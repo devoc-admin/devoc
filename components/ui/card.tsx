@@ -2,13 +2,18 @@ import type * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-function Card({ className, ...props }: React.ComponentProps<"div">) {
+function Card({
+  className,
+  animation = true,
+  ...props
+}: React.ComponentProps<"div"> & { animation?: boolean }) {
   return (
     <div
       data-slot="card"
       className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6",
-        "group hover:border-purple-950 backdrop-blur-sm hover:shadow-2xl shadow-purple-950/40 hover:translate-y-[-10px] transition-all duration-300 cursor-pointer gap-4 border-zinc-900 text-white bg-gradient-to-br from-zinc-950 to-zinc-900",
+        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-purple-950/40 gap-4 border-zinc-900 text-white bg-gradient-to-br from-zinc-950 to-zinc-900",
+        animation &&
+          "group hover:border-purple-950 backdrop-blur-sm hover:shadow-2xl hover:translate-y-[-10px] cursor-pointer transition-all duration-300 ",
         className,
       )}
       {...props}

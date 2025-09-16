@@ -15,7 +15,7 @@ export default function Header() {
             <Link href="/showcase">Showcase</Link>
           </li>
           <li>
-            <Link href="/about">À propos</Link>
+            <Link href="/about">L'équipe</Link>
           </li>
           <li>
             <Link href="/contact">Contact</Link>
