@@ -1,4 +1,5 @@
 import { MailIcon, MapPinIcon, PhoneIcon, SendIcon } from "lucide-react";
+import { LaserFlow } from "@/components/react-bits/laser-flow";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,7 +26,7 @@ function ContactCard({
   return (
     <Card className="p-0 pr-14">
       <a href={href} className="flex items-center gap-6 p-6">
-        <div className="transition-all grid items-center p-2.5 w-fit rounded-lg group-hover:bg-purple-800/20 bg-purple-900/20 text-purple-900">
+        <div className="transition-all grid items-center p-2.5 w-fit rounded-lg group-hover:bg-purple-800/30 bg-purple-900/20 text-purple-900">
           {icon}
         </div>
         <CardContent className="m-0 p-0">
@@ -39,9 +40,9 @@ function ContactCard({
 
 export default function Contact() {
   return (
-    <div className="relative w-full bg-zinc-950 px-8 py-22 flex flex-col items-center gap-16">
+    <div className="relative overflow-hidden bg-zinc-950 bg-gradient-to-br w-full bg-zinc-950 px-8 py-22 flex flex-col items-center gap-24">
       {/* 🆎 Title */}
-      <div className="flex flex-col gap-4 mx-auto text-center">
+      <div className="z-10 flex flex-col gap-4 mx-auto text-center mb-16">
         <h2 className="text-white text-6xl font-bold">Contactez-nous</h2>
         <div className="text-gray-400 text-xl max-w-2xl mx-auto">
           Prêt à démarrer votre projet ? Contactez notre équipe pour discuter de
@@ -49,19 +50,19 @@ export default function Contact() {
         </div>
       </div>
       {/* 🃏 Cards */}
-      <div className="flex items-start gap-6 w-[90vw] max-w-[1000px] justify-center">
+      <div className="flex items-start gap-6 w-[90vw] max-w-[1000px] justify-center z-1">
         {/* Contact cards */}
         <div className="flex flex-col gap-6 max-w-[375px]">
           <ContactCard
             icon={<MailIcon size={28} />}
             content="sudweb@contact.fr"
-            title="Email *"
+            title="Email"
             href="mailto:sudweb@contact.fr"
           />
           <ContactCard
             icon={<PhoneIcon size={28} />}
             content="+33 6 20 23 98 38"
-            title="Téléphone *"
+            title="Téléphone"
             href="tel:+33620239838"
           />
           <ContactCard
@@ -90,7 +91,10 @@ export default function Contact() {
           </Card>
         </div>
         {/* Contact form */}
-        <Card className="grow" animation={false}>
+        <Card className="grow relative overflow-visible" animation={false}>
+          <div className="absolute h-160 -translate-y-[50%] top-0 left-0 mask-t-from-70%">
+            <LaserFlow horizontalSizing={2} fogIntensity={0} color="#c084fc" />
+          </div>
           <CardHeader>
             <CardTitle className="text-2xl !text-white">
               Démarrons votre projet
@@ -132,7 +136,7 @@ export default function Contact() {
               <div className="col-span-2">
                 <Label htmlFor="message">Message *</Label>
                 <Textarea
-                  className="h-32 bg-zinc-950"
+                  className="h-36 bg-zinc-950"
                   placeholder="Décrivez votre projet, vos besoins, vos objectifs etc."
                 />
               </div>

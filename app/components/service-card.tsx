@@ -25,7 +25,7 @@ export default function ServiceCard({
     <Card>
       <CardHeader>
         <div className="mb-3 flex items-center justify-between">
-          <div className="transition-all grid items-center p-2.5 w-fit rounded-lg group-hover:bg-purple-800/20 bg-purple-900/20 text-purple-900">
+          <div className="transition-all grid items-center p-2.5 w-fit rounded-lg group-hover:bg-purple-800/30 bg-purple-900/20 text-purple-900">
             <Icon size={28} />
           </div>
           <motion.div
