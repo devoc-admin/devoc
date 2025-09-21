@@ -1,4 +1,5 @@
 import Image from "next/image";
+import SectionTitle from "@/app/components/section-title";
 import appMockup1 from "@/assets/app-mockup-1.png";
 import appMockup2 from "@/assets/app-mockup-2.png";
 import appMockup3 from "@/assets/app-mockup-3.png";
@@ -60,7 +61,7 @@ function BottomBadge({ children }: { children: React.ReactNode }) {
 
 export default function Showcase() {
   return (
-    <div className="h-screen w-full bg-black relative flex flex-col justify-center items-center gap-12">
+    <div className="min-h-screen w-full bg-black relative flex py-24 px-6 flex-col justify-center items-center gap-12">
       <div className="absolute top-0 w-full h-full">
         <Beams
           beamWidth={2}
@@ -75,16 +76,13 @@ export default function Showcase() {
       </div>
       <div className="absolute top-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
       <div className="flex flex-col z-1 gap-4 mx-auto text-center">
-        <h2 className="text-white text-6xl font-bold">
-          Découvrez nos réalisations
-        </h2>
-        <div className="text-gray-400 text-xl max-w-2xl mx-auto">
-          Découvrez quelques-uns de nos projets récents qui illustrent notre
-          expertise et notre approche orientée résultats.
-        </div>
+        <SectionTitle
+          title="Découvrez nos réalisations"
+          description="Découvrez quelques-uns de nos projets récents qui illustrent notre expertise et notre approche orientée résultats."
+        />
       </div>
 
-      <div className="grid px-12 grid-cols-[repeat(3,400px)] items-center gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-[repeat(2,400px)] xl:grid-cols-[repeat(3,400px)] items-center gap-8">
         {projects.map(
           ({ title, key, description, type, technologies, image }) => (
             <Card key={key} className="relative pt-0 overflow-hidden">

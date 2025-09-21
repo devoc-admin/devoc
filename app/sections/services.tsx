@@ -8,10 +8,11 @@ import {
   SearchIcon,
   ServerIcon,
 } from "lucide-react";
+import SectionTitle from "@/app/components/section-title";
 import ServiceCard from "@/app/components/service-card";
 import Lamp from "@/components/aceternity/lamp";
 
-const services = [
+const SERVICES = [
   {
     title: "Développement Web",
     description:
@@ -58,18 +59,17 @@ const services = [
 
 export default function Services() {
   return (
-    <div className="relative min-h-screen w-full bg-zinc-950 px-8 pt-88 pb-12 flex flex-col justify-between items-center gap-32">
-      <Lamp />
+    <div className="relative min-h-screen w-full bg-zinc-950 px-6 xs:pt-88 pt-36 pb-12 flex flex-col justify-between items-center gap-32">
+      <Lamp className="hidden xs:flex" />
       <div className="flex flex-col gap-4 mx-auto text-center">
-        <h2 className="text-white text-6xl font-bold">Nos Services</h2>
-        <div className="text-gray-400 text-xl max-w-2xl mx-auto">
-          Une gamme complète de services pour accompagner votre transformation
-          digitale, de la conception à la mise en ligne et au-delà.
-        </div>
+        <SectionTitle
+          title="Nos Services"
+          description="Une gamme complète de services pour accompagner votre transformation digitale, de la conception à la mise en ligne et au-delà."
+        />
       </div>
 
-      <div className="grid px-12 grid-cols-[repeat(3,400px)] items-center gap-8">
-        {services.map((service) => (
+      <div className="grid grid-cols-1 lg:grid-cols-[repeat(2,400px)] 2xl:grid-cols-[repeat(3,400px)] items-center gap-8">
+        {SERVICES.map((service) => (
           <ServiceCard
             key={service.title}
             title={service.title}
