@@ -40,7 +40,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: ANIMATION_DELAY * 2 }}
-        className="flex font-semibold items-center gap-2 text-xs xs:text-sm text-purple-600 bg-purple-100 rounded-full px-5 py-2"
+        className="hidden sm:flex font-semibold items-center gap-2 text-xs xs:text-sm text-purple-600 bg-purple-100 rounded-full px-5 py-2"
       >
         <Sparkles size={16} />
         <span>Votre agence web innovante</span>

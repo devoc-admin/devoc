@@ -93,12 +93,11 @@ const LINKS = [
 
 function Footer() {
   return (
-    <div
-      className="bg-zinc-950 bg-gradient-to-br from-purple-950/10
-    10 via-transparent to-purple-950/10 border-t border-t-zinc-600/10 py-10"
-    >
-      <div className="w-[90vw] max-w-[1000px] mx-auto flex flex-col gap-8">
-        <div className="grid grid-cols-5 gap-8 mx-auto">
+    <div className="bg-zinc-950 px-6 bg-gradient-to-br from-purple-950/10 via-transparent to-purple-950/10 border-t border-t-zinc-600/10 py-12">
+      <div className="max-w-[1400px] mx-auto flex flex-col gap-8">
+        {/* 1st row */}
+        <div className="flex flex-col lg:grid lg:grid-cols-5 gap-8 lg:mx-auto">
+          {/* 🐲 Logo and contact */}
           <div className="flex flex-col gap-5 col-span-2">
             <div className="text-2xl font-black flex items-center gap-2">
               <div className="p-2 bg-purple-900/20 rounded-lg">
@@ -109,7 +108,7 @@ function Footer() {
                 <span className="text-white">Web</span>
               </div>
             </div>
-            <div className="text-zinc-400 text-sm">
+            <div className="text-zinc-400 text-sm max-w-[700px]">
               Agence spécialisée dans le développement web moderne. Nous créons
               des solutions digitales sur mesure pour propulser votre
               entreprise.
@@ -145,48 +144,53 @@ function Footer() {
               </div>
             </div>
           </div>
-          {LINKS.map(({ id, title, links }) => (
-            <div key={id}>
-              <div className="text-lg text-white font-bold mb-5">{title}</div>
-              <div className="flex flex-col gap-3 text-zinc-400">
-                {links.map((link) => (
-                  <a
-                    className="text-sm transition-colors cursor-pointer hover:text-purple-600"
-                    key={link.name}
-                    href={link.href}
-                  >
-                    {link.name}
-                  </a>
-                ))}
+          {/* 🔗 Internal links */}
+          <div className="flex flex-col gap-8 xs:grid xs:grid-cols-2 sm:grid-cols-3 lg:col-span-3 lg:grid-cols-subgrid">
+            {LINKS.map(({ id, title, links }) => (
+              <div key={id}>
+                <div className="text-lg text-white font-bold mb-5">{title}</div>
+                <div className="flex flex-col gap-3 text-zinc-400">
+                  {links.map((link) => (
+                    <a
+                      className="text-sm transition-colors cursor-pointer hover:text-purple-600"
+                      key={link.name}
+                      href={link.href}
+                    >
+                      {link.name}
+                    </a>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-        {/* 📧 Newsletter */}
-        <div className="flex items-center border-t border-t-zinc-600/20 border-b border-b-zinc-600/20 justify-between gap-4 py-6">
-          <div className="flex flex-col gap-2">
+        {/* 2nd row - 📧 Newsletter */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-6 border-t border-t-zinc-600/20 border-b border-b-zinc-600/20">
+          {/* 🔤 Restez informés*/}
+          <div>
             <div className="text-white text-lg font-bold">Restez informé</div>
             <div className="text-zinc-400 text-sm">
               Recevez nos dernières actualités et nouveautés
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          {/* 🔗 Newsletter */}
+          <div className="flex flex-col gap-4 w-full sm:w-auto sm:flex-row sm:items-center sm:justify-end">
             <Input
               type="email"
               placeholder="Email"
-              className="bg-zinc-950 text-white h-10 text-[1rem]"
+              className="bg-zinc-950 text-white h-10 text-sm sm:text-[1rem]"
             />
-            <Button className="bg-purple-600 text-white text-[1rem]" size="lg">
+            <Button className="bg-purple-600 text-white text-sm sm:text-[1rem] sm:px-10">
               S'abonner
             </Button>
           </div>
         </div>
-        {/* 📝 Copyright */}
-        <div className="flex items-center justify-between">
+        {/* 3rd row -📝 Copyright */}
+        <div className="flex items-center flex-col gap-4 sm:gap-0 sm:flex-row sm:justify-between">
           <div className="text-zinc-400 text-sm">
             &copy; {new Date().getFullYear()} SudWeb. Tous droits réservés.
           </div>
-          <div className="flex items-center gap-4 text-zinc-400 text-sm">
+          <div className="flex flex-col sm:flex-row items-center gap-4 text-zinc-400 text-sm">
             <a
               href="/mentions-legales"
               className="hover:text-purple-600 transition-all"

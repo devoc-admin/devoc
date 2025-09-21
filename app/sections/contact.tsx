@@ -1,4 +1,5 @@
 import { MailIcon, MapPinIcon, PhoneIcon, SendIcon } from "lucide-react";
+import SectionTitle from "@/app/components/section-title";
 import { LaserFlow } from "@/components/react-bits/laser-flow";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +25,7 @@ function ContactCard({
   href: string;
 }) {
   return (
-    <Card className="p-0 pr-14">
+    <Card className="p-0 pr-14 hidden md:block">
       <a href={href} className="flex items-center gap-6 p-6">
         <div className="transition-all grid items-center p-2.5 w-fit rounded-lg group-hover:bg-purple-800/30 bg-purple-900/20 text-purple-900">
           {icon}
@@ -40,19 +41,18 @@ function ContactCard({
 
 export default function Contact() {
   return (
-    <div className="relative overflow-hidden bg-zinc-950 bg-gradient-to-br w-full bg-zinc-950 px-8 py-22 flex flex-col items-center gap-24">
+    <div className="relative overflow-hidden bg-zinc-950 bg-gradient-to-br w-full bg-zinc-950 px-6 py-24 flex flex-col items-center gap-24">
       {/* 🆎 Title */}
-      <div className="z-10 flex flex-col gap-4 mx-auto text-center mb-16">
-        <h2 className="text-white text-6xl font-bold">Contactez-nous</h2>
-        <div className="text-gray-400 text-xl max-w-2xl mx-auto">
-          Prêt à démarrer votre projet ? Contactez notre équipe pour discuter de
-          vos besoins et obtenir un devis personnalisé.
-        </div>
+      <div className="z-10 flex flex-col gap-4 mx-auto text-center mb-0 md:mb-16">
+        <SectionTitle
+          title="Contactez-nous"
+          description="Prêt à démarrer votre projet ? Contactez notre équipe pour discuter de vos besoins et obtenir un devis personnalisé."
+        />
       </div>
       {/* 🃏 Cards */}
-      <div className="flex items-start gap-6 w-[90vw] max-w-[1000px] justify-center z-1">
+      <div className="flex max-w-[1400px] md:flex-row flex-col md:items-start gap-6 w-full justify-center z-1">
         {/* Contact cards */}
-        <div className="flex flex-col gap-6 max-w-[375px]">
+        <div className="flex order-2 md:order-1 flex-col gap-6 min-w-[335px]">
           <ContactCard
             icon={<MailIcon size={28} />}
             content="sudweb@contact.fr"
@@ -73,7 +73,7 @@ export default function Contact() {
           />
           <Card
             animation={false}
-            className="bg-purple-950/10 border-purple-950/50"
+            className="bg-purple-950/10 border-purple-950/50 max-w-[450px]"
           >
             <CardHeader>
               <CardTitle className="text-2xl">
@@ -91,8 +91,11 @@ export default function Contact() {
           </Card>
         </div>
         {/* Contact form */}
-        <Card className="grow relative overflow-visible" animation={false}>
-          <div className="absolute h-160 -translate-y-[50%] top-0 left-0 mask-t-from-70%">
+        <Card
+          className="grow relative overflow-visible order-1 md:order-2"
+          animation={false}
+        >
+          <div className="hidden md:block absolute h-160 -translate-y-[50%] top-0 left-0 mask-t-from-70%">
             <LaserFlow horizontalSizing={2} fogIntensity={0} color="#c084fc" />
           </div>
           <CardHeader>
