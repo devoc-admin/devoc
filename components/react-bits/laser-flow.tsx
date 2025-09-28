@@ -1,7 +1,7 @@
 "use client";
 import type React from "react";
 import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import * as Three from "three";
 
 type Props = {
   className?: string;
@@ -285,7 +285,7 @@ export const LaserFlow: React.FC<Props> = ({
   color = "#FF79C6",
 }) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const rendererRef = useRef<Three.WebGLRenderer | null>(null);
   const uniformsRef = useRef<any>(null);
   const hasFadedRef = useRef(false);
   const rectRef = useRef<DOMRect | null>(null);
@@ -297,7 +297,7 @@ export const LaserFlow: React.FC<Props> = ({
   const pausedRef = useRef<boolean>(false);
   const inViewRef = useRef<boolean>(true);
 
-  const hexToRGB = (hex: string) => {
+  const hexToRgb = (hex: string) => {
     let c = hex.trim();
     if (c[0] === "#") c = c.slice(1);
     if (c.length === 3)
@@ -305,7 +305,7 @@ export const LaserFlow: React.FC<Props> = ({
         .split("")
         .map((x) => x + x)
         .join("");
-    const n = parseInt(c, 16) || 0xffffff;
+    const n = Number.parseInt(c, 16) || 0xff_ff_ff;
     return {
       r: ((n >> 16) & 255) / 255,
       g: ((n >> 8) & 255) / 255,
@@ -315,7 +315,7 @@ export const LaserFlow: React.FC<Props> = ({
 
   useEffect(() => {
     const mount = mountRef.current!;
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new Three.WebGLRenderer({
       antialias: false,
       alpha: false,
       depth: false,
@@ -333,30 +333,30 @@ export const LaserFlow: React.FC<Props> = ({
 
     renderer.setPixelRatio(currentDprRef.current);
     renderer.shadowMap.enabled = false;
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.setClearColor(0x000000, 1);
+    renderer.outputColorSpace = Three.SRGBColorSpace;
+    renderer.setClearColor(0x00_00_00, 1);
     const canvas = renderer.domElement;
     canvas.style.width = "100%";
     canvas.style.height = "100%";
     canvas.style.display = "block";
     mount.appendChild(canvas);
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    const scene = new Three.Scene();
+    const camera = new Three.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-    const geometry = new THREE.BufferGeometry();
+    const geometry = new Three.BufferGeometry();
     geometry.setAttribute(
       "position",
-      new THREE.BufferAttribute(
+      new Three.BufferAttribute(
         new Float32Array([-1, -1, 0, 3, -1, 0, -1, 3, 0]),
-        3,
-      ),
+        3
+      )
     );
 
     const uniforms = {
       iTime: { value: 0 },
-      iResolution: { value: new THREE.Vector3(1, 1, 1) },
-      iMouse: { value: new THREE.Vector4(0, 0, 0, 0) },
+      iResolution: { value: new Three.Vector3(1, 1, 1) },
+      iMouse: { value: new Three.Vector4(0, 0, 0, 0) },
       uWispDensity: { value: wispDensity },
       uTiltScale: { value: mouseTiltStrength },
       uFlowTime: { value: 0 },
@@ -374,31 +374,31 @@ export const LaserFlow: React.FC<Props> = ({
       uDecay: { value: decay },
       uFalloffStart: { value: falloffStart },
       uFogFallSpeed: { value: fogFallSpeed },
-      uColor: { value: new THREE.Vector3(1, 1, 1) },
+      uColor: { value: new Three.Vector3(1, 1, 1) },
       uFade: { value: hasFadedRef.current ? 1 : 0 },
     };
     uniformsRef.current = uniforms;
 
-    const material = new THREE.RawShaderMaterial({
+    const material = new Three.RawShaderMaterial({
       vertexShader: VERT,
       fragmentShader: FRAG,
       uniforms,
       transparent: false,
       depthTest: false,
       depthWrite: false,
-      blending: THREE.NormalBlending,
+      blending: Three.NormalBlending,
     });
 
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new Three.Mesh(geometry, material);
     mesh.frustumCulled = false;
     scene.add(mesh);
 
-    const clock = new THREE.Clock();
+    const clock = new Three.Clock();
     let prevTime = 0;
     let fade = hasFadedRef.current ? 1 : 0;
 
-    const mouseTarget = new THREE.Vector2(0, 0);
-    const mouseSmooth = new THREE.Vector2(0, 0);
+    const mouseTarget = new Three.Vector2(0, 0);
+    const mouseSmooth = new Three.Vector2(0, 0);
 
     const setSizeNow = () => {
       const w = mount.clientWidth || 1;
@@ -424,7 +424,7 @@ export const LaserFlow: React.FC<Props> = ({
       (entries) => {
         inViewRef.current = entries[0]?.isIntersecting ?? true;
       },
-      { root: null, threshold: 0 },
+      { root: null, threshold: 0 }
     );
     io.observe(mount);
 
@@ -575,7 +575,7 @@ export const LaserFlow: React.FC<Props> = ({
     uniforms.uFalloffStart.value = falloffStart;
     uniforms.uFogFallSpeed.value = fogFallSpeed;
 
-    const { r, g, b } = hexToRGB(color || "#FFFFFF");
+    const { r, g, b } = hexToRgb(color || "#FFFFFF");
     uniforms.uColor.value.set(r, g, b);
   }, [
     wispDensity,
@@ -598,8 +598,8 @@ export const LaserFlow: React.FC<Props> = ({
 
   return (
     <div
+      className={`relative h-full w-full ${className || ""}`}
       ref={mountRef}
-      className={`w-full h-full relative ${className || ""}`}
       style={style}
     />
   );

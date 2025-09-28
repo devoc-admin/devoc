@@ -1,7 +1,7 @@
-import { MailIcon, MapPinIcon, PhoneIcon, SendIcon } from "lucide-react";
+import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
+import ContactForm from "@/app/components/contact-form";
 import SectionTitle from "@/app/components/section-title";
 import { LaserFlow } from "@/components/react-bits/laser-flow";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,10 +9,105 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 
+type ContactItem = {
+  content: string;
+  href: string;
+  icon: React.ReactNode;
+  title: string;
+};
+
+const contactItems: ContactItem[] = [
+  {
+    content: "sudweb@contact.fr",
+    href: "mailto:sudweb@contact.fr",
+    icon: <MailIcon size={26} />,
+    title: "Email",
+  },
+  {
+    content: "+33 6 20 23 98 38",
+    href: "tel:+33620239838",
+    icon: <PhoneIcon size={26} />,
+    title: "Téléphone",
+  },
+  {
+    content: "Carcassonne, France",
+    href: "https://maps.app.goo.gl/1234567890",
+    icon: <MapPinIcon size={26} />,
+    title: "Adresse",
+  },
+];
+
+export default function Contact() {
+  return (
+    <div
+      className="relative flex w-full flex-col items-center gap-24 overflow-hidden bg-gradient-to-br bg-zinc-950 px-6 py-24"
+      id="contact"
+    >
+      {/* 🆎 Title */}
+      <SectionTitle
+        className="z-10"
+        description="Prêt à démarrer votre projet ? Contactez notre équipe pour discuter de vos besoins et obtenir un devis personnalisé."
+        title="Contactez-nous"
+      />
+      {/* 🃏 Cards */}
+      <div
+        className={cn(
+          "z-1 flex w-full justify-center gap-6 md:max-w-[1400px]",
+          "flex-col",
+          "md:flex-row md:items-start"
+        )}
+      >
+        <div className={cn("flex flex-col gap-6", "order-2", "md:order-1")}>
+          {contactItems.map((item) => (
+            <ContactCard key={item.title} {...item} />
+          ))}
+          {/* 📧 Response rapide garantie*/}
+          <Card
+            animation={false}
+            className="border-primary/30 bg-primary/5 md:max-w-[450px]"
+          >
+            <CardHeader>
+              <CardTitle className="text-wrap text-2xl">
+                Réponse rapide garantie
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-muted-foreground">
+              Nous nous engageons à répondre à tous les messages dans les 24
+              heures ouvrées.
+            </CardContent>
+            <CardFooter className="font-bold text-primary text-sm">
+              {/* 🟢 Équipe disponible */}
+              <div className="mr-2 size-2 rounded-full bg-green-500" />
+              <span>Équipe disponible</span>
+            </CardFooter>
+          </Card>
+        </div>
+
+        {/* 📝 Contact form */}
+        <Card
+          animation={false}
+          className="relative order-1 grow overflow-visible md:order-2"
+        >
+          <div className="-translate-y-[50%] mask-t-from-70% absolute top-0 left-0 hidden h-160 md:block">
+            <LaserFlow color="#c084fc" fogIntensity={0} horizontalSizing={2} />
+          </div>
+          <CardHeader>
+            <CardTitle className={cn("text-center text-2xl", "xs:text-left")}>
+              Démarrons votre projet
+            </CardTitle>
+          </CardHeader>
+          <CardContent className={cn("z-1", "max-xs:p-3")}>
+            <ContactForm />
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+// ----------------------------------
 function ContactCard({
   icon,
   content,
@@ -25,136 +120,22 @@ function ContactCard({
   href: string;
 }) {
   return (
-    <Card className="p-0 pr-14 hidden md:block">
-      <a href={href} className="flex items-center gap-6 p-6">
-        <div className="transition-all grid items-center p-2.5 w-fit rounded-lg group-hover:bg-purple-800/30 bg-purple-900/20 text-purple-900">
+    <Card className="hidden p-0 pr-14 md:block">
+      <a className="flex items-center gap-6 p-6" href={href}>
+        <div
+          className={cn(
+            "grid w-fit items-center rounded-lg p-2.5 text-primary",
+            "bg-primary/15",
+            "group-hover:bg-primary/20"
+          )}
+        >
           {icon}
         </div>
         <CardContent className="m-0 p-0">
-          <div className="text-white font-semibold">{title}</div>
-          <div className="text-base">{content}</div>
+          <CardTitle>{title}</CardTitle>
+          <div>{content}</div>
         </CardContent>
       </a>
     </Card>
-  );
-}
-
-export default function Contact() {
-  return (
-    <div className="relative overflow-hidden bg-zinc-950 bg-gradient-to-br w-full bg-zinc-950 px-6 py-24 flex flex-col items-center gap-24">
-      {/* 🆎 Title */}
-      <div className="z-10 flex flex-col gap-4 mx-auto text-center mb-0 md:mb-16">
-        <SectionTitle
-          title="Contactez-nous"
-          description="Prêt à démarrer votre projet ? Contactez notre équipe pour discuter de vos besoins et obtenir un devis personnalisé."
-        />
-      </div>
-      {/* 🃏 Cards */}
-      <div className="flex max-w-[1400px] md:flex-row flex-col md:items-start gap-6 w-full justify-center z-1">
-        {/* Contact cards */}
-        <div className="flex order-2 md:order-1 flex-col gap-6 min-w-[335px]">
-          <ContactCard
-            icon={<MailIcon size={28} />}
-            content="sudweb@contact.fr"
-            title="Email"
-            href="mailto:sudweb@contact.fr"
-          />
-          <ContactCard
-            icon={<PhoneIcon size={28} />}
-            content="+33 6 20 23 98 38"
-            title="Téléphone"
-            href="tel:+33620239838"
-          />
-          <ContactCard
-            icon={<MapPinIcon size={28} />}
-            content="Carcassonne, France"
-            title="Adresse"
-            href="https://maps.app.goo.gl/1234567890"
-          />
-          <Card
-            animation={false}
-            className="bg-purple-950/10 border-purple-950/50 max-w-[450px]"
-          >
-            <CardHeader>
-              <CardTitle className="text-2xl">
-                Réponse rapide garantie
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-zinc-400">
-              Nous nous engageons à répondre à tous les messages dans les 24
-              heures ouvrées.
-            </CardContent>
-            <CardFooter className="text-purple-700 text-sm font-bold">
-              <div className="size-2 bg-green-500 rounded-full mr-2"></div>
-              <span>Équipe disponible</span>
-            </CardFooter>
-          </Card>
-        </div>
-        {/* Contact form */}
-        <Card
-          className="grow relative overflow-visible order-1 md:order-2"
-          animation={false}
-        >
-          <div className="hidden md:block absolute h-160 -translate-y-[50%] top-0 left-0 mask-t-from-70%">
-            <LaserFlow horizontalSizing={2} fogIntensity={0} color="#c084fc" />
-          </div>
-          <CardHeader>
-            <CardTitle className="text-2xl !text-white">
-              Démarrons votre projet
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form className="grid grid-cols-2 gap-6">
-              {/* 🧑 Nom */}
-              <div className="col-span-1">
-                <Label htmlFor="name">Nom *</Label>
-                <Input
-                  type="text"
-                  placeholder="Nom"
-                  className="bg-zinc-950 col-span-1"
-                />
-              </div>
-
-              {/* 📧 Email */}
-              <div className="col-span-1">
-                <Label htmlFor="email">Email *</Label>
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  className="bg-zinc-950 col-span-1"
-                />
-              </div>
-
-              {/* 🏢 Entreprise */}
-              <div className="col-span-2">
-                <Label htmlFor="email">Entreprise</Label>
-                <Input
-                  className="bg-zinc-950 col-span-2"
-                  type="email"
-                  placeholder="Nom de votre entreprise"
-                />
-              </div>
-
-              {/* 📝 Message */}
-              <div className="col-span-2">
-                <Label htmlFor="message">Message *</Label>
-                <Textarea
-                  className="h-36 bg-zinc-950"
-                  placeholder="Décrivez votre projet, vos besoins, vos objectifs etc."
-                />
-              </div>
-
-              <Button
-                type="submit"
-                className="gap-3 cursor-pointer font-semibold text-lg py-6 col-span-2 bg-purple-700 rounded-xl hover:bg-purple-800"
-              >
-                <SendIcon size={20} />
-                <span>Envoyer le message</span>
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
   );
 }

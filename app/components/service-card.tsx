@@ -1,4 +1,7 @@
-import type { LucideProps } from "lucide-react";
+/** biome-ignore-all lint/performance/noNamespaceImport: exception */
+"use client";
+import type { LucideIcon } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 import { motion } from "motion/react";
 import {
   Card,
@@ -7,45 +10,66 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 type Props = {
   title: string;
   description: string;
   features: string[];
-  Icon: React.ComponentType<LucideProps>;
+  icon: string;
 };
 
 export default function ServiceCard({
   title,
   description,
   features,
-  Icon,
+  icon,
 }: Props) {
+  /** biome-ignore lint/performance/noDynamicNamespaceImportAccess: exception */
+  const Icon = LucideIcons[icon as keyof typeof LucideIcons] as LucideIcon;
   return (
     <Card>
       <CardHeader>
         <div className="mb-3 flex items-center justify-between">
-          <div className="transition-all grid items-center p-2.5 w-fit rounded-lg group-hover:bg-purple-800/30 bg-purple-900/20 text-purple-900">
+          {/* 🟪 Icon */}
+          <div
+            className={cn(
+              "grid w-fit items-center rounded-lg p-2.5 text-primary",
+              "bg-primary/15",
+              "group-hover:bg-primary/20"
+            )}
+          >
             <Icon size={28} />
           </div>
+          {/* 👉 Progress Bar */}
           <motion.div
-            className="w-[60px] rounded-lg h-1 bg-purple-900"
-            viewport={{ once: true, amount: 0.5 }}
-            whileInView={{ width: "60px" }}
+            className="h-1 w-[30%] rounded-lg bg-primary"
             initial={{ width: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
+            viewport={{ once: true, amount: 0.5 }}
+            whileInView={{ width: "30%" }}
           />
         </div>
-        <CardTitle className="transition-all group-hover:text-purple-800 text-white text-xl font-bold">
+
+        {/* 🆎 Title */}
+        <CardTitle
+          className={cn(
+            "font-bold text-xl",
+            "text-primary-foreground",
+            "group-hover:text-primary"
+          )}
+        >
           {title}
         </CardTitle>
       </CardHeader>
-      <CardContent className="gap-4">
+
+      {/* 🔡 Description */}
+      <CardContent className="grow gap-4">
         <CardDescription className="text-base">{description}</CardDescription>
-        <ul>
+        <ul className="mt-auto">
           {features.map((feature) => (
-            <li key={feature} className="flex items-center gap-2">
-              <div className="bg-purple-800 size-1.5 rounded-full" />
+            <li className="flex items-center gap-2" key={feature}>
+              <div className="size-1.5 rounded-full bg-primary" />
               <span>{feature}</span>
             </li>
           ))}

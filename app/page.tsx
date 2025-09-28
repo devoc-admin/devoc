@@ -2,8 +2,8 @@ import Header from "@/app/components/header";
 import Contact from "./sections/contact";
 import Footer from "./sections/footer";
 import Hero from "./sections/hero";
+import Realisations from "./sections/realisations";
 import Services from "./sections/services";
-import Showcase from "./sections/showcase";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
       <Header />
       <Hero />
       <Services />
-      <Showcase />
+      <Realisations />
       <Contact />
       <Footer />
     </>

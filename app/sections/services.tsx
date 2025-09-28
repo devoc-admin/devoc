@@ -1,85 +1,90 @@
-"use client";
-
-import {
-  CodeIcon,
-  LifeBuoy,
-  PaletteIcon,
-  PhoneIcon,
-  SearchIcon,
-  ServerIcon,
-} from "lucide-react";
 import SectionTitle from "@/app/components/section-title";
 import ServiceCard from "@/app/components/service-card";
 import Lamp from "@/components/aceternity/lamp";
+import { cn } from "@/lib/utils";
 
-const SERVICES = [
+type Service = {
+  title: string;
+  description: string;
+  features: string[];
+  icon: string;
+};
+
+const services: Service[] = [
   {
     title: "Développement Web",
     description:
       "Sites web modernes et performants avec les dernières technologies (React, Vue, Angular).",
     features: ["Responsive Design", "Performance optimisée", "SEO intégré"],
-    Icon: CodeIcon,
+    icon: "Code",
   },
   {
     title: "Applications Mobiles",
     description:
       "Applications web progressives et applications natives pour iOS et Android.",
     features: ["PWA", "React Native", "Interface intuitive"],
-    Icon: PhoneIcon,
+    icon: "Phone",
   },
   {
     title: "Référencement SEO",
     description:
       "Optimisation pour les moteurs de recherche et amélioration de votre visibilité.",
     features: ["Audit SEO", "Optimisation technique", "Suivi des performances"],
-    Icon: SearchIcon,
+    icon: "Search",
   },
   {
     title: "Design UX/UI",
     description:
       "Conception d'interfaces utilisateur modernes et expériences optimisées.",
     features: ["Wireframes", "Prototypage", "Design system"],
-    Icon: PaletteIcon,
+    icon: "Palette",
   },
   {
     title: "Développement Backend",
     description:
       "API robustes, bases de données et architecture serveur sécurisée.",
     features: ["API REST/GraphQL", "Base de données", "Architecture sécurisée"],
-    Icon: ServerIcon,
+    icon: "Server",
   },
   {
     title: "Support & Maintenance",
     description:
       "Maintenance continue, mises à jour et support technique 24/7.",
     features: ["Maintenance", "Support réactif", "Mise à jour"],
-    Icon: LifeBuoy,
+    icon: "LifeBuoy",
   },
 ];
 
 export default function Services() {
   return (
-    <div className="relative min-h-screen w-full bg-zinc-950 px-6 xs:pt-88 pt-36 pb-12 flex flex-col justify-between items-center gap-32">
-      <Lamp className="hidden xs:flex" />
-      <div className="flex flex-col gap-4 mx-auto text-center">
-        <SectionTitle
-          title="Nos Services"
-          description="Une gamme complète de services pour accompagner votre transformation digitale, de la conception à la mise en ligne et au-delà."
-        />
-      </div>
+    <div
+      className={cn(
+        "relative flex min-h-screen flex-col items-center justify-between gap-32",
+        "bg-zinc-950",
+        "px-6 pt-36 pb-12",
+        "xs:pt-88 xs:pb-48"
+      )}
+      id="services"
+    >
+      <Lamp className={cn("hidden", "xs:flex")} />
+      {/* 🆎 Title */}
+      <SectionTitle
+        description="Une gamme complète de services pour accompagner votre transformation digitale, de la conception à la mise en ligne et au-delà 🚀"
+        title="Nos Services"
+      />
 
-      <div className="grid grid-cols-1 lg:grid-cols-[repeat(2,400px)] 2xl:grid-cols-[repeat(3,400px)] items-center gap-8">
-        {SERVICES.map((service) => (
-          <ServiceCard
-            key={service.title}
-            title={service.title}
-            description={service.description}
-            features={service.features}
-            Icon={service.Icon}
-          />
+      {/* 🃏 Cards */}
+      <div
+        className={cn(
+          "w-full max-w-[1300px] gap-8",
+          "flex flex-col",
+          "sm:grid sm:grid-cols-[repeat(auto-fill,minmax(320px,1fr))]"
+        )}
+      >
+        {services.map((service) => (
+          <ServiceCard key={service.title} {...service} />
         ))}
       </div>
-      <div />
     </div>
   );
 }

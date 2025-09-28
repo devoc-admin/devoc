@@ -11,30 +11,30 @@ import {
   useMemo,
   useRef,
 } from "react";
-import * as THREE from "three";
+import * as Three from "three";
 import { degToRad } from "three/src/math/MathUtils.js";
 
-type UniformValue = THREE.IUniform<unknown> | unknown;
+type UniformValue = Three.IUniform<unknown> | unknown;
 
 interface ExtendMaterialConfig {
   header: string;
   vertexHeader?: string;
   fragmentHeader?: string;
-  material?: THREE.MeshPhysicalMaterialParameters & { fog?: boolean };
+  material?: Three.MeshPhysicalMaterialParameters & { fog?: boolean };
   uniforms?: Record<string, UniformValue>;
   vertex?: Record<string, string>;
   fragment?: Record<string, string>;
 }
 
-type ShaderWithDefines = THREE.ShaderLibShader & {
+type ShaderWithDefines = Three.ShaderLibShader & {
   defines?: Record<string, string | number | boolean>;
 };
 
-function extendMaterial<T extends THREE.Material = THREE.Material>(
-  BaseMaterial: new (params?: THREE.MaterialParameters) => T,
-  cfg: ExtendMaterialConfig,
-): THREE.ShaderMaterial {
-  const physical = THREE.ShaderLib.physical as ShaderWithDefines;
+function extendMaterial<T extends Three.Material = Three.Material>(
+  BaseMaterial: new (params?: Three.MaterialParameters) => T,
+  cfg: ExtendMaterialConfig
+): Three.ShaderMaterial {
+  const physical = Three.ShaderLib.physical as ShaderWithDefines;
   const {
     vertexShader: baseVert,
     fragmentShader: baseFrag,
@@ -42,14 +42,14 @@ function extendMaterial<T extends THREE.Material = THREE.Material>(
   } = physical;
   const baseDefines = physical.defines ?? {};
 
-  const uniforms: Record<string, THREE.IUniform> =
-    THREE.UniformsUtils.clone(baseUniforms);
+  const uniforms: Record<string, Three.IUniform> =
+    Three.UniformsUtils.clone(baseUniforms);
 
   const defaults = new BaseMaterial(cfg.material || {}) as T & {
-    color?: THREE.Color;
+    color?: Three.Color;
     roughness?: number;
     metalness?: number;
-    envMap?: THREE.Texture;
+    envMap?: Three.Texture;
     envMapIntensity?: number;
   };
 
@@ -63,8 +63,8 @@ function extendMaterial<T extends THREE.Material = THREE.Material>(
   Object.entries(cfg.uniforms ?? {}).forEach(([key, u]) => {
     uniforms[key] =
       u !== null && typeof u === "object" && "value" in u
-        ? (u as THREE.IUniform<unknown>)
-        : ({ value: u } as THREE.IUniform<unknown>);
+        ? (u as Three.IUniform<unknown>)
+        : ({ value: u } as Three.IUniform<unknown>);
   });
 
   let vert = `${cfg.header}\n${cfg.vertexHeader ?? ""}\n${baseVert}`;
@@ -77,7 +77,7 @@ function extendMaterial<T extends THREE.Material = THREE.Material>(
     frag = frag.replace(inc, `${inc}\n${code}`);
   }
 
-  const mat = new THREE.ShaderMaterial({
+  const mat = new Three.ShaderMaterial({
     defines: { ...baseDefines },
     uniforms,
     vertexShader: vert,
@@ -90,16 +90,16 @@ function extendMaterial<T extends THREE.Material = THREE.Material>(
 }
 
 const CanvasWrapper: FC<{ children: ReactNode }> = ({ children }) => (
-  <Canvas dpr={[1, 2]} frameloop="always" className="w-full h-full relative">
+  <Canvas className="relative h-full w-full" dpr={[1, 2]} frameloop="always">
     {children}
   </Canvas>
 );
 
-const hexToNormalizedRGB = (hex: string): [number, number, number] => {
+const hexToNormalizedRgb = (hex: string): [number, number, number] => {
   const clean = hex.replace("#", "");
-  const r = parseInt(clean.substring(0, 2), 16);
-  const g = parseInt(clean.substring(2, 4), 16);
-  const b = parseInt(clean.substring(4, 6), 16);
+  const r = Number.parseInt(clean.substring(0, 2), 16);
+  const g = Number.parseInt(clean.substring(2, 4), 16);
+  const b = Number.parseInt(clean.substring(4, 6), 16);
   return [r / 255, g / 255, b / 255];
 };
 
@@ -202,12 +202,12 @@ const Beams: FC<BeamsProps> = ({
   rotation = 0,
 }) => {
   const meshRef = useRef<
-    THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>
+    Three.Mesh<Three.BufferGeometry, Three.ShaderMaterial>
   >(null!);
 
   const beamMaterial = useMemo(
     () =>
-      extendMaterial(THREE.MeshStandardMaterial, {
+      extendMaterial(Three.MeshStandardMaterial, {
         header: `
   varying vec3 vEye;
   varying float vNoise;
@@ -239,8 +239,10 @@ const Beams: FC<BeamsProps> = ({
   }`,
         fragmentHeader: "",
         vertex: {
-          "#include <begin_vertex>": `transformed.z += getPos(transformed.xyz);`,
-          "#include <beginnormal_vertex>": `objectNormal = getNormal(position.xyz);`,
+          "#include <begin_vertex>":
+            "transformed.z += getPos(transformed.xyz);",
+          "#include <beginnormal_vertex>":
+            "objectNormal = getNormal(position.xyz);",
         },
         fragment: {
           "#include <dithering_fragment>": `
@@ -249,7 +251,7 @@ const Beams: FC<BeamsProps> = ({
         },
         material: { fog: true },
         uniforms: {
-          diffuse: new THREE.Color(...hexToNormalizedRGB("#000000")),
+          diffuse: new Three.Color(...hexToNormalizedRgb("#000000")),
           time: { shared: true, mixed: true, linked: true, value: 0 },
           roughness: 0.3,
           metalness: 0.3,
@@ -259,24 +261,24 @@ const Beams: FC<BeamsProps> = ({
           uScale: scale,
         },
       }),
-    [speed, noiseIntensity, scale],
+    [speed, noiseIntensity, scale]
   );
 
   return (
     <CanvasWrapper>
       <group rotation={[0, 0, degToRad(rotation)]}>
         <PlaneNoise
-          ref={meshRef}
-          material={beamMaterial}
           count={beamNumber}
-          width={beamWidth}
           height={beamHeight}
+          material={beamMaterial}
+          ref={meshRef}
+          width={beamWidth}
         />
         <DirLight color={lightColor} position={[0, 3, 10]} />
       </group>
       <ambientLight intensity={1} />
-      <color attach="background" args={["#000000"]} />
-      <PerspectiveCamera makeDefault position={[0, 0, 20]} fov={30} />
+      <color args={["#000000"]} attach="background" />
+      <PerspectiveCamera fov={30} makeDefault position={[0, 0, 20]} />
     </CanvasWrapper>
   );
 };
@@ -286,9 +288,9 @@ function createStackedPlanesBufferGeometry(
   width: number,
   height: number,
   spacing: number,
-  heightSegments: number,
-): THREE.BufferGeometry {
-  const geometry = new THREE.BufferGeometry();
+  heightSegments: number
+): Three.BufferGeometry {
+  const geometry = new Three.BufferGeometry();
   const numVertices = n * (heightSegments + 1) * 2;
   const numFaces = n * heightSegments * 2;
   const positions = new Float32Array(numVertices * 3);
@@ -315,7 +317,7 @@ function createStackedPlanesBufferGeometry(
       const uvY = j / heightSegments;
       uvs.set(
         [uvXOffset, uvY + uvYOffset, uvXOffset + 1, uvY + uvYOffset],
-        uvOffset,
+        uvOffset
       );
 
       if (j < heightSegments) {
@@ -331,52 +333,52 @@ function createStackedPlanesBufferGeometry(
     }
   }
 
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
-  geometry.setIndex(new THREE.BufferAttribute(indices, 1));
+  geometry.setAttribute("position", new Three.BufferAttribute(positions, 3));
+  geometry.setAttribute("uv", new Three.BufferAttribute(uvs, 2));
+  geometry.setIndex(new Three.BufferAttribute(indices, 1));
   geometry.computeVertexNormals();
   return geometry;
 }
 
 const MergedPlanes = forwardRef<
-  THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>,
+  Three.Mesh<Three.BufferGeometry, Three.ShaderMaterial>,
   {
-    material: THREE.ShaderMaterial;
+    material: Three.ShaderMaterial;
     width: number;
     count: number;
     height: number;
   }
 >(({ material, width, count, height }, ref) => {
-  const mesh = useRef<THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>>(
-    null!,
+  const mesh = useRef<Three.Mesh<Three.BufferGeometry, Three.ShaderMaterial>>(
+    null!
   );
   useImperativeHandle(ref, () => mesh.current);
   const geometry = useMemo(
     () => createStackedPlanesBufferGeometry(count, width, height, 0, 100),
-    [count, width, height],
+    [count, width, height]
   );
   useFrame((_, delta) => {
     mesh.current.material.uniforms.time.value += 0.1 * delta;
   });
-  return <mesh ref={mesh} geometry={geometry} material={material} />;
+  return <mesh geometry={geometry} material={material} ref={mesh} />;
 });
 MergedPlanes.displayName = "MergedPlanes";
 
 const PlaneNoise = forwardRef<
-  THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>,
+  Three.Mesh<Three.BufferGeometry, Three.ShaderMaterial>,
   {
-    material: THREE.ShaderMaterial;
+    material: Three.ShaderMaterial;
     width: number;
     count: number;
     height: number;
   }
 >((props, ref) => (
   <MergedPlanes
-    ref={ref}
-    material={props.material}
-    width={props.width}
     count={props.count}
     height={props.height}
+    material={props.material}
+    ref={ref}
+    width={props.width}
   />
 ));
 PlaneNoise.displayName = "PlaneNoise";
@@ -385,10 +387,10 @@ const DirLight: FC<{ position: [number, number, number]; color: string }> = ({
   position,
   color,
 }) => {
-  const dir = useRef<THREE.DirectionalLight>(null!);
+  const dir = useRef<Three.DirectionalLight>(null!);
   useEffect(() => {
     if (!dir.current) return;
-    const cam = dir.current.shadow.camera as THREE.Camera & {
+    const cam = dir.current.shadow.camera as Three.Camera & {
       top: number;
       bottom: number;
       left: number;
@@ -404,10 +406,10 @@ const DirLight: FC<{ position: [number, number, number]; color: string }> = ({
   }, []);
   return (
     <directionalLight
-      ref={dir}
       color={color}
       intensity={1}
       position={position}
+      ref={dir}
     />
   );
 };

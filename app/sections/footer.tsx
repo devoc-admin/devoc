@@ -1,8 +1,18 @@
 import { CodeXmlIcon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
-const LINKS = [
+type GroupLink = {
+  id: string;
+  title: string;
+  links: {
+    name: string;
+    href: string;
+  }[];
+};
+
+const groupLinks: GroupLink[] = [
   {
     id: "services",
     title: "Services",
@@ -91,121 +101,168 @@ const LINKS = [
   },
 ];
 
+type ContactLink = {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  id: string;
+};
+
+const contactLinks: ContactLink[] = [
+  {
+    href: "mailto:sudweb@contact.fr",
+    icon: <MailIcon size={16} />,
+    label: "sudweb@contact.fr",
+    id: "email",
+  },
+  {
+    href: "tel:+33620239838",
+    icon: <PhoneIcon size={16} />,
+    label: "+33 6 20 23 98 38",
+    id: "phone",
+  },
+  {
+    href: "https://maps.app.goo.gl/1234567890",
+    icon: <MapPinIcon size={16} />,
+    label: "Carcassonne, France",
+    id: "address",
+  },
+];
+
+type LegalLink = {
+  href: string;
+  name: string;
+};
+
+const legalLinks: LegalLink[] = [
+  {
+    href: "/mentions-legales",
+    name: "Mentions légales",
+  },
+  {
+    href: "/politique-de-confidentialite",
+    name: "Politique de confidentialité",
+  },
+  {
+    href: "/cookies",
+    name: "Cookies",
+  },
+];
+
 function Footer() {
   return (
-    <div className="bg-zinc-950 px-6 bg-gradient-to-br from-purple-950/10 via-transparent to-purple-950/10 border-t border-t-zinc-600/10 py-12">
-      <div className="max-w-[1400px] mx-auto flex flex-col gap-8">
-        {/* 1st row */}
-        <div className="flex flex-col lg:grid lg:grid-cols-5 gap-8 lg:mx-auto">
+    <div className="border-t border-t-zinc-600/10 bg-gradient-to-br bg-zinc-950 from-primary/5 via-transparent to-primary/5 px-6 py-12">
+      <div className="mx-auto max-w-[1300px] space-y-8">
+        {/* 1️⃣ Row */}
+        <div className={cn("space-y-8", "lg:mx-auto lg:grid lg:grid-cols-5")}>
           {/* 🐲 Logo and contact */}
-          <div className="flex flex-col gap-5 col-span-2">
-            <div className="text-2xl font-black flex items-center gap-2">
-              <div className="p-2 bg-purple-900/20 rounded-lg">
-                <CodeXmlIcon className="text-purple-600" size={16} />
+          <div className="col-span-2 flex flex-col gap-5">
+            <div className="flex items-center gap-2 font-black text-2xl">
+              <div className="rounded-lg bg-primary/15 p-2">
+                <CodeXmlIcon className="text-primary" size={16} />
               </div>
               <div>
-                <span className="text-purple-600">Sud</span>
-                <span className="text-white">Web</span>
+                <span className="text-primary tracking-tighter">Sud</span>
+                <span className="text-primary-foreground tracking-tighter">
+                  Web
+                </span>
               </div>
             </div>
-            <div className="text-zinc-400 text-sm max-w-[700px]">
+            <div className="max-w-[700px] text-muted-foreground text-sm">
               Agence spécialisée dans le développement web moderne. Nous créons
               des solutions digitales sur mesure pour propulser votre
               entreprise.
             </div>
-            {/* 📨 Contact */}
-            <div className="flex flex-col gap-2 text-zinc-400 font-regular">
-              <div className="flex items-center gap-2.5 hover:text-purple-600 text-sm">
-                <MailIcon className="text-purple-600" size={16} />
-                <a
-                  href="mailto:sudweb@contact.fr"
-                  className="transition-colors cursor-pointer"
-                >
-                  sudweb@contact.fr
-                </a>
-              </div>
-              <div className="flex items-center gap-2.5 hover:text-purple-600 text-sm">
-                <PhoneIcon className="text-purple-600" size={16} />
-                <a
-                  href="tel:+33620239838"
-                  className="transition-colors cursor-pointer"
-                >
-                  +33 6 20 23 98 38
-                </a>
-              </div>
-              <div className="flex items-center gap-2.5 hover:text-purple-600 text-sm">
-                <MapPinIcon className="text-purple-600" size={16} />
-                <a
-                  href="https://maps.app.goo.gl/1234567890"
-                  className="transition-colors cursor-pointer"
-                >
-                  Carcassonne, France
-                </a>
-              </div>
+            {/* 📞 Contact links */}
+            <div className="flex flex-col gap-2 font-regular text-muted-foreground">
+              {contactLinks.map((link) => (
+                <ContactLink key={link.id} {...link} />
+              ))}
             </div>
           </div>
           {/* 🔗 Internal links */}
-          <div className="flex flex-col gap-8 xs:grid xs:grid-cols-2 sm:grid-cols-3 lg:col-span-3 lg:grid-cols-subgrid">
-            {LINKS.map(({ id, title, links }) => (
-              <div key={id}>
-                <div className="text-lg text-white font-bold mb-5">{title}</div>
-                <div className="flex flex-col gap-3 text-zinc-400">
-                  {links.map((link) => (
-                    <a
-                      className="text-sm transition-colors cursor-pointer hover:text-purple-600"
-                      key={link.name}
-                      href={link.href}
-                    >
-                      {link.name}
-                    </a>
-                  ))}
-                </div>
-              </div>
+          <div
+            className={cn(
+              "flex flex-col gap-8",
+              "xs:grid xs:grid-cols-2",
+              "sm:grid-cols-3",
+              "lg:col-span-3 lg:grid-cols-subgrid"
+            )}
+          >
+            {groupLinks.map((groupLink) => (
+              <InternalLinks key={groupLink.id} {...groupLink} />
             ))}
           </div>
         </div>
+
         {/* 2nd row - 📧 Newsletter */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-6 border-t border-t-zinc-600/20 border-b border-b-zinc-600/20">
+        <div
+          className={cn(
+            "justify-between gap-x-8 gap-y-4",
+            "border-t border-t-zinc-600/20 border-b border-b-zinc-600/20 py-6",
+            "flex flex-col",
+            "md:flex-row md:items-center"
+          )}
+        >
           {/* 🔤 Restez informés*/}
           <div>
-            <div className="text-white text-lg font-bold">Restez informé</div>
-            <div className="text-zinc-400 text-sm">
+            <div className="font-bold text-lg text-primary-foreground leading-none">
+              Restez informé
+            </div>
+            <div className="text-muted-foreground text-sm">
               Recevez nos dernières actualités et nouveautés
             </div>
           </div>
-          {/* 🔗 Newsletter */}
-          <div className="flex flex-col gap-4 w-full sm:w-auto sm:flex-row sm:items-center sm:justify-end">
+          {/* 📨 Newsletter */}
+          <div
+            className={cn(
+              "flex w-full grow flex-col gap-4",
+              "sm:w-auto sm:flex-row sm:items-center sm:justify-end",
+              "md:max-w-[500px]"
+            )}
+          >
             <Input
-              type="email"
+              className={cn(
+                "h-10 bg-zinc-950 text-primary-foreground text-sm",
+                "sm:text-[1rem]"
+              )}
               placeholder="Email"
-              className="bg-zinc-950 text-white h-10 text-sm sm:text-[1rem]"
+              type="email"
             />
-            <Button className="bg-purple-600 text-white text-sm sm:text-[1rem] sm:px-10">
+            <Button
+              className={cn(
+                "bg-primary text-primary-foreground text-sm",
+                "xs:text-[1rem]",
+                "sm:px-10"
+              )}
+            >
               S'abonner
             </Button>
           </div>
         </div>
-        {/* 3rd row -📝 Copyright */}
-        <div className="flex items-center flex-col gap-4 sm:gap-0 sm:flex-row sm:justify-between">
-          <div className="text-zinc-400 text-sm">
+        {/* 3️⃣ Row -📝 Copyright */}
+        <div
+          className={cn(
+            "flex flex-col items-center gap-4",
+            "sm:flex-row sm:justify-between sm:gap-0"
+          )}
+        >
+          {/* ©️ Copyright */}
+          <div className="text-muted-foreground text-sm">
             &copy; {new Date().getFullYear()} SudWeb. Tous droits réservés.
           </div>
-          <div className="flex flex-col sm:flex-row items-center gap-4 text-zinc-400 text-sm">
-            <a
-              href="/mentions-legales"
-              className="hover:text-purple-600 transition-all"
-            >
-              Mentions légales
-            </a>
-            <a
-              href="/politique-de-confidentialite"
-              className="hover:text-purple-600 transition-all"
-            >
-              Politique de confidentialité
-            </a>
-            <a href="/cookies" className="hover:text-purple-600 transition-all">
-              Cookies
-            </a>
+          {/* 🔗 Legal links */}
+          <div
+            className={cn(
+              "flex items-center gap-4",
+              "text-muted-foreground text-sm",
+              "flex-col",
+              "sm:flex-row"
+            )}
+          >
+            {legalLinks.map((link) => (
+              <LegalLink key={link.name} {...link} />
+            ))}
           </div>
         </div>
       </div>
@@ -214,3 +271,67 @@ function Footer() {
 }
 
 export default Footer;
+
+// ------------------------------------------------------------------------------------------------
+function ContactLink({
+  href,
+  icon,
+  label,
+}: {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="flex items-center gap-2.5 text-sm hover:text-primary">
+      {icon}
+      <a className="cursor-pointer transition-colors" href={href}>
+        {label}
+      </a>
+    </div>
+  );
+}
+
+// ------------------------------------------------------------------------------------------------
+function InternalLinks({
+  title,
+  links,
+}: {
+  id: string;
+  title: string;
+  links: { name: string; href: string }[];
+}) {
+  return (
+    <div>
+      <div className="mb-5 font-bold text-lg text-primary-foreground">
+        {title}
+      </div>
+      <div className="flex flex-col gap-3 text-muted-foreground">
+        {links.map((link) => (
+          <a
+            className="cursor-pointer text-sm transition-colors hover:text-primary"
+            href={link.href}
+            key={link.name}
+          >
+            {link.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ------------------------------------------------------------------------------------------------
+function LegalLink({ href, name }: { href: string; name: string }) {
+  return (
+    <div className="flex flex-col items-center gap-4 text-muted-foreground text-sm sm:flex-row">
+      <a
+        className="transition-colors hover:text-primary"
+        href={href}
+        key={name}
+      >
+        {name}
+      </a>
+    </div>
+  );
+}
