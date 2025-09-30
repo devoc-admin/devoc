@@ -106,6 +106,8 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
+  --text-shawdow-white-letters-border: 5px 5px 0 white, -5px -5px 0 white, 5px -5px 0 white, -5px 5px 0 white
+
   scroll-behavior: smooth;
 }
 
@@ -143,6 +145,11 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+
+.white-letters-border {
+  text-shadow: .07em .07em 0 white, -.07em -.07em 0 white, .07em -.07em 0 white, -.07em .07em 0 white;
+}
+
 
 @layer base {
   * {

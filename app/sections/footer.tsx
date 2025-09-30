@@ -154,12 +154,15 @@ const legalLinks: LegalLink[] = [
 
 function Footer() {
   return (
-    <div className="border-t border-t-zinc-600/10 bg-gradient-to-br bg-zinc-950 from-primary/5 via-transparent to-primary/5 px-6 py-12">
+    <div className="overflow-hidden border-t border-t-zinc-600/10 bg-gradient-to-br bg-zinc-950 from-primary/5 via-transparent to-primary/5 px-6 py-12">
       <div className="relative mx-auto max-w-[1300px] space-y-8">
         {/* 🔮 Purple Circle */}
         <Image
           alt="Purple Circle"
-          className="-mask-linear-70 mask-linear-from-0 mask-linear-to-80% absolute right-0 bottom-0 z-0 translate-x-[80%] opacity-40"
+          className={cn(
+            "absolute right-0 bottom-0 z-0 translate-x-[80%] opacity-40",
+            "mask-radial-[135%_117%] mask-radial-at-bottom-right mask-radial-from-0% mask-radial-to-92%"
+          )}
           height={300}
           src={PurpleCircle}
           width={300}

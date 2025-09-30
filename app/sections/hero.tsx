@@ -55,7 +55,7 @@ export default function Hero() {
       <motion.div
         animate={{ opacity: 1 }}
         className={cn(
-          "back hidden items-center gap-2 rounded-full bg-purple-200/50 px-5 py-2 font-semibold text-primary backdrop-blur-md",
+          "back hidden items-center gap-2 rounded-full bg-purple-200/30 px-5 py-2 font-semibold text-primary backdrop-blur-sm",
           "text-xs",
           "xs:text-sm",
           "sm:flex"
@@ -80,29 +80,36 @@ export default function Hero() {
       >
         <motion.div
           animate={{ opacity: 1, x: 0, y: 0 }}
-          className="-z-1 absolute top-1/2 left-1/2 w-full translate-x-[-50%] translate-y-[-50%]"
+          className={cn(
+            "-z-1 absolute top-1/2 left-1/2 w-full translate-x-[-75%] translate-y-[-50%]",
+            "sm:translate-x-[-50%]"
+          )}
           initial={{ opacity: 0, x: -150, y: -150 }}
           transition={{ duration: 1.5, delay: baseDelay * 2 }}
         >
-          <Doodle color="#d8b4fe" />
+          <Doodle color="#c084fc" />
         </motion.div>
-        <AuroraText
-          className="font-bold tracking-tighter"
-          colors={["#a67de8", "#8951e1", "#6b26d9", "#561eae", "#401782"]}
-          speed={3}
-        >
-          Sud
-        </AuroraText>
-        <span className="font-bold text-foreground tracking-tighter">Web</span>
+        <div className="relative font-bold tracking-tighter">
+          <span className="white-letters-border absolute">Sud</span>
+          <AuroraText
+            colors={["#a67de8", "#8951e1", "#6b26d9", "#561eae", "#401782"]}
+            speed={3}
+          >
+            Sud
+          </AuroraText>
+        </div>
+        <div className="white-letters-border relative font-bold text-foreground tracking-tighter">
+          Web
+        </div>
       </motion.h1>
       {/* 🔤 Subtitle */}
       <motion.p
         animate={{ opacity: 1, y: 0 }}
         className={cn(
-          "max-w-[60ch] select-none rounded-lg p-2 text-center text-secondary leading-tight! backdrop-blur-sm",
+          "white-letters-border max-w-[60ch] select-none rounded-lg bg-white/90 p-2 text-center text-secondary leading-tight!",
           "text-md",
           "xs:p-3 xs:text-md",
-          "sm:text-lg"
+          "sm:font-black sm:text-lg"
         )}
         initial={{ opacity: 0, y: 50 }}
         transition={{ duration: 0.5, delay: 0.5 }}
@@ -171,13 +178,13 @@ export default function Hero() {
         animate={{ opacity: 1, x: 0, y: 0 }}
         className={cn(
           "-z-1 -scale-100 absolute bottom-0 left-1/2 w-89 translate-x-[-50%] translate-y-1/4",
-          "block",
+          "block translate-x-[-25%]",
           "sm:hidden"
         )}
         initial={{ opacity: 0, x: -150, y: -150 }}
         transition={{ duration: 1.5, delay: baseDelay * 2 }}
       >
-        <Doodle className="text-primary" color="#e9d5ff" />
+        <Doodle color="#c084fc" />
       </motion.div>
     </div>
   );

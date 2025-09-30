@@ -10,7 +10,12 @@ function SectionTitle({
   className?: string;
 }) {
   return (
-    <div className={cn("mx-auto flex flex-col gap-4 text-center", className)}>
+    <div
+      className={cn(
+        "mx-auto flex select-none flex-col gap-4 text-center",
+        className
+      )}
+    >
       {/* 🆎 Title */}
       <h2
         className={cn(
@@ -24,7 +29,7 @@ function SectionTitle({
       {/* 🔡 Description */}
       <div
         className={cn(
-          "mx-auto max-w-2xl text-pretty text-muted-foreground leading-tight",
+          "mx-auto max-w-2xl text-pretty text-muted-foreground leading-tight transition-colors hover:text-primary-foreground",
           "text-lg",
           "xs:text-xl"
         )}
