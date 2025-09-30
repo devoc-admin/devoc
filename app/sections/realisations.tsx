@@ -95,7 +95,7 @@ export default function Realisations() {
       </div>
 
       {/* ⏹️ Voir nos réalisations */}
-      <Button className="z-1 rounded-full border-2 border-primary bg-secondary px-8 py-5.5 font-bold text-lg text-secondary-foreground hover:cursor-pointer">
+      <Button className="z-1 rounded-full border-2 border-primary bg-secondary px-8 py-5.5 font-bold text-lg text-secondary-foreground duration-400 hover:cursor-pointer">
         <div className="flex items-center gap-3">
           <span>Voir nos réalisations</span>
         </div>

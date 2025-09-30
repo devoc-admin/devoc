@@ -93,7 +93,7 @@ export default function Hero() {
         >
           Sud
         </AuroraText>
-        <span className="text-foreground tracking-tighter">Web</span>
+        <span className="font-bold text-foreground tracking-tighter">Web</span>
       </motion.h1>
       {/* 🔤 Subtitle */}
       <motion.p
@@ -107,9 +107,9 @@ export default function Hero() {
         initial={{ opacity: 0, y: 50 }}
         transition={{ duration: 0.5, delay: 0.5 }}
       >
-        Nous créons des sites web et applications sur mesure pour propulser
-        votre organisation vers le succès digital. Expertise technique, design
-        moderne, résultats garantis.
+        Nous créons des sites web, des applications sur mesure et des solutions
+        d’automatisation IA pour propulser votre organisation vers le succès
+        digital. Expertise technique, design moderne, résultats garantis.
       </motion.p>
       {/* 🔤 Buttons */}
       <motion.div

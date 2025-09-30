@@ -1,6 +1,7 @@
-import { CodeXmlIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Icon from "@/public/images/icon-64.png";
 
 const LINKS = [
   {
@@ -35,6 +36,7 @@ export default function Header() {
           {/* 🐲 Logo */}
           {Logo}
         </div>
+
         {/* 2️⃣ Center part */}
         {/* 🔗 Internal links */}
         <ul className="flex items-center gap-12 font-semibold text-secondary">
@@ -44,12 +46,15 @@ export default function Header() {
             </li>
           ))}
         </ul>
+
         {/* 3️⃣ Right part */}
         {/* 🆕 Devis gratuit */}
         <div className="flex w-[200px] justify-end">
-          <Button className="rounded-full bg-gradient-to-r from-primary to-primary/60 font-bold text-primary-foreground">
-            Devis gratuit
-          </Button>
+          <Link href="#contact">
+            <Button className="rounded-full bg-gradient-to-r from-primary to-primary/60 font-bold text-primary-foreground">
+              Devis gratuit
+            </Button>
+          </Link>
         </div>
       </nav>
     </header>
@@ -58,13 +63,13 @@ export default function Header() {
 
 // ---------------------------------
 var Logo = (
-  <div className="flex items-center gap-2 text-2xl">
-    <div className="rounded-lg bg-primary/10 p-2">
-      <CodeXmlIcon className="text-primary" size={16} />
-    </div>
+  <div className="flex items-center gap-1.5 text-2xl">
+    <Image alt="Sud Web" height={32} src={Icon} width={32} />
     <div>
-      <span className="font-black text-primary tracking-tighter">Sud</span>
-      <span className="font-regular font-semibold text-secondary tracking-tighter">
+      <span className="bg-gradient-to-b from-[#db75f9] to-[#5d2cf0] bg-clip-text font-black text-transparent tracking-tighter">
+        Sud
+      </span>
+      <span className="font-bold font-regular text-secondary tracking-tighter">
         Web
       </span>
     </div>

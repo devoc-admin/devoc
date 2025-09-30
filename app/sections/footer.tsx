@@ -1,7 +1,9 @@
-import { CodeXmlIcon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
+import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import Icon from "@/public/images/icon-64.png";
 
 type GroupLink = {
   id: string;
@@ -158,11 +160,11 @@ function Footer() {
           {/* 🐲 Logo and contact */}
           <div className="col-span-2 flex flex-col gap-5">
             <div className="flex items-center gap-2 font-black text-2xl">
-              <div className="rounded-lg bg-primary/15 p-2">
-                <CodeXmlIcon className="text-primary" size={16} />
-              </div>
+              <Image alt="Sud Web" height={32} src={Icon} width={32} />
               <div>
-                <span className="text-primary tracking-tighter">Sud</span>
+                <span className="bg-gradient-to-b from-[#db75f9] to-[#5d2cf0] bg-clip-text font-black text-transparent tracking-tighter">
+                  Sud
+                </span>
                 <span className="text-primary-foreground tracking-tighter">
                   Web
                 </span>

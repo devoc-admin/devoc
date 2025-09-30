@@ -59,8 +59,9 @@ export default function Services() {
   return (
     <div
       className={cn(
-        "relative flex min-h-screen flex-col items-center justify-between gap-32",
-        "bg-zinc-950",
+        "relative flex min-h-screen flex-col items-center justify-between gap-32 bg-zinc-950",
+        // Pour scroller en dessous du faisceau
+        "-scroll-m-[300px]",
         "px-6 pt-36 pb-12",
         "xs:pt-88 xs:pb-48"
       )}
