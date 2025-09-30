@@ -80,11 +80,11 @@ export default function Hero() {
       >
         <motion.div
           animate={{ opacity: 1, x: 0, y: 0 }}
-          className="-z-1 absolute top-1/2 left-1/2 w-89 translate-x-[-50%] translate-y-[-50%]"
+          className="-z-1 absolute top-1/2 left-1/2 w-full translate-x-[-50%] translate-y-[-50%]"
           initial={{ opacity: 0, x: -150, y: -150 }}
           transition={{ duration: 1.5, delay: baseDelay * 2 }}
         >
-          <Doodle className="text-primary" color="#e9d5ff" />
+          <Doodle color="#d8b4fe" />
         </motion.div>
         <AuroraText
           className="font-bold tracking-tighter"

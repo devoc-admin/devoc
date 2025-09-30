@@ -1,6 +1,8 @@
+import { SendIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import Icon from "@/public/images/icon-64.png";
 
 const LINKS = [
@@ -41,7 +43,7 @@ export default function Header() {
         {/* 🔗 Internal links */}
         <ul className="flex items-center gap-12 font-semibold text-secondary">
           {LINKS.map(({ href, label }) => (
-            <li key={href}>
+            <li className="hover:text-primary" key={href}>
               <Link href={href}>{label}</Link>
             </li>
           ))}
@@ -51,8 +53,15 @@ export default function Header() {
         {/* 🆕 Devis gratuit */}
         <div className="flex w-[200px] justify-end">
           <Link href="#contact">
-            <Button className="rounded-full bg-gradient-to-r from-primary to-primary/60 font-bold text-primary-foreground">
-              Devis gratuit
+            <Button
+              className={cn(
+                "!px-5 flex cursor-pointer items-center gap-2 rounded-full font-bold text-primary-foreground",
+                "bg-gradient-to-r from-primary to-primary/60",
+                "hover:bg-gradient-to-r hover:from-primary/90 hover:to-primary/50"
+              )}
+            >
+              <SendIcon size={20} />
+              <span>Devis gratuit</span>
             </Button>
           </Link>
         </div>

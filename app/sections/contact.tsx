@@ -66,7 +66,7 @@ export default function Contact() {
           {/* 📧 Response rapide garantie */}
           <Card
             animation={false}
-            className="border-primary/30 bg-primary/5 md:max-w-[450px]"
+            className="border-primary/30 bg-primary/5 md:max-w-[400px]"
           >
             <CardHeader>
               <CardTitle className="text-wrap text-2xl">

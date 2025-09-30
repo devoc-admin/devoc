@@ -4,7 +4,7 @@ export default function Doodle({
   className,
 }: {
   color: string;
-  className: string;
+  className?: string;
 }) {
   return (
     <svg

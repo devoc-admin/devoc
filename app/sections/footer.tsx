@@ -1,5 +1,6 @@
-import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
+import { ArrowRightIcon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import Image from "next/image";
+import PurpleCircle from "@/assets/purple-circle.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -154,9 +155,22 @@ const legalLinks: LegalLink[] = [
 function Footer() {
   return (
     <div className="border-t border-t-zinc-600/10 bg-gradient-to-br bg-zinc-950 from-primary/5 via-transparent to-primary/5 px-6 py-12">
-      <div className="mx-auto max-w-[1300px] space-y-8">
+      <div className="relative mx-auto max-w-[1300px] space-y-8">
+        {/* 🔮 Purple Circle */}
+        <Image
+          alt="Purple Circle"
+          className="-mask-linear-70 mask-linear-from-0 mask-linear-to-80% absolute right-0 bottom-0 z-0 translate-x-[80%] opacity-40"
+          height={300}
+          src={PurpleCircle}
+          width={300}
+        />
         {/* 1️⃣ Row */}
-        <div className={cn("space-y-8", "lg:mx-auto lg:grid lg:grid-cols-5")}>
+        <div
+          className={cn(
+            "relative space-y-8",
+            "lg:mx-auto lg:grid lg:grid-cols-5"
+          )}
+        >
           {/* 🐲 Logo and contact */}
           <div className="col-span-2 flex flex-col gap-5">
             <div className="flex items-center gap-2 font-black text-2xl">
@@ -182,6 +196,7 @@ function Footer() {
               ))}
             </div>
           </div>
+
           {/* 🔗 Internal links */}
           <div
             className={cn(
@@ -200,7 +215,7 @@ function Footer() {
         {/* 2nd row - 📧 Newsletter */}
         <div
           className={cn(
-            "justify-between gap-x-8 gap-y-4",
+            "relative justify-between gap-x-8 gap-y-4",
             "border-t border-t-zinc-600/20 border-b border-b-zinc-600/20 py-6",
             "flex flex-col",
             "md:flex-row md:items-center"
@@ -242,10 +257,11 @@ function Footer() {
             </Button>
           </div>
         </div>
+
         {/* 3️⃣ Row -📝 Copyright */}
         <div
           className={cn(
-            "flex flex-col items-center gap-4",
+            "relative flex flex-col items-center gap-4",
             "sm:flex-row sm:justify-between sm:gap-0"
           )}
         >
@@ -305,17 +321,21 @@ function InternalLinks({
 }) {
   return (
     <div>
-      <div className="mb-5 font-bold text-lg text-primary-foreground">
+      <div className="mb-5 pl-6 font-bold text-lg text-primary-foreground">
         {title}
       </div>
       <div className="flex flex-col gap-3 text-muted-foreground">
         {links.map((link) => (
           <a
-            className="cursor-pointer text-sm transition-colors hover:text-primary"
+            className="group flex cursor-pointer items-center gap-2 text-sm transition-colors hover:text-primary-foreground"
             href={link.href}
             key={link.name}
           >
-            {link.name}
+            <ArrowRightIcon
+              className="opacity-0 transition-opacity group-hover:opacity-100"
+              size={16}
+            />
+            <span>{link.name}</span>
           </a>
         ))}
       </div>
