@@ -54,7 +54,7 @@ export default function Contact() {
       {/* 🃏 Cards */}
       <div
         className={cn(
-          "z-1 flex max-w-[1400px] justify-center gap-6",
+          "z-1 flex w-full max-w-[1400px] justify-center gap-6",
           "flex-col",
           "md:flex-row md:items-start"
         )}
@@ -63,7 +63,7 @@ export default function Contact() {
           {contactItems.map((item) => (
             <ContactCard key={item.title} {...item} />
           ))}
-          {/* 📧 Response rapide garantie*/}
+          {/* 📧 Response rapide garantie */}
           <Card
             animation={false}
             className="border-primary/30 bg-primary/5 md:max-w-[450px]"

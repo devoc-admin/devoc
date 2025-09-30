@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { BackgroundBeams } from "@/components/aceternity/background-beams";
+import SkipLink from "@/components/navigation/skip-link";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -76,8 +77,9 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <SkipLink />
         <BackgroundBeams className="hidden lg:block" />
-        {children}
+        <main id="main-content">{children}</main>
       </body>
     </html>
   );
