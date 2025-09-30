@@ -70,7 +70,7 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         className={cn(
           "relative flex select-none items-center gap-2",
-          "text-7xl",
+          "text-8xl",
           "xs:text-8xl",
           "sm:text-9xl"
         )}
@@ -80,8 +80,8 @@ export default function Hero() {
         <motion.div
           animate={{ opacity: 1, x: 0, y: 0 }}
           className="-z-1 absolute top-1/2 left-1/2 w-89 translate-x-[-50%] translate-y-[-50%]"
-          initial={{ opacity: 0, x: -50, y: -50 }}
-          transition={{ duration: 1, delay: baseDelay * 2 }}
+          initial={{ opacity: 0, x: -150, y: -150 }}
+          transition={{ duration: 1.5, delay: baseDelay * 2 }}
         >
           <Doodle className="text-primary" color="#e9d5ff" />
         </motion.div>
@@ -98,8 +98,8 @@ export default function Hero() {
       <motion.p
         animate={{ opacity: 1, y: 0 }}
         className={cn(
-          "max-w-[60ch] select-none rounded-lg p-2 text-center font-extralight text-muted-foreground leading-tight! backdrop-blur-sm",
-          "hidden text-md",
+          "max-w-[60ch] select-none rounded-lg p-2 text-center text-secondary leading-tight! backdrop-blur-sm",
+          "text-md",
           "xs:p-3 xs:text-md",
           "sm:text-lg"
         )}
@@ -169,8 +169,8 @@ export default function Hero() {
           "block",
           "sm:hidden"
         )}
-        initial={{ opacity: 0, x: -50, y: -50 }}
-        transition={{ duration: 1, delay: baseDelay * 2 }}
+        initial={{ opacity: 0, x: -150, y: -150 }}
+        transition={{ duration: 1.5, delay: baseDelay * 2 }}
       >
         <Doodle className="text-primary" color="#e9d5ff" />
       </motion.div>
