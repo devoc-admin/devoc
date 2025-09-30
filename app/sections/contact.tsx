@@ -33,7 +33,7 @@ const contactItems: ContactItem[] = [
   },
   {
     content: "Carcassonne, France",
-    href: "https://maps.app.goo.gl/1234567890",
+    href: "https://maps.app.goo.gl/HSWRizckJvyuXuDP7",
     icon: <MapPinIcon size={26} />,
     title: "Adresse",
   },
@@ -54,7 +54,7 @@ export default function Contact() {
       {/* 🃏 Cards */}
       <div
         className={cn(
-          "z-1 flex w-full justify-center gap-6 md:max-w-[1400px]",
+          "z-1 flex max-w-[1400px] justify-center gap-6",
           "flex-col",
           "md:flex-row md:items-start"
         )}

@@ -78,7 +78,7 @@ export default function Realisations() {
       <SectionTitle
         className="z-1"
         description="Découvrez quelques-uns de nos projets récents qui illustrent notre expertise et notre approche orientée résultats."
-        title="Découvrez nos réalisations"
+        title="Découvrez nos dernières réalisations"
       />
 
       {/* 🃏 Cards */}
@@ -94,7 +94,8 @@ export default function Realisations() {
         ))}
       </div>
 
-      <Button className="z-1 rounded-full border-2 border-purple-600 bg-black px-8 py-5.5 font-bold text-lg hover:cursor-pointer">
+      {/* ⏹️ Voir nos réalisations */}
+      <Button className="z-1 rounded-full border-2 border-primary bg-secondary px-8 py-5.5 font-bold text-lg text-secondary-foreground hover:cursor-pointer">
         <div className="flex items-center gap-3">
           <span>Voir nos réalisations</span>
         </div>

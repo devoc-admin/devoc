@@ -9,6 +9,7 @@ import {
   ZapIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
+import Link from "next/link";
 import Doodle from "@/app/sections/doodle";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { Button } from "@/components/ui/button";
@@ -118,7 +119,10 @@ export default function Hero() {
         transition={{ duration: 0.5, delay: baseDelay }}
       >
         {/* 🆕 Démarrer un projet */}
-        <HeroButton className="group bg-gradient-to-r from-primary to-purple-300 text-primary-foreground">
+        <HeroButton
+          className="group bg-gradient-to-r from-primary to-purple-300 text-primary-foreground"
+          href="#contact"
+        >
           <div className="flex items-center gap-3">
             <span>Démarrer un projet</span>
             <ArrowRightIcon
@@ -137,6 +141,7 @@ export default function Hero() {
             "hidden",
             "sm:flex"
           )}
+          href="#realisations"
         >
           <div className="flex items-center gap-3">Voir nos réalisations</div>
         </HeroButton>
@@ -183,12 +188,14 @@ export default function Hero() {
 function HeroButton({
   className,
   children,
+  href,
 }: {
   className: string;
   children: React.ReactNode;
+  href: string;
 }) {
   return (
-    <motion.div>
+    <Link href={href}>
       <Button
         className={cn(
           "w-full rounded-full font-bold",
@@ -200,7 +207,7 @@ function HeroButton({
       >
         <div className="flex items-center gap-3">{children}</div>
       </Button>
-    </motion.div>
+    </Link>
   );
 }
 
