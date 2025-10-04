@@ -3,8 +3,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Sud Web - Agence Web en Occitanie",
-    short_name: "Sud Web",
+    name: "Dev'Oc - Agence Web en Occitanie",
+    short_name: "Dev'Oc",
     description:
       "Agence web en Occitanie spécialisée en développement de sites internet, applications web, UX/UI et le référencement.",
     start_url: "/",

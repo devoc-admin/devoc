@@ -12,7 +12,7 @@ export default function Lamp({ className }: { className?: string }) {
     >
       <div className="relative isolate z-0 flex w-full flex-1 scale-y-125 items-center justify-center">
         <motion.div
-          className="absolute inset-auto right-1/2 h-56 w-[25rem] overflow-visible bg-gradient-conic from-purple-600 via-transparent to-transparent text-white [--conic-position:from_70deg_at_center_top]"
+          className="absolute inset-auto right-1/2 h-56 w-[25rem] overflow-visible bg-gradient-conic from--primary via-transparent to-transparent text-white [--conic-position:from_70deg_at_center_top]"
           initial={{ opacity: 0.5, width: "15rem" }}
           style={{
             backgroundImage:
@@ -29,7 +29,7 @@ export default function Lamp({ className }: { className?: string }) {
           <div className="absolute bottom-0 left-0 z-20 h-[100%] w-40 [mask-image:linear-gradient(to_right,white,transparent)]" />
         </motion.div>
         <motion.div
-          className="absolute inset-auto left-1/2 h-56 w-[25rem] bg-gradient-conic from-transparent via-transparent to-purple-500 text-white [--conic-position:from_290deg_at_center_top]"
+          className="absolute inset-auto left-1/2 h-56 w-[25rem] bg-gradient-conic from-transparent via-transparent to-primary/20 text-white [--conic-position:from_290deg_at_center_top]"
           initial={{ opacity: 0.5, width: "15rem" }}
           style={{
             backgroundImage:
@@ -47,9 +47,9 @@ export default function Lamp({ className }: { className?: string }) {
         </motion.div>
         <div className="absolute top-1/2 h-48 w-full translate-y-12 scale-x-150 blur-2xl" />
         <div className="absolute top-1/2 z-50 h-48 w-full bg-transparent opacity-10 backdrop-blur-md" />
-        <div className="-translate-y-1/2 absolute inset-auto z-50 h-36 w-[28rem] rounded-full bg-purple-500 opacity-50 blur-3xl" />
+        <div className="-translate-y-1/2 absolute inset-auto z-50 h-36 w-[28rem] rounded-full bg-primary opacity-50 blur-3xl" />
         <motion.div
-          className="-translate-y-[6rem] absolute inset-auto z-30 h-36 w-64 rounded-full bg-purple-400 blur-2xl"
+          className="-translate-y-[6rem] absolute inset-auto z-30 h-36 w-64 rounded-full bg-primary/80 blur-2xl"
           initial={{ width: "8rem" }}
           transition={{
             delay: 0.3,
@@ -60,7 +60,7 @@ export default function Lamp({ className }: { className?: string }) {
         />
         {/* ▬ Bar */}
         <motion.div
-          className="-translate-y-[7rem] absolute inset-auto z-50 h-0.5 w-[25rem] bg-purple-400"
+          className="-translate-y-[7rem] absolute inset-auto z-50 h-0.5 w-[25rem] bg-primary"
           initial={{ width: "15rem" }}
           transition={{
             delay: 0.3,

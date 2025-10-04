@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Icon from "@/public/images/icon-64.png";
+import Icon from "@/public/images/icon-96.png";
 
 const LINKS = [
   {
@@ -72,14 +72,14 @@ export default function Header() {
 
 // ---------------------------------
 var Logo = (
-  <div className="flex items-center gap-1.5 text-2xl">
-    <Image alt="Sud Web" height={32} src={Icon} width={32} />
+  <div className="flex items-center gap-1 text-2xl">
+    <Image alt="Dev'Oc" height={32} src={Icon} width={32} />
     <div>
-      <span className="bg-gradient-to-b from-[#db75f9] to-[#5d2cf0] bg-clip-text font-black text-transparent tracking-tighter">
-        Sud
+      <span className="bg-gradient-to-b from-primary/20 to-primary bg-clip-text font-black text-transparent tracking-tighter">
+        Dev'
       </span>
       <span className="font-bold font-regular text-secondary tracking-tighter">
-        Web
+        Oc
       </span>
     </div>
   </div>

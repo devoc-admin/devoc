@@ -65,7 +65,7 @@ export default function Realisations() {
           beamHeight={15}
           beamNumber={12}
           beamWidth={2}
-          lightColor="#a855f7"
+          lightColor="#f59e0b"
           noiseIntensity={1.75}
           rotation={30}
           scale={0.2}
@@ -116,7 +116,7 @@ function CardProject({
   return (
     <Card className="relative overflow-hidden pt-0">
       {/* 🔡 Type */}
-      <div className="absolute top-3 left-3 z-1 rounded-full bg-purple-800/80 px-3 py-1 font-semibold text-white text-xs">
+      <div className="absolute top-3 left-3 z-1 rounded-full bg-primary/80 px-3 py-1 font-semibold text-white text-xs">
         {type}
       </div>
 
@@ -132,7 +132,7 @@ function CardProject({
           />
           {/* 🥷 Shadow */}
           <div className="pointer-events-none absolute inset-0 opacity-0 transition-all duration-300 group-hover:opacity-100">
-            <div className="absolute bottom-0 left-0 h-1/3 w-full bg-gradient-to-t from-black/60 to-transparent" />
+            <div className="absolute bottom-0 left-0 h-1/3 w-full bg-gradient-to-t from-primary/20 to-transparent" />
           </div>
         </div>
       </div>

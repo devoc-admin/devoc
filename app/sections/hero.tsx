@@ -46,7 +46,7 @@ export default function Hero() {
   return (
     <div
       className={cn(
-        "relative flex w-full select-none flex-col items-center justify-center gap-6 p-6",
+        "relative flex w-full select-none flex-col items-center justify-center gap-6 overflow-hidden p-6",
         "justify-start py-12",
         "h-screen sm:justify-center"
       )}
@@ -55,7 +55,7 @@ export default function Hero() {
       <motion.div
         animate={{ opacity: 1 }}
         className={cn(
-          "back hidden items-center gap-2 rounded-full bg-purple-200/30 px-5 py-2 font-semibold text-primary backdrop-blur-sm",
+          "back hidden items-center gap-2 rounded-full bg-primary/10 px-5 py-2 font-semibold text-primary backdrop-blur-sm",
           "text-xs",
           "xs:text-sm",
           "sm:flex"
@@ -64,7 +64,7 @@ export default function Hero() {
         transition={{ duration: 1, delay: baseDelay * 2 }}
       >
         <Sparkles size={16} />
-        <span>Votre agence web innovante</span>
+        <span>Votre agence innovante</span>
       </motion.div>
       {/* 🆎 Title */}
       <motion.h1
@@ -84,22 +84,22 @@ export default function Hero() {
             "-z-1 absolute top-1/2 left-1/2 w-full translate-x-[-75%] translate-y-[-50%]",
             "sm:translate-x-[-50%]"
           )}
-          initial={{ opacity: 0, x: -150, y: -150 }}
-          transition={{ duration: 1.5, delay: baseDelay * 2 }}
+          initial={{ opacity: 0, x: -350, y: -350 }}
+          transition={{ duration: 2.5, delay: baseDelay * 2 }}
         >
-          <Doodle color="#c084fc" />
+          <Doodle color="var(--primary)" />
         </motion.div>
         <div className="relative font-bold tracking-tighter">
-          <span className="white-letters-border absolute">Sud</span>
+          <span className="white-letters-border absolute">Dev'</span>
           <AuroraText
-            colors={["#a67de8", "#8951e1", "#6b26d9", "#561eae", "#401782"]}
+            colors={["#FFD166", "#fbbf24", "#f59e0b", "#F48C06"]}
             speed={3}
           >
-            Sud
+            Dev'
           </AuroraText>
         </div>
         <div className="white-letters-border relative font-bold text-foreground tracking-tighter">
-          Web
+          Oc
         </div>
       </motion.h1>
       {/* 🔤 Subtitle */}
@@ -127,7 +127,10 @@ export default function Hero() {
       >
         {/* 🆕 Démarrer un projet */}
         <HeroButton
-          className="group bg-gradient-to-r from-primary to-purple-300 text-primary-foreground"
+          className={cn(
+            "group bg-gradient-to-r from-primary to-primary/50 text-primary-foreground",
+            "hover:bg-gradient-to-r hover:from-primary hover:to-primary/50"
+          )}
           href="#contact"
         >
           <div className="flex items-center gap-3">
@@ -181,10 +184,10 @@ export default function Hero() {
           "block translate-x-[-25%]",
           "sm:hidden"
         )}
-        initial={{ opacity: 0, x: -150, y: -150 }}
-        transition={{ duration: 1.5, delay: baseDelay * 2 }}
+        initial={{ opacity: 0, x: -350, y: -350 }}
+        transition={{ duration: 2.5, delay: baseDelay * 2 }}
       >
-        <Doodle color="#c084fc" />
+        <Doodle color="var(--primary)" />
       </motion.div>
     </div>
   );

@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sud Web | Agence Web en Occitanie - Création de sites & applications",
+  title: "Dev'Oc | Agence Web en Occitanie - Création de sites & applications",
   description:
-    "Sud Web est une agence de développement web en Occitanie spécialisée dans la création de sites internet, applications web, solutions digitales sur-mesure et automatisation des tâches avec l'IA. Expertise en UX/UI, référencement, accompagnement digital et innovation.",
+    "Dev'Oc est une agence de développement web en Occitanie spécialisée dans la création de sites internet, applications web, solutions digitales sur-mesure et automatisation des tâches avec l'IA. Expertise en UX/UI, référencement, accompagnement digital et innovation.",
   keywords: [
     "agence web",
     "Occitanie",
@@ -29,39 +29,39 @@ export const metadata: Metadata = {
     "solutions digitales",
     "automatisation IA",
     "intelligence artificielle",
-    "Sud Web",
+    "Dev'Oc",
   ],
-  authors: [{ name: "Sud Web", url: "https://sudweb.fr" }],
-  creator: "Sud Web",
-  publisher: "Sud Web",
+  authors: [{ name: "Dev'Oc", url: "https://dev-oc.fr" }],
+  creator: "Dev'Oc",
+  publisher: "Dev'Oc",
   openGraph: {
     title:
-      "Sud Web | Agence Web en Occitanie - Création de sites & applications",
+      "Dev'Oc | Agence Web en Occitanie - Création de sites & applications",
     description:
       "Agence web en Occitanie spécialisée en développement de sites internet, applications web, UX/UI, référencement et automatisation des tâches avec l'IA. Découvrez nos réalisations et contactez-nous pour votre projet digital.",
-    url: "https://sudweb.fr",
-    siteName: "Sud Web",
+    url: "https://dev-oc.fr",
+    siteName: "Dev'Oc",
     locale: "fr_FR",
     type: "website",
     images: [
       {
-        url: "https://sudweb.fr/og-image.jpg",
+        url: "https://dev-oc.fr/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Sud Web - Agence Web en Occitanie",
+        alt: "Dev'Oc - Agence Web en Occitanie",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sud Web | Agence Web en Occitanie",
+    title: "Dev'Oc | Agence Web en Occitanie",
     description:
       "Agence web en Occitanie spécialisée en développement web, création de sites internet, applications, référencement et automatisation des tâches avec l'IA.",
-    site: "@sudweb",
-    creator: "@sudweb",
-    images: ["https://sudweb.fr/og-image.jpg"],
+    site: "@devoc",
+    creator: "@devoc",
+    images: ["https://dev-oc.fr/og-image.jpg"],
   },
-  metadataBase: new URL("https://sudweb.fr"),
+  metadataBase: new URL("https://dev-oc.fr"),
   robots: {
     index: true,
     follow: true,

@@ -20,8 +20,8 @@ type ContactItem = {
 
 const contactItems: ContactItem[] = [
   {
-    content: "sudweb@contact.fr",
-    href: "mailto:sudweb@contact.fr",
+    content: "dev-oc@contact.fr",
+    href: "mailto:dev-oc@contact.fr",
     icon: <MailIcon size={26} />,
     title: "Email",
   },
@@ -91,7 +91,7 @@ export default function Contact() {
           className="relative order-1 grow overflow-visible md:order-2"
         >
           <div className="-translate-y-[50%] mask-t-from-70% absolute top-0 left-0 hidden h-160 md:block">
-            <LaserFlow color="#c084fc" fogIntensity={0} horizontalSizing={2} />
+            <LaserFlow color="#f59e0b" fogIntensity={0} horizontalSizing={2} />
           </div>
           <CardHeader>
             <CardTitle className={cn("text-center text-2xl", "xs:text-left")}>

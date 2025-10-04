@@ -1,4 +1,4 @@
-# Configuration SEO - Sud Web
+# Configuration SEO - Dev'Oc
 
 ## Fichiers ajoutés pour le SEO
 

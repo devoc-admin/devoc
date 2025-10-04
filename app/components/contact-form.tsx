@@ -122,7 +122,7 @@ function ContactForm() {
 
       <Button
         className={cn(
-          "col-span-2 cursor-pointer gap-3 rounded-md bg-primary py-6 font-semibold transition-colors hover:bg-primary/80",
+          "col-span-2 cursor-pointer gap-3 rounded-md bg-primary/90 py-6 font-semibold transition-colors hover:bg-primary",
           "text-base",
           "sm:text-lg"
         )}

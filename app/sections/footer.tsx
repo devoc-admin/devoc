@@ -4,7 +4,7 @@ import PurpleCircle from "@/assets/purple-circle.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import Icon from "@/public/images/icon-64.png";
+import Icon from "@/public/images/icon-96.png";
 
 type GroupLink = {
   id: string;
@@ -113,9 +113,9 @@ type ContactLink = {
 
 const contactLinks: ContactLink[] = [
   {
-    href: "mailto:sudweb@contact.fr",
+    href: "mailto:dev-oc@contact.fr",
     icon: <MailIcon size={16} />,
-    label: "sudweb@contact.fr",
+    label: "dev-oc@contact.fr",
     id: "email",
   },
   {
@@ -160,7 +160,7 @@ function Footer() {
         <Image
           alt="Purple Circle"
           className={cn(
-            "absolute right-0 bottom-0 z-0 translate-x-[80%] opacity-40",
+            "absolute right-0 bottom-0 z-0 translate-x-[80%] opacity-40 hue-rotate-125",
             "mask-radial-[135%_117%] mask-radial-at-bottom-right mask-radial-from-0% mask-radial-to-92%"
           )}
           height={300}
@@ -176,14 +176,14 @@ function Footer() {
         >
           {/* 🐲 Logo and contact */}
           <div className="col-span-2 flex flex-col gap-5">
-            <div className="flex items-center gap-2 font-black text-2xl">
-              <Image alt="Sud Web" height={32} src={Icon} width={32} />
+            <div className="flex items-center gap-1 font-black text-2xl">
+              <Image alt="Dev'Oc" height={32} src={Icon} width={32} />
               <div>
-                <span className="bg-gradient-to-b from-[#db75f9] to-[#5d2cf0] bg-clip-text font-black text-transparent tracking-tighter">
-                  Sud
+                <span className="bg-gradient-to-b from-primary/40 to-primary bg-clip-text font-black text-transparent tracking-tighter">
+                  Dev'
                 </span>
                 <span className="text-primary-foreground tracking-tighter">
-                  Web
+                  Oc
                 </span>
               </div>
             </div>
@@ -251,7 +251,7 @@ function Footer() {
             />
             <Button
               className={cn(
-                "bg-primary text-primary-foreground text-sm",
+                "cursor-pointer bg-primary/90 text-primary-foreground text-sm transition-colors hover:bg-primary",
                 "xs:text-[1rem]",
                 "sm:px-10"
               )}
@@ -270,7 +270,7 @@ function Footer() {
         >
           {/* ©️ Copyright */}
           <div className="text-muted-foreground text-sm">
-            &copy; {new Date().getFullYear()} SudWeb. Tous droits réservés.
+            &copy; {new Date().getFullYear()} Dev'Oc. Tous droits réservés.
           </div>
           {/* 🔗 Legal links */}
           <div
