@@ -3,10 +3,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Dev'Oc - Agence Web en Occitanie",
+    name: "Dev'Oc - Création de sites & applications",
     short_name: "Dev'Oc",
     description:
-      "Agence web en Occitanie spécialisée en développement de sites internet, applications web, UX/UI et le référencement.",
+      "Collectif de développeurs en Occitanie spécialisés en développement de sites internet, applications web, UX/UI, référencement et automatisation des tâches avec l'IA. Découvrez nos réalisations et contactez-nous pour votre projet digital.",
     start_url: "/",
     display: "standalone",
     background_color: "#000000",

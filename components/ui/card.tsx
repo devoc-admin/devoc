@@ -10,9 +10,9 @@ function Card({
   return (
     <div
       className={cn(
-        "flex flex-col gap-6 rounded-xl border border-zinc-900 bg-card bg-gradient-to-br from-zinc-950 to-zinc-900 py-6 text-primary-foreground shadow-primary/20",
+        "flex flex-col gap-6 rounded-xl border border-zinc-900 bg-card bg-gradient-to-br from-zinc-950 to-zinc-900 py-6 text-primary-foreground shadow-primary/10",
         animation &&
-          "group cursor-pointer backdrop-blur-sm transition-all duration-300 hover:translate-y-[-5px] hover:border-primary/40 hover:shadow-2xl",
+          "group cursor-pointer backdrop-blur-sm transition-all duration-300 hover:translate-y-[-5px] hover:border-primary/40 hover:shadow-lg",
         className
       )}
       data-slot="card"

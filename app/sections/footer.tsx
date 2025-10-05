@@ -4,7 +4,7 @@ import PurpleCircle from "@/assets/purple-circle.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import Icon from "@/public/images/icon-96.png";
+import Icon from "@/public/images/icon.svg";
 
 type GroupLink = {
   id: string;
@@ -132,25 +132,25 @@ const contactLinks: ContactLink[] = [
   },
 ];
 
-type LegalLink = {
-  href: string;
-  name: string;
-};
+// type LegalLink = {
+//   href: string;
+//   name: string;
+// };
 
-const legalLinks: LegalLink[] = [
-  {
-    href: "/mentions-legales",
-    name: "Mentions légales",
-  },
-  {
-    href: "/politique-de-confidentialite",
-    name: "Politique de confidentialité",
-  },
-  {
-    href: "/cookies",
-    name: "Cookies",
-  },
-];
+// const legalLinks: LegalLink[] = [
+//   {
+//     href: "/mentions-legales",
+//     name: "Mentions légales",
+//   },
+//   {
+//     href: "/politique-de-confidentialite",
+//     name: "Politique de confidentialité",
+//   },
+//   {
+//     href: "/cookies",
+//     name: "Cookies",
+//   },
+// ];
 
 function Footer() {
   return (
@@ -176,21 +176,10 @@ function Footer() {
         >
           {/* 🐲 Logo and contact */}
           <div className="col-span-2 flex flex-col gap-5">
-            <div className="flex items-center gap-1 font-black text-2xl">
-              <Image alt="Dev'Oc" height={32} src={Icon} width={32} />
-              <div>
-                <span className="bg-gradient-to-b from-primary/40 to-primary bg-clip-text font-black text-transparent tracking-tighter">
-                  Dev'
-                </span>
-                <span className="text-primary-foreground tracking-tighter">
-                  Oc
-                </span>
-              </div>
-            </div>
+            {Logo}
             <div className="max-w-[700px] text-muted-foreground text-sm">
-              Agence spécialisée dans le développement web moderne. Nous créons
-              des solutions digitales sur mesure pour propulser votre
-              entreprise.
+              Collectif de développeurs. Nous créons des solutions digitales sur
+              mesure pour propulser votre entreprise.
             </div>
             {/* 📞 Contact links */}
             <div className="flex flex-col gap-2 font-regular text-muted-foreground">
@@ -281,9 +270,9 @@ function Footer() {
               "sm:flex-row"
             )}
           >
-            {legalLinks.map((link) => (
+            {/* {legalLinks.map((link) => (
               <LegalLink key={link.name} {...link} />
-            ))}
+            ))} */}
           </div>
         </div>
       </div>
@@ -292,6 +281,21 @@ function Footer() {
 }
 
 export default Footer;
+
+// ------------------------------------------------------------------------------------------------
+var Logo = (
+  <div className="flex items-center gap-2 text-2xl">
+    <Image alt="Dev'Oc" height={22} src={Icon} width={22} />
+    <div>
+      <span className="bg-gradient-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black text-transparent tracking-tighter">
+        Dev'
+      </span>
+      <span className="font-bold font-regular text-primary-foreground tracking-tighter">
+        Oc
+      </span>
+    </div>
+  </div>
+);
 
 // ------------------------------------------------------------------------------------------------
 function ContactLink({
@@ -347,16 +351,16 @@ function InternalLinks({
 }
 
 // ------------------------------------------------------------------------------------------------
-function LegalLink({ href, name }: { href: string; name: string }) {
-  return (
-    <div className="flex flex-col items-center gap-4 text-muted-foreground text-sm sm:flex-row">
-      <a
-        className="transition-colors hover:text-primary"
-        href={href}
-        key={name}
-      >
-        {name}
-      </a>
-    </div>
-  );
-}
+// function LegalLink({ href, name }: { href: string; name: string }) {
+//   return (
+//     <div className="flex flex-col items-center gap-4 text-muted-foreground text-sm sm:flex-row">
+//       <a
+//         className="transition-colors hover:text-primary"
+//         href={href}
+//         key={name}
+//       >
+//         {name}
+//       </a>
+//     </div>
+//   );
+// }

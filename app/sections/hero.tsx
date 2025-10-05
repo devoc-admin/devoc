@@ -4,7 +4,7 @@ import {
   ArrowRightIcon,
   ChevronsLeftRightIcon,
   type LucideProps,
-  Sparkles,
+  // Sparkles,
   UsersRoundIcon,
   ZapIcon,
 } from "lucide-react";
@@ -52,7 +52,7 @@ export default function Hero() {
       )}
     >
       {/* 🟪 Badge - Agence web innovante */}
-      <motion.div
+      {/* <motion.div
         animate={{ opacity: 1 }}
         className={cn(
           "back hidden items-center gap-2 rounded-full bg-primary/10 px-5 py-2 font-semibold text-primary backdrop-blur-sm",
@@ -64,8 +64,8 @@ export default function Hero() {
         transition={{ duration: 1, delay: baseDelay * 2 }}
       >
         <Sparkles size={16} />
-        <span>Votre agence innovante</span>
-      </motion.div>
+        <span>Votre atelier innovante</span>
+      </motion.div> */}
       {/* 🆎 Title */}
       <motion.h1
         animate={{ opacity: 1, y: 0 }}
@@ -128,8 +128,8 @@ export default function Hero() {
         {/* 🆕 Démarrer un projet */}
         <HeroButton
           className={cn(
-            "group bg-gradient-to-r from-primary to-primary/50 text-primary-foreground",
-            "hover:bg-gradient-to-r hover:from-primary hover:to-primary/50"
+            "group bg-gradient-to-r from-primary to-primary-lighter text-primary-foreground",
+            "hover:bg-gradient-to-r hover:from-primary hover:to-primary-lighter"
           )}
           href="#contact"
         >
@@ -137,8 +137,7 @@ export default function Hero() {
             <span>Démarrer un projet</span>
             <ArrowRightIcon
               className={cn(
-                "h-4 w-4",
-                "translate-x-0 transition-transform duration-300",
+                "size-5 shrink-0 translate-x-0 transition-transform duration-300",
                 "group-hover:translate-x-1"
               )}
             />

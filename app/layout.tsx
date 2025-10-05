@@ -15,11 +15,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dev'Oc | Agence Web en Occitanie - Création de sites & applications",
+  title: "Dev'Oc | Création de sites & applications",
   description:
-    "Dev'Oc est une agence de développement web en Occitanie spécialisée dans la création de sites internet, applications web, solutions digitales sur-mesure et automatisation des tâches avec l'IA. Expertise en UX/UI, référencement, accompagnement digital et innovation.",
+    "Dev'Oc est une collectif de développeurs en Occitanie spécialisée dans la création de sites internet, applications web, solutions digitales sur-mesure et automatisation des tâches avec l'IA. Expertise en UX/UI, référencement, accompagnement digital et innovation.",
   keywords: [
-    "agence web",
     "Occitanie",
     "développement web",
     "création site internet",
@@ -35,10 +34,9 @@ export const metadata: Metadata = {
   creator: "Dev'Oc",
   publisher: "Dev'Oc",
   openGraph: {
-    title:
-      "Dev'Oc | Agence Web en Occitanie - Création de sites & applications",
+    title: "Dev'Oc | Création de sites & applications",
     description:
-      "Agence web en Occitanie spécialisée en développement de sites internet, applications web, UX/UI, référencement et automatisation des tâches avec l'IA. Découvrez nos réalisations et contactez-nous pour votre projet digital.",
+      "Collectif de développeurs en Occitanie spécialisés en développement de sites internet, applications web, UX/UI, référencement et automatisation des tâches avec l'IA. Découvrez nos réalisations et contactez-nous pour votre projet digital.",
     url: "https://dev-oc.fr",
     siteName: "Dev'Oc",
     locale: "fr_FR",
@@ -48,15 +46,15 @@ export const metadata: Metadata = {
         url: "https://dev-oc.fr/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Dev'Oc - Agence Web en Occitanie",
+        alt: "Dev'Oc - Création de sites & applications",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dev'Oc | Agence Web en Occitanie",
+    title: "Dev'Oc | Création de sites & applications",
     description:
-      "Agence web en Occitanie spécialisée en développement web, création de sites internet, applications, référencement et automatisation des tâches avec l'IA.",
+      "Collectif de développeurs en Occitanie spécialisés en développement de sites internet, applications web, UX/UI, référencement et automatisation des tâches avec l'IA. Découvrez nos réalisations et contactez-nous pour votre projet digital.",
     site: "@devoc",
     creator: "@devoc",
     images: ["https://dev-oc.fr/og-image.jpg"],
