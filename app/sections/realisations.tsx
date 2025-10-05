@@ -77,7 +77,7 @@ export default function Realisations() {
       {/* 🆎 Title */}
       <SectionTitle
         className="z-1"
-        description="Découvrez quelques-uns de nos projets récents qui illustrent notre expertise et notre approche orientée résultats."
+        description="Découvrez quelques-uns de nos projets récents qui illustrent notre expertise et notre approche orientée résultats 📈"
         title="Découvrez nos dernières réalisations"
       />
 

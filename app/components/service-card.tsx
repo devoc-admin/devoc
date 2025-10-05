@@ -65,7 +65,9 @@ export default function ServiceCard({
 
       {/* 🔡 Description */}
       <CardContent className="grow gap-4">
-        <CardDescription className="text-base">{description}</CardDescription>
+        <CardDescription className="mb-2 text-base">
+          {description}
+        </CardDescription>
         <ul className="mt-auto">
           {features.map((feature) => (
             <li className="flex items-center gap-2" key={feature}>

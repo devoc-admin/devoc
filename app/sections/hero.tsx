@@ -26,12 +26,12 @@ type Kpi = {
 
 const kpiItems: Kpi[] = [
   {
-    title: "100+",
+    title: "50+",
     subtitle: "Projets réalisés",
     Icon: ChevronsLeftRightIcon,
   },
   {
-    title: "50+",
+    title: "20+",
     subtitle: "Clients satisfaits",
     Icon: UsersRoundIcon,
   },
@@ -116,7 +116,7 @@ export default function Hero() {
       >
         Nous créons des sites web, des applications sur mesure et des solutions
         d’automatisation IA pour propulser votre organisation vers le succès
-        digital. Expertise technique, design moderne, résultats garantis.
+        digital. Expertise technique, design moderne, résultats garantis
       </motion.p>
       {/* 🔤 Buttons */}
       <motion.div

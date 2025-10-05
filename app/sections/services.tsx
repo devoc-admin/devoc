@@ -3,58 +3,6 @@ import ServiceCard from "@/app/components/service-card";
 import Lamp from "@/components/aceternity/lamp";
 import { cn } from "@/lib/utils";
 
-type Service = {
-  title: string;
-  description: string;
-  features: string[];
-  icon: string;
-};
-
-const services: Service[] = [
-  {
-    title: "Développement Web",
-    description:
-      "Sites web modernes et performants avec les dernières technologies (React, Vue, Angular).",
-    features: ["Responsive Design", "Performance optimisée", "SEO intégré"],
-    icon: "Code",
-  },
-  {
-    title: "Applications Mobiles",
-    description:
-      "Applications web progressives et applications natives pour iOS et Android.",
-    features: ["PWA", "React Native", "Interface intuitive"],
-    icon: "Phone",
-  },
-  {
-    title: "Référencement SEO",
-    description:
-      "Optimisation pour les moteurs de recherche et amélioration de votre visibilité.",
-    features: ["Audit SEO", "Optimisation technique", "Suivi des performances"],
-    icon: "Search",
-  },
-  {
-    title: "Design UX/UI",
-    description:
-      "Conception d'interfaces utilisateur modernes et expériences optimisées.",
-    features: ["Wireframes", "Prototypage", "Design system"],
-    icon: "Palette",
-  },
-  {
-    title: "Développement Backend",
-    description:
-      "API robustes, bases de données et architecture serveur sécurisée.",
-    features: ["API REST/GraphQL", "Base de données", "Architecture sécurisée"],
-    icon: "Server",
-  },
-  {
-    title: "Support & Maintenance",
-    description:
-      "Maintenance continue, mises à jour et support technique 24/7.",
-    features: ["Maintenance", "Support réactif", "Mise à jour"],
-    icon: "LifeBuoy",
-  },
-];
-
 export default function Services() {
   return (
     <div
@@ -70,7 +18,7 @@ export default function Services() {
       <Lamp className={cn("hidden", "xs:flex")} />
       {/* 🆎 Title */}
       <SectionTitle
-        description="Une gamme complète de services pour accompagner votre transformation digitale, de la conception à la mise en ligne et au-delà 🚀"
+        description="Une gamme complète de services pour booster votre présence numérique, de la conception à la mise en ligne et au-delà 🚀"
         title="Nos Services"
       />
 
@@ -89,3 +37,81 @@ export default function Services() {
     </div>
   );
 }
+
+// ----------------------------------
+
+type Service = {
+  title: string;
+  description: string;
+  features: string[];
+  icon: string;
+};
+
+var services: Service[] = [
+  {
+    title: "Sites et applications web",
+    description:
+      "Offrez-vous un site web moderne et fluide ! Suivez votre audience avec nos outils et proposez facilement de nouveaux contenus pour vos visiteurs.",
+    features: [
+      "Versions mobile et tablette comprises",
+      "Référencement optimisé",
+      "Amélioration du taux de conversion",
+    ],
+    icon: "Laptop",
+  },
+  {
+    title: "Applications Mobiles",
+    description:
+      "Créez une expérience inédite au plus proche de vos utilisateurs, donnez-leur accès à tous vos services dans le creux de leurs mains.",
+    features: [
+      "Compatible Android et iOS",
+      "Expérience utilisateur fluide et personnalisée",
+      "Notifications push et accès hors-ligne",
+    ],
+    icon: "Smartphone",
+  },
+  {
+    title: "Audit personnalisé",
+    description:
+      "Besoin d'améliorer le référencement, la performance ou l'accessibilité de votre site web ? Nous vous livrons un audit complet et une optimisation adaptée à vos besoins.",
+    features: [
+      "Audit SEO complet",
+      "Optimisation et suivi des performances",
+      "Amélioration de l'accessibilité",
+    ],
+    icon: "WandSparkles",
+  },
+  {
+    title: "Design",
+    description:
+      "Nous vous accompagnons dans la création de votre identité visuelle et la confection de vos supports de communication.",
+    features: [
+      "Logo sur mesure",
+      "Votre propre charte graphique",
+      "Supports print et web",
+    ],
+    icon: "Brush",
+  },
+  {
+    title: "Automatisations IA",
+    description:
+      "Besoin d'automatiser des tâches répétitives ? Nous vous accompagnons dans la création d'automatisations IA pour booster votre productivité.",
+    features: [
+      "Intégration de l'IA dans vos processus",
+      "Amélioration de la productivité",
+      "Réduction des coûts",
+    ],
+    icon: "Bot",
+  },
+  {
+    title: "Formation et support",
+    description:
+      "Nous vous permettons de vous approprier vos outils et de devenir complètement autonomes. Nous nous occupons de la maintenance et des mises à jour.",
+    features: [
+      "Formation en présentiel",
+      "Support réactif",
+      "Maintenance continue",
+    ],
+    icon: "Handshake",
+  },
+];
