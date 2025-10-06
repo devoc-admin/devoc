@@ -154,7 +154,7 @@ const contactLinks: ContactLink[] = [
 
 function Footer() {
   return (
-    <div className="overflow-hidden border-t border-t-zinc-600/10 bg-gradient-to-br bg-zinc-950 from-primary/5 via-transparent to-primary/5 px-6 py-12">
+    <div className="relative overflow-hidden border-t border-t-zinc-600/10 bg-gradient-to-br bg-zinc-950 from-primary/5 via-transparent to-primary/5 px-6 py-12">
       <div className="relative mx-auto max-w-[1300px] space-y-8">
         {/* 🔮 Purple Circle */}
         <Image
@@ -276,6 +276,7 @@ function Footer() {
           </div>
         </div>
       </div>
+      {GradientLine}
     </div>
   );
 }
@@ -364,3 +365,8 @@ function InternalLinks({
 //     </div>
 //   );
 // }
+
+// ------------------------------------------------------------------------------------------------
+var GradientLine = (
+  <div className="absolute bottom-0 left-0 h-2 w-screen bg-gradient-to-r from-primary via-orange-500 to-primary-lighter" />
+);
