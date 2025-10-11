@@ -95,7 +95,7 @@ var services: Service[] = [
   {
     title: "Automatisations IA",
     description:
-      "Besoin d'automatiser des tâches répétitives ? Nous vous accompagnons dans la création d'automatisations IA pour booster votre productivité.",
+      "Besoin d'automatiser des tâches répétitives ? Nous vous aidons à créer des automatisations IA pour booster votre productivité.",
     features: [
       "Intégration de l'IA dans vos processus",
       "Amélioration de la productivité",

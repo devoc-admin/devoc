@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Icon from "@/public/images/icon.svg";
+import Icon from "@/public/icon.svg";
 
 const LINKS = [
   {

@@ -4,7 +4,7 @@ import PurpleCircle from "@/assets/purple-circle.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import Icon from "@/public/images/icon.svg";
+import Icon from "@/public/icon.svg";
 
 type GroupLink = {
   id: string;

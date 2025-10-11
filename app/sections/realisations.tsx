@@ -1,10 +1,19 @@
 import Image, { type StaticImageData } from "next/image";
 import SectionTitle from "@/app/components/section-title";
-import appMockup1 from "@/assets/app-mockup-1.png";
-import appMockup2 from "@/assets/app-mockup-2.png";
-import appMockup3 from "@/assets/app-mockup-3.png";
+import flow1 from "@/assets/projects/flow/flow_1.png";
+import flow2 from "@/assets/projects/flow/flow_2.png";
+import flow3 from "@/assets/projects/flow/flow_3.png";
+import flowMockup from "@/assets/projects/flow/flow_mockup.avif";
+import OneparkFlowLogo from "@/assets/projects/flow/onepark_flow_logo.svg";
+import frustrationCover from "@/assets/projects/frustration/frustration_cover.webp";
+import InseeLogo from "@/assets/projects/statcraft/insee_logo.svg";
+import statcraft1 from "@/assets/projects/statcraft/statcraft_1.png";
+import statcraft2 from "@/assets/projects/statcraft/statcraft_2.png";
+import statcraft3 from "@/assets/projects/statcraft/statcraft_3.png";
+import statcraftCover from "@/assets/projects/statcraft/statcraft_cover.webp";
 import Beams from "@/components/react-bits/beams";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
@@ -18,45 +27,70 @@ type Project = {
   title: string;
   slug: string;
   description: string;
-  type: string;
   technologies: string[];
-  image: StaticImageData;
+  companyLogo: React.ReactNode;
+  companyLink: string;
+  images: StaticImageData[];
 };
 
 const projects: Project[] = [
   {
-    title: "Dashboard Analytics",
+    title: "Une plateforme de réservation",
     slug: "dashboard-analytics",
     description:
-      "Plateforme de business intelligence avec visualisations en temps réel et tableaux de bord personnalisables.",
-    type: "Application web",
-    technologies: ["React", "Typescript", "D3.js", "Node.js"],
-    image: appMockup1,
+      "Plateforme de réservation en ligne de places de parking chez les hôtels partenaires permettant au client de réserver en avance son emplacement depuis son téléphone ou son ordinateur ou de régler en ligne un accès-sur-demande.",
+    images: [flowMockup, flow2, flow1, flow3],
+    companyLogo: (
+      <Image
+        alt="Onepark Flow logo"
+        className="h-6.5 w-auto translate-y-0.5 object-cover"
+        height={30}
+        src={OneparkFlowLogo}
+        width={30}
+      />
+    ),
+    companyLink: "https://oneparkflow.com",
+    technologies: ["React", "Typescript", "Tailwind"],
   },
   {
-    title: "E-commerce Premium",
-    slug: "e-commerce-premium",
+    title: "Outil d'analytiques des visites",
+    slug: "analyse-de-trafic",
     description:
-      "Site e-commerce haute performance avec gestion des stocks, paiements sécurisés et interface mobile-first.",
-    type: "Site e-commerce",
-    technologies: ["Next.js", "Stripe", "Prisma", "Tailwind"],
-    image: appMockup2,
+      "Outil interne pour mesurer les courbes d'audience des publications de l'Insee et analyser les différentes sources de trafic sur ses différents sites web.",
+    images: [statcraftCover, statcraft1, statcraft2, statcraft3],
+    technologies: ["Next.js", "Tailwind"],
+    companyLogo: (
+      <Image
+        alt="Insee logo"
+        className="h-6.5 w-auto translate-y-0.5"
+        height={30}
+        src={InseeLogo}
+        width={30}
+      />
+    ),
+    companyLink: "https://insee.fr",
   },
   {
-    title: "Application SaaS",
-    slug: "application-saas",
+    title: "Un média en ligne",
+    slug: "media-en-ligne",
     description:
-      "Solution SaaS complète avec authentification, abonnements et API intégrée pour la gestion de projets.",
-    type: "Application mobile",
+      "Redesign d'un média en ligne avec de nouveaux outils de gestion pour la rédaction. La solution complète comprenait un site web et un panel d'administration pour la gestion des articles et des contributeurs, un module d'abonnement et la mise en place d'une newsletter.",
+    images: [frustrationCover],
     technologies: ["Vue.js", "Express", "PostgreSQL", "Docker"],
-    image: appMockup3,
+    companyLink: "https://frustrationmagazine.fr",
+    companyLogo: (
+      <div className="flex flex-col text-center font-lobster">
+        <span className="text-xl">Frustration</span>
+        <span className="-mt-2 text-base">Magazine</span>
+      </div>
+    ),
   },
 ];
 
 export default function Realisations() {
   return (
     <div
-      className="relative flex min-h-screen w-full flex-col items-center justify-center gap-12 bg-black px-6 py-24"
+      className="relative flex min-h-screen w-full flex-col items-center justify-center gap-20 bg-black px-6 py-24"
       id="realisations"
     >
       {/* ✨ Beams */}
@@ -77,8 +111,8 @@ export default function Realisations() {
       {/* 🆎 Title */}
       <SectionTitle
         className="z-1"
-        description="Découvrez quelques-uns de nos projets récents qui illustrent notre expertise et notre approche orientée résultats 📈"
-        title="Découvrez nos dernières réalisations"
+        description="Quelques exemples de projets récents de nos développeurs qui illustrent notre expertise et notre approche orientée résultats 👇"
+        title="Découvrez nos réalisations"
       />
 
       {/* 🃏 Cards */}
@@ -95,11 +129,11 @@ export default function Realisations() {
       </div>
 
       {/* ⏹️ Voir nos réalisations */}
-      <Button className="z-1 rounded-full border-2 border-primary bg-secondary px-8 py-5.5 font-bold text-lg text-secondary-foreground duration-400 hover:cursor-pointer">
+      {/* <Button className="z-1 rounded-full border-2 border-primary bg-secondary px-8 py-5.5 font-bold text-lg text-secondary-foreground duration-400 hover:cursor-pointer">
         <div className="flex items-center gap-3">
           <span>Voir nos réalisations</span>
         </div>
-      </Button>
+      </Button> */}
     </div>
   );
 }
@@ -107,28 +141,23 @@ export default function Realisations() {
 // ----------------------------------
 
 function CardProject({
-  type,
-  image,
+  images,
   title,
   description,
-  technologies,
+  companyLogo,
+  companyLink,
 }: Project) {
   return (
-    <Card className="relative overflow-hidden pt-0">
-      {/* 🔡 Type */}
-      <div className="absolute top-3 left-3 z-1 rounded-full bg-primary/80 px-3 py-1 font-semibold text-white text-xs">
-        {type}
-      </div>
-
+    <Card className="relative cursor-auto overflow-hidden pt-0">
       {/* 🖼️ Image */}
-      <div className="relative h-[200px] overflow-hidden">
-        <div className="group relative h-full w-full">
+      <div className="relative h-[250px] overflow-hidden">
+        <div className="group relative grid h-full w-full place-items-center">
           <Image
             alt="Realisation"
-            className="-translate-y-1/2 absolute top-1/2 w-full"
-            height={300}
-            src={image}
-            width={300}
+            className="h-full object-cover"
+            height={1200}
+            src={images[0]}
+            width={1200}
           />
           {/* 🥷 Shadow */}
           <div className="pointer-events-none absolute inset-0 opacity-0 transition-all duration-300 group-hover:opacity-100">
@@ -138,21 +167,22 @@ function CardProject({
       </div>
 
       {/* 🔡 Description */}
-      <CardContent className="gap-2">
-        <CardTitle>{title}</CardTitle>
+      <CardContent className="mb-4">
+        <CardTitle className="mb-1">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardContent>
 
       {/* ⚙️ Technologies */}
-      <CardFooter className="flex flex-wrap gap-2">
-        {technologies.map((technology) => (
-          <div
-            className="rounded-full bg-primary/15 px-3 py-1 font-regular text-primary text-xs"
-            key={technology}
-          >
-            {technology}
-          </div>
-        ))}
+      <CardFooter className="mt-auto mr-4 ml-auto flex items-center gap-3">
+        <span className="text-sm italic">Réalisé pour</span>
+        <a
+          className="cursor-pointer"
+          href={companyLink}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {companyLogo}
+        </a>
       </CardFooter>
     </Card>
   );

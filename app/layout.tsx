@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Lobster } from "next/font/google";
 import { BackgroundBeams } from "@/components/aceternity/background-beams";
 import SkipLink from "@/components/navigation/skip-link";
 import "./globals.css";
@@ -12,6 +12,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const lobster = Lobster({
+  variable: "--font-lobster",
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -74,7 +80,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable}`}
+      >
         <SkipLink />
         <BackgroundBeams className="hidden lg:block" />
         <main id="main-content">{children}</main>
