@@ -2,7 +2,7 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { SendIcon } from "lucide-react";
+import { SendIcon, TriangleAlertIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,11 +25,21 @@ function ContactForm() {
       message: "",
     },
     validators: {
-      //   onBlur: true,
-    },
-    onSubmit: (values) => {
-      // biome-ignore lint/suspicious/noConsole: WIP
-      console.log(values);
+      onSubmit: ({ value }) => {
+        if (!value.name) {
+          return "Merci de renseigner un nom";
+        }
+
+        if (!value.email) {
+          return "Merci de renseigner un email";
+        }
+
+        if (!value.message || value.message.length < 10) {
+          return "Merci d'expliquer brièvement votre projet pour que nous puissions vous aider au mieux 🤝";
+        }
+
+        return false;
+      },
     },
   });
   return (
@@ -93,7 +103,7 @@ function ContactForm() {
               name={field.name}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="Nom de votre organisation"
-              type="email"
+              type="text"
               value={field.state.value ?? ""}
             />
           </div>
@@ -119,7 +129,20 @@ function ContactForm() {
         )}
         name="message"
       />
+      {/* ❌ Erreur */}
+      <form.Subscribe
+        children={(state) =>
+          state.errors.length > 0 && (
+            <div className="col-span-2 flex items-center gap-2 text-primary">
+              <TriangleAlertIcon size={20} />
+              <span>{state.errors[0]}</span>
+            </div>
+          )
+        }
+        selector={(state) => state}
+      />
 
+      {/* 🔔 Envoi du message */}
       <Button
         className={cn(
           "col-span-2 cursor-pointer gap-3 rounded-md bg-primary/90 py-6 font-semibold transition-colors hover:bg-primary",
