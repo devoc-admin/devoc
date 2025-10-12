@@ -30,12 +30,12 @@ function ContactForm() {
           return "Merci de renseigner un nom";
         }
 
-        if (!value.email) {
-          return "Merci de renseigner un email";
+        if (!(value.email.includes("@") && value.email.includes("."))) {
+          return "Merci de renseigner un email valide";
         }
 
         if (!value.message || value.message.length < 10) {
-          return "Merci d'expliquer brièvement votre projet pour que nous puissions vous aider au mieux 🤝";
+          return "Expliquez nous brièvement votre projet ou vos besoins pour que nous puissions vous aider au mieux 🤝";
         }
 
         return false;

@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/style/noMagicNumbers: special case */
 import Image, { type StaticImageData } from "next/image";
 import SectionTitle from "@/app/components/section-title";
 import flow1 from "@/assets/projects/flow/flow_1.png";
@@ -12,8 +13,10 @@ import statcraft2 from "@/assets/projects/statcraft/statcraft_2.png";
 import statcraft3 from "@/assets/projects/statcraft/statcraft_3.png";
 import statcraftCover from "@/assets/projects/statcraft/statcraft_cover.webp";
 import Beams from "@/components/react-bits/beams";
+
 // import { Button } from "@/components/ui/button";
 
+import { TrophyIcon } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -30,6 +33,7 @@ type Project = {
   technologies: string[];
   companyLogo: React.ReactNode;
   companyLink: string;
+  accomplishments?: string[];
   images: StaticImageData[];
 };
 
@@ -50,7 +54,32 @@ const projects: Project[] = [
       />
     ),
     companyLink: "https://oneparkflow.com",
+    accomplishments: [
+      `${formatNumber(50_000)}€ de revenus mensuels`,
+      "Déploiement en France, Espagne et Luxembourg",
+      "+30 hôtels partenaires en 2025",
+    ],
     technologies: ["React", "Typescript", "Tailwind"],
+  },
+  {
+    title: "Un média en ligne",
+    slug: "media-en-ligne",
+    description:
+      "Redesign d'un média en ligne avec de nouveaux outils de gestion pour la rédaction. La solution complète comprenait un site web et un panel d'administration pour la gestion des articles et des contributeurs, un module d'abonnement et la mise en place d'une newsletter.",
+    images: [frustrationCover],
+    technologies: ["Vue.js", "Express", "PostgreSQL", "Docker"],
+    companyLink: "https://frustrationmagazine.fr",
+    accomplishments: [
+      `${formatNumber(120_000)} visiteurs uniques par mois`,
+      `${formatNumber(10_000)} abonnés newsletter`,
+      `${formatNumber(2000)} abonnés payants`,
+    ],
+    companyLogo: (
+      <div className="flex flex-col text-center font-lobster">
+        <span className="text-xl">Frustration</span>
+        <span className="-mt-2 text-base">Magazine</span>
+      </div>
+    ),
   },
   {
     title: "Outil d'analytiques des visites",
@@ -68,22 +97,12 @@ const projects: Project[] = [
         width={30}
       />
     ),
+    accomplishments: [
+      "Profilage des visiteurs",
+      "Détection des robots",
+      "Amélioration des stratégies de promotion des contenus",
+    ],
     companyLink: "https://insee.fr",
-  },
-  {
-    title: "Un média en ligne",
-    slug: "media-en-ligne",
-    description:
-      "Redesign d'un média en ligne avec de nouveaux outils de gestion pour la rédaction. La solution complète comprenait un site web et un panel d'administration pour la gestion des articles et des contributeurs, un module d'abonnement et la mise en place d'une newsletter.",
-    images: [frustrationCover],
-    technologies: ["Vue.js", "Express", "PostgreSQL", "Docker"],
-    companyLink: "https://frustrationmagazine.fr",
-    companyLogo: (
-      <div className="flex flex-col text-center font-lobster">
-        <span className="text-xl">Frustration</span>
-        <span className="-mt-2 text-base">Magazine</span>
-      </div>
-    ),
   },
 ];
 
@@ -118,9 +137,9 @@ export default function Realisations() {
       {/* 🃏 Cards */}
       <div
         className={cn(
-          "w-full max-w-[1300px] gap-8",
+          "w-full max-w-[1400px] gap-6",
           "flex flex-col",
-          "sm:grid sm:grid-cols-[repeat(auto-fill,minmax(320px,1fr))]"
+          "sm:grid sm:grid-cols-[repeat(auto-fit,minmax(320px,1fr))]"
         )}
       >
         {projects.map((project) => (
@@ -144,6 +163,7 @@ function CardProject({
   images,
   title,
   description,
+  accomplishments,
   companyLogo,
   companyLink,
 }: Project) {
@@ -169,7 +189,22 @@ function CardProject({
       {/* 🔡 Description */}
       <CardContent className="mb-4">
         <CardTitle className="mb-1">{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
+        <CardDescription className="min-h-28">{description}</CardDescription>
+        {/* 🏆 Accomplishments */}
+        {accomplishments && accomplishments.length > 0 && (
+          <div className="mt-4 flex flex-col gap-y-2">
+            <div className="font-bold text-sm text-white/80">
+              ✨ Les résultats
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {accomplishments.map((accomplishment) => (
+                <Accomplishment key={accomplishment}>
+                  {accomplishment}
+                </Accomplishment>
+              ))}
+            </div>
+          </div>
+        )}
       </CardContent>
 
       {/* ⚙️ Technologies */}
@@ -186,4 +221,28 @@ function CardProject({
       </CardFooter>
     </Card>
   );
+}
+
+// ----------------------------------
+function Accomplishment({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-2 rounded-full border border-primary/50 bg-primary/30 px-3 py-1 text-primary">
+      <TrophyIcon size={12} />
+      <span className="text-xs">{children}</span>
+    </div>
+  );
+}
+
+// ----------------------------------
+function formatNumber(number: number) {
+  // Use the user's browser locale, default to "fr-FR" if not available
+  if (
+    typeof window !== "undefined" &&
+    typeof window.navigator !== "undefined"
+  ) {
+    const locale =
+      window.navigator.languages?.[0] || window.navigator.language || "fr-FR";
+    return number.toLocaleString(locale);
+  }
+  return number.toLocaleString("fr-FR");
 }

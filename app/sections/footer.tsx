@@ -82,15 +82,11 @@ const groupLinks: GroupLink[] = [
       },
       {
         name: "Contact",
-        href: "/contact",
+        href: "#contact",
       },
       {
         name: "Documentation",
         href: "/documentation",
-      },
-      {
-        name: "Statuts",
-        href: "/status",
       },
       {
         name: "Politique de confidentialité",
