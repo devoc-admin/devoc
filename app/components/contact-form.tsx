@@ -2,13 +2,16 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { SendIcon, TriangleAlertIcon } from "lucide-react";
+import { CheckCircleIcon, SendIcon, TriangleAlertIcon } from "lucide-react";
+import { useState } from "react";
+import { type ContactFormData, sendContactEmail } from "@/actions/send-email";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
+// 🎨 Classes CSS
 const labelClass = cn("text-base", "xs:text-lg");
 
 const inputClass = cn(
@@ -16,7 +19,15 @@ const inputClass = cn(
   "bg-zinc-950 text-primary-foreground sm:text-lg!"
 );
 
+type SubmitStatus = {
+  type: "success" | "error" | null;
+  message: string;
+} | null;
+
 function ContactForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(null);
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -40,6 +51,34 @@ function ContactForm() {
 
         return false;
       },
+    },
+    onSubmit: async ({ value }) => {
+      setIsSubmitting(true);
+      setSubmitStatus({ type: null, message: "" });
+
+      try {
+        const result = await sendContactEmail(value as ContactFormData);
+
+        if (result.success) {
+          setSubmitStatus({
+            type: "success",
+            message: result.message || "Message envoyé avec succès",
+          });
+          form.reset();
+        } else {
+          setSubmitStatus({
+            type: "error",
+            message: result.error || "Une erreur est survenue",
+          });
+        }
+      } catch {
+        setSubmitStatus({
+          type: "error",
+          message: "Une erreur inattendue est survenue. Veuillez réessayer.",
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
     },
   });
   return (
@@ -129,7 +168,7 @@ function ContactForm() {
         )}
         name="message"
       />
-      {/* ❌ Erreur */}
+      {/* ❌ Erreur de validation */}
       <form.Subscribe
         children={(state) =>
           state.errors.length > 0 && (
@@ -142,17 +181,38 @@ function ContactForm() {
         selector={(state) => state}
       />
 
+      {/* ✅/❌ Statut d'envoi */}
+      {submitStatus?.type && (
+        <div
+          className={cn(
+            "col-span-2 flex items-center gap-2 rounded-md p-4",
+            submitStatus.type === "success"
+              ? "border border-green-200 bg-green-50 text-green-800"
+              : "border border-red-200 bg-red-50 text-red-800"
+          )}
+        >
+          {submitStatus.type === "success" ? (
+            <CheckCircleIcon size={20} />
+          ) : (
+            <TriangleAlertIcon size={20} />
+          )}
+          <span>{submitStatus.message}</span>
+        </div>
+      )}
+
       {/* 🔔 Envoi du message */}
       <Button
         className={cn(
           "col-span-2 cursor-pointer gap-3 rounded-md bg-primary/90 py-6 font-semibold transition-colors hover:bg-primary",
           "text-base",
-          "sm:text-lg"
+          "sm:text-lg",
+          isSubmitting && "cursor-not-allowed opacity-50"
         )}
+        disabled={isSubmitting}
         type="submit"
       >
         <SendIcon size={20} />
-        <span>Envoyer le message</span>
+        <span>{isSubmitting ? "Envoi en cours..." : "Envoyer le message"}</span>
       </Button>
     </form>
   );
