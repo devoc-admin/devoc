@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Lobster } from "next/font/google";
 import { BackgroundBeams } from "@/components/aceternity/background-beams";
@@ -86,6 +87,7 @@ export default function RootLayout({
         <SkipLink />
         <BackgroundBeams className="hidden lg:block" />
         <main id="main-content">{children}</main>
+        <Analytics />
       </body>
     </html>
   );
