@@ -11,16 +11,17 @@ import Meet from "@/assets/processus/meet.avif";
 import Plan from "@/assets/processus/plan.avif";
 import { cn } from "@/lib/utils";
 
-type Slide = {
+type Step = {
   title: string;
   description: string;
   image: StaticImageData;
 };
-const slides: Slide[] = [
+
+const steps: Step[] = [
   {
     title: "Rencontre",
     description:
-      "Nous nous rencontrons pour échanger sur vos besoins, vos délais et votre budget.",
+      "Après premier contact, nous nous rencontrons pour échanger sur vos besoins, vos délais et votre budget.",
     image: Meet,
   },
   {
@@ -30,7 +31,7 @@ const slides: Slide[] = [
     image: Plan,
   },
   {
-    title: "Accord",
+    title: "Validation",
     description:
       "Une fois le plan validé, nous lançons la réalisation de votre projet !",
     image: Handshake,
@@ -38,7 +39,7 @@ const slides: Slide[] = [
   {
     title: "Production",
     description:
-      "Durant le développement, vous restez informé de l'avancement de votre projet et recevez les livrables selon le calendrier défini.",
+      "Durant le développement, vous restez informé de l'avancement de votre projet et vous recevez vos livrables selon le calendrier défini.",
     image: Machine,
   },
   {
@@ -58,14 +59,14 @@ const slides: Slide[] = [
 const animationDuration = 8000; // 8 seconds
 
 function Processus() {
-  const [step, setStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   function goStep(index: number) {
-    if (step === index) {
+    if (currentStep === index) {
       return;
     }
-    setStep(index);
+    setCurrentStep(index);
   }
 
   useEffect(() => {
@@ -75,10 +76,10 @@ function Processus() {
     }
 
     function goNextStep() {
-      setStep((currentStep) => {
+      setCurrentStep((step) => {
         const initialStep = 0;
-        if (currentStep < slides.length - 1) {
-          return currentStep + 1;
+        if (step < steps.length - 1) {
+          return step + 1;
         }
         return initialStep;
       });
@@ -92,63 +93,68 @@ function Processus() {
     };
   }, []);
 
+  const NavigationDots = (
+    <div className="mt-4 flex gap-2">
+      {steps.map(({ title }, index) => (
+        <button
+          className={cn(
+            "size-3.5 cursor-pointer rounded-full bg-primary/20 transition-colors duration-500",
+            currentStep === index && "bg-primary"
+          )}
+          key={title}
+          onClick={() => goStep(index)}
+          type="button"
+        />
+      ))}
+    </div>
+  );
+
   return (
     <div
       className="flex min-h-screen flex-col bg-linear-to-b from-black to-zinc-950"
       id="processus"
     >
-      <div className="flex flex-1 flex-col items-center rounded-t-[50px] bg-white px-8 py-26 sm:rounded-t-[100px] md:py-42">
+      <div
+        className={cn(
+          "flex flex-1 flex-col items-center bg-white",
+          "rounded-t-[50px] py-26",
+          "sm:rounded-t-[100px] sm:py-26",
+          "md:rounded-t-[100px] md:py-36"
+        )}
+      >
         {/* 🆎 Title */}
-        <h2 className="mb-12 text-center font-bold text-6xl text-black sm:text-7xl md:text-8xl">
+        <h2 className="mb-12 px-8 text-center font-kanit font-semibold text-6xl text-black sm:text-7xl md:text-8xl">
           Notre méthode
         </h2>
-        {/* Content container */}
-        <div className="group flex w-[500px] max-w-full flex-1 flex-col items-center justify-center gap-3">
-          {/* Slides container */}
+        {/* 🎴🎴🎴 Slides */}
+        <div className="group flex w-[500px] max-w-full flex-1 flex-col items-center justify-center gap-3 px-8">
           <div className="flex w-full overflow-hidden">
-            {/* 🖼️ Slide */}
-            {slides.map(({ title, description, image }, index) => (
-              <Slide
-                description={description}
-                image={image}
+            {/* 🎴 Slide */}
+            {steps.map((props, index) => (
+              <Step
+                key={props.title}
+                {...props}
                 index={index}
-                key={title}
-                step={step}
-                title={title}
+                step={currentStep}
               />
             ))}
           </div>
-          {/* ― Progress bar */}
           <ProgressBar className="mt-2 self-start" ref={progressBarRef} />
-          {/* 🟠🟠🟠 Dots */}
-          <div className="mt-4 flex gap-2">
-            {slides.map(({ title }, index) => (
-              <button
-                className={cn(
-                  "size-3.5 cursor-pointer rounded-full bg-primary/20 transition-colors duration-500",
-                  step === index && "bg-primary"
-                )}
-                key={title}
-                onClick={() => goStep(index)}
-                type="button"
-              />
-            ))}
-          </div>
+          {NavigationDots}
         </div>
       </div>
-      {/* <h1>Processus</h1> */}
     </div>
   );
 }
 
 // -----------------------------
-function Slide({
+function Step({
   title,
   description,
   image,
   index,
   step,
-}: Slide & { index: number; step: number }) {
+}: Step & { index: number; step: number }) {
   return (
     <div
       className="flex w-full shrink-0 flex-col gap-y-3 transition-transform duration-500"
@@ -158,10 +164,10 @@ function Slide({
       }}
     >
       <Image alt={title} className="max-w-full" src={image} width={500} />
-      <h3 className="mb-4 font-bold text-4xl xs:text-5xl md:text-6xl">
+      <h3 className="mb-2 font-kanit font-semibold text-4xl xs:text-5xl md:text-6xl">
         {index + 1}. {title}
       </h3>
-      <div className="max-w-md text-pretty text-xl leading-tight">
+      <div className="max-w-md text-pretty font-kanit text-xl leading-tight">
         {description}
       </div>
     </div>

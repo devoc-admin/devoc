@@ -106,10 +106,10 @@ export default function Hero() {
       <motion.p
         animate={{ opacity: 1, y: 0 }}
         className={cn(
-          "white-letters-border max-w-[60ch] select-none rounded-lg bg-white/90 p-2 text-center text-secondary leading-tight!",
+          "white-letters-border max-w-[60ch] select-none rounded-lg bg-white/90 p-2 text-center font-kanit text-secondary leading-tight!",
           "text-md",
           "xs:p-3 xs:text-md",
-          "sm:font-black sm:text-lg"
+          "sm:font-semibold sm:text-lg"
         )}
         initial={{ opacity: 0, y: 50 }}
         transition={{ duration: 0.5, delay: 0.5 }}

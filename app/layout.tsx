@@ -1,6 +1,6 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Lobster } from "next/font/google";
+import { Geist, Geist_Mono, Kanit, Lobster } from "next/font/google";
 import { BackgroundBeams } from "@/components/aceternity/background-beams";
 import SkipLink from "@/components/navigation/skip-link";
 import "./globals.css";
@@ -19,6 +19,12 @@ const lobster = Lobster({
   variable: "--font-lobster",
   subsets: ["latin"],
   weight: ["400"],
+});
+
+const kanit = Kanit({
+  variable: "--font-kanit",
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -82,7 +88,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable}`}
+        className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} font-sans`}
       >
         <SkipLink />
         <BackgroundBeams className="hidden lg:block" />

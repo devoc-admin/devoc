@@ -5,6 +5,7 @@ import Hero from "./sections/hero";
 import Processus from "./sections/processus";
 import Realisations from "./sections/realisations";
 import Services from "./sections/services";
+import WorkWith from "./sections/work-with";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <Services />
       <Realisations />
       <Processus />
+      <WorkWith />
       <Contact />
       <Footer />
     </>
