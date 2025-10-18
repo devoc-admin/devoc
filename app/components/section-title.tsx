@@ -20,8 +20,10 @@ function SectionTitle({
       <h2
         className={cn(
           "font-bold text-secondary-foreground",
-          "text-5xl",
-          "xs:text-6xl"
+          "text-4xl",
+          "xs:text-5xl",
+          "md:text-6xl",
+          "lg:text-7xl"
         )}
       >
         {title}
@@ -29,7 +31,7 @@ function SectionTitle({
       {/* 🔡 Description */}
       <div
         className={cn(
-          "mx-auto max-w-2xl text-pretty text-muted-foreground leading-tight transition-colors hover:text-primary-foreground",
+          "mx-auto max-w-2xl text-pretty text-white leading-tight! transition-colors hover:text-primary-foreground",
           "text-lg",
           "xs:text-xl"
         )}

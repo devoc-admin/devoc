@@ -130,7 +130,7 @@ export default function Realisations() {
       {/* 🆎 Title */}
       <SectionTitle
         className="z-1"
-        description="Quelques exemples de projets récents de nos développeurs qui illustrent notre expertise et notre approche orientée résultats 👇"
+        description="Quelques projets récents de nos développeurs qui illustrent notre expertise et notre approche orientée résultats 👇"
         title="Découvrez nos réalisations"
       />
 
