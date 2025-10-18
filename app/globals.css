@@ -48,6 +48,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
+  /* 🤹 Animations */
   --animate-aurora-text-background: aurora-text-background 8s ease-in-out
     infinite alternate;
   @keyframes aurora-text-background {
@@ -70,6 +71,16 @@
     100% {
       background-position: 0% 50%;
       transform: rotate(-5deg) scale(0.9);
+    }
+  }
+
+  --animate-progress-bar: progress-bar 5s linear infinite;
+  @keyframes progress-bar {
+    0% {
+      width: 7%;
+    }
+    100% {
+      width: 100%;
     }
   }
 }
@@ -165,4 +176,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@utility animation-pause {
+  animation-play-state: paused;
 }

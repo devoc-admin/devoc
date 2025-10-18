@@ -131,7 +131,7 @@ export default function Hero() {
             "group bg-gradient-to-r from-primary to-primary-lighter text-primary-foreground",
             "hover:bg-gradient-to-r hover:from-primary hover:to-primary-lighter"
           )}
-          href="#contact"
+          href="#processus"
         >
           <div className="flex items-center gap-3">
             <span>Démarrer un projet</span>

@@ -65,7 +65,7 @@ var services: Service[] = [
       "Créez une expérience inédite au plus proche de vos utilisateurs, donnez-leur accès à tous vos services dans le creux de leurs mains.",
     features: [
       "Compatible Android et iOS",
-      "Expérience utilisateur fluide et personnalisée",
+      "Expérience fluide et personnalisée",
       "Notifications push et accès hors-ligne",
     ],
     icon: "Smartphone",

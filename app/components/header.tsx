@@ -19,6 +19,10 @@ const LINKS = [
     href: "#realisations",
     label: "Réalisations",
   },
+  {
+    href: "#processus",
+    label: "Notre méthode",
+  },
   // {
   //   href: "/about",
   //   label: "L'équipe",
