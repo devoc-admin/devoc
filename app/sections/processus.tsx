@@ -17,6 +17,7 @@ type Step = {
   image: StaticImageData;
 };
 
+const translateXRegex = /translateX\((-?\d+)px\)/;
 const steps: Step[] = [
   {
     title: "Rencontre",
@@ -45,13 +46,13 @@ const steps: Step[] = [
   {
     title: "Formation",
     description:
-      "Nous vous formons pour vous approprier vos outils et devenir complètement autonomes dessus.",
+      "Nous vous formons pour vous approprier vos outils afin de devenir complètement autonomes.",
     image: LightBulb,
   },
   {
     title: "Maintenance",
     description:
-      "Nous nous occupons de la maintenance et des mises à jour pour que votre projet fonctionne sans interruption et en toute sécurité.",
+      "Nous nous occupons de la maintenance pour que votre projet fonctionne sans interruption et en toute sécurité.",
     image: DeckChair,
   },
 ];
@@ -60,7 +61,10 @@ const animationDuration = 8000; // 8 seconds
 
 function Processus() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const startingPoint = useRef(0);
   const progressBarRef = useRef<HTMLDivElement>(null);
+  const slidesListRef = useRef<HTMLDivElement>(null);
 
   function goStep(index: number) {
     if (currentStep === index) {
@@ -85,13 +89,74 @@ function Processus() {
       });
     }
 
+    // Prerequisites to prevent default browser behavior when grabbing an element
+    document.addEventListener("dragstart", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+
+    // Grab
+    function grabSlides(event: MouseEvent) {
+      if (slidesListRef.current) {
+        setIsDragging(true);
+        const { clientX: absoluteX } = event;
+        const transform = slidesListRef.current.style.transform;
+        const translateXValueString = transform.match(translateXRegex)?.[1];
+        const translateXValue = translateXValueString
+          ? Number.parseInt(translateXValueString, 10)
+          : 0;
+        startingPoint.current = absoluteX - translateXValue;
+        slidesListRef.current.style.transitionDuration = "0ms";
+      }
+    }
+    slidesListRef.current?.addEventListener("mousedown", grabSlides);
+
+    // Release
+    function releaseSlide() {
+      if (slidesListRef.current) {
+        setIsDragging(false);
+        const transform = slidesListRef.current.style.transform;
+        const translateXString = transform.match(translateXRegex)?.[1];
+        const translateXValue = translateXString
+          ? Number.parseInt(translateXString, 10)
+          : 0;
+
+        const numberOfSteps = Math.round(Math.abs(translateXValue / 500));
+        const newStep = Math.min(numberOfSteps, steps.length - 1);
+
+        slidesListRef.current.style.transitionDuration = "500ms";
+        setCurrentStep(newStep);
+      }
+    }
+    document.addEventListener("mouseup", releaseSlide);
+
+    // Cleanup
     return () => {
+      // Progress Bar
       progressBarRef.current?.removeEventListener(
         "animationiteration",
         goNextStep
       );
     };
   }, []);
+
+  // Drag
+  useEffect(() => {
+    if (slidesListRef.current) {
+      function dragSlides(event: MouseEvent) {
+        if (slidesListRef.current && isDragging) {
+          const { clientX: absoluteX } = event;
+          const deltaX = absoluteX - startingPoint.current;
+          slidesListRef.current.style.transform = `translateX(${deltaX}px)`;
+        }
+      }
+      document.addEventListener("mousemove", dragSlides);
+
+      return () => {
+        document.removeEventListener("mousemove", dragSlides);
+      };
+    }
+  }, [isDragging]);
 
   const NavigationDots = (
     <div className="mt-4 flex gap-2">
@@ -108,6 +173,11 @@ function Processus() {
       ))}
     </div>
   );
+
+  // Set transform for dragging list when current step changes
+  if (slidesListRef.current) {
+    slidesListRef.current.style.transform = `translateX(-${currentStep * 500}px)`;
+  }
 
   return (
     <div
@@ -127,20 +197,24 @@ function Processus() {
           Notre méthode
         </h2>
         {/* 🎴🎴🎴 Slides */}
-        <div className="group flex w-[500px] max-w-full flex-1 flex-col items-center justify-center gap-3 px-8">
-          <div className="flex w-full overflow-hidden">
-            {/* 🎴 Slide */}
-            {steps.map((props, index) => (
-              <Step
-                key={props.title}
-                {...props}
-                index={index}
-                step={currentStep}
-              />
-            ))}
+        <div className="select-none px-8">
+          <div className="group flex w-[500px] max-w-full flex-1 flex-col items-center justify-center gap-3 overflow-hidden">
+            <div
+              className={cn(
+                "flex cursor-grab self-start transition-transform duration-500",
+                isDragging && "cursor-grabbing"
+              )}
+              ref={slidesListRef}
+              style={{ transform: `translateX(-${currentStep * 500}px)` }}
+            >
+              {/* 🎴 Slide */}
+              {steps.map((props, index) => (
+                <Step key={props.title} {...props} index={index} />
+              ))}
+            </div>
+            <ProgressBar className="mt-2 self-start" ref={progressBarRef} />
+            {NavigationDots}
           </div>
-          <ProgressBar className="mt-2 self-start" ref={progressBarRef} />
-          {NavigationDots}
         </div>
       </div>
     </div>
@@ -148,21 +222,9 @@ function Processus() {
 }
 
 // -----------------------------
-function Step({
-  title,
-  description,
-  image,
-  index,
-  step,
-}: Step & { index: number; step: number }) {
+function Step({ title, description, image, index }: Step & { index: number }) {
   return (
-    <div
-      className="flex w-full shrink-0 flex-col gap-y-3 transition-transform duration-500"
-      key={title}
-      style={{
-        transform: `translateX(-${step * 100}%)`,
-      }}
-    >
+    <div className="flex shrink-0 flex-col gap-y-3" key={title}>
       <Image alt={title} className="max-w-full" src={image} width={500} />
       <h3 className="mb-2 font-kanit font-semibold text-4xl xs:text-5xl md:text-6xl">
         {index + 1}. {title}

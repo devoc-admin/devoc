@@ -42,7 +42,7 @@ const projects: Project[] = [
     title: "Une plateforme de réservation",
     slug: "dashboard-analytics",
     description:
-      "Plateforme de réservation en ligne de places de parking chez les hôtels partenaires permettant au client de réserver en avance son emplacement depuis son téléphone ou son ordinateur ou de régler en ligne un accès-sur-demande.",
+      "Réservation en ligne de parkings d’hôtels, avec paiement ou accès à la demande depuis tout appareil.",
     images: [flowMockup, flow2, flow1, flow3],
     companyLogo: (
       <Image
@@ -65,7 +65,7 @@ const projects: Project[] = [
     title: "Un média en ligne",
     slug: "media-en-ligne",
     description:
-      "Redesign d'un média en ligne avec de nouveaux outils de gestion pour la rédaction. La solution complète comprenait un site web et un panel d'administration pour la gestion des articles et des contributeurs, un module d'abonnement et la mise en place d'une newsletter.",
+      "Refonte d'un média en ligne avec site, administration et newsletter.",
     images: [frustrationCover],
     technologies: ["Vue.js", "Express", "PostgreSQL", "Docker"],
     companyLink: "https://frustrationmagazine.fr",
@@ -85,7 +85,7 @@ const projects: Project[] = [
     title: "Outil d'analytiques des visites",
     slug: "analyse-de-trafic",
     description:
-      "Outil interne pour mesurer les courbes d'audience des publications de l'Insee et analyser les différentes sources de trafic sur ses différents sites web.",
+      "Outil pour analyser l'audience et les sources de trafic des sites Insee.",
     images: [statcraftCover, statcraft1, statcraft2, statcraft3],
     technologies: ["Next.js", "Tailwind"],
     companyLogo: (
@@ -130,7 +130,7 @@ export default function Realisations() {
       {/* 🆎 Title */}
       <SectionTitle
         className="z-1"
-        description="Quelques projets récents de nos développeurs qui illustrent notre expertise et notre approche orientée résultats 👇"
+        description="Nos derniers projets qui illustrent notre approche orientée résultats"
         title="Découvrez nos réalisations"
       />
 
@@ -188,8 +188,12 @@ function CardProject({
 
       {/* 🔡 Description */}
       <CardContent className="mb-4">
-        <CardTitle className="mb-1">{title}</CardTitle>
-        <CardDescription className="min-h-28">{description}</CardDescription>
+        <CardTitle className="mb-1 font-kanit font-semibold text-2xl">
+          {title}
+        </CardTitle>
+        <CardDescription className="text-base leading-tight">
+          {description}
+        </CardDescription>
         {/* 🏆 Accomplishments */}
         {accomplishments && accomplishments.length > 0 && (
           <div className="mt-4 flex flex-col gap-y-2">

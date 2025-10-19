@@ -90,7 +90,9 @@ export default function Hero() {
           <Doodle color="var(--primary)" />
         </motion.div>
         <div className="relative font-bold tracking-tighter">
-          <span className="white-letters-border absolute">Dev'</span>
+          <span className="white-letters-border absolute text-transparent">
+            Dev'
+          </span>
           <AuroraText
             colors={["#FFD166", "#fbbf24", "#f59e0b", "#F48C06"]}
             speed={3}

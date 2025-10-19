@@ -282,7 +282,7 @@ function InternalLinks({
 }) {
   return (
     <div>
-      <div className="mb-5 pl-6 font-bold text-lg text-primary-foreground">
+      <div className="mb-5 pl-6 font-kanit font-semibold text-lg text-primary-foreground">
         {title}
       </div>
       <div className="flex flex-col gap-3 text-muted-foreground">

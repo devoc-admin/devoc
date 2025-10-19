@@ -69,7 +69,7 @@ export default function Contact() {
             className="border-primary/30 bg-primary/5 md:max-w-[400px]"
           >
             <CardHeader>
-              <CardTitle className="text-wrap text-2xl">
+              <CardTitle className="text-wrap font-kanit font-semibold text-2xl">
                 Réponse rapide garantie
               </CardTitle>
             </CardHeader>
@@ -132,7 +132,7 @@ function ContactCard({
           {icon}
         </div>
         <CardContent className="m-0 p-0">
-          <CardTitle>{title}</CardTitle>
+          <CardTitle className="font-kanit font-semibold">{title}</CardTitle>
           <div>{content}</div>
         </CardContent>
       </a>

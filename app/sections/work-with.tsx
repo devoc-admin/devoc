@@ -50,7 +50,7 @@ function WorkWith() {
   return (
     <div className="mb-22 w-full text-center text-2xl">
       <div className="mb-6 px-6 font-kanit font-regular text-3xl">
-        Nos experts ont aussi travaillé avec
+        Nos experts ont travaillé avec eux
       </div>
       <div className="flex w-full">
         <div className="grow border-border border-y" />

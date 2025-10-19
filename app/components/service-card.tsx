@@ -54,7 +54,7 @@ export default function ServiceCard({
         {/* 🆎 Title */}
         <CardTitle
           className={cn(
-            "font-bold text-xl",
+            "font-kanit font-semibold text-2xl",
             "text-primary-foreground",
             "group-hover:text-primary"
           )}
