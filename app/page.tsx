@@ -1,4 +1,5 @@
 import Header from "@/app/components/header";
+import { BackgroundBeams } from "@/components/aceternity/background-beams";
 import Contact from "./sections/contact";
 import Footer from "./sections/footer";
 import Hero from "./sections/hero";
@@ -18,6 +19,7 @@ export default function Home() {
       <WorkWith />
       <Contact />
       <Footer />
+      <BackgroundBeams className="hidden lg:block" />
     </>
   );
 }

@@ -1,7 +1,6 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Kanit, Lobster } from "next/font/google";
-import { BackgroundBeams } from "@/components/aceternity/background-beams";
 import SkipLink from "@/components/navigation/skip-link";
 import "./globals.css";
 
@@ -91,7 +90,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} font-sans`}
       >
         <SkipLink />
-        <BackgroundBeams className="hidden lg:block" />
         <main id="main-content">{children}</main>
         <Analytics />
       </body>
