@@ -1,0 +1,19 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": ["NODE_ENV", "RESEND_API_KEY", "CONTACT_EMAIL"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"],
+      "env": ["NODE_ENV", "RESEND_API_KEY", "CONTACT_EMAIL"]
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false,
+      "env": ["NODE_ENV", "RESEND_API_KEY", "CONTACT_EMAIL"]
+    }
+  }
+}
