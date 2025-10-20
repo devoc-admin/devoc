@@ -4,34 +4,34 @@ export default function robots(): MetadataRoute.Robots {
   const baseUrl = "https://dev-oc.fr";
 
   return {
+    host: baseUrl,
     rules: [
       {
-        userAgent: "*",
         allow: "/",
         disallow: ["/api/", "/_next/", "/admin/", "/private/"],
+        userAgent: "*",
       },
       {
+        disallow: "/",
         userAgent: "GPTBot",
-        disallow: "/",
       },
       {
+        disallow: "/",
         userAgent: "ChatGPT-User",
-        disallow: "/",
       },
       {
+        disallow: "/",
         userAgent: "CCBot",
-        disallow: "/",
       },
       {
+        disallow: "/",
         userAgent: "anthropic-ai",
-        disallow: "/",
       },
       {
-        userAgent: "Claude-Web",
         disallow: "/",
+        userAgent: "Claude-Web",
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl,
   };
 }

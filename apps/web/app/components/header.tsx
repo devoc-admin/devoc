@@ -40,7 +40,7 @@ export default function Header() {
         {/* 1️⃣ Left part */}
         <div className="flex w-[200px] justify-start">
           {/* 🐲 Logo */}
-          {Logo}
+          <Logo />
         </div>
 
         {/* 2️⃣ Center part */}
@@ -75,16 +75,18 @@ export default function Header() {
 }
 
 // ---------------------------------
-var Logo = (
-  <div className="flex items-center gap-2 text-2xl">
-    <Image alt="Dev'Oc" height={22} src={Icon} width={22} />
-    <div>
-      <span className="bg-gradient-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black text-transparent tracking-tighter">
-        Dev'
-      </span>
-      <span className="font-bold font-regular text-secondary tracking-tighter">
-        Oc
-      </span>
+function Logo() {
+  return (
+    <div className="flex items-center gap-2 text-2xl">
+      <Image alt="Dev'Oc" height={22} src={Icon} width={22} />
+      <div>
+        <span className="bg-gradient-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black text-transparent tracking-tighter">
+          Dev'
+        </span>
+        <span className="font-bold font-regular text-secondary tracking-tighter">
+          Oc
+        </span>
+      </div>
     </div>
-  </div>
-);
+  );
+}

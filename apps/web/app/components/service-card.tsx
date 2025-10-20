@@ -45,8 +45,8 @@ export default function ServiceCard({
           <motion.div
             className="h-1 w-[30%] rounded-lg bg-primary"
             initial={{ width: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            viewport={{ once: true, amount: 0.5 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            viewport={{ amount: 0.5, once: true }}
             whileInView={{ width: "30%" }}
           />
         </div>

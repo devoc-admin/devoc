@@ -30,10 +30,38 @@ function ContactForm() {
 
   const form = useForm({
     defaultValues: {
-      name: "",
-      email: "",
       company: "",
+      email: "",
       message: "",
+      name: "",
+    },
+    onSubmit: async ({ value }) => {
+      setIsSubmitting(true);
+      setSubmitStatus({ message: "", type: null });
+
+      try {
+        const result = await sendContactEmail(value as ContactFormData);
+
+        if (result.success) {
+          setSubmitStatus({
+            message: result.message || "Message envoyé avec succès",
+            type: "success",
+          });
+          form.reset();
+        } else {
+          setSubmitStatus({
+            message: result.error || "Une erreur est survenue",
+            type: "error",
+          });
+        }
+      } catch {
+        setSubmitStatus({
+          message: "Une erreur inattendue est survenue. Veuillez réessayer.",
+          type: "error",
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
     },
     validators: {
       onSubmit: ({ value }) => {
@@ -51,34 +79,6 @@ function ContactForm() {
 
         return false;
       },
-    },
-    onSubmit: async ({ value }) => {
-      setIsSubmitting(true);
-      setSubmitStatus({ type: null, message: "" });
-
-      try {
-        const result = await sendContactEmail(value as ContactFormData);
-
-        if (result.success) {
-          setSubmitStatus({
-            type: "success",
-            message: result.message || "Message envoyé avec succès",
-          });
-          form.reset();
-        } else {
-          setSubmitStatus({
-            type: "error",
-            message: result.error || "Une erreur est survenue",
-          });
-        }
-      } catch {
-        setSubmitStatus({
-          type: "error",
-          message: "Une erreur inattendue est survenue. Veuillez réessayer.",
-        });
-      } finally {
-        setIsSubmitting(false);
-      }
     },
   });
   return (

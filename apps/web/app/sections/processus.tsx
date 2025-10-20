@@ -20,40 +20,40 @@ type Step = {
 const translateXRegex = /translateX\((-?\d+)px\)/;
 const steps: Step[] = [
   {
-    title: "Rencontre",
     description:
       "Après premier contact, nous nous rencontrons pour échanger sur vos besoins, vos délais et votre budget.",
     image: Meet,
+    title: "Rencontre",
   },
   {
-    title: "Proposition",
     description:
       "Nous élaborons une solution sur-mesure à partir d'un cahier des charges.",
     image: Plan,
+    title: "Proposition",
   },
   {
-    title: "Validation",
     description:
       "Une fois le plan validé, nous lançons la réalisation de votre projet !",
     image: Handshake,
+    title: "Validation",
   },
   {
-    title: "Production",
     description:
       "Durant le développement, vous restez informé de l'avancement de votre projet et vous recevez vos livrables selon le calendrier défini.",
     image: Machine,
+    title: "Production",
   },
   {
-    title: "Formation",
     description:
       "Nous vous formons pour vous approprier vos outils afin de devenir complètement autonomes.",
     image: LightBulb,
+    title: "Formation",
   },
   {
-    title: "Maintenance",
     description:
       "Nous nous occupons de la maintenance pour que votre projet fonctionne sans interruption et en toute sécurité.",
     image: DeckChair,
+    title: "Maintenance",
   },
 ];
 

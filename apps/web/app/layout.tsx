@@ -5,29 +5,30 @@ import SkipLink from "@/components/navigation/skip-link";
 import "./globals.css";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
   subsets: ["latin"],
+  variable: "--font-geist-sans",
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  variable: "--font-geist-mono",
 });
 
 const lobster = Lobster({
-  variable: "--font-lobster",
   subsets: ["latin"],
+  variable: "--font-lobster",
   weight: ["400"],
 });
 
 const kanit = Kanit({
-  variable: "--font-kanit",
   subsets: ["latin"],
+  variable: "--font-kanit",
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
-  title: "Dev'Oc | Création de sites & applications",
+  authors: [{ name: "Dev'Oc", url: "https://dev-oc.fr" }],
+  creator: "Dev'Oc",
   description:
     "Dev'Oc est une collectif de développeurs en Occitanie spécialisée dans la création de sites internet, applications web, solutions digitales sur-mesure et automatisation des tâches avec l'IA. Expertise en UX/UI, référencement, accompagnement digital et innovation.",
   keywords: [
@@ -42,40 +43,39 @@ export const metadata: Metadata = {
     "intelligence artificielle",
     "Dev'Oc",
   ],
-  authors: [{ name: "Dev'Oc", url: "https://dev-oc.fr" }],
-  creator: "Dev'Oc",
-  publisher: "Dev'Oc",
+  metadataBase: new URL("https://dev-oc.fr"),
   openGraph: {
-    title: "Dev'Oc | Création de sites & applications",
     description:
       "Collectif de développeurs en Occitanie spécialisés en développement de sites internet, applications web, UX/UI, référencement et automatisation des tâches avec l'IA. Découvrez nos réalisations et contactez-nous pour votre projet digital.",
-    url: "https://dev-oc.fr",
-    siteName: "Dev'Oc",
-    locale: "fr_FR",
-    type: "website",
     images: [
       {
+        alt: "Dev'Oc - Création de sites & applications",
+        height: 630,
         url: "https://dev-oc.fr/og-image.jpg",
         width: 1200,
-        height: 630,
-        alt: "Dev'Oc - Création de sites & applications",
       },
     ],
+    locale: "fr_FR",
+    siteName: "Dev'Oc",
+    title: "Dev'Oc | Création de sites & applications",
+    type: "website",
+    url: "https://dev-oc.fr",
   },
+  publisher: "Dev'Oc",
+  robots: {
+    follow: true,
+    index: true,
+    nocache: false,
+  },
+  title: "Dev'Oc | Création de sites & applications",
   twitter: {
     card: "summary_large_image",
-    title: "Dev'Oc | Création de sites & applications",
+    creator: "@devoc",
     description:
       "Collectif de développeurs en Occitanie spécialisés en développement de sites internet, applications web, UX/UI, référencement et automatisation des tâches avec l'IA. Découvrez nos réalisations et contactez-nous pour votre projet digital.",
-    site: "@devoc",
-    creator: "@devoc",
     images: ["https://dev-oc.fr/og-image.jpg"],
-  },
-  metadataBase: new URL("https://dev-oc.fr"),
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
+    site: "@devoc",
+    title: "Dev'Oc | Création de sites & applications",
   },
 };
 

@@ -8,41 +8,41 @@ import { cn } from "@/lib/utils";
 
 const companies = [
   {
-    name: "Airbus",
-    logo: <CompanyLogo logo={AirbusLogo} name="Airbus" />,
     link: "https://airbus.com",
+    logo: <CompanyLogo logo={AirbusLogo} name="Airbus" />,
+    name: "Airbus",
   },
   {
-    name: "Insee",
+    link: "https://insee.fr",
     logo: (
       <CompanyLogo className="translate-y-2" logo={InseeLogo} name="Insee" />
     ),
-    link: "https://insee.fr",
+    name: "Insee",
   },
   {
-    name: "Bimpli",
-    logo: <CompanyLogo logo={BimpliLogo} name="Bimpli" />,
     link: "https://bimpli.com",
+    logo: <CompanyLogo logo={BimpliLogo} name="Bimpli" />,
+    name: "Bimpli",
   },
   {
-    name: "Onepark",
-    logo: <CompanyLogo logo={OneparkLogo} name="Onepark" />,
     link: "https://onepark.com",
+    logo: <CompanyLogo logo={OneparkLogo} name="Onepark" />,
+    name: "Onepark",
   },
   {
-    name: "Loft Orbital",
-    logo: <CompanyLogo logo={LoftOrbitalLogo} name="Loft Orbital" />,
     link: "https://loftorbital.com",
+    logo: <CompanyLogo logo={LoftOrbitalLogo} name="Loft Orbital" />,
+    name: "Loft Orbital",
   },
   {
-    name: "Frustration",
+    link: "https://frustrationmagazine.fr",
     logo: (
       <div className="flex flex-col text-center font-lobster">
         <span className="text-3xl">Frustration</span>
         <span className="-mt-2 text-xl">Magazine</span>
       </div>
     ),
-    link: "https://frustrationmagazine.fr",
+    name: "Frustration",
   },
 ];
 

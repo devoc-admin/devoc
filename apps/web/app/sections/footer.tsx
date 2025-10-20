@@ -18,85 +18,85 @@ type GroupLink = {
 const groupLinks: GroupLink[] = [
   {
     id: "services",
-    title: "Services",
     links: [
       {
-        name: "Développement Web",
         href: "/services/developpement-web",
+        name: "Développement Web",
       },
       {
-        name: "Applications Mobiles",
         href: "/services/applications-mobiles",
+        name: "Applications Mobiles",
       },
       {
-        name: "Référencement SEO",
         href: "/services/referencement-seo",
+        name: "Référencement SEO",
       },
       {
-        name: "Design UX/UI",
         href: "/services/design-ux-ui",
+        name: "Design UX/UI",
       },
       {
-        name: "E-commerce",
         href: "/services/e-commerce",
+        name: "E-commerce",
       },
       {
-        name: "Automatisations IA",
         href: "/services/developpement-backend",
+        name: "Automatisations IA",
       },
     ],
+    title: "Services",
   },
   {
     id: "entreprises",
-    title: "Entreprises",
     links: [
       {
-        name: "À propos",
         href: "/about",
+        name: "À propos",
       },
       {
-        name: "Notre équipe",
         href: "/team",
+        name: "Notre équipe",
       },
       {
-        name: "Nos valeurs",
         href: "/values",
+        name: "Nos valeurs",
       },
       {
-        name: "Carrières",
         href: "/careers",
+        name: "Carrières",
       },
       {
-        name: "Blog",
         href: "/blog",
+        name: "Blog",
       },
     ],
+    title: "Entreprises",
   },
   {
     id: "support",
-    title: "Support",
     links: [
       {
-        name: "Centre d'aide",
         href: "/support",
+        name: "Centre d'aide",
       },
       {
-        name: "Contact",
         href: "#contact",
+        name: "Contact",
       },
       {
-        name: "Documentation",
         href: "/documentation",
+        name: "Documentation",
       },
       {
-        name: "Politique de confidentialité",
         href: "/privacy",
+        name: "Politique de confidentialité",
       },
       {
-        name: "Conditions d'utilisation",
         href: "/terms",
+        name: "Conditions d'utilisation",
       },
     ],
+    title: "Support",
   },
 ];
 
@@ -111,20 +111,20 @@ const contactLinks: ContactLink[] = [
   {
     href: "mailto:dev-oc@contact.fr",
     icon: <MailIcon size={16} />,
-    label: "dev-oc@contact.fr",
     id: "email",
+    label: "dev-oc@contact.fr",
   },
   {
     href: "tel:+33620239838",
     icon: <PhoneIcon size={16} />,
-    label: "+33 6 20 23 98 38",
     id: "phone",
+    label: "+33 6 20 23 98 38",
   },
   {
     href: "https://maps.app.goo.gl/1234567890",
     icon: <MapPinIcon size={16} />,
-    label: "Carcassonne, France",
     id: "address",
+    label: "Carcassonne, France",
   },
 ];
 
@@ -172,7 +172,7 @@ function Footer() {
         >
           {/* 🐲 Logo and contact */}
           <div className="col-span-2 flex flex-col gap-5">
-            {Logo}
+            <Logo />
             <div className="max-w-[700px] text-muted-foreground text-sm">
               Collectif de développeurs. Nous créons des solutions digitales sur
               mesure pour propulser votre entreprise.
@@ -229,7 +229,7 @@ function Footer() {
           </div>
         </div>
       </div>
-      {GradientLine}
+      <GradientLine />
     </div>
   );
 }
@@ -237,19 +237,21 @@ function Footer() {
 export default Footer;
 
 // ------------------------------------------------------------------------------------------------
-var Logo = (
-  <div className="flex items-center gap-2 text-2xl">
-    <Image alt="Dev'Oc" height={22} src={Icon} width={22} />
-    <div>
-      <span className="bg-gradient-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black text-transparent tracking-tighter">
-        Dev'
-      </span>
-      <span className="font-bold font-regular text-primary-foreground tracking-tighter">
-        Oc
-      </span>
+function Logo() {
+  return (
+    <div className="flex items-center gap-2 text-2xl">
+      <Image alt="Dev'Oc" height={22} src={Icon} width={22} />
+      <div>
+        <span className="bg-gradient-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black text-transparent tracking-tighter">
+          Dev'
+        </span>
+        <span className="font-bold font-regular text-primary-foreground tracking-tighter">
+          Oc
+        </span>
+      </div>
     </div>
-  </div>
-);
+  );
+}
 
 // ------------------------------------------------------------------------------------------------
 function ContactLink({
@@ -382,6 +384,8 @@ function Newsletter() {
 }
 
 // ------------------------------------------------------------------------------------------------
-var GradientLine = (
-  <div className="absolute bottom-0 left-0 h-2 w-screen bg-gradient-to-r from-primary via-orange-500 to-primary-lighter" />
-);
+function GradientLine() {
+  return (
+    <div className="absolute bottom-0 left-0 h-2 w-screen bg-gradient-to-r from-primary via-orange-500 to-primary-lighter" />
+  );
+}

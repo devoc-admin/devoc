@@ -39,11 +39,12 @@ type Project = {
 
 const projects: Project[] = [
   {
-    title: "Une plateforme de réservation",
-    slug: "dashboard-analytics",
-    description:
-      "Réservation en ligne de parkings d’hôtels, avec paiement ou accès à la demande depuis tout appareil.",
-    images: [flowMockup, flow2, flow1, flow3],
+    accomplishments: [
+      `${formatNumber(50_000)}€ de revenus mensuels`,
+      "Déploiement en France, Espagne et Luxembourg",
+      "+30 hôtels partenaires en 2025",
+    ],
+    companyLink: "https://oneparkflow.com",
     companyLogo: (
       <Image
         alt="Onepark Flow logo"
@@ -53,41 +54,40 @@ const projects: Project[] = [
         width={30}
       />
     ),
-    companyLink: "https://oneparkflow.com",
-    accomplishments: [
-      `${formatNumber(50_000)}€ de revenus mensuels`,
-      "Déploiement en France, Espagne et Luxembourg",
-      "+30 hôtels partenaires en 2025",
-    ],
+    description:
+      "Réservation en ligne de parkings d’hôtels, avec paiement ou accès à la demande depuis tout appareil.",
+    images: [flowMockup, flow2, flow1, flow3],
+    slug: "dashboard-analytics",
     technologies: ["React", "Typescript", "Tailwind"],
+    title: "Une plateforme de réservation",
   },
   {
-    title: "Un média en ligne",
-    slug: "media-en-ligne",
-    description:
-      "Refonte d'un média en ligne avec site, administration et newsletter.",
-    images: [frustrationCover],
-    technologies: ["Vue.js", "Express", "PostgreSQL", "Docker"],
-    companyLink: "https://frustrationmagazine.fr",
     accomplishments: [
       `${formatNumber(120_000)} visiteurs uniques par mois`,
       `${formatNumber(10_000)} abonnés newsletter`,
       `${formatNumber(2000)} abonnés payants`,
     ],
+    companyLink: "https://frustrationmagazine.fr",
     companyLogo: (
       <div className="flex flex-col text-center font-lobster">
         <span className="text-xl">Frustration</span>
         <span className="-mt-2 text-base">Magazine</span>
       </div>
     ),
+    description:
+      "Refonte d'un média en ligne avec site, administration et newsletter.",
+    images: [frustrationCover],
+    slug: "media-en-ligne",
+    technologies: ["Vue.js", "Express", "PostgreSQL", "Docker"],
+    title: "Un média en ligne",
   },
   {
-    title: "Outil d'analytiques des visites",
-    slug: "analyse-de-trafic",
-    description:
-      "Outil pour analyser l'audience et les sources de trafic des sites Insee.",
-    images: [statcraftCover, statcraft1, statcraft2, statcraft3],
-    technologies: ["Next.js", "Tailwind"],
+    accomplishments: [
+      "Profilage des visiteurs",
+      "Détection des robots",
+      "Amélioration des stratégies de promotion des contenus",
+    ],
+    companyLink: "https://insee.fr",
     companyLogo: (
       <Image
         alt="Insee logo"
@@ -97,12 +97,12 @@ const projects: Project[] = [
         width={30}
       />
     ),
-    accomplishments: [
-      "Profilage des visiteurs",
-      "Détection des robots",
-      "Amélioration des stratégies de promotion des contenus",
-    ],
-    companyLink: "https://insee.fr",
+    description:
+      "Outil pour analyser l'audience et les sources de trafic des sites Insee.",
+    images: [statcraftCover, statcraft1, statcraft2, statcraft3],
+    slug: "analyse-de-trafic",
+    technologies: ["Next.js", "Tailwind"],
+    title: "Outil d'analytiques des visites",
   },
 ];
 

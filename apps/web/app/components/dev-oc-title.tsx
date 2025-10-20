@@ -21,7 +21,7 @@ export default function DevOcTitle({ showDoodle = true }: Props) {
         "sm:text-9xl"
       )}
       initial={{ opacity: 0, y: -50 }}
-      transition={{ duration: 0.5, delay: baseDelay }}
+      transition={{ delay: baseDelay, duration: 0.5 }}
     >
       <motion.div
         animate={{ opacity: 1, x: 0, y: 0 }}
@@ -30,7 +30,7 @@ export default function DevOcTitle({ showDoodle = true }: Props) {
           "sm:translate-x-[-50%]"
         )}
         initial={{ opacity: 0, x: -350, y: -350 }}
-        transition={{ duration: 2.5, delay: baseDelay * 2 }}
+        transition={{ delay: baseDelay * 2, duration: 2.5 }}
       >
         {showDoodle && <Doodle color="var(--primary)" />}
       </motion.div>

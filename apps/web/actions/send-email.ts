@@ -6,12 +6,12 @@ import { z } from "zod";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const contactFormSchema = z.object({
-  name: z.string().min(1, "Le nom est requis"),
-  email: z.string().email("Email invalide"),
   company: z.string().optional(),
+  email: z.string().email("Email invalide"),
   message: z
     .string()
     .min(10, "Le message doit contenir au moins 10 caractères"),
+  name: z.string().min(1, "Le nom est requis"),
 });
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
@@ -24,8 +24,6 @@ export async function sendContactEmail(data: ContactFormData) {
     // Send email using Resend
     const { error } = await resend.emails.send({
       from: `Dev'Oc Contact <${process.env.CONTACT_EMAIL || "contact@dev-oc.fr"}>`,
-      to: [process.env.CONTACT_EMAIL || "contact@dev-oc.fr"],
-      subject: `Nouveau message de contact de ${validatedData.name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px;">
@@ -50,6 +48,7 @@ export async function sendContactEmail(data: ContactFormData) {
           </div>
         </div>
       `,
+      subject: `Nouveau message de contact de ${validatedData.name}`,
       text: `
 Nouveau message de contact de ${validatedData.name}
 
@@ -65,32 +64,33 @@ ${validatedData.message}
 Ce message a été envoyé depuis le formulaire de contact du site Dev'Oc.
 Date: ${new Date().toLocaleString("fr-FR")}
       `,
+      to: [process.env.CONTACT_EMAIL || "contact@dev-oc.fr"],
     });
 
     if (error) {
       return {
-        success: false,
         error:
           "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
+        success: false,
       };
     }
 
     return {
-      success: true,
       message:
         "Votre message a été envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.",
+      success: true,
     };
   } catch (error) {
     if (error instanceof z.ZodError) {
       return {
-        success: false,
         error: error.issues[0]?.message || "Données invalides",
+        success: false,
       };
     }
 
     return {
-      success: false,
       error: "Une erreur inattendue est survenue. Veuillez réessayer.",
+      success: false,
     };
   }
 }

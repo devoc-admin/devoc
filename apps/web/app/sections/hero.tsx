@@ -26,19 +26,19 @@ type Kpi = {
 
 const kpiItems: Kpi[] = [
   {
-    title: "50+",
-    subtitle: "Projets réalisés",
     Icon: ChevronsLeftRightIcon,
+    subtitle: "Projets réalisés",
+    title: "50+",
   },
   {
-    title: "20+",
-    subtitle: "Clients satisfaits",
     Icon: UsersRoundIcon,
+    subtitle: "Clients satisfaits",
+    title: "20+",
   },
   {
-    title: "10+",
-    subtitle: "Années d'expérience",
     Icon: ZapIcon,
+    subtitle: "Années d'expérience",
+    title: "10+",
   },
 ];
 
@@ -78,7 +78,7 @@ export default function Hero() {
           "sm:font-semibold sm:text-lg"
         )}
         initial={{ opacity: 0, y: 50 }}
-        transition={{ duration: 0.5, delay: 0.5 }}
+        transition={{ delay: 0.5, duration: 0.5 }}
       >
         Nous créons des sites web, des applications sur mesure et des solutions
         d’automatisation IA pour propulser votre organisation vers le succès
@@ -89,7 +89,7 @@ export default function Hero() {
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col gap-3 xs:gap-6 sm:flex-row"
         initial={{ opacity: 0, y: 50 }}
-        transition={{ duration: 0.5, delay: baseDelay }}
+        transition={{ delay: baseDelay, duration: 0.5 }}
       >
         {/* 🆕 Démarrer un projet */}
         <HeroButton
@@ -123,19 +123,19 @@ export default function Hero() {
       </motion.div>
       {/* 📊 KPIs */}
       <motion.div
-        animate={{ opacity: 1, y: 0, scale: 1 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
         className={cn(
           "flex select-none",
           "mt-2 flex-col gap-4",
           "sm:mt-0 sm:flex-row sm:gap-12"
         )}
-        initial={{ opacity: 0, y: 50, scale: 0.8 }}
+        initial={{ opacity: 0, scale: 0.8, y: 50 }}
         transition={{
-          duration: 0.6,
-          delay: baseDelay + extraDelay,
-          type: "spring",
-          stiffness: 200,
           damping: 15,
+          delay: baseDelay + extraDelay,
+          duration: 0.6,
+          stiffness: 200,
+          type: "spring",
         }}
       >
         {kpiItems.map((kpi) => (
@@ -150,7 +150,7 @@ export default function Hero() {
           "sm:hidden"
         )}
         initial={{ opacity: 0, x: -350, y: -350 }}
-        transition={{ duration: 2.5, delay: baseDelay * 2 }}
+        transition={{ delay: baseDelay * 2, duration: 2.5 }}
       >
         <Doodle color="var(--primary)" />
       </motion.div>
