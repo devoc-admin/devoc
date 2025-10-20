@@ -29,6 +29,8 @@
       "!build",
       // To remove with Biome v2.3 because some v4 tailwind rules are not recognized yet
       "!**/globals.css",
+      // Remove preview apps
+      "!**/preview",
       // 🧱 These components are pre-made components mostly copied/pasted from external registry so we don't want to apply to them linting rules
       "!**/components/ui",
       "!**/components/react-bits",
