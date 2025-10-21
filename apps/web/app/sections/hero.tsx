@@ -94,8 +94,8 @@ export default function Hero() {
         {/* 🆕 Démarrer un projet */}
         <HeroButton
           className={cn(
-            "group bg-gradient-to-r from-primary to-primary-lighter text-primary-foreground",
-            "hover:bg-gradient-to-r hover:from-primary hover:to-primary-lighter"
+            "group bg-linear-to-r from-primary to-primary-lighter text-primary-foreground",
+            "hover:bg-linear-to-r hover:from-primary hover:to-primary-lighter"
           )}
           href="#processus"
         >

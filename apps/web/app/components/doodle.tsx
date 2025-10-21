@@ -6,6 +6,7 @@ export default function Doodle({
   color: string;
   className?: string;
 }) {
+  const strokeWidth = "2";
   return (
     <svg
       className={className}
@@ -20,7 +21,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M13.5996 71.7998L21.1996 79.4998"
@@ -29,7 +30,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M26.4004 72.7998L55.1004 101.4"
@@ -38,7 +39,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M11.7998 58.2002L17.6998 64.0002"
@@ -47,7 +48,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M47 81.3999L72.2 106.6"
@@ -56,7 +57,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M47 81.3999L72.2 106.6"
@@ -65,7 +66,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M9 43.3999L35.9 70.1999"
@@ -74,7 +75,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M9 43.3999L35.9 70.1999"
@@ -83,7 +84,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M30.0996 52.5L74.4996 96.9"
@@ -92,7 +93,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M11.7002 34.1001L21.1002 43.5001"
@@ -101,7 +102,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M66.7998 77.2002L77.3998 87.9002"
@@ -110,7 +111,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M1 11.5L55.5 66"
@@ -119,7 +120,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M44.7002 43.2002L98.0002 96.5002"
@@ -128,7 +129,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M44.7002 43.2002L98.0002 96.5002"
@@ -137,7 +138,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M21.2002 19.7002L33.6002 32.1002"
@@ -146,7 +147,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M21.2002 19.7002L33.6002 32.1002"
@@ -155,7 +156,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M55.0996 41.6001L89.4996 76.0001"
@@ -164,7 +165,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M20 6.5L45.4 31.9"
@@ -173,7 +174,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M83.4004 58L101.4 76"
@@ -182,7 +183,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M83.4004 58L101.4 76"
@@ -191,7 +192,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M35.5 10.0996L70.4 44.8996"
@@ -200,7 +201,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M35.5 10.0996L70.4 44.8996"
@@ -209,7 +210,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M66 28.5996L90.3 52.8996"
@@ -218,7 +219,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M38.4004 1L56.5004 19.1"
@@ -227,7 +228,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M87.5996 38.2002L96.9996 47.7002"
@@ -236,7 +237,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M87.5996 38.2002L96.9996 47.7002"
@@ -245,7 +246,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M52.9004 3.5L76.8004 27.5"
@@ -254,7 +255,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M52.9004 3.5L76.8004 27.5"
@@ -263,7 +264,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M82.7002 21.4004L88.5002 27.2004"
@@ -272,7 +273,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
       <path
         d="M72.5 11.2002L76.5 15.2002"
@@ -281,7 +282,7 @@ export default function Doodle({
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeMiterlimit="10"
-        strokeWidth="1.1533"
+        strokeWidth={strokeWidth}
       />
     </svg>
   );
