@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import Doodle from "../components/doodle";
 
-const urlToRedirect = "https://lasbordes-modern-revamp.vercel.app/";
+const urlToRedirect = "https://customers-lasbordes-preview.vercel.app";
 export default function Page() {
   const [projectPassword, setProjectPassword] = useState<string>("");
 
