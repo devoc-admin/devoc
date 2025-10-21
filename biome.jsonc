@@ -42,7 +42,13 @@
     "enabled": true
   },
   "linter": {
-    "enabled": true
+    "enabled": true,
+    "rules": {
+      "style": {
+        // No need to wrap every if statement in a block statement eg. if(!condition) return;
+        "useBlockStatements": "off"
+      }
+    }
   },
 
   "extends": ["ultracite"]

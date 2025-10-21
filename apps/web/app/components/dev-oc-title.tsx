@@ -6,11 +6,7 @@ import { cn } from "@/lib/utils";
 
 const baseDelay = 0.5;
 
-type Props = {
-  showDoodle?: boolean;
-};
-
-export default function DevOcTitle({ showDoodle = true }: Props) {
+export default function DevOcTitle() {
   return (
     <motion.h1
       animate={{ opacity: 1, y: 0 }}
@@ -30,9 +26,15 @@ export default function DevOcTitle({ showDoodle = true }: Props) {
           "sm:translate-x-[-50%]"
         )}
         initial={{ opacity: 0, x: -350, y: -350 }}
-        transition={{ delay: baseDelay * 2, duration: 2.5 }}
+        transition={{
+          // biome-ignore lint/style/noMagicNumbers: exception
+          delay: baseDelay * 3,
+          opacity: { duration: 5 },
+          x: { duration: 2.5 },
+          y: { duration: 2.5 },
+        }}
       >
-        {showDoodle && <Doodle color="var(--primary)" />}
+        <Doodle color="var(--primary)" />
       </motion.div>
       <div className="relative font-bold tracking-tighter">
         <span className="white-letters-border absolute text-transparent">

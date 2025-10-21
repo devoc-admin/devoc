@@ -17,7 +17,6 @@ type Step = {
   image: StaticImageData;
 };
 
-const translateXRegex = /translateX\((-?\d+)px\)/;
 const steps: Step[] = [
   {
     description:
@@ -66,96 +65,92 @@ function Processus() {
   const progressBarRef = useRef<HTMLDivElement>(null);
   const slidesListRef = useRef<HTMLDivElement>(null);
 
-  function goStep(index: number) {
-    if (currentStep === index) {
+  //↔️ Change step
+  function goStep(newStep: number): void {
+    if (currentStep === newStep) {
       return;
     }
-    setCurrentStep(index);
+    setCurrentStep(newStep);
   }
 
-  useEffect(() => {
-    if (progressBarRef.current) {
-      progressBarRef.current.style.animationDuration = `${animationDuration}ms`;
-      progressBarRef.current.addEventListener("animationiteration", goNextStep);
-    }
+  function goNextStep() {
+    setCurrentStep((step) => {
+      const initialStep = 0;
+      if (step < steps.length - 1) {
+        return step + 1;
+      }
+      return initialStep;
+    });
+  }
 
-    function goNextStep() {
-      setCurrentStep((step) => {
-        const initialStep = 0;
-        if (step < steps.length - 1) {
-          return step + 1;
-        }
-        return initialStep;
-      });
-    }
+  // --------------------------------------
+  function grabSlides(event: MouseEvent) {
+    if (!slidesListRef.current) return;
+    setIsDragging(true);
+    const { clientX: absoluteX } = event;
+    startingPoint.current = absoluteX;
+    slidesListRef.current.style.transitionDuration = "0ms";
+  }
 
-    // Prerequisites to prevent default browser behavior when grabbing an element
-    document.addEventListener("dragstart", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
+  function releaseSlide(event: MouseEvent) {
+    if (!slidesListRef.current?.firstElementChild) return;
+    setIsDragging(false);
+
+    const { clientX: absoluteX } = event;
+    const deltaX = startingPoint.current - absoluteX;
+    const slideWidth = Number.parseInt(
+      getComputedStyle(slidesListRef.current.firstElementChild).width,
+      10
+    );
+
+    const additionalStepsByGrabbing = Math.round(deltaX / slideWidth);
+
+    setCurrentStep((step) => {
+      let newStep = step + additionalStepsByGrabbing;
+      newStep = Math.max(newStep, 0);
+      newStep = Math.min(newStep, steps.length - 1);
+      return newStep;
     });
 
-    // Grab
-    function grabSlides(event: MouseEvent) {
-      if (slidesListRef.current) {
-        setIsDragging(true);
-        const { clientX: absoluteX } = event;
-        const transform = slidesListRef.current.style.transform;
-        const translateXValueString = transform.match(translateXRegex)?.[1];
-        const translateXValue = translateXValueString
-          ? Number.parseInt(translateXValueString, 10)
-          : 0;
-        startingPoint.current = absoluteX - translateXValue;
-        slidesListRef.current.style.transitionDuration = "0ms";
-      }
-    }
+    slidesListRef.current.style.transitionDuration = "500ms";
+    slidesListRef.current.style.transform = "translateX(0px)";
+  }
+
+  // ✊ Grab
+  // biome-ignore lint/correctness/useExhaustiveDependencies: exception
+  useEffect(() => {
+    // Sync changing step with progress bar animation
+    progressBarRef.current?.addEventListener("animationiteration", goNextStep);
+    // Remove default browser dragging behavior
+    document.addEventListener("dragstart", stopBrowserDragging);
+    // Record dragging and a starting position
     slidesListRef.current?.addEventListener("mousedown", grabSlides);
 
     // Release
-    function releaseSlide() {
-      if (slidesListRef.current) {
-        setIsDragging(false);
-        const transform = slidesListRef.current.style.transform;
-        const translateXString = transform.match(translateXRegex)?.[1];
-        const translateXValue = translateXString
-          ? Number.parseInt(translateXString, 10)
-          : 0;
-
-        const numberOfSteps = Math.round(Math.abs(translateXValue / 500));
-        const newStep = Math.min(numberOfSteps, steps.length - 1);
-
-        slidesListRef.current.style.transitionDuration = "500ms";
-        setCurrentStep(newStep);
-      }
-    }
     document.addEventListener("mouseup", releaseSlide);
 
-    // Cleanup
+    // 🧹 Cleanup event listeners
     return () => {
-      // Progress Bar
       progressBarRef.current?.removeEventListener(
         "animationiteration",
         goNextStep
       );
+      document.removeEventListener("dragstart", stopBrowserDragging);
+      slidesListRef.current?.removeEventListener("mousedown", grabSlides);
     };
   }, []);
 
-  // Drag
   useEffect(() => {
-    if (slidesListRef.current) {
-      function dragSlides(event: MouseEvent) {
-        if (slidesListRef.current && isDragging) {
-          const { clientX: absoluteX } = event;
-          const deltaX = absoluteX - startingPoint.current;
-          slidesListRef.current.style.transform = `translateX(${deltaX}px)`;
-        }
-      }
-      document.addEventListener("mousemove", dragSlides);
+    document.addEventListener("mousemove", dragSlides);
 
-      return () => {
-        document.removeEventListener("mousemove", dragSlides);
-      };
+    // ------------------------------------------------
+    function dragSlides(event: MouseEvent) {
+      if (!(slidesListRef.current && isDragging)) return;
+      const { clientX: absoluteX } = event;
+      const deltaX = absoluteX - startingPoint.current;
+      slidesListRef.current.style.transform = `translateX(${deltaX}px)`;
     }
+    return () => document.removeEventListener("mousemove", dragSlides);
   }, [isDragging]);
 
   const NavigationDots = (
@@ -173,11 +168,6 @@ function Processus() {
       ))}
     </div>
   );
-
-  // Set transform for dragging list when current step changes
-  if (slidesListRef.current) {
-    slidesListRef.current.style.transform = `translateX(-${currentStep * 500}px)`;
-  }
 
   return (
     <div
@@ -198,14 +188,17 @@ function Processus() {
         </h2>
         {/* 🎴🎴🎴 Slides */}
         <div className="select-none px-8">
-          <div className="group flex w-[500px] max-w-full flex-1 flex-col items-center justify-center gap-3 overflow-hidden">
+          <div className="group relative flex w-[500px] max-w-[90vw] flex-1 flex-col items-center justify-center gap-3 overflow-hidden">
             <div
               className={cn(
-                "flex cursor-grab self-start transition-transform duration-500",
+                "relative flex cursor-grab self-start duration-500",
                 isDragging && "cursor-grabbing"
               )}
               ref={slidesListRef}
-              style={{ transform: `translateX(-${currentStep * 500}px)` }}
+              style={{
+                left: `-${currentStep * 100}%`,
+                width: `${steps.length * 100}%`,
+              }}
             >
               {/* 🎴 Slide */}
               {steps.map((props, index) => (
@@ -224,7 +217,11 @@ function Processus() {
 // -----------------------------
 function Step({ title, description, image, index }: Step & { index: number }) {
   return (
-    <div className="flex shrink-0 flex-col gap-y-3" key={title}>
+    <div
+      className="flex shrink-0 flex-col gap-y-3"
+      key={title}
+      style={{ width: `${100 / steps.length}%` }}
+    >
       <Image alt={title} className="max-w-full" src={image} width={500} />
       <h3 className="mb-2 font-kanit font-semibold text-4xl xs:text-5xl md:text-6xl">
         {index + 1}. {title}
@@ -250,7 +247,7 @@ function ProgressBar({
     <div className={cn("h-5 w-[50%] rounded-full bg-transparent", className)}>
       <div
         className={cn(
-          "group-hover:animation-pause h-full animate-progress-bar rounded-full bg-gradient-to-br from-[#FF5709] to-[#FFC731]",
+          "group-hover:animation-pause h-full min-w-5 animate-progress-bar rounded-full bg-gradient-to-br from-[#FF5709] to-[#FFC731]",
           !isInView && "animation-pause"
         )}
         ref={ref}
@@ -261,3 +258,9 @@ function ProgressBar({
 }
 
 export default Processus;
+
+// ----------------------------------------------
+function stopBrowserDragging(event: DragEvent): void {
+  event.preventDefault();
+  event.stopPropagation();
+}
