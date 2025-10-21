@@ -262,7 +262,7 @@ void main(){
 }
 `;
 
-export const LaserFlow: React.FC<Props> = ({
+const LaserFlow: (props: Props) => any = ({
   className,
   style,
   wispDensity = 1,

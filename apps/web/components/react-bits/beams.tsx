@@ -191,7 +191,7 @@ interface BeamsProps {
   rotation?: number;
 }
 
-const Beams: FC<BeamsProps> = ({
+const Beams: (props: BeamsProps) => any = ({
   beamWidth = 2,
   beamHeight = 15,
   beamNumber = 12,
