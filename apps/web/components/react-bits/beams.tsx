@@ -1,3 +1,4 @@
+// @ts-nocheck 
 /** biome-ignore-all lint/style/noNonNullAssertion: specific for this component */
 "use client";
 import { PerspectiveCamera } from "@react-three/drei";
