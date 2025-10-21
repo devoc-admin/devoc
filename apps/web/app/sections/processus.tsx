@@ -268,10 +268,10 @@ function ProgressBar({
     <div className={cn("h-5 w-[50%] rounded-full bg-transparent", className)}>
       <div
         className={cn(
-          "group-hover:animation-pause h-full min-w-5 animate-progress-bar rounded-full bg-gradient-to-br from-[#FF5709] to-[#FFC731]",
+          "group-hover:animation-pause h-full min-w-5 animate-progress-bar rounded-full bg-linear-to-br from-[#FF5709] to-[#FFC731]",
           !isInView && "animation-pause"
         )}
-        ref={ref}
+        ref={ref as React.RefObject<HTMLDivElement>}
         style={{ animationDuration: `${animationDuration}ms` }}
       />
     </div>
