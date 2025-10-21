@@ -84,19 +84,20 @@ function Processus() {
   }
 
   // --------------------------------------
-  function grabSlides(event: MouseEvent) {
+  function grabSlides(event: MouseEvent | TouchEvent) {
     if (!slidesListRef.current) return;
     setIsDragging(true);
-    const { clientX: absoluteX } = event;
+    const { clientX: absoluteX } =
+      "touches" in event ? event.touches[0] : event;
     startingPoint.current = absoluteX;
     slidesListRef.current.style.transitionDuration = "0ms";
   }
 
-  function releaseSlide(event: MouseEvent) {
+  function releaseSlide(event: MouseEvent | TouchEvent) {
     if (!slidesListRef.current?.firstElementChild) return;
     setIsDragging(false);
-
-    const { clientX: absoluteX } = event;
+    const { clientX: absoluteX } =
+      "touches" in event ? event.changedTouches[0] : event;
     const deltaX = startingPoint.current - absoluteX;
     const slideWidth = Number.parseInt(
       getComputedStyle(slidesListRef.current.firstElementChild).width,
@@ -124,11 +125,26 @@ function Processus() {
     // Remove default browser dragging behavior
     document.addEventListener("dragstart", stopBrowserDragging);
     // Record dragging and a starting position
-    slidesListRef.current?.addEventListener("mousedown", grabSlides);
+    // // Use pointer events only for coarse pointers (touch screens)
+    // const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    // if (!isCoarsePointer) {
+    //   slidesListRef.current?.addEventListener("touchstart", (event) => {
+    //     if (event.touches.length === 1) {
+    //       grabSlides({
+    //         clientX: event.touches[0].clientX,
+    //       } as unknown as MouseEvent);
+    //     }
+    //   });
+    // }
 
+    // if (!isCoarsePointer) {
+    // }
+
+    slidesListRef.current?.addEventListener("mousedown", grabSlides);
+    slidesListRef.current?.addEventListener("touchstart", grabSlides);
     // Release
     document.addEventListener("mouseup", releaseSlide);
-
+    document.addEventListener("touchend", releaseSlide);
     // 🧹 Cleanup event listeners
     return () => {
       progressBarRef.current?.removeEventListener(
@@ -142,15 +158,20 @@ function Processus() {
 
   useEffect(() => {
     document.addEventListener("mousemove", dragSlides);
+    document.addEventListener("touchmove", dragSlides);
 
     // ------------------------------------------------
-    function dragSlides(event: MouseEvent) {
+    function dragSlides(event: MouseEvent | TouchEvent) {
       if (!(slidesListRef.current && isDragging)) return;
-      const { clientX: absoluteX } = event;
+      const { clientX: absoluteX } =
+        "touches" in event ? event.touches[0] : event;
       const deltaX = absoluteX - startingPoint.current;
       slidesListRef.current.style.transform = `translateX(${deltaX}px)`;
     }
-    return () => document.removeEventListener("mousemove", dragSlides);
+    return () => {
+      document.removeEventListener("mousemove", dragSlides);
+      document.removeEventListener("touchmove", dragSlides);
+    };
   }, [isDragging]);
 
   const NavigationDots = (
@@ -187,7 +208,7 @@ function Processus() {
           Notre méthode
         </h2>
         {/* 🎴🎴🎴 Slides */}
-        <div className="select-none px-8">
+        <div className="select-none">
           <div className="group relative flex w-[500px] max-w-[90vw] flex-1 flex-col items-center justify-center gap-3 overflow-hidden">
             <div
               className={cn(
