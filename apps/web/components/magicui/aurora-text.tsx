@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-import { memo } from "react";
 
 interface AuroraTextProps {
   children: React.ReactNode;
@@ -10,7 +9,7 @@ interface AuroraTextProps {
   speed?: number;
 }
 
-export const AuroraText = memo(
+export const AuroraText = 
   ({
     children,
     className = "",
@@ -30,7 +29,7 @@ export const AuroraText = memo(
       <span className={`relative inline-block ${className}`}>
         <span
           aria-hidden="true"
-          className="relative animate-aurora-text-background bg-[length:200%_auto] bg-clip-text text-transparent"
+          className="relative animate-aurora-text-background bg-size-[200%_auto] bg-clip-text text-transparent"
           style={gradientStyle}
         >
           {children}
@@ -38,6 +37,5 @@ export const AuroraText = memo(
       </span>
     );
   }
-);
 
 AuroraText.displayName = "AuroraText";
