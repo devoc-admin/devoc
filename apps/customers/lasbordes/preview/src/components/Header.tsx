@@ -8,7 +8,7 @@ const Header = () => {
     { href: "#infos", label: "Infos pratiques" },
     { href: "#histoire", label: "Histoire" },
     { href: "#actualites", label: "Actualités" },
-    { href: "#culture", label: "Culture & Loisirs" },
+    { href: "#culture", label: "Culture" },
     { href: "#contact", label: "Contact" },
   ];
 
