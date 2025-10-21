@@ -42,7 +42,7 @@ const contactItems: ContactItem[] = [
 export default function Contact() {
   return (
     <div
-      className="relative flex w-full flex-col items-center gap-24 overflow-hidden bg-gradient-to-br bg-zinc-950 px-6 py-24"
+      className="relative flex w-full flex-col items-center gap-24 overflow-hidden bg-linear-to-br bg-zinc-950 px-6 py-24"
       id="contact"
     >
       {/* 🆎 Title */}

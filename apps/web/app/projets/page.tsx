@@ -118,7 +118,7 @@ export default function Page() {
           <span>{error}</span>
         </div>
         <Button
-          className="cursor-pointer bg-gradient-to-r from-primary to-primary-lighter font-kanit text-primary-foreground focus:ring-primary/40!"
+          className="cursor-pointer bg-linear-to-r from-primary to-primary-lighter font-kanit text-primary-foreground focus:ring-primary/40!"
           size="xl"
           type="submit"
         >
