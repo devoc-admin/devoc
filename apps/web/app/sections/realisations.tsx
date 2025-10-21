@@ -126,7 +126,7 @@ export default function Realisations() {
         />
       </div>
       {/* 🌈 Top bar */}
-      <div className="absolute top-0 h-1 w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
+      <div className="absolute top-0 h-1 w-full bg-linear-to-r from-transparent via-primary to-transparent" />
       {/* 🆎 Title */}
       <SectionTitle
         className="z-1"
@@ -181,7 +181,7 @@ function CardProject({
           />
           {/* 🥷 Shadow */}
           <div className="pointer-events-none absolute inset-0 opacity-0 transition-all duration-300 group-hover:opacity-100">
-            <div className="absolute bottom-0 left-0 h-1/3 w-full bg-gradient-to-t from-primary/20 to-transparent" />
+            <div className="absolute bottom-0 left-0 h-1/3 w-full bg-linear-to-t from-primary/20 to-transparent" />
           </div>
         </div>
       </div>

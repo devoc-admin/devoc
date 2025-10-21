@@ -1,7 +1,7 @@
 import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import ContactForm from "@/app/components/contact-form";
 import SectionTitle from "@/app/components/section-title";
-import { LaserFlow } from "@/components/react-bits/laser-flow";
+import LaserFlow from "@/components/react-bits/laser-flow";
 import {
   Card,
   CardContent,
