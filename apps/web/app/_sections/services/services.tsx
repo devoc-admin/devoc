@@ -17,7 +17,7 @@ const services: Service[] = [
   },
   {
     description:
-      "Créez une expérience inédite au plus proche de vos utilisateurs, donnez-leur accès à tous vos services dans le creux de leurs mains.",
+      "Créez une expérience inédite au plus proche de vos utilisateurs, donnez-leur accès à tous vos services au bout de leur doigt.",
     features: [
       "Compatible Android et iOS",
       "Expérience fluide et personnalisée",
