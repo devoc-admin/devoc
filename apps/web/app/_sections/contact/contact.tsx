@@ -2,6 +2,7 @@ import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import ContactForm from "@/app/_sections/contact/contact-form";
 import SectionTitle from "@/app/_sections/section-title";
 import LaserFlow from "@/components/react-bits/laser-flow";
+import GlowLine from "@/components/sera-ui/glow-line";
 import {
   Card,
   CardContent,
@@ -45,6 +46,7 @@ export default function Contact() {
       className="relative flex w-full flex-col items-center gap-24 overflow-hidden bg-linear-to-br bg-zinc-950 px-6 py-24"
       id="contact"
     >
+      <GlowLine color="orange" orientation="horizontal" position="0px" />
       {/* 🆎 Title */}
       <SectionTitle
         className="z-10"
