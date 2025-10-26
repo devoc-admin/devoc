@@ -1,6 +1,6 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Kanit, Lobster } from "next/font/google";
+import { Fira_Code, Geist, Geist_Mono, Kanit, Lobster } from "next/font/google";
 import SkipLink from "@/components/navigation/skip-link";
 import "./globals.css";
 
@@ -24,6 +24,11 @@ const kanit = Kanit({
   subsets: ["latin"],
   variable: "--font-kanit",
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+const firaCode = Fira_Code({
+  subsets: ["latin"],
+  variable: "--font-fira-code",
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -87,7 +92,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} font-sans`}
+        className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} font-sans`}
       >
         <SkipLink />
         <main id="main-content">{children}</main>

@@ -35,6 +35,7 @@
       "!**/components/ui",
       "!**/components/react-bits",
       "!**/components/aceternity",
+      "!**/components/kibo-ui",
       "!**/components/magicui"
     ]
   },

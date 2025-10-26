@@ -12,7 +12,14 @@ import { motion } from "motion/react";
 import Link from "next/link";
 import DevOcTitle from "@/app/_sections/hero/dev-oc-title";
 import Doodle from "@/app/_sections/hero/doodle";
+import { AvatarStack } from "@/components/kibo-ui/avatar-stack";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 const baseDelay = 0.5;
@@ -47,7 +54,8 @@ export default function Hero() {
     <div
       className={cn(
         "relative flex w-full select-none flex-col items-center justify-center gap-6 overflow-hidden p-6",
-        "justify-start py-12",
+        "justify-center",
+        "py-12 sm:justify-start",
         "h-screen sm:justify-center"
       )}
     >
@@ -125,7 +133,9 @@ export default function Hero() {
       <motion.div
         animate={{ opacity: 1, scale: 1, y: 0 }}
         className={cn(
-          "flex select-none",
+          "select-none",
+          "hidden",
+          "sm:flex",
           "mt-2 flex-col gap-4",
           "sm:mt-0 sm:flex-row sm:gap-12"
         )}
@@ -142,15 +152,70 @@ export default function Hero() {
           <Kpi {...kpi} key={kpi.title} />
         ))}
       </motion.div>
+      {/* 👯 Avatars */}
+      <div className="flex flex-col items-center gap-2 font-fira-code">
+        <motion.div
+          animate={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, scale: 0 }}
+          transition={{ delay: 0.7, duration: 0.25 }}
+        >
+          <div>Fondateurs</div>
+        </motion.div>
+        <AvatarStack>
+          <motion.div
+            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0 }}
+            transition={{ delay: 0.5, duration: 0.25 }}
+          >
+            <Avatar>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <motion.a
+                    href="https://github.com/cdubos-fr"
+                    rel="noopener"
+                    target="_blank"
+                  >
+                    <AvatarImage src="https://avatars.githubusercontent.com/u/52322202" />
+                    <AvatarFallback>CB</AvatarFallback>
+                  </motion.a>
+                </TooltipTrigger>
+                <TooltipContent>Clément Dubos</TooltipContent>
+              </Tooltip>
+            </Avatar>
+          </motion.div>
+          <motion.div
+            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0 }}
+            transition={{ delay: 0.6, duration: 0.25 }}
+          >
+            <Avatar>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <a
+                    href="https://github.com/thibautizard"
+                    rel="noopener"
+                    target="_blank"
+                  >
+                    <AvatarImage src="https://avatars.githubusercontent.com/u/8688023" />
+                    <AvatarFallback>TI</AvatarFallback>
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>Thibaut Izard</TooltipContent>
+              </Tooltip>
+            </Avatar>
+          </motion.div>
+        </AvatarStack>
+      </div>
+      {/* ☀️ Additional mobile doodle */}
       <motion.div
-        animate={{ opacity: 1, x: 0, y: 0 }}
+        animate={{ opacity: 0.5, x: -10, y: -150 }}
         className={cn(
-          "-z-1 -scale-100 absolute bottom-0 left-1/2 w-89 translate-x-[-50%] translate-y-1/4",
+          "-z-1 -scale-100 absolute bottom-0 left-1/2 w-89 translate-x-[-50%] translate-y-1/4 rotate-45",
           "block translate-x-[-25%]",
           "sm:hidden"
         )}
-        initial={{ opacity: 0, x: -350, y: -350 }}
-        transition={{ delay: baseDelay * 2, duration: 2.5 }}
+        initial={{ opacity: 0, x: -50, y: -200 }}
+        transition={{ delay: baseDelay * 2, duration: 2 }}
       >
         <Doodle color="var(--primary)" />
       </motion.div>
