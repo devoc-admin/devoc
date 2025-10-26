@@ -23,7 +23,7 @@ export default function DevOcTitle() {
         animate={{ opacity: 1, x: 0, y: 0 }}
         className={cn(
           "-z-1 absolute top-1/2 left-1/2 w-full translate-x-[-75%] translate-y-[-50%]",
-          "sm:translate-x-[-50%]"
+          "translate-x-[-50%]"
         )}
         initial={{ opacity: 0, x: -350, y: -350 }}
         transition={{
