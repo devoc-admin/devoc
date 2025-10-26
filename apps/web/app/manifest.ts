@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     background_color: "#000000",
     categories: ["business", "productivity", "ia", "utilities"],
     description:
-      "Collectif de développeurs en Occitanie spécialisés en développement de sites internet, applications web, UX/UI, référencement et automatisation des tâches avec l'IA. Découvrez nos réalisations et contactez-nous pour votre projet digital.",
+      "Collectif de développeurs en Occitanie spécialisés en développement de sites internet, applications web, UX/UI, référencement et automatisation des tâches avec l'IA. Découvrez nos réalisations et contactez-nous pour votre projet numérique.",
     display: "standalone",
     icons: [
       {

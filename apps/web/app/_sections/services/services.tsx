@@ -1,5 +1,5 @@
-import SectionTitle from "@/app/components/section-title";
-import ServiceCard from "@/app/components/service-card";
+import SectionTitle from "@/app/_sections/section-title";
+import ServiceCard from "@/app/_sections/services/service-card";
 import Lamp from "@/components/aceternity/lamp";
 import { cn } from "@/lib/utils";
 

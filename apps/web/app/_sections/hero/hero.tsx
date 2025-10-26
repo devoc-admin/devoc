@@ -10,8 +10,8 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
-import DevOcTitle from "@/app/components/dev-oc-title";
-import Doodle from "@/app/components/doodle";
+import DevOcTitle from "@/app/_sections/hero/dev-oc-title";
+import Doodle from "@/app/_sections/hero/doodle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
