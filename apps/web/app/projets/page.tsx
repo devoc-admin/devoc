@@ -7,7 +7,7 @@ import { AuroraText } from "@/components/magicui/aurora-text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import Doodle from "../components/doodle";
+import Doodle from "../_sections/hero/doodle";
 
 const urlToRedirect = "https://customers-lasbordes-preview.vercel.app";
 export default function Page() {

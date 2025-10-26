@@ -124,27 +124,14 @@ function Processus() {
     progressBarRef.current?.addEventListener("animationiteration", goNextStep);
     // Remove default browser dragging behavior
     document.addEventListener("dragstart", stopBrowserDragging);
-    // Record dragging and a starting position
-    // // Use pointer events only for coarse pointers (touch screens)
-    // const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
-    // if (!isCoarsePointer) {
-    //   slidesListRef.current?.addEventListener("touchstart", (event) => {
-    //     if (event.touches.length === 1) {
-    //       grabSlides({
-    //         clientX: event.touches[0].clientX,
-    //       } as unknown as MouseEvent);
-    //     }
-    //   });
-    // }
-
-    // if (!isCoarsePointer) {
-    // }
 
     slidesListRef.current?.addEventListener("mousedown", grabSlides);
     slidesListRef.current?.addEventListener("touchstart", grabSlides);
+
     // Release
     document.addEventListener("mouseup", releaseSlide);
     document.addEventListener("touchend", releaseSlide);
+
     // 🧹 Cleanup event listeners
     return () => {
       progressBarRef.current?.removeEventListener(

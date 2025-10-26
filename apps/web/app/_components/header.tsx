@@ -59,9 +59,9 @@ export default function Header() {
           <Link href="#contact">
             <Button
               className={cn(
-                "!px-5 flex cursor-pointer items-center gap-2 rounded-full font-bold text-primary-foreground transition-colors",
-                "bg-gradient-to-r from-primary to-primary-lighter",
-                "hover:bg-gradient-to-r hover:from-primary/90 hover:to-primary-lighter/90"
+                "flex cursor-pointer items-center gap-2 rounded-full px-5! font-bold text-primary-foreground transition-colors",
+                "bg-linear-to-r from-primary to-primary-lighter",
+                "hover:bg-linear-to-r hover:from-primary/90 hover:to-primary-lighter/90"
               )}
             >
               <SendIcon size={20} />
@@ -80,7 +80,7 @@ function Logo() {
     <div className="flex items-center gap-2 text-2xl">
       <Image alt="Dev'Oc" height={22} src={Icon} width={22} />
       <div>
-        <span className="bg-gradient-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black text-transparent tracking-tighter">
+        <span className="bg-linear-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black text-transparent tracking-tighter">
           Dev'
         </span>
         <span className="font-bold font-regular text-secondary tracking-tighter">

@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "motion/react";
-import Doodle from "@/app/components/doodle";
+import Doodle from "@/app/_sections/hero/doodle";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { cn } from "@/lib/utils";
 

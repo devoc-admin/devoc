@@ -5,6 +5,7 @@ import InseeLogo from "@/assets/companies/insee.svg";
 import LoftOrbitalLogo from "@/assets/companies/loft-orbital.svg";
 import OneparkLogo from "@/assets/companies/onepark.svg";
 import { cn } from "@/lib/utils";
+import WorkWithCompany from "./work-with-company";
 
 const companies = [
   {
@@ -37,7 +38,7 @@ const companies = [
   {
     link: "https://frustrationmagazine.fr",
     logo: (
-      <div className="flex flex-col text-center font-lobster">
+      <div className="z-10 flex flex-col text-center font-lobster transition-colors duration-500 group-hover:text-white">
         <span className="text-3xl">Frustration</span>
         <span className="-mt-2 text-xl">Magazine</span>
       </div>
@@ -63,15 +64,7 @@ function WorkWith() {
           )}
         >
           {companies.map(({ name, logo, link }) => (
-            <a
-              className="flex h-24 items-center justify-center border-border border-t border-r px-12 py-2"
-              href={link}
-              key={name}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              {logo}
-            </a>
+            <WorkWithCompany key={name} link={link} logo={logo} />
           ))}
         </div>
         <div className="grow border-border border-y" />
@@ -95,7 +88,12 @@ function CompanyLogo({
   return (
     <Image
       alt={`Logo ${name}`}
-      className={cn("h-12 max-h-full w-auto grayscale-100", className)}
+      className={cn(
+        "h-12 max-h-full w-auto transition-all duration-500",
+        "brightness-100 grayscale-100 invert-0",
+        "group-hover:brightness-0 group-hover:grayscale-0 group-hover:invert-100",
+        className
+      )}
       height={20}
       src={logo}
       width={20}
