@@ -4,7 +4,14 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"],
-      "env": ["NODE_ENV", "RESEND_API_KEY", "CONTACT_EMAIL"]
+      "env": [
+        "NODE_ENV",
+        "RESEND_API_KEY",
+        "CONTACT_EMAIL",
+        "DATABASE_URL",
+        "PAYLOAD_SECRET",
+        "BLOB_READ_WRITE_TOKEN"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"],
