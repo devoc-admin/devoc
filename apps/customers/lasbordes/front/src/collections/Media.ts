@@ -1,18 +1,16 @@
 import type { CollectionConfig } from "payload";
 
-export const Users: CollectionConfig = {
+export const Media: CollectionConfig = {
   access: {
     read: () => true,
   },
-  admin: {
-    useAsTitle: "email",
-  },
-  auth: true,
   fields: [
     {
-      name: "name",
+      name: "alt",
+      required: true,
       type: "text",
     },
   ],
-  slug: "users",
+  slug: "media",
+  upload: true,
 };

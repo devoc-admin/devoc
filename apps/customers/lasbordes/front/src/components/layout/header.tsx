@@ -22,7 +22,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-border border-b bg-white shadow-sm">
+    <header className="sticky top-0 z-40 border-border border-b bg-white shadow-xs">
       <nav
         aria-label="Navigation principale"
         className="container mx-auto flex items-center justify-between px-4 py-4"
@@ -30,7 +30,7 @@ export function Header() {
         {/* Logo */}
         <div className="flex items-center">
           <Link
-            className="rounded-sm font-bold text-primary text-xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            className="rounded-sm font-bold text-primary text-xl focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2"
             href="/"
           >
             Lasbordes
@@ -45,7 +45,7 @@ export function Header() {
               <Link
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "rounded-sm px-2 py-1 font-medium text-sm transition-colors hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+                  "rounded-sm px-2 py-1 font-medium text-sm transition-colors hover:text-primary focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2",
                   isActive ? "text-primary" : "text-foreground"
                 )}
                 href={item.href}
@@ -62,7 +62,7 @@ export function Header() {
           aria-controls="mobile-menu"
           aria-expanded={mobileMenuOpen}
           aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
-          className="rounded-sm p-2 text-foreground hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 lg:hidden"
+          className="rounded-sm p-2 text-foreground hover:text-primary focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2 lg:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           type="button"
         >
@@ -87,7 +87,7 @@ export function Header() {
                 <Link
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "block rounded-md px-3 py-2 font-medium text-base focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
+                    "block rounded-md px-3 py-2 font-medium text-base focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2",
                     isActive
                       ? "bg-primary/10 text-primary"
                       : "text-foreground hover:bg-muted"

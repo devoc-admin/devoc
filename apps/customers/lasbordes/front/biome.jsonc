@@ -4,8 +4,15 @@
   "linter": {
     "rules": {
       "style": {
-        "useFilenamingConvention": "off",
-        "noMagicNumbers": "off"
+        "noMagicNumbers": "off",
+        "useFilenamingConvention": "off"
+      },
+      "suspicious": {
+        "useAwait": "off"
+      },
+      "complexity": {
+        "noBannedTypes": "off",
+        "useLiteralKeys": "off"
       },
       "nursery": {
         "useConsistentTypeDefinitions": "off"

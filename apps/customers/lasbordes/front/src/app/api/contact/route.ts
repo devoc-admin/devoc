@@ -62,7 +62,7 @@ ${validatedData.message}
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { details: error.errors, error: "Données invalides", success: false },
+        { details: error.message, error: "Données invalides", success: false },
         { status: 400 }
       );
     }
