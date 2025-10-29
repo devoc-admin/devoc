@@ -34,7 +34,7 @@ export function Banner() {
     >
       <div className="container mx-auto">
         <div className="flex items-center gap-3">
-          <SeverityIcon aria-hidden="true" className="h-5 w-5 flex-shrink-0" />
+          <SeverityIcon aria-hidden="true" className="h-5 w-5 shrink-0" />
           <p className="font-medium text-sm">{banner.message}</p>
         </div>
       </div>

@@ -15,14 +15,14 @@ export function TopBar() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-4 md:gap-6">
             <Link
-              className="flex items-center gap-2 rounded-sm hover:underline focus:outline-none focus:ring-2 focus:ring-primary-foreground focus:ring-offset-2 focus:ring-offset-primary"
+              className="flex items-center gap-2 rounded-sm hover:underline focus:outline-hidden focus:ring-2 focus:ring-primary-foreground focus:ring-offset-2 focus:ring-offset-primary"
               href={`mailto:${contact.email}`}
             >
               <Mail aria-hidden="true" className="h-4 w-4" />
               <span>{contact.email}</span>
             </Link>
             <Link
-              className="flex items-center gap-2 rounded-sm hover:underline focus:outline-none focus:ring-2 focus:ring-primary-foreground focus:ring-offset-2 focus:ring-offset-primary"
+              className="flex items-center gap-2 rounded-sm hover:underline focus:outline-hidden focus:ring-2 focus:ring-primary-foreground focus:ring-offset-2 focus:ring-offset-primary"
               href={`tel:${contact.phone.replace(/\s/g, "")}`}
             >
               <Phone aria-hidden="true" className="h-4 w-4" />

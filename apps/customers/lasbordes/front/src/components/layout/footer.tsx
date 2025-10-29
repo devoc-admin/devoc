@@ -64,7 +64,7 @@ export function Footer() {
               {footer.links.map((link) => (
                 <li key={link.href}>
                   <Link
-                    className="rounded-sm text-muted-foreground text-sm transition-colors hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                    className="rounded-sm text-muted-foreground text-sm transition-colors hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     href={link.href}
                   >
                     {link.label}
@@ -82,7 +82,7 @@ export function Footer() {
                 <span className="font-medium">Numéro d'urgence :</span>
                 <br />
                 <Link
-                  className="rounded-sm text-destructive hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  className="rounded-sm text-destructive hover:underline focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2"
                   href={`tel:${emergency.phone}`}
                 >
                   {emergency.phone}
@@ -92,7 +92,7 @@ export function Footer() {
                 <span className="font-medium">Police municipale :</span>
                 <br />
                 <Link
-                  className="rounded-sm hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  className="rounded-sm hover:underline focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2"
                   href="tel:17"
                 >
                   17
@@ -102,7 +102,7 @@ export function Footer() {
                 <span className="font-medium">Pompiers :</span>
                 <br />
                 <Link
-                  className="rounded-sm hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                  className="rounded-sm hover:underline focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2"
                   href="tel:18"
                 >
                   18
@@ -120,7 +120,7 @@ export function Footer() {
                 return (
                   <Link
                     aria-label={`Suivez-nous sur ${social.platform}`}
-                    className="rounded-sm text-muted-foreground transition-colors hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                    className="rounded-sm text-muted-foreground transition-colors hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     href={social.url}
                     key={social.platform}
                     rel="noopener noreferrer"
@@ -132,7 +132,7 @@ export function Footer() {
               })}
               <Link
                 aria-label="Flux RSS des actualités"
-                className="rounded-sm text-muted-foreground transition-colors hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                className="rounded-sm text-muted-foreground transition-colors hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2"
                 href="/rss.xml"
               >
                 <Rss aria-hidden="true" className="h-5 w-5" />
@@ -156,7 +156,7 @@ export function Footer() {
               {legalLinks.map((link) => (
                 <li key={link.href}>
                   <Link
-                    className="rounded-sm text-muted-foreground text-sm transition-colors hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                    className="rounded-sm text-muted-foreground text-sm transition-colors hover:text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     href={link.href}
                   >
                     {link.label}
