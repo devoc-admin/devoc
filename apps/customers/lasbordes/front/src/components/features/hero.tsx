@@ -24,7 +24,7 @@ export function Hero() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 to-background">
+    <section className="relative overflow-hidden bg-linear-to-b from-primary/10 to-background">
       <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           {/* Content */}
@@ -85,7 +85,7 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.95 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <div className="flex aspect-[4/3] items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 shadow-xl">
+            <div className="flex aspect-4/3 items-center justify-center rounded-2xl bg-linear-to-br from-primary/20 to-primary/5 shadow-xl">
               <p className="px-4 text-center text-muted-foreground">
                 Image de la commune
                 <br />

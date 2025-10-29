@@ -1,6 +1,10 @@
+import { withPayload } from "@payloadcms/next/withPayload";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    reactCompiler: false,
+  },
   async headers() {
     return [
       {
@@ -44,4 +48,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withPayload(nextConfig);

@@ -10,7 +10,8 @@
         "CONTACT_EMAIL",
         "DATABASE_URL",
         "PAYLOAD_SECRET",
-        "BLOB_READ_WRITE_TOKEN"
+        "BLOB_READ_WRITE_TOKEN",
+        "POSTGRES_URL"
       ]
     },
     "lint": {
