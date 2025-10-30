@@ -62,10 +62,11 @@ function Processus() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const startingPoint = useRef(0);
+  const startingLeft = useRef(0);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const slidesListRef = useRef<HTMLDivElement>(null);
 
-  //↔️ Change step
+  // ↔️ Change step
   function goStep(newStep: number): void {
     if (currentStep === newStep || !progressBarRef.current) {
       return;
@@ -102,11 +103,21 @@ function Processus() {
     const { clientX: absoluteX } =
       "touches" in event ? event.touches[0] : event;
     startingPoint.current = absoluteX;
+    startingLeft.current = slidesListRef.current.offsetLeft;
     slidesListRef.current.style.transitionDuration = "0ms";
+    document.body.style.overflow = "hidden";
+    if (progressBarRef.current) {
+      progressBarRef.current.style.animationPlayState = "paused";
+    }
   }
 
   function releaseSlide(event: MouseEvent | TouchEvent) {
+    document.body.style.overflow = "auto";
+
     if (!slidesListRef.current?.firstElementChild) return;
+    if (progressBarRef.current) {
+      progressBarRef.current.style.animationPlayState = "running";
+    }
     setIsDragging(false);
     const { clientX: absoluteX } =
       "touches" in event ? event.changedTouches[0] : event;
@@ -122,12 +133,17 @@ function Processus() {
       let newStep = step + additionalStepsByGrabbing;
       newStep = Math.max(newStep, 0);
       newStep = Math.min(newStep, steps.length - 1);
+      if (step === newStep && slidesListRef.current) {
+        slidesListRef.current.style.left = `${startingLeft.current}px`;
+      }
+
+      if (step !== newStep) {
+        resetProgressBar();
+      }
       return newStep;
     });
-    resetProgressBar();
 
     slidesListRef.current.style.transitionDuration = "500ms";
-    slidesListRef.current.style.transform = "translateX(0px)";
   }
 
   // ✊ Grab
@@ -166,7 +182,7 @@ function Processus() {
       const { clientX: absoluteX } =
         "touches" in event ? event.touches[0] : event;
       const deltaX = absoluteX - startingPoint.current;
-      slidesListRef.current.style.transform = `translateX(${deltaX}px)`;
+      slidesListRef.current.style.left = `${startingLeft.current + deltaX}px`;
     }
     return () => {
       document.removeEventListener("mousemove", dragSlides);
