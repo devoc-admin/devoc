@@ -1,4 +1,14 @@
 {
   "root": false,
-  "extends": "//"
+  "extends": "//",
+  "linter": {
+    "rules": {
+      "style": {
+        "noMagicNumbers": "off"
+      },
+      "correctness": {
+        "useUniqueElementIds": "off"
+      }
+    }
+  }
 }
