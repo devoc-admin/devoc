@@ -178,14 +178,17 @@ function Processus() {
   );
 
   return (
+    // ⚫ Black background
     <div
       className="flex min-h-screen flex-col bg-linear-to-b from-black to-zinc-950"
       id="processus"
     >
+      {/* ⚪ White background */}
       <div
         className={cn(
           "flex flex-1 flex-col items-center bg-white",
           "rounded-t-[50px] py-26",
+          "border-primary border-t-8",
           "sm:rounded-t-[100px] sm:py-26",
           "md:rounded-t-[100px] md:py-36"
         )}

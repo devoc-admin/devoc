@@ -2,12 +2,12 @@
 import { AlertCircleIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Doodle from "@/app/_sections/hero/doodle";
 import { BackgroundBeams } from "@/components/aceternity/background-beams";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import Doodle from "./doodle";
 
 const urlToRedirect = "https://customers-lasbordes-preview.vercel.app";
 export default function Page() {
