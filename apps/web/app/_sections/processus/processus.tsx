@@ -56,7 +56,7 @@ const steps: Step[] = [
   },
 ];
 
-const animationDuration = 8000; // 8 seconds
+const animationDuration = 10_000; // 10 seconds
 
 function Processus() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -67,10 +67,22 @@ function Processus() {
 
   //↔️ Change step
   function goStep(newStep: number): void {
-    if (currentStep === newStep) {
+    if (currentStep === newStep || !progressBarRef.current) {
       return;
     }
+
+    resetProgressBar();
     setCurrentStep(newStep);
+  }
+
+  // 🔁 Reset progress bar
+  function resetProgressBar() {
+    if (progressBarRef.current) {
+      progressBarRef.current.style.animation = "none"; // Remove the animation
+      // biome-ignore lint/complexity/noVoid: exception
+      void progressBarRef.current.offsetHeight; // Trigger a reflow
+      progressBarRef.current.style.animation = ""; // Reapply the animation
+    }
   }
 
   function goNextStep() {
@@ -112,6 +124,7 @@ function Processus() {
       newStep = Math.min(newStep, steps.length - 1);
       return newStep;
     });
+    resetProgressBar();
 
     slidesListRef.current.style.transitionDuration = "500ms";
     slidesListRef.current.style.transform = "translateX(0px)";
