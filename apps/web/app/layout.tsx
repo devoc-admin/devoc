@@ -1,17 +1,27 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
-import { Fira_Code, Geist, Geist_Mono, Kanit, Lobster } from "next/font/google";
+import {
+  Fira_Code,
+  Geist,
+  Geist_Mono,
+  Kanit,
+  Lobster,
+  Passion_One,
+  Style_Script,
+} from "next/font/google";
 import SkipLink from "@/components/navigation/skip-link";
 import "./globals.css";
 
 const geistSans = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const lobster = Lobster({
@@ -29,6 +39,18 @@ const firaCode = Fira_Code({
   subsets: ["latin"],
   variable: "--font-fira-code",
   weight: ["400"],
+});
+
+const styleScript = Style_Script({
+  subsets: ["latin"],
+  variable: "--font-style-script",
+  weight: ["400"],
+});
+
+const passionOne = Passion_One({
+  subsets: ["latin"],
+  variable: "--font-passion-one",
+  weight: ["400", "700", "900"],
 });
 
 export const metadata: Metadata = {
@@ -92,7 +114,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} font-sans`}
+        className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${passionOne.variable} font-sans`}
       >
         <SkipLink />
         <main id="main-content">{children}</main>
