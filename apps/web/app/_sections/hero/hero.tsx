@@ -4,15 +4,15 @@ import {
   ArrowRightIcon,
   ChevronsLeftRightIcon,
   type LucideProps,
-  // Sparkles,
   UsersRoundIcon,
   ZapIcon,
 } from "lucide-react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AvatarStack } from "@/components/kibo-ui/avatar-stack";
+import Loader from "@/components/kokonutui/loader";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -30,26 +30,54 @@ import SphereShape from "./shapes/sphere.png";
 const baseDelay = 0.5;
 const extraDelay = 0.2;
 
+const intialPageDelayInMs = 1500;
+
 export default function Hero() {
+  const [showLoader, setShowLoader] = useState(true);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(
+      () => setShowLoader(false),
+      intialPageDelayInMs
+    );
+    return () => clearTimeout(timeoutId);
+  }, []);
+
   return (
     <div
       className={cn(
-        "relative flex h-screen w-full items-center justify-center overflow-hidden px-6 py-12"
+        "relative flex min-h-screen w-full items-center justify-center overflow-hidden px-6 py-12"
       )}
     >
-      <Shapes />
-      <div className="flex flex-col items-center justify-center gap-y-6 rounded-xl p-4 backdrop-blur-xs">
-        <DevOc />
-        <Subtitle />
-        <HeroButtons />
-        <Kpis />
-        <Founders />
-      </div>
+      <AnimatePresence mode="wait">
+        {showLoader ? (
+          <motion.div
+            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            key="loader"
+            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+          >
+            <Loader color="#fb923c" subtitle="" title="Chargement..." />
+          </motion.div>
+        ) : (
+          <>
+            <Shapes />
+            <div className="flex flex-col items-center justify-center gap-y-6 rounded-xl p-4 backdrop-blur-xs">
+              <DevOc />
+              <Subtitle />
+              <HeroButtons />
+              <Kpis />
+              <Founders />
+            </div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
 // ----------------------------------
+
 function Shapes() {
   const [parallaxOffset, setParallaxOffset] = useState(0);
   const effectiveParallaxOffset = parallaxOffset * 0.5;
