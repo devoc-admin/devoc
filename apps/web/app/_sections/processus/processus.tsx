@@ -20,7 +20,7 @@ type Step = {
 const steps: Step[] = [
   {
     description:
-      "Après premier contact, nous nous rencontrons pour échanger sur vos besoins, vos délais et votre budget.",
+      "Après un premier contact, nous nous rencontrons pour échanger sur vos besoins, vos délais et votre budget.",
     image: Meet,
     title: "Rencontre",
   },
@@ -56,34 +56,21 @@ const steps: Step[] = [
   },
 ];
 
-const animationDuration = 10_000; // 10 seconds
+const animationDuration = 8000; // 8 seconds
 
 function Processus() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const startingPoint = useRef(0);
-  const startingLeft = useRef(0);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const slidesListRef = useRef<HTMLDivElement>(null);
 
-  // ↔️ Change step
+  //↔️ Change step
   function goStep(newStep: number): void {
-    if (currentStep === newStep || !progressBarRef.current) {
+    if (currentStep === newStep) {
       return;
     }
-
-    resetProgressBar();
     setCurrentStep(newStep);
-  }
-
-  // 🔁 Reset progress bar
-  function resetProgressBar() {
-    if (progressBarRef.current) {
-      progressBarRef.current.style.animation = "none"; // Remove the animation
-      // biome-ignore lint/complexity/noVoid: exception
-      void progressBarRef.current.offsetHeight; // Trigger a reflow
-      progressBarRef.current.style.animation = ""; // Reapply the animation
-    }
   }
 
   function goNextStep() {
@@ -103,21 +90,11 @@ function Processus() {
     const { clientX: absoluteX } =
       "touches" in event ? event.touches[0] : event;
     startingPoint.current = absoluteX;
-    startingLeft.current = slidesListRef.current.offsetLeft;
     slidesListRef.current.style.transitionDuration = "0ms";
-    document.body.style.overflow = "hidden";
-    if (progressBarRef.current) {
-      progressBarRef.current.style.animationPlayState = "paused";
-    }
   }
 
   function releaseSlide(event: MouseEvent | TouchEvent) {
-    document.body.style.overflow = "auto";
-
     if (!slidesListRef.current?.firstElementChild) return;
-    if (progressBarRef.current) {
-      progressBarRef.current.style.animationPlayState = "running";
-    }
     setIsDragging(false);
     const { clientX: absoluteX } =
       "touches" in event ? event.changedTouches[0] : event;
@@ -133,17 +110,11 @@ function Processus() {
       let newStep = step + additionalStepsByGrabbing;
       newStep = Math.max(newStep, 0);
       newStep = Math.min(newStep, steps.length - 1);
-      if (step === newStep && slidesListRef.current) {
-        slidesListRef.current.style.left = `${startingLeft.current}px`;
-      }
-
-      if (step !== newStep) {
-        resetProgressBar();
-      }
       return newStep;
     });
 
     slidesListRef.current.style.transitionDuration = "500ms";
+    slidesListRef.current.style.transform = "translateX(0px)";
   }
 
   // ✊ Grab
@@ -182,7 +153,7 @@ function Processus() {
       const { clientX: absoluteX } =
         "touches" in event ? event.touches[0] : event;
       const deltaX = absoluteX - startingPoint.current;
-      slidesListRef.current.style.left = `${startingLeft.current + deltaX}px`;
+      slidesListRef.current.style.transform = `translateX(${deltaX}px)`;
     }
     return () => {
       document.removeEventListener("mousemove", dragSlides);
@@ -207,17 +178,17 @@ function Processus() {
   );
 
   return (
-    // ⚫ Black background
+    /* ⚫ Black background  */
     <div
       className="flex min-h-screen flex-col bg-linear-to-b from-black to-zinc-950"
       id="processus"
     >
-      {/* ⚪ White background */}
+      {/* ⚪ White background  */}
       <div
         className={cn(
           "flex flex-1 flex-col items-center bg-white",
+          "border-2 border-orange-600 border-t",
           "rounded-t-[50px] py-26",
-          "border-primary border-t-8",
           "sm:rounded-t-[100px] sm:py-26",
           "md:rounded-t-[100px] md:py-36"
         )}
