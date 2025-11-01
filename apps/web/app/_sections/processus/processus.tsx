@@ -187,7 +187,7 @@ function Processus() {
       <div
         className={cn(
           "flex flex-1 flex-col items-center bg-white",
-          "border-2 border-orange-600 border-t",
+          "border-t-6 border-t-orange-600",
           "rounded-t-[50px] py-26",
           "sm:rounded-t-[100px] sm:py-26",
           "md:rounded-t-[100px] md:py-36"

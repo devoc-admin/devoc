@@ -5,7 +5,8 @@
     "rules": {
       "style": {
         "noMagicNumbers": "off",
-        "useFilenamingConvention": "off"
+        "useFilenamingConvention": "off",
+        "useConsistentTypeDefinitions": "off"
       },
       "suspicious": {
         "useAwait": "off"
@@ -13,9 +14,6 @@
       "complexity": {
         "noBannedTypes": "off",
         "useLiteralKeys": "off"
-      },
-      "nursery": {
-        "useConsistentTypeDefinitions": "off"
       }
     }
   }

@@ -1,3 +1,4 @@
+import path from "node:path";
 import { withPayload } from "@payloadcms/next/withPayload";
 import type { NextConfig } from "next";
 
@@ -45,6 +46,9 @@ const nextConfig: NextConfig = {
         protocol: "https",
       },
     ],
+  },
+  turbopack: {
+    root: path.join(__dirname, "../../"),
   },
 };
 
