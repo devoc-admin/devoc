@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/style/useNamingConvention: React components as Props */
+/** biome-ignore-all lint/a11y/noSvgWithoutTitle: Exception */
 "use client";
 import {
   ArrowRightIcon,
@@ -391,13 +391,29 @@ function Kpi({
     <div className="group flex flex-col items-center justify-center gap-1 whitespace-nowrap rounded-xl p-6 text-center backdrop-blur-xs">
       <div className="flex items-center gap-2 font-bold text-3xl">
         {/* 🔍 Icon */}
+        <svg className="size-0">
+          <defs>
+            <linearGradient
+              id={`icon-gradient-${title}`}
+              x1="0%"
+              x2="100%"
+              y1="0%"
+              y2="100%"
+            >
+              <stop offset="0%" stopColor="#fdba74" />
+              <stop offset="50%" stopColor="#fb923c" />
+              <stop offset="100%" stopColor="#ea580c" />
+            </linearGradient>
+          </defs>
+        </svg>
         <Icon
           className={cn(
-            "text-primary transition-transform duration-300",
+            "transition-transform duration-300",
             "translate-y-0",
             "group-hover:-translate-y-0.5"
           )}
           size={34}
+          stroke={`url(#icon-gradient-${title})`}
           strokeWidth={2}
         />
         {/* 🔤 Title */}
