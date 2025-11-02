@@ -1,6 +1,9 @@
 {
   "root": false,
   "extends": "//",
+  "files": {
+    "includes": ["!**/payload.config.ts", "!**/payload-types.ts"]
+  },
   "linter": {
     "rules": {
       "style": {

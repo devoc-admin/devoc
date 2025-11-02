@@ -11,8 +11,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
     "@payloadcms/db-postgres": "^3.62.0",
     "@payloadcms/db-vercel-postgres": "^3.62.0",
+    "@payloadcms/email-nodemailer": "^3.62.0",
     "@payloadcms/next": "^3.62.0",
     "@payloadcms/richtext-lexical": "^3.62.0",
     "@payloadcms/storage-vercel-blob": "^3.62.0",
