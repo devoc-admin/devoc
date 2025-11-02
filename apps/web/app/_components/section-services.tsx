@@ -14,7 +14,7 @@ import {
   WandSparklesIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Lamp from "@/components/aceternity/lamp";
 import {
   Card,
@@ -50,6 +50,15 @@ export default function Services() {
 }
 
 // ----------------------------------
+type ServiceCardProps = {
+  id: string;
+  title: string;
+  description: string;
+  features: string[];
+  Icon: LucideIcon;
+  subtitle?: string;
+};
+
 const services: ServiceCardProps[] = [
   {
     description:
@@ -135,6 +144,15 @@ const services: ServiceCardProps[] = [
 ];
 
 function ServiceCards() {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 640);
+    checkDesktop();
+    window.addEventListener("resize", checkDesktop);
+    return () => window.removeEventListener("resize", checkDesktop);
+  }, []);
+
   return (
     <div
       className={cn(
@@ -147,7 +165,10 @@ function ServiceCards() {
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           key={service.id}
-          transition={{ delay: index * 0.2, duration: 0.5 }}
+          transition={{
+            delay: isDesktop ? index * 0.2 : 0,
+            duration: 0.5,
+          }}
           viewport={{ once: true }}
           whileInView={{ opacity: 1, y: 0 }}
         >
@@ -157,17 +178,6 @@ function ServiceCards() {
     </div>
   );
 }
-
-// ----------------------------------
-
-type ServiceCardProps = {
-  id: string;
-  title: string;
-  description: string;
-  features: string[];
-  Icon: LucideIcon;
-  subtitle?: string;
-};
 
 function ServiceCard({
   title,
