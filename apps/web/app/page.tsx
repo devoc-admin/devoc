@@ -1,12 +1,12 @@
 import Header from "@/app/_components/header";
+import Footer from "./_components/footer";
+import Contact from "./_components/section-contact";
+import Hero from "./_components/section-hero";
+import Processus from "./_components/section-processus";
+import Realisations from "./_components/section-realisations";
+import Services from "./_components/section-services";
+import WorkWith from "./_components/section-work-with";
 // import { BackgroundBeams } from "@/components/aceternity/background-beams";
-import Contact from "./_sections/contact/contact";
-import Footer from "./_sections/footer";
-import Hero from "./_sections/hero/hero";
-import Processus from "./_sections/processus/processus";
-import Realisations from "./_sections/realisations/realisations";
-import Services from "./_sections/services/services";
-import WorkWith from "./_sections/work-with/work-with";
 
 export default function Home() {
   return (

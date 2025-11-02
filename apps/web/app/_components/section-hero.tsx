@@ -11,6 +11,10 @@ import { AnimatePresence, motion } from "motion/react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import CubeShape from "@/assets/shapes/cube.png";
+import DiamondShape from "@/assets/shapes/diamond.png";
+import DonutShape from "@/assets/shapes/donut.png";
+import SphereShape from "@/assets/shapes/sphere.png";
 import { AvatarStack } from "@/components/kibo-ui/avatar-stack";
 import Loader from "@/components/kokonutui/loader";
 import { AuroraText } from "@/components/magicui/aurora-text";
@@ -22,10 +26,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import CubeShape from "./shapes/cube.png";
-import DiamondShape from "./shapes/diamond.png";
-import DonutShape from "./shapes/donut.png";
-import SphereShape from "./shapes/sphere.png";
 
 const baseDelay = 0.5;
 const extraDelay = 0.2;

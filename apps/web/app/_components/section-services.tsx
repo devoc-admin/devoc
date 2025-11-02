@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
-import SectionTitle from "@/app/_sections/section-title";
 import Lamp from "@/components/aceternity/lamp";
 import {
   Card,
@@ -26,6 +25,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import SectionTitle from "./section-title";
 
 export default function Services() {
   return (
@@ -89,7 +89,7 @@ const services: ServiceCardProps[] = [
     Icon: SmartphoneIcon,
     id: "mobile",
     subtitle: "Offrez une expérience embarquée unique",
-    title: "Applications Mobiles",
+    title: "Applications mobiles",
   },
   {
     description:
@@ -219,15 +219,12 @@ function ServiceCard({
             {/* 🟪 Icon */}
             <div
               className={cn(
+                "animate-pulse-shadow",
                 "-mt-10 mx-auto h-[40cqw]",
                 "grid aspect-square place-items-center rounded-full border-[3px] border-primary/3 text-primary",
                 "bg-primary/15",
                 "group-hover:bg-primary/20"
               )}
-              style={{
-                boxShadow:
-                  "0 4px 64px 0px color-mix(in oklch, var(--primary), transparent 50%)",
-              }}
             >
               <Icon className="size-[50%]" strokeWidth={1.3} />
             </div>
