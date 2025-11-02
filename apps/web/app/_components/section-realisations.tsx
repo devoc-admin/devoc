@@ -1,6 +1,5 @@
 /** biome-ignore-all lint/style/noMagicNumbers: special case */
 import Image, { type StaticImageData } from "next/image";
-import SectionTitle from "@/app/_sections/section-title";
 import flow1 from "@/assets/projects/flow/flow_1.png";
 import flow2 from "@/assets/projects/flow/flow_2.png";
 import flow3 from "@/assets/projects/flow/flow_3.png";
@@ -13,6 +12,7 @@ import statcraft2 from "@/assets/projects/statcraft/statcraft_2.png";
 import statcraft3 from "@/assets/projects/statcraft/statcraft_3.png";
 import statcraftCover from "@/assets/projects/statcraft/statcraft_cover.webp";
 import Beams from "@/components/react-bits/beams";
+import SectionTitle from "./section-title";
 
 // import { Button } from "@/components/ui/button";
 
