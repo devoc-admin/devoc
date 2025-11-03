@@ -16,6 +16,7 @@ import {
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import Lamp from "@/components/aceternity/lamp";
+import { DotPattern } from "@/components/magicui/dot-pattern";
 import {
   Card,
   CardContent,
@@ -226,13 +227,22 @@ function ServiceCard({
 
           {/* 🔡 Description */}
           <CardContent className="grid grow place-items-center">
+            <DotPattern
+              className={cn(
+                "z-0",
+                "text-primary/70",
+                "mask-[radial-gradient(250px_circle_at_center,white,transparent)]"
+              )}
+              glow
+            />
             {/* 🟪 Icon */}
             <div
               className={cn(
                 "animate-pulse-shadow",
                 "-mt-10 mx-auto h-[40cqw]",
                 "grid aspect-square place-items-center rounded-full border-[3px] border-primary/3 text-primary",
-                "bg-primary/15",
+                "z-1",
+                "bg-[#392413]",
                 "group-hover:bg-primary/20"
               )}
             >
