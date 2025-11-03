@@ -8,7 +8,8 @@ import {
   ZapIcon,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import Image, { type StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import CubeShape from "@/assets/shapes/cube.png";
@@ -33,15 +34,7 @@ const extraDelay = 0.2;
 const intialPageDelayInMs = 1500;
 
 export default function Hero() {
-  const [showLoader, setShowLoader] = useState(true);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(
-      () => setShowLoader(false),
-      intialPageDelayInMs
-    );
-    return () => clearTimeout(timeoutId);
-  }, []);
+  const { showLoader } = useInitLoading();
 
   return (
     <div
@@ -62,9 +55,11 @@ export default function Hero() {
         ) : (
           <>
             <Shapes />
-            <div className="flex flex-col items-center justify-center gap-y-6 rounded-xl p-4 backdrop-blur-xs">
-              <DevOc />
-              <Subtitle />
+            <div className="flex flex-col items-center justify-center gap-y-6 rounded-xl p-4">
+              <div className="flex flex-col items-center backdrop-blur-xs">
+                <DevOc />
+                <Subtitle />
+              </div>
               <HeroButtons />
               <Kpis />
               <Founders />
@@ -74,6 +69,24 @@ export default function Hero() {
       </AnimatePresence>
     </div>
   );
+}
+
+// ----------------------------------
+
+function useInitLoading() {
+  const [showLoader, setShowLoader] = useState(true);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(
+      () => setShowLoader(false),
+      intialPageDelayInMs
+    );
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  return {
+    showLoader,
+  };
 }
 
 // ----------------------------------
@@ -98,7 +111,7 @@ function Shapes() {
   }, []);
 
   return (
-    <div className="-z-1 absolute h-full w-full">
+    <div className="-z-1 absolute h-full w-full max-w-[1400px]">
       <Shape
         className={cn(
           "-translate-x-1/2 -translate-y-1/2",
@@ -133,7 +146,7 @@ function Shapes() {
           "sm:bottom-[13%] sm:left-[20%]",
           "md:bottom-[16%] md:left-[22%]",
           "lg:bottom-[16%] lg:left-[22%]",
-          "xl:bottom-[24%] xl:left-[22%]"
+          "xl:bottom-[24%] xl:left-[19%]"
         )}
         parallaxOffset={effectiveParallaxOffset}
         src={DonutShape}
@@ -242,7 +255,7 @@ function Subtitle() {
     <motion.p
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        "-mt-8 w-[45ch] max-w-[90vw] text-center font-kanit font-semibold text-secondary leading-tight!",
+        "w-[45ch] max-w-[90vw] text-center font-kanit font-semibold text-secondary leading-tight!",
         "text-sm",
         "xs:text-lg"
       )}
@@ -428,7 +441,7 @@ function Kpi({
 // ----------------------------------
 function Founders() {
   return (
-    <div className="flex flex-col items-center gap-2 rounded-lg px-6 py-4 font-fira-code backdrop-blur-xs">
+    <div className="flex flex-col items-center gap-2 rounded-lg px-6 py-4 font-fira-code">
       <motion.div
         animate={{ opacity: 1, scale: 1 }}
         initial={{ opacity: 0, scale: 0 }}
