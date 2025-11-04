@@ -31,7 +31,7 @@ import { cn } from "@/lib/utils";
 const baseDelay = 0.5;
 const extraDelay = 0.2;
 
-const intialPageDelayInMs = 800;
+const intialPageDelayInMs = 1100;
 
 export default function Hero() {
   const { showLoader } = useInitLoading();
