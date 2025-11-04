@@ -108,7 +108,13 @@ function Processus() {
 
     const absoluteX = getAbsolutePosition(event);
     const deltaX = startingPoint.current - absoluteX;
-    const additionalStepsByGrabbing = Math.round(deltaX / (slideWidth / 3));
+
+    const isTouch = event instanceof TouchEvent;
+    const slidingCoeff = isTouch ? 3 : 1;
+
+    const additionalStepsByGrabbing = Math.round(
+      deltaX / (slideWidth / slidingCoeff)
+    );
 
     setCurrentStep((step) => {
       let newStep = step + additionalStepsByGrabbing;
