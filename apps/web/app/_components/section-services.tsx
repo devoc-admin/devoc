@@ -150,8 +150,18 @@ function ServiceCards() {
   useEffect(() => {
     const checkDesktop = () => setIsDesktop(window.innerWidth >= 640);
     checkDesktop();
-    window.addEventListener("resize", checkDesktop);
-    return () => window.removeEventListener("resize", checkDesktop);
+
+    let timeoutId: NodeJS.Timeout;
+    const debouncedCheckDesktop = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkDesktop, 150);
+    };
+
+    window.addEventListener("resize", debouncedCheckDesktop);
+    return () => {
+      window.removeEventListener("resize", debouncedCheckDesktop);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return (
@@ -188,28 +198,54 @@ function ServiceCard({
   subtitle,
 }: ServiceCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+
+    let timeoutId: NodeJS.Timeout;
+    const debouncedCheckMobile = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkMobile, 150);
+    };
+
+    window.addEventListener("resize", debouncedCheckMobile);
+    return () => {
+      window.removeEventListener("resize", debouncedCheckMobile);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   return (
     <div
-      className="@container perspective-[2000px] relative aspect-4/5"
+      className={cn(
+        "@container relative aspect-4/5",
+        // Only use perspective on desktop
+        !isMobile && "perspective-[2000px]"
+      )}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
     >
       <Card
         animation={false}
         className={cn(
-          "relative h-full cursor-pointer",
-          "transform-3d",
-          "transition-all duration-700",
-          isFlipped ? "rotate-y-180" : "rotate-y-0"
+          "relative h-full min-h-[400px] cursor-pointer",
+          // Only use 3D transforms on desktop
+          !isMobile && "transform-3d",
+          !isMobile && "transition-all duration-700",
+          !isMobile && (isFlipped ? "rotate-y-180" : "rotate-y-0")
         )}
       >
         {/* 🔼 Front Face */}
         <div
           className={cn(
-            "backface-hidden absolute inset-0 flex h-full rotate-y-0 flex-col gap-6 py-6",
+            "absolute inset-0 flex h-full flex-col gap-6 py-6",
+            !isMobile && "backface-hidden rotate-y-0",
             "transition-all duration-700",
-            isFlipped ? "opacity-0" : "opacity-100"
+            isFlipped ? "opacity-0" : "opacity-100",
+            // On mobile, hide completely when flipped
+            isMobile && isFlipped && "pointer-events-none"
           )}
         >
           <CardHeader>
@@ -231,9 +267,9 @@ function ServiceCard({
               className={cn(
                 "z-0",
                 "text-primary/70",
-                "mask-[radial-gradient(250px_circle_at_center,white,transparent)]"
+                "mask-[radial-gradient(60cqw_circle_at_center,white,transparent)]"
               )}
-              glow
+              glow={false}
             />
             {/* 🟪 Icon */}
             <div
@@ -281,18 +317,24 @@ function ServiceCard({
         {/* 🔼 Back Face */}
         <div
           className={cn(
-            "backface-hidden absolute inset-0 flex h-full rotate-y-180 flex-col gap-6 pt-10 pb-6",
+            "absolute inset-0 flex h-full flex-col gap-6 pt-6 pb-6",
+            !isMobile && "pt-10 pb-6",
+            !isMobile && "backface-hidden rotate-y-180",
             "transition-all duration-700",
-            isFlipped ? "opacity-100" : "opacity-0"
+            isFlipped ? "opacity-100" : "opacity-0",
+            // On mobile, hide completely when not flipped
+            isMobile && !isFlipped && "pointer-events-none"
           )}
         >
-          <CardHeader className="mt-6 px-10">
+          <CardHeader className={cn("mt-0 px-6", "sm:mt-6 sm:px-10")}>
             {/* 🆎 Title */}
             <CardTitle
               className={cn(
-                "font-kanit font-semibold text-3xl",
+                "font-kanit font-semibold",
                 "text-primary-foreground",
-                "group-hover:text-primary"
+                "group-hover:text-primary",
+                "text-2xl",
+                "sm:text-3xl"
               )}
             >
               {title}
@@ -300,8 +342,8 @@ function ServiceCard({
           </CardHeader>
 
           {/* 🔡 Description */}
-          <CardContent className="grow px-10">
-            <CardDescription className="mb-2 text-base">
+          <CardContent className={cn("grow px-6", "lg:px-10")}>
+            <CardDescription className={cn("mb-2 text-[15px]", "sm:text-base")}>
               {description}
             </CardDescription>
             <ul className={cn("mt-8", "@sm:block hidden")}>
@@ -320,7 +362,8 @@ function ServiceCard({
               className={cn(
                 "group flex w-full items-center justify-between rounded-lg px-5 py-3 transition-colors",
                 "bg-primary/10 text-primary/80",
-                "hover:bg-primary/20 hover:text-primary"
+                "hover:bg-primary/20 hover:text-primary",
+                !isFlipped && "pointer-events-none"
               )}
               href="#contact"
             >

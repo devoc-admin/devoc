@@ -62,10 +62,11 @@ function Processus() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const startingPoint = useRef(0);
+  const startingLeft = useRef(0);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const slidesListRef = useRef<HTMLDivElement>(null);
 
-  //↔️ Change step
+  // ↔️ Change step
   function goStep(newStep: number): void {
     if (currentStep === newStep) {
       return;
@@ -87,34 +88,48 @@ function Processus() {
   function grabSlides(event: MouseEvent | TouchEvent) {
     if (!slidesListRef.current) return;
     setIsDragging(true);
-    const { clientX: absoluteX } =
-      "touches" in event ? event.touches[0] : event;
+    const absoluteX = getAbsolutePosition(event);
     startingPoint.current = absoluteX;
+    startingLeft.current = slidesListRef.current.offsetLeft;
     slidesListRef.current.style.transitionDuration = "0ms";
+
+    if (progressBarRef.current) {
+      progressBarRef.current.style.animationPlayState = "paused";
+    }
   }
 
   function releaseSlide(event: MouseEvent | TouchEvent) {
     if (!slidesListRef.current?.firstElementChild) return;
     setIsDragging(false);
-    const { clientX: absoluteX } =
-      "touches" in event ? event.changedTouches[0] : event;
-    const deltaX = startingPoint.current - absoluteX;
     const slideWidth = Number.parseInt(
-      getComputedStyle(slidesListRef.current.firstElementChild).width,
+      getComputedStyle(slidesListRef?.current?.firstElementChild).width,
       10
     );
 
-    const additionalStepsByGrabbing = Math.round(deltaX / slideWidth);
+    const absoluteX = getAbsolutePosition(event);
+    const deltaX = startingPoint.current - absoluteX;
+    const additionalStepsByGrabbing = Math.round(deltaX / (slideWidth / 3));
 
     setCurrentStep((step) => {
       let newStep = step + additionalStepsByGrabbing;
       newStep = Math.max(newStep, 0);
       newStep = Math.min(newStep, steps.length - 1);
+      if (slidesListRef.current) {
+        slidesListRef.current.style.left = `-${newStep * 100}%`;
+      }
       return newStep;
     });
 
     slidesListRef.current.style.transitionDuration = "500ms";
-    slidesListRef.current.style.transform = "translateX(0px)";
+
+    // Reinit progress bar animation
+    if (progressBarRef.current) {
+      progressBarRef.current.style.animationPlayState = "running";
+      progressBarRef.current.classList.remove("animate-progress-bar");
+      // biome-ignore lint/complexity/noVoid: exception
+      void progressBarRef.current.offsetWidth;
+      progressBarRef.current.classList.add("animate-progress-bar");
+    }
   }
 
   // ✊ Grab
@@ -143,21 +158,36 @@ function Processus() {
     };
   }, []);
 
+  // 👋 Move slides
   useEffect(() => {
-    document.addEventListener("mousemove", dragSlides);
-    document.addEventListener("touchmove", dragSlides);
+    let rafId: number | null = null;
 
-    // ------------------------------------------------
-    function dragSlides(event: MouseEvent | TouchEvent) {
+    function moveSlides(event: MouseEvent | TouchEvent) {
       if (!(slidesListRef.current && isDragging)) return;
-      const { clientX: absoluteX } =
-        "touches" in event ? event.touches[0] : event;
-      const deltaX = absoluteX - startingPoint.current;
-      slidesListRef.current.style.transform = `translateX(${deltaX}px)`;
+      // Cancel any pending animation frame
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+
+      rafId = requestAnimationFrame(() => {
+        if (!slidesListRef.current) return;
+        const absoluteX = getAbsolutePosition(event);
+        const deltaX = absoluteX - startingPoint.current;
+        slidesListRef.current.style.left = `${+startingLeft.current + deltaX}px`;
+        rafId = null;
+      });
     }
+
+    document.addEventListener("mousemove", moveSlides);
+    document.addEventListener("touchmove", moveSlides);
+
     return () => {
-      document.removeEventListener("mousemove", dragSlides);
-      document.removeEventListener("touchmove", dragSlides);
+      document.removeEventListener("mousemove", moveSlides);
+      document.removeEventListener("touchmove", moveSlides);
+      // Clean up any pending animation frame
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
     };
   }, [isDragging]);
 
@@ -202,7 +232,7 @@ function Processus() {
           <div className="group relative flex w-[500px] max-w-[90vw] flex-1 flex-col items-center justify-center gap-3 overflow-hidden">
             <div
               className={cn(
-                "relative flex cursor-grab self-start duration-500",
+                "relative flex cursor-grab touch-none self-start duration-500",
                 isDragging && "cursor-grabbing"
               )}
               ref={slidesListRef}
@@ -274,4 +304,19 @@ export default Processus;
 function stopBrowserDragging(event: DragEvent): void {
   event.preventDefault();
   event.stopPropagation();
+}
+
+// -----------------------------------------------
+//
+function getAbsolutePosition(event: MouseEvent | TouchEvent) {
+  let referenceEvent = { clientX: 0 };
+
+  if ("touches" in event) {
+    if (event?.touches?.[0]) referenceEvent = event.touches[0];
+    if (event?.changedTouches?.[0]) referenceEvent = event.changedTouches[0];
+  } else {
+    referenceEvent = event;
+  }
+  const { clientX: absoluteX } = referenceEvent;
+  return absoluteX;
 }
