@@ -6,7 +6,6 @@ import {
   Geist_Mono,
   Kanit,
   Lobster,
-  Passion_One,
   Style_Script,
 } from "next/font/google";
 import SkipLink from "@/components/navigation/skip-link";
@@ -45,12 +44,6 @@ const styleScript = Style_Script({
   subsets: ["latin"],
   variable: "--font-style-script",
   weight: ["400"],
-});
-
-const passionOne = Passion_One({
-  subsets: ["latin"],
-  variable: "--font-passion-one",
-  weight: ["400", "700", "900"],
 });
 
 export const metadata: Metadata = {
@@ -114,7 +107,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${passionOne.variable} font-sans`}
+        className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} font-sans`}
       >
         <SkipLink />
         <main id="main-content">{children}</main>
