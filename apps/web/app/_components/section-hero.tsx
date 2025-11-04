@@ -31,7 +31,7 @@ import { cn } from "@/lib/utils";
 const baseDelay = 0.5;
 const extraDelay = 0.2;
 
-const intialPageDelayInMs = 1500;
+const intialPageDelayInMs = 800;
 
 export default function Hero() {
   const { showLoader } = useInitLoading();
@@ -93,14 +93,43 @@ function useInitLoading() {
 
 function Shapes() {
   const [parallaxOffset, setParallaxOffset] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const effectiveParallaxOffset = parallaxOffset * 0.5;
 
-  // ⇅ Parallax effect
+  // Check if mobile on mount
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768); // md breakpoint
+    checkMobile();
+
+    let timeoutId: NodeJS.Timeout;
+    const debouncedCheckMobile = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkMobile, 150);
+    };
+
+    window.addEventListener("resize", debouncedCheckMobile);
+    return () => {
+      window.removeEventListener("resize", debouncedCheckMobile);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+  // ⇅ Parallax effect (disabled on mobile)
+  useEffect(() => {
+    if (isMobile) return; // Skip parallax on mobile
+
+    let ticking = false;
+
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const displacement = scrollY * -0.3;
-      setParallaxOffset(displacement);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const displacement = scrollY * -0.3;
+          setParallaxOffset(displacement);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -108,7 +137,7 @@ function Shapes() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <div className="-z-1 absolute h-full w-full max-w-[1400px]">
@@ -177,20 +206,42 @@ function Shape({
   parallaxOffset: number;
   className?: string;
 }) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+
+    let timeoutId: NodeJS.Timeout;
+    const debouncedCheckMobile = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkMobile, 150);
+    };
+
+    window.addEventListener("resize", debouncedCheckMobile);
+    return () => {
+      window.removeEventListener("resize", debouncedCheckMobile);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
   return (
     <motion.div
       animate={{
         opacity: 1,
-        x: [0, 3, -2, 4, 0, -1, 0],
-        y: [
-          parallaxOffset,
-          parallaxOffset - 8,
-          parallaxOffset - 5,
-          parallaxOffset - 10,
-          parallaxOffset - 15,
-          parallaxOffset - 8,
-          parallaxOffset,
-        ],
+        // Simplified animation on mobile: only 3 keyframes instead of 7
+        x: isMobile ? [0, 2, 0] : [0, 3, -2, 4, 0, -1, 0],
+        y: isMobile
+          ? [parallaxOffset, parallaxOffset - 5, parallaxOffset]
+          : [
+              parallaxOffset,
+              parallaxOffset - 8,
+              parallaxOffset - 5,
+              parallaxOffset - 10,
+              parallaxOffset - 15,
+              parallaxOffset - 8,
+              parallaxOffset,
+            ],
       }}
       className={cn(
         className,
@@ -206,7 +257,8 @@ function Shape({
       style={{ y: parallaxOffset }}
       transition={{
         delay: Math.random(),
-        duration: 9 + Math.random() * 3,
+        // Slower animation on mobile (12-18s instead of 9-12s)
+        duration: isMobile ? 12 + Math.random() * 6 : 9 + Math.random() * 3,
         ease: "easeInOut",
         opacity: {
           duration: 1,

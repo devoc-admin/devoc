@@ -7,6 +7,7 @@ export const Actualites: CollectionConfig = {
     read: () => true,
     update: () => true,
   },
+
   fields: [
     {
       label: "Titre",
