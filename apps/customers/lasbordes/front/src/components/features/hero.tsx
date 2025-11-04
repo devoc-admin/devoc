@@ -2,7 +2,9 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Calendar, MapPin, Users } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
+import LasbordesImage from "@/assets/lasbordes.jpg";
 import { Button } from "@/components/ui/button";
 
 export function Hero() {
@@ -10,7 +12,7 @@ export function Hero() {
   const hero = {
     image: {
       alt: "Vue de la commune de Lasbordes",
-      url: "/images/hero-lasbordes.jpg",
+      url: LasbordesImage,
     },
     subtitle:
       "Une commune dynamique au cœur de l'Aude, où il fait bon vivre. Découvrez nos services, nos actualités et toutes les informations pratiques.",
@@ -85,14 +87,12 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.95 }}
             transition={{ delay: 0.2, duration: 0.6 }}
           >
-            <div className="flex aspect-4/3 items-center justify-center rounded-2xl bg-linear-to-br from-primary/20 to-primary/5 shadow-xl">
-              <p className="px-4 text-center text-muted-foreground">
-                Image de la commune
-                <br />
-                <span className="text-sm">
-                  (À remplacer par une vraie photo)
-                </span>
-              </p>
+            <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-2x bg-linear-to-br from-primary/20 to-primary/5 shadow-xl">
+              <Image
+                alt="Image de la commune"
+                className="h-full w-full object-cover"
+                src={LasbordesImage}
+              />
             </div>
           </motion.div>
         </div>
