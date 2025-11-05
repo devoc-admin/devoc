@@ -1,4 +1,6 @@
+"use client";
 import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
+import useNavTheme from "@/app/_hooks/use-nav-theme";
 import LaserFlow from "@/components/react-bits/laser-flow";
 import GlowLine from "@/components/sera-ui/glow-line";
 import {
@@ -41,10 +43,16 @@ const contactItems: ContactItem[] = [
 ];
 
 export default function Contact() {
+  const { ref: sectionRef } = useNavTheme({
+    sectionName: "contact",
+    theme: "dark",
+  });
+
   return (
     <div
       className="relative flex w-full flex-col items-center gap-24 overflow-hidden bg-linear-to-br bg-zinc-950 px-6 py-24"
       id="contact"
+      ref={sectionRef}
     >
       <GlowLine color="orange" orientation="horizontal" position="0px" />
       {/* 🆎 Title */}

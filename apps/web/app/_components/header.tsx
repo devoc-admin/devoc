@@ -1,64 +1,92 @@
+"use client";
+
 import { SendIcon } from "lucide-react";
+import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
 
 export default function Header() {
+  const { scrollY } = useScroll();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (value) => {
+    setIsScrolled(value > 50);
+  });
+
   return (
-    <header className="-translate-x-1/2 absolute top-3 left-1/2 z-10 hidden h-16 w-full max-w-[1600px] items-center justify-center rounded-full bg-white/20 px-6 backdrop-blur-sm lg:flex">
-      {/* 🧭 Navbar */}
-      <nav className="flex w-full items-center justify-between">
-        {/* 1️⃣ Left part */}
-        <div className="flex w-[200px] justify-start">
-          <Logo />
-        </div>
-
-        {/* 2️⃣ Center part */}
-        <Links />
-
-        {/* 3️⃣ Right part */}
-        <div className="flex w-[200px] justify-end">
-          <ContactButton />
-        </div>
-      </nav>
-    </header>
+    <motion.div
+      animate={isScrolled ? "scrolled" : "unscrolled"}
+      className={cn(
+        "hidden",
+        "xl:flex",
+        "-translate-x-1/2 fixed left-1/2 z-5000 mx-auto mt-0 items-center justify-between rounded-full px-8 py-4 backdrop-blur-sm transition-[background] duration-300",
+        "bg-white/10 text-secondary hover:text-secondary", // light
+        "[html[data-nav-theme='dark']_&]:bg-zinc-900/20" // Dark
+      )}
+      initial={false}
+      variants={{
+        scrolled: { maxWidth: "1200px", top: "25px", width: "80vw" },
+        unscrolled: { maxWidth: "1600px", top: "10px", width: "100vw" },
+      }}
+    >
+      <div className="flex w-[200px] justify-start">
+        <Logo />
+      </div>
+      <Links />
+      <div className="flex w-[200px] justify-end">
+        <ContactButton />
+      </div>
+    </motion.div>
   );
 }
 
 // ---------------------------------
 function Logo() {
   return (
-    <div className="flex items-center gap-2 text-2xl">
+    <button
+      className="flex cursor-pointer items-center gap-2 text-2xl"
+      onClick={() => window.scrollTo({ behavior: "smooth", top: 0 })}
+      onKeyDown={() => window.scrollTo({ behavior: "smooth", top: 0 })}
+      type="button"
+    >
       <Image alt="Dev'Oc" height={22} src={Icon} width={22} />
       <div>
-        <span className="font-bold text-secondary tracking-tighter">Dev'</span>
+        <span
+          className={cn(
+            "font-bold tracking-tighter transition-colors duration-300",
+            "text-secondary", // Light
+            "[html[data-nav-theme='dark']_&]:text-white" // Dark
+          )}
+        >
+          Dev'
+        </span>
         <span className="bg-linear-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black text-transparent tracking-tighter">
           Oc
         </span>
       </div>
-    </div>
+    </button>
   );
 }
 
 // --------------------------------
 const LINKS = [
   {
-    href: "/",
-    label: "Accueil",
-  },
-
-  {
     href: "#services",
+    id: "services",
     label: "Services",
   },
   {
     href: "#realisations",
+    id: "realisations",
     label: "Réalisations",
   },
   {
     href: "#processus",
+    id: "processus",
     label: "Notre méthode",
   },
   // {
@@ -67,16 +95,35 @@ const LINKS = [
   // },
   {
     href: "#contact",
+    id: "contact",
     label: "Contact",
   },
 ];
 
 function Links() {
   return (
-    <ul className="flex items-center gap-12 font-semibold text-secondary">
-      {LINKS.map(({ href, label }) => (
+    <ul
+      className={cn(
+        "flex items-center gap-12 font-semibold",
+        "text-secondary", // Light
+        "[html[data-nav-theme='dark']_&]:text-white" // Dark
+      )}
+    >
+      {LINKS.map(({ href, label, id }) => (
         <li
-          className="whitespace-nowrap text-center transition-colors hover:text-primary"
+          className={cn(
+            "whitespace-nowrap text-center transition-colors duration-300",
+            "hover:text-primary",
+            id === "home" && `[html[data-section-name='home']_&]:text-primary`,
+            id === "services" &&
+              `[html[data-section-name='services']_&]:text-primary`,
+            id === "realisations" &&
+              `[html[data-section-name='realisations']_&]:text-primary`,
+            id === "processus" &&
+              `[html[data-section-name='processus']_&]:text-primary`,
+            id === "contact" &&
+              `[html[data-section-name='contact']_&]:text-primary`
+          )}
           key={href}
         >
           <Link href={href}>{label}</Link>

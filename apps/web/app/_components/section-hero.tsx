@@ -12,6 +12,7 @@ import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import useNavTheme from "@/app/_hooks/use-nav-theme";
 import CubeShape from "@/assets/shapes/cube.png";
 import DiamondShape from "@/assets/shapes/diamond.png";
 import DonutShape from "@/assets/shapes/donut.png";
@@ -35,12 +36,17 @@ const intialPageDelayInMs = 1100;
 
 export default function Hero() {
   const { showLoader } = useInitLoading();
+  const { ref: sectionRef } = useNavTheme({
+    sectionName: "home",
+    theme: "light",
+  });
 
   return (
     <div
       className={cn(
-        "relative flex min-h-screen w-full items-center justify-center overflow-hidden px-6 py-12"
+        "relative flex min-h-screen w-full grow items-center justify-center overflow-hidden px-6 py-12"
       )}
+      ref={sectionRef}
     >
       <AnimatePresence mode="wait">
         {showLoader ? (
