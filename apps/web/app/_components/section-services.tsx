@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
+import useNavTheme from "@/app/_hooks/use-nav-theme";
 import Lamp from "@/components/aceternity/lamp";
 import { DotPattern } from "@/components/magicui/dot-pattern";
 import {
@@ -29,16 +30,19 @@ import { cn } from "@/lib/utils";
 import SectionTitle from "./section-title";
 
 export default function Services() {
+  const { ref } = useNavTheme({ sectionName: "services", theme: "dark" });
+
   return (
-    <div
+    <motion.div
       className={cn(
         "relative flex min-h-screen flex-col items-center justify-between gap-32 bg-zinc-950",
         // Pour scroller en dessous du faisceau
-        "-scroll-m-[300px]",
+        "-scroll-m-[200px]",
         "px-6 pt-36 pb-12",
         "xs:pt-88 xs:pb-48"
       )}
       id="services"
+      ref={ref}
     >
       <Lamp className={cn("hidden", "xs:flex")} />
       <SectionTitle
@@ -46,7 +50,7 @@ export default function Services() {
         title="Nos Services"
       />
       <ServiceCards />
-    </div>
+    </motion.div>
   );
 }
 

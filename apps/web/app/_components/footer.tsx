@@ -75,10 +75,10 @@ function Logo() {
     <div className="flex items-center gap-2 text-2xl">
       <Image alt="Dev'Oc" height={22} src={Icon} width={22} />
       <div>
-        <span className="bg-linear-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black text-transparent tracking-tighter">
+        <span className="font-black text-primary-foreground tracking-tighter">
           Dev'
         </span>
-        <span className="font-bold font-regular text-primary-foreground tracking-tighter">
+        <span className="bg-linear-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-bold font-regular text-transparent tracking-tighter">
           Oc
         </span>
       </div>

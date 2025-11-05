@@ -3,6 +3,7 @@
 import { useInView } from "motion/react";
 import Image, { type StaticImageData } from "next/image";
 import { useEffect, useRef, useState } from "react";
+import useNavTheme from "@/app/_hooks/use-nav-theme";
 import DeckChair from "@/assets/processus/deck_chair.avif";
 import Handshake from "@/assets/processus/handshake.avif";
 import LightBulb from "@/assets/processus/light_bulb.avif";
@@ -65,6 +66,10 @@ function Processus() {
   const startingLeft = useRef(0);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const slidesListRef = useRef<HTMLDivElement>(null);
+  const { ref: sectionRef } = useNavTheme({
+    sectionName: "processus",
+    theme: "light",
+  });
 
   // ↔️ Change step
   function goStep(newStep: number): void {
@@ -85,6 +90,8 @@ function Processus() {
   }
 
   // --------------------------------------
+  //
+  // ✊ Grab slides
   function grabSlides(event: MouseEvent | TouchEvent) {
     if (!slidesListRef.current) return;
     setIsDragging(true);
@@ -98,6 +105,35 @@ function Processus() {
     }
   }
 
+  // 👋 Move slides
+  useEffect(() => {
+    let rafId: number | null = null;
+
+    function moveSlides(event: MouseEvent | TouchEvent) {
+      if (!(slidesListRef.current && isDragging)) return;
+
+      if (rafId !== null) cancelAnimationFrame(rafId);
+
+      rafId = requestAnimationFrame(() => {
+        if (!slidesListRef.current) return;
+        const absoluteX = getAbsolutePosition(event);
+        const deltaX = absoluteX - startingPoint.current;
+        slidesListRef.current.style.left = `${+startingLeft.current + deltaX}px`;
+        rafId = null;
+      });
+    }
+
+    document.addEventListener("mousemove", moveSlides);
+    document.addEventListener("touchmove", moveSlides);
+
+    return () => {
+      document.removeEventListener("mousemove", moveSlides);
+      document.removeEventListener("touchmove", moveSlides);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
+  }, [isDragging]);
+
+  // 🤚 Release
   function releaseSlide(event: MouseEvent | TouchEvent) {
     if (!slidesListRef.current?.firstElementChild) return;
     setIsDragging(false);
@@ -138,18 +174,12 @@ function Processus() {
     }
   }
 
-  // ✊ Grab
   // biome-ignore lint/correctness/useExhaustiveDependencies: exception
   useEffect(() => {
-    // Sync changing step with progress bar animation
     progressBarRef.current?.addEventListener("animationiteration", goNextStep);
-    // Remove default browser dragging behavior
     document.addEventListener("dragstart", stopBrowserDragging);
-
     slidesListRef.current?.addEventListener("mousedown", grabSlides);
     slidesListRef.current?.addEventListener("touchstart", grabSlides);
-
-    // Release
     document.addEventListener("mouseup", releaseSlide);
     document.addEventListener("touchend", releaseSlide);
 
@@ -163,39 +193,6 @@ function Processus() {
       slidesListRef.current?.removeEventListener("mousedown", grabSlides);
     };
   }, []);
-
-  // 👋 Move slides
-  useEffect(() => {
-    let rafId: number | null = null;
-
-    function moveSlides(event: MouseEvent | TouchEvent) {
-      if (!(slidesListRef.current && isDragging)) return;
-      // Cancel any pending animation frame
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId);
-      }
-
-      rafId = requestAnimationFrame(() => {
-        if (!slidesListRef.current) return;
-        const absoluteX = getAbsolutePosition(event);
-        const deltaX = absoluteX - startingPoint.current;
-        slidesListRef.current.style.left = `${+startingLeft.current + deltaX}px`;
-        rafId = null;
-      });
-    }
-
-    document.addEventListener("mousemove", moveSlides);
-    document.addEventListener("touchmove", moveSlides);
-
-    return () => {
-      document.removeEventListener("mousemove", moveSlides);
-      document.removeEventListener("touchmove", moveSlides);
-      // Clean up any pending animation frame
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId);
-      }
-    };
-  }, [isDragging]);
 
   const NavigationDots = (
     <div className="mt-4 flex gap-2">
@@ -228,6 +225,7 @@ function Processus() {
           "sm:rounded-t-[100px] sm:py-26",
           "md:rounded-t-[100px] md:py-36"
         )}
+        ref={sectionRef}
       >
         {/* 🆎 Title */}
         <h2 className="mb-12 px-8 text-center font-kanit font-semibold text-6xl text-black sm:text-7xl md:text-8xl">
@@ -238,7 +236,7 @@ function Processus() {
           <div className="group relative flex w-[500px] max-w-[90vw] flex-1 flex-col items-center justify-center gap-3 overflow-hidden">
             <div
               className={cn(
-                "relative flex cursor-grab touch-none self-start duration-500",
+                "relative flex cursor-grab touch-pan-x self-start duration-500",
                 isDragging && "cursor-grabbing"
               )}
               ref={slidesListRef}
