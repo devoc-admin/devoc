@@ -7,7 +7,7 @@ import {
   UsersRoundIcon,
   ZapIcon,
 } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,7 +18,6 @@ import DiamondShape from "@/assets/shapes/diamond.png";
 import DonutShape from "@/assets/shapes/donut.png";
 import SphereShape from "@/assets/shapes/sphere.png";
 import { AvatarStack } from "@/components/kibo-ui/avatar-stack";
-import Loader from "@/components/kokonutui/loader";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -32,10 +31,7 @@ import { cn } from "@/lib/utils";
 const baseDelay = 0.5;
 const extraDelay = 0.2;
 
-const intialPageDelayInMs = 1100;
-
 export default function Hero() {
-  const { showLoader } = useInitLoading();
   const { ref: sectionRef } = useNavTheme({
     sectionName: "home",
     theme: "light",
@@ -48,51 +44,18 @@ export default function Hero() {
       )}
       ref={sectionRef}
     >
-      <AnimatePresence mode="wait">
-        {showLoader ? (
-          <motion.div
-            animate={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            key="loader"
-            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-          >
-            <Loader color="#fb923c" subtitle="" title="Chargement..." />
-          </motion.div>
-        ) : (
-          <>
-            <Shapes />
-            <div className="flex flex-col items-center justify-center gap-y-6 rounded-xl p-4">
-              <div className="flex flex-col items-center backdrop-blur-xs">
-                <DevOc />
-                <Subtitle />
-              </div>
-              <HeroButtons />
-              <Kpis />
-              <Founders />
-            </div>
-          </>
-        )}
-      </AnimatePresence>
+      <Shapes />
+      <div className="flex flex-col items-center justify-center gap-y-6 rounded-xl p-4">
+        <div className="flex flex-col items-center backdrop-blur-xs">
+          <DevOc />
+          <Subtitle />
+        </div>
+        <HeroButtons />
+        <Kpis />
+        <Founders />
+      </div>
     </div>
   );
-}
-
-// ----------------------------------
-
-function useInitLoading() {
-  const [showLoader, setShowLoader] = useState(true);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(
-      () => setShowLoader(false),
-      intialPageDelayInMs
-    );
-    return () => clearTimeout(timeoutId);
-  }, []);
-
-  return {
-    showLoader,
-  };
 }
 
 // ----------------------------------

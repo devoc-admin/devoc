@@ -8,7 +8,7 @@ import {
   Lobster,
   Style_Script,
 } from "next/font/google";
-import SkipLink from "@/components/navigation/skip-link";
+import SkipLink from "@/components/ui/skip-link";
 import "./globals.css";
 
 const geistSans = Geist({
