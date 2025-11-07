@@ -1,0 +1,26 @@
+{
+  "name": "email",
+  "version": "1.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "email build",
+    "dev": "email dev",
+    "export": "email export",
+    "lint": "bunx ultracite fix",
+    "format": "biome format --write"
+  },
+  "dependencies": {
+    "@react-email/components": "0.5.7",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@react-email/preview-server": "4.3.2",
+    "@types/node": "^24.10.0",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.1",
+    "next": "^16.0.1",
+    "react-email": "4.3.2"
+  }
+}
