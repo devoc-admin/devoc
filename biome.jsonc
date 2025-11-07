@@ -47,11 +47,10 @@
     "enabled": true,
     "rules": {
       "style": {
-        // No need to wrap every if statement in a block statement eg. if(!condition) return;
-        "useBlockStatements": "off"
+        "useBlockStatements": "off" // No need to wrap every if statement in a block statement eg. if(!condition) return;
       }
     }
   },
 
-  "extends": ["ultracite/core"]
+  "extends": ["ultracite/core", "ultracite/react", "ultracite/next"]
 }

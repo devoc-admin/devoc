@@ -27,15 +27,13 @@ export function Header() {
         aria-label="Navigation principale"
         className="container mx-auto flex items-center justify-between px-4 py-4"
       >
-        {/* Logo */}
-        <div className="flex items-center">
-          <Link
-            className="rounded-sm font-bold text-primary text-xl focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2"
-            href="/"
-          >
-            Lasbordes
-          </Link>
-        </div>
+        {/* 🐲 Logo */}
+        <Link
+          className="rounded-sm font-bold text-primary text-xl focus:outline-hidden focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          href="/"
+        >
+          Lasbordes
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex lg:gap-x-6">
