@@ -112,17 +112,16 @@ function Links() {
       {LINKS.map(({ href, label, id }) => (
         <li
           className={cn(
-            "whitespace-nowrap text-center transition-colors duration-300",
+            "whitespace-nowrap border-2 border-transparent text-center transition-colors duration-300",
             "hover:text-primary",
-            id === "home" && `[html[data-section-name='home']_&]:text-primary`,
             id === "services" &&
-              `[html[data-section-name='services']_&]:text-primary`,
+              `[html[data-section-name='services']_&]:border-b-primary [html[data-section-name='services']_&]:text-primary`,
             id === "realisations" &&
-              `[html[data-section-name='realisations']_&]:text-primary`,
+              `[html[data-section-name='realisations']_&]:border-b-primary [html[data-section-name='realisations']_&]:text-primary`,
             id === "processus" &&
-              `[html[data-section-name='processus']_&]:text-primary`,
+              `[html[data-section-name='processus']_&]:border-b-primary [html[data-section-name='processus']_&]:text-primary`,
             id === "contact" &&
-              `[html[data-section-name='contact']_&]:text-primary`
+              `[html[data-section-name='contact']_&]:border-b-primary [html[data-section-name='contact']_&]:text-primary`
           )}
           key={href}
         >
