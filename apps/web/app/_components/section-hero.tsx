@@ -1,12 +1,6 @@
 /** biome-ignore-all lint/a11y/noSvgWithoutTitle: Exception */
 "use client";
-import {
-  ArrowRightIcon,
-  ChevronsLeftRightIcon,
-  type LucideProps,
-  UsersRoundIcon,
-  ZapIcon,
-} from "lucide-react";
+import { ArrowRightIcon } from "lucide-react";
 import { motion } from "motion/react";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
@@ -29,7 +23,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const baseDelay = 0.5;
-const extraDelay = 0.2;
+// const extraDelay = 0.2;
 
 export default function Hero() {
   const { ref: sectionRef } = useNavTheme({
@@ -51,7 +45,7 @@ export default function Hero() {
           <Subtitle />
         </div>
         <HeroButtons />
-        <Kpis />
+        {/*<Kpis />*/}
         <Founders />
       </div>
     </div>
@@ -361,103 +355,103 @@ function HeroButton({
 }
 
 // ----------------------------------
-type Kpi = {
-  title: string;
-  subtitle: string;
-  Icon: React.ComponentType<LucideProps>;
-};
+// type Kpi = {
+//   title: string;
+//   subtitle: string;
+//   Icon: React.ComponentType<LucideProps>;
+// };
 
-const kpiItems: Kpi[] = [
-  {
-    Icon: ChevronsLeftRightIcon,
-    subtitle: "Projets réalisés",
-    title: "50+",
-  },
-  {
-    Icon: UsersRoundIcon,
-    subtitle: "Clients satisfaits",
-    title: "20+",
-  },
-  {
-    Icon: ZapIcon,
-    subtitle: "Années d'expérience",
-    title: "10+",
-  },
-];
+// const kpiItems: Kpi[] = [
+//   {
+//     Icon: ChevronsLeftRightIcon,
+//     subtitle: "Projets réalisés",
+//     title: "50+",
+//   },
+//   {
+//     Icon: UsersRoundIcon,
+//     subtitle: "Clients satisfaits",
+//     title: "20+",
+//   },
+//   {
+//     Icon: ZapIcon,
+//     subtitle: "Années d'expérience",
+//     title: "10+",
+//   },
+// ];
 
-function Kpis() {
-  return (
-    <motion.div
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      className={cn(
-        "select-none",
-        "hidden",
-        "sm:flex",
-        "mt-2 flex-col gap-4",
-        "sm:mt-0 sm:flex-row sm:gap-12"
-      )}
-      initial={{ opacity: 0, scale: 0.8, y: 50 }}
-      transition={{
-        damping: 15,
-        delay: baseDelay + extraDelay,
-        duration: 0.6,
-        stiffness: 200,
-        type: "spring",
-      }}
-    >
-      {kpiItems.map((kpi) => (
-        <Kpi {...kpi} key={kpi.title} />
-      ))}
-    </motion.div>
-  );
-}
+// function Kpis() {
+//   return (
+//     <motion.div
+//       animate={{ opacity: 1, scale: 1, y: 0 }}
+//       className={cn(
+//         "select-none",
+//         "hidden",
+//         "sm:flex",
+//         "mt-2 flex-col gap-4",
+//         "sm:mt-0 sm:flex-row sm:gap-12"
+//       )}
+//       initial={{ opacity: 0, scale: 0.8, y: 50 }}
+//       transition={{
+//         damping: 15,
+//         delay: baseDelay + extraDelay,
+//         duration: 0.6,
+//         stiffness: 200,
+//         type: "spring",
+//       }}
+//     >
+//       {kpiItems.map((kpi) => (
+//         <Kpi {...kpi} key={kpi.title} />
+//       ))}
+//     </motion.div>
+//   );
+// }
 
-function Kpi({
-  title,
-  subtitle,
-  Icon,
-}: {
-  title: string;
-  subtitle: string;
-  Icon: React.ComponentType<LucideProps>;
-}) {
-  return (
-    <div className="group flex flex-col items-center justify-center gap-1 whitespace-nowrap rounded-xl p-6 text-center backdrop-blur-xs">
-      <div className="flex items-center gap-2 font-bold text-3xl">
-        {/* 🔍 Icon */}
-        <svg className="size-0">
-          <defs>
-            <linearGradient
-              id={`icon-gradient-${title}`}
-              x1="0%"
-              x2="100%"
-              y1="0%"
-              y2="100%"
-            >
-              <stop offset="0%" stopColor="#fdba74" />
-              <stop offset="50%" stopColor="#fb923c" />
-              <stop offset="100%" stopColor="#ea580c" />
-            </linearGradient>
-          </defs>
-        </svg>
-        <Icon
-          className={cn(
-            "transition-transform duration-300",
-            "translate-y-0",
-            "group-hover:-translate-y-0.5"
-          )}
-          size={34}
-          stroke={`url(#icon-gradient-${title})`}
-          strokeWidth={2}
-        />
-        {/* 🔤 Title */}
-        <span className="text-secondary">{title}</span>
-      </div>
-      {/* 🔤 Subtitle */}
-      <div className="font-semibold text-base text-zinc-800">{subtitle}</div>
-    </div>
-  );
-}
+// function Kpi({
+//   title,
+//   subtitle,
+//   Icon,
+// }: {
+//   title: string;
+//   subtitle: string;
+//   Icon: React.ComponentType<LucideProps>;
+// }) {
+//   return (
+//     <div className="group flex flex-col items-center justify-center gap-1 whitespace-nowrap rounded-xl p-6 text-center backdrop-blur-xs">
+//       <div className="flex items-center gap-2 font-bold text-3xl">
+//         {/* 🔍 Icon */}
+//         <svg className="size-0">
+//           <defs>
+//             <linearGradient
+//               id={`icon-gradient-${title}`}
+//               x1="0%"
+//               x2="100%"
+//               y1="0%"
+//               y2="100%"
+//             >
+//               <stop offset="0%" stopColor="#fdba74" />
+//               <stop offset="50%" stopColor="#fb923c" />
+//               <stop offset="100%" stopColor="#ea580c" />
+//             </linearGradient>
+//           </defs>
+//         </svg>
+//         <Icon
+//           className={cn(
+//             "transition-transform duration-300",
+//             "translate-y-0",
+//             "group-hover:-translate-y-0.5"
+//           )}
+//           size={34}
+//           stroke={`url(#icon-gradient-${title})`}
+//           strokeWidth={2}
+//         />
+//         {/* 🔤 Title */}
+//         <span className="text-secondary">{title}</span>
+//       </div>
+//       {/* 🔤 Subtitle */}
+//       <div className="font-semibold text-base text-zinc-800">{subtitle}</div>
+//     </div>
+//   );
+// }
 
 // ----------------------------------
 function Founders() {
