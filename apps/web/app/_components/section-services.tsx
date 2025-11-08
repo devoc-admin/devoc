@@ -14,9 +14,10 @@ import {
   WandSparklesIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import Lamp from "@/components/aceternity/lamp";
+import { BorderBeam } from "@/components/magicui/border-beam";
 import { DotPattern } from "@/components/magicui/dot-pattern";
 import {
   Card,
@@ -187,7 +188,7 @@ function ServiceCards() {
           viewport={{ once: true }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          <ServiceCard key={service.title} {...service} />
+          <ServiceCard index={index} key={service.title} {...service} />
         </motion.div>
       ))}
     </div>
@@ -200,9 +201,11 @@ function ServiceCard({
   features,
   Icon,
   subtitle,
-}: ServiceCardProps) {
+  index,
+}: ServiceCardProps & { index: number }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const randomDelay = useMemo(() => Math.random() * 1000, []);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -273,20 +276,18 @@ function ServiceCard({
                 "text-primary/70",
                 "mask-[radial-gradient(60cqw_circle_at_center,white,transparent)]"
               )}
-              glow={false}
             />
             {/* 🟪 Icon */}
             <div
               className={cn(
                 "animate-pulse-shadow",
                 "-mt-10 mx-auto h-[40cqw]",
-                "grid aspect-square place-items-center rounded-full border-[3px] border-primary/3 text-primary",
+                "grid aspect-square place-items-center rounded-full border-[3px] border-primary/3",
                 "z-1",
-                "bg-[#392413]",
-                "group-hover:bg-primary/20"
+                "bg-[#392413]"
               )}
             >
-              <Icon className="size-[50%]" strokeWidth={1.3} />
+              <Icon className="size-[50%] text-primary" strokeWidth={1.3} />
             </div>
           </CardContent>
 
@@ -312,10 +313,15 @@ function ServiceCard({
                 {subtitle}
               </div>
             </div>
-            <div className="grid place-items-center rounded-lg bg-primary/15 p-1.5 text-primary">
-              <Repeat2Icon size={18} />
+            <div className="grid shrink-0 place-items-center rounded-lg bg-primary/15 p-1.5 text-primary">
+              <Repeat2Icon className={cn("@lg:size-9 @md:size-8 size-7")} />
             </div>
           </CardFooter>
+          <BorderBeam
+            delay={randomDelay}
+            reverse={index % 2 === 0}
+            size={100}
+          />
         </div>
 
         {/* 🔼 Back Face */}
@@ -385,6 +391,11 @@ function ServiceCard({
               </div>
             </a>
           </CardFooter>
+          <BorderBeam
+            delay={randomDelay}
+            reverse={index % 2 === 0}
+            size={100}
+          />
         </div>
       </Card>
     </div>
