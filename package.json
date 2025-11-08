@@ -7,7 +7,7 @@
     "better-commits": "^1.18.1",
     "lefthook": "^2.0.2",
     "turbo": "^2.6.0",
-    "ultracite": "^6.3.0"
+    "ultracite": "^6.3.2"
   },
   "packageManager": "pnpm@10.20.0"
 }

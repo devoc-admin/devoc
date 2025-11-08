@@ -3,7 +3,12 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", ".react-email/.next/**", "!.next/cache/**", "dist/**"],
+      "outputs": [
+        ".next/**",
+        ".react-email/.next/**",
+        "!.next/cache/**",
+        "dist/**"
+      ],
       "env": [
         "NODE_ENV",
         "RESEND_API_KEY",
