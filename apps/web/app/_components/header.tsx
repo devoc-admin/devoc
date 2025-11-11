@@ -10,6 +10,40 @@ import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
 
 export default function Header() {
+  return (
+    <SlideFadeAnimation>
+      <CollapseWhileScroll>
+        <div className="flex w-[200px] justify-start">
+          <Logo />
+        </div>
+        <Links />
+        <div className="flex w-[200px] justify-end">
+          <ContactButton />
+        </div>
+      </CollapseWhileScroll>
+    </SlideFadeAnimation>
+  );
+}
+
+// --------------------------------
+const baseDelay = 1;
+const baseDuration = 0.5;
+
+function SlideFadeAnimation({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      initial={{ opacity: 0, y: -20 }}
+      transition={{ delay: baseDelay, duration: baseDuration }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ---------------------------------
+function CollapseWhileScroll({ children }: { children: React.ReactNode }) {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -33,13 +67,7 @@ export default function Header() {
         unscrolled: { maxWidth: "1600px", top: "10px", width: "100vw" },
       }}
     >
-      <div className="flex w-[200px] justify-start">
-        <Logo />
-      </div>
-      <Links />
-      <div className="flex w-[200px] justify-end">
-        <ContactButton />
-      </div>
+      {children}
     </motion.div>
   );
 }

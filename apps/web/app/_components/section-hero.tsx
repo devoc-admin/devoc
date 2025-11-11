@@ -23,6 +23,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const baseDelay = 0.5;
+const baseDuration = 0.5;
 // const extraDelay = 0.2;
 
 export default function Hero() {
@@ -250,7 +251,7 @@ function DevOc() {
         "xl:text-[12rem]"
       )}
       initial={{ opacity: 0, y: -50 }}
-      transition={{ delay: baseDelay, duration: 0.5 }}
+      transition={{ delay: baseDelay, duration: baseDuration }}
     >
       {/*<DoodleTop/>*/}
       <div className={cn("font-style-script", "pt-4")}>Dev'</div>
@@ -275,7 +276,7 @@ function Subtitle() {
         "xs:text-lg"
       )}
       initial={{ opacity: 0, y: 50 }}
-      transition={{ delay: 0.5, duration: 0.5 }}
+      transition={{ delay: baseDelay, duration: baseDuration }}
     >
       <span>
         Nous créons des sites web, des applications sur mesure et des solutions
@@ -293,7 +294,7 @@ function HeroButtons() {
       animate={{ opacity: 1, y: 0 }}
       className="flex flex-col gap-3 xs:gap-6 sm:flex-row"
       initial={{ opacity: 0, y: 50 }}
-      transition={{ delay: baseDelay, duration: 0.5 }}
+      transition={{ delay: baseDelay, duration: baseDuration }}
     >
       {/* 🆕 Démarrer un projet */}
       <HeroButton
@@ -460,7 +461,7 @@ function Founders() {
       <motion.div
         animate={{ opacity: 1, scale: 1 }}
         initial={{ opacity: 0, scale: 0 }}
-        transition={{ delay: 0.7, duration: 0.25 }}
+        transition={{ delay: baseDelay * 3, duration: baseDuration / 2 }}
       >
         <div>Fondateurs</div>
       </motion.div>
@@ -468,7 +469,7 @@ function Founders() {
         <motion.div
           animate={{ opacity: 1, scale: 1 }}
           initial={{ opacity: 0, scale: 0 }}
-          transition={{ delay: 0.5, duration: 0.25 }}
+          transition={{ delay: baseDelay * 4, duration: 0.25 }}
         >
           <Avatar>
             <Tooltip>
@@ -489,7 +490,7 @@ function Founders() {
         <motion.div
           animate={{ opacity: 1, scale: 1 }}
           initial={{ opacity: 0, scale: 0 }}
-          transition={{ delay: 0.6, duration: 0.25 }}
+          transition={{ delay: baseDelay * 4 + 0.25, duration: 0.25 }}
         >
           <Avatar>
             <Tooltip>
