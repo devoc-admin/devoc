@@ -24,9 +24,26 @@ import { cn } from "@/lib/utils";
 
 const baseDelay = 0.5;
 const baseDuration = 0.5;
-// const extraDelay = 0.2;
 
 export default function Hero() {
+  return (
+    <Navbar>
+      <Shapes />
+      <div className="flex flex-col items-center justify-center gap-y-6 rounded-xl p-4">
+        <div className="flex flex-col items-center backdrop-blur-xs">
+          <DevOc />
+          <Subtitle />
+        </div>
+        <HeroButtons />
+        {/*<Kpis />*/}
+        <Founders />
+      </div>
+    </Navbar>
+  );
+}
+
+// ----------------------------------
+function Navbar({ children }: { children: React.ReactNode }) {
   const { ref: sectionRef } = useNavTheme({
     sectionName: "home",
     theme: "light",
@@ -39,69 +56,14 @@ export default function Hero() {
       )}
       ref={sectionRef}
     >
-      <Shapes />
-      <div className="flex flex-col items-center justify-center gap-y-6 rounded-xl p-4">
-        <div className="flex flex-col items-center backdrop-blur-xs">
-          <DevOc />
-          <Subtitle />
-        </div>
-        <HeroButtons />
-        {/*<Kpis />*/}
-        <Founders />
-      </div>
+      {children}
     </div>
   );
 }
 
 // ----------------------------------
-
 function Shapes() {
-  const [parallaxOffset, setParallaxOffset] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const effectiveParallaxOffset = parallaxOffset * 0.5;
-
-  // Check if mobile on mount
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768); // md breakpoint
-    checkMobile();
-
-    let timeoutId: NodeJS.Timeout;
-    const debouncedCheckMobile = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(checkMobile, 150);
-    };
-
-    window.addEventListener("resize", debouncedCheckMobile);
-    return () => {
-      window.removeEventListener("resize", debouncedCheckMobile);
-      clearTimeout(timeoutId);
-    };
-  }, []);
-
-  // ⇅ Parallax effect (disabled on mobile)
-  useEffect(() => {
-    if (isMobile) return; // Skip parallax on mobile
-
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scrollY = window.scrollY;
-          const displacement = scrollY * -0.3;
-          setParallaxOffset(displacement);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [isMobile]);
+  const { effectiveParallaxOffset } = useShapesParallaxEffect();
 
   return (
     <div className="-z-1 absolute h-full w-full max-w-[1400px]">
@@ -170,25 +132,7 @@ function Shape({
   parallaxOffset: number;
   className?: string;
 }) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-
-    let timeoutId: NodeJS.Timeout;
-    const debouncedCheckMobile = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(checkMobile, 150);
-    };
-
-    window.addEventListener("resize", debouncedCheckMobile);
-    return () => {
-      window.removeEventListener("resize", debouncedCheckMobile);
-      clearTimeout(timeoutId);
-    };
-  }, []);
-
+  const { isMobile } = useMobile();
   return (
     <motion.div
       animate={{
@@ -234,6 +178,81 @@ function Shape({
       <Image alt="shape" height={400} src={src} width={400} />
     </motion.div>
   );
+}
+
+function useMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+
+    let timeoutId: NodeJS.Timeout;
+    const debouncedCheckMobile = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkMobile, 150);
+    };
+
+    window.addEventListener("resize", debouncedCheckMobile);
+    return () => {
+      window.removeEventListener("resize", debouncedCheckMobile);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+  return { isMobile };
+}
+
+function useShapesParallaxEffect() {
+  const [parallaxOffset, setParallaxOffset] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const effectiveParallaxOffset = parallaxOffset * 0.5;
+
+  // Check if mobile on mount
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768); // md breakpoint
+    checkMobile();
+
+    let timeoutId: NodeJS.Timeout;
+    const debouncedCheckMobile = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkMobile, 150);
+    };
+
+    window.addEventListener("resize", debouncedCheckMobile);
+    return () => {
+      window.removeEventListener("resize", debouncedCheckMobile);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+  // ⇅ Parallax effect (disabled on mobile)
+  useEffect(() => {
+    if (isMobile) return; // Skip parallax on mobile
+
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const displacement = scrollY * -0.3;
+          setParallaxOffset(displacement);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isMobile]);
+
+  return {
+    effectiveParallaxOffset,
+  };
 }
 
 // ----------------------------------
@@ -356,6 +375,94 @@ function HeroButton({
 }
 
 // ----------------------------------
+function Founders() {
+  return (
+    <div className="flex flex-col items-center gap-2 rounded-lg px-6 py-4 font-fira-code">
+      <FadeScaleEntry>
+        <div>Fondateurs</div>
+      </FadeScaleEntry>
+      <AvatarStack>
+        <PopEntry>
+          <AvatarWithTooltip
+            fallback="CB"
+            name="Clément Dubos"
+            url="https://github.com/cdubos-fr"
+            urlImage="https://avatars.githubusercontent.com/u/52322202"
+          />
+        </PopEntry>
+        <PopEntry extraDelay={0.25}>
+          <AvatarWithTooltip
+            fallback="TI"
+            name="Thibaut Izard"
+            url="https://github.com/thibautizard"
+            urlImage="https://avatars.githubusercontent.com/u/8688023"
+          />
+        </PopEntry>
+      </AvatarStack>
+    </div>
+  );
+}
+
+function AvatarWithTooltip({
+  name,
+  fallback,
+  url,
+  urlImage,
+}: {
+  name: string;
+  fallback: string;
+  url: string;
+  urlImage: string;
+}) {
+  return (
+    <Avatar>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <a href={url} rel="noopener" target="_blank">
+            <AvatarImage src={urlImage} />
+            <AvatarFallback>{fallback}</AvatarFallback>
+          </a>
+        </TooltipTrigger>
+        <TooltipContent>{name}</TooltipContent>
+      </Tooltip>
+    </Avatar>
+  );
+}
+
+function FadeScaleEntry({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, scale: 0 }}
+      transition={{ delay: baseDelay * 3, duration: baseDuration / 2 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function PopEntry({
+  children,
+  extraDelay = 0,
+}: {
+  children: React.ReactNode;
+  extraDelay?: number;
+}) {
+  return (
+    <motion.div
+      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, scale: 0 }}
+      transition={{
+        delay: baseDelay * 4 + extraDelay,
+        duration: baseDuration / 2,
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ----------------------------------
 // type Kpi = {
 //   title: string;
 //   subtitle: string;
@@ -453,62 +560,3 @@ function HeroButton({
 //     </div>
 //   );
 // }
-
-// ----------------------------------
-function Founders() {
-  return (
-    <div className="flex flex-col items-center gap-2 rounded-lg px-6 py-4 font-fira-code">
-      <motion.div
-        animate={{ opacity: 1, scale: 1 }}
-        initial={{ opacity: 0, scale: 0 }}
-        transition={{ delay: baseDelay * 3, duration: baseDuration / 2 }}
-      >
-        <div>Fondateurs</div>
-      </motion.div>
-      <AvatarStack>
-        <motion.div
-          animate={{ opacity: 1, scale: 1 }}
-          initial={{ opacity: 0, scale: 0 }}
-          transition={{ delay: baseDelay * 4, duration: 0.25 }}
-        >
-          <Avatar>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <motion.a
-                  href="https://github.com/cdubos-fr"
-                  rel="noopener"
-                  target="_blank"
-                >
-                  <AvatarImage src="https://avatars.githubusercontent.com/u/52322202" />
-                  <AvatarFallback>CB</AvatarFallback>
-                </motion.a>
-              </TooltipTrigger>
-              <TooltipContent>Clément Dubos</TooltipContent>
-            </Tooltip>
-          </Avatar>
-        </motion.div>
-        <motion.div
-          animate={{ opacity: 1, scale: 1 }}
-          initial={{ opacity: 0, scale: 0 }}
-          transition={{ delay: baseDelay * 4 + 0.25, duration: 0.25 }}
-        >
-          <Avatar>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <a
-                  href="https://github.com/thibautizard"
-                  rel="noopener"
-                  target="_blank"
-                >
-                  <AvatarImage src="https://avatars.githubusercontent.com/u/8688023" />
-                  <AvatarFallback>TI</AvatarFallback>
-                </a>
-              </TooltipTrigger>
-              <TooltipContent>Thibaut Izard</TooltipContent>
-            </Tooltip>
-          </Avatar>
-        </motion.div>
-      </AvatarStack>
-    </div>
-  );
-}
