@@ -174,6 +174,7 @@ function ServiceCards() {
       className={cn(
         "w-full max-w-[1300px] gap-8",
         "flex flex-col",
+        "overflow-hidden",
         "sm:grid sm:grid-cols-[repeat(auto-fill,minmax(320px,1fr))]"
       )}
     >
