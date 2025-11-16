@@ -12,7 +12,8 @@
         "useConsistentTypeDefinitions": "off"
       },
       "suspicious": {
-        "useAwait": "off"
+        "useAwait": "off",
+        "noExplicitAny": "off"
       },
       "complexity": {
         "noBannedTypes": "off",

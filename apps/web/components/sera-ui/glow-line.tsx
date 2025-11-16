@@ -53,7 +53,7 @@ const COLOR_SCHEMES: Record<ColorScheme, ColorSchemeConfig> = {
   },
 };
 
-const GlowLine: React.FC<GlowLineProps> = ({
+const GlowLine = ({
   orientation,
   position,
   className = "",
