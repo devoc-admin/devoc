@@ -8,42 +8,44 @@ import Icon from "@/public/icon.svg";
 
 function Footer() {
   return (
-    <div className="relative overflow-hidden border-t border-t-zinc-600/10 bg-linear-to-br bg-zinc-950 from-primary/5 via-transparent to-primary/5 px-6 py-12">
-      <div className="relative mx-auto max-w-[1300px] space-y-8">
-        <PurpleCircle />
-        {/* 1️⃣ Row */}
-        <div
-          className={cn(
-            "relative space-y-8",
-            "lg:mx-auto lg:grid lg:grid-cols-5"
-          )}
-        >
-          {/* 🐲 Logo and contact */}
-          <div className="col-span-2 flex flex-col gap-5">
-            <Logo />
-            <div className="max-w-[700px] text-muted-foreground text-sm">
-              Collectif de développeurs. Nous créons des solutions digitales sur
-              mesure pour propulser votre entreprise.
+    <div className="relative overflow-hidden bg-zinc-950">
+      <div className="rounded-t-4xl border-t border-t-zinc-600/10 bg-linear-to-br from-primary/5 via-transparent to-primary/5 px-6 py-12">
+        <div className="relative mx-auto max-w-[1300px] space-y-8">
+          <PurpleCircle />
+          {/* 1️⃣ Row */}
+          <div
+            className={cn(
+              "relative space-y-8",
+              "lg:mx-auto lg:grid lg:grid-cols-5"
+            )}
+          >
+            {/* 🐲 Logo and contact */}
+            <div className="col-span-2 flex flex-col gap-5">
+              <Logo />
+              <div className="max-w-[700px] text-muted-foreground text-sm">
+                Collectif de développeurs. Nous créons des solutions digitales
+                sur mesure pour propulser votre entreprise.
+              </div>
+              <ContactLinks />
             </div>
-            <ContactLinks />
+
+            {/* 🔗 Internal links */}
+            <GroupsInternalLinks />
           </div>
 
-          {/* 🔗 Internal links */}
-          <GroupsInternalLinks />
-        </div>
+          {/* 2️⃣ row - 📧 Newsletter */}
+          {/* <Newsletter /> */}
 
-        {/* 2️⃣ row - 📧 Newsletter */}
-        {/* <Newsletter /> */}
-
-        {/* 3️⃣ row -📝 Copyright */}
-        <div
-          className={cn(
-            "relative flex flex-col items-center gap-4",
-            "sm:flex-row sm:justify-between sm:gap-0"
-          )}
-        >
-          <Copyright />
-          {/*<LegalLinks/>*/}
+          {/* 3️⃣ row -📝 Copyright */}
+          <div
+            className={cn(
+              "relative flex flex-col items-center gap-4",
+              "sm:flex-row sm:justify-between sm:gap-0"
+            )}
+          >
+            <Copyright />
+            {/*<LegalLinks/>*/}
+          </div>
         </div>
       </div>
       <GradientLine />
