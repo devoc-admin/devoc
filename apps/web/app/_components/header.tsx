@@ -6,13 +6,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { useClickAnyWhere, useMediaQuery } from "usehooks-ts";
+import { Glass } from "@/components/sera-ui/liquid-glass";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
-
 export default function Header() {
   const isMobile = useMediaQuery("(max-width: 970px)");
-  return isMobile ? <MobileHeader /> : <DesktopHeader />;
+  const isDesktop = useMediaQuery("(min-width: 971px)");
+
+  if (isMobile) return <MobileHeader />;
+  if (isDesktop) return <DesktopHeader />;
 }
 
 // --------------------------------
@@ -70,13 +73,22 @@ function DesktopHeader() {
   return (
     <SlideFadeAnimation>
       <CollapseWhileScroll>
-        <div className="flex w-[200px] justify-start">
-          <LogoButtonWithText />
-        </div>
-        <LinksDesktop />
-        <div className="flex w-[200px] justify-end">
-          <ContactButton>Devis gratuit</ContactButton>
-        </div>
+        <Glass
+          borderRadius={1000}
+          className={cn(
+            "mx-auto flex items-center justify-between rounded-full px-8 py-3",
+            "bg-white/80! text-secondary hover:text-secondary", // Light
+            "[html[data-nav-theme='dark']_&]:bg-zinc-900/70!" // Dark
+          )}
+        >
+          <div className="flex w-[200px] justify-start">
+            <LogoButtonWithText />
+          </div>
+          <LinksDesktop />
+          <div className="flex w-[200px] justify-end">
+            <ContactButton>Devis gratuit</ContactButton>
+          </div>
+        </Glass>
       </CollapseWhileScroll>
     </SlideFadeAnimation>
   );
@@ -112,9 +124,7 @@ function CollapseWhileScroll({ children }: { children: React.ReactNode }) {
     <motion.div
       animate={isScrolled ? "scrolled" : "unscrolled"}
       className={cn(
-        "-translate-x-1/2 fixed left-1/2 z-5000 mx-auto mt-0 flex items-center justify-between rounded-full px-8 py-4 backdrop-blur-sm transition-[background] duration-300",
-        "bg-white/10 text-secondary hover:text-secondary", // light
-        "[html[data-nav-theme='dark']_&]:bg-zinc-900/20" // Dark
+        "-translate-x-1/2 fixed left-1/2 z-5000 mx-auto mt-0 rounded-full rounded-full transition-[background] duration-300"
       )}
       initial={false}
       variants={{
