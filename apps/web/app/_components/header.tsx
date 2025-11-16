@@ -4,8 +4,8 @@ import { MenuIcon, SendIcon, XIcon } from "lucide-react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { useMediaQuery } from "usehooks-ts";
+import { useRef, useState } from "react";
+import { useClickAnyWhere, useMediaQuery } from "usehooks-ts";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
@@ -17,8 +17,7 @@ export default function Header() {
 
 // --------------------------------
 function MobileHeader() {
-  const [isOpened, setIsOpened] = useState(false);
-
+  const { iconRef, isOpened } = useToogleNavbarLink();
   return (
     <div className="-translate-x-1/2 fixed top-1.5 left-1/2 z-5000 mx-auto mt-0">
       <div
@@ -28,31 +27,42 @@ function MobileHeader() {
           "rounded-full backdrop-blur-sm transition-[background] duration-300",
           isOpened &&
             "rounded-tl-lg rounded-tr-lg rounded-br-none! rounded-bl-none!",
-          "bg-white/50 text-secondary hover:text-secondary", // light
+          "bg-white/50 text-secondary hover:text-secondary", // Light
           "[html[data-nav-theme='dark']_&]:bg-zinc-900/20" // Dark
         )}
       >
         <LogoButton logoSize={28} />
-        <div className="flex items-center gap-x-3">
-          {isOpened ? (
-            <XIcon
-              color="var(--primary)"
-              onClick={() => setIsOpened(false)}
-              strokeWidth={2.5}
-            />
-          ) : (
-            <MenuIcon
-              color="var(--primary)"
-              onClick={() => setIsOpened(true)}
-              strokeWidth={3}
-            />
-          )}
+        <div className="flex items-center">
+          <div className="px-4 py-1" ref={iconRef}>
+            {isOpened ? (
+              <XIcon color="var(--primary)" strokeWidth={2.5} />
+            ) : (
+              <MenuIcon color="var(--primary)" strokeWidth={3} />
+            )}
+          </div>
           <ContactButton />
         </div>
       </div>
-      {isOpened && <LinksMobile close={() => setIsOpened(false)} />}
+      {isOpened && <LinksMobile />}
     </div>
   );
+}
+
+function useToogleNavbarLink() {
+  const [isOpened, setIsOpened] = useState(false);
+  const iconRef = useRef<HTMLImageElement>(null);
+  useClickAnyWhere((e) => {
+    // console.log(e.target);
+    const hasClickedOnNavbarIcon =
+      iconRef.current?.contains(e.target as Node) ?? false;
+    if (hasClickedOnNavbarIcon) setIsOpened((v) => !v);
+    if (!hasClickedOnNavbarIcon) setIsOpened(false);
+  });
+
+  return {
+    iconRef,
+    isOpened,
+  };
 }
 
 // --------------------------------
@@ -187,24 +197,24 @@ const LINKS = [
   },
 ];
 
-function LinksMobile({ close }: { close: () => void }) {
+function LinksMobile() {
   return (
     <div
       className={cn(
         "border-t-2 border-t-primary",
         "flex w-full flex-col gap-y-2",
         "-translate-x-1/2 absolute top-full left-1/2 rounded-br-lg rounded-bl-lg bg-white/70 py-2 pt-4 backdrop-blur-sm transition-colors duration-300",
-        "[html[data-nav-theme='dark']_&]:bg-zinc-900/20"
+        "[html[data-nav-theme='dark']_&]:text-secondary", // Light
+        "[html[data-nav-theme='dark']_&]:bg-zinc-900/20 [html[data-nav-theme='dark']_&]:text-white" // Dark
       )}
     >
       {LINKS.map(({ href, label }) => (
         <Link
           className={cn(
-            "px-4 py-2 text-left font-kira font-semibold text-primary uppercase"
+            "px-4 py-2 text-left font-kira font-semibold uppercase"
           )}
           href={href}
           key={href}
-          onClick={close}
         >
           {label}
         </Link>
