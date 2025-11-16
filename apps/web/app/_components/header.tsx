@@ -1,24 +1,71 @@
 "use client";
 
-import { SendIcon } from "lucide-react";
+import { MenuIcon, SendIcon, XIcon } from "lucide-react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { useMediaQuery } from "usehooks-ts";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
 
 export default function Header() {
+  const isMobile = useMediaQuery("(max-width: 970px)");
+  return isMobile ? <MobileHeader /> : <DesktopHeader />;
+}
+
+// --------------------------------
+function MobileHeader() {
+  const [isOpened, setIsOpened] = useState(false);
+
+  return (
+    <div className="-translate-x-1/2 fixed top-1.5 left-1/2 z-5000 mx-auto mt-0">
+      <div
+        className={cn(
+          "flex w-[95vw] items-center justify-between",
+          "px-4 py-2",
+          "rounded-full backdrop-blur-sm transition-[background] duration-300",
+          isOpened &&
+            "rounded-tl-lg rounded-tr-lg rounded-br-none! rounded-bl-none!",
+          "bg-white/50 text-secondary hover:text-secondary", // light
+          "[html[data-nav-theme='dark']_&]:bg-zinc-900/20" // Dark
+        )}
+      >
+        <LogoButton logoSize={28} />
+        <div className="flex items-center gap-x-3">
+          {isOpened ? (
+            <XIcon
+              color="var(--primary)"
+              onClick={() => setIsOpened(false)}
+              strokeWidth={2.5}
+            />
+          ) : (
+            <MenuIcon
+              color="var(--primary)"
+              onClick={() => setIsOpened(true)}
+              strokeWidth={3}
+            />
+          )}
+          <ContactButton />
+        </div>
+      </div>
+      {isOpened && <LinksMobile close={() => setIsOpened(false)} />}
+    </div>
+  );
+}
+
+// --------------------------------
+function DesktopHeader() {
   return (
     <SlideFadeAnimation>
       <CollapseWhileScroll>
         <div className="flex w-[200px] justify-start">
-          <Logo />
+          <LogoButtonWithText />
         </div>
-        <Links />
+        <LinksDesktop />
         <div className="flex w-[200px] justify-end">
-          <ContactButton />
+          <ContactButton>Devis gratuit</ContactButton>
         </div>
       </CollapseWhileScroll>
     </SlideFadeAnimation>
@@ -55,9 +102,7 @@ function CollapseWhileScroll({ children }: { children: React.ReactNode }) {
     <motion.div
       animate={isScrolled ? "scrolled" : "unscrolled"}
       className={cn(
-        "hidden",
-        "xl:flex",
-        "-translate-x-1/2 fixed left-1/2 z-5000 mx-auto mt-0 items-center justify-between rounded-full px-8 py-4 backdrop-blur-sm transition-[background] duration-300",
+        "-translate-x-1/2 fixed left-1/2 z-5000 mx-auto mt-0 flex items-center justify-between rounded-full px-8 py-4 backdrop-blur-sm transition-[background] duration-300",
         "bg-white/10 text-secondary hover:text-secondary", // light
         "[html[data-nav-theme='dark']_&]:bg-zinc-900/20" // Dark
       )}
@@ -73,7 +118,13 @@ function CollapseWhileScroll({ children }: { children: React.ReactNode }) {
 }
 
 // ---------------------------------
-function Logo() {
+function LogoButton({
+  children,
+  logoSize = 22,
+}: {
+  children?: React.ReactNode;
+  logoSize?: number;
+}) {
   return (
     <button
       className="flex cursor-pointer items-center gap-2 text-2xl"
@@ -81,7 +132,15 @@ function Logo() {
       onKeyDown={() => window.scrollTo({ behavior: "smooth", top: 0 })}
       type="button"
     >
-      <Image alt="Dev'Oc" height={22} src={Icon} width={22} />
+      <Image alt="Dev'Oc" height={logoSize} src={Icon} width={logoSize} />
+      {children}
+    </button>
+  );
+}
+
+function LogoButtonWithText() {
+  return (
+    <LogoButton>
       <div>
         <span
           className={cn(
@@ -96,7 +155,7 @@ function Logo() {
           Oc
         </span>
       </div>
-    </button>
+    </LogoButton>
   );
 }
 
@@ -128,7 +187,33 @@ const LINKS = [
   },
 ];
 
-function Links() {
+function LinksMobile({ close }: { close: () => void }) {
+  return (
+    <div
+      className={cn(
+        "border-t-2 border-t-primary",
+        "flex w-full flex-col gap-y-2",
+        "-translate-x-1/2 absolute top-full left-1/2 rounded-br-lg rounded-bl-lg bg-white/70 py-2 pt-4 backdrop-blur-sm transition-colors duration-300",
+        "[html[data-nav-theme='dark']_&]:bg-zinc-900/20"
+      )}
+    >
+      {LINKS.map(({ href, label }) => (
+        <Link
+          className={cn(
+            "px-4 py-2 text-left font-kira font-semibold text-primary uppercase"
+          )}
+          href={href}
+          key={href}
+          onClick={close}
+        >
+          {label}
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+function LinksDesktop() {
   return (
     <ul
       className={cn(
@@ -161,18 +246,19 @@ function Links() {
 }
 
 // ----------------------------------
-function ContactButton() {
+function ContactButton({ children = null }: React.PropsWithChildren) {
   return (
     <Link href="#contact">
       <Button
         className={cn(
-          "flex cursor-pointer items-center gap-2 rounded-full px-5! font-bold text-primary-foreground transition-colors",
+          "flex cursor-pointer items-center gap-2 rounded-full font-bold text-primary-foreground transition-colors",
+          children && "px-5!",
           "bg-linear-to-r from-primary to-primary-lighter",
           "hover:bg-linear-to-r hover:from-primary/90 hover:to-primary-lighter/90"
         )}
       >
         <SendIcon size={20} />
-        <span>Devis gratuit</span>
+        {children && <span>{children}</span>}
       </Button>
     </Link>
   );
