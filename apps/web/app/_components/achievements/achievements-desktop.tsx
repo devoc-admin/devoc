@@ -3,6 +3,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { motion } from "motion/react";
 import { createContext, useContext, useState } from "react";
 import { Safari } from "@/components/magicui/safari";
+import { WordRotate } from "@/components/magicui/word-rotate";
 import { achievements } from "./achievements";
 import LaurelIcon from "./icons/laurel";
 
@@ -72,9 +73,11 @@ function AchievementsPanel() {
         {accomplishments && (
           <div className="mx-auto flex items-center gap-x-2 font-bold text-yellow-400">
             <LaurelIcon className="size-12" />
-            <div className="max-w-[200px] text-center text-sm leading-none">
-              {accomplishments[0]}
-            </div>
+            <WordRotate
+              className="flex max-w-[200px] text-center text-sm leading-none"
+              duration={5000}
+              words={accomplishments}
+            />
             <LaurelIcon className="-scale-x-100 size-12" />
           </div>
         )}
