@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { createContext, useContext, useState } from "react";
 import { Safari } from "@/components/magicui/safari";
 import { achievements } from "./achievements";
+import LaurelIcon from "./icons/laurel";
 
 type AchievementContext = {
   changeAchievementIndex: (delta: number) => void;
@@ -47,12 +48,13 @@ export function AchievementsDesktop() {
 function AchievementsPanel() {
   const { currentIndex } = useContext(AchievementsContext);
   const currentAchievement = achievements[currentIndex];
+  const { accomplishments } = currentAchievement;
   return (
     <div className="perspective-midrange flex flex-col gap-y-2">
       {/* 📝 Description */}
-      <div className="flex h-[300px] max-w-[550px] rotate-y-8 flex-col justify-between gap-y-6 rounded-xl p-8 backdrop-blur-xl">
+      <div className="flex max-w-[550px] rotate-y-8 flex-col justify-between gap-y-6 rounded-xl p-8 backdrop-blur-xl">
         <div className="flex flex-col gap-y-4">
-          <h3 className="font-bold font-kanit text-5xl text-white">
+          <h3 className="text-center font-bold font-kanit text-5xl text-white">
             {currentAchievement.title}
           </h3>
           <p className="text-lg text-white leading-tight">
@@ -66,7 +68,18 @@ function AchievementsPanel() {
         >
           {currentAchievement.companyLogo}
         </a>
+        {/* 👑 */}
+        {accomplishments && (
+          <div className="mx-auto flex items-center gap-x-2 font-bold text-yellow-400">
+            <LaurelIcon className="size-12" />
+            <div className="max-w-[200px] text-center text-sm leading-none">
+              {accomplishments[0]}
+            </div>
+            <LaurelIcon className="-scale-x-100 size-12" />
+          </div>
+        )}
       </div>
+      <div />
       {/* ⬅️➡️ Buttons */}
       <div className="flex rotate-y-8 justify-center gap-x-12">
         <AchievementButton delta={-1}>

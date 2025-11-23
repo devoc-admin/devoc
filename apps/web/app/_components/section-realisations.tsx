@@ -1,5 +1,5 @@
 "use client";
-import { useScreen } from "usehooks-ts";
+import { useWindowSize } from "usehooks-ts";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import Beams from "@/components/react-bits/beams";
 import { cn } from "@/lib/utils";
@@ -9,8 +9,10 @@ import SectionTitle from "./section-title";
 
 export default function Realisations() {
   const { ref } = useNavTheme({ sectionName: "realisations", theme: "dark" });
-  const Screen = useScreen();
-  const isLargeEnough = Screen?.width >= 1400;
+  const { width = 0 } = useWindowSize();
+  const isLargeEnough = width >= 1400;
+
+  if (width === 0) return null;
 
   return (
     <div
