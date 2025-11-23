@@ -34,7 +34,7 @@ function MobileHeader() {
           "[html[data-nav-theme='dark']_&]:bg-zinc-900/20" // Dark
         )}
       >
-        <LogoButton logoSize={28} />
+        <LogoButtonWithText />
         <div className="flex items-center">
           <div className="px-4 py-1" ref={iconRef}>
             {isOpened ? (
