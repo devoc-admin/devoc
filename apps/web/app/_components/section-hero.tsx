@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/a11y/noSvgWithoutTitle: Exception */
 "use client";
 import { ArrowRightIcon } from "lucide-react";
 import { motion } from "motion/react";
