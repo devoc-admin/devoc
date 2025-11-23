@@ -22,7 +22,7 @@ export default function Header() {
 function MobileHeader() {
   const { iconRef, isOpened } = useToogleNavbarLink();
   return (
-    <div className="-translate-x-1/2 fixed top-1.5 left-1/2 z-5000 mx-auto mt-0">
+    <div className="-translate-x-1/2 fixed top-3 left-1/2 z-5000 mx-auto mt-0">
       <div
         className={cn(
           "flex w-[95vw] items-center justify-between",
