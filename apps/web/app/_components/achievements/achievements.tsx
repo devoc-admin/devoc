@@ -30,7 +30,7 @@ const Onepark = {
     />
   ),
   description:
-    "Réservation en ligne de places de parkings avec paiement depuis mobile, tablette ou ordinateur.",
+    "Réservation en ligne de places de parking avec paiement depuis mobile, tablette ou ordinateur.",
   id: "onepark",
   showcase: flowMockup,
   slug: "dashboard-analytics",
@@ -64,9 +64,9 @@ const Frustration = {
 
 const Statcraft = {
   accomplishments: [
+    "Amélioration des stratégies de promotion des contenus",
     "Profilage des visiteurs",
     "Détection des robots",
-    "Amélioration des stratégies de promotion des contenus",
   ],
   companyLink: "https://insee.fr",
   companyLogo: (

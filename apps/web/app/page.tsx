@@ -1,3 +1,4 @@
+"use client";
 import Header from "@/app/_components/header";
 import Footer from "./_components/footer";
 import Contact from "./_components/section-contact";
