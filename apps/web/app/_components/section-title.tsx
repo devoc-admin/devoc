@@ -12,18 +12,18 @@ function SectionTitle({
   return (
     <div
       className={cn(
-        "mx-auto flex select-none flex-col gap-4 text-center",
+        "mx-auto flex select-none flex-col gap-4 text-center text-white",
         className
       )}
     >
       {/* 🆎 Title */}
       <h2
         className={cn(
-          "font-kanit font-semibold text-secondary-foreground",
+          "font-kanit font-semibold",
           "text-4xl",
           "xs:text-5xl",
           "md:text-6xl",
-          "lg:text-7xl"
+          "lg:text-8xl"
         )}
       >
         {title}
@@ -31,9 +31,10 @@ function SectionTitle({
       {/* 🔡 Description */}
       <div
         className={cn(
-          "mx-auto max-w-2xl text-pretty font-kanit text-white leading-tight! transition-colors hover:text-primary-foreground",
+          "mx-auto max-w-3xl text-pretty font-kanit leading-tight! transition-colors",
           "text-lg",
-          "xs:text-xl"
+          "xs:text-xl",
+          "md:text-2xl"
         )}
       >
         {description}
