@@ -12,6 +12,7 @@ import DonutShape from "@/assets/shapes/donut.png";
 import SphereShape from "@/assets/shapes/sphere.png";
 import { AvatarStack } from "@/components/kibo-ui/avatar-stack";
 import { AuroraText } from "@/components/magicui/aurora-text";
+import { ShimmerButton } from "@/components/magicui/shimmer-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,7 +35,6 @@ export default function Hero() {
           <Subtitle />
         </div>
         <HeroButtons />
-        {/*<Kpis />*/}
         <Founders />
       </div>
     </Navbar>
@@ -333,16 +333,14 @@ function HeroButtons() {
         </div>
       </HeroButton>
       {/* 👀 Voir nos réalisations */}
-      <HeroButton
-        className={cn(
-          "border-2 border-primary bg-secondary text-secondary-foreground",
-          "hidden",
-          "sm:flex"
-        )}
-        href="#realisations"
-      >
-        <div className="flex items-center gap-3">Voir nos réalisations</div>
-      </HeroButton>
+      <Link href="#realisations">
+        <ShimmerButton
+          className={cn("font-kanit", "h-13 w-[260px] px-11", "text-lg")}
+          shimmerSize="1.5px"
+        >
+          Voir nos réalisations
+        </ShimmerButton>
+      </Link>
     </motion.div>
   );
 }
@@ -360,9 +358,10 @@ function HeroButton({
     <Link href={href}>
       <Button
         className={cn(
-          "w-full rounded-full font-bold",
-          "px-7 py-5.5 text-base",
-          "xs:px-8 xs:py-6 xs:text-lg",
+          "h-13 w-[260px]",
+          "w-full rounded-full font-kanit",
+          "px-7 py-5.5",
+          "xs:px-8 xs:py-6 text-lg",
           "hover:cursor-pointer",
           className
         )}
@@ -460,102 +459,3 @@ function PopEntry({
     </motion.div>
   );
 }
-
-// ----------------------------------
-// type Kpi = {
-//   title: string;
-//   subtitle: string;
-//   Icon: React.ComponentType<LucideProps>;
-// };
-
-// const kpiItems: Kpi[] = [
-//   {
-//     Icon: ChevronsLeftRightIcon,
-//     subtitle: "Projets réalisés",
-//     title: "50+",
-//   },
-//   {
-//     Icon: UsersRoundIcon,
-//     subtitle: "Clients satisfaits",
-//     title: "20+",
-//   },
-//   {
-//     Icon: ZapIcon,
-//     subtitle: "Années d'expérience",
-//     title: "10+",
-//   },
-// ];
-
-// function Kpis() {
-//   return (
-//     <motion.div
-//       animate={{ opacity: 1, scale: 1, y: 0 }}
-//       className={cn(
-//         "select-none",
-//         "hidden",
-//         "sm:flex",
-//         "mt-2 flex-col gap-4",
-//         "sm:mt-0 sm:flex-row sm:gap-12"
-//       )}
-//       initial={{ opacity: 0, scale: 0.8, y: 50 }}
-//       transition={{
-//         damping: 15,
-//         delay: baseDelay + extraDelay,
-//         duration: 0.6,
-//         stiffness: 200,
-//         type: "spring",
-//       }}
-//     >
-//       {kpiItems.map((kpi) => (
-//         <Kpi {...kpi} key={kpi.title} />
-//       ))}
-//     </motion.div>
-//   );
-// }
-
-// function Kpi({
-//   title,
-//   subtitle,
-//   Icon,
-// }: {
-//   title: string;
-//   subtitle: string;
-//   Icon: React.ComponentType<LucideProps>;
-// }) {
-//   return (
-//     <div className="group flex flex-col items-center justify-center gap-1 whitespace-nowrap rounded-xl p-6 text-center backdrop-blur-xs">
-//       <div className="flex items-center gap-2 font-bold text-3xl">
-//         {/* 🔍 Icon */}
-//         <svg className="size-0">
-//           <defs>
-//             <linearGradient
-//               id={`icon-gradient-${title}`}
-//               x1="0%"
-//               x2="100%"
-//               y1="0%"
-//               y2="100%"
-//             >
-//               <stop offset="0%" stopColor="#fdba74" />
-//               <stop offset="50%" stopColor="#fb923c" />
-//               <stop offset="100%" stopColor="#ea580c" />
-//             </linearGradient>
-//           </defs>
-//         </svg>
-//         <Icon
-//           className={cn(
-//             "transition-transform duration-300",
-//             "translate-y-0",
-//             "group-hover:-translate-y-0.5"
-//           )}
-//           size={34}
-//           stroke={`url(#icon-gradient-${title})`}
-//           strokeWidth={2}
-//         />
-//         {/* 🔤 Title */}
-//         <span className="text-secondary">{title}</span>
-//       </div>
-//       {/* 🔤 Subtitle */}
-//       <div className="font-semibold text-base text-zinc-800">{subtitle}</div>
-//     </div>
-//   );
-// }

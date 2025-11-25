@@ -124,7 +124,7 @@ function CollapseWhileScroll({ children }: { children: React.ReactNode }) {
     <motion.div
       animate={isScrolled ? "scrolled" : "unscrolled"}
       className={cn(
-        "-translate-x-1/2 fixed left-1/2 z-5000 mx-auto mt-0 rounded-full rounded-full transition-[background] duration-300"
+        "-translate-x-1/2 fixed left-1/2 z-5000 mx-auto mt-0 rounded-full transition-[background] duration-300"
       )}
       initial={false}
       variants={{
