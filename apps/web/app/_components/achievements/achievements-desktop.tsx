@@ -53,7 +53,7 @@ function AchievementsPanel() {
   return (
     <div className="perspective-midrange flex flex-col gap-y-2">
       {/* 📝 Description */}
-      <div className="flex max-w-[550px] rotate-y-8 flex-col justify-between gap-y-6 rounded-xl p-8 backdrop-blur-xl">
+      <div className="flex h-[400px] max-w-[550px] rotate-y-8 flex-col justify-between gap-y-6 rounded-xl p-8 backdrop-blur-xl">
         <div className="flex flex-col gap-y-4">
           <h3 className="text-center font-bold font-kanit text-5xl text-white">
             {currentAchievement.title}

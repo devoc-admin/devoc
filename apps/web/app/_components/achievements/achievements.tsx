@@ -30,7 +30,7 @@ const Onepark = {
     />
   ),
   description:
-    "Réservation en ligne de places de parking avec paiement depuis mobile, tablette ou ordinateur.",
+    "Site de réservation en ligne de places de parking avec possibilité de paiement depuis mobile, tablette ou ordinateur et fourniture d'équipements embarqués pour la détection de plaque et le contrôle de barrières d'accès.",
   id: "onepark",
   showcase: flowMockup,
   slug: "dashboard-analytics",
@@ -53,7 +53,7 @@ const Frustration = {
     </div>
   ),
   description:
-    "Refonte d'un média en ligne avec site, administration et newsletter.",
+    "Refonte d'un média en ligne avec redesign du site, création d'une interface d'administration, configuration d'unsystème de paiement sécurisé pour des dons et mise en place d'une newsletter très suivie.",
   id: "frustration",
   showcase: frustrationCover,
   slug: "media-en-ligne",
@@ -79,7 +79,7 @@ const Statcraft = {
     />
   ),
   description:
-    "Tableau de bord pour analyser l'audience et les sources de trafic des sites Insee.",
+    "Tableau de bord comprenant de nombreux indicateurs statistiques pour analyser l'audience et les sources de trafic des sites Insee à partir des logs de consultation.",
   id: "insee",
   showcase: statcraftCover,
   slug: "analyse-de-trafic",
