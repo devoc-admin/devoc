@@ -86,7 +86,7 @@ function DesktopHeader() {
           </div>
           <LinksDesktop />
           <div className="flex w-[200px] justify-end">
-            <ContactButton>Devis gratuit</ContactButton>
+            <ContactButton>Contact</ContactButton>
           </div>
         </Glass>
       </CollapseWhileScroll>

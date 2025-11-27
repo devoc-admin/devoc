@@ -1,5 +1,4 @@
 "use client";
-import { ArrowRightIcon } from "lucide-react";
 import { motion } from "motion/react";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
@@ -10,11 +9,11 @@ import CubeShape from "@/assets/shapes/cube.png";
 import DiamondShape from "@/assets/shapes/diamond.png";
 import DonutShape from "@/assets/shapes/donut.png";
 import SphereShape from "@/assets/shapes/sphere.png";
+import { ContainerTextFlip } from "@/components/aceternity/container-text-flip";
 import { AvatarStack } from "@/components/kibo-ui/avatar-stack";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -29,13 +28,16 @@ export default function Hero() {
   return (
     <Navbar>
       <Shapes />
-      <div className="flex flex-col items-center justify-center gap-y-6 rounded-xl p-4">
-        <div className="flex flex-col items-center backdrop-blur-xs">
+      <div className="flex h-full flex-col items-center justify-center gap-y-32 rounded-xl p-4">
+        <div className="flex flex-col items-center gap-y-6 backdrop-blur-xs">
           <DevOc />
-          <Subtitle />
+          <Keywords />
+          <Description />
         </div>
-        <HeroButtons />
-        <Founders />
+        <div className={cn("absolute", "bottom-0", "xs:bottom-10")}>
+          <CTA />
+          <Founders />
+        </div>
       </div>
     </Navbar>
   );
@@ -65,11 +67,17 @@ function Shapes() {
   const { effectiveParallaxOffset } = useShapesParallaxEffect();
 
   return (
-    <div className="-z-1 absolute h-full w-full max-w-[1400px]">
+    <div
+      className={cn(
+        "-z-1 absolute h-full w-full max-w-[1400px]",
+        "blur-xs",
+        "sm:blur-none"
+      )}
+    >
       <Shape
         className={cn(
           "-translate-x-1/2 -translate-y-1/2",
-          "top-[9%] left-[28%]",
+          "top-[29%] left-[28%]",
           "xs:top-[13%] xs:left-[28%]",
           "sm:top-[13%] sm:left-[16%]",
           "md:top-[17%] md:left-[15%]",
@@ -82,7 +90,7 @@ function Shapes() {
       <Shape
         className={cn(
           "-translate-y-1/2 translate-x-1/2",
-          "top-[17%] right-[23%]",
+          "top-[20%] right-[23%]",
           "xs:top-[22%] xs:right-[18%]",
           "sm:top-[28%] sm:right-[15%]",
           "md:top-[28%] md:right-[16%]",
@@ -95,7 +103,7 @@ function Shapes() {
       <Shape
         className={cn(
           "-translate-x-1/2 translate-y-1/2",
-          "bottom-[12%] left-[22%]",
+          "bottom-[20%] left-[22%]",
           "xs:bottom-[17%] xs:left-[24%]",
           "sm:bottom-[13%] sm:left-[20%]",
           "md:bottom-[16%] md:left-[22%]",
@@ -108,7 +116,7 @@ function Shapes() {
       <Shape
         className={cn(
           "translate-x-1/2 translate-y-1/2",
-          "right-[22%] bottom-[20%]",
+          "right-[22%] bottom-[29%]",
           "xs:right-[22%] xs:bottom-[20%]",
           "sm:right-[24%] sm:bottom-[18%]",
           "md:right-[24%] md:bottom-[22%]",
@@ -179,55 +187,12 @@ function Shape({
   );
 }
 
-function useMobile() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-
-    let timeoutId: NodeJS.Timeout;
-    const debouncedCheckMobile = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(checkMobile, 150);
-    };
-
-    window.addEventListener("resize", debouncedCheckMobile);
-    return () => {
-      window.removeEventListener("resize", debouncedCheckMobile);
-      clearTimeout(timeoutId);
-    };
-  }, []);
-  return { isMobile };
-}
-
 function useShapesParallaxEffect() {
   const [parallaxOffset, setParallaxOffset] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
   const effectiveParallaxOffset = parallaxOffset * 0.5;
-
-  // Check if mobile on mount
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768); // md breakpoint
-    checkMobile();
-
-    let timeoutId: NodeJS.Timeout;
-    const debouncedCheckMobile = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(checkMobile, 150);
-    };
-
-    window.addEventListener("resize", debouncedCheckMobile);
-    return () => {
-      window.removeEventListener("resize", debouncedCheckMobile);
-      clearTimeout(timeoutId);
-    };
-  }, []);
 
   // ⇅ Parallax effect (disabled on mobile)
   useEffect(() => {
-    if (isMobile) return; // Skip parallax on mobile
-
     let ticking = false;
 
     const handleScroll = () => {
@@ -247,7 +212,7 @@ function useShapesParallaxEffect() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [isMobile]);
+  }, []);
 
   return {
     effectiveParallaxOffset,
@@ -255,120 +220,133 @@ function useShapesParallaxEffect() {
 }
 
 // ----------------------------------
-function DevOc() {
-  return (
-    <motion.h1
-      animate={{ opacity: 1, y: 0 }}
-      className={cn(
-        "relative flex select-none items-center p-6 pb-1",
-        "text-8xl",
-        "xs:text-9xl",
-        "sm:text-[9rem]",
-        "md:text-[10rem]",
-        "lg:text-[11rem]",
-        "xl:text-[12rem]"
-      )}
-      initial={{ opacity: 0, y: -50 }}
-      transition={{ delay: baseDelay, duration: baseDuration }}
-    >
-      {/*<DoodleTop/>*/}
-      <div className={cn("font-style-script", "pt-4")}>Dev'</div>
-      <AuroraText
-        className="font-extrabold font-geist text-transparent tracking-tighter"
-        colors={["#FFC731", "#FF5709", "#FFC731", "#FF5709"]}
-      >
-        Oc
-      </AuroraText>
-    </motion.h1>
-  );
-}
-
-// ----------------------------------
-function Subtitle() {
-  return (
-    <motion.p
-      animate={{ opacity: 1, y: 0 }}
-      className={cn(
-        "w-[45ch] max-w-[90vw] text-center font-kanit font-semibold text-secondary leading-tight!",
-        "text-sm",
-        "xs:text-lg"
-      )}
-      initial={{ opacity: 0, y: 50 }}
-      transition={{ delay: baseDelay, duration: baseDuration }}
-    >
-      <span>
-        Nous créons des sites web, des applications sur mesure et des solutions
-        d’automatisation IA pour propulser votre organisation vers le succès
-        digital.
-      </span>
-    </motion.p>
-  );
-}
-
-// ----------------------------------
-function HeroButtons() {
+function Keywords() {
   return (
     <motion.div
-      animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col gap-3 xs:gap-6 sm:flex-row"
-      initial={{ opacity: 0, y: 50 }}
-      transition={{ delay: baseDelay, duration: baseDuration }}
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+      transition={{ delay: baseDelay * 3, duration: baseDuration }}
     >
-      {/* 🆕 Démarrer un projet */}
-      <HeroButton
-        className={cn(
-          "group bg-linear-to-r from-primary to-primary-lighter text-primary-foreground",
-          "hover:bg-linear-to-r hover:from-primary hover:to-primary-lighter"
-        )}
-        href="#processus"
-      >
-        <div className="flex items-center gap-3">
-          <span>Démarrer un projet</span>
-          <ArrowRightIcon
-            className={cn(
-              "size-5 shrink-0 translate-x-0 transition-transform duration-300",
-              "group-hover:translate-x-1"
-            )}
-          />
+      <div className={cn("flex flex-col gap-y-1", "-mt-8", "xs:-mt-10")}>
+        <div className="text-center font-bold font-kanit text-base">
+          Votre expert de proximité en
         </div>
-      </HeroButton>
-      {/* 👀 Voir nos réalisations */}
-      <Link href="#realisations">
-        <ShimmerButton
-          className={cn("font-kanit", "h-13 w-[260px] px-11", "text-lg")}
-          shimmerSize="1.5px"
-        >
-          Voir nos réalisations
-        </ShimmerButton>
-      </Link>
+        <ContainerTextFlip
+          words={[
+            "🔒 Sécurité",
+            "👁️ Accessibilité",
+            "⚡ Performance",
+            "🎨 Design",
+          ]}
+        />
+      </div>
     </motion.div>
   );
 }
 
-function HeroButton({
-  className,
-  children,
-  href,
-}: {
-  className: string;
-  children: React.ReactNode;
-  href: string;
-}) {
+// ----------------------------------
+function DevOc() {
   return (
-    <Link href={href}>
-      <Button
+    <FadeMoveDown>
+      <h1
         className={cn(
-          "h-13 w-[260px]",
-          "w-full rounded-full font-kanit",
-          "px-7 py-5.5",
-          "xs:px-8 xs:py-6 text-lg",
-          "hover:cursor-pointer",
-          className
+          "relative flex select-none items-center px-6",
+          "text-8xl",
+          "xs:text-9xl",
+          "sm:text-[9rem]",
+          "md:text-[10rem]",
+          "lg:text-[11rem]",
+          "xl:text-[12rem]"
         )}
       >
-        <div className="flex items-center gap-3">{children}</div>
-      </Button>
+        {/*<DoodleTop/>*/}
+        <div className={cn("font-style-script", "pt-4")}>Dev'</div>
+        <AuroraText
+          className="font-extrabold font-geist text-transparent tracking-tighter"
+          colors={["#FFC731", "#FF5709", "#FFC731", "#FF5709"]}
+        >
+          Oc
+        </AuroraText>
+      </h1>
+    </FadeMoveDown>
+  );
+}
+
+function FadeMoveDown({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: -50 }}
+      transition={{ delay: baseDelay, duration: baseDuration }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ----------------------------------
+function Description() {
+  return (
+    <motion.div
+      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 50 }}
+      transition={{ delay: baseDelay, duration: baseDuration }}
+    >
+      <div
+        className={cn(
+          "mx-auto",
+          "w-[45ch] max-w-[90vw] text-center font-kanit font-semibold text-secondary leading-tight!",
+          "text-base",
+          "xs:text-lg"
+        )}
+      >
+        Nous créons des sites web, des applications sur mesure et des solutions
+        d’automatisation IA pour propulser votre organisation vers le succès
+        digital.
+      </div>
+    </motion.div>
+  );
+}
+
+// ----------------------------------
+function CTA() {
+  return (
+    <FadeMoveUp>
+      <div className={cn("flex flex-col gap-3", "xs:gap-6", "sm:flex-row")}>
+        {/*<DemarrerUnProjet />*/}
+        <VoirNosRealisations />
+      </div>
+    </FadeMoveUp>
+  );
+}
+
+function VoirNosRealisations() {
+  return (
+    <Link href="#realisations">
+      <ShimmerButton
+        className={cn(
+          "font-kanit",
+          "h-12 px-8 text-md",
+          "xs:h-13 xs:px-12 xs:text-lg",
+          "sm:h-13 sm:px-12 sm:text-xl"
+        )}
+        shimmerSize="2px"
+      >
+        Voir nos réalisations
+      </ShimmerButton>
     </Link>
+  );
+}
+
+function FadeMoveUp({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 50 }}
+      transition={{ delay: baseDelay, duration: baseDuration }}
+    >
+      {children}
+    </motion.div>
   );
 }
 
@@ -377,7 +355,7 @@ function Founders() {
   return (
     <div className="flex flex-col items-center gap-2 rounded-lg px-6 py-4 font-fira-code">
       <FadeScaleEntry>
-        <div>Fondateurs</div>
+        <div className={cn("text-sm", "xs:text-base")}>Fondateurs</div>
       </FadeScaleEntry>
       <AvatarStack>
         <PopEntry>
@@ -458,4 +436,28 @@ function PopEntry({
       {children}
     </motion.div>
   );
+}
+
+// ------------------------------------------------------
+//
+function useMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+
+    let timeoutId: NodeJS.Timeout;
+    const debouncedCheckMobile = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkMobile, 150);
+    };
+
+    window.addEventListener("resize", debouncedCheckMobile);
+    return () => {
+      window.removeEventListener("resize", debouncedCheckMobile);
+      clearTimeout(timeoutId);
+    };
+  }, []);
+  return { isMobile };
 }
