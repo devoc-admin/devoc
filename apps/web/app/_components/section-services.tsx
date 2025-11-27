@@ -38,14 +38,14 @@ export default function Services() {
       className={cn(
         "relative flex min-h-screen flex-col items-center justify-between gap-32 bg-zinc-950",
         // Pour scroller en dessous du faisceau
-        "-scroll-m-[200px]",
-        "px-6 pt-36 pb-12",
-        "xs:pt-88 xs:pb-48"
+        "sm:-scroll-m-[200px]",
+        "px-6 pt-24 pb-12",
+        "sm:pt-88 sm:pb-48"
       )}
       id="services"
       ref={ref}
     >
-      <Lamp className={cn("hidden", "xs:flex")} />
+      <Lamp className={cn("hidden", "sm:flex")} />
       <SectionTitle
         description="Une gamme complète de services pour booster votre présence numérique, de la conception à la mise en ligne et au-delà 🚀"
         title="Nos Services"

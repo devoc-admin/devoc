@@ -20,7 +20,7 @@ function SectionTitle({
       <h2
         className={cn(
           "font-kanit font-semibold",
-          "text-4xl",
+          "text-[40px]",
           "xs:text-5xl",
           "md:text-6xl",
           "lg:text-8xl"
