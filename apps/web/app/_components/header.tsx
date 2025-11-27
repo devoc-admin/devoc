@@ -13,7 +13,6 @@ import Icon from "@/public/icon.svg";
 export default function Header() {
   const isMobile = useMediaQuery("(max-width: 970px)");
   const isDesktop = useMediaQuery("(min-width: 971px)");
-
   if (isMobile) return <MobileHeader />;
   if (isDesktop) return <DesktopHeader />;
 }

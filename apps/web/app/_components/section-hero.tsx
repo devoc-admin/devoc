@@ -26,25 +26,23 @@ const baseDuration = 0.5;
 
 export default function Hero() {
   return (
-    <Navbar>
+    <WithNavbar>
       <Shapes />
-      <div className="flex h-full flex-col items-center justify-center gap-y-32 rounded-xl p-4">
-        <div className="flex flex-col items-center gap-y-6">
-          <DevOc />
-          <Keywords />
-          <Description />
-        </div>
-        <div className={cn("absolute", "bottom-0", "xs:bottom-10")}>
-          <CTA />
-          <Founders />
-        </div>
+      <div className="flex flex-col items-center gap-y-6">
+        <DevOc />
+        <Keywords />
+        <Description />
       </div>
-    </Navbar>
+      <div className={cn("absolute", "bottom-0", "xs:bottom-10")}>
+        <CTA />
+        <Founders />
+      </div>
+    </WithNavbar>
   );
 }
 
 // ----------------------------------
-function Navbar({ children }: { children: React.ReactNode }) {
+function WithNavbar({ children }: { children: React.ReactNode }) {
   const { ref: sectionRef } = useNavTheme({
     sectionName: "home",
     theme: "light",
@@ -53,7 +51,8 @@ function Navbar({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "relative flex min-h-screen w-full grow items-center justify-center overflow-hidden px-6 py-12"
+        "min-h-svh w-full",
+        "relative flex grow items-center justify-center overflow-hidden px-6 py-12"
       )}
       ref={sectionRef}
     >
@@ -65,11 +64,11 @@ function Navbar({ children }: { children: React.ReactNode }) {
 // ----------------------------------
 function Shapes() {
   const { effectiveParallaxOffset } = useShapesParallaxEffect();
-
   return (
     <div
       className={cn(
-        "-z-1 absolute h-full w-full max-w-[1400px]",
+        "-z-1 absolute",
+        "h-full w-full max-w-[1400px]",
         "blur-xs",
         "sm:blur-none"
       )}
@@ -360,7 +359,13 @@ function FadeMoveUp({ children }: { children: React.ReactNode }) {
 // ----------------------------------
 function Founders() {
   return (
-    <div className="flex flex-col items-center gap-2 rounded-lg px-6 py-4 font-fira-code">
+    <div
+      className={cn(
+        "hidden",
+        "sm:flex",
+        "flex-col items-center gap-2 rounded-lg px-6 py-4 font-fira-code"
+      )}
+    >
       <FadeScaleEntry>
         <div className={cn("text-sm", "xs:text-base")}>Fondateurs</div>
       </FadeScaleEntry>
