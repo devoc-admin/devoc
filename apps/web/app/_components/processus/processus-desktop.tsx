@@ -106,7 +106,7 @@ function MoveRotateFromOutside({
         className="-translate-x-[125%] relative w-fit"
         initial={{
           left: 70,
-          opacity: 0,
+          opacity: 1,
           rotate: 200,
           y: 150,
         }}
@@ -116,7 +116,7 @@ function MoveRotateFromOutside({
           ease: "easeOut",
           type: "spring",
         }}
-        viewport={{ margin: "-20px", once: true }}
+        viewport={{ margin: "0px 0px 0px 0px", once: true }}
         whileInView={{ left: "50%", opacity: 1, rotate: -10, y: 0 }}
       >
         {children}

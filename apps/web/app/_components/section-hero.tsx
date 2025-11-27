@@ -29,7 +29,7 @@ export default function Hero() {
     <Navbar>
       <Shapes />
       <div className="flex h-full flex-col items-center justify-center gap-y-32 rounded-xl p-4">
-        <div className="flex flex-col items-center gap-y-6 backdrop-blur-xs">
+        <div className="flex flex-col items-center gap-y-6">
           <DevOc />
           <Keywords />
           <Description />
@@ -77,26 +77,28 @@ function Shapes() {
       <Shape
         className={cn(
           "-translate-x-1/2 -translate-y-1/2",
-          "top-[29%] left-[28%]",
+          "top-[25%] left-[28%]",
           "xs:top-[13%] xs:left-[28%]",
           "sm:top-[13%] sm:left-[16%]",
           "md:top-[17%] md:left-[15%]",
           "lg:top-[19%] lg:left-[19%]",
           "lg:left-[19%] xl:top-[25%]"
         )}
+        parallaxCoeff={4}
         parallaxOffset={effectiveParallaxOffset}
         src={CubeShape}
       />
       <Shape
         className={cn(
           "-translate-y-1/2 translate-x-1/2",
-          "top-[20%] right-[23%]",
+          "top-[12%] right-[23%]",
           "xs:top-[22%] xs:right-[18%]",
           "sm:top-[28%] sm:right-[15%]",
           "md:top-[28%] md:right-[16%]",
           "lg:top-[33%] lg:right-[16%]",
-          "xl:top-[36%] xl:right-[23%]"
+          "xl:top-[36%] xl:right-[19%]"
         )}
+        parallaxCoeff={3}
         parallaxOffset={effectiveParallaxOffset}
         src={DiamondShape}
       />
@@ -110,19 +112,21 @@ function Shapes() {
           "lg:bottom-[16%] lg:left-[22%]",
           "xl:bottom-[24%] xl:left-[19%]"
         )}
+        parallaxCoeff={2}
         parallaxOffset={effectiveParallaxOffset}
         src={DonutShape}
       />
       <Shape
         className={cn(
           "translate-x-1/2 translate-y-1/2",
-          "right-[22%] bottom-[29%]",
+          "right-[16%] bottom-[27%]",
           "xs:right-[22%] xs:bottom-[20%]",
           "sm:right-[24%] sm:bottom-[18%]",
           "md:right-[24%] md:bottom-[22%]",
           "lg:right-[14%] lg:bottom-[22%]",
           "xl:right-[20%] xl:bottom-[18%]"
         )}
+        parallaxCoeff={1}
         parallaxOffset={effectiveParallaxOffset}
         src={SphereShape}
       />
@@ -134,12 +138,15 @@ function Shape({
   src,
   className,
   parallaxOffset,
+  parallaxCoeff,
 }: {
   src: StaticImageData;
   parallaxOffset: number;
+  parallaxCoeff: number;
   className?: string;
 }) {
   const { isMobile } = useMobile();
+  const parallaxValue = parallaxOffset * parallaxCoeff;
   return (
     <motion.div
       animate={{
@@ -147,29 +154,29 @@ function Shape({
         // Simplified animation on mobile: only 3 keyframes instead of 7
         x: isMobile ? [0, 2, 0] : [0, 3, -2, 4, 0, -1, 0],
         y: isMobile
-          ? [parallaxOffset, parallaxOffset - 5, parallaxOffset]
+          ? [parallaxValue, parallaxValue - 5, parallaxValue]
           : [
-              parallaxOffset,
-              parallaxOffset - 8,
-              parallaxOffset - 5,
-              parallaxOffset - 10,
-              parallaxOffset - 15,
-              parallaxOffset - 8,
-              parallaxOffset,
+              parallaxValue,
+              parallaxValue - 8,
+              parallaxValue - 5,
+              parallaxValue - 10,
+              parallaxValue - 15,
+              parallaxValue - 8,
+              parallaxValue,
             ],
       }}
       className={cn(
         className,
         "absolute",
-        "w-[200px]",
-        "xs:w-[250px]",
-        "sm:w-[275px]",
+        "w-60",
+        "xs:w-[275px]",
+        "sm:w-[300px]",
         "md:w-[300px]",
         "lg:w-[350px]",
         "xl:w-[400px]"
       )}
       initial={{ opacity: 0 }}
-      style={{ y: parallaxOffset }}
+      style={{ y: parallaxValue }}
       transition={{
         delay: Math.random(),
         // Slower animation on mobile (12-18s instead of 9-12s)
@@ -228,7 +235,7 @@ function Keywords() {
       transition={{ delay: baseDelay * 3, duration: baseDuration }}
     >
       <div className={cn("flex flex-col gap-y-1", "-mt-8", "xs:-mt-10")}>
-        <div className="text-center font-bold font-kanit text-base">
+        <div className="text-center font-kanit font-normal text-base">
           Votre expert de proximité en
         </div>
         <ContainerTextFlip
