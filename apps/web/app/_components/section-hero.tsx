@@ -33,7 +33,7 @@ export default function Hero() {
         <Keywords />
         <Description />
       </div>
-      <div className={cn("absolute", "bottom-0", "xs:bottom-10")}>
+      <div className={cn("absolute", "bottom-10")}>
         <CTA />
         <Founders />
       </div>
@@ -69,7 +69,7 @@ function Shapes() {
       className={cn(
         "-z-1 absolute",
         "h-full w-full max-w-[1400px]",
-        "blur-xs",
+        "opacity-50 blur-xs",
         "sm:blur-none"
       )}
     >

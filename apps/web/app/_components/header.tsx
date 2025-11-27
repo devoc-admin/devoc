@@ -10,6 +10,7 @@ import { Glass } from "@/components/sera-ui/liquid-glass";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
+
 export default function Header() {
   const isMobile = useMediaQuery("(max-width: 970px)");
   const isDesktop = useMediaQuery("(min-width: 971px)");
@@ -20,8 +21,26 @@ export default function Header() {
 // --------------------------------
 function MobileHeader() {
   const { iconRef, isOpened } = useToogleNavbarLink();
+  const { scrollY } = useScroll();
+  const [isVisible, setIsVisible] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useMotionValueEvent(scrollY, "change", (currentScrollY) => {
+    const scrollThreshold = 100;
+    const isScrollingUp = currentScrollY < lastScrollY;
+    const isBelowThreshold = currentScrollY > scrollThreshold;
+
+    setIsVisible(isScrollingUp && isBelowThreshold);
+    setLastScrollY(currentScrollY);
+  });
+
   return (
-    <div className="-translate-x-1/2 fixed top-3 left-1/2 z-5000 mx-auto mt-0">
+    <motion.div
+      animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -100 }}
+      className="-translate-x-1/2 fixed top-3 left-1/2 z-5000 mx-auto mt-0"
+      initial={{ opacity: 0, y: -100 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+    >
       <div
         className={cn(
           "flex w-[95vw] items-center justify-between",
@@ -46,7 +65,7 @@ function MobileHeader() {
         </div>
       </div>
       {isOpened && <LinksMobile />}
-    </div>
+    </motion.div>
   );
 }
 
