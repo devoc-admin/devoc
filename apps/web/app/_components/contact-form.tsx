@@ -94,11 +94,13 @@ function ContactForm() {
       <form.Field
         children={(field) => (
           <div className={cn("col-span-2", "@md:col-span-1")}>
-            <Label className={labelClass} htmlFor="name">
+            <Label className={labelClass} htmlFor={field.name}>
               Nom *
             </Label>
             <Input
+              autoComplete="on"
               className={cn("col-span-1", inputClass)}
+              id={field.name}
               name={field.name}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="Nom"
@@ -114,11 +116,13 @@ function ContactForm() {
       <form.Field
         children={(field) => (
           <div className={cn("col-span-2", "@md:col-span-1")}>
-            <Label className={labelClass} htmlFor="email">
+            <Label className={labelClass} htmlFor={field.name}>
               Email *
             </Label>
             <Input
+              autoComplete="on"
               className={cn("col-span-1", inputClass)}
+              id={field.name}
               name={field.name}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="Email"
@@ -134,11 +138,13 @@ function ContactForm() {
       <form.Field
         children={(field) => (
           <div className="col-span-2">
-            <Label className={labelClass} htmlFor="email">
+            <Label className={labelClass} htmlFor={field.name}>
               Organisation
             </Label>
             <Input
+              autoComplete="off"
               className={cn("col-span-2", inputClass)}
+              id={field.name}
               name={field.name}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="Nom de votre organisation"
@@ -154,11 +160,13 @@ function ContactForm() {
       <form.Field
         children={(field) => (
           <div className="col-span-2">
-            <Label className={labelClass} htmlFor="message">
+            <Label className={labelClass} htmlFor={field.name}>
               Message *
             </Label>
             <Textarea
+              autoComplete="off"
               className={cn("h-36", inputClass)}
+              id={field.name}
               name={field.name}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="Décrivez votre projet, vos besoins, vos objectifs etc."
