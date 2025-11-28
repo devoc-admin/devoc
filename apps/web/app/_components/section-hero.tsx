@@ -70,7 +70,7 @@ function Shapes() {
         "-z-1 absolute",
         "h-full w-full max-w-[1400px]",
         "opacity-50 blur-xs",
-        "sm:blur-none"
+        "sm:opacity-100 sm:blur-none"
       )}
     >
       <Shape
