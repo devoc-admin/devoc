@@ -168,86 +168,26 @@ type GroupInternalLink = {
 
 const groupLinks: GroupInternalLink[] = [
   {
-    id: "services",
+    id: "navigation",
     links: [
       {
-        href: "/services/developpement-web",
-        name: "Développement Web",
+        href: "/#services",
+        name: "Services",
       },
       {
-        href: "/services/applications-mobiles",
-        name: "Applications Mobiles",
+        href: "/#realisations",
+        name: "Réalisations",
       },
       {
-        href: "/services/referencement-seo",
-        name: "Référencement SEO",
+        href: "/#processus",
+        name: "Notre méthode",
       },
       {
-        href: "/services/design-ux-ui",
-        name: "Design UX/UI",
-      },
-      {
-        href: "/services/e-commerce",
-        name: "E-commerce",
-      },
-      {
-        href: "/services/developpement-backend",
-        name: "Automatisations IA",
-      },
-    ],
-    title: "Services",
-  },
-  {
-    id: "entreprises",
-    links: [
-      {
-        href: "/about",
-        name: "À propos",
-      },
-      {
-        href: "/team",
-        name: "Notre équipe",
-      },
-      {
-        href: "/values",
-        name: "Nos valeurs",
-      },
-      {
-        href: "/careers",
-        name: "Carrières",
-      },
-      {
-        href: "/blog",
-        name: "Blog",
-      },
-    ],
-    title: "Entreprises",
-  },
-  {
-    id: "support",
-    links: [
-      {
-        href: "/support",
-        name: "Centre d'aide",
-      },
-      {
-        href: "#contact",
+        href: "/#contact",
         name: "Contact",
       },
-      {
-        href: "/documentation",
-        name: "Documentation",
-      },
-      {
-        href: "/privacy",
-        name: "Politique de confidentialité",
-      },
-      {
-        href: "/terms",
-        name: "Conditions d'utilisation",
-      },
     ],
-    title: "Support",
+    title: "Navigation",
   },
 ];
 
