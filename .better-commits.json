@@ -6,6 +6,7 @@
     "infer_type_from_branch": true,
     "append_emoji_to_label": true,
     "append_emoji_to_commit": true,
+    "emoji_commit_position": "After-Colon",
     "options": [
       {
         "value": "feat",

@@ -59,10 +59,70 @@ Our tool for managing the whole monorepo
 pnpm add turbo --global
 ```
 
+### Bun (runtime & bunx)
+This repo runs some scripts and Git hooks using `bunx` (via Bun).
+
+Install with Homebrew/Linuxbrew (recommended):
+
+```bash
+brew install oven-sh/bun/bun
+bun --version
+```
+
+Tip: If you use direnv, the provided `.envrc` adds `~/.bun/bin` to your PATH automatically.
+
+### just (optionnel mais recommandé)
+Lightweight task runner pour centraliser les commandes (alternative à Make). Utilisé ici via le fichier `Justfile`.
+
+```bash
+brew install just
+just --list   # voir les recettes disponibles
+```
+
+Si vous ne souhaitez pas l'utiliser, toutes les commandes restent accessibles via pnpm/turbo.
+
 ## 6. Biome plugin (recommended)
 Biome is our formatter and linter for JavaScript and TypeScript. You probably want to install appropriate plugin for your IDE so it can format your code automatically on save. Please check [this link](https://biomejs.dev/guides/editors/first-party-extensions/) for more information.
 
 ## Getting Started
+
+### Zero Setup Philosophy
+Ce dépôt est conçu pour que vous puissiez cloner et commencer à coder sans configuration manuelle superflue grace a [Direnv](#installer-direnv).
+
+1. Autorisez direnv quand vous entrez dans le dossier: `direnv allow`.
+2. Le fichier `.envrc` s'occupe de:
+	- Vérifier la présence des outils clés (git, node, pnpm, bun)
+	- Activer pnpm via Corepack à la bonne version
+	- Installer automatiquement les dépendances (`pnpm install --recursive`)
+	- Installer/Vérifier les hooks Git (lefthook: pré-commit + commit-msg)
+	- Exporter les variables d'environnement et ajouter `node_modules/.bin` au PATH
+	- Afficher les versions et conseils d'installation manquants
+
+Ensuite lancez `just dev` ou `turbo dev`. Rien d'autre n'est requis.
+
+### Installer direnv
+Direnv recharge automatiquement l'environnement selon `.envrc`.
+
+macOS/Linux (Homebrew/Linuxbrew):
+```bash
+brew install direnv
+```
+
+Activez le hook pour votre shell (zsh par défaut ici). Ajoutez dans `~/.zshrc`:
+```bash
+eval "$(direnv hook zsh)"
+```
+Puis rechargez:
+```bash
+source ~/.zshrc
+```
+
+Utilisation:
+```bash
+cd devoc
+direnv allow   # première fois
+```
+À chaque changement du `.envrc`, direnv demandera à nouveau confirmation.
 
 ### Step 1: Clone the Repository
 
@@ -80,6 +140,8 @@ This will install all the packages needed for all apps in the monorepo:
 
 ```bash
 pnpm install --recursive
+# ou via just
+just install
 ```
 
 ## Running the Applications
@@ -88,6 +150,8 @@ pnpm install --recursive
 
 ```bash
 turbo dev
+## ou
+just dev
 ```
 
 ### Run a Specific App
@@ -95,9 +159,22 @@ turbo dev
 ```bash
 # Run the main web app
 turbo dev --filter=web
+## ou
+just dev web
 
 # Run the lasbordes preview app (Vite)
 turbo dev --filter=lasbordes-preview
+## ou
+just dev lasbordes-preview
+```
+
+### Qualité de code (centralisé)
+
+```bash
+just lint      # lint toutes les apps principales
+just format    # format
+just types     # vérification des types
+just commit    # assistant de message de commit
 ```
 
 **What does this mean?**
