@@ -94,6 +94,7 @@ type ContactLink = {
   icon: React.ReactNode;
   label: string;
   id: string;
+  newPage?: boolean;
 };
 
 const contactLinks: ContactLink[] = [
@@ -102,18 +103,21 @@ const contactLinks: ContactLink[] = [
     icon: <MailIcon size={16} />,
     id: "email",
     label: "dev-oc@contact.fr",
+    newPage: false,
   },
   {
     href: "tel:+33620239838",
     icon: <PhoneIcon size={16} />,
     id: "phone",
     label: "+33 6 20 23 98 38",
+    newPage: false,
   },
   {
-    href: "https://maps.app.goo.gl/1234567890",
+    href: "https://maps.app.goo.gl/bomxYpGK3RnMo3ww7",
     icon: <MapPinIcon size={16} />,
     id: "address",
     label: "Carcassonne, France",
+    newPage: true,
   },
 ];
 
@@ -131,15 +135,21 @@ function ContactLink({
   href,
   icon,
   label,
+  newPage,
 }: {
   href: string;
   icon: React.ReactNode;
   label: string;
+  newPage?: boolean;
 }) {
   return (
     <div className="flex items-center gap-2.5 text-sm hover:text-primary">
       {icon}
-      <a className="cursor-pointer transition-colors" href={href}>
+      <a
+        className="cursor-pointer transition-colors"
+        href={href}
+        target={newPage ? "_blank" : "_self"}
+      >
         {label}
       </a>
     </div>
