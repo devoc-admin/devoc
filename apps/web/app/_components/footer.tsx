@@ -284,9 +284,9 @@ function InternalLinks({
           //   />
           //   <span>{link.name}</span>
           // </a>
-          <div
+          <a
             className="group flex cursor-pointer items-center gap-2 text-sm transition-colors hover:text-primary-foreground"
-            // href={link.href}
+            href={link.href}
             key={link.name}
           >
             <ArrowRightIcon
@@ -294,7 +294,7 @@ function InternalLinks({
               size={16}
             />
             <span>{link.name}</span>
-          </div>
+          </a>
         ))}
       </div>
     </div>

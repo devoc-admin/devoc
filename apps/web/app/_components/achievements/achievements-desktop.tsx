@@ -4,8 +4,8 @@ import { motion } from "motion/react";
 import { createContext, useContext, useState } from "react";
 import { Safari } from "@/components/magicui/safari";
 import { WordRotate } from "@/components/magicui/word-rotate";
+import { RatingBadge } from "@/components/untitledui/rating-badge";
 import { achievements } from "./achievements";
-import LaurelIcon from "./icons/laurel";
 
 type AchievementContext = {
   changeAchievementIndex: (delta: number) => void;
@@ -53,7 +53,7 @@ function AchievementsPanel() {
   return (
     <div className="perspective-midrange flex flex-col gap-y-2">
       {/* 📝 Description */}
-      <div className="flex h-[400px] max-w-[550px] rotate-y-8 flex-col justify-between gap-y-6 rounded-xl p-8 backdrop-blur-xl">
+      <div className="flex h-[430px] max-w-[550px] rotate-y-8 flex-col justify-between gap-y-6 rounded-xl p-8 backdrop-blur-xl">
         <div className="flex flex-col gap-y-4">
           <h3 className="text-center font-bold font-kanit text-5xl text-white">
             {currentAchievement.title}
@@ -71,15 +71,7 @@ function AchievementsPanel() {
         </a>
         {/* 👑 */}
         {accomplishments && (
-          <div className="mx-auto flex items-center gap-x-2 font-bold text-yellow-400">
-            <LaurelIcon className="size-12" />
-            <WordRotate
-              className="flex max-w-[200px] text-center text-sm leading-none"
-              duration={5000}
-              words={accomplishments}
-            />
-            <LaurelIcon className="-scale-x-100 size-12" />
-          </div>
+          <AchievementWithWreaths accomplishments={accomplishments} />
         )}
       </div>
       <div />
@@ -93,6 +85,22 @@ function AchievementsPanel() {
         </AchievementButton>
       </div>
     </div>
+  );
+}
+
+function AchievementWithWreaths({
+  accomplishments,
+}: {
+  accomplishments: string[];
+}) {
+  return (
+    <RatingBadge className="mx-auto text-yellow-400">
+      <WordRotate
+        className="flex max-w-[200px] text-center font-bold text-base leading-none"
+        duration={5000}
+        words={accomplishments}
+      />
+    </RatingBadge>
   );
 }
 
