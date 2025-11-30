@@ -1,0 +1,31 @@
+set shell := ["zsh", "-c"]
+
+dev:
+    pnpm run dev || pnpm exec vite dev
+
+build:
+    pnpm run build || pnpm exec vite build
+
+clean:
+    rm -rf dist
+
+lint:
+    pnpm exec eslint . || echo "(preview) eslint non configuré ou absent"
+
+format:
+    pnpm exec biome format --write || true
+
+types:
+    pnpm exec tsc --noEmit || true
+
+help:
+    echo "Commandes disponibles :"
+    just --list
+
+versions:
+    just -f "{{justfile_directory()}}/../../../Justfile" versions
+    echo "(lasbordes/preview) vite: $(pnpm exec vite --version 2>/dev/null || true)"
+
+install:
+    just -f "{{justfile_directory()}}/../../../Justfile" install
+    pnpm install
