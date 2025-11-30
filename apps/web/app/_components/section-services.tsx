@@ -14,7 +14,8 @@ import {
   WandSparklesIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { useMediaQuery } from "usehooks-ts";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import Lamp from "@/components/aceternity/lamp";
 import { BorderBeam } from "@/components/magicui/border-beam";
@@ -84,11 +85,9 @@ const services: ServiceCardProps[] = [
     description:
       "Besoin d'améliorer le référencement, la performance ou l'accessibilité de votre site web ? Nous vous livrons un audit complet et une optimisation adaptée à vos besoins.",
     features: [
-      "Audit SEO",
-      "Optimisation et suivi des performances",
+      "Audit SEO et performance",
       "Conformité RGAA 4.1 pour l'accessibilité",
-      "Conformité RGPD",
-      "Conformité RGS",
+      "Conformité RGPD et RGS",
     ],
     Icon: WandSparklesIcon,
     id: "audit",
@@ -153,18 +152,20 @@ const services: ServiceCardProps[] = [
 ];
 
 function ServiceCards() {
+  const isDesktop = useMediaQuery("(min-width: 640px)");
+
   return (
     <motion.div
       className={cn(
-        "w-full max-w-[1300px] gap-8",
-        "flex flex-col",
-        "sm:grid sm:grid-cols-[repeat(auto-fill,minmax(320px,1fr))]"
+        "w-full max-w-[1300px]",
+        "flex flex-col gap-8",
+        "sm:grid sm:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] sm:gap-8"
       )}
       initial={{ opacity: 0, y: 200 }}
       transition={{
         duration: 0.5,
       }}
-      viewport={{ amount: 0.2, once: true }}
+      viewport={{ amount: isDesktop ? 0.2 : 0, once: true }}
       whileInView={{ opacity: 1, y: 0 }}
     >
       {services.map((service, index) => (
@@ -183,32 +184,15 @@ function ServiceCard({
   index,
 }: ServiceCardProps & { index: number }) {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const randomDelay = useMemo(() => Math.random() * 1000, []);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-
-    let timeoutId: NodeJS.Timeout;
-    const debouncedCheckMobile = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(checkMobile, 150);
-    };
-
-    window.addEventListener("resize", debouncedCheckMobile);
-    return () => {
-      window.removeEventListener("resize", debouncedCheckMobile);
-      clearTimeout(timeoutId);
-    };
-  }, []);
 
   return (
     <div
       className={cn(
         "@container relative aspect-4/5",
         // Only use perspective on desktop
-        !isMobile && "perspective-[2000px]"
+        isDesktop && "perspective-[2000px]"
       )}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
@@ -218,20 +202,19 @@ function ServiceCard({
         className={cn(
           "relative h-full min-h-[400px] cursor-pointer",
           // Only use 3D transforms on desktop
-          !isMobile && "transform-3d",
-          !isMobile && "transition-all duration-700",
-          !isMobile && (isFlipped ? "rotate-y-180" : "rotate-y-0")
+          isDesktop && "transform-3d transition-all duration-700",
+          isDesktop && (isFlipped ? "rotate-y-180" : "rotate-y-0")
         )}
       >
         {/* 🔼 Front Face */}
         <div
           className={cn(
             "absolute inset-0 flex h-full flex-col gap-6 py-6",
-            !isMobile && "backface-hidden rotate-y-0",
             "transition-all duration-700",
+            isDesktop && "backface-hidden rotate-y-0",
             isFlipped ? "opacity-0" : "opacity-100",
             // On mobile, hide completely when flipped
-            isMobile && isFlipped && "pointer-events-none"
+            isDesktop && isFlipped && "pointer-events-none"
           )}
         >
           <CardHeader>
@@ -269,7 +252,7 @@ function ServiceCard({
             >
               <div className="relative size-[50%]">
                 <Icon
-                  className="absolute h-full w-full text-primary blur-xs"
+                  className="absolute h-full w-full animate-blur-glow text-primary blur-xs"
                   strokeWidth={1.3}
                 />
                 <Icon
@@ -308,34 +291,39 @@ function ServiceCard({
               <Repeat2Icon className={cn("@lg:size-9 @md:size-8 size-7")} />
             </div>
           </CardFooter>
-          <BorderBeam
-            delay={randomDelay}
-            reverse={index % 2 === 0}
-            size={100}
-          />
+          {isDesktop ? (
+            <BorderBeam
+              delay={randomDelay}
+              reverse={index % 2 === 0}
+              size={100}
+            />
+          ) : null}
         </div>
 
         {/* 🔼 Back Face */}
         <div
           className={cn(
-            "absolute inset-0 flex h-full flex-col gap-6 pt-6 pb-6",
-            !isMobile && "pt-10 pb-6",
-            !isMobile && "backface-hidden rotate-y-180",
+            "absolute inset-0 flex h-full flex-col gap-6",
             "transition-all duration-700",
+            "py-6",
+            "@md:px-2 @md:py-8",
+            isDesktop && "backface-hidden rotate-y-180",
             isFlipped ? "opacity-100" : "opacity-0",
             // On mobile, hide completely when not flipped
-            isMobile && !isFlipped && "pointer-events-none"
+            isDesktop && !isFlipped && "pointer-events-none"
           )}
         >
-          <CardHeader className={cn("mt-0 px-6", "sm:mt-6 sm:px-10")}>
+          <CardHeader>
             {/* 🆎 Title */}
             <CardTitle
               className={cn(
                 "font-kanit font-semibold",
+                "mt-4 mb-3",
                 "text-primary-foreground",
                 "group-hover:text-primary",
-                "text-2xl",
-                "sm:text-3xl"
+                "underline decoration-primary underline-offset-12",
+                "text-4xl",
+                "@sm:text-5xl"
               )}
             >
               {title}
@@ -343,11 +331,11 @@ function ServiceCard({
           </CardHeader>
 
           {/* 🔡 Description */}
-          <CardContent className={cn("grow px-6", "lg:px-10")}>
-            <CardDescription className={cn("mb-2 text-[15px]", "sm:text-base")}>
+          <CardContent className="grow">
+            <CardDescription className={cn("mb-2", "text-lg", "@sm:text-lg")}>
               {description}
             </CardDescription>
-            <ul className={cn("mt-8", "@sm:block hidden")}>
+            <ul className={cn("mt-8", "hidden", "@sm:block @sm:text-lg")}>
               {features.map((feature) => (
                 <li className="flex items-center gap-2" key={feature}>
                   <ArrowRightIcon className="text-primary" size={16} />
@@ -382,11 +370,13 @@ function ServiceCard({
               </div>
             </a>
           </CardFooter>
-          <BorderBeam
-            delay={randomDelay}
-            reverse={index % 2 === 0}
-            size={100}
-          />
+          {isDesktop ? (
+            <BorderBeam
+              delay={randomDelay}
+              reverse={index % 2 === 0}
+              size={100}
+            />
+          ) : null}
         </div>
       </Card>
     </div>
