@@ -99,6 +99,9 @@
 	}
 
 
+    --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite
+        alternate;
+    --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
 	@keyframes shimmer-slide {
         to {
         transform: translate(calc(100cqw - 100%), 0);
@@ -121,9 +124,16 @@
         }
     }
 
-    --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite
-        alternate;
-    --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+   	--animate-blur-glow: blur-glow 10s ease-in-out infinite;
+	@keyframes blur-glow {
+		0%, 100% {
+		    filter: blur(2px);
+		}
+		50% {
+		    filter: blur(8px);
+		}
+	}
+
 }
 
 :root {
