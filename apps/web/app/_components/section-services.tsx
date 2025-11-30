@@ -76,22 +76,25 @@ const services: ServiceCardProps[] = [
     ],
     Icon: LaptopIcon,
     id: "site-web",
-    subtitle: "Créez ou améliorez votre présence en ligne",
-    title: "Sites web",
+    subtitle:
+      "Affirmez votre présence en ligne avec un site ultra rapide et moderne",
+    title: "Site web",
   },
   {
     description:
       "Besoin d'améliorer le référencement, la performance ou l'accessibilité de votre site web ? Nous vous livrons un audit complet et une optimisation adaptée à vos besoins.",
     features: [
-      "Audit SEO complet",
+      "Audit SEO",
       "Optimisation et suivi des performances",
-      "Amélioration de l'accessibilité",
+      "Conformité RGAA 4.1 pour l'accessibilité",
+      "Conformité RGPD",
+      "Conformité RGS",
     ],
     Icon: WandSparklesIcon,
     id: "audit",
     subtitle:
       "Boostez vos performances, renforcez votre sécurité et votre accessibilité",
-    title: "Audit personnalisé",
+    title: "Audit",
   },
   {
     description:
@@ -103,21 +106,22 @@ const services: ServiceCardProps[] = [
     ],
     Icon: SmartphoneIcon,
     id: "mobile",
-    subtitle: "Offrez une expérience embarquée unique",
-    title: "Applications mobiles",
+    subtitle: "Offrez une expérience embarquée unique à vos utilisateurs",
+    title: "Mobile",
   },
   {
     description:
       "Nous vous accompagnons dans la création de votre charte graphique et la confection de vos supports de communication.",
     features: [
       "Logo sur mesure",
-      "Votre propre charte graphique",
+      "Charte graphique",
       "Supports print et web",
+      "Kit communication pour les réseaux",
     ],
     Icon: BrushIcon,
     id: "design",
     subtitle:
-      "Affirmez votre identité visuelle pour vous démarquer de la concurrence et vous imposer",
+      "Découvrez votre identité visuelle pour vous démarquer et vous imposer",
     title: "Design",
   },
   {
@@ -130,13 +134,12 @@ const services: ServiceCardProps[] = [
     ],
     Icon: BotIcon,
     id: "ai",
-    subtitle:
-      "Utilisez l'intelligence artificielle pour automatiser vos tâches et réduire vos coûts.",
-    title: "Automatisations IA",
+    subtitle: "Utilisez l'IA pour automatiser vos tâches et réduire vos coûts.",
+    title: "IA",
   },
   {
     description:
-      "Nous vous permettons de vous approprier vos outils et de devenir complètement autonomes. Nous nous occupons de la maintenance et des mises à jour.",
+      "Appropriez-vous vos outils et devenez complètement autonomes avec notre formation comprise. Nous nous occupons également de la maintenance et des mises à jour de vos applications.",
     features: [
       "Formation en présentiel",
       "Support réactif",
@@ -145,54 +148,29 @@ const services: ServiceCardProps[] = [
     Icon: HandshakeIcon,
     id: "support",
     subtitle: "Restez serein avec notre expertise et notre soutien continu.",
-    title: "Formation et support",
+    title: "Formation",
   },
 ];
 
 function ServiceCards() {
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    const checkDesktop = () => setIsDesktop(window.innerWidth >= 640);
-    checkDesktop();
-
-    let timeoutId: NodeJS.Timeout;
-    const debouncedCheckDesktop = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(checkDesktop, 150);
-    };
-
-    window.addEventListener("resize", debouncedCheckDesktop);
-    return () => {
-      window.removeEventListener("resize", debouncedCheckDesktop);
-      clearTimeout(timeoutId);
-    };
-  }, []);
-
   return (
-    <div
+    <motion.div
       className={cn(
         "w-full max-w-[1300px] gap-8",
         "flex flex-col",
-        "overflow-hidden",
         "sm:grid sm:grid-cols-[repeat(auto-fill,minmax(320px,1fr))]"
       )}
+      initial={{ opacity: 0, y: 200 }}
+      transition={{
+        duration: 0.5,
+      }}
+      viewport={{ amount: 0.2, once: true }}
+      whileInView={{ opacity: 1, y: 0 }}
     >
       {services.map((service, index) => (
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          key={service.id}
-          transition={{
-            delay: isDesktop ? index * 0.2 : 0,
-            duration: 0.5,
-          }}
-          viewport={{ once: true }}
-          whileInView={{ opacity: 1, y: 0 }}
-        >
-          <ServiceCard index={index} key={service.title} {...service} />
-        </motion.div>
+        <ServiceCard index={index} key={service.title} {...service} />
       ))}
-    </div>
+    </motion.div>
   );
 }
 
@@ -283,12 +261,22 @@ function ServiceCard({
               className={cn(
                 "animate-pulse-shadow",
                 "-mt-10 mx-auto h-[40cqw]",
-                "grid aspect-square place-items-center rounded-full border-[3px] border-primary/3",
+                "grid aspect-square place-items-center rounded-full",
                 "z-1",
-                "bg-[#392413]"
+                "border-[3px] border-primary/3",
+                "bg-linear-to-br from-[#392413] to-[#392413]"
               )}
             >
-              <Icon className="size-[50%] text-primary" strokeWidth={1.3} />
+              <div className="relative size-[50%]">
+                <Icon
+                  className="absolute h-full w-full text-primary blur-xs"
+                  strokeWidth={1.3}
+                />
+                <Icon
+                  className="h-full w-full text-primary"
+                  strokeWidth={1.3}
+                />
+              </div>
             </div>
           </CardContent>
 
@@ -300,7 +288,9 @@ function ServiceCard({
                   "mb-1 font-kanit font-semibold",
                   "text-primary-foreground",
                   "group-hover:text-primary",
-                  "@sm:text-3xl @xs:text-[1.5rem] text-2xl"
+                  "text-3xl",
+                  "@xs:text-[2.2rem]",
+                  "@sm:text-4xl"
                 )}
               >
                 {title}
