@@ -22,8 +22,8 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-const baseDelay = 0.5;
-const baseDuration = 0.5;
+const heroEntryDelay = 0.5;
+const heroEntryDuration = 0.5;
 
 export default function Hero() {
   return (
@@ -242,7 +242,7 @@ function KeywordsRotating() {
     <motion.div
       animate={{ opacity: 1 }}
       initial={{ opacity: 0 }}
-      transition={{ delay: baseDelay * 3, duration: baseDuration }}
+      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
     >
       <div className={cn("flex flex-col gap-y-1", "-mt-8", "xs:-mt-10")}>
         <div className="text-center font-kanit font-normal text-base">
@@ -287,7 +287,7 @@ function FadeMoveDown({ children }: { children: React.ReactNode }) {
     <motion.div
       animate={{ opacity: 1, y: 0 }}
       initial={{ opacity: 0, y: -50 }}
-      transition={{ delay: baseDelay, duration: baseDuration }}
+      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
     >
       {children}
     </motion.div>
@@ -300,7 +300,7 @@ function Description() {
     <motion.div
       animate={{ opacity: 1, y: 0 }}
       initial={{ opacity: 0, y: 50 }}
-      transition={{ delay: baseDelay, duration: baseDuration }}
+      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
     >
       <div
         className={cn(
@@ -353,7 +353,7 @@ function FadeMoveUp({ children }: { children: React.ReactNode }) {
     <motion.div
       animate={{ opacity: 1, y: 0 }}
       initial={{ opacity: 0, y: 50 }}
-      transition={{ delay: baseDelay, duration: baseDuration }}
+      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
     >
       {children}
     </motion.div>
@@ -426,7 +426,10 @@ function FadeScaleEntry({ children }: { children: React.ReactNode }) {
     <motion.div
       animate={{ opacity: 1, scale: 1 }}
       initial={{ opacity: 0, scale: 0 }}
-      transition={{ delay: baseDelay * 3, duration: baseDuration / 2 }}
+      transition={{
+        delay: heroEntryDelay * 3,
+        duration: heroEntryDuration / 2,
+      }}
     >
       {children}
     </motion.div>
@@ -445,8 +448,8 @@ function PopEntry({
       animate={{ opacity: 1, scale: 1 }}
       initial={{ opacity: 0, scale: 0 }}
       transition={{
-        delay: baseDelay * 4 + extraDelay,
-        duration: baseDuration / 2,
+        delay: heroEntryDelay * 4 + extraDelay,
+        duration: heroEntryDuration / 2,
       }}
     >
       {children}
