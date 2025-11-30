@@ -177,21 +177,32 @@ function LogoButton({
 }
 
 function LogoButtonWithText() {
+  const DevOc = (
+    <>
+      <span
+        className={cn(
+          "font-bold tracking-tighter transition-colors duration-300",
+          "text-secondary", // Light
+          "[html[data-nav-theme='dark']_&]:text-white" // Dark
+        )}
+      >
+        Dev'
+      </span>
+      <span className="bg-linear-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black text-transparent tracking-tighter">
+        Oc
+      </span>
+    </>
+  );
+
   return (
     <LogoButton>
-      <div>
-        <span
-          className={cn(
-            "font-bold tracking-tighter transition-colors duration-300",
-            "text-secondary", // Light
-            "[html[data-nav-theme='dark']_&]:text-white" // Dark
-          )}
-        >
-          Dev'
-        </span>
-        <span className="bg-linear-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black text-transparent tracking-tighter">
-          Oc
-        </span>
+      <div className="relative">
+        {/* Blurry copy */}
+        <div className="absolute opacity-70 blur-sm [html[data-nav-theme='light']_&]:hidden">
+          {DevOc}
+        </div>
+        {/* Real text */}
+        <div>{DevOc}</div>
       </div>
     </LogoButton>
   );
