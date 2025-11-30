@@ -23,10 +23,6 @@ help:
     echo "Commandes disponibles :"
     just --list
 
-# Delegate commit to parent
-commit:
-    just -f "{{justfile_directory()}}/../../Justfile" commit
-
 # Versions: delegate parent + local info
 versions:
     just -f "{{justfile_directory()}}/../../Justfile" versions

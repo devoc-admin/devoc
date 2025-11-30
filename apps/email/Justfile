@@ -22,9 +22,6 @@ help:
     echo "Commandes disponibles :"
     just --list
 
-commit:
-    just -f "{{justfile_directory()}}/../../Justfile" commit
-
 versions:
     just -f "{{justfile_directory()}}/../../Justfile" versions
     echo "(apps/email) react-email: dev server via npm scripts"
