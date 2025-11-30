@@ -4,6 +4,7 @@ import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useMediaQuery } from "usehooks-ts";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import CubeShape from "@/assets/shapes/cube.png";
 import DiamondShape from "@/assets/shapes/diamond.png";
@@ -30,7 +31,7 @@ export default function Hero() {
       <Shapes />
       <div className="flex flex-col items-center gap-y-6">
         <DevOc />
-        <Keywords />
+        <KeywordsRotating />
         <Description />
       </div>
       <div className={cn("absolute", "bottom-10")}>
@@ -197,8 +198,11 @@ function useShapesParallaxEffect() {
   const [parallaxOffset, setParallaxOffset] = useState(0);
   const effectiveParallaxOffset = parallaxOffset * 0.5;
 
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   // ⇅ Parallax effect (disabled on mobile)
   useEffect(() => {
+    if (isMobile) return;
     let ticking = false;
 
     const handleScroll = () => {
@@ -218,7 +222,7 @@ function useShapesParallaxEffect() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [isMobile]);
 
   return {
     effectiveParallaxOffset,
@@ -226,7 +230,14 @@ function useShapesParallaxEffect() {
 }
 
 // ----------------------------------
-function Keywords() {
+const keywords = [
+  "🔒 Sécurité",
+  "👁️ Accessibilité",
+  "⚡ Performance",
+  "🎨 Design",
+];
+
+function KeywordsRotating() {
   return (
     <motion.div
       animate={{ opacity: 1 }}
@@ -237,14 +248,7 @@ function Keywords() {
         <div className="text-center font-kanit font-normal text-base">
           Votre expert de proximité en
         </div>
-        <ContainerTextFlip
-          words={[
-            "🔒 Sécurité",
-            "👁️ Accessibilité",
-            "⚡ Performance",
-            "🎨 Design",
-          ]}
-        />
+        <ContainerTextFlip words={keywords} />
       </div>
     </motion.div>
   );
