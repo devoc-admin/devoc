@@ -233,21 +233,6 @@ pnpm --filter web format
 
 - **Biome**: Fast linter and formatter for JavaScript/TypeScript
 - **lefthook**: Git hooks manager (runs checks before commits)
-- **better-commits**: Helper for writing good commit messages
-
-### Making Commits
-
-This project uses `better-commits` to help you write meaningful commit messages:
-
-```bash
-# Stage your changes
-git add .
-
-# Create a commit (will launch interactive prompt)
-pnpm better-commits
-# Or use git commit directly (lefthook will validate)
-git commit
-```
 
 ### Commit Message Format
 

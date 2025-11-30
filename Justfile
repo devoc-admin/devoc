@@ -31,9 +31,6 @@ format app="web":
 types app="web":
     pnpm --filter {{app}} exec tsc --noEmit
 
-## --- Commit assisté ---
-commit:
-    pnpm better-commits
 
 ## --- Diagnostics ---
 versions:
