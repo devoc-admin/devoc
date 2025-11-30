@@ -99,21 +99,27 @@ type ContactLink = {
 
 const contactLinks: ContactLink[] = [
   {
-    href: "mailto:dev-oc@contact.fr",
+    href: "mailto:contact@dev-oc.fr",
     icon: <MailIcon size={16} />,
     id: "email",
-    label: "dev-oc@contact.fr",
+    label: "contact@dev-oc.fr",
     newPage: false,
   },
   {
     href: "tel:+33620239838",
     icon: <PhoneIcon size={16} />,
-    id: "phone",
+    id: "phone1",
     label: "+33 6 20 23 98 38",
     newPage: false,
   },
   {
-    href: "https://maps.app.goo.gl/bomxYpGK3RnMo3ww7",
+    href: "tel:+33658889701",
+    icon: <PhoneIcon size={16} />,
+    id: "phone2",
+    label: "+33 6 58 88 97 01",
+  },
+  {
+    href: "https://maps.app.goo.gl/u8M4QDvL5pA4o4Xt6",
     icon: <MapPinIcon size={16} />,
     id: "address",
     label: "Carcassonne, France",
@@ -168,86 +174,26 @@ type GroupInternalLink = {
 
 const groupLinks: GroupInternalLink[] = [
   {
-    id: "services",
+    id: "navigation",
     links: [
       {
-        href: "/services/developpement-web",
-        name: "Développement Web",
+        href: "/#services",
+        name: "Services",
       },
       {
-        href: "/services/applications-mobiles",
-        name: "Applications Mobiles",
+        href: "/#realisations",
+        name: "Réalisations",
       },
       {
-        href: "/services/referencement-seo",
-        name: "Référencement SEO",
+        href: "/#processus",
+        name: "Notre méthode",
       },
       {
-        href: "/services/design-ux-ui",
-        name: "Design UX/UI",
-      },
-      {
-        href: "/services/e-commerce",
-        name: "E-commerce",
-      },
-      {
-        href: "/services/developpement-backend",
-        name: "Automatisations IA",
-      },
-    ],
-    title: "Services",
-  },
-  {
-    id: "entreprises",
-    links: [
-      {
-        href: "/about",
-        name: "À propos",
-      },
-      {
-        href: "/team",
-        name: "Notre équipe",
-      },
-      {
-        href: "/values",
-        name: "Nos valeurs",
-      },
-      {
-        href: "/careers",
-        name: "Carrières",
-      },
-      {
-        href: "/blog",
-        name: "Blog",
-      },
-    ],
-    title: "Entreprises",
-  },
-  {
-    id: "support",
-    links: [
-      {
-        href: "/support",
-        name: "Centre d'aide",
-      },
-      {
-        href: "#contact",
+        href: "/#contact",
         name: "Contact",
       },
-      {
-        href: "/documentation",
-        name: "Documentation",
-      },
-      {
-        href: "/privacy",
-        name: "Politique de confidentialité",
-      },
-      {
-        href: "/terms",
-        name: "Conditions d'utilisation",
-      },
     ],
-    title: "Support",
+    title: "Navigation",
   },
 ];
 
@@ -283,17 +229,6 @@ function InternalLinks({
       </div>
       <div className="flex flex-col gap-3 text-muted-foreground">
         {links.map((link) => (
-          // <a
-          //   className="group flex cursor-pointer items-center gap-2 text-sm transition-colors hover:text-primary-foreground"
-          //   href={link.href}
-          //   key={link.name}
-          // >
-          //   <ArrowRightIcon
-          //     className="opacity-0 transition-opacity group-hover:opacity-100"
-          //     size={16}
-          //   />
-          //   <span>{link.name}</span>
-          // </a>
           <a
             className="group flex cursor-pointer items-center gap-2 text-sm transition-colors hover:text-primary-foreground"
             href={link.href}

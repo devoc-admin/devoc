@@ -1,7 +1,7 @@
 pre-commit:
   jobs:
     - run: bunx ultracite fix
-      glob: 
+      glob:
         - "*.js"
         - "*.jsx"
         - "*.ts"
@@ -10,3 +10,8 @@ pre-commit:
         - "*.jsonc"
         - "*.css"
       stage_fixed: true
+
+commit-msg:
+  commands:
+    commitlint:
+      run: pnpm commitlint --edit {1}

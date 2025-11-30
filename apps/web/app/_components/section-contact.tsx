@@ -23,8 +23,8 @@ type ContactItem = {
 
 const contactItems: ContactItem[] = [
   {
-    content: "dev-oc@contact.fr",
-    href: "mailto:dev-oc@contact.fr",
+    content: "contact@dev-oc.fr",
+    href: "mailto:contact@dev-oc.fr",
     icon: <MailIcon size={26} />,
     title: "Email",
   },
