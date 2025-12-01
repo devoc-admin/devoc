@@ -376,6 +376,9 @@ importers:
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
+      usehooks-ts:
+        specifier: ^3.1.1
+        version: 3.1.1(react@19.2.0)
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.1.17

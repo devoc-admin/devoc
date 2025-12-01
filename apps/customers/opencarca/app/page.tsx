@@ -6,15 +6,15 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { motion } from "motion/react";
 import Image from "next/image";
-import { AuroraText } from "@/components/aurora-text";
-import { BarCompare } from "@/components/bar-compare";
-// import { MapPlaceholder } from "@/components/map-placeholder"; // remplacé par FranceMapGauge
+import { BubbleCluster } from "@/components/bubble-cluster";
+import { CircleStandards } from "@/components/circle-standards";
+import { DevOc } from "@/components/devoc";
 import { FranceMapGauge } from "@/components/france-map-gauge";
+import { GapTriangle } from "@/components/gap-triangle";
 import { Gauge } from "@/components/gauge";
-import { KpiCard } from "@/components/kpi-card";
-import { LineTrend } from "@/components/line-trend";
-import { OccitanieMapSimple } from "@/components/occitanie-map";
+import { OccitanieMapGauge } from "@/components/occitanie-map-gauge";
 import { PieDonut } from "@/components/pie-donut";
+import { Shapes } from "@/components/shapes-bg";
 
 export default function Home() {
   return (
@@ -27,228 +27,148 @@ export default function Home() {
         mousewheel={{ forceToAxis: true }}
         pagination={{ clickable: true }}
       >
-        {/* Slide 1: Introduction & Slogan (light) */}
-        <SwiperSlide>
-          <section className="slide-ambient flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
-            <div className="mx-auto max-w-6xl text-center">
-              <motion.div
-                animate={{ opacity: 1, y: 0 }}
-                initial={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.6 }}
-              >
-                <DevOcTitle />
-              </motion.div>
-              <motion.p
-                animate={{ opacity: 1 }}
-                className="shimmer-text mt-8 text-2xl text-muted-foreground"
-                initial={{ opacity: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-              >
-                Le Collectif Numérique, Made in Occitanie.
-              </motion.p>
+        {/* Slide 1: Hero centré (haut) + bulles/gauge (haut milieu) */}
+        <SwiperSlide className="slide-ambient relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+          <Shapes />
+          <div className="interactive-layer relative mx-auto flex flex-col items-center">
+            {/* Haut: DevOc + Keywords, centrés */}
+            <div className="flex flex-col items-center justify-center">
+              <DevOc />
+              {/* <KeywordsRotating /> */}
             </div>
-          </section>
+            {/* Haut milieu: gauche bulles, droite carte France */}
+            <div className="grid w-full grid-cols-1 items-start sm:grid-cols-2 md:grid-cols-2">
+              <div className="mx-auto flex w-full items-center justify-center">
+                <BubbleCluster />
+              </div>
+              <div className="mx-auto flex w-full items-center justify-center">
+                <FranceMapGauge percent={80} />
+              </div>
+            </div>
+          </div>
         </SwiperSlide>
 
-        {/* Slide 2: Problème — Vulnérabilité & Risque (dark) */}
+        {/* Slide 2: Occitanie 75% + Triangle GAP (dark) */}
         <SwiperSlide>
           <section className="slide-ambient dark flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
             <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 md:grid-cols-2">
+              <div className="flex flex-col items-center justify-center gap-2">
+                <OccitanieMapGauge percent={75} />
+              </div>
+              <div className="flex items-center justify-center">
+                <GapTriangle />
+              </div>
+            </div>
+          </section>
+        </SwiperSlide>
+
+        {/* Slide 3: Gouvernance — 70% rouge (light) */}
+        <SwiperSlide>
+          <section className="slide-ambient flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+            <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-4 text-center">
+              <Gauge
+                color="#dc2626"
+                label="Dépendance cloud non-UE (hyp.)"
+                value={70}
+              />
+              <div className="text-muted-foreground">
+                Réorientation vers des solutions 🇪🇺 lorsque pertinent
+              </div>
+              <div className="text-muted-foreground text-xs">
+                Source:{" "}
+                <a
+                  className="underline hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/60"
+                  href="https://siecledigital.fr/2022/10/03/pres-de-3-4-des-depenses-cloud-en-europe-sont-destinees-a-amazon-google-ou-microsoft/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  EU Digital Strategy
+                </a>
+              </div>
+            </div>
+          </section>
+        </SwiperSlide>
+
+        {/* Slide 4: Accompagnement — RGAA / RGPD / RGS (dark) */}
+        <SwiperSlide>
+          <section className="slide-ambient dark flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+            <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 text-center">
+              <CircleStandards />
+              <div className="text-muted-foreground text-xs">
+                Lien RGAA:{" "}
+                <a
+                  className="underline hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/60"
+                  href="https://www.numerique.gouv.fr/publications/rgaa-version-4-1/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  accessibilite.numerique.gouv.fr
+                </a>
+              </div>
+            </div>
+          </section>
+        </SwiperSlide>
+
+        {/* Slide 5: Protection — Anneau 80% (light) */}
+        <SwiperSlide>
+          <section className="slide-ambient flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+            <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-4 text-center">
+              <PieDonut label="Maturité cyber (objectif)" value={80} />
+              <div className="text-muted-foreground text-xs">
+                Source:{" "}
+                <a
+                  className="underline hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/60"
+                  href="https://www.lopinion.fr/economie/tpe-pme-une-maturite-cyber-encore-bien-faible"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  ANSSI
+                </a>
+              </div>
+            </div>
+          </section>
+        </SwiperSlide>
+
+        {/* Slide 6: Conclusion / CTA (dark) */}
+        <SwiperSlide>
+          <section className="slide-ambient dark flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+            <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 text-center">
+              <div className="shimmer-text font-bold font-kanit text-6xl">
+                Choisissez
+              </div>
               <motion.div
-                className="flex items-center justify-center"
-                initial={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.6 }}
+                className="neon-glow"
+                initial={{ opacity: 0, scale: 0.95 }}
+                style={{ background: "gray" }}
+                transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, scale: 1 }}
               >
-                <PieDonut color="#dc2626" label="Part WordPress" value={43} />
-              </motion.div>
-              <motion.div
-                className="flex flex-col items-center justify-center gap-3 text-center"
-                initial={{ opacity: 0, y: 20 }}
-                transition={{ delay: 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-                whileInView={{ opacity: 1, y: 0 }}
-              >
-                <div className="shimmer-text float-slow font-bold font-kanit text-7xl">
-                  90%
-                </div>
-                <div className="text-muted-foreground">
-                  Failles via plugins tiers
-                </div>
-                <div className="text-muted-foreground/70 text-xs">
-                  Sources: W3Techs, Sucuri
-                </div>
-              </motion.div>
-            </div>
-          </section>
-        </SwiperSlide>
-
-        {/* Slide 3: Problème — Concentration & Coût (light) */}
-        <SwiperSlide>
-          <section className="slide-ambient flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
-            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 md:grid-cols-2">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
-                whileInView={{ opacity: 1, y: 0 }}
-              >
-                <FranceMapGauge percent={75} />
-              </motion.div>
-              <motion.div
-                className="flex flex-col items-center justify-center gap-2 text-center"
-                initial={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
-                whileInView={{ opacity: 1, y: 0 }}
-              >
-                <LineTrend points={[100, 90, 84, 76, 68]} />
-                <div className="neon-glow float-slow font-bold font-kanit text-5xl">
-                  +32%
-                </div>
-                <div className="text-muted-foreground">
-                  Taux de rebond après 3s
-                </div>
-                <div className="text-muted-foreground/70 text-xs">
-                  Sources: INSEE/Observatoires, Google (Core Web Vitals)
-                </div>
-              </motion.div>
-            </div>
-          </section>
-        </SwiperSlide>
-
-        {/* Slide 4: Solution — Les 3 Piliers (dark) */}
-        <SwiperSlide>
-          <section className="slide-ambient dark flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
-            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 md:grid-cols-2">
-              <motion.div
-                className="grid grid-cols-3 gap-8 text-center"
-                initial={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
-                whileInView={{ opacity: 1, y: 0 }}
-              >
-                <KpiCard title="Performance" value="⚡" />
-                <KpiCard title="Souveraineté" value="🛡️" />
-                <KpiCard title="Proximité" value="🤝" />
-              </motion.div>
-              <motion.div
-                className="flex flex-col items-center justify-center gap-6 text-center"
-                initial={{ opacity: 0, y: 20 }}
-                transition={{ delay: 0.1, duration: 0.6 }}
-                viewport={{ once: true }}
-                whileInView={{ opacity: 1, y: 0 }}
-              >
-                <Gauge label="Cloud US (Europe)" value={70} />
-                <Gauge label="Souveraineté Dev'OC (OVHcloud)" value={100} />
-                <div className="text-muted-foreground/70 text-xs">
-                  Sources: ARCEP / Études sectorielles, Interne
-                </div>
-              </motion.div>
-            </div>
-          </section>
-        </SwiperSlide>
-
-        {/* Slide 5: Marché Local & Pertinence (light) */}
-        <SwiperSlide>
-          <section className="slide-ambient flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
-            <div className="relative mx-auto w-full max-w-6xl">
-              <motion.div
-                initial={{ opacity: 0 }}
-                transition={{ duration: 0.6 }}
-                viewport={{ once: true }}
-                whileInView={{ opacity: 1 }}
-              >
-                <OccitanieMapSimple />
-              </motion.div>
-              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 text-center">
-                <div className="shimmer-text float-slow font-bold font-kanit text-7xl">
-                  40 000
-                </div>
-                <div className="text-muted-foreground">
-                  Entreprises / établissements (Aude)
-                </div>
-                <div className="neon-glow font-bold font-kanit text-5xl">
-                  3 400
-                </div>
-                <div className="text-muted-foreground">
-                  Communes en Occitanie
-                </div>
-                <div className="mt-2 text-muted-foreground/70 text-xs">
-                  Sources: INSEE, CCI de l'Aude
-                </div>
-              </div>
-            </div>
-          </section>
-        </SwiperSlide>
-
-        {/* Slide 6: Impact & Valeur (dark) */}
-        <SwiperSlide>
-          <section className="slide-ambient dark flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
-            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 md:grid-cols-2">
-              <BarCompare
-                baseline={100}
-                improved={55}
-                labelBaseline="TCO actuel"
-                labelImproved="TCO Dev'OC"
-              />
-              <div className="flex flex-col items-center justify-center text-center">
-                <div className="shimmer-text font-bold font-kanit text-6xl">
-                  7 jours ouvrés
-                </div>
-                <div className="text-muted-foreground">
-                  Déploiement (automatisation Pulumi)
-                </div>
-                <div className="mt-2 text-muted-foreground/70 text-xs">
-                  Source: Interne
-                </div>
-              </div>
-            </div>
-          </section>
-        </SwiperSlide>
-
-        {/* Slide 7: Appel à l'Action (light) */}
-        <SwiperSlide>
-          <section className="slide-ambient flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
-            <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 text-center">
-              <div className="shimmer-text font-bold font-kanit text-5xl">
-                Investir Localement, Agir Globalement
-              </div>
-              <motion.div
-                animate={{ opacity: 1, scale: 1 }}
-                className="neon-glow float-slow"
-                initial={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.6 }}
-              >
                 <Image
-                  alt="Calendly QR"
-                  className="h-56 w-56 rounded-xl border border-border"
+                  alt="QR vers prise de rendez-vous"
+                  className="rounded-xl border border-border"
                   height={224}
                   priority
                   src="/qrcode.png"
                   width={224}
                 />
               </motion.div>
+              <DevOc />
               <div className="text-muted-foreground">
-                Le Futur du Numérique de Proximité.
+                Démo preview disponible:
               </div>
-              <div className="text-muted-foreground/70 text-xs">
-                Merci — scannez et planifions le prochain échange
-              </div>
+              <a
+                className="rounded-lg border border-border bg-primary px-6 py-3 font-medium text-primary-foreground hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary/60"
+                href="https://www.devoc.fr"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Voir la démo
+              </a>
             </div>
           </section>
         </SwiperSlide>
       </Swiper>
     </main>
-  );
-}
-
-function DevOcTitle() {
-  return (
-    <h1 className="relative flex select-none items-center justify-center px-6 text-6xl xs:text-7xl sm:text-8xl md:text-9xl">
-      <div className="pt-2 font-style-script">Dev'</div>
-      <AuroraText className="font-extrabold tracking-tighter">Oc</AuroraText>
-    </h1>
   );
 }

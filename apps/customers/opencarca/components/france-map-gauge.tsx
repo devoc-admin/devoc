@@ -2,13 +2,6 @@ import { motion } from "motion/react";
 import { useId } from "react";
 
 // Centres approximatifs des 5 grandes métropoles (coordonnées relatives au viewBox 0 0 248 260)
-const hotspots = [
-  { label: "Paris", x: 125, y: 110 },
-  { label: "Toulouse", x: 75, y: 185 },
-  { label: "Montpellier", x: 120, y: 200 },
-  { label: "Lyon", x: 150, y: 180 },
-  { label: "Marseille", x: 175, y: 210 },
-];
 
 export function FranceMapGauge({ percent = 75 }: { percent?: number }) {
   const titleId = useId();
@@ -19,7 +12,7 @@ export function FranceMapGauge({ percent = 75 }: { percent?: number }) {
   const dash = (clamped / 100) * circ;
 
   return (
-    <div className="relative mx-auto flex w-full max-w-3xl items-center justify-center">
+    <div className="relative flex w-full flex-col items-center">
       <motion.svg
         animate={{ opacity: 1, scale: 1 }}
         aria-labelledby={titleId}
@@ -73,27 +66,6 @@ export function FranceMapGauge({ percent = 75 }: { percent?: number }) {
             stroke="var(--border)"
             strokeWidth={3}
           />
-          {/* Hotspots */}
-          {hotspots.map((h, i) => (
-            <g key={h.label} transform={`translate(${h.x} ${h.y})`}>
-              <circle
-                className="marker-pulse neon-glow"
-                fill="var(--primary)"
-                r={10}
-                style={{ animationDelay: `${i * 0.2}s` }}
-              />
-              <text
-                className="opacity-90"
-                fill="var(--foreground)"
-                fontSize={14}
-                fontWeight={600}
-                x={14}
-                y={4}
-              >
-                {h.label}
-              </text>
-            </g>
-          ))}
         </g>
         {/* Pourcentage */}
         <motion.text
@@ -111,16 +83,23 @@ export function FranceMapGauge({ percent = 75 }: { percent?: number }) {
         >
           {clamped}%
         </motion.text>
-        <text
-          fill="var(--muted-foreground)"
-          fontSize={16}
-          textAnchor="middle"
-          x={260}
-          y={330}
-        >
-          Concentration de l'expertise (5 grandes métropoles)
-        </text>
       </motion.svg>
+      <div className="text-muted-foreground text-xs">
+        <ul>
+          <li>Concentration de l'expertise numérique</li>
+          <li>
+            Source:{" "}
+            <a
+              className="underline hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/60"
+              href="https://www.insee.fr/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              INSEE
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 }

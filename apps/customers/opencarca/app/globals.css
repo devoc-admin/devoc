@@ -196,7 +196,9 @@
 
 @keyframes ambient-move { 0% { transform: translate3d(0,0,0); } 50% { transform: translate3d(2%, -2%,0); } 100% { transform: translate3d(0,0,0); } }
 .slide-ambient { position: relative; overflow: hidden; }
-.slide-ambient::before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 30% 30%, var(--primary)/0.12, transparent 60%), radial-gradient(circle at 70% 70%, var(--primary-lighter)/0.10, transparent 65%); animation: ambient-move 18s linear infinite; }
+.slide-ambient::before { content:""; position:absolute; inset:0; z-index:0; background:radial-gradient(circle at 30% 30%, var(--primary)/0.12, transparent 60%), radial-gradient(circle at 70% 70%, var(--primary-lighter)/0.10, transparent 65%); animation: ambient-move 18s linear infinite; pointer-events:none; }
+.slide-ambient .interactive-layer { position:relative; z-index:10; pointer-events:auto; }
+.slide-ambient a, .slide-ambient button { position:relative; z-index:20; pointer-events:auto; }
 
 /* Ajuste gradient animé sur carte occitanie */
 .occ-gradient { filter: drop-shadow(0 0 6px var(--primary)); }
@@ -211,3 +213,13 @@
 
 /* Effet néon doux réutilisable */
 .neon-glow { filter: drop-shadow(0 0 4px var(--primary)) drop-shadow(0 0 12px var(--primary)); }
+
+/* AuroraText animation (aligné avec apps/web) */
+@keyframes aurora-text-background {
+  0% { background-position: 0% 50%; transform: rotate(-5deg) scale(0.95); }
+  25% { background-position: 50% 100%; transform: rotate(5deg) scale(1.05); }
+  50% { background-position: 100% 50%; transform: rotate(-3deg) scale(0.98); }
+  75% { background-position: 50% 0%; transform: rotate(3deg) scale(1.02); }
+  100% { background-position: 0% 50%; transform: rotate(-5deg) scale(0.95); }
+}
+.animate-aurora-text-background { animation: aurora-text-background 8s ease-in-out infinite alternate; }
