@@ -13,6 +13,7 @@ dev-oc/
 ├── apps/                    # All applications live here
 │   ├── web/                # Main Next.js website
 │   └── customers/          # Customer-specific projects
+│       ├── opencarca/      # OpenCarca 2025 presentation (Next.js + SwiperJS)
 │       └── lasbordes/
 │           ├── front/      # Lasbordes frontend
 │           └── preview/    # Lasbordes preview app (Vite)
@@ -161,6 +162,11 @@ just dev
 turbo dev --filter=web
 ## ou
 just dev web
+
+# Run the OpenCarca presentation (Next.js)
+turbo dev --filter=opencarca
+## ou
+just dev opencarca
 
 # Run the lasbordes preview app (Vite)
 turbo dev --filter=lasbordes-preview
