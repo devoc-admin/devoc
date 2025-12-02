@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useId } from "react";
 
-export function BubbleCluster() {
+export function BubbleCluster({ className }: { className?: string }) {
   const titleId = useId();
   const centerR = 70; // ~170px diamètre pour plus de présence
   const satelliteR = 33; // ~86px diamètre (réduit de ~10%)
@@ -19,7 +19,7 @@ export function BubbleCluster() {
   return (
     <motion.svg
       aria-labelledby={titleId}
-      className="w-full"
+      className={["h-auto w-full", className].filter(Boolean).join(" ")}
       initial={{ opacity: 0 }}
       role="img"
       transition={{ duration: 0.4 }}

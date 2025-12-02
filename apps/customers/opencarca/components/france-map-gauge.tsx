@@ -3,7 +3,13 @@ import { useId } from "react";
 
 // Centres approximatifs des 5 grandes métropoles (coordonnées relatives au viewBox 0 0 248 260)
 
-export function FranceMapGauge({ percent = 75 }: { percent?: number }) {
+export function FranceMapGauge({
+  percent = 75,
+  className,
+}: {
+  percent?: number;
+  className?: string;
+}) {
   const titleId = useId();
   const clamped = Math.min(100, Math.max(0, percent));
   // Jauge circulaire autour de la carte: longueur d'un cercle fictif
@@ -12,11 +18,11 @@ export function FranceMapGauge({ percent = 75 }: { percent?: number }) {
   const dash = (clamped / 100) * circ;
 
   return (
-    <div className="relative flex w-full flex-col items-center">
+    <div className={["relative w-full", className].filter(Boolean).join(" ")}>
       <motion.svg
         animate={{ opacity: 1, scale: 1 }}
         aria-labelledby={titleId}
-        className="w-full"
+        className="h-auto w-full"
         initial={{ opacity: 0, scale: 0.9 }}
         role="img"
         transition={{ duration: 0.8 }}

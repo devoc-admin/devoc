@@ -5,11 +5,13 @@ export function Gauge({
   max = 100,
   label,
   color = "var(--primary)",
+  className,
 }: {
   value: number;
   max?: number;
   label?: string;
   color?: string;
+  className?: string;
 }) {
   const titleId = useId();
   const pct = useMemo(
@@ -17,10 +19,10 @@ export function Gauge({
     [value, max]
   );
   return (
-    <div className="flex w-full max-w-xl flex-col items-center gap-4">
+    <div className={["relative w-full", className].filter(Boolean).join(" ")}>
       <svg
         aria-labelledby={titleId}
-        className="w-full"
+        className="h-auto w-full"
         role="img"
         viewBox="0 0 100 60"
       >
@@ -56,7 +58,7 @@ export function Gauge({
         </text>
       </svg>
       {label ? (
-        <div className="text-center text-zinc-600 dark:text-zinc-300">
+        <div className="mt-2 text-center text-zinc-600 dark:text-zinc-300">
           {label}
         </div>
       ) : null}

@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useEffect, useId, useRef, useState } from "react";
 
-export function GapTriangle() {
+export function GapTriangle({ className }: { className?: string }) {
   const titleId = useId();
   const pathD = "M110 40 L180 180 L40 180 Z";
   const measureRef = useRef<SVGPathElement | null>(null);
@@ -17,8 +17,13 @@ export function GapTriangle() {
     }
   }, []);
   return (
-    <div className="xs:max-auto mx-auto w-full">
-      <svg aria-labelledby={titleId} role="img" viewBox="0 0 220 220">
+    <div className={className}>
+      <svg
+        aria-labelledby={titleId}
+        className="h-auto w-full"
+        role="img"
+        viewBox="0 0 220 220"
+      >
         <title id={titleId}>
           Triangle GAP — Gouvernance, Accompagnement, Protection
         </title>

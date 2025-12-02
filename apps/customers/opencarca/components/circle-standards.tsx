@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { useId } from "react";
 
-export function CircleStandards() {
+export function CircleStandards({ className }: { className?: string }) {
   const titleId = useId();
   const ringR = 70; // rayon du cercle principal
   const labels = [
@@ -11,10 +11,10 @@ export function CircleStandards() {
   ];
   const circ = 2 * Math.PI * ringR;
   return (
-    <div className="relative mx-auto flex w-full max-w-md items-center justify-center">
+    <div className={["relative w-full", className].filter(Boolean).join(" ")}>
       <motion.svg
         aria-labelledby={titleId}
-        className="w-full"
+        className="h-auto w-full"
         initial={{ opacity: 0, scale: 0.96 }}
         role="img"
         transition={{ duration: 0.5 }}

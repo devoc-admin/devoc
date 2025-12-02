@@ -9,13 +9,14 @@ import Image from "next/image";
 import MeetIcon from "@/assets/illustration/meet.avif";
 import { BubbleCluster } from "@/components/bubble-cluster";
 import { CircleStandards } from "@/components/circle-standards";
+import { DarkAccents } from "@/components/dark-accents";
 import { DevOc } from "@/components/devoc";
 import { FranceMapGauge } from "@/components/france-map-gauge";
 import { GapTriangle } from "@/components/gap-triangle";
 import { Gauge } from "@/components/gauge";
+import { LightGrid } from "@/components/light-grid";
 import { OccitanieMapGauge } from "@/components/occitanie-map-gauge";
 import { PieDonut } from "@/components/pie-donut";
-import { Shapes } from "@/components/shapes-bg";
 
 export default function Home() {
   return (
@@ -29,15 +30,15 @@ export default function Home() {
         pagination={{ clickable: true }}
       >
         {/* Slide 1: Hero centré (haut) + bulles/gauge (haut milieu) */}
-        <SwiperSlide className="slide-ambient relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
-          <Shapes />
+        <SwiperSlide className="slide-ambient dark relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+          <DarkAccents />
           <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
             <DevOc />
           </div>
           <div className="relative z-10 flex h-full w-full flex-col items-center justify-center gap-6 pt-24 md:pt-28 lg:pt-32">
             <div className="grid w-full max-w-6xl grid-cols-1 place-items-center gap-6 sm:grid-cols-2 sm:gap-10">
               <motion.div
-                className="mx-auto flex w-full max-w-[16rem] items-center justify-center sm:max-w-md md:max-w-lg"
+                className="mx-auto flex w-full max-w-[18rem] items-center justify-center sm:max-w-lg md:max-w-xl"
                 style={{ filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.15))" }}
                 transition={{ damping: 20, stiffness: 200, type: "spring" }}
                 whileHover={{ scale: 1.02 }}
@@ -45,7 +46,7 @@ export default function Home() {
                 <BubbleCluster />
               </motion.div>
               <motion.div
-                className="mx-auto flex w-full max-w-[16rem] items-center justify-center sm:max-w-md md:max-w-lg"
+                className="mx-auto flex w-full max-w-[18rem] items-center justify-center sm:max-w-lg md:max-w-xl"
                 style={{ filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.15))" }}
                 transition={{ damping: 20, stiffness: 200, type: "spring" }}
                 whileHover={{ scale: 1.02 }}
@@ -56,8 +57,9 @@ export default function Home() {
           </div>
         </SwiperSlide>
 
-        {/* Slide 2: Occitanie 75% + Triangle GAP (dark) */}
-        <SwiperSlide className="slide-ambient dark relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+        {/* Slide 2: Occitanie 75% + Triangle GAP (light) */}
+        <SwiperSlide className="slide-ambient relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+          <LightGrid />
           <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
             <DevOc />
           </div>
@@ -83,8 +85,9 @@ export default function Home() {
           </div>
         </SwiperSlide>
 
-        {/* Slide 3: Gouvernance — 70% rouge (light) */}
-        <SwiperSlide className="slide-ambient relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+        {/* Slide 3: Gouvernance — 70% rouge (dark) */}
+        <SwiperSlide className="slide-ambient dark relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+          <DarkAccents />
           <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
             <DevOc />
           </div>
@@ -113,15 +116,16 @@ export default function Home() {
           </div>
         </SwiperSlide>
 
-        {/* Slide 4: Accompagnement — RGAA / RGPD / RGS (dark) */}
-        <SwiperSlide className="slide-ambient dark relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+        {/* Slide 4: Accompagnement — RGAA / RGPD / RGS (light) */}
+        <SwiperSlide className="slide-ambient relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+          <LightGrid />
           <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
             <DevOc />
           </div>
           <div className="flex h-full w-full flex-col items-center justify-center gap-6 pt-24 md:pt-28 lg:pt-32">
             <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-1 md:grid-cols-2">
-              <div className="flex items-center justify-center">
-                <CircleStandards />
+              <div className="flex w-full items-center justify-center">
+                <CircleStandards className="w-full max-w-[18rem] sm:max-w-md md:max-w-lg" />
               </div>
               <div className="flex items-center justify-center">
                 <div className="relative">
@@ -141,7 +145,7 @@ export default function Home() {
                   />
                   <Image
                     alt="Illustration de réunion"
-                    className="h-auto w-40 rounded-xl border border-border md:w-56 lg:w-64"
+                    className="h-auto w-48 rounded-xl border border-border md:w-64 lg:w-72"
                     height={256}
                     priority
                     src={MeetIcon}
@@ -164,14 +168,19 @@ export default function Home() {
           </div>
         </SwiperSlide>
 
-        {/* Slide 5: Protection — Anneau 80% (light) */}
-        <SwiperSlide className="slide-ambient relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+        {/* Slide 5: Protection — Anneau 80% (dark) */}
+        <SwiperSlide className="slide-ambient dark relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+          <DarkAccents />
           <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
             <DevOc />
           </div>
           <div className="flex h-full w-full flex-col items-center justify-center gap-6 pt-24 md:pt-28 lg:pt-32">
             <div className="mx-auto grid w-full max-w-4xl grid-cols-1 place-items-center gap-4 text-center">
-              <PieDonut label="Maturité cyber (objectif)" value={80} />
+              <PieDonut
+                className="w-full max-w-[18rem] sm:max-w-md md:max-w-lg"
+                label="Maturité cyber (objectif)"
+                value={80}
+              />
               <div className="text-muted-foreground text-xs">
                 Source:{" "}
                 <a
@@ -187,17 +196,16 @@ export default function Home() {
           </div>
         </SwiperSlide>
 
-        {/* Slide 6: Conclusion / CTA (dark) */}
+        {/* Slide 6: Conclusion / CTA (light) */}
         <SwiperSlide>
-          <section className="slide-ambient dark flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+          <section className="slide-ambient relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+            <LightGrid />
             <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 text-center">
               <div className="shimmer-text font-bold font-kanit text-6xl">
                 Choisissez
               </div>
               <motion.div
                 className="neon-glow"
-                initial={{ opacity: 0, scale: 0.95 }}
-                style={{ background: "gray" }}
                 transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
                 whileInView={{ opacity: 1, scale: 1 }}

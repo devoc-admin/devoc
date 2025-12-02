@@ -6,14 +6,20 @@ const hotspots = [
   { label: "Montpellier", x: 315, y: 150 },
 ];
 
-export function OccitanieMapGauge({ percent = 75 }: { percent?: number }) {
+export function OccitanieMapGauge({
+  percent = 75,
+  className,
+}: {
+  percent?: number;
+  className?: string;
+}) {
   const titleId = useId();
   const clamped = Math.min(100, Math.max(0, percent));
   const radius = 160;
   const circ = 2 * Math.PI * radius;
   const dash = (clamped / 100) * circ;
   return (
-    <div className="relative mx-auto xs:mx-auto flex w-full flex-col items-center justify-center sm:mx-auto md:mx-auto">
+    <div className={["relative w-full", className].filter(Boolean).join(" ")}>
       <motion.svg
         animate={{ opacity: 1, scale: 1 }}
         aria-labelledby={titleId}
