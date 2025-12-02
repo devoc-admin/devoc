@@ -3,12 +3,13 @@ import { useId } from "react";
 
 export function CircleStandards() {
   const titleId = useId();
-  const ringR = 70; // rayon du cercle principal (réduit pour laisser plus d'espace visuel)
+  const ringR = 70; // rayon du cercle principal
   const labels = [
     { angle: -90, text: "RGAA" },
     { angle: 30, text: "RGPD" },
     { angle: 150, text: "RGS" },
   ];
+  const circ = 2 * Math.PI * ringR;
   return (
     <div className="relative mx-auto flex w-full max-w-md items-center justify-center">
       <motion.svg
@@ -31,6 +32,24 @@ export function CircleStandards() {
           r={ringR}
           stroke="var(--border)"
           strokeWidth={6}
+        />
+        {/* Traînée animée qui tourne autour du cercle */}
+        <motion.circle
+          animate={{ strokeDashoffset: [0, -circ] }}
+          cx={120}
+          cy={120}
+          fill="none"
+          r={ringR}
+          stroke="var(--primary)"
+          strokeDasharray={`${Math.max(18, Math.round(circ * 0.18))} ${circ}`}
+          strokeLinecap="round"
+          strokeWidth={6}
+          style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.25))" }}
+          transition={{
+            duration: 3.6,
+            ease: "linear",
+            repeat: Number.POSITIVE_INFINITY,
+          }}
         />
         {labels.map((l) => {
           const rad = (l.angle * Math.PI) / 180;
