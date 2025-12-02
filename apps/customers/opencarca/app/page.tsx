@@ -29,71 +29,106 @@ export default function Home() {
         mousewheel={{ forceToAxis: true }}
         pagination={{ clickable: true }}
       >
-        {/* Slide 1: Hero centré (haut) + bulles/gauge (haut milieu) */}
+        {/* Slide 1: Deux composants: gauche/droite, gaps uniformes */}
         <SwiperSlide className="slide-ambient dark relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
           <DarkAccents />
           <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
             <DevOc />
           </div>
-          <div className="relative z-10 flex h-full w-full flex-col items-center justify-center gap-6 pt-24 md:pt-28 lg:pt-32">
-            <div className="grid w-full max-w-6xl grid-cols-1 place-items-center gap-6 sm:grid-cols-2 sm:gap-10">
+          <div className="relative z-10 flex h-full w-full flex-col items-center justify-center pt-12 md:pt-28 lg:pt-32">
+            <div className="grid w-full max-w-6xl grid-cols-1 place-items-center gap-4 md:grid-cols-2">
               <motion.div
-                className="mx-auto flex w-full max-w-[18rem] items-center justify-center sm:max-w-lg md:max-w-xl"
+                className="mx-auto flex w-full items-center justify-center"
                 style={{ filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.15))" }}
                 transition={{ damping: 20, stiffness: 200, type: "spring" }}
                 whileHover={{ scale: 1.02 }}
               >
-                <BubbleCluster />
+                <BubbleCluster className="w-full max-w-[20rem] sm:max-w-lg md:max-w-xl" />
               </motion.div>
               <motion.div
-                className="mx-auto flex w-full max-w-[18rem] items-center justify-center sm:max-w-lg md:max-w-xl"
+                className="mx-auto flex w-full items-center justify-center"
                 style={{ filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.15))" }}
                 transition={{ damping: 20, stiffness: 200, type: "spring" }}
                 whileHover={{ scale: 1.02 }}
               >
-                <FranceMapGauge percent={80} />
+                <FranceMapGauge
+                  className="w-full max-w-[20rem] sm:max-w-lg md:max-w-xl"
+                  percent={80}
+                />
               </motion.div>
+            </div>
+            <div className="pointer-events-auto absolute right-8 bottom-6 text-right text-muted-foreground text-xs">
+              <div>Concentration de l'expertise numérique</div>
+              <div>
+                Source:{" "}
+                <a
+                  className="underline hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/60"
+                  href="https://www.insee.fr/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  INSEE
+                </a>
+              </div>
             </div>
           </div>
         </SwiperSlide>
 
-        {/* Slide 2: Occitanie 75% + Triangle GAP (light) */}
+        {/* Slide 2: Deux composants: gauche/droite, gaps uniformes (light) */}
         <SwiperSlide className="slide-ambient relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
           <LightGrid />
           <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
             <DevOc />
           </div>
-          <div className="flex h-full w-full flex-col items-center justify-center gap-6 pt-24 md:pt-28 lg:pt-32">
-            <div className="mx-auto grid w-full max-w-6xl grid-cols-1 place-items-center gap-8 md:grid-cols-2">
+          <div className="relative flex h-full w-full flex-col items-center justify-center pt-12 md:pt-28 lg:pt-32">
+            <div className="mx-auto grid w-full max-w-6xl grid-cols-1 place-items-center gap-4 md:grid-cols-2 md:gap-8">
               <motion.div
-                className="flex w-full max-w-[15rem] flex-col items-center justify-center gap-2 sm:max-w-md md:max-w-lg"
+                className="flex w-full items-center justify-center"
                 style={{ filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.15))" }}
                 transition={{ damping: 20, stiffness: 200, type: "spring" }}
                 whileHover={{ scale: 1.02 }}
               >
-                <OccitanieMapGauge percent={75} />
+                <OccitanieMapGauge
+                  className="w-full max-w-[16rem] sm:max-w-[18rem] md:max-w-xl"
+                  percent={75}
+                />
               </motion.div>
               <motion.div
-                className="flex w-full max-w-[15rem] items-center justify-center sm:max-w-md md:max-w-lg"
+                className="flex w-full items-center justify-center"
                 style={{ filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.15))" }}
                 transition={{ damping: 20, stiffness: 200, type: "spring" }}
                 whileHover={{ scale: 1.02 }}
               >
-                <GapTriangle />
+                <GapTriangle className="w-full max-w-[16rem] sm:max-w-[18rem] md:max-w-xl" />
               </motion.div>
+            </div>
+            <div className="pointer-events-auto absolute right-6 bottom-4 text-right text-muted-foreground text-xs">
+              <div>Entreprises / établissements (Aude)</div>
+              <div>
+                Source:{" "}
+                <a
+                  className="underline"
+                  href="https://www.insee.fr/fr/statistiques/4179701"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  INSEE
+                </a>
+              </div>
             </div>
           </div>
         </SwiperSlide>
 
-        {/* Slide 3: Gouvernance — 70% rouge (dark) */}
+        {/* Slide 3: Un composant centré (dark) */}
         <SwiperSlide className="slide-ambient dark relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
           <DarkAccents />
           <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
             <DevOc />
           </div>
-          <div className="flex h-full w-full flex-col items-center justify-center gap-4 pt-24 md:pt-28 lg:pt-32">
-            <div className="mx-auto grid w-full max-w-xl grid-cols-1 items-center gap-3 text-center">
+          <div className="relative flex h-full w-full items-center justify-center pt-12 md:pt-28 lg:pt-32">
+            <div className="mx-auto flex w-full max-w-xl flex-col items-center gap-3 text-center">
               <Gauge
+                className="w-full max-w-[20rem] sm:max-w-lg md:max-w-xl"
                 color="#dc2626"
                 label="Dépendance cloud non-UE (hyp.)"
                 value={70}
@@ -101,34 +136,34 @@ export default function Home() {
               <div className="text-muted-foreground">
                 Réorientation vers des solutions 🇪🇺 lorsque pertinent
               </div>
-              <div className="text-muted-foreground text-xs">
-                Source:{" "}
-                <a
-                  className="underline hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/60"
-                  href="https://siecledigital.fr/2022/10/03/pres-de-3-4-des-depenses-cloud-en-europe-sont-destinees-a-amazon-google-ou-microsoft/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  EU Digital Strategy
-                </a>
-              </div>
+            </div>
+            <div className="pointer-events-auto absolute right-8 bottom-6 text-right text-muted-foreground text-xs">
+              Source:{" "}
+              <a
+                className="underline hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/60"
+                href="https://siecledigital.fr/2022/10/03/pres-de-3-4-des-depenses-cloud-en-europe-sont-destinees-a-amazon-google-ou-microsoft/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Siecle Digital
+              </a>
             </div>
           </div>
         </SwiperSlide>
 
-        {/* Slide 4: Accompagnement — RGAA / RGPD / RGS (light) */}
+        {/* Slide 4: Deux composants gauche/droite (light) */}
         <SwiperSlide className="slide-ambient relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
           <LightGrid />
           <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
             <DevOc />
           </div>
-          <div className="flex h-full w-full flex-col items-center justify-center gap-6 pt-24 md:pt-28 lg:pt-32">
-            <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-1 md:grid-cols-2">
+          <div className="relative flex h-full w-full flex-col items-center justify-center gap-6 pt-12 md:pt-28 lg:pt-32">
+            <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-4 md:grid-cols-2">
               <div className="flex w-full items-center justify-center">
-                <CircleStandards className="w-full max-w-[18rem] sm:max-w-md md:max-w-lg" />
+                <CircleStandards className="w-full max-w-[20rem] sm:max-w-lg md:max-w-xl" />
               </div>
               <div className="flex items-center justify-center">
-                <div className="relative">
+                <div className="relative w-full max-w-[20rem] sm:max-w-lg md:max-w-xl">
                   <motion.div
                     animate={{ y: [-20, 20, -20] }}
                     className="-inset-3 -z-10 absolute rounded-xl"
@@ -145,7 +180,7 @@ export default function Home() {
                   />
                   <Image
                     alt="Illustration de réunion"
-                    className="h-auto w-48 rounded-xl border border-border md:w-64 lg:w-72"
+                    className="h-auto w-full rounded-xl border border-border"
                     height={256}
                     priority
                     src={MeetIcon}
@@ -153,7 +188,7 @@ export default function Home() {
                   />
                 </div>
               </div>
-              <div className="col-span-1 text-center text-muted-foreground text-xs md:col-span-2">
+              <div className="pointer-events-auto absolute right-8 bottom-6 text-right text-muted-foreground text-xs">
                 Lien RGAA:{" "}
                 <a
                   className="underline hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/60"
@@ -161,37 +196,37 @@ export default function Home() {
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  accessibilite.numerique.gouv.fr
+                  numerique.gouv.fr
                 </a>
               </div>
             </div>
           </div>
         </SwiperSlide>
 
-        {/* Slide 5: Protection — Anneau 80% (dark) */}
+        {/* Slide 5: Un composant centré (dark) */}
         <SwiperSlide className="slide-ambient dark relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
           <DarkAccents />
           <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
             <DevOc />
           </div>
-          <div className="flex h-full w-full flex-col items-center justify-center gap-6 pt-24 md:pt-28 lg:pt-32">
+          <div className="relative flex h-full w-full items-center justify-center pt-12 md:pt-28 lg:pt-32">
             <div className="mx-auto grid w-full max-w-4xl grid-cols-1 place-items-center gap-4 text-center">
               <PieDonut
-                className="w-full max-w-[18rem] sm:max-w-md md:max-w-lg"
-                label="Maturité cyber (objectif)"
+                className="w-full max-w-[20rem] sm:max-w-lg md:max-w-xl"
+                label="TPE/PME mal accompagnées en cybersécurité"
                 value={80}
               />
-              <div className="text-muted-foreground text-xs">
-                Source:{" "}
-                <a
-                  className="underline hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/60"
-                  href="https://www.lopinion.fr/economie/tpe-pme-une-maturite-cyber-encore-bien-faible"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  ANSSI
-                </a>
-              </div>
+            </div>
+            <div className="pointer-events-auto absolute right-8 bottom-6 text-right text-muted-foreground text-xs">
+              Source:{" "}
+              <a
+                className="underline hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/60"
+                href="https://www.lopinion.fr/economie/tpe-pme-une-maturite-cyber-encore-bien-faible"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                L'Opinion
+              </a>
             </div>
           </div>
         </SwiperSlide>

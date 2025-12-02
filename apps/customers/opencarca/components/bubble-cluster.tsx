@@ -23,7 +23,7 @@ export function BubbleCluster({ className }: { className?: string }) {
       initial={{ opacity: 0 }}
       role="img"
       transition={{ duration: 0.4 }}
-      viewBox="0 0 300 300"
+      viewBox="20 -20 300 300"
       viewport={{ once: true }}
       whileInView={{ opacity: 1 }}
     >

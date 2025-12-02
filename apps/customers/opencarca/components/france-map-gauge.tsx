@@ -26,7 +26,7 @@ export function FranceMapGauge({
         initial={{ opacity: 0, scale: 0.9 }}
         role="img"
         transition={{ duration: 0.8 }}
-        viewBox="0 0 520 520"
+        viewBox="100 80 380 380"
       >
         <title
           id={titleId}
@@ -90,22 +90,6 @@ export function FranceMapGauge({
           {clamped}%
         </motion.text>
       </motion.svg>
-      <div className="-mt-3 text-muted-foreground text-xs">
-        <ul>
-          <li>Concentration de l'expertise numérique</li>
-          <li>
-            Source:{" "}
-            <a
-              className="underline hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/60"
-              href="https://www.insee.fr/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              INSEE
-            </a>
-          </li>
-        </ul>
-      </div>
     </div>
   );
 }
