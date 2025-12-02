@@ -36,12 +36,22 @@ export default function Home() {
           </div>
           <div className="relative z-10 flex h-full w-full flex-col items-center justify-center gap-6 pt-24 md:pt-28 lg:pt-32">
             <div className="grid w-full max-w-6xl grid-cols-1 place-items-center gap-6 sm:grid-cols-2 sm:gap-10">
-              <div className="mx-auto flex w-full max-w-[16rem] items-center justify-center sm:max-w-md md:max-w-lg">
+              <motion.div
+                className="mx-auto flex w-full max-w-[16rem] items-center justify-center sm:max-w-md md:max-w-lg"
+                style={{ filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.15))" }}
+                transition={{ damping: 20, stiffness: 200, type: "spring" }}
+                whileHover={{ scale: 1.02 }}
+              >
                 <BubbleCluster />
-              </div>
-              <div className="mx-auto flex w-full max-w-[16rem] items-center justify-center sm:max-w-md md:max-w-lg">
+              </motion.div>
+              <motion.div
+                className="mx-auto flex w-full max-w-[16rem] items-center justify-center sm:max-w-md md:max-w-lg"
+                style={{ filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.15))" }}
+                transition={{ damping: 20, stiffness: 200, type: "spring" }}
+                whileHover={{ scale: 1.02 }}
+              >
                 <FranceMapGauge percent={80} />
-              </div>
+              </motion.div>
             </div>
           </div>
         </SwiperSlide>
@@ -53,12 +63,22 @@ export default function Home() {
           </div>
           <div className="flex h-full w-full flex-col items-center justify-center gap-6 pt-24 md:pt-28 lg:pt-32">
             <div className="mx-auto grid w-full max-w-6xl grid-cols-1 place-items-center gap-8 md:grid-cols-2">
-              <div className="flex w-full max-w-[15rem] flex-col items-center justify-center gap-2 sm:max-w-md md:max-w-lg">
+              <motion.div
+                className="flex w-full max-w-[15rem] flex-col items-center justify-center gap-2 sm:max-w-md md:max-w-lg"
+                style={{ filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.15))" }}
+                transition={{ damping: 20, stiffness: 200, type: "spring" }}
+                whileHover={{ scale: 1.02 }}
+              >
                 <OccitanieMapGauge percent={75} />
-              </div>
-              <div className="flex w-full max-w-[15rem] items-center justify-center sm:max-w-md md:max-w-lg">
+              </motion.div>
+              <motion.div
+                className="flex w-full max-w-[15rem] items-center justify-center sm:max-w-md md:max-w-lg"
+                style={{ filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.15))" }}
+                transition={{ damping: 20, stiffness: 200, type: "spring" }}
+                whileHover={{ scale: 1.02 }}
+              >
                 <GapTriangle />
-              </div>
+              </motion.div>
             </div>
           </div>
         </SwiperSlide>
@@ -104,14 +124,30 @@ export default function Home() {
                 <CircleStandards />
               </div>
               <div className="flex items-center justify-center">
-                <Image
-                  alt="Illustration de réunion"
-                  className="h-auto w-40 md:w-56 lg:w-64"
-                  height={256}
-                  priority
-                  src={MeetIcon}
-                  width={256}
-                />
+                <div className="relative">
+                  <motion.div
+                    animate={{ y: [-20, 20, -20] }}
+                    className="-inset-3 -z-10 absolute rounded-xl"
+                    style={{
+                      background:
+                        "repeating-linear-gradient(180deg, var(--accent) 0px, var(--accent) 8px, transparent 8px, transparent 20px)",
+                      opacity: 0.25,
+                    }}
+                    transition={{
+                      duration: 6,
+                      ease: "easeInOut",
+                      repeat: Number.POSITIVE_INFINITY,
+                    }}
+                  />
+                  <Image
+                    alt="Illustration de réunion"
+                    className="h-auto w-40 rounded-xl border border-border md:w-56 lg:w-64"
+                    height={256}
+                    priority
+                    src={MeetIcon}
+                    width={256}
+                  />
+                </div>
               </div>
               <div className="col-span-1 text-center text-muted-foreground text-xs md:col-span-2">
                 Lien RGAA:{" "}

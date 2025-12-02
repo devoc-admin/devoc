@@ -35,10 +35,9 @@ export function FranceMapGauge({ percent = 75 }: { percent?: number }) {
           stroke="var(--border)"
           strokeWidth={14}
         />
-        {/* Jauge progression */}
+        {/* Jauge progression (effet doux sans néon) */}
         <motion.circle
           animate={{ strokeDasharray: `${dash} ${circ - dash}` }}
-          className="neon-glow drop-shadow-[0_0_8px_var(--primary)]"
           cx={260}
           cy={260}
           fill="none"
@@ -48,6 +47,7 @@ export function FranceMapGauge({ percent = 75 }: { percent?: number }) {
           strokeDasharray={`${dash} ${circ - dash}`}
           strokeLinecap="round"
           strokeWidth={14}
+          style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.2))" }}
           transform="rotate(-90 260 260)"
           transition={{ duration: 1.2, ease: "easeInOut" }}
         />
