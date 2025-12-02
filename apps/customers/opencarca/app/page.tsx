@@ -6,6 +6,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { motion } from "motion/react";
 import Image from "next/image";
+import MeetIcon from "@/assets/illustration/meet.avif";
 import { BubbleCluster } from "@/components/bubble-cluster";
 import { CircleStandards } from "@/components/circle-standards";
 import { DevOc } from "@/components/devoc";
@@ -30,18 +31,15 @@ export default function Home() {
         {/* Slide 1: Hero centré (haut) + bulles/gauge (haut milieu) */}
         <SwiperSlide className="slide-ambient relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
           <Shapes />
-          <div className="interactive-layer relative mx-auto flex flex-col items-center">
-            {/* Haut: DevOc + Keywords, centrés */}
-            <div className="flex flex-col items-center justify-center">
-              <DevOc />
-              {/* <KeywordsRotating /> */}
-            </div>
-            {/* Haut milieu: gauche bulles, droite carte France */}
-            <div className="grid w-full grid-cols-1 items-start sm:grid-cols-2 md:grid-cols-2">
-              <div className="mx-auto flex w-full items-center justify-center">
+          <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
+            <DevOc />
+          </div>
+          <div className="relative z-10 flex h-full w-full flex-col items-center justify-center gap-6 pt-24 md:pt-28 lg:pt-32">
+            <div className="grid w-full max-w-6xl grid-cols-1 place-items-center gap-6 sm:grid-cols-2 sm:gap-10">
+              <div className="mx-auto flex w-full max-w-[16rem] items-center justify-center sm:max-w-md md:max-w-lg">
                 <BubbleCluster />
               </div>
-              <div className="mx-auto flex w-full items-center justify-center">
+              <div className="mx-auto flex w-full max-w-[16rem] items-center justify-center sm:max-w-md md:max-w-lg">
                 <FranceMapGauge percent={80} />
               </div>
             </div>
@@ -49,23 +47,29 @@ export default function Home() {
         </SwiperSlide>
 
         {/* Slide 2: Occitanie 75% + Triangle GAP (dark) */}
-        <SwiperSlide>
-          <section className="slide-ambient dark flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
-            <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 md:grid-cols-2">
-              <div className="flex flex-col items-center justify-center gap-2">
+        <SwiperSlide className="slide-ambient dark relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+          <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
+            <DevOc />
+          </div>
+          <div className="flex h-full w-full flex-col items-center justify-center gap-6 pt-24 md:pt-28 lg:pt-32">
+            <div className="mx-auto grid w-full max-w-6xl grid-cols-1 place-items-center gap-8 md:grid-cols-2">
+              <div className="flex w-full max-w-[15rem] flex-col items-center justify-center gap-2 sm:max-w-md md:max-w-lg">
                 <OccitanieMapGauge percent={75} />
               </div>
-              <div className="flex items-center justify-center">
+              <div className="flex w-full max-w-[15rem] items-center justify-center sm:max-w-md md:max-w-lg">
                 <GapTriangle />
               </div>
             </div>
-          </section>
+          </div>
         </SwiperSlide>
 
         {/* Slide 3: Gouvernance — 70% rouge (light) */}
-        <SwiperSlide>
-          <section className="slide-ambient flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
-            <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-4 text-center">
+        <SwiperSlide className="slide-ambient relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+          <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
+            <DevOc />
+          </div>
+          <div className="flex h-full w-full flex-col items-center justify-center gap-4 pt-24 md:pt-28 lg:pt-32">
+            <div className="mx-auto grid w-full max-w-xl grid-cols-1 items-center gap-3 text-center">
               <Gauge
                 color="#dc2626"
                 label="Dépendance cloud non-UE (hyp.)"
@@ -86,15 +90,30 @@ export default function Home() {
                 </a>
               </div>
             </div>
-          </section>
+          </div>
         </SwiperSlide>
 
         {/* Slide 4: Accompagnement — RGAA / RGPD / RGS (dark) */}
-        <SwiperSlide>
-          <section className="slide-ambient dark flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
-            <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-6 text-center">
-              <CircleStandards />
-              <div className="text-muted-foreground text-xs">
+        <SwiperSlide className="slide-ambient dark relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+          <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
+            <DevOc />
+          </div>
+          <div className="flex h-full w-full flex-col items-center justify-center gap-6 pt-24 md:pt-28 lg:pt-32">
+            <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-1 md:grid-cols-2">
+              <div className="flex items-center justify-center">
+                <CircleStandards />
+              </div>
+              <div className="flex items-center justify-center">
+                <Image
+                  alt="Illustration de réunion"
+                  className="h-auto w-40 md:w-56 lg:w-64"
+                  height={256}
+                  priority
+                  src={MeetIcon}
+                  width={256}
+                />
+              </div>
+              <div className="col-span-1 text-center text-muted-foreground text-xs md:col-span-2">
                 Lien RGAA:{" "}
                 <a
                   className="underline hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-primary/60"
@@ -106,13 +125,16 @@ export default function Home() {
                 </a>
               </div>
             </div>
-          </section>
+          </div>
         </SwiperSlide>
 
         {/* Slide 5: Protection — Anneau 80% (light) */}
-        <SwiperSlide>
-          <section className="slide-ambient flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
-            <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-4 text-center">
+        <SwiperSlide className="slide-ambient relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
+          <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
+            <DevOc />
+          </div>
+          <div className="flex h-full w-full flex-col items-center justify-center gap-6 pt-24 md:pt-28 lg:pt-32">
+            <div className="mx-auto grid w-full max-w-4xl grid-cols-1 place-items-center gap-4 text-center">
               <PieDonut label="Maturité cyber (objectif)" value={80} />
               <div className="text-muted-foreground text-xs">
                 Source:{" "}
@@ -126,7 +148,7 @@ export default function Home() {
                 </a>
               </div>
             </div>
-          </section>
+          </div>
         </SwiperSlide>
 
         {/* Slide 6: Conclusion / CTA (dark) */}

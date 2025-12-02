@@ -18,7 +18,7 @@ export function PieDonut({
     <div className="flex flex-col items-center">
       <svg
         aria-labelledby={titleId}
-        className="h-48 w-48"
+        className="h-64 w-64 sm:h-72 sm:w-72 md:h-96 md:w-96"
         role="img"
         viewBox="0 0 120 120"
       >
@@ -44,11 +44,19 @@ export function PieDonut({
           transform="rotate(-90 60 60)"
         />
         <circle cx="60" cy="60" fill="var(--background)" r="32" />
+        <text
+          dominantBaseline="middle"
+          fill="var(--foreground)"
+          fontSize={20}
+          fontWeight={800}
+          textAnchor="middle"
+          x={60}
+          y={60}
+        >
+          {clamped}%
+        </text>
       </svg>
       {label ? <div className="mt-2 text-muted-foreground">{label}</div> : null}
-      <div className="mt-1 font-bold font-kanit text-3xl text-foreground">
-        {clamped}%
-      </div>
     </div>
   );
 }

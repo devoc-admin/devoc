@@ -43,15 +43,23 @@ export function Gauge({
           strokeWidth="8"
         />
         <circle cx={10 + (80 * pct) / 100} cy={50} fill={color} r={3.5} />
-      </svg>
-      <div className="text-center">
-        <div className="font-bold font-kanit text-4xl text-zinc-900 dark:text-zinc-50">
+        <text
+          dominantBaseline="middle"
+          fill="var(--foreground)"
+          fontSize={14}
+          fontWeight={800}
+          textAnchor="middle"
+          x={50}
+          y={34}
+        >
           {Math.round(pct)}%
+        </text>
+      </svg>
+      {label ? (
+        <div className="text-center text-zinc-600 dark:text-zinc-300">
+          {label}
         </div>
-        {label ? (
-          <div className="text-zinc-600 dark:text-zinc-300">{label}</div>
-        ) : null}
-      </div>
+      ) : null}
     </div>
   );
 }
