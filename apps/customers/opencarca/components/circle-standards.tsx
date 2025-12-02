@@ -18,7 +18,7 @@ export function CircleStandards({ className }: { className?: string }) {
         initial={{ opacity: 0, scale: 0.96 }}
         role="img"
         transition={{ duration: 0.5 }}
-        viewBox="0 0 240 240"
+        viewBox="0 0 220 220"
         viewport={{ once: true }}
         whileInView={{ opacity: 1, scale: 1 }}
       >

@@ -105,17 +105,6 @@ export function OccitanieMapGauge({
           Entreprises / établissements (Aude)
         </div>
       </div>
-      <div className="mt-2 text-center text-muted-foreground text-xs">
-        Source:{" "}
-        <a
-          className="underline"
-          href="https://www.insee.fr/fr/statistiques/4179701"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          INSEE
-        </a>
-      </div>
     </div>
   );
 }
