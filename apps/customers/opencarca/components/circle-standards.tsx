@@ -3,6 +3,7 @@ import { useId } from "react";
 
 export function CircleStandards() {
   const titleId = useId();
+  const ringR = 70; // rayon du cercle principal (réduit pour laisser plus d'espace visuel)
   const labels = [
     { angle: -90, text: "RGAA" },
     { angle: 30, text: "RGPD" },
@@ -27,25 +28,14 @@ export function CircleStandards() {
           cx={120}
           cy={120}
           fill="none"
-          r={90}
+          r={ringR}
           stroke="var(--border)"
-          strokeWidth={6}
-        />
-        <circle
-          className="neon-glow"
-          cx={120}
-          cy={120}
-          fill="none"
-          r={90}
-          stroke="var(--primary)"
-          strokeDasharray="565"
-          strokeDashoffset="420"
           strokeWidth={6}
         />
         {labels.map((l) => {
           const rad = (l.angle * Math.PI) / 180;
-          const x = 120 + 90 * Math.cos(rad);
-          const y = 120 + 90 * Math.sin(rad);
+          const x = 120 + ringR * Math.cos(rad);
+          const y = 120 + ringR * Math.sin(rad);
           return (
             <g key={l.text}>
               <circle cx={x} cy={y} fill="var(--primary)" r={8} />
@@ -82,9 +72,6 @@ export function CircleStandards() {
           TPE, PME
         </text>
       </motion.svg>
-      <div className="-bottom-8 absolute w-full text-center text-muted-foreground text-xs">
-        Icônes: proximité 🤝 — pédagogie 📚
-      </div>
     </div>
   );
 }

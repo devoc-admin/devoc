@@ -84,7 +84,7 @@ export function FranceMapGauge({ percent = 75 }: { percent?: number }) {
           {clamped}%
         </motion.text>
       </motion.svg>
-      <div className="text-muted-foreground text-xs">
+      <div className="-mt-3 text-muted-foreground text-xs">
         <ul>
           <li>Concentration de l'expertise numérique</li>
           <li>
