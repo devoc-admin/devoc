@@ -4,10 +4,12 @@ export function PieDonut({
   value,
   color = "#dc2626",
   label,
+  className,
 }: {
   value: number;
   color?: string;
   label?: string;
+  className?: string;
 }) {
   const titleId = useId();
   const clamped = Math.max(0, Math.min(100, value));
@@ -15,10 +17,10 @@ export function PieDonut({
   const circ = 2 * Math.PI * radius;
   const filled = (clamped / 100) * circ;
   return (
-    <div className="flex flex-col items-center">
+    <div className={["relative w-full", className].filter(Boolean).join(" ")}>
       <svg
         aria-labelledby={titleId}
-        className="h-64 w-64 sm:h-72 sm:w-72 md:h-96 md:w-96"
+        className="h-auto w-full"
         role="img"
         viewBox="0 0 120 120"
       >
@@ -56,7 +58,9 @@ export function PieDonut({
           {clamped}%
         </text>
       </svg>
-      {label ? <div className="mt-2 text-muted-foreground">{label}</div> : null}
+      {label ? (
+        <div className="mt-2 text-center text-muted-foreground">{label}</div>
+      ) : null}
     </div>
   );
 }

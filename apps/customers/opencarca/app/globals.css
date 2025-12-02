@@ -201,7 +201,8 @@
 .slide-ambient a, .slide-ambient button { position:relative; z-index:20; pointer-events:auto; }
 
 /* Ajuste gradient animé sur carte occitanie */
-.occ-gradient { filter: drop-shadow(0 0 6px var(--primary)); }
+.occ-gradient { filter: none; }
+.dark .occ-gradient { filter: drop-shadow(0 0 6px var(--primary)); }
 
 /* Légère respiration sur la silhouette France */
 @keyframes breath {
@@ -211,8 +212,9 @@
 }
 .animate-breath { animation: breath 6s ease-in-out infinite; }
 
-/* Effet néon doux réutilisable */
-.neon-glow { filter: drop-shadow(0 0 4px var(--primary)) drop-shadow(0 0 12px var(--primary)); }
+/* Effet néon doux réutilisable (uniquement sur slides dark) */
+.neon-glow { filter: none; }
+.dark .neon-glow { filter: drop-shadow(0 0 4px var(--primary)) drop-shadow(0 0 12px var(--primary)); }
 
 /* AuroraText animation (aligné avec apps/web) */
 @keyframes aurora-text-background {
