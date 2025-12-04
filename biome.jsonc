@@ -34,10 +34,12 @@
       // 🧱 These components are pre-made components mostly copied/pasted from external registry so we don't want to apply to them linting rules
       "!**/components/ui",
       "!**/components/react-bits",
+      "!**/components/fancy",
       "!**/components/aceternity",
       "!**/components/kibo-ui",
       "!**/components/sera-ui",
-      "!**/components/magicui"
+      "!**/components/magicui",
+      "!**/bilan"
     ]
   },
   "formatter": {
@@ -54,5 +56,5 @@
     }
   },
 
-  "extends": ["ultracite/core", "ultracite/react", "ultracite/next"]
+  "extends": ["ultracite/core", "ultracite/next"]
 }

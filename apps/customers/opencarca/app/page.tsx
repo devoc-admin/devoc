@@ -189,7 +189,7 @@ export default function Home() {
                 <a
                   aria-label="Carte de visite DevOc (lien vers dev-oc.fr)"
                   className="devoc-3dcard block rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/60"
-                  href="https://dev-oc.fr"
+                  href="https://dev-oc.fr/bilan"
                   rel="noopener noreferrer"
                   tabIndex={0}
                   target="_blank"
