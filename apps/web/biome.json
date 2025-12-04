@@ -3,6 +3,9 @@
   "extends": "//",
   "linter": {
     "rules": {
+      "nursery": {
+        "noLeakedRender": "off"
+      },
       "style": {
         "noMagicNumbers": "off"
       },
