@@ -4,11 +4,11 @@
   "private": true,
   "devDependencies": {
     "@biomejs/biome": "^2.3.8",
-    "@commitlint/cli": "^20.1.0",
-    "@commitlint/config-conventional": "^20.0.0",
-    "lefthook": "^2.0.4",
-    "turbo": "^2.6.1",
-    "ultracite": "^6.3.7"
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
+    "lefthook": "^2.0.9",
+    "turbo": "^2.6.3",
+    "ultracite": "^6.3.10"
   },
   "packageManager": "pnpm@10.20.0"
 }

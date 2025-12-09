@@ -41,13 +41,15 @@
     ]
   },
   "formatter": {
-    "enabled": true
+    "enabled": true,
+    "indentStyle": "space"
   },
   "linter": {
     "enabled": true,
     "rules": {
       "style": {
-        "useBlockStatements": "off" // No need to wrap every if statement in a block statement eg. if(!condition) return;
+        "useBlockStatements": "off", // No need to wrap every if statement in a block statement eg. if(!condition) return;
+        "useConsistentTypeDefinitions": "off"
       }
     }
   },
