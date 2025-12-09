@@ -4,7 +4,7 @@ import { useId } from "react";
 export function BubbleCluster({ className }: { className?: string }) {
   const titleId = useId();
   const centerR = 70; // ~170px diamètre pour plus de présence
-  const satelliteR = 33; // ~86px diamètre (réduit de ~10%)
+  const satelliteR = 45; // ~86px diamètre (réduit de ~10%)
   const orbitR = 100; // rayon d’orbite centre→centre (plus large)
   const cx = 150;
   const cy = 150;
@@ -23,7 +23,7 @@ export function BubbleCluster({ className }: { className?: string }) {
       initial={{ opacity: 0 }}
       role="img"
       transition={{ duration: 0.4 }}
-      viewBox="20 -20 300 300"
+      viewBox="0 -20 300 300"
       viewport={{ once: true }}
       whileInView={{ opacity: 1 }}
     >

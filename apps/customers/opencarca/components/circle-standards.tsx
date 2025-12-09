@@ -55,6 +55,9 @@ export function CircleStandards({ className }: { className?: string }) {
           const rad = (l.angle * Math.PI) / 180;
           const x = 120 + ringR * Math.cos(rad);
           const y = 120 + ringR * Math.sin(rad);
+          // Position du label : au-dessus si angle dans [-90,90], en dessous sinon
+          const isTop = l.angle <= 0;
+          const labelDy = isTop ? -18 : 28;
           return (
             <g key={l.text}>
               <circle cx={x} cy={y} fill="var(--primary)" r={8} />
@@ -63,7 +66,7 @@ export function CircleStandards({ className }: { className?: string }) {
                 fontSize={12}
                 textAnchor="middle"
                 x={x}
-                y={y - 12}
+                y={y + labelDy}
               >
                 {l.text}
               </text>
@@ -76,9 +79,12 @@ export function CircleStandards({ className }: { className?: string }) {
           fontSize={12}
           textAnchor="middle"
           x={120}
-          y={120}
+          y={105}
         >
-          Administration publique
+          Administration
+          <tspan dy={14} x={120}>
+            publique
+          </tspan>
         </text>
         <text
           className="fill-current"

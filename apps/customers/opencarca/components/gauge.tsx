@@ -44,15 +44,14 @@ export function Gauge({
           strokeDashoffset={125.6 - (125.6 * pct) / 100}
           strokeWidth="8"
         />
-        <circle cx={10 + (80 * pct) / 100} cy={50} fill={color} r={3.5} />
         <text
           dominantBaseline="middle"
           fill="var(--foreground)"
-          fontSize={14}
+          fontSize={28}
           fontWeight={800}
           textAnchor="middle"
           x={50}
-          y={34}
+          y={51}
         >
           {Math.round(pct)}%
         </text>
