@@ -130,12 +130,9 @@ export default function Home() {
               <Gauge
                 className="w-full max-w-[20rem] sm:max-w-lg md:max-w-xl"
                 color="#dc2626"
-                label="Dépendance cloud non-UE (hyp.)"
+                label="Dépendance cloud non-UE"
                 value={70}
               />
-              <div className="text-muted-foreground">
-                Réorientation vers des solutions 🇪🇺 lorsque pertinent
-              </div>
             </div>
             <div className="pointer-events-auto absolute right-8 bottom-6 text-right text-muted-foreground text-xs">
               Source:{" "}
