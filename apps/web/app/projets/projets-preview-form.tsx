@@ -75,7 +75,7 @@ function ProjetPreviewForm() {
       <div className="w-[300px]">
         <Input
           className="h-12 border-primary bg-white px-4 text-lg! ring-3 ring-white"
-          maxLength={10}
+          maxLength={15}
           onChange={handleChangeProjectPassword}
           placeholder="Entrez ici votre mot de passe"
           value={projectPassword}
