@@ -7,7 +7,6 @@ import "swiper/css/pagination";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { BubbleCluster } from "@/components/bubble-cluster";
-import { CircleStandards } from "@/components/circle-standards";
 import { DarkAccents } from "@/components/dark-accents";
 import { DevOc } from "@/components/devoc";
 import { GapTriangle } from "@/components/gap-triangle";
@@ -92,7 +91,7 @@ export default function Home() {
           <div className="pointer-events-none absolute inset-x-0 top-6 z-20 flex justify-center">
             <DevOc />
           </div>
-          <div className="relative flex h-full w-full items-center justify-center pt-12 md:pt-28 lg:pt-32">
+          <div className="relative flex h-full w-full flex-col items-center justify-center gap-4 pt-12 md:flex-row md:gap-0 md:pt-28 lg:pt-32">
             <motion.div
               className="flex w-full items-center justify-center"
               style={{ filter: "drop-shadow(0 6px 18px rgba(0,0,0,0.15))" }}
@@ -135,7 +134,29 @@ export default function Home() {
           <div className="relative flex h-full w-full flex-col items-center justify-center gap-6 pt-12 md:pt-28 lg:pt-32">
             <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-4 md:grid-cols-2">
               <div className="flex w-full items-center justify-center">
-                <CircleStandards className="w-full max-w-[20rem] sm:max-w-lg md:max-w-xl" />
+                <div className="w-full max-w-[20rem] rounded-xl border border-border bg-card p-6 shadow-lg sm:max-w-s md:max-w-s">
+                  <div className="mb-4 text-center font-bold text-primary text-xl">
+                    Package
+                  </div>
+                  <ul className="space-y-2 font-medium text-foreground text-lg">
+                    <li className="flex items-center gap-2">
+                      <span className="inline-block h-2 w-2 rounded-full bg-primary" />
+                      Accessibilité
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="inline-block h-2 w-2 rounded-full bg-primary" />
+                      Performances
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="inline-block h-2 w-2 rounded-full bg-primary" />
+                      Sécurité
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="inline-block h-2 w-2 rounded-full bg-primary" />
+                      Souveraineté
+                    </li>
+                  </ul>
+                </div>
               </div>
               <div className="flex items-center justify-center">
                 <div className="relative w-full max-w-[20rem] sm:max-w-lg md:max-w-xl">
@@ -155,41 +176,66 @@ export default function Home() {
           </div>
         </SwiperSlide>
 
-        {/* Slide 5: Notre Méthode */}
+        {/* Slide 5: Carte de visite 3D */}
         <SwiperSlide>
           <div className="slide-ambient dark relative flex h-screen w-full items-center justify-center bg-background px-8 text-foreground">
             <DarkAccents />
             <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 text-center">
-              <div className="shimmer-text font-bold font-kanit text-6xl">
+              <div className="shimmer-text mb-4 font-bold font-kanit text-6xl">
                 Choisissez
               </div>
-              <motion.div
-                className="neon-glow"
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-                whileInView={{ opacity: 1, scale: 1 }}
-              >
-                <Image
-                  alt="QR vers prise de rendez-vous"
-                  className="rounded-xl border border-border"
-                  height={224}
-                  priority
-                  src="/qrcode.png"
-                  width={224}
-                />
-              </motion.div>
-              <DevOc />
-              <div className="text-muted-foreground">
-                Démo preview disponible:
+              {/* Carte de visite 3D */}
+              <div className="[perspective:1200px]">
+                <a
+                  aria-label="Carte de visite DevOc (lien vers dev-oc.fr)"
+                  className="devoc-3dcard block rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/60"
+                  href="https://dev-oc.fr"
+                  rel="noopener noreferrer"
+                  tabIndex={0}
+                  target="_blank"
+                >
+                  <div className="devoc-3dcard-inner relative aspect-[318/204] w-[90vw] max-w-[320px] cursor-pointer rounded-xl transition-transform duration-500 [transform-style:preserve-3d] sm:max-w-md md:max-w-2xl">
+                    <Image
+                      alt="Carte de visite DevOc (face)"
+                      className="absolute inset-0 h-full w-full rounded-xl border border-border bg-card [backface-visibility:hidden]"
+                      fill
+                      src="/visite-card-face.svg"
+                      style={{ objectFit: "cover" }}
+                    />
+                    <Image
+                      alt="Carte de visite DevOc (dos)"
+                      className="absolute inset-0 h-full w-full rotate-y-180 rounded-xl border border-border bg-card [backface-visibility:hidden]"
+                      fill
+                      src="/visite-card-back.svg"
+                      style={{ objectFit: "cover" }}
+                    />
+                    <div className="absolute inset-0 flex rotate-y-180 items-center justify-center [backface-visibility:hidden]">
+                      <Image
+                        alt="Carte de visite DevOc (dos)"
+                        className="h-full w-full rounded-xl border border-border bg-card"
+                        fill
+                        src="/visite-card-back.svg"
+                        style={{ objectFit: "cover" }}
+                      />
+                      <div className="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute top-[35%] left-1/2">
+                        <Image
+                          alt="QR code projets DevOc"
+                          className="rounded-md border border-border bg-white shadow-md"
+                          height={144}
+                          src="/qrcodeprojects.png"
+                          width={144}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </a>
+                <style global jsx>{`
+                  .devoc-3dcard:hover > .devoc-3dcard-inner,
+                  .devoc-3dcard:focus-visible > .devoc-3dcard-inner {
+                    transform: rotateY(180deg);
+                  }
+                `}</style>
               </div>
-              <a
-                className="rounded-lg border border-border bg-primary px-6 py-3 font-medium text-primary-foreground hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary/60"
-                href="https://www.devoc.fr"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Voir la démo
-              </a>
             </div>
           </div>
         </SwiperSlide>
