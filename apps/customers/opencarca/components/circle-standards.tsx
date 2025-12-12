@@ -75,26 +75,14 @@ export function CircleStandards({ className }: { className?: string }) {
         })}
         <text
           className="fill-current"
+          color="#daa30cff"
           dominantBaseline="middle"
-          fontSize={12}
+          fontSize={60}
           textAnchor="middle"
           x={120}
-          y={105}
+          y={120}
         >
-          Administration
-          <tspan dy={14} x={120}>
-            publique
-          </tspan>
-        </text>
-        <text
-          className="fill-current"
-          dominantBaseline="middle"
-          fontSize={12}
-          textAnchor="middle"
-          x={120}
-          y={138}
-        >
-          TPE, PME
+          0,5%
         </text>
       </motion.svg>
     </div>
