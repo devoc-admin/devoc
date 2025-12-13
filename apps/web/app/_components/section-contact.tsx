@@ -108,7 +108,7 @@ export default function Contact() {
               Démarrons votre projet
             </CardTitle>
           </CardHeader>
-          <CardContent className={cn("z-1", "max-xs:p-3")}>
+          <CardContent className={cn("z-10", "max-xs:p-3")}>
             <ContactForm />
           </CardContent>
         </Card>

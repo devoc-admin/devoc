@@ -185,31 +185,31 @@ export default function Home() {
                 Choisissez
               </div>
               {/* Carte de visite 3D */}
-              <div className="[perspective:1200px]">
+              <div className="perspective-distant">
                 <a
                   aria-label="Carte de visite DevOc (lien vers dev-oc.fr)"
                   className="devoc-3dcard block rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/60"
-                  href="https://dev-oc.fr"
+                  href="https://dev-oc.fr/bilan"
                   rel="noopener noreferrer"
                   tabIndex={0}
                   target="_blank"
                 >
-                  <div className="devoc-3dcard-inner relative aspect-[318/204] w-[90vw] max-w-[320px] cursor-pointer rounded-xl transition-transform duration-500 [transform-style:preserve-3d] sm:max-w-md md:max-w-2xl">
+                  <div className="devoc-3dcard-inner transform-3d relative aspect-318/204 w-[90vw] max-w-[320px] cursor-pointer rounded-xl transition-transform duration-500 sm:max-w-md md:max-w-2xl">
                     <Image
                       alt="Carte de visite DevOc (face)"
-                      className="absolute inset-0 h-full w-full rounded-xl border border-border bg-card [backface-visibility:hidden]"
+                      className="backface-hidden absolute inset-0 h-full w-full rounded-xl border border-border bg-card"
                       fill
                       src="/visite-card-face.svg"
                       style={{ objectFit: "cover" }}
                     />
                     <Image
                       alt="Carte de visite DevOc (dos)"
-                      className="absolute inset-0 h-full w-full rotate-y-180 rounded-xl border border-border bg-card [backface-visibility:hidden]"
+                      className="backface-hidden absolute inset-0 h-full w-full rotate-y-180 rounded-xl border border-border bg-card"
                       fill
                       src="/visite-card-back.svg"
                       style={{ objectFit: "cover" }}
                     />
-                    <div className="absolute inset-0 flex rotate-y-180 items-center justify-center [backface-visibility:hidden]">
+                    <div className="backface-hidden absolute inset-0 flex rotate-y-180 items-center justify-center">
                       <Image
                         alt="Carte de visite DevOc (dos)"
                         className="h-full w-full rounded-xl border border-border bg-card"

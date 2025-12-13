@@ -27,7 +27,7 @@ export default function Realisations() {
       <BackgroundWithBeams />
       <TopBar />
       <SectionTitle
-        className="z-1 mb-24"
+        className="z-10 mb-24"
         description="Nos derniers projets qui illustrent notre approche orientée résultats"
         title="Découvrez nos réalisations"
       />

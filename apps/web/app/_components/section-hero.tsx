@@ -269,7 +269,6 @@ function DevOc() {
           "xl:text-[12rem]"
         )}
       >
-        {/*<DoodleTop/>*/}
         <div className={cn("font-style-script", "pt-4")}>Dev'</div>
         <AuroraText
           className="font-extrabold font-geist text-transparent tracking-tighter"

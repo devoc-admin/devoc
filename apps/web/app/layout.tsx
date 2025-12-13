@@ -1,14 +1,21 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import {
+  Dancing_Script,
+  Faustina,
   Fira_Code,
   Geist,
   Geist_Mono,
+  Inter,
   Kanit,
   Lobster,
+  Montserrat,
+  Sarina,
   Style_Script,
 } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import SkipLink from "@/components/ui/skip-link";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -34,6 +41,13 @@ const kanit = Kanit({
   variable: "--font-kanit",
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
+
+const sarina = Sarina({
+  subsets: ["latin"],
+  variable: "--font-sarina",
+  weight: ["400"],
+});
+
 const firaCode = Fira_Code({
   subsets: ["latin"],
   variable: "--font-fira-code",
@@ -45,6 +59,52 @@ const styleScript = Style_Script({
   variable: "--font-style-script",
   weight: ["400"],
 });
+
+const dancingScript = Dancing_Script({
+  subsets: ["latin"],
+  variable: "--font-dancing-script",
+  weight: ["400", "500", "600", "700"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
+
+const faustina = Faustina({
+  subsets: ["latin"],
+  variable: "--font-faustina",
+  weight: ["400", "300"],
+});
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="fr">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${dancingScript.variable} ${inter.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} flex min-h-screen flex-col font-sans`}
+      >
+        <NuqsAdapter>
+          <main className="grow" id="main-content">
+            {children}
+          </main>
+        </NuqsAdapter>
+        <Analytics />
+        <SkipLink />
+      </body>
+    </html>
+  );
+}
 
 export const metadata: Metadata = {
   authors: [{ name: "Dev'Oc", url: "https://dev-oc.fr" }],
@@ -98,21 +158,3 @@ export const metadata: Metadata = {
     title: "Dev'Oc | Création de sites & applications",
   },
 };
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="fr">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} font-sans`}
-      >
-        <SkipLink />
-        <main id="main-content">{children}</main>
-        <Analytics />
-      </body>
-    </html>
-  );
-}

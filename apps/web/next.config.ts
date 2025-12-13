@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  transpilePackages: ["react-reveal-slides"],
   turbopack: {
     root: path.join(__dirname, "../../"),
   },
