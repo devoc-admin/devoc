@@ -1,28 +1,27 @@
-// @ts-nocheck
 import type React from "react";
 
 // Type definitions
 type Orientation = "vertical" | "horizontal";
 type ColorScheme = "purple" | "blue" | "green" | "red" | "orange";
 
-interface GlowLineProps {
+type GlowLineProps = {
   orientation: Orientation;
   position: string;
   className?: string;
   color: ColorScheme;
-}
+};
 
-interface GlowLayer {
+type GlowLayer = {
   size: string;
   blur: string;
   opacity: string;
   color: string;
-}
+};
 
-interface ColorSchemeConfig {
+type ColorSchemeConfig = {
   core: string;
   glow: string[];
-}
+};
 
 // Color schemes configuration
 const COLOR_SCHEMES: Record<ColorScheme, ColorSchemeConfig> = {

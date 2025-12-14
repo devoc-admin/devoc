@@ -4,20 +4,20 @@ import { useMemo, useRef } from "react";
 import { useDimensions } from "@/hooks/use-debounced-dimensions";
 import { cn } from "@/lib/utils";
 
-interface AnimatedGradientProps {
+type AnimatedGradientProps = {
   colors: string[];
   speed?: number;
   blur?: "light" | "medium" | "heavy";
-}
+};
 
 const randomInt = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
-const AnimatedGradient: React.FC<AnimatedGradientProps> = ({
+function AnimatedGradient({
   colors,
   speed = 0.2,
   blur = "light",
-}) => {
+}: AnimatedGradientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useDimensions(containerRef);
 
@@ -68,6 +68,6 @@ const AnimatedGradient: React.FC<AnimatedGradientProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export default AnimatedGradient;

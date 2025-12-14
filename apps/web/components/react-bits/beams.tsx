@@ -1,4 +1,3 @@
-// @ts-nocheck 
 /** biome-ignore-all lint/style/noNonNullAssertion: specific for this component */
 "use client";
 import { PerspectiveCamera } from "@react-three/drei";
@@ -17,7 +16,7 @@ import { degToRad } from "three/src/math/MathUtils.js";
 
 type UniformValue = Three.IUniform<unknown> | unknown;
 
-interface ExtendMaterialConfig {
+type ExtendMaterialConfig = {
   header: string;
   vertexHeader?: string;
   fragmentHeader?: string;
@@ -25,7 +24,7 @@ interface ExtendMaterialConfig {
   uniforms?: Record<string, UniformValue>;
   vertex?: Record<string, string>;
   fragment?: Record<string, string>;
-}
+};
 
 type ShaderWithDefines = Three.ShaderLibShader & {
   defines?: Record<string, string | number | boolean>;

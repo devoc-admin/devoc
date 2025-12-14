@@ -73,7 +73,6 @@ function useToogleNavbarLink() {
   const [isOpened, setIsOpened] = useState(false);
   const iconRef = useRef<HTMLImageElement>(null);
   useClickAnyWhere((e) => {
-    // console.log(e.target);
     const hasClickedOnNavbarIcon =
       iconRef.current?.contains(e.target as Node) ?? false;
     if (hasClickedOnNavbarIcon) setIsOpened((v) => !v);

@@ -47,4 +47,4 @@ yarn-error.log*
 
 # Direnv
 .direnv
-.zed
+**/.zed

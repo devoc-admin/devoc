@@ -1,14 +1,13 @@
 "use client";
-// @ts-nocheck
 
 import type React from "react";
 
-interface AuroraTextProps {
+type AuroraTextProps = {
 	children: React.ReactNode;
 	className?: string;
 	colors?: string[];
 	speed?: number;
-}
+};
 
 export const AuroraText = ({
 	children,

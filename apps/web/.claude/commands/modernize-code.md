@@ -1,0 +1,1 @@
+- Find old or deprecated patterns and replace them with modern ones. Use Context7 or Exa MCP to identify and replace outdated patterns by comparing them with the documentation available.

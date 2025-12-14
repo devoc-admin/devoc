@@ -59,9 +59,7 @@ export const variantsAccessibilityCard = {
       duration: 0.5,
       delay: custom.delay,
     },
-    onAnimationComplete: () => {
-      console.log("Animation completed");
-    },
+    onAnimationComplete: () => {},
   }),
 };
 

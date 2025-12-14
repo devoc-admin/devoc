@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useId } from 'react';
 
-export interface GlassSurfaceProps {
+export type GlassSurfaceProps = {
   children?: React.ReactNode;
   width?: number | string;
   height?: number | string;
@@ -39,7 +39,7 @@ export interface GlassSurfaceProps {
     | 'plus-lighter';
   className?: string;
   style?: React.CSSProperties;
-}
+};
 
 const useDarkMode = () => {
   const [isDark, setIsDark] = useState(false);
@@ -58,7 +58,7 @@ const useDarkMode = () => {
   return isDark;
 };
 
-const GlassSurface: React.FC<GlassSurfaceProps> = ({
+function GlassSurface({
   children,
   width = "auto",
   height = 80,
@@ -79,7 +79,7 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
   mixBlendMode = 'difference',
   className = '',
   style = {}
-}) => {
+}: GlassSurfaceProps) {
   const uniqueId = useId().replace(/:/g, '-');
   const filterId = `glass-filter-${uniqueId}`;
   const redGradId = `red-grad-${uniqueId}`;
@@ -366,6 +366,6 @@ const GlassSurface: React.FC<GlassSurfaceProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export default GlassSurface;

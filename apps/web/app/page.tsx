@@ -19,7 +19,6 @@ export default function Home() {
       <WorkWith />
       <Contact />
       <Footer />
-      {/*<BackgroundBeams className="hidden lg:block" />*/}
     </>
   );
 }

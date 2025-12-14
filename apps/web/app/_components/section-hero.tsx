@@ -51,7 +51,6 @@ export default function Hero() {
         <Kpis />
         <Founders />
       </div>
-      j
     </div>
   );
 }

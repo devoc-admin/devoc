@@ -88,7 +88,7 @@ const GLASS_DEFAULTS = {
   yChannel: "G",
 };
 
-interface GlassProps {
+type GlassProps = {
   variant?: GlassVariant;
   children?: React.ReactNode;
   className?: string;
@@ -110,7 +110,7 @@ interface GlassProps {
   xChannel?: "R" | "G" | "B" | "A";
   yChannel?: "R" | "G" | "B" | "A";
   mixBlendMode?: string;
-}
+};
 
 export const Glass = (rawProps: GlassProps) => {
   const {
@@ -495,7 +495,7 @@ type GlassButtonProps = {
   disabled?: boolean;
 } & Omit<GlassProps, "children" | "variant" | "className" | "style">;
 
-export const GlassButton: React.FC<GlassButtonProps> = ({
+export function GlassButton({
   children,
   onClick,
   className = "",
@@ -504,7 +504,7 @@ export const GlassButton: React.FC<GlassButtonProps> = ({
   textClassName = "text-white font-semibold",
   disabled,
   ...surfaceOverrides
-}) => {
+}: GlassButtonProps) {
   return (
     <button
       onClick={onClick}
@@ -525,4 +525,4 @@ export const GlassButton: React.FC<GlassButtonProps> = ({
       </Glass>
     </button>
   );
-};
+}

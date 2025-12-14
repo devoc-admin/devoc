@@ -14,7 +14,7 @@ import {
   WandSparklesIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import Lamp from "@/components/aceternity/lamp";
@@ -185,7 +185,7 @@ function ServiceCard({
 }: ServiceCardProps & { index: number }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const randomDelay = useMemo(() => Math.random() * 1000, []);
+  const randomDelay = Math.random() * 1000;
 
   return (
     <div

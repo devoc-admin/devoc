@@ -1,5 +1,4 @@
 "use client";
-// @ts-nocheck 
 import type React from "react";
 import { useEffect, useRef } from "react";
 import * as Three from "three";
@@ -446,10 +445,10 @@ const LaserFlow: (props: Props) => any = ({
     const onMove = (ev: PointerEvent | MouseEvent) =>
       updateMouse(ev.clientX, ev.clientY);
     const onLeave = () => mouseTarget.set(0, 0);
-    canvas.addEventListener("pointermove", onMove as any, { passive: true });
-    canvas.addEventListener("pointerdown", onMove as any, { passive: true });
-    canvas.addEventListener("pointerenter", onMove as any, { passive: true });
-    canvas.addEventListener("pointerleave", onLeave as any, { passive: true });
+    canvas.addEventListener("pointermove", onMove as EventListener, { passive: true });
+    canvas.addEventListener("pointerdown", onMove as EventListener, { passive: true });
+    canvas.addEventListener("pointerenter", onMove as EventListener, { passive: true });
+    canvas.addEventListener("pointerleave", onLeave as EventListener, { passive: true });
 
     const onCtxLost = (e: Event) => {
       e.preventDefault();
@@ -542,10 +541,10 @@ const LaserFlow: (props: Props) => any = ({
       ro.disconnect();
       io.disconnect();
       document.removeEventListener("visibilitychange", onVis);
-      canvas.removeEventListener("pointermove", onMove as any);
-      canvas.removeEventListener("pointerdown", onMove as any);
-      canvas.removeEventListener("pointerenter", onMove as any);
-      canvas.removeEventListener("pointerleave", onLeave as any);
+      canvas.removeEventListener("pointermove", onMove as EventListener);
+      canvas.removeEventListener("pointerdown", onMove as EventListener);
+      canvas.removeEventListener("pointerenter", onMove as EventListener);
+      canvas.removeEventListener("pointerleave", onLeave as EventListener);
       canvas.removeEventListener("webglcontextlost", onCtxLost);
       canvas.removeEventListener("webglcontextrestored", onCtxRestored);
       geometry.dispose();
