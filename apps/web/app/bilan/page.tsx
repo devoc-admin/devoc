@@ -14,7 +14,6 @@ import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circu
 import { AuroraBackground } from "./components/aurora-background";
 import { MacbookScroll } from "./components/macbook-scroll";
 import { OfferedBy } from "./components/offered-by";
-import { Pricing } from "./components/price-grid";
 import { TimelineProjections } from "./components/timeline-projections";
 
 const accessibilityScore = 21;

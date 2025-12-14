@@ -11,16 +11,16 @@
     "format": "biome format --write"
   },
   "dependencies": {
-    "@react-email/components": "1.0.0",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1"
+    "@react-email/components": "^1.0.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
-    "@react-email/preview-server": "5.0.1",
-    "@types/node": "^24.10.1",
+    "@react-email/preview-server": "^5.0.8",
+    "@types/node": "^25.0.2",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "next": "^16.0.7",
-    "react-email": "5.0.1"
+    "next": "^16.0.10",
+    "react-email": "^5.0.8"
   }
 }
