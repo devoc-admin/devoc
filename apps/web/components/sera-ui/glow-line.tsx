@@ -31,7 +31,12 @@ const COLOR_SCHEMES: Record<ColorScheme, ColorSchemeConfig> = {
   },
   orange: {
     core: "via-orange-400",
-    glow: ["via-orange-400", "via-orange-500", "via-orange-400", "via-orange-300"],
+    glow: [
+      "via-orange-400",
+      "via-orange-500",
+      "via-orange-400",
+      "via-orange-300",
+    ],
   },
   green: {
     core: "via-green-400",
@@ -57,7 +62,7 @@ const GlowLine = ({
   position,
   className = "",
   color,
-}) => {
+}: GlowLineProps) => {
   const isVertical = orientation === "vertical";
   const containerClasses = isVertical
     ? "absolute w-px h-full"

@@ -32,7 +32,7 @@ type ShaderWithDefines = Three.ShaderLibShader & {
 
 function extendMaterial<T extends Three.Material = Three.Material>(
   BaseMaterial: new (params?: Three.MaterialParameters) => T,
-  cfg: ExtendMaterialConfig
+  cfg: ExtendMaterialConfig,
 ): Three.ShaderMaterial {
   const physical = Three.ShaderLib.physical as ShaderWithDefines;
   const {
@@ -261,7 +261,7 @@ const Beams: (props: BeamsProps) => any = ({
           uScale: scale,
         },
       }),
-    [speed, noiseIntensity, scale]
+    [speed, noiseIntensity, scale],
   );
 
   return (
@@ -288,7 +288,7 @@ function createStackedPlanesBufferGeometry(
   width: number,
   height: number,
   spacing: number,
-  heightSegments: number
+  heightSegments: number,
 ): Three.BufferGeometry {
   const geometry = new Three.BufferGeometry();
   const numVertices = n * (heightSegments + 1) * 2;
@@ -317,7 +317,7 @@ function createStackedPlanesBufferGeometry(
       const uvY = j / heightSegments;
       uvs.set(
         [uvXOffset, uvY + uvYOffset, uvXOffset + 1, uvY + uvYOffset],
-        uvOffset
+        uvOffset,
       );
 
       if (j < heightSegments) {
@@ -350,17 +350,19 @@ const MergedPlanes = forwardRef<
   }
 >(({ material, width, count, height }, ref) => {
   const mesh = useRef<Three.Mesh<Three.BufferGeometry, Three.ShaderMaterial>>(
-    null!
+    null!,
   );
   useImperativeHandle(ref, () => mesh.current);
   const geometry = useMemo(
     () => createStackedPlanesBufferGeometry(count, width, height, 0, 100),
-    [count, width, height]
+    [count, width, height],
   );
   useFrame((_, delta) => {
     mesh.current.material.uniforms.time.value += 0.1 * delta;
   });
-  return <mesh geometry={geometry} material={material} ref={mesh} />;
+  return (
+    <mesh geometry={geometry as any} material={material as any} ref={mesh} />
+  );
 });
 MergedPlanes.displayName = "MergedPlanes";
 
