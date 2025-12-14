@@ -33,7 +33,7 @@ const extraDelay = 0.2;
 const intialPageDelayInMs = 1500;
 
 export default function Hero() {
-  const { showLoader } = useInitLoading();
+  useInitLoading();
 
   return (
     <div
