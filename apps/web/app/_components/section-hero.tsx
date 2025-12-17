@@ -68,7 +68,7 @@ function Shapes() {
   return (
     <div
       className={cn(
-        "-z-1 absolute",
+        "absolute -z-1",
         "h-full w-full max-w-[1400px]",
         "opacity-50 blur-xs",
         "sm:opacity-100 sm:blur-none"
@@ -90,7 +90,7 @@ function Shapes() {
       />
       <Shape
         className={cn(
-          "-translate-y-1/2 translate-x-1/2",
+          "translate-x-1/2 -translate-y-1/2",
           "top-[12%] right-[23%]",
           "xs:top-[22%] xs:right-[18%]",
           "sm:top-[28%] sm:right-[15%]",
@@ -409,9 +409,21 @@ function AvatarWithTooltip({
     <Avatar>
       <Tooltip>
         <TooltipTrigger asChild>
-          <a href={url} rel="noopener" target="_blank">
-            <AvatarImage src={urlImage} />
-            <AvatarFallback>{fallback}</AvatarFallback>
+          <a
+            aria-label={`Profil GitHub de ${name} (ouvre dans une nouvelle fenêtre)`}
+            href={url}
+            rel="noopener noreferrer"
+            target="_blank"
+            title={`Visiter le profil GitHub de ${name}`}
+          >
+            <AvatarImage
+              alt={`Photo de profil de ${name}`}
+              role="img"
+              src={urlImage}
+            />
+            <AvatarFallback aria-label={`Initiales de ${name}`}>
+              {fallback}
+            </AvatarFallback>
           </a>
         </TooltipTrigger>
         <TooltipContent>{name}</TooltipContent>

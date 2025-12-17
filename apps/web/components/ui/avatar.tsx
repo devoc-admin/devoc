@@ -16,6 +16,7 @@ function Avatar({
         "relative flex size-8 shrink-0 overflow-hidden rounded-full",
         className
       )}
+      role="img"
       {...props}
     />
   )
