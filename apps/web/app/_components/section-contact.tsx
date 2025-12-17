@@ -100,7 +100,7 @@ export default function Contact() {
           animation={false}
           className="relative order-1 grow overflow-visible md:order-2"
         >
-          <div className="-translate-y-[50%] mask-t-from-70% absolute top-0 left-0 hidden h-160 md:block">
+          <div className="mask-t-from-70% absolute top-0 left-0 hidden h-160 -translate-y-[50%] md:block">
             <LaserFlow color="#f59e0b" fogIntensity={0} horizontalSizing={2} />
           </div>
           <CardHeader>

@@ -24,15 +24,15 @@ function CardStep({
   return (
     <div className="relative">
       <MoveRotateFromOutside fromLeft={fromLeft}>
-        <div className="size-[400px] rounded-xl border-6 border-primary p-4">
+        <div className="size-100 rounded-xl border-6 border-primary p-4">
           <Image alt="meet" className="max-w-full" src={image} width={500} />
-          <div className="-translate-x-1/2 absolute bottom-0 left-1/2 flex size-16 translate-y-1/2 items-center justify-center rounded-full bg-primary p-3 font-bold font-kanit text-4xl text-white">
+          <div className="absolute bottom-0 left-1/2 flex size-16 -translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-primary p-3 font-bold font-kanit text-4xl text-white">
             {index + 1}
           </div>
         </div>
       </MoveRotateFromOutside>
       <FadeMoveFromOutside fromLeft={fromLeft}>
-        <div className="flex max-w-[400px] flex-col gap-y-2 p-4 font-kanit">
+        <div className="flex max-w-100 flex-col gap-y-2 p-4 font-kanit">
           <h3 className="font-bold text-7xl">{title}</h3>
           <div className="text-xl leading-tight">{description}</div>
         </div>
@@ -51,7 +51,7 @@ function FadeMoveFromOutside({
   if (fromLeft) {
     return (
       <motion.div
-        className="-translate-y-1/2 absolute top-1/2 w-fit translate-x-[25%]"
+        className="absolute top-1/2 w-fit translate-x-[25%] -translate-y-1/2"
         initial={{
           left: "80%",
           opacity: 0,
@@ -73,7 +73,7 @@ function FadeMoveFromOutside({
   if (!fromLeft) {
     return (
       <motion.div
-        className="-translate-y-1/2 absolute top-1/2 w-fit translate-x-[25%]"
+        className="absolute top-1/2 w-fit translate-x-[25%] -translate-y-1/2"
         initial={{
           left: "0%",
           opacity: 0,
@@ -103,7 +103,7 @@ function MoveRotateFromOutside({
   if (fromLeft) {
     return (
       <motion.div
-        className="-translate-x-[125%] relative w-fit"
+        className="relative w-fit -translate-x-[125%]"
         initial={{
           left: 70,
           opacity: 1,

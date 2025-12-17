@@ -16,7 +16,7 @@ export function AccessibilityCards() {
   const { animations } = useSlidesContext();
   const { accessibilityQuestion: accessiblityQuestionAnimations } = animations;
   return (
-    <div className="-translate-x-1/2 -translate-y-1/2 fixed top-1/2 left-1/2 flex flex-col items-center justify-center gap-y-12">
+    <div className="fixed top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center gap-y-12">
       <motion.div
         animate={accessiblityQuestionAnimations}
         className="z-10 mb-12 max-w-[900px] bg-white text-center font-bold font-montserrat text-5xl leading-[1.2]"
@@ -87,8 +87,8 @@ function AccessibilityCard({
         >
           <div className="grid h-[92%] place-items-center rounded-lg bg-white shadow-xl">
             <span>{value}%</span>
-            <div className="-translate-y-1/3 absolute bottom-0">
-              <div className="-translate-y-[16%] -translate-x-1/2 mask-b-from-65% mask-b-to-65% absolute left-1/2 h-[35%] w-[130%] rounded-t-full border-4 border-primary-strong pt-8" />
+            <div className="absolute bottom-0 -translate-y-1/3">
+              <div className="mask-b-from-65% mask-b-to-65% absolute left-1/2 h-[35%] w-[130%] -translate-x-1/2 -translate-y-[16%] rounded-t-full border-4 border-primary-strong pt-8" />
               <div className="grid aspect-square w-12 place-items-center rounded-full bg-primary-strong font-dancing-script text-2xl text-white leading-none shadow-xl">
                 {letter}
               </div>
