@@ -183,7 +183,8 @@ function WorkWithCompany({ link, logo, name }: WorkWithCompanyProps) {
         }}
       >
         <Image
-          alt="Noise Texture"
+          alt=""
+          aria-hidden="true"
           className="w-full"
           height={100}
           src={NoiseTexture}
@@ -200,7 +201,8 @@ function WorkWithCompany({ link, logo, name }: WorkWithCompanyProps) {
         }}
       >
         <Image
-          alt="Noise Texture"
+          alt=""
+          aria-hidden="true"
           className="w-full"
           height={100}
           src={NoiseTexture}

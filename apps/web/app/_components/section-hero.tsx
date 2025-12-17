@@ -189,7 +189,7 @@ function Shape({
         repeat: Number.POSITIVE_INFINITY,
       }}
     >
-      <Image alt="shape" height={400} src={src} width={400} />
+      <Image alt="" aria-hidden="true" height={400} src={src} width={400} />
     </motion.div>
   );
 }
