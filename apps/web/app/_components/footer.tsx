@@ -75,7 +75,7 @@ function PurpleCircle() {
 function Logo() {
   return (
     <div className="flex items-center gap-2 text-2xl">
-      <Image alt="Dev'Oc" height={22} src={Icon} width={22} />
+      <Image alt="" aria-hidden="true" height={22} src={Icon} width={22} />
       <div>
         <span className="font-black text-primary-foreground tracking-tighter">
           Dev'
