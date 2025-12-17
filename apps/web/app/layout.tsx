@@ -94,13 +94,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${dancingScript.variable} ${inter.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} flex min-h-screen flex-col font-sans`}
       >
+        <SkipLink />
         <NuqsAdapter>
           <main className="grow" id="main-content">
             {children}
           </main>
         </NuqsAdapter>
         <Analytics />
-        <SkipLink />
       </body>
     </html>
   );
