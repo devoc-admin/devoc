@@ -98,12 +98,14 @@ function ContactForm() {
               Nom *
             </Label>
             <Input
-              autoComplete="on"
+              aria-required="true"
+              autoComplete="name"
               className={cn("col-span-1", inputClass)}
               id={field.name}
               name={field.name}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="Nom"
+              required
               type="text"
               value={field.state.value ?? ""}
             />
@@ -120,12 +122,14 @@ function ContactForm() {
               Email *
             </Label>
             <Input
-              autoComplete="on"
+              aria-required="true"
+              autoComplete="email"
               className={cn("col-span-1", inputClass)}
               id={field.name}
               name={field.name}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="Email"
+              required
               type="email"
               value={field.state.value ?? ""}
             />
@@ -164,12 +168,14 @@ function ContactForm() {
               Message *
             </Label>
             <Textarea
+              aria-required="true"
               autoComplete="off"
               className={cn("h-36", inputClass)}
               id={field.name}
               name={field.name}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder="Décrivez votre projet, vos besoins, vos objectifs etc."
+              required
               value={field.state.value ?? ""}
             />
           </div>
