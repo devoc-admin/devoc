@@ -112,7 +112,11 @@ type WorkWithProps = {
 const DEGREES = 180;
 const DEGREES_TO_RADIANS = DEGREES / Math.PI;
 
-function WorkWithCompany({ link, logo }: WorkWithProps) {
+type WorkWithCompanyProps = WorkWithProps & {
+  name: string;
+};
+
+function WorkWithCompany({ link, logo, name }: WorkWithCompanyProps) {
   const [size, setSize] = useState({ diagonal: 0, rotationInDegrees: 0 });
   const ref = useRef(null);
 
@@ -161,11 +165,13 @@ function WorkWithCompany({ link, logo }: WorkWithProps) {
   }, []);
   return (
     <a
+      aria-label={`Visiter le site de ${name} (ouvre dans une nouvelle fenêtre)`}
       className="group relative flex h-24 items-center justify-center overflow-hidden border-border border-t border-r px-12 py-2"
       href={link}
       ref={ref}
       rel="noopener noreferrer"
       target="_blank"
+      title={`Visiter ${name}`}
     >
       <div
         className={cn(
