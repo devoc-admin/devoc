@@ -54,13 +54,31 @@ function MobileHeader() {
       >
         <LogoButtonWithText />
         <div className="flex items-center">
-          <div className="px-4 py-1" ref={iconRef}>
+          <button
+            aria-expanded={isOpened}
+            aria-label={
+              isOpened
+                ? "Fermer le menu de navigation"
+                : "Ouvrir le menu de navigation"
+            }
+            className="px-4 py-1"
+            ref={iconRef}
+            type="button"
+          >
             {isOpened ? (
-              <XIcon color="var(--primary)" strokeWidth={2.5} />
+              <XIcon
+                aria-hidden="true"
+                color="var(--primary)"
+                strokeWidth={2.5}
+              />
             ) : (
-              <MenuIcon color="var(--primary)" strokeWidth={3} />
+              <MenuIcon
+                aria-hidden="true"
+                color="var(--primary)"
+                strokeWidth={3}
+              />
             )}
-          </div>
+          </button>
           <ContactButton />
         </div>
       </div>
@@ -164,12 +182,25 @@ function LogoButton({
 }) {
   return (
     <button
+      aria-label="Retour en haut de la page"
       className="flex cursor-pointer items-center gap-2 text-2xl"
       onClick={() => window.scrollTo({ behavior: "smooth", top: 0 })}
-      onKeyDown={() => window.scrollTo({ behavior: "smooth", top: 0 })}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          window.scrollTo({ behavior: "smooth", top: 0 });
+        }
+      }}
+      title="Retour en haut"
       type="button"
     >
-      <Image alt="Dev'Oc" height={logoSize} src={Icon} width={logoSize} />
+      <Image
+        alt=""
+        aria-hidden="true"
+        height={logoSize}
+        src={Icon}
+        width={logoSize}
+      />
       {children}
     </button>
   );
