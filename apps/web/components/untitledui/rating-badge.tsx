@@ -128,10 +128,10 @@ export const RatingBadge = ({
 }: RatingBadgeProps) => (
   <div
     {...props}
-    className={cn("-space-x-0.5 flex items-center text-3xl", className)}
+    className={cn("flex items-center -space-x-0.5 text-3xl", className)}
   >
     <Wreath className="shrink-0" />
     {children}
-    <Wreath className="-scale-x-100 shrink-0" />
+    <Wreath className="shrink-0 -scale-x-100" />
   </div>
 );

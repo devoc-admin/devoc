@@ -169,7 +169,7 @@ function WorkWithCompany({ link, logo }: WorkWithProps) {
     >
       <div
         className={cn(
-          "not-group-hover:-rotate-90! absolute top-0 left-0 h-full origin-bottom-left overflow-hidden bg-linear-to-b from-[#FF5709] to-[#FFC731] transition-transform duration-300 ease-linear"
+          "absolute top-0 left-0 h-full origin-bottom-left not-group-hover:-rotate-90! overflow-hidden bg-linear-to-b from-[#FF5709] to-[#FFC731] transition-transform duration-300 ease-linear"
         )}
         style={{
           rotate: `-${size.rotationInDegrees - 1}deg`,
@@ -186,7 +186,7 @@ function WorkWithCompany({ link, logo }: WorkWithProps) {
       </div>
       <div
         className={cn(
-          "not-group-hover:-rotate-90! absolute top-0 right-0 h-full origin-top-right overflow-hidden bg-linear-to-t from-[#FF5709] to-[#FFC731] transition-transform duration-300 ease-linear"
+          "absolute top-0 right-0 h-full origin-top-right not-group-hover:-rotate-90! overflow-hidden bg-linear-to-t from-[#FF5709] to-[#FFC731] transition-transform duration-300 ease-linear"
         )}
         style={{
           rotate: `-${size.rotationInDegrees - 1}deg`,

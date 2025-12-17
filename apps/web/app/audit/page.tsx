@@ -22,7 +22,7 @@ const Audit = () => {
   return (
     <div className="relative flex min-h-screen min-w-screen flex-col items-center justify-center overflow-hidden">
       {/* 🎨 Background */}
-      <div className="-z-10 fixed h-screen w-screen [background:radial-gradient(125%_125%_at_50%_90%,white_60%,var(--color-primary)_100%)]" />
+      <div className="fixed -z-10 h-screen w-screen [background:radial-gradient(125%_125%_at_50%_90%,white_60%,var(--color-primary)_100%)]" />
       {/* 📦 Content */}
       <div className="flex flex-col items-center gap-y-12 px-6">
         {/* 🆎 Title */}

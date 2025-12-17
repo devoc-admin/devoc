@@ -217,7 +217,7 @@ export default function Home() {
                         src="/visite-card-back.svg"
                         style={{ objectFit: "cover" }}
                       />
-                      <div className="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute top-[35%] left-1/2">
+                      <div className="pointer-events-none absolute top-[35%] left-1/2 -translate-x-1/2 -translate-y-1/2">
                         <Image
                           alt="QR code projets DevOc"
                           className="rounded-md border border-border bg-white shadow-md"

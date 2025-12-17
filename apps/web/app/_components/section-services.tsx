@@ -243,7 +243,7 @@ function ServiceCard({
             <div
               className={cn(
                 "animate-pulse-shadow",
-                "-mt-10 mx-auto h-[40cqw]",
+                "mx-auto -mt-10 h-[40cqw]",
                 "grid aspect-square place-items-center rounded-full",
                 "z-1",
                 "border-[3px] border-primary/3",

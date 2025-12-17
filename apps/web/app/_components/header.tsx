@@ -37,7 +37,7 @@ function MobileHeader() {
   return (
     <motion.div
       animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -100 }}
-      className="-translate-x-1/2 fixed top-3 left-1/2 z-5000 mx-auto mt-0"
+      className="fixed top-3 left-1/2 z-5000 mx-auto mt-0 -translate-x-1/2"
       initial={{ opacity: 0, y: -100 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
     >
@@ -141,7 +141,7 @@ function CollapseWhileScroll({ children }: { children: React.ReactNode }) {
     <motion.div
       animate={isScrolled ? "scrolled" : "unscrolled"}
       className={cn(
-        "-translate-x-1/2 fixed left-1/2 z-5000 mx-auto mt-0 rounded-full transition-[background] duration-300"
+        "fixed left-1/2 z-5000 mx-auto mt-0 -translate-x-1/2 rounded-full transition-[background] duration-300"
       )}
       initial={false}
       variants={{
@@ -241,7 +241,7 @@ function LinksMobile() {
       className={cn(
         "border-t-2 border-t-primary",
         "flex w-full flex-col gap-y-2",
-        "-translate-x-1/2 absolute top-full left-1/2 rounded-br-lg rounded-bl-lg bg-white/70 py-2 pt-4 backdrop-blur-sm transition-colors duration-300",
+        "absolute top-full left-1/2 -translate-x-1/2 rounded-br-lg rounded-bl-lg bg-white/70 py-2 pt-4 backdrop-blur-sm transition-colors duration-300",
         "[html[data-nav-theme='dark']_&]:text-secondary", // Light
         "[html[data-nav-theme='dark']_&]:bg-zinc-900/20 [html[data-nav-theme='dark']_&]:text-white" // Dark
       )}

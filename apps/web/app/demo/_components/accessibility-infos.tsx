@@ -21,7 +21,7 @@ export function AccessiblityBigNumber() {
   const { accessibilityNumber: accessibilityNumberAnimations } = animations;
 
   return (
-    <div className="-translate-x-1/2 -translate-y-1/2 fixed top-1/2 left-1/2 font-montserrat">
+    <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-montserrat">
       <motion.div
         animate={accessibilityNumberAnimations}
         className="flex! flex-col items-center justify-center"
