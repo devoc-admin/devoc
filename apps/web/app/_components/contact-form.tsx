@@ -180,8 +180,13 @@ function ContactForm() {
       <form.Subscribe
         children={(state) =>
           state.errors.length > 0 && (
-            <div className="col-span-2 flex items-center gap-2 text-primary">
-              <TriangleAlertIcon size={20} />
+            <div
+              aria-atomic="true"
+              aria-live="assertive"
+              className="col-span-2 flex items-center gap-2 text-primary"
+              role="alert"
+            >
+              <TriangleAlertIcon aria-hidden="true" size={20} />
               <span>{state.errors[0]}</span>
             </div>
           )
@@ -192,17 +197,20 @@ function ContactForm() {
       {/* ✅/❌ Statut d'envoi */}
       {submitStatus?.type && (
         <div
+          aria-atomic="true"
+          aria-live="polite"
           className={cn(
             "col-span-2 flex items-center gap-2 rounded-md p-4",
             submitStatus.type === "success"
               ? "border border-green-200 bg-green-50 text-green-800"
               : "border border-red-200 bg-red-50 text-red-800"
           )}
+          role="alert"
         >
           {submitStatus.type === "success" ? (
-            <CheckCircleIcon size={20} />
+            <CheckCircleIcon aria-hidden="true" size={20} />
           ) : (
-            <TriangleAlertIcon size={20} />
+            <TriangleAlertIcon aria-hidden="true" size={20} />
           )}
           <span>{submitStatus.message}</span>
         </div>
