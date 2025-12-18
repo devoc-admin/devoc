@@ -1,7 +1,7 @@
 set shell := ["zsh", "-c"]
 
 dev:
-    pnpm run dev || npm run dev || yarn dev
+    bun run dev
 
 build:
     echo "(apps/email) Pas de build dédié; utilisez dev pour prévisualiser."
@@ -13,7 +13,7 @@ lint:
     echo "(apps/email) lint non défini"
 
 format:
-    pnpm exec biome format --write || true
+    bunx biome format --write || true
 
 types:
     echo "(apps/email) typecheck non défini"
@@ -24,8 +24,8 @@ help:
 
 versions:
     just -f "{{justfile_directory()}}/../../Justfile" versions
-    echo "(apps/email) react-email: dev server via npm scripts"
+    echo "(apps/email) react-email: dev server via bun scripts"
 
 install:
     just -f "{{justfile_directory()}}/../../Justfile" install
-    pnpm install || npm install || yarn
+    bun install

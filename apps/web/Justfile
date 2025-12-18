@@ -2,22 +2,22 @@ set shell := ["zsh", "-c"]
 
 # Local commands for apps/web
 dev:
-    pnpm run dev
+    bun run dev
 
 build:
-    pnpm run build
+    bun run build
 
 clean:
     rm -rf .next
 
 lint:
-    pnpm run lint
+    bun run lint
 
 format:
-    pnpm run format || pnpm exec biome format --write
+    bun run format || bunx biome format --write
 
 types:
-    pnpm run check-types || pnpm exec tsc --noEmit
+    bun run check-types || bunx tsc --noEmit
 
 help:
     echo "Commandes disponibles :"
@@ -26,9 +26,9 @@ help:
 # Versions: delegate parent + local info
 versions:
     just -f "{{justfile_directory()}}/../../Justfile" versions
-    echo "(apps/web) next: $(pnpm exec next --version 2>/dev/null || true)"
+    echo "(apps/web) next: $(bunx next --version 2>/dev/null || true)"
 
 # Install: delegate parent + local install
 install:
     just -f "{{justfile_directory()}}/../../Justfile" install
-    pnpm install
+    bun install

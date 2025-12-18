@@ -5,7 +5,7 @@ set shell := ["zsh", "-c"]
 
 ## --- Installation ---
 install:
-    pnpm install --recursive
+    bun install
 
 ## --- Nettoyage ---
 clean:
@@ -15,30 +15,29 @@ clean:
 
 ## --- Développement ---
 dev app="web":
-    turbo dev --filter={{app}}
+    bunx turbo dev --filter={{app}}
 
 ## --- Build ---
 build app="web":
-    turbo build --filter={{app}}
+    bunx turbo build --filter={{app}}
 
 ## --- Qualité de code ---
 lint app="web":
-    pnpm --filter {{app}} lint
+    bun --filter {{app}} run lint
 
 format app="web":
-    pnpm --filter {{app}} exec biome format --write
+    bunx --filter {{app}} biome format --write
 
 types app="web":
-    pnpm --filter {{app}} exec tsc --noEmit
+    bunx --filter {{app}} tsc --noEmit
 
 
 ## --- Diagnostics ---
 versions:
     echo "node: $(node --version 2>/dev/null)"
-    echo "pnpm: $(pnpm --version 2>/dev/null)"
     echo "bun: $(bun --version 2>/dev/null)"
-    echo "turbo: $(pnpm turbo --version 2>/dev/null || turbo --version 2>/dev/null)"
-    echo "biome: $(pnpm biome --version 2>/dev/null || true)"
+    echo "turbo: $(bunx turbo --version 2>/dev/null)"
+    echo "biome: $(bunx biome --version 2>/dev/null || true)"
 
 ## --- Aide ---
 help:
