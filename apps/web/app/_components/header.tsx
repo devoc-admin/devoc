@@ -89,7 +89,7 @@ function MobileHeader() {
 
 function useToogleNavbarLink() {
   const [isOpened, setIsOpened] = useState(false);
-  const iconRef = useRef<HTMLImageElement>(null);
+  const iconRef = useRef<HTMLButtonElement>(null);
   useClickAnyWhere((e) => {
     const hasClickedOnNavbarIcon =
       iconRef.current?.contains(e.target as Node) ?? false;

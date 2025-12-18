@@ -66,7 +66,7 @@ function WorkWith() {
           )}
         >
           {companies.map(({ name, logo, link }) => (
-            <WorkWithCompany key={name} link={link} logo={logo} />
+            <WorkWithCompany key={name} link={link} logo={logo} name={name} />
           ))}
         </div>
         <div className="grow border-border border-y" />
