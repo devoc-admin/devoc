@@ -8,7 +8,7 @@
     "@commitlint/config-conventional": "^20.2.0",
     "lefthook": "^2.0.12",
     "turbo": "^2.6.3",
-    "ultracite": "^6.4.1"
+    "ultracite": "^6.4.2"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

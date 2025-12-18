@@ -17,6 +17,7 @@ dev-oc/
 │       └── lasbordes/
 │           ├── front/      # Lasbordes frontend
 │           └── preview/    # Lasbordes preview app (Vite)
+├── packages/               # Shared packages
 ├── tooling/                # Shared configurations
 │   └── typescript-config/  # TypeScript settings
 └── package.json            # Root package file
@@ -26,13 +27,8 @@ dev-oc/
 
 Before you start, you need to install these tools on your computer:
 
-### 1. Node.js (JavaScript runtime)
-- Download from: https://nodejs.org/
-- **Recommended version**: Latest LTS (Long Term Support)
-- To check if installed: `node --version`
-
-### 2. Bun (Package manager & runtime)
-This project uses **Bun** - a fast all-in-one JavaScript runtime and package manager with built-in bundling and testing.
+### 1. Bun (JavaScript runtime & package manager)
+This project uses **Bun** as the default JavaScript runtime - a fast all-in-one JavaScript runtime and package manager with built-in bundling and testing.
 
 Install with Homebrew/Linuxbrew (recommended):
 
@@ -47,20 +43,18 @@ Alternatively, use the official installer from https://bun.sh
 
 Tip: If you use direnv, the provided `.envrc` adds `~/.bun/bin` to your PATH automatically.
 
-### 3. Git (Version control)
+### 2. Git (Version control)
 - Download from: https://git-scm.com/
 - To check if installed: `git --version`
 
-### 4. Turborepo
+### 3. Turborepo
 Tool for managing the whole monorepo
 
 ```bash
 bun add -g turbo
 ```
 
-Alternatively, turbo is already installed in the project and can be run via `bunx turbo`.
-
-### 5. just (optional but recommended)
+### 4. just (optional but recommended)
 Lightweight task runner to centralize commands (alternative to Make). Used here via the `Justfile`.
 
 ```bash
@@ -70,8 +64,16 @@ just --list   # view available recipes
 
 If you prefer not to use it, all commands remain accessible via `bun` and `turbo`.
 
-### 6. Biome plugin (recommended)
-Biome is our formatter and linter for JavaScript and TypeScript. You probably want to install appropriate plugin for your IDE so it can format your code automatically on save. Please check [this link](https://biomejs.dev/guides/editors/first-party-extensions/) for more information.
+### 5. IDE Extensions (recommended)
+
+#### Biome
+Formatter and linter for JavaScript and TypeScript. Install the plugin for your IDE to enable automatic formatting on save.
+- [Biome IDE Extensions](https://biomejs.dev/guides/editors/first-party-extensions/)
+
+#### Tailwind CSS IntelliSense
+Essential for TailwindCSS development - provides autocomplete, syntax highlighting, and linting for Tailwind classes.
+- [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+- Available for other IDEs via their extension marketplaces
 
 ## Getting Started
 
@@ -86,7 +88,7 @@ This repo is designed so you can clone and start coding without unnecessary manu
 	- Exporting environment variables and adding `node_modules/.bin` to PATH
 	- Displaying versions and hints for missing installations
 
-Then run `just dev` or `bunx turbo dev`. Nothing else required.
+Then run `just dev` or `turbo dev`. Nothing else required.
 
 ### Install direnv
 Direnv automatically reloads your environment based on `.envrc`.
@@ -129,7 +131,7 @@ cd devoc
 This will install all the packages needed for all apps in the monorepo:
 
 ```bash
-bun install
+bun install  # or: bun i
 # or via just
 just install
 ```
@@ -139,7 +141,7 @@ just install
 ### Run All Apps (Development Mode)
 
 ```bash
-bunx turbo dev
+turbo dev
 # or
 just dev
 ```
@@ -148,17 +150,17 @@ just dev
 
 ```bash
 # Run the main web app
-bunx turbo dev --filter=web
+turbo dev --filter=web
 # or
 just dev web
 
 # Run the OpenCarca presentation (Next.js)
-bunx turbo dev --filter=opencarca
+turbo dev --filter=opencarca
 # or
 just dev opencarca
 
 # Run the lasbordes preview app (Vite)
-bunx turbo dev --filter=lasbordes-preview
+turbo dev --filter=lasbordes-preview
 # or
 just dev lasbordes-preview
 ```
@@ -188,10 +190,10 @@ To create optimized production builds:
 
 ```bash
 # Build all apps
-bunx turbo build
+turbo build
 
 # Build a specific app
-bunx turbo build --filter=web
+turbo build --filter=web
 ```
 
 ## Code Quality Tools
@@ -202,19 +204,18 @@ This project uses several tools to maintain code quality:
 
 ```bash
 # Check and fix code style issues
-bunx turbo lint --filter=web
+turbo lint --filter=web
 
 # Format code with Biome (runs on all files)
-bunx turbo format --filter=web
+turbo format --filter=web
 ```
 
 ## Understanding the Tech Stack
 
 ### Core Technologies
 
-- **Node.js**: JavaScript runtime that lets you run JavaScript outside the browser
+- **Bun**: Default JavaScript runtime, package manager, and bundler - a fast all-in-one toolkit that replaces Node.js, npm, and webpack
 - **TypeScript**: JavaScript with types (helps catch errors early)
-- **Bun**: Fast all-in-one JavaScript runtime, package manager, and bundler
 - **Turbo**: Tool that helps run tasks across multiple projects efficiently
 
 ### Frameworks & Libraries
@@ -256,7 +257,7 @@ Try:
 ```bash
 # Clean install
 rm -rf node_modules
-bun install
+bun install  # or: bun i
 ```
 
 ### Build/Dev server issues
@@ -270,7 +271,7 @@ rm -rf .turbo
 rm -rf apps/web/.next
 
 # Reinstall dependencies
-bun install
+bun install  # or: bun i
 ```
 
 ## Getting Help
@@ -298,14 +299,67 @@ bun install
 2. Add a `package.json` file
 3. The workspace will automatically detect it
 
-### Updating Dependencies
+### Managing Dependencies
+
+#### Installing Dependencies Recursively
+
+Bun can install dependencies across all workspaces (apps, packages, tooling) in the monorepo:
 
 ```bash
-# Update all dependencies from root
-bun update --recursive
+# Install all dependencies in all workspaces from root
+bun install  # or: bun i
 
-# Update a specific package in an app
-bun --filter <app-name> update <package-name>
+# Install a specific package in all workspaces
+bun add <package-name> --workspace  # or: bun a <package-name> --workspace
 ```
+
+#### Updating Dependencies
+
+```bash
+# Update all dependencies across all workspaces
+bun update --recursive  # or: bun u --recursive
+
+# Interactive update - choose which packages to update
+bun update --interactive  # or: bun u -i
+
+# Interactive update across all workspaces
+bun update --interactive --recursive  # or: bun u -i --recursive
+
+# Update a specific package everywhere
+bun update <package-name>  # or: bun u <package-name>
+
+# Update dependencies in a specific workspace
+cd apps/web
+bun update  # or: bun u
+```
+
+**Tip**: The `--interactive` (or `-i`) flag opens an interactive menu where you can:
+- See all available updates with version comparisons
+- Select specific packages to update using arrow keys and spacebar
+- Skip packages you don't want to update yet
+- Combine with `--recursive` to interactively update across all workspaces
+
+#### Adding Dependencies to Specific Workspaces
+
+```bash
+# Add to a specific app (from root)
+bun add <package-name> --filter=web  # or: bun a <package-name> --filter=web
+
+# Add as dev dependency
+bun add <package-name> --dev  # or: bun a <package-name> -d or -D
+
+# Or navigate to the workspace
+cd apps/web
+bun add <package-name>  # or: bun a <package-name>
+```
+
+**Common Bun shortcuts**:
+- `bun i` = `bun install`
+- `bun a` = `bun add`
+- `bun u` = `bun update`
+- `bun rm` or `bun remove` = remove package
+- `-d` or `-D` = `--dev` (dev dependency)
+- `-g` = `--global` (global install)
+- `-i` = `--interactive`
 
 ---
