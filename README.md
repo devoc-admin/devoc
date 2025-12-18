@@ -31,99 +31,88 @@ Before you start, you need to install these tools on your computer:
 - **Recommended version**: Latest LTS (Long Term Support)
 - To check if installed: `node --version`
 
-### 2. pnpm (Package manager)
-This project uses **pnpm** instead of npm because it's faster and saves disk space.
-
-```bash
-# Install pnpm globally
-npm install -g pnpm
-
-# Check if installed
-pnpm --version
-```
-
-### 3. Git (Version control)
-- Download from: https://git-scm.com/
-- To check if installed: `git --version`
-
-### 4.Turborepo
-Our tool for managing the whole monorepo
-
-```bash
-pnpm add turbo --global
-```
-
-### 5.Turborepo
-Our tool for managing the whole monorepo
-
-```bash
-pnpm add turbo --global
-```
-
-### Bun (runtime & bunx)
-This repo runs some scripts and Git hooks using `bunx` (via Bun).
+### 2. Bun (Package manager & runtime)
+This project uses **Bun** - a fast all-in-one JavaScript runtime and package manager with built-in bundling and testing.
 
 Install with Homebrew/Linuxbrew (recommended):
 
 ```bash
 brew install oven-sh/bun/bun
+
+# Check if installed
 bun --version
 ```
 
+Alternatively, use the official installer from https://bun.sh
+
 Tip: If you use direnv, the provided `.envrc` adds `~/.bun/bin` to your PATH automatically.
 
-### just (optionnel mais recommandé)
-Lightweight task runner pour centraliser les commandes (alternative à Make). Utilisé ici via le fichier `Justfile`.
+### 3. Git (Version control)
+- Download from: https://git-scm.com/
+- To check if installed: `git --version`
+
+### 4. Turborepo
+Tool for managing the whole monorepo
+
+```bash
+bun add -g turbo
+```
+
+Alternatively, turbo is already installed in the project and can be run via `bunx turbo`.
+
+### 5. just (optional but recommended)
+Lightweight task runner to centralize commands (alternative to Make). Used here via the `Justfile`.
 
 ```bash
 brew install just
-just --list   # voir les recettes disponibles
+just --list   # view available recipes
 ```
 
-Si vous ne souhaitez pas l'utiliser, toutes les commandes restent accessibles via pnpm/turbo.
+If you prefer not to use it, all commands remain accessible via `bun` and `turbo`.
 
-## 6. Biome plugin (recommended)
+### 6. Biome plugin (recommended)
 Biome is our formatter and linter for JavaScript and TypeScript. You probably want to install appropriate plugin for your IDE so it can format your code automatically on save. Please check [this link](https://biomejs.dev/guides/editors/first-party-extensions/) for more information.
 
 ## Getting Started
 
 ### Zero Setup Philosophy
-Ce dépôt est conçu pour que vous puissiez cloner et commencer à coder sans configuration manuelle superflue grace a [Direnv](#installer-direnv).
+This repo is designed so you can clone and start coding without unnecessary manual configuration thanks to [Direnv](#install-direnv).
 
-1. Autorisez direnv quand vous entrez dans le dossier: `direnv allow`.
-2. Le fichier `.envrc` s'occupe de:
-	- Vérifier la présence des outils clés (git, node, pnpm, bun)
-	- Activer pnpm via Corepack à la bonne version
-	- Installer automatiquement les dépendances (`pnpm install --recursive`)
-	- Installer/Vérifier les hooks Git (lefthook: pré-commit + commit-msg)
-	- Exporter les variables d'environnement et ajouter `node_modules/.bin` au PATH
-	- Afficher les versions et conseils d'installation manquants
+1. Allow direnv when you enter the folder: `direnv allow`.
+2. The `.envrc` file handles:
+	- Checking for key tools (git, node, bun)
+	- Installing dependencies automatically (`bun install`)
+	- Installing/verifying Git hooks (lefthook: pre-commit + commit-msg)
+	- Exporting environment variables and adding `node_modules/.bin` to PATH
+	- Displaying versions and hints for missing installations
 
-Ensuite lancez `just dev` ou `turbo dev`. Rien d'autre n'est requis.
+Then run `just dev` or `bunx turbo dev`. Nothing else required.
 
-### Installer direnv
-Direnv recharge automatiquement l'environnement selon `.envrc`.
+### Install direnv
+Direnv automatically reloads your environment based on `.envrc`.
 
 macOS/Linux (Homebrew/Linuxbrew):
 ```bash
 brew install direnv
 ```
 
-Activez le hook pour votre shell (zsh par défaut ici). Ajoutez dans `~/.zshrc`:
+Enable the hook for your shell (zsh by default here). Add to `~/.zshrc`:
 ```bash
 eval "$(direnv hook zsh)"
 ```
-Puis rechargez:
+
+Then reload:
 ```bash
 source ~/.zshrc
 ```
 
-Utilisation:
+Usage:
 ```bash
-cd devoc
-direnv allow   # première fois
+cd dev-oc
+direnv allow   # first time only
 ```
-À chaque changement du `.envrc`, direnv demandera à nouveau confirmation.
+
+Direnv will ask for confirmation each time `.envrc` changes.
 
 ### Step 1: Clone the Repository
 
@@ -140,8 +129,8 @@ cd devoc
 This will install all the packages needed for all apps in the monorepo:
 
 ```bash
-pnpm install --recursive
-# ou via just
+bun install
+# or via just
 just install
 ```
 
@@ -150,8 +139,8 @@ just install
 ### Run All Apps (Development Mode)
 
 ```bash
-turbo dev
-## ou
+bunx turbo dev
+# or
 just dev
 ```
 
@@ -159,28 +148,28 @@ just dev
 
 ```bash
 # Run the main web app
-turbo dev --filter=web
-## ou
+bunx turbo dev --filter=web
+# or
 just dev web
 
 # Run the OpenCarca presentation (Next.js)
-turbo dev --filter=opencarca
-## ou
+bunx turbo dev --filter=opencarca
+# or
 just dev opencarca
 
 # Run the lasbordes preview app (Vite)
-turbo dev --filter=lasbordes-preview
-## ou
+bunx turbo dev --filter=lasbordes-preview
+# or
 just dev lasbordes-preview
 ```
 
-### Qualité de code (centralisé)
+### Code Quality (centralized)
 
 ```bash
-just lint      # lint toutes les apps principales
-just format    # format
-just types     # vérification des types
-just commit    # assistant de message de commit
+just lint      # lint all main apps
+just format    # format code
+just types     # type checking
+just commit    # commit message assistant
 ```
 
 **What does this mean?**
@@ -199,10 +188,10 @@ To create optimized production builds:
 
 ```bash
 # Build all apps
-turbo build
+bunx turbo build
 
 # Build a specific app
-turbo build --filter=web
+bunx turbo build --filter=web
 ```
 
 ## Code Quality Tools
@@ -213,10 +202,10 @@ This project uses several tools to maintain code quality:
 
 ```bash
 # Check and fix code style issues
-pnpm --filter web lint
+bunx turbo lint --filter=web
 
 # Format code with Biome (runs on all files)
-pnpm --filter web format
+bunx turbo format --filter=web
 ```
 
 ## Understanding the Tech Stack
@@ -225,7 +214,7 @@ pnpm --filter web format
 
 - **Node.js**: JavaScript runtime that lets you run JavaScript outside the browser
 - **TypeScript**: JavaScript with types (helps catch errors early)
-- **pnpm**: Fast package manager for installing dependencies
+- **Bun**: Fast all-in-one JavaScript runtime, package manager, and bundler
 - **Turbo**: Tool that helps run tasks across multiple projects efficiently
 
 ### Frameworks & Libraries
@@ -251,9 +240,9 @@ Follow this convention:
 
 ## Troubleshooting
 
-### "Command not found: pnpm"
+### "Command not found: bun"
 
-Install pnpm: `npm install -g pnpm`
+Install Bun: `brew install oven-sh/bun/bun` (or visit https://bun.sh)
 
 ### "Port already in use"
 
@@ -267,7 +256,7 @@ Try:
 ```bash
 # Clean install
 rm -rf node_modules
-pnpm install
+bun install
 ```
 
 ### Build/Dev server issues
@@ -281,7 +270,7 @@ rm -rf .turbo
 rm -rf apps/web/.next
 
 # Reinstall dependencies
-pnpm install
+bun install
 ```
 
 ## Getting Help
@@ -293,7 +282,8 @@ pnpm install
 ## Useful Resources
 
 - [Node.js Documentation](https://nodejs.org/docs)
-- [pnpm Documentation](https://pnpm.io/)
+- [Bun Documentation](https://bun.sh/docs)
+- [Turbo Documentation](https://turbo.build/repo/docs)
 - [Next.js Documentation](https://nextjs.org/docs)
 - [React Documentation](https://react.dev/)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
@@ -306,16 +296,16 @@ pnpm install
 
 1. Create a new folder in `apps/`
 2. Add a `package.json` file
-3. The pnpm workspace will automatically detect it
+3. The workspace will automatically detect it
 
 ### Updating Dependencies
 
 ```bash
 # Update all dependencies from root
-pnpm update --recursive
+bun update --recursive
 
 # Update a specific package in an app
-pnpm --filter <app-name> update <package-name>
+bun --filter <app-name> update <package-name>
 ```
 
 ---
