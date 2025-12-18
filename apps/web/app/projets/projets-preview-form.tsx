@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 const projectsPreviews = new Map([
-  ["lasbordes", "https://customers-lasbordes-preview.vercel.app"],
   ["opencarca2025", "https://devoc-opencarca.vercel.app/"],
 ]);
 
