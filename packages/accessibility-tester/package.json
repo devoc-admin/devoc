@@ -1,11 +1,31 @@
 {
   "name": "accessibility-tester",
-  "module": "index.ts",
+  "version": "1.0.0",
+  "description": "Outil d'audit RGAA et RGPD pour agence web ciblant les collectivites francaises",
+  "module": "src/index.ts",
   "type": "module",
+  "scripts": {
+    "audit": "bun run src/batch/batch-auditor.ts",
+    "audit:single": "bun run index.ts",
+    "audit:rgaa": "bun run rgaa-audit.ts",
+    "audit:batch": "bun run src/batch/batch-auditor.ts",
+    "test": "bun test"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "@axe-core/puppeteer": "^4.11.0",
+    "chrome-launcher": "^1.2.1",
+    "lighthouse": "^13.0.1",
+    "puppeteer": "^24.34.0"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./batch": "./src/batch/batch-auditor.ts",
+    "./types": "./src/core/types.ts"
   }
 }
