@@ -1,18 +1,15 @@
 "use client";
 
+import { LockIcon, MailIcon } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "@/lib/auth-client";
+import DevOcIcon from "@/public/icon.svg";
 
 export function LoginForm() {
   const router = useRouter();
@@ -49,30 +46,35 @@ export function LoginForm() {
   return (
     <Card
       animation={false}
-      className="w-full max-w-md border-neutral-800 bg-neutral-900"
+      className="w-full max-w-130 border-none from-transparent to-transparent py-12 shadow-none! shadow-zinc-200! backdrop-blur-2xl selection:bg-zinc-950"
     >
-      <CardHeader className="space-y-1">
-        <CardTitle className="font-bold text-2xl text-white!">
-          Connexion Admin
+      <CardHeader className="flex flex-col items-center justify-center text-center">
+        <Image
+          alt="DevOc Logo"
+          className="size-12"
+          height={12}
+          src={DevOcIcon.src}
+          width={12}
+        />
+        <CardTitle className="font-bold font-kanit text-4xl text-zinc-950">
+          Connexion
         </CardTitle>
-        <CardDescription className="text-neutral-400">
-          Entrez vos identifiants pour accéder au backoffice
-        </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-10 text-zinc-950">
         <form className="space-y-4" onSubmit={handleSubmit}>
           {error && (
-            <div className="rounded-md bg-red-500/10 p-3 text-red-500 text-sm">
+            <div className="rounded-md bg-red-100 p-3 text-red-600 text-sm">
               {error}
             </div>
           )}
 
           <div className="space-y-2">
-            <Label className="text-neutral-200" htmlFor="email">
-              Email
+            <Label className="font-normal text-zinc-400" htmlFor="email">
+              <MailIcon className="mr-0 h-4 w-4" />
+              <span>Email</span>
             </Label>
             <Input
-              className="border-neutral-700 bg-neutral-800 text-white placeholder:text-neutral-500"
+              className="border-zinc-300! ring-0!"
               disabled={isLoading}
               id="email"
               onChange={(e) => setEmail(e.target.value)}
@@ -83,15 +85,15 @@ export function LoginForm() {
           </div>
 
           <div className="space-y-2">
-            <Label className="text-neutral-200" htmlFor="password">
-              Mot de passe
+            <Label className="font-normal text-zinc-400" htmlFor="password">
+              <LockIcon className="mr-0 h-4 w-4" />
+              <span>Mot de passe</span>
             </Label>
             <Input
-              className="border-neutral-700 bg-neutral-800 text-white placeholder:text-neutral-500"
+              className="border-zinc-300! ring-0!"
               disabled={isLoading}
               id="password"
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="********"
               required
               type="password"
               value={password}
@@ -99,7 +101,7 @@ export function LoginForm() {
           </div>
 
           <Button
-            className="w-full bg-white text-black hover:bg-neutral-200"
+            className="mt-6 h-12 w-full cursor-pointer bg-zinc-950! text-md text-white"
             disabled={isLoading}
             type="submit"
           >
