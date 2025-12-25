@@ -16,7 +16,7 @@ URL par défaut: http://localhost:3000
 ### Commandes (via just)
 - `just dev`: mode développement (Turbopack)
 - `just build`: build de production
-- `just lint`: lint (ultracite via bunx)
+- `just lint`: lint (ultracite via bun x)
 - `just format`: format avec Biome
 - `just types`: vérification TypeScript
 

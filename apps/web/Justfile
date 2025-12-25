@@ -14,10 +14,10 @@ lint:
     bun run lint
 
 format:
-    bun run format || bunx biome format --write
+    bun run format || bun x biome format --write
 
 types:
-    bun run check-types || bunx tsc --noEmit
+    bun run check-types || bun x tsc --noEmit
 
 help:
     echo "Commandes disponibles :"
@@ -26,7 +26,7 @@ help:
 # Versions: delegate parent + local info
 versions:
     just -f "{{justfile_directory()}}/../../Justfile" versions
-    echo "(apps/web) next: $(bunx next --version 2>/dev/null || true)"
+    echo "(apps/web) next: $(bun x next --version 2>/dev/null || true)"
 
 # Install: delegate parent + local install
 install:

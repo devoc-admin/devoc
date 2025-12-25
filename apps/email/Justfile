@@ -13,7 +13,7 @@ lint:
     echo "(apps/email) lint non défini"
 
 format:
-    bunx biome format --write || true
+    bun x biome format --write || true
 
 types:
     echo "(apps/email) typecheck non défini"

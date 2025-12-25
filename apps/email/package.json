@@ -7,7 +7,7 @@
     "build": "email build",
     "dev": "email dev",
     "export": "email export",
-    "lint": "bunx ultracite fix",
+    "lint": "bun x ultracite fix",
     "format": "biome format --write"
   },
   "dependencies": {

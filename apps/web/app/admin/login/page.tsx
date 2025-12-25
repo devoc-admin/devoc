@@ -16,7 +16,7 @@ export default function LoginPage() {
           color3="#FF5709"
           isRotate={false}
           mouseInteraction={false}
-          pixelFilter={2000}
+          pixelFilter={30_000}
         />
       </div>
       <LoginForm />

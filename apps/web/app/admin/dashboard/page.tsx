@@ -1,24 +1,22 @@
-"use client";
-import { redirect } from "next/navigation";
-import { signOut } from "@/lib/auth-client";
+import { ThemeProvider } from "next-themes";
+import { Sidebar } from "./_components/sidebar";
 
 export default function DashboardPage() {
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <button
-        onClick={() =>
-          signOut({
-            fetchOptions: {
-              onSuccess: () => {
-                redirect("/admin/login");
-              },
-            },
-          })
-        }
-      >
-        Sign out
-      </button>
-    </div>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="dark"
+      disableTransitionOnChange
+      enableSystem
+    >
+      <div className="flex h-screen w-screen gap-x-4 bg-sidebar p-4">
+        <div>
+          <Sidebar />
+        </div>
+        <div className="bg- grow rounded-xl bg-sidebar-strong p-6">
+          Empty for now...
+        </div>
+      </div>
+    </ThemeProvider>
   );
 }
