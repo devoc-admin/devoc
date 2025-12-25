@@ -13,13 +13,6 @@ type AdminLayoutProps = {
   children: React.ReactNode;
 };
 
-export function Layout({ children }: AdminLayoutProps) {
-  return (
-    <div>
-      <header>
-        <h1>Admin Dashboard</h1>
-      </header>
-      <main>{children}</main>
-    </div>
-  );
+export default function Layout({ children }: AdminLayoutProps) {
+  return children;
 }

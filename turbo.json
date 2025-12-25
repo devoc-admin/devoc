@@ -16,7 +16,9 @@
         "DATABASE_URL",
         "PAYLOAD_SECRET",
         "BLOB_READ_WRITE_TOKEN",
-        "POSTGRES_URL"
+        "POSTGRES_URL",
+        "BETTER_AUTH_SECRET",
+        "BETTER_AUTH_URL"
       ]
     },
     "lint": {

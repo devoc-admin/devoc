@@ -73,7 +73,6 @@ export function LoginForm() {
               disabled={isLoading}
               id="email"
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@dev-oc.fr"
               required
               type="email"
               value={email}
