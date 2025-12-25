@@ -9,7 +9,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/admin/dashboard", request.url));
   }
 
-  if (!sessionCookie && pathname.startsWith("/admin")) {
+  if (
+    !sessionCookie &&
+    pathname.startsWith("/admin") &&
+    pathname !== "/admin/login"
+  ) {
     return NextResponse.redirect(new URL("/admin/login", request.url));
   }
 

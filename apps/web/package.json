@@ -9,6 +9,7 @@
     "start": "bun --bun next start",
     "lint": "bunx ultracite fix",
     "format": "biome format --write",
+    "create-admin": "bun run scripts/create-admin.ts",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
