@@ -1,9 +1,9 @@
 "use client";
 // https://reactbits.dev/backgrounds/balatro
 import { Mesh, Program, Renderer, Triangle } from "ogl";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
-interface BalatroProps {
+type BalatroProps = {
   spinRotation?: number;
   spinSpeed?: number;
   offset?: [number, number];
@@ -17,7 +17,7 @@ interface BalatroProps {
   spinEase?: number;
   isRotate?: boolean;
   mouseInteraction?: boolean;
-}
+};
 
 function hexToVec4(hex: string): [number, number, number, number] {
   const hexStr = hex.replace("#", "");
@@ -136,20 +136,74 @@ export default function Balatro({
   mouseInteraction = true,
 }: BalatroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const programRef = useRef<Program | null>(null);
+  const animationFrameIdRef = useRef<number | null>(null);
+  const mouseInteractionRef = useRef(mouseInteraction);
 
+  // Keep mouseInteraction ref in sync to avoid stale closures
   useEffect(() => {
-    if (!containerRef.current) return;
+    mouseInteractionRef.current = mouseInteraction;
+  }, [mouseInteraction]);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!(mouseInteractionRef.current && programRef.current)) return;
     const container = containerRef.current;
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = 1.0 - (e.clientY - rect.top) / rect.height;
+    programRef.current.uniforms.uMouse.value = [x, y];
+  }, []);
+
+  // Update uniforms when props change (without recreating WebGL context)
+  useEffect(() => {
+    const program = programRef.current;
+    if (!program) return;
+
+    program.uniforms.uColor1.value = hexToVec4(color1);
+    program.uniforms.uColor2.value = hexToVec4(color2);
+    program.uniforms.uColor3.value = hexToVec4(color3);
+    program.uniforms.uContrast.value = contrast;
+    program.uniforms.uIsRotate.value = isRotate;
+    program.uniforms.uLighting.value = lighting;
+    program.uniforms.uOffset.value = offset;
+    program.uniforms.uPixelFilter.value = pixelFilter;
+    program.uniforms.uSpinAmount.value = spinAmount;
+    program.uniforms.uSpinEase.value = spinEase;
+    program.uniforms.uSpinRotation.value = spinRotation;
+    program.uniforms.uSpinSpeed.value = spinSpeed;
+  }, [
+    color1,
+    color2,
+    color3,
+    contrast,
+    isRotate,
+    lighting,
+    offset,
+    pixelFilter,
+    spinAmount,
+    spinEase,
+    spinRotation,
+    spinSpeed,
+  ]);
+
+  // Initialize WebGL context once on mount
+  // biome-ignore lint/correctness/useExhaustiveDependencies: exception
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
     const renderer = new Renderer();
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 1);
 
-    let program: Program;
-
     function resize() {
+      const container = containerRef.current;
+      if (!container) return;
+
       renderer.setSize(container.offsetWidth, container.offsetHeight);
-      if (program) {
-        program.uniforms.iResolution.value = [
+      if (programRef.current) {
+        programRef.current.uniforms.iResolution.value = [
           gl.canvas.width,
           gl.canvas.height,
           gl.canvas.width / gl.canvas.height,
@@ -160,7 +214,7 @@ export default function Balatro({
     resize();
 
     const geometry = new Triangle(gl);
-    program = new Program(gl, {
+    const program = new Program(gl, {
       fragment: fragmentShader,
       uniforms: {
         iResolution: {
@@ -187,49 +241,36 @@ export default function Balatro({
       },
       vertex: vertexShader,
     });
+    programRef.current = program;
 
     const mesh = new Mesh(gl, { geometry, program });
-    let animationFrameId: number;
 
     function update(time: number) {
-      animationFrameId = requestAnimationFrame(update);
-      program.uniforms.iTime.value = time * 0.001;
+      animationFrameIdRef.current = requestAnimationFrame(update);
+      if (programRef.current) {
+        programRef.current.uniforms.iTime.value = time * 0.001;
+      }
       renderer.render({ scene: mesh });
     }
-    animationFrameId = requestAnimationFrame(update);
+    animationFrameIdRef.current = requestAnimationFrame(update);
     container.appendChild(gl.canvas);
 
-    function handleMouseMove(e: MouseEvent) {
-      if (!mouseInteraction) return;
-      const rect = container.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = 1.0 - (e.clientY - rect.top) / rect.height;
-      program.uniforms.uMouse.value = [x, y];
-    }
     container.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameIdRef.current !== null) {
+        cancelAnimationFrame(animationFrameIdRef.current);
+        animationFrameIdRef.current = null;
+      }
       window.removeEventListener("resize", resize);
       container.removeEventListener("mousemove", handleMouseMove);
-      container.removeChild(gl.canvas);
+      if (gl.canvas.parentNode === container) {
+        container.removeChild(gl.canvas);
+      }
       gl.getExtension("WEBGL_lose_context")?.loseContext();
+      programRef.current = null;
     };
-  }, [
-    spinRotation,
-    spinSpeed,
-    offset,
-    color1,
-    color2,
-    color3,
-    contrast,
-    lighting,
-    spinAmount,
-    pixelFilter,
-    spinEase,
-    isRotate,
-    mouseInteraction,
-  ]);
+  }, [handleMouseMove]);
 
   return <div className="h-full w-full" ref={containerRef} />;
 }
