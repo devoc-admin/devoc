@@ -3,9 +3,8 @@
 import { PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
-  type FC,
-  forwardRef,
   type ReactNode,
+  type Ref,
   useEffect,
   useImperativeHandle,
   useMemo,
@@ -89,11 +88,13 @@ function extendMaterial<T extends Three.Material = Three.Material>(
   return mat;
 }
 
-const CanvasWrapper: FC<{ children: ReactNode }> = ({ children }) => (
-  <Canvas className="relative h-full w-full" dpr={[1, 2]} frameloop="always">
-    {children}
-  </Canvas>
-);
+function CanvasWrapper({ children }: { children: ReactNode }) {
+  return (
+    <Canvas className="relative h-full w-full" dpr={[1, 2]} frameloop="always">
+      {children}
+    </Canvas>
+  );
+}
 
 const hexToNormalizedRgb = (hex: string): [number, number, number] => {
   const clean = hex.replace("#", "");
@@ -180,7 +181,7 @@ float cnoise(vec3 P){
 }
 `;
 
-interface BeamsProps {
+type BeamsProps = {
   beamWidth?: number;
   beamHeight?: number;
   beamNumber?: number;
@@ -340,15 +341,19 @@ function createStackedPlanesBufferGeometry(
   return geometry;
 }
 
-const MergedPlanes = forwardRef<
-  Three.Mesh<Three.BufferGeometry, Three.ShaderMaterial>,
-  {
-    material: Three.ShaderMaterial;
-    width: number;
-    count: number;
-    height: number;
-  }
->(({ material, width, count, height }, ref) => {
+function MergedPlanes({
+  material,
+  width,
+  count,
+  height,
+  ref,
+}: {
+  material: Three.ShaderMaterial;
+  width: number;
+  count: number;
+  height: number;
+  ref?: Ref<Three.Mesh<Three.BufferGeometry, Three.ShaderMaterial>>;
+}) {
   const mesh = useRef<Three.Mesh<Three.BufferGeometry, Three.ShaderMaterial>>(
     null!,
   );
@@ -363,32 +368,39 @@ const MergedPlanes = forwardRef<
   return (
     <mesh geometry={geometry as any} material={material as any} ref={mesh} />
   );
-});
-MergedPlanes.displayName = "MergedPlanes";
+}
 
-const PlaneNoise = forwardRef<
-  Three.Mesh<Three.BufferGeometry, Three.ShaderMaterial>,
-  {
-    material: Three.ShaderMaterial;
-    width: number;
-    count: number;
-    height: number;
-  }
->((props, ref) => (
-  <MergedPlanes
-    count={props.count}
-    height={props.height}
-    material={props.material}
-    ref={ref}
-    width={props.width}
-  />
-));
-PlaneNoise.displayName = "PlaneNoise";
+function PlaneNoise({
+  material,
+  width,
+  count,
+  height,
+  ref,
+}: {
+  material: Three.ShaderMaterial;
+  width: number;
+  count: number;
+  height: number;
+  ref?: Ref<Three.Mesh<Three.BufferGeometry, Three.ShaderMaterial>>;
+}) {
+  return (
+    <MergedPlanes
+      count={count}
+      height={height}
+      material={material}
+      ref={ref}
+      width={width}
+    />
+  );
+}
 
-const DirLight: FC<{ position: [number, number, number]; color: string }> = ({
+function DirLight({
   position,
   color,
-}) => {
+}: {
+  position: [number, number, number];
+  color: string;
+}) {
   const dir = useRef<Three.DirectionalLight>(null!);
   useEffect(() => {
     if (!dir.current) return;
@@ -414,6 +426,6 @@ const DirLight: FC<{ position: [number, number, number]; color: string }> = ({
       ref={dir}
     />
   );
-};
+}
 
 export default Beams;

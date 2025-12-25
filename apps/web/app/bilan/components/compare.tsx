@@ -13,7 +13,7 @@ import LasbordesNew from "../assets/lasbordes_new.webp";
 import LasbordesOld from "../assets/lasbordes_old.webp";
 import { SparklesCore } from "../../../components/aceternity/sparkles";
 
-interface CompareProps {
+type CompareProps = {
   firstImage?: string;
   secondImage?: string;
   scrollYProgress: MotionValue<number>;

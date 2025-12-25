@@ -117,9 +117,9 @@ export const Wreath = (props: HTMLAttributes<HTMLOrSVGElement>) => (
   </svg>
 );
 
-interface RatingBadgeProps extends HTMLAttributes<HTMLDivElement> {
+type RatingBadgeProps = HTMLAttributes<HTMLDivElement> & {
   children?: React.ReactNode;
-}
+};
 
 export const RatingBadge = ({
   children,

@@ -17,7 +17,7 @@ const WIDTH_PCT = (SCREEN_WIDTH / SAFARI_WIDTH) * 100
 const HEIGHT_PCT = (SCREEN_HEIGHT / SAFARI_HEIGHT) * 100
 
 
-export interface SafariProps extends HTMLAttributes<HTMLDivElement> {
+export type SafariProps = HTMLAttributes<HTMLDivElement> & {
   url?: string
   image: StaticImageData
   invisibleMode?: boolean

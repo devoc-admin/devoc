@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
 
-interface TimelineEntry {
+type TimelineEntry = {
   title: string;
   content: React.ReactNode;
 }

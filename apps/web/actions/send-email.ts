@@ -7,7 +7,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 const contactFormSchema = z.object({
   company: z.string().optional(),
-  email: z.string().email("Email invalide"),
+  email: z.email({ error: "Email invalide" }),
   message: z
     .string()
     .min(10, "Le message doit contenir au moins 10 caractères"),

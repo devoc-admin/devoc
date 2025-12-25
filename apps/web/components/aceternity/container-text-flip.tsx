@@ -5,7 +5,7 @@ import React, { useState, useEffect, useId } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 
-export interface ContainerTextFlipProps {
+export type ContainerTextFlipProps = {
   /** Array of words to cycle through in the animation */
   words?: string[];
   /** Time in milliseconds between word transitions */
