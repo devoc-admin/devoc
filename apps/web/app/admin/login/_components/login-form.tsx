@@ -47,9 +47,12 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md border-neutral-800 bg-neutral-900">
+    <Card
+      animation={false}
+      className="w-full max-w-md border-neutral-800 bg-neutral-900"
+    >
       <CardHeader className="space-y-1">
-        <CardTitle className="font-bold text-2xl text-white">
+        <CardTitle className="font-bold text-2xl text-white!">
           Connexion Admin
         </CardTitle>
         <CardDescription className="text-neutral-400">
