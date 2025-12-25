@@ -2,13 +2,18 @@
 import { useForm } from "@tanstack/react-form";
 import { XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
 export function Searchbar() {
   const form = useSearchForm();
   return (
     <div className="rounded-md bg-sidebar p-8">
       <div className="mx-auto flex max-w-[600px] flex-col items-center justify-center gap-y-4">
+        {/* 🆎 Title */}
         <h2 className="font-kanit text-4xl">Rechercher un site</h2>
+        {/* 📝 Form */}
         <form
           className="flex w-full flex-col gap-y-2 space-y-4"
           onSubmit={(e) => {
@@ -17,6 +22,7 @@ export function Searchbar() {
             void form.handleSubmit();
           }}
         >
+          {/* 🔍 Search */}
           <form.Field
             name="search"
             validators={{
@@ -37,17 +43,65 @@ export function Searchbar() {
                   value={field.state.value}
                 />
                 {!field.state.meta.isValid && (
-                  <div
-                    className="flex items-center gap-x-0.5 font-normal text-red-500 text-sm"
-                    role="alert"
-                  >
-                    <XIcon size={16} />
+                  <ErrorMessage>
                     {field.state.meta.errors.join(", ")}
-                  </div>
+                  </ErrorMessage>
                 )}
               </div>
             )}
           </form.Field>
+          {/* ☑️ Checkboxes */}
+          <div className="flex items-center justify-center gap-x-6">
+            {/* 👁️ A11Y */}
+            <form.Field name="checkAccessibility">
+              {(field) => (
+                <div className="flex gap-x-2">
+                  <Checkbox
+                    checked={field.state.value}
+                    id="checkAccessibility"
+                    name="checkAccessibility"
+                    onCheckedChange={(checked) =>
+                      field.handleChange(!field.state.value)
+                    }
+                  />
+                  <Label htmlFor="checkAccessibility">Accessibilité</Label>
+                </div>
+              )}
+            </form.Field>
+            {/* 🔒 Sécurité */}
+            <form.Field name="checkSecurity">
+              {(field) => (
+                <div className="flex gap-x-2">
+                  <Checkbox
+                    checked={field.state.value}
+                    id="checkSecurity"
+                    name="checkSecurity"
+                    onCheckedChange={(checked) =>
+                      field.handleChange(!field.state.value)
+                    }
+                  />
+                  <Label htmlFor="checkSecurity">Sécurité</Label>
+                </div>
+              )}
+            </form.Field>
+            {/* ⚡ Performance */}
+            <form.Field name="checkPerformance">
+              {(field) => (
+                <div className="flex gap-x-2">
+                  <Checkbox
+                    checked={field.state.value}
+                    id="checkPerformance"
+                    name="checkPerformance"
+                    onCheckedChange={(checked) =>
+                      field.handleChange(!field.state.value)
+                    }
+                  />
+                  <Label htmlFor="checkPerformance">Performance</Label>
+                </div>
+              )}
+            </form.Field>
+          </div>
+          {/* 🆕 Submit */}
           <Button type="submit" variant="default">
             Lancer un audit
           </Button>
@@ -61,13 +115,15 @@ export function Searchbar() {
 function useSearchForm() {
   const form = useForm({
     defaultValues: {
+      checkAccessibility: true,
+      checkPerformance: false,
+      checkSecurity: false,
       search: "",
     },
     onSubmit: async (values) => {
       const { search } = values.value;
-      if (!search) return "Veuillez saisir une URL";
+      if (!search) return "Veuillez saisir une URL valide";
       if (!isWebsite(search)) return "La saisie n'est pas une URL valide";
-      console.log("is ok!", search);
     },
   });
 
@@ -83,3 +139,18 @@ function isWebsite(url: string): boolean {
     return false;
   }
 }
+
+// --------------------------------------------
+function ErrorMessage({ children }: { children: string }) {
+  return (
+    <div
+      className="flex items-center gap-x-0.5 font-normal text-red-500 text-sm"
+      role="alert"
+    >
+      <XIcon size={16} />
+      {children}
+    </div>
+  );
+}
+
+// --------------------------------------------
