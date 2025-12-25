@@ -1,4 +1,5 @@
 import { ThemeProvider } from "next-themes";
+import { Searchbar } from "./_components/searchbar";
 import { Sidebar } from "./_components/sidebar";
 
 export default function DashboardPage() {
@@ -14,7 +15,7 @@ export default function DashboardPage() {
           <Sidebar />
         </div>
         <div className="bg- grow rounded-xl bg-sidebar-strong p-6">
-          Empty for now...
+          <Searchbar />
         </div>
       </div>
     </ThemeProvider>
