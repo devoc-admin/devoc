@@ -14,7 +14,10 @@ export async function upsertAudit({ url }: AuditProps) {
     await db
       .insert(audit)
       .values({ url: origin })
-      .onConflictDoUpdate({ set: { url: origin }, target: audit.url })
+      .onConflictDoUpdate({
+        set: { url: origin },
+        target: audit.url,
+      })
       .returning();
   } catch (error) {
     console.error(error);
@@ -44,6 +47,7 @@ export async function isValidWebsite(url: string): Promise<boolean> {
     // Consider 2xx and 3xx as valid
     return response.ok || (response.status >= 300 && response.status < 400);
   } catch (error) {
+    console.log("error", error);
     return false;
   }
 }

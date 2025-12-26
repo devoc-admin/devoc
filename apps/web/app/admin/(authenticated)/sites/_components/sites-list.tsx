@@ -5,6 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import Link from "next/link";
 import {
   Table,
   TableBody,
@@ -16,6 +17,61 @@ import {
 import type { Audit } from "@/lib/db/schema";
 
 export function SitesList({ sites }: { sites: Audit[] }) {
+  const table = useSitesList({ sites });
+  return (
+    <div className="space-y-8 rounded-md bg-sidebar p-8">
+      <h2 className="font-kanit font-semibold text-3xl">
+        Sites déjà référencés
+      </h2>
+      <div>
+        {sites?.length > 0 ? (
+          <Table>
+            {/* 0️⃣ Header */}
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id}>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                    </TableHead>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHeader>
+            {/* 1️⃣ Body */}
+            <TableBody>
+              {table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} role="button" tabIndex={0}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <div>
+            Pas de site analysé, passez par{" "}
+            <Link className="text-blue-500 underline" href="/admin/audit">
+              la page d'analyse
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// --------------------------------------------
+function useSitesList({ sites }: { sites: Audit[] }) {
   const columnHelper = createColumnHelper<Audit>();
 
   const defaultColumns = [
@@ -35,6 +91,17 @@ export function SitesList({ sites }: { sites: Audit[] }) {
       cell: ({ getValue }) => formatDate(getValue()),
       header: "🗓️ Ajouté le",
     }),
+    columnHelper.accessor("id", {
+      cell: ({ getValue }) => (
+        <Link
+          className="text-blue-500 underline"
+          href={`/admin/sites/${getValue()}`}
+        >
+          Voir plus
+        </Link>
+      ),
+      header: "Audit",
+    }),
   ];
 
   const table = useReactTable({
@@ -42,45 +109,7 @@ export function SitesList({ sites }: { sites: Audit[] }) {
     data: sites,
     getCoreRowModel: getCoreRowModel(),
   });
-
-  return (
-    <div className="space-y-8 rounded-md bg-sidebar p-8">
-      <h2 className="font-kanit font-semibold text-3xl">
-        Sites déjà référencés
-      </h2>
-      <div>
-        <Table>
-          {/* 0️⃣ Header */}
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          {/* 1️⃣ Body */}
-          <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} role="button" tabIndex={0}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </div>
-  );
+  return table;
 }
 
 // --------------------------------------------

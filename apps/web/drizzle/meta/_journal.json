@@ -5,29 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1766703928853,
-      "tag": "0000_flawless_caretaker",
+      "when": 1766768012425,
+      "tag": "0000_premium_starhawk",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1766704133886,
-      "tag": "0001_flippant_colleen_wing",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1766704175248,
-      "tag": "0002_acoustic_marvel_boy",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1766743318553,
-      "tag": "0003_smooth_cloak",
+      "when": 1766768509255,
+      "tag": "0001_sparkling_wallop",
       "breakpoints": true
     }
   ]

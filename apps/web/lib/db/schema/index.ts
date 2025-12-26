@@ -1,8 +1,10 @@
+/** biome-ignore-all assist/source/useSortedKeys: database schema */
 import { sql } from "drizzle-orm";
 import {
   boolean,
   foreignKey,
   index,
+  integer,
   pgTable,
   text,
   timestamp,
@@ -110,13 +112,14 @@ export const verification = pgTable(
 );
 
 export const audit = pgTable("audit", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  url: text().unique().notNull(),
   createdAt: timestamp({ mode: "string", withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   updatedAt: timestamp({ mode: "string", withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  url: text().primaryKey().notNull().unique(),
 });
 
 export type Audit = typeof audit.$inferSelect;
