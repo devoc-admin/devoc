@@ -10,15 +10,13 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
       data-slot="table-container"
       className="relative w-full overflow-x-auto"
     >
-      <table
-        data-slot="table"
-        className={cn(
-          "w-full caption-bottom text-sm overflow-hidden",
-          /* ⭕ Rounded */ "rounded-md",
-          className,
-        )}
-        {...props}
-      />
+      <div className="overflow-hidden rounded-md border border-border">
+        <table
+          data-slot="table"
+          className={cn("w-full caption-bottom text-sm", className)}
+          {...props}
+        />
+      </div>
     </div>
   );
 }
