@@ -5,6 +5,29 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { upsertAudit } from "../actions";
+
+function useSearchForm() {
+  const form = useForm({
+    defaultValues: {
+      checkAccessibility: true,
+      checkPerformance: false,
+      checkSecurity: false,
+      search: "",
+    },
+    onSubmit: async (values) => {
+      const { search } = values.value;
+      if (!search) return "Veuillez saisir une URL valide";
+      if (!isWebsite(search)) return "La saisie n'est pas une URL valide";
+      console.log("will upsert!");
+      await upsertAudit({ url: search });
+      return;
+    },
+  });
+
+  return form;
+}
+// --------------------------------------------
 
 export function Searchbar() {
   const form = useSearchForm();
@@ -30,7 +53,7 @@ export function Searchbar() {
                 if (!search) return "Veuillez saisir une URL";
                 if (!isWebsite(search))
                   return "La saisie n'est pas une URL valide";
-                console.log("is ok!", search);
+                return;
               },
             }}
           >
@@ -60,7 +83,7 @@ export function Searchbar() {
                     checked={field.state.value}
                     id="checkAccessibility"
                     name="checkAccessibility"
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={() =>
                       field.handleChange(!field.state.value)
                     }
                   />
@@ -68,7 +91,7 @@ export function Searchbar() {
                 </div>
               )}
             </form.Field>
-            {/* 🔒 Sécurité */}
+            {/* 🔒 Security */}
             <form.Field name="checkSecurity">
               {(field) => (
                 <div className="flex gap-x-2">
@@ -76,7 +99,7 @@ export function Searchbar() {
                     checked={field.state.value}
                     id="checkSecurity"
                     name="checkSecurity"
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={() =>
                       field.handleChange(!field.state.value)
                     }
                   />
@@ -92,7 +115,7 @@ export function Searchbar() {
                     checked={field.state.value}
                     id="checkPerformance"
                     name="checkPerformance"
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={() =>
                       field.handleChange(!field.state.value)
                     }
                   />
@@ -102,32 +125,22 @@ export function Searchbar() {
             </form.Field>
           </div>
           {/* 🆕 Submit */}
-          <Button type="submit" variant="default">
-            Lancer un audit
-          </Button>
+          <form.Subscribe selector={(state) => state.isSubmitting}>
+            {(isSubmitting) => (
+              <Button
+                disabled={isSubmitting}
+                loading={isSubmitting}
+                type="submit"
+                variant="default"
+              >
+                Lancer un audit
+              </Button>
+            )}
+          </form.Subscribe>
         </form>
       </div>
     </div>
   );
-}
-
-// --------------------------------------------
-function useSearchForm() {
-  const form = useForm({
-    defaultValues: {
-      checkAccessibility: true,
-      checkPerformance: false,
-      checkSecurity: false,
-      search: "",
-    },
-    onSubmit: async (values) => {
-      const { search } = values.value;
-      if (!search) return "Veuillez saisir une URL valide";
-      if (!isWebsite(search)) return "La saisie n'est pas une URL valide";
-    },
-  });
-
-  return form;
 }
 
 // --------------------------------------------

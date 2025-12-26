@@ -22,6 +22,13 @@
       "when": 1766704175248,
       "tag": "0002_acoustic_marvel_boy",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1766743318553,
+      "tag": "0003_smooth_cloak",
+      "breakpoints": true
     }
   ]
 }

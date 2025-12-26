@@ -113,11 +113,10 @@ export const audit = pgTable("audit", {
   createdAt: timestamp({ mode: "string", withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  id: text().primaryKey().notNull(),
   updatedAt: timestamp({ mode: "string", withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  url: text().notNull().unique(),
+  url: text().primaryKey().notNull().unique(),
 });
 
 export type Audit = typeof audit.$inferSelect;
