@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { upsertAudit } from "../actions";
+import { isValidWebsite, upsertAudit } from "../actions";
 
 function useSearchForm() {
   const form = useForm({
@@ -17,10 +17,7 @@ function useSearchForm() {
     },
     onSubmit: async (values) => {
       const { search } = values.value;
-      if (!search) return "Veuillez saisir une URL valide";
-      if (!isWebsite(search)) return "La saisie n'est pas une URL valide";
-      console.log("will upsert!");
-      await upsertAudit({ url: search });
+      const result = await upsertAudit({ url: search });
       return;
     },
   });
@@ -51,9 +48,13 @@ export function Searchbar() {
             validators={{
               onSubmit: ({ value: search }) => {
                 if (!search) return "Veuillez saisir une URL";
-                if (!isWebsite(search))
+                if (!isWebsiteUrl(search))
                   return "La saisie n'est pas une URL valide";
                 return;
+              },
+              onSubmitAsync: async ({ value: search }) => {
+                const result = await isValidWebsite(search);
+                if (!result) return "Ce site web n'existe pas";
               },
             }}
           >
@@ -144,7 +145,7 @@ export function Searchbar() {
 }
 
 // --------------------------------------------
-function isWebsite(url: string): boolean {
+function isWebsiteUrl(url: string): boolean {
   try {
     new URL(url);
     return true;
@@ -165,5 +166,3 @@ function ErrorMessage({ children }: { children: string }) {
     </div>
   );
 }
-
-// --------------------------------------------
