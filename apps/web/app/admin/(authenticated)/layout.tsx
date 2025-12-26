@@ -1,4 +1,5 @@
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "@/components/ui/sonner";
 import { Sidebar } from "./_components/sidebar";
 
 export default function AdminLayout({
@@ -19,6 +20,7 @@ export default function AdminLayout({
         </div>
         <div className="grow rounded-xl bg-sidebar-strong p-6">{children}</div>
       </div>
+      <Toaster />
     </ThemeProvider>
   );
 }

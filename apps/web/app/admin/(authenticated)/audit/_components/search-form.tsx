@@ -1,6 +1,7 @@
 "use client";
 import { useForm } from "@tanstack/react-form";
 import { XIcon } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,10 @@ function useSearchForm() {
       const result = await upsertAudit({ url: search });
 
       if (result.success) {
+        toast("Le site a bien été ajouté !", {
+          icon: "✅",
+          position: "bottom-right",
+        });
         form.reset();
       }
       return;
