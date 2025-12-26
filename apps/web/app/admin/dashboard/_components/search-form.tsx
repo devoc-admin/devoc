@@ -18,6 +18,10 @@ function useSearchForm() {
     onSubmit: async (values) => {
       const { search } = values.value;
       const result = await upsertAudit({ url: search });
+
+      if (result.success) {
+        form.reset();
+      }
       return;
     },
   });
@@ -32,9 +36,7 @@ export function SearchForm() {
     <div className="rounded-md bg-sidebar p-8">
       <div className="mx-auto flex max-w-150 flex-col items-center justify-center gap-y-4">
         {/* 🆎 Title */}
-        <h2 className="font-kanit font-semibold text-4xl">
-          Rechercher un site
-        </h2>
+        <h2 className="font-kanit font-semibold text-4xl">Analyser un site</h2>
         {/* 📝 Form */}
         <form
           className="flex w-full flex-col gap-y-2 space-y-4"

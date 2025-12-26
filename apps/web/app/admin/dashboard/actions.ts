@@ -7,11 +7,19 @@ type AuditProps = {
 };
 
 export async function upsertAudit({ url }: AuditProps) {
-  const [result] = await db
-    .insert(audit)
-    .values({ url })
-    .onConflictDoUpdate({ set: { url }, target: audit.url })
-    .returning();
+  const urlObject = new URL(url);
+  const { origin } = urlObject;
+
+  try {
+    await db
+      .insert(audit)
+      .values({ url: origin })
+      .onConflictDoUpdate({ set: { url: origin }, target: audit.url })
+      .returning();
+  } catch (error) {
+    console.error(error);
+    return { error };
+  }
 
   return { success: true };
 }

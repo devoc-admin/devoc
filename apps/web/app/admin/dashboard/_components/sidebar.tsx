@@ -1,5 +1,5 @@
 "use client";
-import { AppWindowIcon, DoorOpenIcon, type LucideIcon } from "lucide-react";
+import { DoorOpenIcon, FileScanIcon, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
 import { ModeToggle } from "@/components/toggle-theme";
@@ -23,11 +23,11 @@ function Sidebar() {
       {/* 🔗 Links */}
       <div className="mt-4 w-full text-base text-zinc-200">
         <SidebarLink
-          icon={AppWindowIcon}
+          icon={FileScanIcon}
           isActive={pathname === "/admin/dashboard"}
           pathname="/admin/dashboard"
         >
-          Vue globale
+          Analyse
         </SidebarLink>
       </div>
       {/* ⬇️ Footer */}
