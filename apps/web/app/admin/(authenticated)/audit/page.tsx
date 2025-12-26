@@ -1,5 +1,5 @@
 import { SearchForm } from "./_components/search-form";
 
-export default function AuditPage() {
+export default async function AuditPage() {
   return <SearchForm />;
 }

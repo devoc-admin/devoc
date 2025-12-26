@@ -96,7 +96,7 @@ function SidebarLink({
         /* 🤹 Transition */ "transition-colors",
         "hover:bg-accent",
         /* 👁️ Hover */ "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        /* 🔆 */ isActive && "bg-muted text-muted-foreground"
+        /* 🔆 */ isActive && "bg-muted"
       )}
       href={pathname}
       prefetch
