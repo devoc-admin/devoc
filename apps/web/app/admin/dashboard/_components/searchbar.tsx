@@ -81,63 +81,39 @@ export function Searchbar() {
             {/* 👁️ A11Y */}
             <form.Field name="checkAccessibility">
               {(field) => (
-                <div className="flex gap-x-2">
-                  <Checkbox
-                    checked={field.state.value}
-                    className="cursor-pointer"
-                    id="checkAccessibility"
-                    name="checkAccessibility"
-                    onCheckedChange={() =>
-                      field.handleChange(!field.state.value)
-                    }
-                  />
-                  <Label
-                    className="cursor-pointer"
-                    htmlFor="checkAccessibility"
-                  >
-                    Accessibilité
-                  </Label>
-                </div>
+                <CustomCheckbox
+                  checked={field.state.value}
+                  handleChange={field.handleChange}
+                  name="checkAccessibility"
+                >
+                  Accessibilité
+                </CustomCheckbox>
               )}
             </form.Field>
             {/* 🔒 Security */}
             <form.Field name="checkSecurity">
               {(field) => (
-                <div className="flex gap-x-2">
-                  <Checkbox
-                    checked={field.state.value}
-                    className="cursor-pointer"
-                    disabled
-                    id="checkSecurity"
-                    name="checkSecurity"
-                    onCheckedChange={() =>
-                      field.handleChange(!field.state.value)
-                    }
-                  />
-                  <Label className="cursor-pointer" htmlFor="checkSecurity">
-                    Sécurité
-                  </Label>
-                </div>
+                <CustomCheckbox
+                  checked={field.state.value}
+                  disabled
+                  handleChange={field.handleChange}
+                  name="checkSecurity"
+                >
+                  Sécurité
+                </CustomCheckbox>
               )}
             </form.Field>
             {/* ⚡ Performance */}
             <form.Field name="checkPerformance">
               {(field) => (
-                <div className="flex gap-x-2">
-                  <Checkbox
-                    checked={field.state.value}
-                    className="cursor-pointer"
-                    disabled
-                    id="checkPerformance"
-                    name="checkPerformance"
-                    onCheckedChange={() =>
-                      field.handleChange(!field.state.value)
-                    }
-                  />
-                  <Label className="cursor-pointer" htmlFor="checkPerformance">
-                    Performance
-                  </Label>
-                </div>
+                <CustomCheckbox
+                  checked={field.state.value}
+                  disabled
+                  handleChange={field.handleChange}
+                  name="checkPerformance"
+                >
+                  Performance
+                </CustomCheckbox>
               )}
             </form.Field>
           </div>
@@ -179,6 +155,36 @@ function ErrorMessage({ children }: { children: string }) {
     >
       <XIcon size={16} />
       {children}
+    </div>
+  );
+}
+
+// --------------------------------------------
+function CustomCheckbox({
+  checked,
+  handleChange,
+  name,
+  children,
+  ...props
+}: React.ComponentProps<"button"> & {
+  checked: boolean;
+  handleChange: (value: boolean) => void;
+  name: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex gap-x-2">
+      <Checkbox
+        checked={checked}
+        className="cursor-pointer"
+        id={name}
+        name={name}
+        onCheckedChange={() => handleChange(!checked)}
+        {...props}
+      />
+      <Label className="cursor-pointer" htmlFor={name}>
+        {children}
+      </Label>
     </div>
   );
 }
