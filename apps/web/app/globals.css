@@ -249,8 +249,9 @@
 
   --flow: oklch(0.7 0.25 240);
 
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-strong: oklch(0.1448 0 0);
+  --sidebar: oklch(0.3085 0.0035 106.6);
+  --sidebar-strong: oklch(0.2679 0.0036 106.64);
+
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
   --sidebar-primary-foreground: oklch(0.985 0 0);
