@@ -1,5 +1,10 @@
 "use client";
-import { DoorOpenIcon, FileScanIcon, type LucideIcon } from "lucide-react";
+import {
+  AppWindowIcon,
+  DoorOpenIcon,
+  FileScanIcon,
+  type LucideIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
 import { ModeToggle } from "@/components/toggle-theme";
@@ -21,13 +26,20 @@ function Sidebar() {
       )}
     >
       {/* 🔗 Links */}
-      <div className="mt-4 w-full text-base text-zinc-200">
+      <div className="mt-4 w-full space-y-2 text-base text-zinc-200">
         <SidebarLink
           icon={FileScanIcon}
-          isActive={pathname === "/admin/dashboard"}
-          pathname="/admin/dashboard"
+          isActive={pathname === "/admin/audit"}
+          pathname="/admin/audit"
         >
           Analyse
+        </SidebarLink>
+        <SidebarLink
+          icon={AppWindowIcon}
+          isActive={pathname === "/admin/sites"}
+          pathname="/admin/sites"
+        >
+          Sites
         </SidebarLink>
       </div>
       {/* ⬇️ Footer */}
@@ -81,6 +93,9 @@ function SidebarLink({
         /* 🔲 Border */ "border-none dark:border dark:border-input",
         /* ⭕ Radius */ "rounded-lg",
         /* 🫷 Padding */ "px-5 py-2.5",
+        /* 🤹 Transition */ "transition-colors",
+        "hover:bg-accent",
+        /* 👁️ Hover */ "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         /* 🔆 */ isActive && "bg-muted text-muted-foreground"
       )}
       href={pathname}

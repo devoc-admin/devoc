@@ -35,7 +35,7 @@ export function LoginForm() {
         return;
       }
 
-      router.push("/admin/dashboard");
+      router.push("/admin/audit");
       router.refresh();
     } catch {
       setError("Une erreur est survenue lors de la connexion");

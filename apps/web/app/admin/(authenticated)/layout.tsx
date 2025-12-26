@@ -1,8 +1,11 @@
 import { ThemeProvider } from "next-themes";
-import { SearchForm } from "./_components/search-form";
 import { Sidebar } from "./_components/sidebar";
 
-export default function DashboardPage() {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <ThemeProvider
       attribute="class"
@@ -14,9 +17,7 @@ export default function DashboardPage() {
         <div>
           <Sidebar />
         </div>
-        <div className="grow rounded-xl bg-sidebar-strong p-6">
-          <SearchForm />
-        </div>
+        <div className="grow rounded-xl bg-sidebar-strong p-6">{children}</div>
       </div>
     </ThemeProvider>
   );
