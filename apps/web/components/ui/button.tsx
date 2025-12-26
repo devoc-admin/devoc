@@ -6,27 +6,83 @@ import { LoaderIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex gap-x-1 cursor-pointer shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium text-sm outline-none transition-all focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  cn(
+    /* ⬇️ Layout */ "inline-flex gap-x-1 shrink-0 items-center justify-center",
+    /* 🖱️ Cursor */ "cursor-pointer",
+    /* ⭕ Radius */ "rounded-md",
+    /* 🔤 Text */ "text-sm text-foreground font-medium whitespace-nowrap",
+    /* 💄 Outline */ "outline-none transition-all",
+    /* 🎯 Focus */ "focus-visible:ring-ring/50 focus-visible:border-ring focus-visible:ring-[3px]",
+    /* 🚫 Disabled */ "disabled:pointer-events-none disabled:opacity-50",
+    /* ⛔ Invalid */ "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
+    /* 🗿 Icon */ "[&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  ),
   {
     variants: {
       variant: {
-        default:
-          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40",
-        outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
-        secondary:
-          "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
-        ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
-        link: "text-primary underline-offset-4 hover:underline",
+        default: cn(
+          /* 🖼️ Background */ "bg-primary",
+          /* 🖼️ Background | Hover */ "hover:bg-primary/90",
+          /* 🔤 Text */ "text-primary-foreground",
+          /* 🥷 Shadow */ "shadow-xs",
+        ),
+        destructive: cn(
+          /* 🖼️ Background */ "bg-destructive dark:bg-destructive/60",
+          /* 🖼️ Background | Hover */ "hover:bg-destructive/90",
+          /* 🎯 Focus */ "focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
+          /* 🔤 Text */ "text-white ",
+          /* 🥷 Shadow */ "shadow-xs",
+        ),
+        outline: cn(
+          /* 🖼️ Background */ "bg-background dark:bg-input/30",
+          /* 🖼️ Background | Hover */ "hover:bg-accent dark:hover:bg-input/50",
+          /* 🔤 Text | Hover */ "hover:text-accent-foreground",
+          /* 🔲 Border */ "border dark:border-input",
+          /* 🥷 Shadow */ "shadow-xs",
+        ),
+        secondary: cn(
+          /* 🖼️ Background */ "bg-secondary",
+          /* 🖼️ Background | Hover */ "hover:bg-secondary/80",
+          /* 🔤 Text */ "text-secondary-foreground",
+          /* 🥷 Shadow */ "shadow-xs",
+        ),
+        ghost: cn(
+          /* 🖼️ Background */ "",
+          /* 🖼️ Background | Hover */ "hover:bg-accent dark:hover:bg-accent/50",
+          /* 🔤 Text */ "",
+          /* 🔤 Text | Hover */ "hover:text-accent-foreground",
+        ),
+        link: cn(
+          /* 🔤 Text */ "text-primary underline-offset-4",
+          /* 🔤 Text | Hover */ "hover:underline",
+        ),
       },
       size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5",
-        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
-        xl: "h-12 text-xl rounded-md px-8 has-[>svg]:px-6",
+        default: cn(
+          /* ↔️ Size */ "h-9",
+          /* 🫷Padding */ "px-4 py-2",
+          /* 🗿 Icon */ "has-[>svg]:px-3",
+        ),
+        sm: cn(
+          /* ↔️ Size */ "h-8",
+          /* 🕳️ Gap */ "gap-1.5",
+          /* ⭕ Radius */ "rounded-md",
+          /* 🫷Padding */ "px-3",
+          /* 🗿 Icon */ "has-[>svg]:px-2.5",
+        ),
+        lg: cn(
+          /* ↔️ Size */ "h-10",
+          /* ⭕ Radius */ "rounded-md",
+          /* 🫷Padding */ "px-6",
+          /* 🗿 Icon */ "has-[>svg]:px-4",
+        ),
+        xl: cn(
+          /* ↔️ Size */ "h-12",
+          /* ⭕ Radius */ "rounded-md",
+          /* 🫷Padding */ "px-8",
+          /* 🔤 Text */ "text-xl",
+          /* 🗿 Icon */ "has-[>svg]:px-6",
+        ),
         icon: "size-9",
       },
     },

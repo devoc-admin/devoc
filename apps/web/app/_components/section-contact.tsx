@@ -98,7 +98,7 @@ export default function Contact() {
         {/* 📝 Contact form */}
         <Card
           animation={false}
-          className="relative order-1 grow overflow-visible md:order-2"
+          className="relative order-1 grow overflow-visible bg-linear-to-br from-zinc-950 to-zinc-900 md:order-2"
         >
           <div className="mask-t-from-70% absolute top-0 left-0 hidden h-160 -translate-y-[50%] md:block">
             <LaserFlow color="#f59e0b" fogIntensity={0} horizontalSizing={2} />
@@ -130,7 +130,7 @@ function ContactCard({
   href: string;
 }) {
   return (
-    <Card className="hidden p-0 pr-14 md:block">
+    <Card className="hidden bg-linear-to-br from-zinc-950 to-zinc-900 p-0 pr-14 md:block">
       <a className="flex items-center gap-6 p-6" href={href}>
         <div
           className={cn(

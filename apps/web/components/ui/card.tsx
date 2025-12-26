@@ -15,7 +15,7 @@ function Card({
         /* ⭕ Radius */ "rounded-xl",
         /* 🖱️ Cursor */ "cursor-pointer",
         /* 🔲 Border */ "border border-zinc-900 hover:border-primary/40 ",
-        /* 🖼️ Background */ "bg-card bg-linear-to-br from-zinc-950 to-zinc-900 ",
+        /* 🖼️ Background */ "bg-card",
         /* 🫷 Padding/Margin */ "py-6",
         /* 🔤 Text */ "text-primary-foreground",
         /* 🥷 Shadow */ "shadow-primary/10 hover:shadow-lg",

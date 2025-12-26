@@ -1,5 +1,5 @@
 "use client";
-import { AppWindowIcon, DoorOpenIcon } from "lucide-react";
+import { AppWindowIcon, DoorOpenIcon, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
 import { ModeToggle } from "@/components/toggle-theme";
@@ -10,20 +10,25 @@ import { cn } from "@/lib/utils";
 function Sidebar() {
   const pathname = usePathname();
   return (
-    <div className="flex h-full w-[250px] flex-col rounded-md bg-transparent px-4 py-1 text-white">
+    <div
+      className={cn(
+        /* ⬇️ Layout */ "flex flex-col",
+        /* 🔤 Color */ "text-foreground",
+        /* 🖼️ Background */ "bg-transparent",
+        /* ↔️ Size */ "h-full w-62.5",
+        /* ⭕ Radius */ "rounded-md",
+        /*🫸 Padding*/ "px-4 py-1"
+      )}
+    >
       {/* 🔗 Links */}
       <div className="mt-4 w-full text-base text-zinc-200">
-        <Link
-          className={cn(
-            "flex items-center gap-x-3 rounded-lg px-5 py-2.5",
-            pathname === "/admin/dashboard" && "bg-sidebar-accent"
-          )}
-          href="/admin/dashboard"
-          prefetch
+        <SidebarLink
+          icon={AppWindowIcon}
+          isActive={pathname === "/admin/dashboard"}
+          pathname="/admin/dashboard"
         >
-          <AppWindowIcon size={18} />
-          <span>Vue globale</span>
-        </Link>
+          Vue globale
+        </SidebarLink>
       </div>
       {/* ⬇️ Footer */}
       <div className="mt-auto flex gap-x-2">
@@ -33,7 +38,7 @@ function Sidebar() {
     </div>
   );
 }
-
+// ------------------------------
 function SignOutButton() {
   return (
     <Button
@@ -56,4 +61,34 @@ function SignOutButton() {
   );
 }
 
+// ------------------------------
+function SidebarLink({
+  pathname,
+  isActive,
+  icon: Icon,
+  children,
+}: {
+  pathname: string;
+  isActive: boolean;
+  icon: LucideIcon;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      className={cn(
+        /* ⬇️ Layout */ "flex items-center gap-x-3",
+        /* 🔤 Text */ "text-foreground",
+        /* 🔲 Border */ "border-none dark:border dark:border-input",
+        /* ⭕ Radius */ "rounded-lg",
+        /* 🫷 Padding */ "px-5 py-2.5",
+        /* 🔆 */ isActive && "bg-muted text-muted-foreground"
+      )}
+      href={pathname}
+      prefetch
+    >
+      <Icon size={18} />
+      {children}
+    </Link>
+  );
+}
 export { Sidebar };

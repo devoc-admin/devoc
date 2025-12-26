@@ -201,6 +201,7 @@ function ServiceCard({
         animation={false}
         className={cn(
           "relative h-full min-h-[400px] cursor-pointer",
+          "bg-linear-to-br from-zinc-950 to-zinc-900",
           // Only use 3D transforms on desktop
           isDesktop && "transform-3d transition-all duration-700",
           isDesktop && (isFlipped ? "rotate-y-180" : "rotate-y-0")

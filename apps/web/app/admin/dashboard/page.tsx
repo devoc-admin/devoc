@@ -6,7 +6,7 @@ export default function DashboardPage() {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="dark"
+      defaultTheme="system"
       disableTransitionOnChange
       enableSystem
     >
@@ -14,7 +14,7 @@ export default function DashboardPage() {
         <div>
           <Sidebar />
         </div>
-        <div className="bg- grow rounded-xl bg-sidebar-strong p-6">
+        <div className="grow rounded-xl bg-sidebar-strong p-6">
           <Searchbar />
         </div>
       </div>

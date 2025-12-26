@@ -12,10 +12,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
 // 🎨 Classes CSS
-const labelClass = cn("text-base", "xs:text-lg");
+const labelClass = cn("text-base text-white", "xs:text-lg");
 
 const inputClass = cn(
   "text-base!",
+  "border-zinc-800",
   "bg-zinc-950 text-primary-foreground sm:text-lg!"
 );
 

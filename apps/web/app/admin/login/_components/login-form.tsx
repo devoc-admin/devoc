@@ -56,7 +56,7 @@ export function LoginForm() {
           src={DevOcIcon.src}
           width={12}
         />
-        <CardTitle className="font-bold font-kanit text-4xl text-zinc-950">
+        <CardTitle className="font-bold font-kanit text-4xl text-zinc-950 dark:text-white">
           Connexion
         </CardTitle>
       </CardHeader>

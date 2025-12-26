@@ -32,7 +32,9 @@ export function Searchbar() {
     <div className="rounded-md bg-sidebar p-8">
       <div className="mx-auto flex max-w-[600px] flex-col items-center justify-center gap-y-4">
         {/* 🆎 Title */}
-        <h2 className="font-kanit text-4xl">Rechercher un site</h2>
+        <h2 className="font-kanit font-semibold text-4xl">
+          Rechercher un site
+        </h2>
         {/* 📝 Form */}
         <form
           className="flex w-full flex-col gap-y-2 space-y-4"
@@ -82,13 +84,19 @@ export function Searchbar() {
                 <div className="flex gap-x-2">
                   <Checkbox
                     checked={field.state.value}
+                    className="cursor-pointer"
                     id="checkAccessibility"
                     name="checkAccessibility"
                     onCheckedChange={() =>
                       field.handleChange(!field.state.value)
                     }
                   />
-                  <Label htmlFor="checkAccessibility">Accessibilité</Label>
+                  <Label
+                    className="cursor-pointer"
+                    htmlFor="checkAccessibility"
+                  >
+                    Accessibilité
+                  </Label>
                 </div>
               )}
             </form.Field>
@@ -98,13 +106,17 @@ export function Searchbar() {
                 <div className="flex gap-x-2">
                   <Checkbox
                     checked={field.state.value}
+                    className="cursor-pointer"
+                    disabled
                     id="checkSecurity"
                     name="checkSecurity"
                     onCheckedChange={() =>
                       field.handleChange(!field.state.value)
                     }
                   />
-                  <Label htmlFor="checkSecurity">Sécurité</Label>
+                  <Label className="cursor-pointer" htmlFor="checkSecurity">
+                    Sécurité
+                  </Label>
                 </div>
               )}
             </form.Field>
@@ -114,13 +126,17 @@ export function Searchbar() {
                 <div className="flex gap-x-2">
                   <Checkbox
                     checked={field.state.value}
+                    className="cursor-pointer"
+                    disabled
                     id="checkPerformance"
                     name="checkPerformance"
                     onCheckedChange={() =>
                       field.handleChange(!field.state.value)
                     }
                   />
-                  <Label htmlFor="checkPerformance">Performance</Label>
+                  <Label className="cursor-pointer" htmlFor="checkPerformance">
+                    Performance
+                  </Label>
                 </div>
               )}
             </form.Field>
