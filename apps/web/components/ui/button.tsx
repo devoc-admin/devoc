@@ -23,6 +23,7 @@ const buttonVariants = cva(
         default: cn(
           /* 🖼️ Background */ "bg-primary",
           /* 🖼️ Background | Hover */ "hover:bg-primary/90",
+          /* 🎯 Focus */ "focus-visible:ring-primary/50 focus-visible:border-primary",
           /* 🔤 Text */ "text-primary-foreground",
           /* 🥷 Shadow */ "shadow-xs",
         ),
