@@ -48,7 +48,7 @@ export function SearchForm() {
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            void form.handleSubmit();
+            form.handleSubmit();
           }}
         >
           {/* 🔍 Search */}
@@ -148,7 +148,7 @@ function isWebsiteUrl(url: string): boolean {
   try {
     new URL(url);
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 }

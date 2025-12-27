@@ -1,3 +1,4 @@
+// biome-ignore lint/performance/noBarrelFile: Re-exporting crawler module for clean public API
 export { detectCategoryPage } from "./category-detector";
 export { WebCrawler } from "./crawler";
 export type {

@@ -22,13 +22,13 @@ import type {
 export class WebCrawler {
   private browser: Browser | null = null;
   private context: BrowserContext | null = null;
-  private visited = new Set<string>();
-  private queue: QueueItem[] = [];
-  private config: CrawlConfig;
-  private baseUrl: string;
-  private baseOrigin: string;
-  private pages: CrawlPageResult[] = [];
-  private errors: Array<{ url: string; error: string }> = [];
+  private readonly visited = new Set<string>();
+  private readonly queue: QueueItem[] = [];
+  private readonly config: CrawlConfig;
+  private readonly baseUrl: string;
+  private readonly baseOrigin: string;
+  private readonly pages: CrawlPageResult[] = [];
+  private readonly errors: Array<{ url: string; error: string }> = [];
 
   // 🏗️ Constructor
   constructor({
@@ -51,6 +51,7 @@ export class WebCrawler {
   }
 
   //💥 Start crawling
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Crawler logic requires sequential checks
   async crawl({
     onProgress,
   }: {
@@ -73,7 +74,8 @@ export class WebCrawler {
         this.queue.length > 0 &&
         this.pages.length < this.config.maxPages
       ) {
-        const item = this.queue.shift()!;
+        const item = this.queue.shift();
+        if (!item) continue;
         const normalizedUrl = normalizeUrl({
           baseUrl: this.baseUrl,
           url: item.url,
@@ -146,7 +148,10 @@ export class WebCrawler {
     normalizedUrl: string;
     depth: number;
   }): Promise<CrawlPageResult | null> {
-    const page = await this.context!.newPage();
+    if (!this.context) {
+      throw new Error("Browser context not initialized");
+    }
+    const page = await this.context.newPage();
 
     try {
       //⏰ Start time

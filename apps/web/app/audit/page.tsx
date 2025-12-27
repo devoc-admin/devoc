@@ -140,32 +140,6 @@ export default Audit;
 
 // ✨ Motion animation wrapper components
 
-type FloatingUpProps = {
-  children: ReactNode;
-  delay: number;
-  duration: number;
-  className?: string;
-  yRange?: [number, number, number];
-};
-
-function FloatingUp({
-  children,
-  delay,
-  duration,
-  className,
-  yRange = [0, -10, 0],
-}: FloatingUpProps) {
-  return (
-    <motion.div
-      animate={{ opacity: 0.6, y: yRange }}
-      initial={{ opacity: 0 }}
-      transition={{ delay, duration, repeat: Number.POSITIVE_INFINITY }}
-    >
-      <div className={className}>{children}</div>
-    </motion.div>
-  );
-}
-
 type FadeInDownProps = {
   children: ReactNode;
   delay?: number;

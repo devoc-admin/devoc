@@ -40,7 +40,7 @@ export function normalizeUrl({
     let normalized = parsed.origin + pathname;
     const queryString = cleanParams.toString();
     if (queryString) {
-      normalized += "?" + queryString;
+      normalized += `?${queryString}`;
     }
 
     return normalized.toLowerCase();

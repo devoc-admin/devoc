@@ -9,7 +9,7 @@ import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
 import { ModeToggle } from "@/components/toggle-theme";
 import { Button } from "@/components/ui/button";
-import { signOut } from "@/lib/auth-client";
+import { signOut } from "@/lib/auth/auth-client";
 import { cn } from "@/lib/utils";
 
 function Sidebar() {
