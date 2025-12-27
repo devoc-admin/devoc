@@ -1,0 +1,177 @@
+import type { Page } from "playwright";
+import type { CategoryResult, PageCharacteristics } from "./types";
+
+const URL_PATTERNS: Record<string, RegExp[]> = {
+  accessibility: [/\/accessibilite/i, /\/accessibility/i, /\/a11y/i],
+  authentication: [
+    /\/login/i,
+    /\/connexion/i,
+    /\/signin/i,
+    /\/sign-in/i,
+    /\/auth/i,
+    /\/inscription/i,
+    /\/register/i,
+    /\/signup/i,
+    /\/sign-up/i,
+    /\/mon-compte/i,
+    /\/account/i,
+  ],
+  contact: [/\/contact/i, /\/nous-contacter/i, /\/contactez/i],
+  document: [
+    /\/documents/i,
+    /\/telechargement/i,
+    /\/download/i,
+    /\/ressources/i,
+    /\/resources/i,
+  ],
+  help: [/\/aide$/i, /\/help$/i, /\/faq/i, /\/support/i, /\/assistance/i],
+  homepage: [/^\/$/, /^\/index\.html?$/i, /^\/accueil$/i, /^\/home$/i],
+  legal_notices: [
+    /\/mentions-legales/i,
+    /\/legal/i,
+    /\/cgu$/i,
+    /\/cgv$/i,
+    /\/conditions/i,
+    /\/politique-de-confidentialite/i,
+    /\/privacy/i,
+  ],
+  multi_step_process: [
+    /\/etape/i,
+    /\/step/i,
+    /\/wizard/i,
+    /\/checkout/i,
+    /\/panier/i,
+    /\/cart/i,
+    /\/commande/i,
+    /\/order/i,
+  ],
+  multimedia: [/\/video/i, /\/audio/i, /\/media/i, /\/galerie/i, /\/gallery/i],
+  sitemap: [/\/plan-du-site/i, /\/sitemap/i, /\/plan$/i],
+};
+
+export async function detectCategoryPage({
+  page,
+  url,
+}: {
+  page: Page;
+  url: string;
+}): Promise<CategoryResult> {
+  const pathname = new URL(url).pathname;
+
+  // 1. Check URL patterns (more reliable)
+  for (const [category, patterns] of Object.entries(URL_PATTERNS)) {
+    if (patterns.some((pattern) => pattern.test(pathname))) {
+      const characteristics = await analyzePageCharacteristics(page);
+      return {
+        category: category as CategoryResult["category"],
+        characteristics,
+        confidence: 85,
+      };
+    }
+  }
+
+  // 2. Parse DOM
+  const characteristics = await analyzePageCharacteristics(page);
+  if (characteristics.hasAuthentication) {
+    return { category: "authentication", characteristics, confidence: 75 };
+  }
+
+  if (characteristics.hasMultimedia) {
+    return { category: "multimedia", characteristics, confidence: 70 };
+  }
+
+  if (characteristics.hasDocuments) {
+    return { category: "document", characteristics, confidence: 70 };
+  }
+
+  if (characteristics.hasTable) {
+    return { category: "table", characteristics, confidence: 65 };
+  }
+
+  if (characteristics.hasForm) {
+    return { category: "form", characteristics, confidence: 65 };
+  }
+
+  // Default category
+  return { category: "other", characteristics, confidence: 50 };
+}
+
+export async function analyzePageCharacteristics(
+  page: Page
+): Promise<PageCharacteristics> {
+  return await page.evaluate(() => {
+    // 📝 Check forms
+    const forms = document.querySelectorAll("form");
+    const hasForm =
+      forms.length > 0 &&
+      Array.from(forms).some((form) => {
+        const inputs = form.querySelectorAll("input, textarea, select");
+        return inputs.length >= 2;
+      });
+
+    // 🧮 Check tables
+    const tables = document.querySelectorAll("table");
+    const hasTable = Array.from(tables).some((table) => {
+      // Ignore les tableaux de présentation
+      if (table.getAttribute("role") === "presentation") return false;
+      if (table.closest('[role="presentation"]')) return false;
+
+      // Vérifie qu'il y a des en-têtes ou suffisamment de cellules
+      const headers = table.querySelectorAll("th");
+      const cells = table.querySelectorAll("td");
+      return headers.length > 0 || cells.length > 4;
+    });
+
+    // 📹 Check multimedia
+    const hasMultimedia =
+      document.querySelectorAll(
+        'video, audio, iframe[src*="youtube"], iframe[src*="vimeo"], iframe[src*="dailymotion"]'
+      ).length > 0;
+
+    // 🔗 Check document links
+    const docLinks = document.querySelectorAll(
+      'a[href$=".pdf"], a[href$=".doc"], a[href$=".docx"], a[href$=".xls"], a[href$=".xlsx"], a[href$=".odt"], a[href$=".ods"]'
+    );
+    const hasDocuments = docLinks.length > 0;
+
+    //🔒 Check authentication
+    const passwordInputs = document.querySelectorAll('input[type="password"]');
+    const loginForms = document.querySelectorAll(
+      'form[action*="login"], form[action*="auth"], form[action*="signin"], form[action*="connexion"]'
+    );
+    const hasAuthentication =
+      passwordInputs.length > 0 || loginForms.length > 0;
+
+    // 📄 Layout signature
+    const header = document.querySelector("header, [role='banner']");
+    const nav = document.querySelector("nav, [role='navigation']");
+    const main = document.querySelector("main, [role='main']");
+    const aside = document.querySelector("aside, [role='complementary']");
+    const footer = document.querySelector("footer, [role='contentinfo']");
+
+    //🏛️ Columns count
+    const columns = document.querySelectorAll(
+      '[class*="col-"], [class*="column"], [class*="grid"] > *'
+    ).length;
+
+    const layoutSignature = [
+      header ? "H" : "",
+      nav ? "N" : "",
+      main ? "M" : "",
+      aside ? "A" : "",
+      footer ? "F" : "",
+      columns > 3 ? `C${Math.min(columns, 9)}` : "",
+    ]
+      .filter(Boolean)
+      .join("");
+
+    return {
+      hasAuthentication,
+      hasDocuments,
+      hasForm,
+      hasMultimedia,
+      hasTable,
+      layoutSignature,
+    };
+  });
+}
