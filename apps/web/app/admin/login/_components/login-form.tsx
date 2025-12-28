@@ -47,7 +47,7 @@ export function LoginForm() {
   return (
     <Card
       animation={false}
-      className="w-full max-w-130 border-none from-transparent to-transparent py-12 shadow-none! shadow-zinc-200! backdrop-blur-2xl selection:bg-zinc-950"
+      className="w-full max-w-130 border-none from-transparent to-transparent py-12 shadow-none! shadow-zinc-200! backdrop-blur-2xl dark:bg-sidebar"
     >
       <CardHeader className="flex flex-col items-center justify-center text-center">
         <Image

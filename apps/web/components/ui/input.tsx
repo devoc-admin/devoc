@@ -9,7 +9,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
         /* ⬇️ Layout */ "flex",
         /* ↔️ Size */ "h-13 w-full min-w-0",
         /* 🫷Padding/Margin */ "px-3 py-1",
-        /* 🔤 Text */ "text-base md:text-sm",
+        /* 🔤 Text */ "text-base md:text-sm dark:text-white dark:selection:bg-input",
         /* 🔤 Placeholder */ "placeholder:text-muted-foreground",
         /* ⭕ Radius */ "rounded-md",
         /* 🔲 Border */ "border border-border outline-none",

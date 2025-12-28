@@ -19,6 +19,10 @@ import type {
   QueueItem,
 } from "./types";
 
+const DEFAULT_DELAY_BETWEEN_REQUESTS = 500;
+const DEFAULT_MAX_DEPTH = 3;
+const DEFAULT_MAX_PAGES = 50;
+
 export class WebCrawler {
   private browser: Browser | null = null;
   private context: BrowserContext | null = null;
@@ -41,11 +45,12 @@ export class WebCrawler {
     this.baseUrl = baseUrl;
     this.baseOrigin = new URL(baseUrl).origin;
     this.config = {
-      delayBetweenRequests: config.delayBetweenRequests ?? 1000,
+      delayBetweenRequests:
+        config.delayBetweenRequests ?? DEFAULT_DELAY_BETWEEN_REQUESTS,
       excludePaths: config.excludePaths,
       includePaths: config.includePaths,
-      maxDepth: config.maxDepth ?? 3,
-      maxPages: config.maxPages ?? 50,
+      maxDepth: config.maxDepth ?? DEFAULT_MAX_DEPTH,
+      maxPages: config.maxPages ?? DEFAULT_MAX_PAGES,
       respectRobotsTxt: config.respectRobotsTxt ?? true,
     };
   }
