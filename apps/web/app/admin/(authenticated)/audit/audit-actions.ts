@@ -1,25 +1,31 @@
 "use server";
 import { db } from "@/lib/db";
-import { type Audit, audit, type CrawlJob, crawlJob } from "@/lib/db/schema";
+import {
+  type Audit,
+  audit,
+  type CrawlJob,
+  crawledPage,
+  crawlJob,
+} from "@/lib/db/schema";
 import { inngest } from "@/lib/inngest/client";
 
 // ═══════════════════════════════════════════════════════════════════════════
-// TYPES
-// ═══════════════════════════════════════════════════════════════════════════
+// Start audit
 
-// 1️⃣ Typage des paramètres d'entrée
 type UpsertAuditParams = {
   url: string;
+  maxDepth: number;
+  maxResults: number;
 };
 
-// 2️⃣ Typage du retour - Union discriminée (Discriminated Union)
-// C'est le pattern recommandé pour les server actions
 type UpsertAuditResult =
   | { success: true; auditId: number; crawlJobId: string }
   | { success: false; error: string };
 
 export async function upsertAudit({
   url,
+  maxDepth,
+  maxResults,
 }: UpsertAuditParams): Promise<UpsertAuditResult> {
   // ✅ Validation de l'URL
   let origin: string;
@@ -87,8 +93,8 @@ export async function upsertAudit({
     await inngest.send({
       data: {
         config: {
-          maxDepth: 1,
-          maxPages: 5,
+          maxDepth: maxDepth ?? 1,
+          maxPages: maxResults ?? 5,
         },
         crawlJobId: insertedCrawlJob.id,
         url: origin,
@@ -106,6 +112,26 @@ export async function upsertAudit({
     crawlJobId: insertedCrawlJob.id,
     success: true,
   };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Erase audits
+
+type DeleteAllAuditsResult =
+  | { success: true }
+  | { success: false; error: string };
+
+export async function deleteAllAudits(): Promise<DeleteAllAuditsResult> {
+  try {
+    await db.delete(audit).execute();
+    await db.delete(crawlJob).execute();
+    await db.delete(crawledPage).execute();
+    return { success: true };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    console.error("Error erasing audits:", message);
+    return { error: "Error while erasing audits", success: false };
+  }
 }
 
 // -------------------------------------------------

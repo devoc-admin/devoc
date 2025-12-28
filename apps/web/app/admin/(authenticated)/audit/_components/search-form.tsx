@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 import { isValidWebsite, upsertAudit } from "../audit-actions";
 
 function useSearchForm() {
@@ -14,11 +15,13 @@ function useSearchForm() {
       checkAccessibility: true,
       checkPerformance: false,
       checkSecurity: false,
+      maxDepth: 1,
+      maxResults: 15,
       search: "",
     },
     onSubmit: async (values) => {
-      const { search } = values.value;
-      const result = await upsertAudit({ url: search });
+      const { search, maxDepth, maxResults } = values.value;
+      const result = await upsertAudit({ maxDepth, maxResults, url: search });
 
       if (result.success) {
         toast("Le site a bien été ajouté !", {
@@ -44,7 +47,7 @@ export function SearchForm() {
         <h2 className="font-kanit font-semibold text-4xl">Analyser un site</h2>
         {/* 📝 Form */}
         <form
-          className="flex w-full flex-col gap-y-2 space-y-4"
+          className="flex w-full flex-col items-center justify-center gap-y-2 space-y-4"
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -68,7 +71,7 @@ export function SearchForm() {
             }}
           >
             {(field) => (
-              <div className="flex flex-col gap-y-1">
+              <div className="flex w-full flex-col gap-y-1">
                 <Input
                   name={field.name}
                   onChange={(e) => field.handleChange(e.target.value)}
@@ -83,6 +86,51 @@ export function SearchForm() {
               </div>
             )}
           </form.Field>
+          {/* 🔢 Sliders */}
+          <div className="flex w-full max-w-[400px] flex-col gap-y-4">
+            {/* 🔢 Nb. max de résultats */}
+            <form.Field name="maxResults">
+              {(field) => (
+                <div>
+                  <Label className="font-kanit text-lg">
+                    Nombre maximum de résultats
+                  </Label>
+                  <div className="flex items-center gap-4">
+                    <Slider
+                      max={50}
+                      min={5}
+                      name="maxResults"
+                      onValueChange={(values) => field.handleChange(values[0])}
+                      step={1}
+                      value={[field.state.value]}
+                    />
+                    <span>{field.state.value}</span>
+                  </div>
+                </div>
+              )}
+            </form.Field>
+            {/* 🔢 Profondeur maximale */}
+            <form.Field name="maxDepth">
+              {(field) => (
+                <div>
+                  <Label className="font-kanit text-lg">
+                    Profondeur maximale
+                  </Label>
+                  <div className="flex items-center gap-4">
+                    <Slider
+                      max={5}
+                      min={1}
+                      name="maxDepth"
+                      onValueChange={(values) => field.handleChange(values[0])}
+                      step={1}
+                      value={[field.state.value]}
+                    />
+                    <span>{field.state.value}</span>
+                  </div>
+                </div>
+              )}
+            </form.Field>
+          </div>
           {/* ☑️ Checkboxes */}
           <div className="flex items-center justify-center gap-x-6">
             {/* 👁️ A11Y */}

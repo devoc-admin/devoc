@@ -18,7 +18,9 @@ export default function AdminLayout({
         <div>
           <Sidebar />
         </div>
-        <div className="grow rounded-xl bg-sidebar-strong p-6">{children}</div>
+        <div className="relative grow rounded-xl bg-sidebar-strong p-6">
+          {children}
+        </div>
       </div>
       <Toaster />
     </ThemeProvider>
