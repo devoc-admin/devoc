@@ -81,7 +81,6 @@ function useKeyboardNavigation({
   setCurrentStep: (step: number) => void;
 }) {
   useEffect(() => {
-    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: exception
     function handleKeydown(event: KeyboardEvent) {
       if (event.key === "ArrowRight") {
         goNextStep();
