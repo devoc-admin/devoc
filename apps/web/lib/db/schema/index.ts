@@ -236,6 +236,7 @@ export const crawledPage = pgTable(
     httpStatus: integer(),
     contentType: text(),
     responseTime: integer(),
+    screenshotUrl: text(),
     errorMessage: text(),
     selectedForAudit: boolean().default(false),
     createdAt: timestamp({ mode: "string", withTimezone: true })

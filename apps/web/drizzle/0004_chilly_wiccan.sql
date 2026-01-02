@@ -1,0 +1,1 @@
+ALTER TABLE "crawled_page" ADD COLUMN "screenshotUrl" text;

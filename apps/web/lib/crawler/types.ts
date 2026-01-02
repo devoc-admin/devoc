@@ -16,6 +16,7 @@ export type CrawlPageResult = {
   httpStatus: number;
   contentType: string;
   responseTime: number;
+  screenshotUrl?: string;
   links: string[];
   error?: string;
 };
@@ -29,6 +30,7 @@ export type CrawlProgressCallback = (progress: {
   discovered: number;
   crawled: number;
   currentUrl: string;
+  currentTitle: string | null;
 }) => Promise<void>;
 
 type PageCategory = (typeof pageCategoryEnum.enumValues)[number];

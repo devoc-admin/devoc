@@ -75,7 +75,7 @@ export function shouldCrawlUrl({
     const parsed = new URL(url);
     const path = parsed.pathname.toLowerCase();
 
-    // Extensions à ignorer (ressources statiques)
+    // 📂 Extensions à ignorer (ressources statiques)
     const skipExtensions = [
       ".pdf",
       ".jpg",
@@ -111,7 +111,7 @@ export function shouldCrawlUrl({
       return false;
     }
 
-    // Vérifie les chemins exclus
+    // 🚫 Vérifie les chemins exclus
     if (
       config.excludePaths?.some((pattern) =>
         path.includes(pattern.toLowerCase())
@@ -120,7 +120,7 @@ export function shouldCrawlUrl({
       return false;
     }
 
-    // Vérifie les chemins inclus (si spécifiés)
+    // ✅ Vérifie les chemins inclus (si spécifiés)
     if (config.includePaths?.length) {
       return config.includePaths.some((pattern) =>
         path.includes(pattern.toLowerCase())

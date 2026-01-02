@@ -1,3 +1,4 @@
+import { put } from "@vercel/blob";
 import {
   type Browser,
   type BrowserContext,
@@ -19,9 +20,9 @@ import type {
   QueueItem,
 } from "./types";
 
-const DEFAULT_DELAY_BETWEEN_REQUESTS = 500;
+const DEFAULT_DELAY_BETWEEN_REQUESTS = 100;
 const DEFAULT_MAX_DEPTH = 3;
-const DEFAULT_MAX_PAGES = 50;
+const DEFAULT_MAX_PAGES = 100;
 
 export class WebCrawler {
   private browser: Browser | null = null;
@@ -31,6 +32,7 @@ export class WebCrawler {
   private readonly config: CrawlConfig;
   private readonly baseUrl: string;
   private readonly baseOrigin: string;
+  private readonly crawlJobId: string;
   private readonly pages: CrawlPageResult[] = [];
   private readonly errors: Array<{ url: string; error: string }> = [];
 
@@ -38,12 +40,15 @@ export class WebCrawler {
   constructor({
     baseUrl,
     config,
+    crawlJobId,
   }: {
     baseUrl: string;
     config: Partial<CrawlConfig>;
+    crawlJobId: string;
   }) {
     this.baseUrl = baseUrl;
     this.baseOrigin = new URL(baseUrl).origin;
+    this.crawlJobId = crawlJobId;
     this.config = {
       delayBetweenRequests:
         config.delayBetweenRequests ?? DEFAULT_DELAY_BETWEEN_REQUESTS,
@@ -90,20 +95,11 @@ export class WebCrawler {
         if (this.visited.has(normalizedUrl)) continue;
         // ⏭️ Skip if max depth reached
         if (item.depth > this.config.maxDepth) continue;
-        // ⏭️ Skip if it shouldn't crawl
+        // ⏭️ Skip if it shouldn't crawl (static assets or excluded paths)
         if (!shouldCrawlUrl({ config: this.config, url: item.url })) continue;
 
         // ✅➕ Add to visited if all checks are passed
         this.visited.add(normalizedUrl);
-
-        // 🔔 Notify progress
-        if (onProgress) {
-          await onProgress({
-            crawled: this.pages.length,
-            currentUrl: item.url,
-            discovered: this.visited.size + this.queue.length,
-          });
-        }
 
         // 🏊 Crawl page
         const result = await this.crawlPage({
@@ -114,6 +110,15 @@ export class WebCrawler {
 
         //🎁 Result
         if (result) {
+          // 🔔 Notify progress
+          if (onProgress) {
+            await onProgress({
+              crawled: this.pages.length,
+              currentTitle: result.title,
+              currentUrl: result?.normalizedUrl,
+              discovered: this.visited.size + this.queue.length,
+            });
+          }
           this.pages.push(result);
 
           // Add discovered links to queue
@@ -195,6 +200,12 @@ export class WebCrawler {
       // 🔗 Extract links
       const links = await this.extractLinksFromPage(page);
 
+      // 📸 Take screenshot and upload to Vercel Blob
+      const screenshotUrl = await this.takeAndUploadScreenshot({
+        normalizedUrl,
+        page,
+      });
+
       // 🎁 Result
       return {
         category: categoryResult.category,
@@ -206,6 +217,7 @@ export class WebCrawler {
         links,
         normalizedUrl,
         responseTime,
+        screenshotUrl,
         title,
         url,
       };
@@ -242,6 +254,48 @@ export class WebCrawler {
       }
     }
     return [...new Set(absoluteLinks)];
+  }
+
+  /**
+   * Take screenshot and upload to Vercel Blob
+   */
+  private async takeAndUploadScreenshot({
+    page,
+    normalizedUrl,
+  }: {
+    page: Page;
+    normalizedUrl: string;
+  }): Promise<string | undefined> {
+    try {
+      // Check for token
+      if (!process.env.BLOB_READ_WRITE_TOKEN) {
+        console.error("📸 BLOB_READ_WRITE_TOKEN is not set");
+        return undefined;
+      }
+
+      const screenshot = await page.screenshot({
+        fullPage: false,
+        quality: 80,
+        type: "jpeg",
+      });
+
+      // Create a safe filename from the URL
+      const safeFilename = normalizedUrl
+        .replace(/^https?:\/\//, "")
+        .replace(/[^a-zA-Z0-9]/g, "_")
+        .slice(0, 100);
+
+      const filename = `screenshots/${this.crawlJobId}/${safeFilename}.jpg`;
+
+      const blob = await put(filename, screenshot, { access: "public" });
+
+      console.log(`📸 Screenshot uploaded: ${blob.url}`);
+      return blob.url;
+    } catch (error) {
+      // Screenshot failed, but don't fail the entire crawl
+      console.error(`📸 Screenshot failed for ${normalizedUrl}:`, error);
+      return undefined;
+    }
   }
 
   /**
