@@ -23,6 +23,7 @@ import type {
 const DEFAULT_DELAY_BETWEEN_REQUESTS = 100;
 const DEFAULT_MAX_DEPTH = 3;
 const DEFAULT_MAX_PAGES = 100;
+const httpRegex = /^https?:\/\//;
 
 export class WebCrawler {
   private browser: Browser | null = null;
@@ -108,14 +109,13 @@ export class WebCrawler {
           url: item.url,
         });
 
-        //🎁 Result
+        // 🎁 Result
         if (result) {
           // 🔔 Notify progress
           if (onProgress) {
             await onProgress({
               crawled: this.pages.length,
-              currentTitle: result.title,
-              currentUrl: result?.normalizedUrl,
+              crawledPage: result,
               discovered: this.visited.size + this.queue.length,
             });
           }
@@ -194,6 +194,7 @@ export class WebCrawler {
 
       // 🆎 Get title
       const title = await page.title();
+
       //📦 Get category
       const categoryResult = await detectCategoryPage({ page, url });
 
@@ -207,11 +208,13 @@ export class WebCrawler {
       });
 
       // 🎁 Result
+      const nowString = new Date().toISOString();
       return {
         category: categoryResult.category,
         categoryConfidence: categoryResult.confidence,
         characteristics: categoryResult.characteristics,
         contentType,
+        createdAt: nowString,
         depth,
         httpStatus,
         links,
@@ -281,7 +284,7 @@ export class WebCrawler {
 
       // Create a safe filename from the URL
       const safeFilename = normalizedUrl
-        .replace(/^https?:\/\//, "")
+        .replace(httpRegex, "")
         .replace(/[^a-zA-Z0-9]/g, "_")
         .slice(0, 100);
 

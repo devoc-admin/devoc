@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
       {
         hostname: "avatars.githubusercontent.com",
       },
+      new URL(`${process.env.VERCEL_BLOB_URL}/screenshots/**`),
     ],
   },
   turbopack: {

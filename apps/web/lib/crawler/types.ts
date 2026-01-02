@@ -7,6 +7,7 @@ export type CrawlResult = {
 
 export type CrawlPageResult = {
   url: string;
+  createdAt: string;
   normalizedUrl: string;
   title: string | null;
   depth: number;
@@ -29,8 +30,7 @@ export type QueueItem = {
 export type CrawlProgressCallback = (progress: {
   discovered: number;
   crawled: number;
-  currentUrl: string;
-  currentTitle: string | null;
+  crawledPage: CrawlPageResult;
 }) => Promise<void>;
 
 type PageCategory = (typeof pageCategoryEnum.enumValues)[number];

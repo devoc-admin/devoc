@@ -62,9 +62,11 @@ export const crawlWebsite = inngest.createFunction(
       // ⏳ Update progress
       return await crawler.crawl({
         onProgress: async (progress) => {
+          // 👁️📝 Logs
           logger.info(
-            `🔬 ${progress.currentTitle ? `${progress.currentTitle} (${progress.currentUrl})` : progress.currentUrl}  has been parsed`
+            `🔬 ${progress.crawledPage.title ? `${progress.crawledPage.title} (${progress.crawledPage.normalizedUrl})` : progress.crawledPage.normalizedUrl}  has been parsed`
           );
+          logger.info("");
           logger.info(
             `📊 ${progress.crawled}/${progress.discovered} pages crawled (${Math.round(
               (progress.crawled / config.maxPages) * 100
@@ -72,6 +74,8 @@ export const crawlWebsite = inngest.createFunction(
           );
 
           const nowString = new Date().toISOString();
+
+          // Update crawl job
           await db
             .update(crawlJob)
             .set({
@@ -80,6 +84,32 @@ export const crawlWebsite = inngest.createFunction(
               updatedAt: nowString,
             })
             .where(eq(crawlJob.id, crawlJobId));
+
+          // ➕ Add result
+          const pageToInsert = {
+            category: progress.crawledPage.category,
+            categoryConfidence: progress.crawledPage.categoryConfidence,
+            contentType: progress.crawledPage.contentType,
+            crawlJobId,
+            depth: progress.crawledPage.depth,
+            hasAuthentication:
+              progress.crawledPage.characteristics.hasAuthentication,
+            hasDocuments: progress.crawledPage.characteristics.hasDocuments,
+            hasForm: progress.crawledPage.characteristics.hasForm,
+            hasMultimedia: progress.crawledPage.characteristics.hasMultimedia,
+            hasTable: progress.crawledPage.characteristics.hasTable,
+            httpStatus: progress.crawledPage.httpStatus,
+            layoutSignature:
+              progress.crawledPage.characteristics.layoutSignature,
+            normalizedUrl: progress.crawledPage.normalizedUrl,
+            responseTime: progress.crawledPage.responseTime,
+            screenshotUrl: progress.crawledPage.screenshotUrl,
+            selectedForAudit: false,
+            title: progress.crawledPage.title,
+            url: progress.crawledPage.url,
+          };
+
+          await db.insert(crawledPage).values(pageToInsert);
         },
       });
     });
@@ -95,42 +125,7 @@ export const crawlWebsite = inngest.createFunction(
       });
     }
 
-    // 3️⃣ 💾 📄 Store crawled pages
-    await step.run("save-pages", async () => {
-      if (result.pages.length === 0) {
-        logger.warn(`⚠️ No pages to save (crawlJobId: ${crawlJobId})`);
-        return;
-      }
-
-      logger.info(
-        `💾 Saving crawled pages to database (${result.pages.length})`
-      );
-
-      const pagesToInsert = result.pages.map((page) => ({
-        category: page.category,
-        categoryConfidence: page.categoryConfidence,
-        contentType: page.contentType,
-        crawlJobId,
-        depth: page.depth,
-        hasAuthentication: page.characteristics.hasAuthentication,
-        hasDocuments: page.characteristics.hasDocuments,
-        hasForm: page.characteristics.hasForm,
-        hasMultimedia: page.characteristics.hasMultimedia,
-        hasTable: page.characteristics.hasTable,
-        httpStatus: page.httpStatus,
-        layoutSignature: page.characteristics.layoutSignature,
-        normalizedUrl: page.normalizedUrl,
-        responseTime: page.responseTime,
-        screenshotUrl: page.screenshotUrl,
-        selectedForAudit: false,
-        title: page.title,
-        url: page.url,
-      }));
-
-      await db.insert(crawledPage).values(pagesToInsert);
-    });
-
-    // 4️⃣ Select pages for RGAA audit
+    // 3️⃣ Select pages for RGAA audit
     await step.run("select-pages-for-audit", async () => {
       logger.info("🎯 Selecting pages for RGAA audit");
 
@@ -200,7 +195,7 @@ export const crawlWebsite = inngest.createFunction(
 
     //5️⃣ 🎉 Mark job as completed
     await step.run("mark-job-completed", async () => {
-      logger.info("🎉 Marking job as completed", { crawlJobId });
+      logger.info(`🎉 Marking job as completed (crawl job id: ${crawlJobId}`);
 
       const nowString = new Date().toISOString();
       await db
