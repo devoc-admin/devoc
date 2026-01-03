@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { isValidWebsite, upsertCrawl } from "../crawl-actions";
+import { upsertCrawl } from "../_actions/upsert-crawl";
 import { useCrawlContext } from "../crawl-context";
+import { isValidWebsite } from "../crawl-utils";
 
 export function CrawlForm() {
   const form = useCrawlForm();
@@ -37,6 +38,7 @@ export function CrawlForm() {
                 return;
               },
               onSubmitAsync: async ({ value: search }) => {
+                console.log("isValidWebsite", isValidWebsite);
                 const result = await isValidWebsite(search);
                 if (!result) return "Ce site web n'existe pas";
               },
@@ -182,7 +184,6 @@ function useCrawlForm() {
         });
 
         handleCrawlJobId(result.crawlJobId);
-        form.reset();
       }
 
       if (!result.success) {

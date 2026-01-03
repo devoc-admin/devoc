@@ -14,7 +14,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { deleteAllCrawls } from "../crawl-actions";
+import { deleteAllCrawls } from "../_actions/delete-all-crawls";
 
 export function DeleteCrawlsButton() {
   const [open, setOpen] = useState(false);

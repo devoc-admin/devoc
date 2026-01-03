@@ -1,8 +1,8 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2Icon, LoaderIcon, XCircleIcon } from "lucide-react";
 import Image from "next/image";
-import { getCrawlJob } from "../crawl-actions";
+import { getCrawlJob } from "../_actions/get-crawl-job";
 import { useCrawlContext } from "../crawl-context";
 
 export function CrawlStatusPanel() {
@@ -126,6 +126,7 @@ export function CrawlStatusPanel() {
 // -------------------------------------------
 function useCrawlJob(crawlJobId: string | null) {
   const { removeCrawlJobId } = useCrawlContext();
+  const queryClient = useQueryClient();
 
   return useQuery({
     enabled: !!crawlJobId,
@@ -144,6 +145,8 @@ function useCrawlJob(crawlJobId: string | null) {
       if (!data) return 2000;
       // Stop polling when job is finished
       if (["completed", "failed", "cancelled"].includes(data.status)) {
+        queryClient.invalidateQueries({ queryKey: ["list-crawls"] });
+        removeCrawlJobId();
         return false;
       }
       return 2000; // Poll every second
