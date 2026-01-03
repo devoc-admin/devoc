@@ -2,22 +2,22 @@
 import { del, list } from "@vercel/blob";
 import { db } from "@/lib/db";
 import {
-  type Audit,
-  audit,
+  type Crawl,
   type CrawlJob,
+  crawl,
   crawledPage,
   crawlJob,
 } from "@/lib/db/schema";
 import { inngest } from "@/lib/inngest/client";
 
 // ═══════════════════════════════════════════════════════════════════════════
-// 🏁 Start audit
+// 🏁 Start crawl
 
-export async function upsertAudit({
+export async function upsertCrawl({
   url,
   maxDepth,
   maxPages,
-}: UpsertAuditParams): Promise<UpsertAuditResult> {
+}: UpsertCrawlParams): Promise<UpsertCrawlResult> {
   // ✅🌐 Validation de l'URL
   let origin: string;
   try {
@@ -27,25 +27,25 @@ export async function upsertAudit({
   }
 
   // 1️⃣ Register the website in database
-  let auditResult: Audit[];
+  let crawlResult: Crawl[];
   try {
-    auditResult = await db
-      .insert(audit)
+    crawlResult = await db
+      .insert(crawl)
       .values({ url: origin })
       .onConflictDoUpdate({
         set: { url: origin },
-        target: audit.url,
+        target: crawl.url,
       })
       .returning();
   } catch (error) {
     const message = error instanceof Error ? error.message : "Erreur inconnue";
-    console.error("Erreur upsert audit:", message);
+    console.error("Erreur upsert crawl:", message);
     return { error: message, success: false };
   }
 
-  const insertedAudit = auditResult[0];
-  if (!insertedAudit) {
-    return { error: "Échec de l'insertion de l'audit", success: false };
+  const insertedCrawl = crawlResult[0];
+  if (!insertedCrawl) {
+    return { error: "Échec de l'insertion du crawl", success: false };
   }
 
   // 2️⃣ Register the crawl job in database
@@ -55,7 +55,7 @@ export async function upsertAudit({
     crawlJobsResult = await db
       .insert(crawlJob)
       .values({
-        auditId: insertedAudit.id,
+        crawlId: insertedCrawl.id,
         createdAt: nowString,
         id: crypto.randomUUID(),
         maxDepth,
@@ -86,7 +86,7 @@ export async function upsertAudit({
         crawlJobId: insertedCrawlJob.id,
         url: origin,
       },
-      name: "audit/crawl.requested",
+      name: "crawl/crawl.requested",
     });
   } catch (error) {
     const message = getErrorMessage(error);
@@ -95,20 +95,20 @@ export async function upsertAudit({
   }
 
   return {
-    auditId: insertedAudit.id,
+    crawlId: insertedCrawl.id,
     crawlJobId: insertedCrawlJob.id,
     success: true,
   };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Erase audits
+// 🚮 Erase crawls
 
-type DeleteAllAuditsResult =
+type DeleteAllCrawlsResult =
   | { success: true }
   | { success: false; error: string };
 
-export async function deleteAllAudits(): Promise<DeleteAllAuditsResult> {
+export async function deleteAllCrawls(): Promise<DeleteAllCrawlsResult> {
   try {
     // 1️⃣ Delete all screenshots from Vercel Blob storage (recursively)
     await deleteAllScreenshots();
@@ -116,13 +116,13 @@ export async function deleteAllAudits(): Promise<DeleteAllAuditsResult> {
     // 2️⃣ Delete all database records
     await db.delete(crawledPage).execute();
     await db.delete(crawlJob).execute();
-    await db.delete(audit).execute();
+    await db.delete(crawl).execute();
 
     return { success: true };
   } catch (error) {
     const message = getErrorMessage(error);
-    console.error("Error erasing audits:", message);
-    return { error: "Error while erasing audits", success: false };
+    console.error("Error erasing crawls:", message);
+    return { error: "Error while erasing crawls", success: false };
   }
 }
 
@@ -169,28 +169,27 @@ export async function isValidWebsite(url: string): Promise<boolean> {
   }
 }
 
-type UpsertAuditParams = {
+type UpsertCrawlParams = {
   url: string;
   maxDepth: number;
   maxPages: number;
 };
 
-type UpsertAuditResult =
-  | { success: true; auditId: number; crawlJobId: string }
+type UpsertCrawlResult =
+  | { success: true; crawlId: number; crawlJobId: string }
   | { success: false; error: string };
 
 // ═══════════════════════════════════════════════════════════════════════════
 // 📊 Get crawl status (for polling)
 
-export async function getCrawlStatus(
-  crawlJobId: string
-): Promise<CrawlStatusResult> {
+export async function getCrawlJob(crawlJobId: string): Promise<CrawlJobResult> {
   try {
     const { desc, eq } = await import("drizzle-orm");
 
-    // Fetch crawl job status
+    // 🐝 Fetch crawl job status
     const [job] = await db
       .select({
+        crawlUrl: crawl.url,
         errorMessage: crawlJob.errorMessage,
         pagesCrawled: crawlJob.pagesCrawled,
         pagesDiscovered: crawlJob.pagesDiscovered,
@@ -198,6 +197,7 @@ export async function getCrawlStatus(
       })
       .from(crawlJob)
       .where(eq(crawlJob.id, crawlJobId))
+      .leftJoin(crawl, eq(crawlJob.crawlId, crawl.id))
       .limit(1);
 
     if (!job) {
@@ -222,6 +222,7 @@ export async function getCrawlStatus(
       .limit(1);
 
     return {
+      crawlUrl: job.crawlUrl,
       errorMessage: job.errorMessage,
       latestPage: latestPage ?? null,
       pagesCrawled: job.pagesCrawled,
@@ -236,13 +237,14 @@ export async function getCrawlStatus(
   }
 }
 
-type CrawlStatusResult =
+type CrawlJobResult =
   | {
       success: true;
       status: "pending" | "running" | "completed" | "failed" | "cancelled";
       pagesCrawled: number;
       pagesDiscovered: number;
       errorMessage: string | null;
+      crawlUrl: string | null;
       latestPage: {
         id: string;
         url: string;

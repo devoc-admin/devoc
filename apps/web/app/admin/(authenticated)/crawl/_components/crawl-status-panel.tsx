@@ -1,32 +1,46 @@
+"use client";
 import { useQuery } from "@tanstack/react-query";
 import { CheckCircle2Icon, LoaderIcon, XCircleIcon } from "lucide-react";
 import Image from "next/image";
-import { getCrawlStatus } from "../audit-actions";
-import { useAuditContext } from "../audit-context";
+import { getCrawlJob } from "../crawl-actions";
+import { useCrawlContext } from "../crawl-context";
 
 export function CrawlStatusPanel() {
-  const { crawlJobId } = useAuditContext();
-  const { data: status } = useCrawlStatus(crawlJobId);
+  const { crawlJobId } = useCrawlContext();
+  const { data: crawlJob } = useCrawlJob(crawlJobId);
+  if (!crawlJob) return null;
 
-  if (!status) return null;
-
-  const isRunning = status.status === "running" || status.status === "pending";
-  const isCompleted = status.status === "completed";
-  const isFailed = status.status === "failed" || status.status === "cancelled";
+  const isRunning =
+    crawlJob.status === "running" || crawlJob.status === "pending";
+  const isCompleted = crawlJob.status === "completed";
+  const isFailed =
+    crawlJob.status === "failed" || crawlJob.status === "cancelled";
 
   return (
     <div className="rounded-md bg-sidebar p-6">
       <div className="flex flex-col gap-y-4">
         {/* 🆎 Header with status */}
         <div className="flex items-center justify-between">
-          <h3 className="font-kanit font-semibold text-2xl">
-            Progression du crawl
-          </h3>
+          <div>
+            <h2 className="font-kanit font-semibold text-2xl">
+              Progression du crawl
+            </h2>
+            {crawlJob.crawlUrl && (
+              <a
+                className="text-sm underline"
+                href={crawlJob.crawlUrl}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {crawlJob.crawlUrl}
+              </a>
+            )}
+          </div>
           <StatusBadge
             isCompleted={isCompleted}
             isFailed={isFailed}
             isRunning={isRunning}
-            status={status.status}
+            status={crawlJob.status}
           />
         </div>
 
@@ -35,7 +49,7 @@ export function CrawlStatusPanel() {
           <span>
             Pages crawlées :{" "}
             <strong>
-              {status.pagesCrawled} / {status.pagesDiscovered}
+              {crawlJob.pagesCrawled} / {crawlJob.pagesDiscovered}
             </strong>
           </span>
           {isRunning && (
@@ -47,14 +61,14 @@ export function CrawlStatusPanel() {
         </div>
 
         {/* ❌ Error message if failed */}
-        {isFailed && status.errorMessage && (
+        {isFailed && crawlJob.errorMessage && (
           <div className="rounded-md bg-red-500/10 p-3 text-red-500 text-sm">
-            {status.errorMessage}
+            {crawlJob.errorMessage}
           </div>
         )}
 
         {/* 💻 Latest crawled page */}
-        {status.latestPage && (
+        {crawlJob.latestPage && (
           <div className="rounded-md border border-border bg-sidebar-strong p-4">
             <h4 className="mb-2 text-muted-foreground text-xs uppercase tracking-wide">
               Dernière page crawlée
@@ -62,24 +76,24 @@ export function CrawlStatusPanel() {
             <div className="flex flex-col gap-y-1">
               <a
                 className="space-y-2"
-                href={status.latestPage.url}
+                href={crawlJob.latestPage.url}
                 target="_blank"
               >
                 {/* 🔠 Title */}
                 <div className="font-medium text-sm">
-                  {status.latestPage.title ?? "Sans titre"}
+                  {crawlJob.latestPage.title ?? "Sans titre"}
                 </div>
                 {/* 🔗 URL */}
-                <div className="truncate text-muted-foreground text-xs">
-                  {status.latestPage.url}
+                <div className="truncate text-muted-foreground text-xs underline">
+                  {crawlJob.latestPage.url}
                 </div>
                 {/* 🖼️ Image */}
-                {status.latestPage.screenshotUrl && (
+                {crawlJob.latestPage.screenshotUrl && (
                   <Image
-                    alt={status.latestPage.title ?? "Sans titre"}
+                    alt={crawlJob.latestPage.title ?? "Sans titre"}
                     className="w-[400px] rounded-md border border-border"
                     height={400}
-                    src={status.latestPage.screenshotUrl}
+                    src={crawlJob.latestPage.screenshotUrl}
                     width={400}
                   />
                 )}
@@ -88,16 +102,16 @@ export function CrawlStatusPanel() {
               <div className="mt-2 flex items-center gap-x-3 text-xs">
                 {/* 🟨 Category */}
                 <span className="rounded bg-primary/10 px-2 py-0.5 text-primary">
-                  {formatCategory(status.latestPage.category)}
+                  {formatCategory(crawlJob.latestPage.category)}
                 </span>
                 {/* 🕳️ Depth */}
                 <span className="text-muted-foreground">
-                  Profondeur: {status.latestPage.depth}
+                  Profondeur: {crawlJob.latestPage.depth}
                 </span>
                 {/* 🔢 HTTP code */}
-                {status.latestPage.httpStatus && (
+                {crawlJob.latestPage.httpStatus && (
                   <span className="text-muted-foreground">
-                    HTTP {status.latestPage.httpStatus}
+                    HTTP {crawlJob.latestPage.httpStatus}
                   </span>
                 )}
               </div>
@@ -110,13 +124,18 @@ export function CrawlStatusPanel() {
 }
 
 // -------------------------------------------
-function useCrawlStatus(crawlJobId: string | null) {
+function useCrawlJob(crawlJobId: string | null) {
+  const { removeCrawlJobId } = useCrawlContext();
+
   return useQuery({
     enabled: !!crawlJobId,
     queryFn: async () => {
       if (!crawlJobId) return null;
-      const result = await getCrawlStatus(crawlJobId);
-      if (!result.success) throw new Error(result.error);
+      const result = await getCrawlJob(crawlJobId);
+      if (!result.success) {
+        removeCrawlJobId();
+        throw new Error(result.error);
+      }
       return result;
     },
     queryKey: ["crawl-status", crawlJobId],

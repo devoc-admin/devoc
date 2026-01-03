@@ -29,17 +29,17 @@ function Sidebar() {
       <div className="mt-4 w-full space-y-2 text-base text-zinc-200">
         <SidebarLink
           icon={FileScanIcon}
-          isActive={pathname === "/admin/audit"}
-          pathname="/admin/audit"
+          isActive={pathname === "/admin/crawl"}
+          pathname="/admin/crawl"
         >
-          Analyse
+          Crawls
         </SidebarLink>
         <SidebarLink
           icon={AppWindowIcon}
           isActive={pathname === "/admin/sites"}
           pathname="/admin/sites"
         >
-          Sites
+          Crawls
         </SidebarLink>
       </div>
       {/* ⬇️ Footer */}

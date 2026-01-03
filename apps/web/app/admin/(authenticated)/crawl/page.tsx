@@ -1,15 +1,15 @@
 import { Suspense } from "react";
-import { AuditPageContent } from "./audit-page-content";
+import { CrawlPageContent } from "./crawl-page-content";
 
-export default function AuditPage() {
+export default function CrawlPage() {
   return (
-    <Suspense fallback={<AuditPageSkeleton />}>
-      <AuditPageContent />
+    <Suspense fallback={<CrawlPageSkeleton />}>
+      <CrawlPageContent />
     </Suspense>
   );
 }
 
-function AuditPageSkeleton() {
+function CrawlPageSkeleton() {
   return (
     <div className="space-y-6">
       <div className="h-32 animate-pulse rounded-lg bg-sidebar" />

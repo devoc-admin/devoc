@@ -14,9 +14,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Audit } from "@/lib/db/schema";
+import type { Crawl } from "@/lib/db/schema";
 
-export function SitesList({ sites }: { sites: Audit[] }) {
+export function SitesList({ sites }: { sites: Crawl[] }) {
   const table = useSitesList({ sites });
   return (
     <div className="space-y-8 rounded-md bg-sidebar p-8">
@@ -60,7 +60,7 @@ export function SitesList({ sites }: { sites: Audit[] }) {
         ) : (
           <div>
             Pas de site analysé, passez par{" "}
-            <Link className="text-blue-500 underline" href="/admin/audit">
+            <Link className="text-blue-500 underline" href="/admin/crawl">
               la page d'analyse
             </Link>
           </div>
@@ -71,8 +71,8 @@ export function SitesList({ sites }: { sites: Audit[] }) {
 }
 
 // --------------------------------------------
-function useSitesList({ sites }: { sites: Audit[] }) {
-  const columnHelper = createColumnHelper<Audit>();
+function useSitesList({ sites }: { sites: Crawl[] }) {
+  const columnHelper = createColumnHelper<Crawl>();
 
   const defaultColumns = [
     columnHelper.accessor("url", {
@@ -100,7 +100,7 @@ function useSitesList({ sites }: { sites: Audit[] }) {
           Voir plus
         </Link>
       ),
-      header: "Audit",
+      header: "Crawl",
     }),
   ];
 

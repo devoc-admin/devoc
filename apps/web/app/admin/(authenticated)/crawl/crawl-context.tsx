@@ -3,23 +3,27 @@
 import { useQueryState } from "nuqs";
 import { createContext, useContext } from "react";
 
-type AuditContextType = {
+type CrawlContextType = {
   crawlJobId: string | null;
   handleCrawlJobId: (id: string) => void;
+  removeCrawlJobId: () => void;
 };
 
-const AuditContext = createContext<AuditContextType>({
+const CrawlContext = createContext<CrawlContextType>({
   crawlJobId: null,
   handleCrawlJobId: () => {},
+  removeCrawlJobId: () => {},
 });
 
-export function AuditProvider({ children }: { children: React.ReactNode }) {
-  const { crawlJobId, handleCrawlJobId } = useCrawlJob();
+export function CrawlProvider({ children }: { children: React.ReactNode }) {
+  const { crawlJobId, handleCrawlJobId, removeCrawlJobId } = useCrawlJob();
 
   return (
-    <AuditContext.Provider value={{ crawlJobId, handleCrawlJobId }}>
+    <CrawlContext.Provider
+      value={{ crawlJobId, handleCrawlJobId, removeCrawlJobId }}
+    >
       {children}
-    </AuditContext.Provider>
+    </CrawlContext.Provider>
   );
 }
 
@@ -31,18 +35,23 @@ function useCrawlJob() {
     setCrawlJobId(id);
   }
 
+  function removeCrawlJobId() {
+    setCrawlJobId(null);
+  }
+
   return {
     crawlJobId,
     handleCrawlJobId,
+    removeCrawlJobId,
   };
 }
 
 // --------------------------------------
-export function useAuditContext() {
-  const context = useContext(AuditContext);
+export function useCrawlContext() {
+  const context = useContext(CrawlContext);
 
   if (!context) {
-    throw new Error("useAuditContext must be used within an AuditProvider");
+    throw new Error("useCrawlContext must be used within an CrawlProvider");
   }
 
   return context;

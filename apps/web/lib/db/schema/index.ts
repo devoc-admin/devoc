@@ -113,9 +113,9 @@ export const verification = pgTable(
   ]
 );
 
-// Audit
+// Crawl
 
-export const audit = pgTable("audit", {
+export const crawl = pgTable("crawl", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   url: text().unique().notNull(),
   createdAt: timestamp({ mode: "string", withTimezone: true })
@@ -126,8 +126,8 @@ export const audit = pgTable("audit", {
     .notNull(),
 });
 
-export type Audit = typeof audit.$inferSelect;
-export type NewAudit = typeof audit.$inferInsert;
+export type Crawl = typeof crawl.$inferSelect;
+export type NewCrawl = typeof crawl.$inferInsert;
 
 // Crawler
 
@@ -176,7 +176,7 @@ export const crawlJob = pgTable(
       .primaryKey()
       .notNull()
       .$defaultFn(() => crypto.randomUUID()),
-    auditId: integer().notNull(),
+    crawlId: integer().notNull(),
     status: crawlStatusEnum().default("pending").notNull(),
     maxDepth: integer().default(3).notNull(),
     maxPages: integer().default(50).notNull(),
@@ -195,13 +195,13 @@ export const crawlJob = pgTable(
   },
   (table) => [
     foreignKey({
-      columns: [table.auditId],
-      foreignColumns: [audit.id],
-      name: "crawl_job_audit_id_fkey",
+      columns: [table.crawlId],
+      foreignColumns: [crawl.id],
+      name: "crawl_job_crawl_id_fkey",
     }).onDelete("cascade"),
-    index("crawl_job_auditId_idx").using(
+    index("crawl_job_crawlId_idx").using(
       "btree",
-      table.auditId.asc().nullsLast()
+      table.crawlId.asc().nullsLast()
     ),
     index("crawl_job_status_idx").using(
       "btree",

@@ -14,21 +14,21 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { deleteAllAudits } from "../audit-actions";
+import { deleteAllCrawls } from "../crawl-actions";
 
-export function DeleteAuditsButton() {
+export function DeleteCrawlsButton() {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleDelete() {
     setIsLoading(true);
-    const result = await deleteAllAudits();
+    const result = await deleteAllCrawls();
     setIsLoading(false);
     if (result.success) {
       setOpen(false);
-      toast.success("Tous les audits ont été supprimés avec succès !");
+      toast.success("Tous les crawls ont été supprimés avec succès !");
     } else {
-      toast.error("Une erreur est survenue lors de la suppression des audits.");
+      toast.error("Une erreur est survenue lors de la suppression des crawls.");
     }
   }
 
@@ -40,10 +40,10 @@ export function DeleteAuditsButton() {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Êtes-vous sûr de vouloir supprimer tous les audits ?
+            Êtes-vous sûr de vouloir supprimer tous les crawls ?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Cette action est irréversible. Tous les audits seront supprimés
+            Cette action est irréversible. Tous les crawls seront supprimés
             définitivement.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -75,7 +75,7 @@ function ButtonTrigger({ ...props }) {
       variant="destructive"
     >
       <Trash2Icon />
-      <span>Effacer tous les audits</span>
+      <span>Effacer tous les crawls</span>
     </Button>
   );
 }
