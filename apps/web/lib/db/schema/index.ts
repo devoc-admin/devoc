@@ -161,6 +161,7 @@ export type CrawlConfig = {
   maxPages: number;
   delayBetweenRequests: number;
   respectRobotsTxt: boolean;
+  skipResources?: boolean;
   includePaths?: string[];
   excludePaths?: string[];
   auth?: {

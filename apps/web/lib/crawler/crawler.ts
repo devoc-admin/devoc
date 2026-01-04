@@ -77,6 +77,17 @@ export class WebCrawler {
         viewport: { height: 720, width: 1280 },
       });
 
+      // 🚫 Block unnecessary resources for 50-70% faster crawling (optional)
+      if (this.config.skipResources) {
+        await this.context.route("**/*", (route) => {
+          const resourceType = route.request().resourceType();
+          if (["image", "font", "stylesheet", "media"].includes(resourceType)) {
+            return route.abort();
+          }
+          return route.continue();
+        });
+      }
+
       // 2️⃣🏡 Add homepage
       this.queue.push({ depth: 0, url: this.baseUrl });
 
@@ -170,7 +181,7 @@ export class WebCrawler {
       //⛵ Go to page
       const response = await page.goto(url, {
         timeout: 30_000,
-        waitUntil: "networkidle",
+        waitUntil: "domcontentloaded",
       });
 
       const responseTime = Date.now() - startTime;
@@ -188,15 +199,15 @@ export class WebCrawler {
         return null;
       }
 
-      // ⌚ Additional delay for SPA
-      await page.waitForLoadState("domcontentloaded");
-      await this.delay(500);
+      // ⌚ Wait for SPA content to load
+      await waitForSpaLoad(page);
 
       // 🆎 Get title
       const title = await page.title();
 
       //📦 Get category
-      const categoryResult = await detectCategoryPage({ page, url });
+      const { category, confidence, characteristics } =
+        await detectCategoryPage({ page, url });
 
       // 🔗 Extract links
       const links = await this.extractLinksFromPage(page);
@@ -210,9 +221,9 @@ export class WebCrawler {
       // 🎁 Result
       const nowString = new Date().toISOString();
       return {
-        category: categoryResult.category,
-        categoryConfidence: categoryResult.confidence,
-        characteristics: categoryResult.characteristics,
+        category,
+        categoryConfidence: confidence,
+        characteristics,
         contentType,
         createdAt: nowString,
         depth,
@@ -315,4 +326,74 @@ export class WebCrawler {
     if (this.context) await this.context.close();
     if (this.browser) await this.browser.close();
   }
+}
+
+// wait for SPA load
+async function waitForSpaLoad(page: Page) {
+  // 1. Basic DOM ready
+  await page.waitForLoadState("domcontentloaded");
+
+  // 2. Wait for initial network burst to settle (cap at 5s)
+  await Promise.race([
+    page.waitForLoadState("networkidle"),
+    page.waitForTimeout(5000),
+  ]);
+
+  // 3. Wait for critical content (optional - some pages may not have these selectors)
+  try {
+    await page.waitForSelector(
+      'main, [role="main"], #app, #root, article, .content',
+      {
+        state: "visible",
+        timeout: 3000,
+      }
+    );
+  } catch {
+    // Selector not found - page may have different structure, continue anyway
+  }
+
+  // 4. Brief stabilization for any final renders
+  try {
+    await waitForDomStable(page, 2000, 200);
+  } catch {
+    // DOM stability timeout - page may be highly dynamic, continue anyway
+  }
+}
+
+// waitForDomStable
+async function waitForDomStable(page: Page, timeout = 5000, debounce = 300) {
+  await page.evaluate(
+    ({ timeout, debounce }) => {
+      return new Promise<void>((resolve, reject) => {
+        let timer: NodeJS.Timeout;
+        const timeoutId = setTimeout(
+          () => reject(new Error("DOM stability timeout")),
+          timeout
+        );
+
+        const observer = new MutationObserver(() => {
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            observer.disconnect();
+            clearTimeout(timeoutId);
+            resolve();
+          }, debounce);
+        });
+
+        observer.observe(document.body, {
+          attributes: true,
+          childList: true,
+          subtree: true,
+        });
+
+        // Initial trigger
+        timer = setTimeout(() => {
+          observer.disconnect();
+          clearTimeout(timeoutId);
+          resolve();
+        }, debounce);
+      });
+    },
+    { debounce, timeout }
+  );
 }

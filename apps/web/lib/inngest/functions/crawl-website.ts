@@ -13,6 +13,7 @@ type CrawlRequestEvent = {
       maxPages: number;
       delayBetweenRequests: number;
       respectRobotsTxt: boolean;
+      skipResources?: boolean;
       includePaths?: string[];
       excludePaths?: string[];
     };
