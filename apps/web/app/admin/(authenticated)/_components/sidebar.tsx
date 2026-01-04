@@ -1,9 +1,9 @@
 "use client";
 import {
-  AppWindowIcon,
   DoorOpenIcon,
   FileScanIcon,
   type LucideIcon,
+  WaypointsIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
@@ -28,18 +28,18 @@ function Sidebar() {
       {/* 🔗 Links */}
       <div className="mt-4 w-full space-y-2 text-base text-zinc-200">
         <SidebarLink
-          icon={FileScanIcon}
+          icon={WaypointsIcon}
           isActive={pathname === "/admin/crawl"}
           pathname="/admin/crawl"
         >
           Crawls
         </SidebarLink>
         <SidebarLink
-          icon={AppWindowIcon}
+          icon={FileScanIcon}
           isActive={pathname === "/admin/sites"}
           pathname="/admin/sites"
         >
-          Crawls
+          Audits
         </SidebarLink>
       </div>
       {/* ⬇️ Footer */}

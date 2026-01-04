@@ -1,13 +1,10 @@
 "use client";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2Icon, LoaderIcon, XCircleIcon } from "lucide-react";
 import Image from "next/image";
-import { getCrawlJob } from "../_actions/get-crawl-job";
 import { useCrawlContext } from "../crawl-context";
 
 export function CrawlStatusPanel() {
-  const { crawlJobId } = useCrawlContext();
-  const { data: crawlJob } = useCrawlJob(crawlJobId);
+  const { crawlJob } = useCrawlContext();
   if (!crawlJob) return null;
 
   const isRunning =
@@ -75,23 +72,25 @@ export function CrawlStatusPanel() {
             </h4>
             <div className="flex flex-col gap-y-1">
               <a
-                className="space-y-2"
+                className="space-y-4"
                 href={crawlJob.latestPage.url}
                 target="_blank"
               >
-                {/* 🔠 Title */}
-                <div className="font-medium text-sm">
-                  {crawlJob.latestPage.title ?? "Sans titre"}
-                </div>
-                {/* 🔗 URL */}
-                <div className="truncate text-muted-foreground text-xs underline">
-                  {crawlJob.latestPage.url}
+                <div>
+                  {/* 🔠 Title */}
+                  <div className="font-medium text-sm">
+                    {crawlJob.latestPage.title ?? "Sans titre"}
+                  </div>
+                  {/* 🔗 URL */}
+                  <div className="truncate text-muted-foreground text-xs underline">
+                    {crawlJob.latestPage.url}
+                  </div>
                 </div>
                 {/* 🖼️ Image */}
                 {crawlJob.latestPage.screenshotUrl && (
                   <Image
                     alt={crawlJob.latestPage.title ?? "Sans titre"}
-                    className="w-[400px] rounded-md border border-border"
+                    className="w-[400px] rounded-md border border-border shadow-md"
                     height={400}
                     src={crawlJob.latestPage.screenshotUrl}
                     width={400}
@@ -121,37 +120,6 @@ export function CrawlStatusPanel() {
       </div>
     </div>
   );
-}
-
-// -------------------------------------------
-function useCrawlJob(crawlJobId: string | null) {
-  const { removeCrawlJobId } = useCrawlContext();
-  const queryClient = useQueryClient();
-
-  return useQuery({
-    enabled: !!crawlJobId,
-    queryFn: async () => {
-      if (!crawlJobId) return null;
-      const result = await getCrawlJob(crawlJobId);
-      if (!result.success) {
-        removeCrawlJobId();
-        throw new Error(result.error);
-      }
-      return result;
-    },
-    queryKey: ["crawl-status", crawlJobId],
-    refetchInterval: (query) => {
-      const data = query.state.data;
-      if (!data) return 2000;
-      // Stop polling when job is finished
-      if (["completed", "failed", "cancelled"].includes(data.status)) {
-        queryClient.invalidateQueries({ queryKey: ["list-crawls"] });
-        removeCrawlJobId();
-        return false;
-      }
-      return 2000; // Poll every second
-    },
-  });
 }
 
 // --------------------------------------------

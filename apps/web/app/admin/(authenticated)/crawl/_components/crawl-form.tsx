@@ -1,17 +1,26 @@
 "use client";
 import { useForm } from "@tanstack/react-form";
 import { XIcon } from "lucide-react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { upsertCrawl } from "../_actions/upsert-crawl";
 import { useCrawlContext } from "../crawl-context";
 import { isValidWebsite } from "../crawl-utils";
 
+const MAX_PAGES_CRAWLED = 100;
+const DEFAULT_PAGES_CRAWLED = 50;
+
+const MAX_DEPTH = 10;
+const DEFAULT_DEPTH = 3;
+
 export function CrawlForm() {
-  const form = useCrawlForm();
+  const crawlForm = useCrawlForm();
+  const { crawlJobId } = useCrawlContext();
+
+  const currentJobRunning = crawlJobId !== undefined && crawlJobId !== null;
 
   return (
     <div className="rounded-md bg-sidebar p-8">
@@ -24,11 +33,11 @@ export function CrawlForm() {
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            form.handleSubmit();
+            crawlForm.handleSubmit();
           }}
         >
           {/* 🔍 Search */}
-          <form.Field
+          <crawlForm.Field
             name="search"
             validators={{
               onSubmit: ({ value: search }) => {
@@ -38,7 +47,6 @@ export function CrawlForm() {
                 return;
               },
               onSubmitAsync: async ({ value: search }) => {
-                console.log("isValidWebsite", isValidWebsite);
                 const result = await isValidWebsite(search);
                 if (!result) return "Ce site web n'existe pas";
               },
@@ -47,6 +55,7 @@ export function CrawlForm() {
             {(field) => (
               <div className="flex w-full flex-col gap-y-1">
                 <Input
+                  disabled={currentJobRunning || field.form.state.isSubmitting}
                   name={field.name}
                   onChange={(e) => field.handleChange(e.target.value)}
                   placeholder="Crawler un site..."
@@ -59,18 +68,21 @@ export function CrawlForm() {
                 )}
               </div>
             )}
-          </form.Field>
+          </crawlForm.Field>
           {/* 🔢 Sliders */}
           <div className="flex w-full max-w-[400px] flex-col gap-y-4">
             {/* 🔢 Nb. max de résultats */}
-            <form.Field name="maxPages">
+            <crawlForm.Field name="maxPages">
               {(field) => (
                 <div>
                   <Label className="font-kanit text-lg">Pages à crawler</Label>
                   <div className="flex items-center gap-4">
                     <Slider
-                      max={50}
-                      min={5}
+                      disabled={
+                        currentJobRunning || field.form.state.isSubmitting
+                      }
+                      max={MAX_PAGES_CRAWLED}
+                      min={1}
                       name="maxPages"
                       onValueChange={(values) => field.handleChange(values[0])}
                       step={1}
@@ -80,15 +92,18 @@ export function CrawlForm() {
                   </div>
                 </div>
               )}
-            </form.Field>
+            </crawlForm.Field>
             {/* 🔢 Profondeur max. */}
-            <form.Field name="maxDepth">
+            <crawlForm.Field name="maxDepth">
               {(field) => (
                 <div>
                   <Label className="font-kanit text-lg">Profondeur max.</Label>
                   <div className="flex items-center gap-4">
                     <Slider
-                      max={5}
+                      disabled={
+                        currentJobRunning || field.form.state.isSubmitting
+                      }
+                      max={MAX_DEPTH}
                       min={1}
                       name="maxDepth"
                       onValueChange={(values) => field.handleChange(values[0])}
@@ -99,7 +114,7 @@ export function CrawlForm() {
                   </div>
                 </div>
               )}
-            </form.Field>
+            </crawlForm.Field>
           </div>
           {/* ☑️ Checkboxes */}
           {/*<div className="flex items-center justify-center gap-x-6">*/}
@@ -143,18 +158,18 @@ export function CrawlForm() {
             </form.Field>
           </div>*/}
           {/* 🆕 Submit */}
-          <form.Subscribe selector={(state) => state.isSubmitting}>
+          <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
             {(isSubmitting) => (
               <Button
-                disabled={isSubmitting}
+                disabled={isSubmitting || currentJobRunning}
                 loading={isSubmitting}
                 type="submit"
                 variant="default"
               >
-                Lancer un crawl
+                {currentJobRunning ? "Crawl en cours..." : "Lancer un crawl"}
               </Button>
             )}
-          </form.Subscribe>
+          </crawlForm.Subscribe>
         </form>
       </div>
     </div>
@@ -163,40 +178,51 @@ export function CrawlForm() {
 
 // --------------------------------------------
 function useCrawlForm() {
-  const { handleCrawlJobId } = useCrawlContext();
+  const {
+    upsertCrawlMutate,
+    upsertCrawlIsError,
+    upsertCrawlError,
+    upsertCrawlIsSuccess,
+  } = useCrawlContext();
+
   const form = useForm({
     defaultValues: {
       checkAccessibility: true,
       checkPerformance: false,
       checkSecurity: false,
-      maxDepth: 2,
-      maxPages: 10,
+      maxDepth: DEFAULT_DEPTH,
+      maxPages: DEFAULT_PAGES_CRAWLED,
       search: "",
     },
-    onSubmit: async (values) => {
-      const { search, maxDepth, maxPages } = values.value;
-      const result = await upsertCrawl({ maxDepth, maxPages, url: search });
-
-      if (result.success) {
-        toast("Le site a bien été ajouté ! Le crawl est en cours...", {
-          icon: "✅",
-          position: "bottom-right",
-        });
-
-        handleCrawlJobId(result.crawlJobId);
-      }
-
-      if (!result.success) {
-        toast("Une erreur est survenue lors de l'analyse du site", {
-          description: result.error,
-          icon: "❌",
-          position: "bottom-right",
-        });
-      }
-
-      return;
+    onSubmit: ({ value: { search, maxDepth, maxPages } }) => {
+      upsertCrawlMutate({
+        maxDepth,
+        maxPages,
+        url: search,
+      });
     },
   });
+
+  // ✅🍞 Toast success
+  useEffect(() => {
+    if (upsertCrawlIsSuccess) {
+      toast("Demande de crawl envoyée !", {
+        icon: "✅",
+        position: "bottom-right",
+      });
+    }
+  }, [upsertCrawlIsSuccess]);
+
+  // ⛔🍞 Toast error
+  useEffect(() => {
+    if (upsertCrawlIsError) {
+      toast("Une erreur est survenue lors du crawl du site", {
+        description: upsertCrawlError,
+        icon: "❌",
+        position: "bottom-right",
+      });
+    }
+  }, [upsertCrawlIsError, upsertCrawlError]);
 
   return form;
 }

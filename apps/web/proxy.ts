@@ -6,7 +6,7 @@ export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (sessionCookie && pathname === "/admin/login") {
-    return NextResponse.redirect(new URL("/admin/audit", request.url));
+    return NextResponse.redirect(new URL("/admin/crawl", request.url));
   }
 
   if (

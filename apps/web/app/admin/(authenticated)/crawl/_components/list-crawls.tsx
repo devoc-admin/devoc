@@ -1,31 +1,54 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
-import { ExternalLinkIcon } from "lucide-react";
+import {
+  ExternalLinkIcon,
+  EyeIcon,
+  LoaderIcon,
+  Trash2Icon,
+} from "lucide-react";
 import Image from "next/image";
-import { type CrawlResult, listCrawls } from "../_actions/list-crawls";
+import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import type { CrawlResult } from "../crawl-actions";
+import { useCrawlContext } from "../crawl-context";
 
 export function ListCrawls() {
-  const { data: crawls } = useListCrawls();
-  console.log("crawls", crawls);
-  if (!crawls || (Array.isArray(crawls) && crawls.length === 0)) {
-    return null;
-  }
-
   return (
     <div className="rounded-md bg-sidebar p-8">
       <h2 className="mb-8 text-center font-kanit font-semibold text-4xl">
         Derniers crawls
       </h2>
-      <ul className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] space-y-8">
-        {crawls.map(CrawlCard)}
-      </ul>
+      {<CrawlsCards />}
     </div>
   );
 }
 
 // -----------------------------------------------------------
+function CrawlsCards() {
+  const { crawls, crawlsAreLoading } = useCrawlContext();
+  if (!(crawls || crawlsAreLoading)) return <NoCrawlFound />;
+
+  return (
+    <ul className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-10 space-y-8">
+      {crawlsAreLoading ? (
+        <>
+          <CrawlCardSkeleton />
+          <CrawlCardSkeleton />
+          <CrawlCardSkeleton />
+        </>
+      ) : (
+        crawls?.map(CrawlCard)
+      )}
+    </ul>
+  );
+}
+
 function CrawlCard(crawl: CrawlResult) {
-  if (!crawl) return null;
   return (
     <li className="space-y-6" key={crawl.id}>
       <div>
@@ -40,28 +63,97 @@ function CrawlCard(crawl: CrawlResult) {
         </a>
       </div>
       {crawl.screenshotUrl && (
-        <Image
-          alt="Screenshot"
-          className="rounded-md"
-          height={200}
-          src={crawl.screenshotUrl}
-          width={300}
-        />
+        <div className="group relative w-fit">
+          <Image
+            alt="Screenshot"
+            className="rounded-md shadow-md"
+            height={200}
+            src={crawl.screenshotUrl}
+            width={300}
+          />
+          <div className="absolute right-2 bottom-2 flex gap-x-2">
+            <SeeCrawlButton crawlId={crawl.id} />
+            <DeleteCrawlButton crawlId={crawl.id} />
+          </div>
+        </div>
       )}
     </li>
   );
 }
 
-// ------------------------------------------------------------
-function useListCrawls() {
-  return useQuery({
-    queryFn: async () => {
-      const result = await listCrawls();
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      return result.crawls;
-    },
-    queryKey: ["list-crawls"],
-  });
+function CrawlCardSkeleton() {
+  return <Skeleton className="h-[250px] w-[350px] rounded-md" />;
 }
+
+function NoCrawlFound() {
+  return (
+    <p className="text-center text-muted-foreground">Aucun crawl trouvé</p>
+  );
+}
+
+// ------------------------------------------------------------
+// 🚮 Delete crawl
+function DeleteCrawlButton({ crawlId }: { crawlId: number }) {
+  const { crawlDeletionIsPending, deleteCrawlMutate, deletingCrawlId } =
+    useCrawlContext();
+
+  const isPending = crawlDeletionIsPending && deletingCrawlId === crawlId;
+  const otherCrawlDeletionIsPending =
+    crawlDeletionIsPending && deletingCrawlId !== crawlId;
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          className={cn(
+            "hidden cursor-pointer rounded-full p-2 transition-opacity",
+            "bg-red-200 text-red-900 dark:bg-red-800 dark:text-red-50",
+            !otherCrawlDeletionIsPending && "group-hover:block",
+            "disabled:cursor-not-allowed disabled:opacity-50",
+            isPending && "block"
+          )}
+          disabled={isPending}
+          onClick={() => deleteCrawlMutate(crawlId)}
+          type="button"
+        >
+          {isPending ? (
+            <LoaderIcon className="animate-spin" size={16} strokeWidth={2} />
+          ) : (
+            <Trash2Icon size={16} strokeWidth={2} />
+          )}
+        </button>
+      </TooltipTrigger>
+      <TooltipContent>Supprimer ce crawl</TooltipContent>
+    </Tooltip>
+  );
+}
+
+// ------------------------------------------------------------
+// 👁️ See crawl
+function SeeCrawlButton({ crawlId }: { crawlId: number }) {
+  const { crawlDeletionIsPending, deletingCrawlId } = useCrawlContext();
+
+  const actionPending = crawlDeletionIsPending && deletingCrawlId === crawlId;
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Link
+          className={cn(
+            "hidden cursor-pointer rounded-full p-2 transition-opacity",
+            "bg-blue-200 text-blue-900 dark:bg-blue-800 dark:text-blue-50",
+            "group-hover:block",
+            actionPending && "pointer-events-none opacity-50"
+          )}
+          href={`/admin/crawl/${crawlId}`}
+          type="button"
+        >
+          <EyeIcon size={17} strokeWidth={2} />
+        </Link>
+      </TooltipTrigger>
+      <TooltipContent>Voir ce crawl</TooltipContent>
+    </Tooltip>
+  );
+}
+
+// ------------------------------------------------------------

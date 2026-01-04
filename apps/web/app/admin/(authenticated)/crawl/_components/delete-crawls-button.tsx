@@ -1,7 +1,8 @@
 "use client";
-import { Trash2Icon } from "lucide-react";
-import { useState } from "react";
+import { LoaderIcon, Trash2Icon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useCrawlContext } from "@/app/admin/(authenticated)/crawl/crawl-context";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,28 +15,36 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { deleteAllCrawls } from "../_actions/delete-all-crawls";
+import { cn } from "@/lib/utils";
 
 export function DeleteCrawlsButton() {
+  const {
+    deleteAllCrawlsMutate,
+    allCrawlsDeletionIsPending,
+    allCrawlsDeletionIsError,
+    allCrawlsDeletionIsSuccess,
+  } = useCrawlContext();
   const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
-  async function handleDelete() {
-    setIsLoading(true);
-    const result = await deleteAllCrawls();
-    setIsLoading(false);
-    if (result.success) {
-      setOpen(false);
+  // 🍞 Toast actions
+  useEffect(() => {
+    if (allCrawlsDeletionIsSuccess) {
       toast.success("Tous les crawls ont été supprimés avec succès !");
-    } else {
+    }
+
+    if (allCrawlsDeletionIsError) {
       toast.error("Une erreur est survenue lors de la suppression des crawls.");
     }
-  }
+  }, [allCrawlsDeletionIsError, allCrawlsDeletionIsSuccess]);
 
   return (
     <AlertDialog open={open}>
       <AlertDialogTrigger asChild>
-        <ButtonTrigger disabled={open} onClick={() => setOpen(true)} />
+        <ButtonTrigger
+          disabled={open || allCrawlsDeletionIsPending}
+          loading={allCrawlsDeletionIsPending}
+          onClick={() => setOpen(true)}
+        />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -52,10 +61,11 @@ export function DeleteCrawlsButton() {
             Annuler
           </AlertDialogCancel>
           <AlertDialogAction
-            disabled={isLoading}
+            disabled={allCrawlsDeletionIsPending}
             onClick={(e) => {
               e.preventDefault(); // Prevent default close behavior
-              handleDelete();
+              setOpen(false);
+              deleteAllCrawlsMutate();
             }}
           >
             Supprimer
@@ -71,10 +81,14 @@ function ButtonTrigger({ ...props }) {
   return (
     <Button
       {...props}
-      className="absolute right-4 bottom-4"
+      className={cn(
+        "absolute right-4 bottom-4 gap-x-2",
+        props.disabled && "pointer-events-none"
+      )}
+      disabled={props.disabled}
       variant="destructive"
     >
-      <Trash2Icon />
+      {props.loading ? <LoaderIcon className="animate-spin" /> : <Trash2Icon />}
       <span>Effacer tous les crawls</span>
     </Button>
   );
