@@ -1,5 +1,5 @@
 "use client";
-import { LoaderIcon, Trash2Icon } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useCrawlContext } from "@/app/admin/(authenticated)/crawl/crawl-context";
@@ -88,7 +88,7 @@ function ButtonTrigger({ ...props }) {
       disabled={props.disabled}
       variant="destructive"
     >
-      {props.loading ? <LoaderIcon className="animate-spin" /> : <Trash2Icon />}
+      {!props.loading && <Trash2Icon />}
       <span>Effacer tous les crawls</span>
     </Button>
   );

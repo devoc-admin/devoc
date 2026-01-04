@@ -4,6 +4,7 @@ import { XIcon } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
@@ -37,84 +38,119 @@ export function CrawlForm() {
           }}
         >
           {/* 🔍 Search */}
-          <crawlForm.Field
-            name="search"
-            validators={{
-              onSubmit: ({ value: search }) => {
-                if (!search) return "Veuillez saisir une URL";
-                if (!isWebsiteUrl(search))
-                  return "La saisie n'est pas une URL valide";
-                return;
-              },
-              onSubmitAsync: async ({ value: search }) => {
-                const result = await isValidWebsite(search);
-                if (!result) return "Ce site web n'existe pas";
-              },
-            }}
-          >
-            {(field) => (
-              <div className="flex w-full flex-col gap-y-1">
-                <Input
-                  disabled={currentJobRunning || field.form.state.isSubmitting}
-                  name={field.name}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  placeholder="Crawler un site..."
-                  value={field.state.value}
-                />
-                {!field.state.meta.isValid && (
-                  <ErrorMessage>
-                    {field.state.meta.errors.join(", ")}
-                  </ErrorMessage>
+          <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+            {(isSubmitting) => (
+              <crawlForm.Field
+                name="search"
+                validators={{
+                  onSubmit: ({ value: search }) => {
+                    if (!search) return "Veuillez saisir une URL";
+                    if (!isWebsiteUrl(search))
+                      return "La saisie n'est pas une URL valide";
+                    return;
+                  },
+                  onSubmitAsync: async ({ value: search }) => {
+                    const result = await isValidWebsite(search);
+                    if (!result) return "Ce site web n'existe pas";
+                  },
+                }}
+              >
+                {(field) => (
+                  <div className="flex w-full flex-col gap-y-1">
+                    <Input
+                      disabled={currentJobRunning || isSubmitting}
+                      name={field.name}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="Crawler un site..."
+                      value={field.state.value}
+                    />
+                    {!field.state.meta.isValid && (
+                      <ErrorMessage>
+                        {field.state.meta.errors.join(", ")}
+                      </ErrorMessage>
+                    )}
+                  </div>
                 )}
-              </div>
+              </crawlForm.Field>
             )}
-          </crawlForm.Field>
+          </crawlForm.Subscribe>
           {/* 🔢 Sliders */}
           <div className="flex w-full max-w-[400px] flex-col gap-y-4">
             {/* 🔢 Nb. max de résultats */}
-            <crawlForm.Field name="maxPages">
-              {(field) => (
-                <div>
-                  <Label className="font-kanit text-lg">Pages à crawler</Label>
-                  <div className="flex items-center gap-4">
-                    <Slider
-                      disabled={
-                        currentJobRunning || field.form.state.isSubmitting
-                      }
-                      max={MAX_PAGES_CRAWLED}
-                      min={1}
-                      name="maxPages"
-                      onValueChange={(values) => field.handleChange(values[0])}
-                      step={1}
-                      value={[field.state.value]}
-                    />
-                    <span>{field.state.value}</span>
-                  </div>
-                </div>
+            <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+              {(isSubmitting) => (
+                <crawlForm.Field name="maxPages">
+                  {(field) => (
+                    <div>
+                      <Label className="font-kanit text-lg">
+                        Pages à crawler
+                      </Label>
+                      <div className="flex items-center gap-4">
+                        <Slider
+                          disabled={currentJobRunning || isSubmitting}
+                          max={MAX_PAGES_CRAWLED}
+                          min={1}
+                          name="maxPages"
+                          onValueChange={(values) =>
+                            field.handleChange(values[0])
+                          }
+                          step={1}
+                          value={[field.state.value]}
+                        />
+                        <span>{field.state.value}</span>
+                      </div>
+                    </div>
+                  )}
+                </crawlForm.Field>
               )}
-            </crawlForm.Field>
+            </crawlForm.Subscribe>
             {/* 🔢 Profondeur max. */}
-            <crawlForm.Field name="maxDepth">
-              {(field) => (
-                <div>
-                  <Label className="font-kanit text-lg">Profondeur max.</Label>
-                  <div className="flex items-center gap-4">
-                    <Slider
-                      disabled={
-                        currentJobRunning || field.form.state.isSubmitting
-                      }
-                      max={MAX_DEPTH}
-                      min={1}
-                      name="maxDepth"
-                      onValueChange={(values) => field.handleChange(values[0])}
-                      step={1}
-                      value={[field.state.value]}
-                    />
-                    <span>{field.state.value}</span>
-                  </div>
-                </div>
+            <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+              {(isSubmitting) => (
+                <crawlForm.Field name="maxDepth">
+                  {(field) => (
+                    <div>
+                      <Label className="font-kanit text-lg">
+                        Profondeur max.
+                      </Label>
+                      <div className="flex items-center gap-4">
+                        <Slider
+                          disabled={currentJobRunning || isSubmitting}
+                          max={MAX_DEPTH}
+                          min={1}
+                          name="maxDepth"
+                          onValueChange={(values) =>
+                            field.handleChange(values[0])
+                          }
+                          step={1}
+                          value={[field.state.value]}
+                        />
+                        <span>{field.state.value}</span>
+                      </div>
+                    </div>
+                  )}
+                </crawlForm.Field>
               )}
-            </crawlForm.Field>
+            </crawlForm.Subscribe>
+            {/* 🚀 Skip resources */}
+            <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+              {(isSubmitting) => (
+                <crawlForm.Field name="skipResources">
+                  {(field) => (
+                    <CustomCheckbox
+                      checked={field.state.value}
+                      disabled={currentJobRunning || isSubmitting}
+                      handleChange={(checked) =>
+                        field.handleChange(checked === true)
+                      }
+                      name="skipResources"
+                    >
+                      Mode rapide (ignorer images, fonts, CSS)
+                    </CustomCheckbox>
+                  )}
+                </crawlForm.Field>
+              )}
+            </crawlForm.Subscribe>
           </div>
           {/* ☑️ Checkboxes */}
           {/*<div className="flex items-center justify-center gap-x-6">*/}
@@ -193,11 +229,13 @@ function useCrawlForm() {
       maxDepth: DEFAULT_DEPTH,
       maxPages: DEFAULT_PAGES_CRAWLED,
       search: "",
+      skipResources: false,
     },
-    onSubmit: ({ value: { search, maxDepth, maxPages } }) => {
+    onSubmit: ({ value: { search, maxDepth, maxPages, skipResources } }) => {
       upsertCrawlMutate({
         maxDepth,
         maxPages,
+        skipResources,
         url: search,
       });
     },
@@ -251,31 +289,31 @@ function ErrorMessage({ children }: { children: string }) {
 }
 
 // --------------------------------------------
-// function CustomCheckbox({
-//   checked,
-//   handleChange,
-//   name,
-//   children,
-//   ...props
-// }: React.ComponentProps<"button"> & {
-//   checked: boolean;
-//   handleChange: (value: boolean) => void;
-//   name: string;
-//   children: React.ReactNode;
-// }) {
-//   return (
-//     <div className="flex gap-x-2">
-//       <Checkbox
-//         checked={checked}
-//         className="cursor-pointer"
-//         id={name}
-//         name={name}
-//         onCheckedChange={() => handleChange(!checked)}
-//         {...props}
-//       />
-//       <Label className="cursor-pointer" htmlFor={name}>
-//         {children}
-//       </Label>
-//     </div>
-//   );
-// }
+function CustomCheckbox({
+  checked,
+  handleChange,
+  name,
+  children,
+  ...props
+}: React.ComponentProps<"button"> & {
+  checked: boolean;
+  handleChange: (value: boolean) => void;
+  name: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-center gap-x-2">
+      <Checkbox
+        checked={checked}
+        className="cursor-pointer"
+        id={name}
+        name={name}
+        onCheckedChange={() => handleChange(!checked)}
+        {...props}
+      />
+      <Label className="mb-0 cursor-pointer" htmlFor={name}>
+        {children}
+      </Label>
+    </div>
+  );
+}

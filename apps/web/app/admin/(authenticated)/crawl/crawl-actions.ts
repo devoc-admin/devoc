@@ -22,6 +22,7 @@ export async function upsertCrawl({
   url,
   maxDepth,
   maxPages,
+  skipResources,
 }: UpsertCrawlParams): Promise<ActionResult<UpsertCrawlResult>> {
   // ✅🌐 Validation de l'URL
   let origin: string;
@@ -89,6 +90,7 @@ export async function upsertCrawl({
         config: {
           maxDepth: maxDepth ?? 1,
           maxPages: maxPages ?? 5,
+          skipResources: skipResources ?? false,
         },
         crawlJobId: insertedCrawlJob.id,
         url: origin,
@@ -116,6 +118,7 @@ type UpsertCrawlParams = {
   url: string;
   maxDepth: number;
   maxPages: number;
+  skipResources: boolean;
 };
 
 export type UpsertCrawlResult = { crawlId: number; crawlJobId: string };
@@ -218,6 +221,50 @@ export async function listCrawls(): Promise<ActionResult<ListCrawlsResult>> {
     const message = getErrorMessage(error);
     return { error: message, success: false };
   }
+}
+
+// --------------------------------------
+// 🚮 Delete a crawl job
+
+export async function deleteCrawlJob(
+  crawlJobId: string
+): Promise<ActionResult> {
+  try {
+    // 1️⃣ Send cancellation event to Inngest to stop the running job
+    await inngest.send({
+      data: { crawlJobId },
+      name: "crawl/crawl.cancelled",
+    });
+
+    // 2️⃣ Delete all screenshots from Vercel Blob storage (recursively)
+    await deleteScreenshotsForCrawlJob(crawlJobId);
+
+    // 3️⃣ Delete records for this crawl job
+    await db.delete(crawlJob).where(eq(crawlJob.id, crawlJobId));
+
+    return { success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+async function deleteScreenshotsForCrawlJob(crawlJobId: string): Promise<void> {
+  const allScreenshotUrls = (
+    await db
+      .select({
+        screenshotUrl: crawledPage.screenshotUrl,
+      })
+      .from(crawlJob)
+      .leftJoin(crawledPage, eq(crawledPage.crawlJobId, crawlJob.id))
+  )
+    .map((row) => row.screenshotUrl)
+    .filter(Boolean) as string[];
+
+  await del(allScreenshotUrls);
+  console.log(
+    `🗑️ Deleted ${allScreenshotUrls.length} screenshots for the crawl job ${crawlJobId}`
+  );
 }
 
 // --------------------------------------

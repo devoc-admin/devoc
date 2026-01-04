@@ -21,6 +21,12 @@ type CrawlRequestEvent = {
 
 export const crawlWebsite = inngest.createFunction(
   {
+    cancelOn: [
+      {
+        event: "crawl/crawl.cancelled",
+        match: "data.crawlJobId",
+      },
+    ],
     id: "crawl-website",
     name: "Crawl Website for audit",
     retries: 2,

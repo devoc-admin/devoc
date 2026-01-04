@@ -8,11 +8,12 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useQueryState } from "nuqs";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect, useEffectEvent } from "react";
 import {
   type CrawlJobQueryResult,
   deleteAllCrawls,
   deleteCrawl,
+  deleteCrawlJob,
   getCrawlJob,
   type ListCrawlsResult,
   listCrawls,
@@ -32,7 +33,7 @@ type CrawlContextType = {
   upsertCrawlMutate: UseMutateFunction<
     UpsertCrawlResult,
     Error,
-    { url: string; maxDepth: number; maxPages: number },
+    { url: string; maxDepth: number; maxPages: number; skipResources: boolean },
     unknown
   >;
   upsertCrawlIsPending: boolean;
@@ -48,6 +49,10 @@ type CrawlContextType = {
   deletingCrawlId: number | undefined;
   crawlDeletionIsPending: boolean;
   deleteCrawlMutate: UseMutateFunction<boolean, Error, number, unknown>;
+
+  //  🚮 Delete a crawl job
+  deleteCrawlJobMutate: UseMutateFunction<boolean, Error, string, unknown>;
+  deleteCrawlJobIsPending: boolean;
 
   // 🚮🚮🚮 Delete alls crawls
   deleteAllCrawlsMutate: UseMutateFunction<boolean, Error, void, unknown>;
@@ -85,6 +90,10 @@ const CrawlContext = createContext<CrawlContextType>({
   allCrawlsDeletionIsPending: false,
   allCrawlsDeletionIsError: false,
   allCrawlsDeletionIsSuccess: false,
+
+  // 🚮 Delete a crawl job
+  deleteCrawlJobMutate: () => {},
+  deleteCrawlJobIsPending: false,
 });
 
 export function CrawlProvider({ children }: { children: React.ReactNode }) {
@@ -105,6 +114,13 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
   //📝 List crawls
   const { crawls, crawlsAreLoading } = useCrawlsList();
 
+  // 🚮 Delete a crawl job
+  const {
+    mutate: deleteCrawlJobMutate,
+    isPending: deleteCrawlJobIsPending,
+    data: isCrawlJobDeleted,
+  } = useDeleteCrawlJob();
+
   // 🚮 Delete a crawl
   const {
     mutate: deleteCrawlMutate,
@@ -121,8 +137,19 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
   } = useDeleteAllCrawls();
 
   // 🔄 INTERDEPEND ACTIONS
-  if (upsertCrawlResult && crawlJobId !== upsertCrawlResult?.crawlJobId)
-    handleCrawlJobId(upsertCrawlResult?.crawlJobId);
+  const insertedCrawlJobId = upsertCrawlResult?.crawlJobId;
+
+  // # Insert new crawl job id in URL
+  const onInsertCrawlJobId = useEffectEvent((insertedCrawlJobId: string) => {
+    if (insertedCrawlJobId !== crawlJobId) {
+      handleCrawlJobId(insertedCrawlJobId);
+    }
+  });
+  useEffect(() => {
+    if (insertedCrawlJobId) {
+      onInsertCrawlJobId(insertedCrawlJobId);
+    }
+  }, [insertedCrawlJobId]);
 
   return (
     <CrawlContext.Provider
@@ -155,6 +182,10 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
         allCrawlsDeletionIsPending,
         allCrawlsDeletionIsError,
         allCrawlsDeletionIsSuccess,
+
+        // 🛑 Interrupt crawl
+        deleteCrawlJobMutate,
+        deleteCrawlJobIsPending,
       }}
     >
       {children}
@@ -184,12 +215,19 @@ function useUpsertCrawl() {
       url,
       maxDepth,
       maxPages,
+      skipResources,
     }: {
       url: string;
       maxDepth: number;
       maxPages: number;
+      skipResources: boolean;
     }) => {
-      const result = await upsertCrawl({ url, maxDepth, maxPages });
+      const result = await upsertCrawl({
+        url,
+        maxDepth,
+        maxPages,
+        skipResources,
+      });
       if (!result.success) {
         throw new Error(result.error);
       }
@@ -266,6 +304,22 @@ function useCrawlsList() {
     crawls,
     crawlsAreLoading: isLoading,
   };
+}
+
+// --------------------------------------
+// 🚮 Delete a crawl job
+
+// 🪝
+function useDeleteCrawlJob() {
+  return useMutation({
+    mutationFn: async (crawlJobId: string) => {
+      const result = await deleteCrawlJob(crawlJobId);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return true;
+    },
+  });
 }
 
 // --------------------------------------

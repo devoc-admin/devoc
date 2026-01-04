@@ -1,10 +1,21 @@
 "use client";
-import { CheckCircle2Icon, LoaderIcon, XCircleIcon } from "lucide-react";
+import {
+  CheckCircle2Icon,
+  LoaderIcon,
+  StopCircleIcon,
+  XCircleIcon,
+} from "lucide-react";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
 import { useCrawlContext } from "../crawl-context";
 
 export function CrawlStatusPanel() {
-  const { crawlJob } = useCrawlContext();
+  const {
+    crawlJob,
+    crawlJobId,
+    deleteCrawlJobMutate,
+    deleteCrawlJobIsPending,
+  } = useCrawlContext();
   if (!crawlJob) return null;
 
   const isRunning =
@@ -50,10 +61,25 @@ export function CrawlStatusPanel() {
             </strong>
           </span>
           {isRunning && (
-            <span className="flex items-center gap-x-1 text-muted-foreground">
-              <LoaderIcon className="animate-spin" size={14} />
-              Polling actif...
-            </span>
+            <>
+              <span className="flex items-center gap-x-1 text-muted-foreground">
+                <LoaderIcon className="animate-spin" size={14} />
+                Crawling en cours...
+              </span>
+              <Button
+                disabled={deleteCrawlJobIsPending}
+                onClick={() => crawlJobId && deleteCrawlJobMutate(crawlJobId)}
+                size="sm"
+                variant="destructive"
+              >
+                {deleteCrawlJobIsPending ? (
+                  <LoaderIcon className="animate-spin" size={14} />
+                ) : (
+                  <StopCircleIcon size={14} />
+                )}
+                Interrompre
+              </Button>
+            </>
           )}
         </div>
 

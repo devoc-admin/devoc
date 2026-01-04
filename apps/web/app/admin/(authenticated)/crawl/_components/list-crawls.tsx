@@ -2,6 +2,7 @@
 import {
   ExternalLinkIcon,
   EyeIcon,
+  FileCheckCornerIcon,
   LoaderIcon,
   Trash2Icon,
 } from "lucide-react";
@@ -34,7 +35,7 @@ function CrawlsCards() {
   if (!(crawls || crawlsAreLoading)) return <NoCrawlFound />;
 
   return (
-    <ul className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-10 space-y-8">
+    <ul className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-10">
       {crawlsAreLoading ? (
         <>
           <CrawlCardSkeleton />
@@ -50,26 +51,44 @@ function CrawlsCards() {
 
 function CrawlCard(crawl: CrawlResult) {
   return (
-    <li className="space-y-6" key={crawl.id}>
+    <li
+      className="flex flex-col gap-y-6 rounded-md border border-border bg-sidebar-strong p-4"
+      key={crawl.id}
+    >
       <div>
-        <h3 className="font-kanit text-xl">{crawl.title}</h3>
+        <h3 className="now max-w-full truncate font-kanit text-xl">
+          {crawl.title}
+        </h3>
         <a
           className="flex items-center gap-x-2 text-muted-foreground hover:underline"
           href={crawl.url}
           target="_blank"
         >
-          <span>{crawl.url}</span>
-          <ExternalLinkIcon size={16} />
+          <span className="truncate">{crawl.url}</span>
+          <ExternalLinkIcon className="shrink-0" size={16} />
         </a>
+        {/* Details */}
+        <div className="mt-2">
+          {/* Crawled */}
+          <div className="flex items-center gap-x-1 text-sm">
+            <FileCheckCornerIcon size={14} />
+            <span>{crawl.pagesCrawled} pages crawlées</span>
+          </div>
+          {/* Discovered */}
+          {/*<div className="flex items-center gap-x-1 text-sm">
+            <FileStackIcon size={14} />
+            <span>{crawl.pagesDiscovered} pages découvertes</span>
+          </div>*/}
+        </div>
       </div>
       {crawl.screenshotUrl && (
-        <div className="group relative w-fit">
+        <div className="group relative mt-auto w-fit">
           <Image
             alt="Screenshot"
             className="rounded-md shadow-md"
-            height={200}
+            height={225}
             src={crawl.screenshotUrl}
-            width={300}
+            width={400}
           />
           <div className="absolute right-2 bottom-2 flex gap-x-2">
             <SeeCrawlButton crawlId={crawl.id} />
@@ -82,7 +101,7 @@ function CrawlCard(crawl: CrawlResult) {
 }
 
 function CrawlCardSkeleton() {
-  return <Skeleton className="h-[250px] w-[350px] rounded-md" />;
+  return <Skeleton className="h-[338px] w-[476px] rounded-md" />;
 }
 
 function NoCrawlFound() {
@@ -106,9 +125,10 @@ function DeleteCrawlButton({ crawlId }: { crawlId: number }) {
       <TooltipTrigger asChild>
         <button
           className={cn(
-            "hidden cursor-pointer rounded-full p-2 transition-opacity",
+            "rounded-full p-2 opacity-0 transition-opacity",
             "bg-red-200 text-red-900 dark:bg-red-800 dark:text-red-50",
-            !otherCrawlDeletionIsPending && "group-hover:block",
+            !otherCrawlDeletionIsPending &&
+              "group-hover:cursor-pointer group-hover:opacity-100",
             "disabled:cursor-not-allowed disabled:opacity-50",
             isPending && "block"
           )}
@@ -140,9 +160,9 @@ function SeeCrawlButton({ crawlId }: { crawlId: number }) {
       <TooltipTrigger asChild>
         <Link
           className={cn(
-            "hidden cursor-pointer rounded-full p-2 transition-opacity",
+            "rounded-full p-2 opacity-0 transition-opacity",
             "bg-blue-200 text-blue-900 dark:bg-blue-800 dark:text-blue-50",
-            "group-hover:block",
+            "group-hover:cursor-pointer group-hover:opacity-100",
             actionPending && "pointer-events-none opacity-50"
           )}
           href={`/admin/crawl/${crawlId}`}
