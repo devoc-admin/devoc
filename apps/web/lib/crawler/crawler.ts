@@ -58,6 +58,7 @@ export class WebCrawler {
       maxDepth: config.maxDepth ?? DEFAULT_MAX_DEPTH,
       maxPages: config.maxPages ?? DEFAULT_MAX_PAGES,
       respectRobotsTxt: config.respectRobotsTxt ?? true,
+      skipResources: config.skipResources ?? false,
     };
   }
 
