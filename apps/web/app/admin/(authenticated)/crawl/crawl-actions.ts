@@ -23,6 +23,7 @@ export async function upsertCrawl({
   maxDepth,
   maxPages,
   skipResources,
+  concurrency,
 }: UpsertCrawlParams): Promise<ActionResult<UpsertCrawlResult>> {
   // ✅🌐 Validation de l'URL
   let origin: string;
@@ -88,6 +89,7 @@ export async function upsertCrawl({
     await inngest.send({
       data: {
         config: {
+          concurrency: concurrency ?? 5,
           maxDepth: maxDepth ?? 1,
           maxPages: maxPages ?? 5,
           skipResources: skipResources ?? false,
@@ -119,6 +121,7 @@ type UpsertCrawlParams = {
   maxDepth: number;
   maxPages: number;
   skipResources: boolean;
+  concurrency: number;
 };
 
 export type UpsertCrawlResult = { crawlId: number; crawlJobId: string };
@@ -208,8 +211,7 @@ const crawlsQuery = db
   .leftJoin(crawlJob, eq(crawl.id, crawlJob.crawlId))
   .leftJoin(crawledPage, eq(crawlJob.id, crawledPage.crawlJobId))
   .where(and(eq(crawlJob.status, "completed"), eq(crawledPage.url, crawl.url)))
-  .orderBy(desc(crawlJob.createdAt))
-  .limit(10);
+  .orderBy(desc(crawlJob.createdAt));
 
 export type ListCrawlsResult = Awaited<typeof crawlsQuery>;
 export type CrawlResult = ListCrawlsResult[number];
@@ -263,9 +265,6 @@ async function deleteScreenshotsForCrawlJob(crawlJobId: string): Promise<void> {
     .filter(Boolean) as string[];
 
   await del(allScreenshotUrls);
-  console.log(
-    `🗑️ Deleted ${allScreenshotUrls.length} screenshots for the crawl job ${crawlJobId}`
-  );
 }
 
 // --------------------------------------
@@ -303,9 +302,6 @@ async function deleteScreenshotsForCrawl(crawlId: number): Promise<void> {
     .filter(Boolean) as string[];
 
   await del(allScreenshotUrls);
-  console.log(
-    `🗑️ Deleted ${allScreenshotUrls.length} screenshots for the crawl ${crawlId}`
-  );
 }
 
 // --------------------------------------
@@ -341,7 +337,6 @@ async function deleteAllScreenshots(): Promise<void> {
     if (response.blobs.length > 0) {
       const urls = response.blobs.map((blob) => blob.url);
       await del(urls);
-      console.log(`🗑️ Deleted ${urls.length} screenshots`);
     }
 
     cursor = response.cursor;

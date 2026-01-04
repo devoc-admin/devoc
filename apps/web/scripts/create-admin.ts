@@ -37,12 +37,6 @@ export async function createAdmin() {
         password,
       },
     });
-
-    if (result.user) {
-      console.log("Admin user created successfully!");
-      console.log(`Email: ${email}`);
-      console.log(`Name: ${name}`);
-    }
   } catch (error) {
     console.error("Failed to create admin user:", error);
     process.exit(1);

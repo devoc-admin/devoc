@@ -11,11 +11,14 @@ import { Slider } from "@/components/ui/slider";
 import { useCrawlContext } from "../crawl-context";
 import { isValidWebsite } from "../crawl-utils";
 
-const MAX_PAGES_CRAWLED = 100;
+const MAX_PAGES_CRAWLED = 500;
 const DEFAULT_PAGES_CRAWLED = 50;
 
 const MAX_DEPTH = 10;
 const DEFAULT_DEPTH = 3;
+
+const MAX_CONCURRENCY = 8; // Higher values risk rate limiting/memory issues
+const DEFAULT_CONCURRENCY = 5;
 
 export function CrawlForm() {
   const crawlForm = useCrawlForm();
@@ -132,6 +135,34 @@ export function CrawlForm() {
                 </crawlForm.Field>
               )}
             </crawlForm.Subscribe>
+            {/* 🔀 Concurrency */}
+            <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+              {(isSubmitting) => (
+                <crawlForm.Field name="concurrency">
+                  {(field) => (
+                    <div>
+                      <Label className="font-kanit text-lg">
+                        Pages en parallèle
+                      </Label>
+                      <div className="flex items-center gap-4">
+                        <Slider
+                          disabled={currentJobRunning || isSubmitting}
+                          max={MAX_CONCURRENCY}
+                          min={1}
+                          name="concurrency"
+                          onValueChange={(values) =>
+                            field.handleChange(values[0])
+                          }
+                          step={1}
+                          value={[field.state.value]}
+                        />
+                        <span>{field.state.value}</span>
+                      </div>
+                    </div>
+                  )}
+                </crawlForm.Field>
+              )}
+            </crawlForm.Subscribe>
             {/* 🚀 Skip resources */}
             <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
               {(isSubmitting) => (
@@ -226,13 +257,17 @@ function useCrawlForm() {
       checkAccessibility: true,
       checkPerformance: false,
       checkSecurity: false,
+      concurrency: DEFAULT_CONCURRENCY,
       maxDepth: DEFAULT_DEPTH,
       maxPages: DEFAULT_PAGES_CRAWLED,
       search: "",
       skipResources: false,
     },
-    onSubmit: ({ value: { search, maxDepth, maxPages, skipResources } }) => {
+    onSubmit: ({
+      value: { search, maxDepth, maxPages, skipResources, concurrency },
+    }) => {
       upsertCrawlMutate({
+        concurrency,
         maxDepth,
         maxPages,
         skipResources,

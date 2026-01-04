@@ -1,4 +1,5 @@
 import { put } from "@vercel/blob";
+import pLimit from "p-limit";
 import {
   type Browser,
   type BrowserContext,
@@ -23,12 +24,13 @@ import type {
 const DEFAULT_DELAY_BETWEEN_REQUESTS = 100;
 const DEFAULT_MAX_DEPTH = 3;
 const DEFAULT_MAX_PAGES = 100;
+const DEFAULT_CONCURRENCY = 5;
 const httpRegex = /^https?:\/\//;
 
 export class WebCrawler {
   private browser: Browser | null = null;
-  private context: BrowserContext | null = null;
-  private readonly visited = new Set<string>();
+  private readonly visited = new Set<string>(); // URLs that have been crawled
+  private readonly pending = new Set<string>(); // URLs in queue (prevents duplicates)
   private readonly queue: QueueItem[] = [];
   private readonly config: CrawlConfig;
   private readonly baseUrl: string;
@@ -51,6 +53,7 @@ export class WebCrawler {
     this.baseOrigin = new URL(baseUrl).origin;
     this.crawlJobId = crawlJobId;
     this.config = {
+      concurrency: config.concurrency ?? DEFAULT_CONCURRENCY,
       delayBetweenRequests:
         config.delayBetweenRequests ?? DEFAULT_DELAY_BETWEEN_REQUESTS,
       excludePaths: config.excludePaths,
@@ -69,60 +72,84 @@ export class WebCrawler {
   }: {
     onProgress?: CrawlProgressCallback;
   }): Promise<CrawlResult> {
+    const concurrency = this.config.concurrency ?? DEFAULT_CONCURRENCY;
+    const limit = pLimit(concurrency);
+
     try {
       // 1️⃣ Init browser
       this.browser = await chromium.launch();
-      this.context = await this.browser.newContext({
-        locale: "fr-FR",
-        userAgent: "RGAA-Audit-Crawler/1.0 (Accessibility Audit Tool)",
-        viewport: { height: 720, width: 1280 },
-      });
-
-      // 🚫 Block unnecessary resources for 50-70% faster crawling (optional)
-      if (this.config.skipResources) {
-        await this.context.route("**/*", (route) => {
-          const resourceType = route.request().resourceType();
-          if (["image", "font", "stylesheet", "media"].includes(resourceType)) {
-            return route.abort();
-          }
-          return route.continue();
-        });
-      }
 
       // 2️⃣🏡 Add homepage
-      this.queue.push({ depth: 0, url: this.baseUrl });
+      const normalizedBaseUrl = normalizeUrl({
+        baseUrl: this.baseUrl,
+        url: this.baseUrl,
+      });
+      this.queue.push({ depth: 0, url: normalizedBaseUrl });
+      this.pending.add(normalizedBaseUrl);
 
-      //3️⃣🔁 Loop through site
+      // 3️⃣🔁 Loop through site with parallel processing
       while (
         this.queue.length > 0 &&
         this.pages.length < this.config.maxPages
       ) {
-        const item = this.queue.shift();
-        if (!item) continue;
-        const normalizedUrl = normalizeUrl({
-          baseUrl: this.baseUrl,
-          url: item.url,
-        });
+        // 📦 Get batch of items to process (up to concurrency limit)
+        const batch: QueueItem[] = [];
+        const remainingSlots = this.config.maxPages - this.pages.length;
+        const batchSize = Math.min(
+          concurrency,
+          remainingSlots,
+          this.queue.length
+        );
 
-        // ⏭️ Skip if alread visited
-        if (this.visited.has(normalizedUrl)) continue;
-        // ⏭️ Skip if max depth reached
-        if (item.depth > this.config.maxDepth) continue;
-        // ⏭️ Skip if it shouldn't crawl (static assets or excluded paths)
-        if (!shouldCrawlUrl({ config: this.config, url: item.url })) continue;
+        for (let i = 0; i < batchSize; i++) {
+          const item = this.queue.shift();
+          if (!item) break;
 
-        // ✅➕ Add to visited if all checks are passed
-        this.visited.add(normalizedUrl);
+          const normalizedUrl = normalizeUrl({
+            baseUrl: this.baseUrl,
+            url: item.url,
+          });
 
-        // 🏊 Crawl page
-        const result = await this.crawlPage({
-          depth: item.depth,
-          normalizedUrl,
-          url: item.url,
-        });
+          // ⏭️ Skip checks
+          if (this.visited.has(normalizedUrl)) {
+            this.pending.delete(normalizedUrl);
+            continue;
+          }
+          if (item.depth > this.config.maxDepth) continue;
+          if (!shouldCrawlUrl({ config: this.config, url: item.url })) continue;
 
-        // 🎁 Result
-        if (result) {
+          // ✅➕ Mark as visited before processing (prevents duplicates in parallel)
+          this.visited.add(normalizedUrl);
+          this.pending.delete(normalizedUrl); // Move from pending to visited
+          batch.push({ ...item, url: normalizedUrl });
+        }
+
+        if (batch.length === 0) continue;
+
+        // 🚀 Process batch in parallel
+        const results = await Promise.all(
+          batch.map((item) =>
+            limit(async () => {
+              const context = await this.createContext();
+              try {
+                const result = await this.crawlPage({
+                  context,
+                  depth: item.depth,
+                  normalizedUrl: item.url,
+                  url: item.url,
+                });
+                return { item, result };
+              } finally {
+                await context.close();
+              }
+            })
+          )
+        );
+
+        // 🎁 Process results
+        for (const { item, result } of results) {
+          if (!result) continue;
+
           // 🔔 Notify progress
           if (onProgress) {
             await onProgress({
@@ -133,7 +160,7 @@ export class WebCrawler {
           }
           this.pages.push(result);
 
-          // Add discovered links to queue
+          // Add discovered links to queue (check both visited AND pending to prevent duplicates)
           if (item.depth < this.config.maxDepth) {
             for (const link of result.links) {
               const normalizedLink = normalizeUrl({
@@ -141,15 +168,24 @@ export class WebCrawler {
                 url: link,
               });
 
-              if (!this.visited.has(normalizedLink)) {
-                this.queue.push({ depth: item.depth + 1, url: normalizedLink });
+              // Skip if already visited or already in queue
+              if (
+                this.visited.has(normalizedLink) ||
+                this.pending.has(normalizedLink)
+              ) {
+                continue;
               }
+
+              this.pending.add(normalizedLink);
+              this.queue.push({ depth: item.depth + 1, url: normalizedLink });
             }
           }
         }
 
-        //⏳ Delay between requests
-        await this.delay(this.config.delayBetweenRequests);
+        // ⏳ Small delay between batches
+        if (this.config.delayBetweenRequests > 0) {
+          await this.delay(this.config.delayBetweenRequests);
+        }
       }
       return { errors: this.errors, pages: this.pages };
     } finally {
@@ -158,22 +194,48 @@ export class WebCrawler {
   }
 
   /**
+   * Create a new browser context with optional resource blocking
+   */
+  private async createContext(): Promise<BrowserContext> {
+    if (!this.browser) {
+      throw new Error("Browser not initialized");
+    }
+
+    const context = await this.browser.newContext({
+      locale: "fr-FR",
+      userAgent: "RGAA-Audit-Crawler/1.0 (Accessibility Audit Tool)",
+      viewport: { height: 720, width: 1280 },
+    });
+
+    // 🚫 Block unnecessary resources for 50-70% faster crawling (optional)
+    if (this.config.skipResources) {
+      await context.route("**/*", (route) => {
+        const resourceType = route.request().resourceType();
+        if (["image", "font", "stylesheet", "media"].includes(resourceType)) {
+          return route.abort();
+        }
+        return route.continue();
+      });
+    }
+
+    return context;
+  }
+
+  /**
    * Crawl page
    */
-
   private async crawlPage({
     url,
     normalizedUrl,
     depth,
+    context,
   }: {
     url: string;
     normalizedUrl: string;
     depth: number;
+    context: BrowserContext;
   }): Promise<CrawlPageResult | null> {
-    if (!this.context) {
-      throw new Error("Browser context not initialized");
-    }
-    const page = await this.context.newPage();
+    const page = await context.newPage();
 
     try {
       //⏰ Start time
@@ -303,8 +365,6 @@ export class WebCrawler {
       const filename = `screenshots/${this.crawlJobId}/${safeFilename}.jpg`;
 
       const blob = await put(filename, screenshot, { access: "public" });
-
-      console.log(`📸 Screenshot uploaded: ${blob.url}`);
       return blob.url;
     } catch (error) {
       // Screenshot failed, but don't fail the entire crawl
@@ -324,38 +384,53 @@ export class WebCrawler {
    * Clean up resources
    */
   private async cleanup(): Promise<void> {
-    if (this.context) await this.context.close();
     if (this.browser) await this.browser.close();
   }
 }
 
-// wait for SPA load
+// Tiered SPA loading strategy - fast first, thorough only when needed
 async function waitForSpaLoad(page: Page) {
   // 1. Basic DOM ready
   await page.waitForLoadState("domcontentloaded");
 
-  // 2. Wait for initial network burst to settle (cap at 5s)
+  // 2. Quick check: is there already visible content?
+  const hasContent = await page.evaluate(() => {
+    const bodyText = document.body?.innerText?.trim() || "";
+    const hasMainContent =
+      document.querySelector('main, [role="main"], article, .content') !== null;
+    return bodyText.length > 100 || hasMainContent;
+  });
+
+  // ⚡ Fast path: content already present, skip expensive waits
+  if (hasContent) {
+    // Brief stabilization only (200ms)
+    await page.waitForTimeout(200);
+    return;
+  }
+
+  // 🐢 Slow path: SPA that needs JS rendering
+  // Wait for initial network burst to settle (cap at 3s)
   await Promise.race([
     page.waitForLoadState("networkidle"),
-    page.waitForTimeout(5000),
+    page.waitForTimeout(3000),
   ]);
 
-  // 3. Wait for critical content (optional - some pages may not have these selectors)
+  // Wait for critical content (optional)
   try {
     await page.waitForSelector(
       'main, [role="main"], #app, #root, article, .content',
       {
         state: "visible",
-        timeout: 3000,
+        timeout: 2000,
       }
     );
   } catch {
     // Selector not found - page may have different structure, continue anyway
   }
 
-  // 4. Brief stabilization for any final renders
+  // Brief stabilization for any final renders
   try {
-    await waitForDomStable(page, 2000, 200);
+    await waitForDomStable(page, 1500, 150);
   } catch {
     // DOM stability timeout - page may be highly dynamic, continue anyway
   }

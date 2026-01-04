@@ -10,9 +10,9 @@ export function normalizeUrl({
   try {
     const parsed = new URL(url, baseUrl);
 
-    // Delete trailing slash (except for root path)
+    // Remove trailing slash for consistency (root "/" becomes "")
     let pathname = parsed.pathname;
-    if (pathname.length > 1 && pathname.endsWith("/")) {
+    if (pathname.endsWith("/")) {
       pathname = pathname.slice(0, -1);
     }
 
@@ -152,7 +152,16 @@ export function toAbsoluteUrl({
       return null;
     }
 
-    return new URL(url, baseUrl).href;
+    const parsed = new URL(url, baseUrl);
+
+    // Remove trailing slash from pathname (including root for consistency)
+    let pathname = parsed.pathname;
+    if (pathname.endsWith("/")) {
+      pathname = pathname.slice(0, -1);
+    }
+
+    // Rebuild URL without trailing slash
+    return `${parsed.origin}${pathname}${parsed.search}${parsed.hash}`;
   } catch {
     return null;
   }

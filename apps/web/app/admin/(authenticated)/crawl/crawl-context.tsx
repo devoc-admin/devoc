@@ -33,7 +33,13 @@ type CrawlContextType = {
   upsertCrawlMutate: UseMutateFunction<
     UpsertCrawlResult,
     Error,
-    { url: string; maxDepth: number; maxPages: number; skipResources: boolean },
+    {
+      url: string;
+      maxDepth: number;
+      maxPages: number;
+      skipResources: boolean;
+      concurrency: number;
+    },
     unknown
   >;
   upsertCrawlIsPending: boolean;
@@ -115,11 +121,8 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
   const { crawls, crawlsAreLoading } = useCrawlsList();
 
   // 🚮 Delete a crawl job
-  const {
-    mutate: deleteCrawlJobMutate,
-    isPending: deleteCrawlJobIsPending,
-    data: isCrawlJobDeleted,
-  } = useDeleteCrawlJob();
+  const { mutate: deleteCrawlJobMutate, isPending: deleteCrawlJobIsPending } =
+    useDeleteCrawlJob();
 
   // 🚮 Delete a crawl
   const {
@@ -216,17 +219,20 @@ function useUpsertCrawl() {
       maxDepth,
       maxPages,
       skipResources,
+      concurrency,
     }: {
       url: string;
       maxDepth: number;
       maxPages: number;
       skipResources: boolean;
+      concurrency: number;
     }) => {
       const result = await upsertCrawl({
         url,
         maxDepth,
         maxPages,
         skipResources,
+        concurrency,
       });
       if (!result.success) {
         throw new Error(result.error);

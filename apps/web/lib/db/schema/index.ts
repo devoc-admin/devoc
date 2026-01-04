@@ -162,6 +162,7 @@ export type CrawlConfig = {
   delayBetweenRequests: number;
   respectRobotsTxt: boolean;
   skipResources?: boolean;
+  concurrency?: number;
   includePaths?: string[];
   excludePaths?: string[];
   auth?: {
