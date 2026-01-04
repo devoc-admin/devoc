@@ -192,14 +192,15 @@ export async function getCrawlJob(
 
 // --------------------------------------
 // 📝 List crawls
-
 const crawlsQuery = db
   .select({
+    completedAt: crawlJob.completedAt,
     createdAt: crawl.createdAt,
     id: crawl.id,
     pagesCrawled: crawlJob.pagesCrawled,
     pagesDiscovered: crawlJob.pagesDiscovered,
     screenshotUrl: crawledPage.screenshotUrl,
+    startedAt: crawlJob.startedAt,
     title: crawledPage.title,
     url: crawl.url,
   })

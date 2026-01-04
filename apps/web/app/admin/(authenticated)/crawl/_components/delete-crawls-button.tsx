@@ -82,7 +82,7 @@ function ButtonTrigger({ ...props }) {
     <Button
       {...props}
       className={cn(
-        "absolute right-4 bottom-4 gap-x-2",
+        "absolute right-3 bottom-3 gap-x-2",
         props.disabled && "pointer-events-none"
       )}
       disabled={props.disabled}

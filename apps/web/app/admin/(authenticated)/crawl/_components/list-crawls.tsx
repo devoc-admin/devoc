@@ -1,5 +1,7 @@
 "use client";
 import {
+  CalendarIcon,
+  ClockIcon,
   ExternalLinkIcon,
   EyeIcon,
   FileCheckCornerIcon,
@@ -68,14 +70,29 @@ function CrawlCard(crawl: CrawlResult) {
           <ExternalLinkIcon className="shrink-0" size={16} />
         </a>
         {/* Details */}
-        <div className="mt-2">
+        <div className="mt-2 space-y-0.5">
           {/* Crawled */}
           <div className="flex items-center gap-x-1 text-sm">
             <FileCheckCornerIcon size={14} />
             <span>{crawl.pagesCrawled} pages crawlées</span>
           </div>
+          {/* ⏳ Duration */}
+          <div className="flex items-center gap-x-1 text-sm">
+            <ClockIcon size={14} />
+            <span>
+              {formatDurationInMinutesAndSeconds(
+                crawl.startedAt,
+                crawl.completedAt
+              )}
+            </span>
+          </div>
+          {/* 🗓️ Started */}
+          <div className="flex items-center gap-x-1 text-sm">
+            <CalendarIcon size={14} />
+            <span>{formatDate(crawl.createdAt)}</span>
+          </div>
           {/* Discovered */}
-          {/*<div className="flex items-center gap-x-1 text-sm">
+          {/* <div className="flex items-center gap-x-1 text-sm">
             <FileStackIcon size={14} />
             <span>{crawl.pagesDiscovered} pages découvertes</span>
           </div>*/}
@@ -177,3 +194,37 @@ function SeeCrawlButton({ crawlId }: { crawlId: number }) {
 }
 
 // ------------------------------------------------------------
+function formatDate(date: string | null) {
+  if (!date) return "N/A";
+  const d = new Date(date);
+  return `${d.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  })} à ${d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}`;
+}
+
+// ------------------------------------------------------------
+function formatDurationInMinutesAndSeconds(
+  startedAtString: string | null,
+  completedAtString: string | null
+) {
+  if (!(startedAtString && completedAtString)) return "N/A";
+
+  const startedAt = new Date(startedAtString);
+  const completedAt = new Date(completedAtString);
+
+  const duration = completedAt.getTime() - startedAt.getTime();
+  const minutes = Math.floor(duration / (60 * 1000));
+  const seconds = Math.floor((duration % (60 * 1000)) / 1000);
+
+  let minutesPart = `${minutes}m`;
+  if (minutes === 0) minutesPart = "";
+
+  let secondsPart = `${seconds}s`;
+  if (seconds === 0 && minutes >= 1) secondsPart = "";
+
+  if (minutesPart && secondsPart) return minutesPart + secondsPart;
+  if (minutesPart && !secondsPart) return minutesPart;
+  if (!minutesPart && secondsPart) return secondsPart;
+}
