@@ -244,7 +244,7 @@ export async function deleteCrawlJob(
     });
 
     // 2️⃣ Delete all screenshots from Vercel Blob storage (recursively)
-    await deleteScreenshotsForCrawlJob();
+    await deleteScreenshotsForCrawlJob({ crawlJobId });
 
     // 3️⃣ Delete records for this crawl job
     await db.delete(crawlJob).where(eq(crawlJob.id, crawlJobId));
@@ -256,7 +256,11 @@ export async function deleteCrawlJob(
   }
 }
 
-async function deleteScreenshotsForCrawlJob(): Promise<void> {
+async function deleteScreenshotsForCrawlJob({
+  crawlJobId,
+}: {
+  crawlJobId: string;
+}): Promise<void> {
   const allScreenshotUrls = (
     await db
       .select({
@@ -264,6 +268,7 @@ async function deleteScreenshotsForCrawlJob(): Promise<void> {
       })
       .from(crawlJob)
       .leftJoin(crawledPage, eq(crawledPage.crawlJobId, crawlJob.id))
+      .where(eq(crawlJob.id, crawlJobId))
   )
     .map((row) => row.screenshotUrl)
     .filter(Boolean) as string[];
@@ -277,7 +282,7 @@ async function deleteScreenshotsForCrawlJob(): Promise<void> {
 export async function deleteCrawl(crawlId: number): Promise<ActionResult> {
   try {
     // 1️⃣ Delete all screenshots from Vercel Blob storage (recursively)
-    await deleteScreenshotsForCrawl();
+    await deleteScreenshotsForCrawl({ crawlId });
 
     // 2️⃣ Delete records for this crawl
     await db.delete(crawl).where(eq(crawl.id, crawlId)).execute();
@@ -292,7 +297,11 @@ export async function deleteCrawl(crawlId: number): Promise<ActionResult> {
   }
 }
 
-async function deleteScreenshotsForCrawl(): Promise<void> {
+async function deleteScreenshotsForCrawl({
+  crawlId,
+}: {
+  crawlId: number;
+}): Promise<void> {
   const allScreenshotUrls = (
     await db
       .select({
@@ -301,6 +310,7 @@ async function deleteScreenshotsForCrawl(): Promise<void> {
       .from(crawl)
       .leftJoin(crawlJob, eq(crawl.id, crawlJob.crawlId))
       .leftJoin(crawledPage, eq(crawledPage.crawlJobId, crawlJob.id))
+      .where(eq(crawl.id, crawlId))
   )
     .map((row) => row.screenshotUrl)
     .filter(Boolean) as string[];
