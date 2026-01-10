@@ -207,6 +207,8 @@ const crawlsQuery = db
     pagesCrawled: crawlJob.pagesCrawled,
     pagesDiscovered: crawlJob.pagesDiscovered,
     screenshotUrl: crawledPage.screenshotUrl,
+    skipResources: crawlJob.skipResources,
+    skipScreenshots: crawlJob.skipScreenshots,
     startedAt: crawlJob.startedAt,
     title: crawledPage.title,
     url: crawl.url,

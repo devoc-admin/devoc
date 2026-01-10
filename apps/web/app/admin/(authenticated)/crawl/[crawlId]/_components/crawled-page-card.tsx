@@ -34,7 +34,6 @@ type CrawledPageCardProps = {
 };
 
 export function CrawledPageCard({ page }: CrawledPageCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
   const cardRef = useRef<HTMLLIElement>(null);
   const {
     updateCategoryMutate,
@@ -45,6 +44,8 @@ export function CrawledPageCard({ page }: CrawledPageCardProps) {
     markAsRecentlyToggled,
     focusedCrawledPageId,
     hoveredCrawledPageId,
+    hoveredHttpStatusRange,
+    getHttpStatusRange,
   } = useCrawlDetailsContext();
 
   const isCategoryUpdating = updatingCategoryPageId === page.id;
@@ -52,9 +53,13 @@ export function CrawledPageCard({ page }: CrawledPageCardProps) {
   const isRecentlyToggled = recentlyToggledIds.has(page.id);
   const isFocused = focusedCrawledPageId === page.id;
   const isHovered = hoveredCrawledPageId === page.id;
-  const isHighlighted = isFocused || isHovered;
+  const pageHttpStatusRange = getHttpStatusRange(page.httpStatus);
+  const isHttpStatusHighlighted =
+    hoveredHttpStatusRange !== null &&
+    pageHttpStatusRange === hoveredHttpStatusRange;
+  const isHighlighted = isFocused || isHovered || isHttpStatusHighlighted;
 
-  // Scroll into view when focused
+  // 🔆 Scroll into view when focused
   useEffect(() => {
     if (isFocused && cardRef.current) {
       cardRef.current.scrollIntoView({
@@ -82,21 +87,26 @@ export function CrawledPageCard({ page }: CrawledPageCardProps) {
   return (
     <li
       className={cn(
-        "flex flex-col gap-y-4 rounded-lg border bg-sidebar-strong p-4 transition-shadow duration-300",
-        isRecentlyToggled
-          ? "border-2 border-amber-500 dark:border-amber-400"
-          : "border-border",
-        isHighlighted &&
-          "shadow-[0_0_20px_4px_oklch(0.7363_0.1697_61.12_/_0.4)]"
+        "relative",
+        "flex flex-col gap-y-4",
+        "rounded-lg",
+        "p-4 pb-10",
+        "border border-border",
+        "bg-sidebar-strong",
+        "transition-shadow duration-300",
+        isRecentlyToggled && "border-2 border-amber-500 dark:border-amber-400",
+        isHighlighted && "shadow-[0_0_20px_4px_oklch(0.7363_0.1697_61.12/0.4)]"
       )}
       ref={cardRef}
     >
+      {/* 🖼️ Image */}
       {page.screenshotUrl && (
         <LazyImage alt={page.title ?? "Screenshot"} src={page.screenshotUrl} />
       )}
 
       <div className="flex flex-col gap-y-3">
         <div className="flex items-start justify-between gap-x-4">
+          {/* 🔠 Title and link */}
           <div className="min-w-0 flex-1">
             <TruncatableTitle title={page.title || "Sans titre"} />
             <a
@@ -110,6 +120,7 @@ export function CrawledPageCard({ page }: CrawledPageCardProps) {
             </a>
           </div>
 
+          {/* ✅ Select for audit */}
           <ToggleSwitch
             checked={page.selectedForAudit ?? false}
             disabled={isAuditToggling}
@@ -118,6 +129,7 @@ export function CrawledPageCard({ page }: CrawledPageCardProps) {
           />
         </div>
 
+        {/* 🔛🟡 Toggle category */}
         <div className="flex items-center gap-x-3">
           <CategoryDropdown
             category={page.category}
@@ -127,64 +139,42 @@ export function CrawledPageCard({ page }: CrawledPageCardProps) {
           />
         </div>
 
-        <button
-          className="flex items-center gap-x-1 text-muted-foreground text-sm hover:text-foreground"
-          onClick={() => setIsExpanded(!isExpanded)}
-          type="button"
-        >
-          <ChevronDownIcon
-            className={cn("transition-transform", isExpanded && "rotate-180")}
-            size={16}
-          />
-          <span>{isExpanded ? "Masquer" : "Voir"} les détails</span>
-        </button>
-
-        {isExpanded && (
-          <div className="rounded-md bg-sidebar p-3">
-            <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
-              <span className="text-muted-foreground">
-                Profondeur:{" "}
-                <span className="text-foreground">{page.depth}</span>
-              </span>
-              <span className="text-muted-foreground">
-                HTTP: <HttpStatusBadge status={page.httpStatus} />
-              </span>
-            </div>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {page.hasForm && (
-                <ContentIndicator
-                  icon={<FormInputIcon size={14} />}
-                  label="Formulaire"
-                />
-              )}
-              {page.hasTable && (
-                <ContentIndicator
-                  icon={<TableIcon size={14} />}
-                  label="Tableau"
-                />
-              )}
-              {page.hasMultimedia && (
-                <ContentIndicator
-                  icon={<PlayCircleIcon size={14} />}
-                  label="Multimédia"
-                />
-              )}
-              {page.hasDocuments && (
-                <ContentIndicator
-                  icon={<FileTextIcon size={14} />}
-                  label="Documents"
-                />
-              )}
-              {page.hasAuthentication && (
-                <ContentIndicator icon={<KeyIcon size={14} />} label="Auth" />
-              )}
-            </div>
-          </div>
-        )}
+        {/* 📄 Specificities */}
+        <div className="mt-2 flex flex-wrap gap-2">
+          {page.hasForm && (
+            <ContentIndicator
+              icon={<FormInputIcon size={14} />}
+              label="Formulaire"
+            />
+          )}
+          {page.hasTable && (
+            <ContentIndicator icon={<TableIcon size={14} />} label="Tableau" />
+          )}
+          {page.hasMultimedia && (
+            <ContentIndicator
+              icon={<PlayCircleIcon size={14} />}
+              label="Multimédia"
+            />
+          )}
+          {page.hasDocuments && (
+            <ContentIndicator
+              icon={<FileTextIcon size={14} />}
+              label="Documents"
+            />
+          )}
+          {page.hasAuthentication && (
+            <ContentIndicator icon={<KeyIcon size={14} />} label="Auth" />
+          )}
+        </div>
       </div>
+
+      {/* 🌐 HTTP Status */}
+      <HttpStatusBadge status={page.httpStatus} />
     </li>
   );
 }
+
+/* ✅ Select for audit */
 
 interface ToggleSwitchProps {
   checked: boolean;
@@ -227,6 +217,7 @@ function ToggleSwitch({
   );
 }
 
+/* 🔛🟡 Select category */
 type CategoryDropdownProps = {
   category: PageCategory;
   disabled?: boolean;
@@ -303,25 +294,36 @@ function ContentIndicator({ icon, label }: ContentIndicatorProps) {
   );
 }
 
+// --------------------------------
+// 🌐 HTTP Status Badge
+
 type HttpStatusBadgeProps = {
   status: number | null;
 };
 
 function HttpStatusBadge({ status }: HttpStatusBadgeProps) {
-  if (status === null)
-    return <span className="text-muted-foreground">N/A</span>;
+  if (status === null) return null;
 
+  const isInfo = status >= 100 && status < 200;
   const isSuccess = status >= 200 && status < 300;
   const isRedirect = status >= 300 && status < 400;
-  const isError = status >= 400;
+  const isClientError = status >= 400 && status < 500;
+  const isServerError = status >= 500;
 
   return (
     <span
       className={cn(
-        "font-medium",
-        isSuccess && "text-green-600 dark:text-green-400",
-        isRedirect && "text-yellow-600 dark:text-yellow-400",
-        isError && "text-red-600 dark:text-red-400"
+        "absolute right-3 bottom-3 inline-flex items-center rounded-md px-2 py-0.5 font-medium text-xs",
+        isInfo &&
+          "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+        isSuccess &&
+          "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+        isRedirect &&
+          "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+        isClientError &&
+          "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
+        isServerError &&
+          "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
       )}
     >
       {status}
@@ -330,7 +332,7 @@ function HttpStatusBadge({ status }: HttpStatusBadgeProps) {
 }
 
 // --------------------------------
-// Truncatable title with tooltip
+// 🔠 Truncatable title with tooltip
 
 type TruncatableTitleProps = {
   title: string;
@@ -375,8 +377,8 @@ function TruncatableTitle({ title }: TruncatableTitleProps) {
   );
 }
 
-// --------------------------------
-// Lazy image with intersection observer
+// --------------------------------—————————
+// 🖼️ Lazy image w/ intersection observer
 
 type LazyImageProps = {
   alt: string;

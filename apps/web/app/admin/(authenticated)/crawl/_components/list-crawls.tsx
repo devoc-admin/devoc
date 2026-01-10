@@ -1,13 +1,16 @@
 "use client";
 import {
+  ApertureIcon,
   CalendarIcon,
   ClockIcon,
   ExternalLinkIcon,
   EyeIcon,
   FileCheckCornerIcon,
+  FileCheckIcon,
   ImageOffIcon,
   LoaderIcon,
   Trash2Icon,
+  XIcon,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -62,6 +65,7 @@ function CrawlCard(crawl: CrawlResult) {
         <h3 className="now max-w-full truncate font-kanit text-xl">
           {crawl.title}
         </h3>
+        {/* 🌐 Website */}
         <a
           className="flex items-center gap-x-2 text-muted-foreground hover:underline"
           href={crawl.url}
@@ -72,7 +76,12 @@ function CrawlCard(crawl: CrawlResult) {
         </a>
         {/* Details */}
         <div className="mt-2 space-y-0.5">
-          {/* Crawled */}
+          {/* 🗓️ Started */}
+          <div className="flex items-center gap-x-1 text-sm">
+            <CalendarIcon size={14} />
+            <span>{formatDate(crawl.createdAt)}</span>
+          </div>
+          {/* 🔢 Crawled */}
           <div className="flex items-center gap-x-1 text-sm">
             <FileCheckCornerIcon size={14} />
             <span>{crawl.pagesCrawled} pages crawlées</span>
@@ -87,18 +96,35 @@ function CrawlCard(crawl: CrawlResult) {
               )}
             </span>
           </div>
-          {/* 🗓️ Started */}
+          {/* 📸 Skip screenshots ? */}
           <div className="flex items-center gap-x-1 text-sm">
-            <CalendarIcon size={14} />
-            <span>{formatDate(crawl.createdAt)}</span>
+            {crawl.skipScreenshots ? (
+              <XIcon className="text-red-500 dark:text-red-500" size={16} />
+            ) : (
+              <ApertureIcon size={15} />
+            )}
+            <span>
+              {crawl.skipScreenshots
+                ? "Pas de captures écran"
+                : "Captures écran"}
+            </span>
           </div>
-          {/* Discovered */}
-          {/* <div className="flex items-center gap-x-1 text-sm">
-            <FileStackIcon size={14} />
-            <span>{crawl.pagesDiscovered} pages découvertes</span>
-          </div>*/}
+          {/* 🖼️ Skip resources ? */}
+          <div className="flex items-center gap-x-1 text-sm">
+            {crawl.skipResources ? (
+              <XIcon className="text-red-500 dark:text-red-500" size={16} />
+            ) : (
+              <FileCheckIcon size={16} />
+            )}
+            <span>
+              {crawl.skipResources
+                ? "Ressources ignorées"
+                : "Ressources chargées"}
+            </span>
+          </div>
         </div>
       </div>
+      {/* 🖼️ Cover */}
       <div className="group relative mt-auto w-fit">
         {crawl.screenshotUrl ? (
           <Image
@@ -116,6 +142,13 @@ function CrawlCard(crawl: CrawlResult) {
           <DeleteCrawlButton crawlId={crawl.id} />
         </div>
       </div>
+      {/* 🆕 Button */}
+      <Link
+        className="rounded-md bg-primary py-3 text-center font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
+        href={`/admin/crawl/${crawl.id}`}
+      >
+        Voir le crawl
+      </Link>
     </li>
   );
 }
@@ -164,7 +197,11 @@ function DeleteCrawlButton({ crawlId }: { crawlId: number }) {
             isPending && "block"
           )}
           disabled={isPending}
-          onClick={() => deleteCrawlMutate(crawlId)}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            deleteCrawlMutate(crawlId);
+          }}
           type="button"
         >
           {isPending ? (

@@ -12,7 +12,7 @@ import { useCrawlContext } from "../crawl-context";
 import { isValidWebsite } from "../crawl-utils";
 
 const MAX_PAGES_CRAWLED = 500;
-const DEFAULT_PAGES_CRAWLED = 50;
+const DEFAULT_PAGES_CRAWLED = 200;
 
 const MAX_DEPTH = 10;
 const DEFAULT_DEPTH = 3;
@@ -142,7 +142,7 @@ export function CrawlForm() {
                   {(field) => (
                     <div>
                       <Label className="font-kanit text-lg">
-                        Pages en parallèle
+                        Pages traitées en parallèle
                       </Label>
                       <div className="flex items-center gap-4">
                         <Slider
@@ -163,26 +163,7 @@ export function CrawlForm() {
                 </crawlForm.Field>
               )}
             </crawlForm.Subscribe>
-            {/* 🚀 Skip resources */}
-            <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
-              {(isSubmitting) => (
-                <crawlForm.Field name="skipResources">
-                  {(field) => (
-                    <CustomCheckbox
-                      checked={field.state.value}
-                      disabled={currentJobRunning || isSubmitting}
-                      handleChange={(checked) =>
-                        field.handleChange(checked === true)
-                      }
-                      name="skipResources"
-                    >
-                      Mode rapide (ignorer images, fonts, CSS)
-                    </CustomCheckbox>
-                  )}
-                </crawlForm.Field>
-              )}
-            </crawlForm.Subscribe>
-            {/* 📷 Skip screenshots */}
+            {/* 📷🚫 Skip screenshots */}
             <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
               {(isSubmitting) => (
                 <crawlForm.Field name="skipScreenshots">
@@ -195,7 +176,26 @@ export function CrawlForm() {
                       }
                       name="skipScreenshots"
                     >
-                      Ignorer les captures d'ecran
+                      Ne pas prendre de captures écran
+                    </CustomCheckbox>
+                  )}
+                </crawlForm.Field>
+              )}
+            </crawlForm.Subscribe>
+            {/* 🖼️🚫 Skip resources */}
+            <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+              {(isSubmitting) => (
+                <crawlForm.Field name="skipResources">
+                  {(field) => (
+                    <CustomCheckbox
+                      checked={field.state.value}
+                      disabled={currentJobRunning || isSubmitting}
+                      handleChange={(checked) =>
+                        field.handleChange(checked === true)
+                      }
+                      name="skipResources"
+                    >
+                      Ignorer les ressources (images, fonts, CSS)
                     </CustomCheckbox>
                   )}
                 </crawlForm.Field>

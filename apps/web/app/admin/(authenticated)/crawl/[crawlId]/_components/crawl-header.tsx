@@ -7,11 +7,16 @@ import {
   FileCheckIcon,
   LayersIcon,
   ListChecksIcon,
+  RotateCcwIcon,
+  SearchIcon,
   XIcon,
 } from "lucide-react";
-import { useMemo } from "react";
+import { cn } from "@/lib/utils";
 import type { PageCategory } from "../crawl-details-actions";
-import { useCrawlDetailsContext } from "../crawl-details-context";
+import {
+  type HttpStatusRange,
+  useCrawlDetailsContext,
+} from "../crawl-details-context";
 
 const CATEGORY_LABELS: Record<PageCategory, string> = {
   accessibility: "Accessibilité",
@@ -47,36 +52,39 @@ const ALL_CATEGORIES: PageCategory[] = [
   "other",
 ];
 
+const ALL_HTTP_STATUS_RANGES: HttpStatusRange[] = [
+  "1xx",
+  "2xx",
+  "3xx",
+  "4xx",
+  "5xx",
+];
+
+const HTTP_STATUS_LABELS: Record<HttpStatusRange, string> = {
+  "1xx": "1xx Info",
+  "2xx": "2xx Succès",
+  "3xx": "3xx Redirect",
+  "4xx": "4xx Erreur client",
+  "5xx": "5xx Erreur serveur",
+};
+
 export function CrawlHeader() {
-  const { crawlDetails, selectedPages, focusCrawledPage, hoverCrawledPage } =
-    useCrawlDetailsContext();
-
-  // Compute which categories have at least one selected page and map to first page ID
-  const categoryToPageId = useMemo(() => {
-    const mapping = new Map<PageCategory, string>();
-    for (const page of selectedPages) {
-      if (!mapping.has(page.category)) {
-        mapping.set(page.category, page.id);
-      }
-    }
-    return mapping;
-  }, [selectedPages]);
-
-  function handleCategoryClick(category: PageCategory) {
-    const pageId = categoryToPageId.get(category);
-    if (pageId) {
-      focusCrawledPage(pageId);
-    }
-  }
-
-  function handleCategoryHover(category: PageCategory | null) {
-    if (category === null) {
-      hoverCrawledPage(null);
-    } else {
-      const pageId = categoryToPageId.get(category);
-      hoverCrawledPage(pageId ?? null);
-    }
-  }
+  const {
+    crawlDetails,
+    selectedPages,
+    searchQuery,
+    setSearchQuery,
+    selectedCategoryFilter,
+    selectedHttpStatusFilter,
+    hoveredHttpStatusRange,
+    setHoveredHttpStatusRange,
+    coveredCategories,
+    handleHttpStatusClick,
+    handleCategoryClick,
+    httpStatusCounts,
+    hasActiveFilters,
+    handleResetFilters,
+  } = useCrawlDetailsContext();
 
   if (!crawlDetails) return null;
 
@@ -85,7 +93,7 @@ export function CrawlHeader() {
   return (
     <div className="rounded-lg bg-sidebar p-6">
       <div className="mb-6">
-        <h1 className="font-kanit font-semibold text-3xl">Détails du crawl</h1>
+        <h1 className="font-kanit font-semibold text-3xl">Détail du crawl</h1>
         <a
           className="mt-1 flex items-center gap-x-2 text-muted-foreground hover:underline"
           href={crawl.crawlUrl ?? ""}
@@ -95,6 +103,29 @@ export function CrawlHeader() {
           <span className="truncate">{crawl.crawlUrl}</span>
           <ExternalLinkIcon className="shrink-0" size={16} />
         </a>
+      </div>
+
+      <div className="relative mb-6 max-w-[700px]">
+        <SearchIcon
+          className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
+          size={18}
+        />
+        <input
+          className="h-10 w-full rounded-md border border-input bg-background pr-10 pl-10 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Rechercher par titre, URL, catégorie ou statut HTTP..."
+          type="text"
+          value={searchQuery}
+        />
+        {searchQuery && (
+          <button
+            className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            onClick={() => setSearchQuery("")}
+            type="button"
+          >
+            <XIcon size={18} />
+          </button>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
@@ -129,59 +160,87 @@ export function CrawlHeader() {
         <h2 className="mb-3 font-kanit font-medium text-lg">
           Catégories pour l'audit
         </h2>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-3">
           {ALL_CATEGORIES.map((category) => {
-            const isCovered = categoryToPageId.has(category);
+            const isCovered = coveredCategories.has(category);
+            const isActive = selectedCategoryFilter === category;
             return (
               <CategoryIndicator
+                isActive={isActive}
                 isCovered={isCovered}
                 key={category}
                 label={CATEGORY_LABELS[category]}
                 onClick={
                   isCovered ? () => handleCategoryClick(category) : undefined
                 }
-                onMouseEnter={
-                  isCovered ? () => handleCategoryHover(category) : undefined
-                }
-                onMouseLeave={
-                  isCovered ? () => handleCategoryHover(null) : undefined
-                }
               />
             );
           })}
         </div>
       </div>
+
+      <div className="mt-6">
+        <h2 className="mb-3 font-kanit font-medium text-lg">Statuts HTTP</h2>
+        <div className="flex flex-wrap gap-2">
+          {ALL_HTTP_STATUS_RANGES.map((range) => {
+            const count = httpStatusCounts[range];
+            const hasPages = count > 0;
+            const isActive = selectedHttpStatusFilter === range;
+            const isHovered = hoveredHttpStatusRange === range;
+            return (
+              <HttpStatusIndicator
+                count={count}
+                isActive={isActive}
+                isHovered={isHovered}
+                key={range}
+                label={HTTP_STATUS_LABELS[range]}
+                onClick={
+                  hasPages ? () => handleHttpStatusClick(range) : undefined
+                }
+                onMouseEnter={
+                  hasPages ? () => setHoveredHttpStatusRange(range) : undefined
+                }
+                onMouseLeave={() => setHoveredHttpStatusRange(null)}
+                range={range}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      {hasActiveFilters && (
+        <div className="mt-6">
+          <button
+            className={cn(
+              "inline-flex items-center gap-x-2",
+              "rounded-md",
+              "bg-muted",
+              "text-foreground",
+              "px-3 py-2",
+              "cursor-pointer",
+              "text-sm"
+            )}
+            onClick={handleResetFilters}
+            type="button"
+          >
+            <RotateCcwIcon size={16} />
+            Réinitialiser les filtres
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
 // --------------------------------
-// ✅ Category indicator
-
-interface CategoryIndicatorProps {
-  label: string;
-  isCovered: boolean;
-  onClick?: () => void;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
-}
+// 🟡 Category
 
 function CategoryIndicator({
   label,
   isCovered,
+  isActive,
   onClick,
-  onMouseEnter,
-  onMouseLeave,
 }: CategoryIndicatorProps) {
-  const baseClasses =
-    "inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-sm transition-all";
-  const colorClasses = isCovered
-    ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-    : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400";
-  const interactiveClasses = onClick
-    ? "cursor-pointer hover:ring-2 hover:ring-offset-1 hover:ring-green-500/50 dark:hover:ring-green-400/50"
-    : "";
-
   const content = (
     <>
       {isCovered ? (
@@ -193,13 +252,25 @@ function CategoryIndicator({
     </>
   );
 
+  // ✅
   if (onClick) {
     return (
       <button
-        className={`${baseClasses} ${colorClasses} ${interactiveClasses}`}
+        className={cn(
+          "inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-sm transition-all",
+          "cursor-pointer",
+          "hover:ring-2 hover:ring-green-500/50 hover:ring-offset-2 dark:hover:ring-green-400/50",
+          "focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:ring-offset-2 dark:focus-visible:ring-green-400/50",
+          "focus-visible:outline-none",
+          "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+          isCovered &&
+            isActive &&
+            "bg-primary text-primary-foreground ring-2 ring-primary ring-offset-2 hover:ring-primary",
+          isCovered &&
+            !isActive &&
+            "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+        )}
         onClick={onClick}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
         type="button"
       >
         {content}
@@ -207,17 +278,124 @@ function CategoryIndicator({
     );
   }
 
-  return <span className={`${baseClasses} ${colorClasses}`}>{content}</span>;
+  // 🚫
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-sm transition-all",
+        "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
+      )}
+    >
+      {content}
+    </span>
+  );
+}
+
+type CategoryIndicatorProps = {
+  label: string;
+  isCovered: boolean;
+  isActive: boolean;
+  onClick?: () => void;
+};
+
+// --------------------------------
+// 🌐 HTTP Status indicator
+
+type HttpStatusIndicatorProps = {
+  range: HttpStatusRange;
+  label: string;
+  count: number;
+  isActive: boolean;
+  isHovered: boolean;
+  onClick?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+};
+
+const HTTP_STATUS_COLORS: Record<
+  HttpStatusRange,
+  { base: string; active: string }
+> = {
+  "1xx": {
+    active: "bg-blue-500 text-white ring-blue-500",
+    base: "bg-blue-100 text-blue-700 ring-blue-500 dark:bg-blue-900/30 dark:text-blue-400",
+  },
+  "2xx": {
+    active: "bg-green-500 text-white ring-green-500",
+    base: "bg-green-100 text-green-700 dark:bg-green-900/30 ring-green-500 dark:text-green-400",
+  },
+  "3xx": {
+    active: "bg-yellow-500 text-white ring-yellow-500",
+    base: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+  },
+  "4xx": {
+    active: "bg-orange-500 text-white  ring-orange-500",
+    base: "bg-orange-100 text-orange-700 ring-orange-500 dark:bg-orange-900/30 dark:text-orange-400",
+  },
+  "5xx": {
+    active: "bg-red-500 text-white ring-red-500",
+    base: "bg-red-100 text-red-700 ring-red-500 dark:bg-red-900/30 dark:text-red-400",
+  },
+};
+
+function HttpStatusIndicator({
+  range,
+  label,
+  count,
+  isActive,
+  onClick,
+  onMouseEnter,
+  onMouseLeave,
+}: HttpStatusIndicatorProps) {
+  const hasPages = count > 0;
+  const colors = HTTP_STATUS_COLORS[range];
+
+  const isDisabled = !(isActive || hasPages);
+  const isClickable = !!onClick;
+  return (
+    <button
+      className={cn(
+        "inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-sm transition-all",
+        isDisabled && "bg-muted text-muted-foreground opacity-50",
+        isActive && hasPages && colors.active,
+        isActive && hasPages && "ring-2 ring-offset-2",
+        !isActive && hasPages && colors.base,
+        isClickable && "cursor-pointer",
+        isClickable && "hover:ring-2 hover:ring-offset-2",
+        isClickable && "focus-visible:ring-2 focus-visible:ring-offset-2",
+        "focus-visible:outline-none"
+      )}
+      disabled={!hasPages}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      type="button"
+    >
+      {/* 🔤 2XX */}
+      <span>{label}</span>
+      {/* 🔢 Count */}
+      <span
+        className={cn(
+          "ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs",
+          isActive && !hasPages && "bg-white/20 text-inherit",
+          isActive && hasPages && "bg-black/10 dark:bg-white/10",
+          !(isActive || hasPages) && "hidden"
+        )}
+      >
+        {count}
+      </span>
+    </button>
+  );
 }
 
 // --------------------------------
 // 🃏 Stat card
 
-interface StatCardProps {
+type StatCardProps = {
   icon: React.ReactNode;
   label: string;
   value: string | number;
-}
+};
 
 function StatCard({ icon, label, value }: StatCardProps) {
   return (
