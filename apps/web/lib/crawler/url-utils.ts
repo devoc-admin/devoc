@@ -36,16 +36,24 @@ export function normalizeUrl({
       }
     }
 
-    // Build normalized URL
-    let normalized = parsed.origin + pathname;
+    // Build normalized URL - only lowercase protocol and host (they're case-insensitive)
+    // Keep path and query case-sensitive for Linux/Unix servers
+    const normalizedOrigin = `${parsed.protocol.toLowerCase()}//${parsed.host.toLowerCase()}`;
+    let normalized = normalizedOrigin + pathname;
     const queryString = cleanParams.toString();
     if (queryString) {
       normalized += `?${queryString}`;
     }
 
-    return normalized.toLowerCase();
+    return normalized;
   } catch {
-    return url.toLowerCase();
+    // For malformed URLs, try to at least lowercase the protocol/host portion
+    try {
+      const parsed = new URL(url);
+      return `${parsed.protocol.toLowerCase()}//${parsed.host.toLowerCase()}${parsed.pathname}${parsed.search}`;
+    } catch {
+      return url;
+    }
   }
 }
 

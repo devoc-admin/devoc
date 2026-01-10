@@ -1,4 +1,5 @@
 /** biome-ignore-all assist/source/useSortedKeys: database schema */
+
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -185,18 +186,21 @@ export const crawlJob = pgTable(
     maxPages: integer().default(50).notNull(),
     pagesDiscovered: integer().default(0).notNull(),
     pagesCrawled: integer().default(0).notNull(),
+    skipResources: boolean().default(false),
+    skipScreenshots: boolean().default(false),
     errorMessage: text(),
     config: jsonb().$type<CrawlConfig>(),
-    // Technology detection summary
+    // 🤖 Technology detection summary
     primaryCms: text(),
     primaryFramework: text(),
     analyticsTools: jsonb().$type<string[]>(),
     detectedTechCount: integer().default(0),
-    // French-specific technology detection
+    // 🇫🇷 French-specific technology detection
     accessibilityTool: text(),
     consentManager: text(),
     hostingProvider: text(),
     usesDsfr: boolean().default(false),
+    //🗓️ Dates
     startedAt: timestamp({ mode: "string", withTimezone: true }),
     completedAt: timestamp({ mode: "string", withTimezone: true }),
     createdAt: timestamp({ mode: "string", withTimezone: true })

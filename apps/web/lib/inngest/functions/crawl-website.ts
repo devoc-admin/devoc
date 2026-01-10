@@ -132,6 +132,10 @@ export const crawlWebsite = inngest.createFunction(
 
     // 3️⃣ Select pages for RGAA audit
     await step.run("select-pages-for-audit", async () => {
+      // Helper to check if page has successful HTTP status (2xx)
+      const isSuccessfulPage = (page: { httpStatus: number }) =>
+        page.httpStatus >= 200 && page.httpStatus < 300;
+
       const mandatoryCategories = [
         "homepage",
         "contact",
@@ -142,11 +146,12 @@ export const crawlWebsite = inngest.createFunction(
         "authentication",
       ] as const;
 
-      // Select first page for each mandatory category
+      // Select first page for each mandatory category (only 2xx pages)
       const selectedMandatory: string[] = [];
       for (const mandatoryCategory of mandatoryCategories) {
         const selectedPage = result.pages.find(
-          (page) => page.category === mandatoryCategory
+          (page) =>
+            page.category === mandatoryCategory && isSuccessfulPage(page)
         );
         if (selectedPage) {
           selectedMandatory.push(mandatoryCategory);
@@ -157,13 +162,14 @@ export const crawlWebsite = inngest.createFunction(
         }
       }
 
-      // ✨ Select pages with unique characteristics
+      // ✨ Select pages with unique characteristics (only 2xx pages)
       const specialPages = result.pages.filter(
         (page) =>
-          page.characteristics.hasMultimedia ||
-          page.characteristics.hasTable ||
-          page.characteristics.hasForm ||
-          page.characteristics.hasDocuments
+          isSuccessfulPage(page) &&
+          (page.characteristics.hasMultimedia ||
+            page.characteristics.hasTable ||
+            page.characteristics.hasForm ||
+            page.characteristics.hasDocuments)
       );
 
       const maxSpecialPages = 15;
