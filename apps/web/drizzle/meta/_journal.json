@@ -57,6 +57,13 @@
       "when": 1768043970426,
       "tag": "0007_lowly_sinister_six",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1768045308645,
+      "tag": "0008_giant_wendigo",
+      "breakpoints": true
     }
   ]
 }

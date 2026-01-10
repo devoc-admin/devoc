@@ -272,16 +272,21 @@ async function saveTechnologies(
     }
   }
 
-  // 4. Update crawl job summary columns
+  // 4. Update crawl job summary columns (including French tech)
+  const { frenchTech } = detectionResult;
   const nowString = new Date().toISOString();
   await db
     .update(crawlJob)
     .set({
+      accessibilityTool: frenchTech.accessibilityTool ?? null,
       analyticsTools: analyticsToolsList.length ? analyticsToolsList : null,
+      consentManager: frenchTech.consentManager ?? null,
       detectedTechCount: techs.length,
+      hostingProvider: frenchTech.hostingProvider ?? null,
       primaryCms: primaryCms ?? null,
       primaryFramework: primaryFramework ?? null,
       updatedAt: nowString,
+      usesDsfr: frenchTech.usesDsfr,
     })
     .where(eq(crawlJob.id, crawlJobId));
 }

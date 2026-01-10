@@ -3,7 +3,11 @@ import categories from "wapalyzer/categories.json";
 
 // @ts-expect-error - wapalyzer has no types
 import Wappalyzer from "wapalyzer/wappalyzer.js";
-import type { DetectedTechnology, TechnologyDetectionResult } from "./types";
+import type {
+  DetectedTechnology,
+  FrenchTechDetection,
+  TechnologyDetectionResult,
+} from "./types";
 
 // Technology patterns from wapalyzer package
 const techFiles = [
@@ -120,6 +124,168 @@ async function extractPageData(page: Page): Promise<PageData> {
   return data;
 }
 
+/**
+ * Detect French-specific technologies that Wappalyzer might miss
+ */
+async function detectFrenchTech(
+  page: Page,
+  pageData: PageData,
+  responseHeaders: Record<string, string>,
+  wappalyzerTechnologies: DetectedTechnology[]
+): Promise<FrenchTechDetection> {
+  const result: FrenchTechDetection = {
+    usesDsfr: false,
+  };
+
+  // Check if already detected by Wappalyzer
+  const techNames = wappalyzerTechnologies.map((t) => t.name.toLowerCase());
+  const techCategories = wappalyzerTechnologies.map((t) =>
+    t.category.toLowerCase()
+  );
+
+  // 1. Detect DSFR (Design System de l'État)
+  const dsfrDetection = await page.evaluate(() => {
+    // Check for DSFR CSS
+    const dsfrCss = Array.from(document.querySelectorAll("link[href]")).some(
+      (link) => {
+        const href = link.getAttribute("href") || "";
+        return href.includes("dsfr") || href.includes("gouvfr");
+      }
+    );
+
+    // Check for DSFR classes in body
+    const dsfrClasses =
+      document.body.className.includes("fr-") ||
+      document.querySelector(".fr-header") !== null ||
+      document.querySelector(".fr-footer") !== null;
+
+    // Check for window.dsfr
+    const dsfrWindow =
+      typeof (window as unknown as { dsfr?: unknown }).dsfr !== "undefined";
+
+    return dsfrCss || dsfrClasses || dsfrWindow;
+  });
+  result.usesDsfr = dsfrDetection;
+
+  // 2. Detect consent managers
+  const consentManagers = [
+    { name: "Tarteaucitron", patterns: ["tarteaucitron"] },
+    { name: "Axeptio", patterns: ["axeptio"] },
+    { name: "Didomi", patterns: ["didomi"] },
+    { name: "OneTrust", patterns: ["onetrust", "optanon"] },
+    { name: "Cookiebot", patterns: ["cookiebot"] },
+    { name: "CookieFirst", patterns: ["cookiefirst"] },
+    { name: "Quantcast", patterns: ["quantcast"] },
+    { name: "TrustCommander", patterns: ["trustcommander", "trustpid"] },
+  ];
+
+  // Check from Wappalyzer results first
+  for (const tech of wappalyzerTechnologies) {
+    const nameLower = tech.name.toLowerCase();
+    for (const cm of consentManagers) {
+      if (cm.patterns.some((p) => nameLower.includes(p))) {
+        result.consentManager = tech.name;
+        break;
+      }
+    }
+    if (result.consentManager) break;
+  }
+
+  // If not found, check script sources
+  if (!result.consentManager) {
+    const scriptsLower = pageData.scriptSrc.map((s) => s.toLowerCase());
+    for (const cm of consentManagers) {
+      if (
+        scriptsLower.some((src) => cm.patterns.some((p) => src.includes(p)))
+      ) {
+        result.consentManager = cm.name;
+        break;
+      }
+    }
+  }
+
+  // 3. Detect accessibility tools
+  const accessibilityTools = [
+    { name: "RGAA", patterns: ["rgaa"] },
+    { name: "Axe", patterns: ["axe-core", "deque"] },
+    { name: "WAVE", patterns: ["wave.webaim"] },
+    { name: "Siteimprove", patterns: ["siteimprove"] },
+    { name: "AccessiBe", patterns: ["accessibe", "acsbapp"] },
+    { name: "UserWay", patterns: ["userway"] },
+    { name: "EqualWeb", patterns: ["equalweb"] },
+  ];
+
+  // Check from Wappalyzer results first
+  for (const tech of wappalyzerTechnologies) {
+    const nameLower = tech.name.toLowerCase();
+    for (const at of accessibilityTools) {
+      if (at.patterns.some((p) => nameLower.includes(p))) {
+        result.accessibilityTool = tech.name;
+        break;
+      }
+    }
+    if (result.accessibilityTool) break;
+  }
+
+  // If not found, check script sources and HTML
+  if (!result.accessibilityTool) {
+    const scriptsLower = pageData.scriptSrc.map((s) => s.toLowerCase());
+    const htmlLower = pageData.html.toLowerCase();
+    for (const at of accessibilityTools) {
+      if (
+        scriptsLower.some((src) => at.patterns.some((p) => src.includes(p))) ||
+        at.patterns.some((p) => htmlLower.includes(p))
+      ) {
+        result.accessibilityTool = at.name;
+        break;
+      }
+    }
+  }
+
+  // 4. Detect hosting provider from headers
+  const hostingProviders = [
+    { name: "OVH", patterns: ["ovh"] },
+    { name: "Scaleway", patterns: ["scaleway", "scw"] },
+    { name: "Clever Cloud", patterns: ["clever-cloud", "cleverapps"] },
+    { name: "Gandi", patterns: ["gandi"] },
+    { name: "Online.net", patterns: ["online.net", "scaleway"] },
+    { name: "AWS", patterns: ["aws", "amazon", "cloudfront"] },
+    { name: "Google Cloud", patterns: ["google", "gcp", "appspot"] },
+    { name: "Azure", patterns: ["azure", "microsoft"] },
+    { name: "Vercel", patterns: ["vercel"] },
+    { name: "Netlify", patterns: ["netlify"] },
+    { name: "Cloudflare", patterns: ["cloudflare"] },
+  ];
+
+  // Check from Wappalyzer results first (often detects CDN/hosting)
+  for (const tech of wappalyzerTechnologies) {
+    const categoryLower = tech.category.toLowerCase();
+    if (
+      categoryLower.includes("hosting") ||
+      categoryLower.includes("paas") ||
+      categoryLower.includes("cdn")
+    ) {
+      result.hostingProvider = tech.name;
+      break;
+    }
+  }
+
+  // If not found, check headers
+  if (!result.hostingProvider) {
+    const headersLower = Object.entries(responseHeaders).map(
+      ([k, v]) => `${k.toLowerCase()}:${v.toLowerCase()}`
+    );
+    for (const hp of hostingProviders) {
+      if (headersLower.some((h) => hp.patterns.some((p) => h.includes(p)))) {
+        result.hostingProvider = hp.name;
+        break;
+      }
+    }
+  }
+
+  return result;
+}
+
 export async function detectTechnologies({
   page,
   url,
@@ -187,9 +353,18 @@ export async function detectTechnologies({
       }
     );
 
+    // Detect French-specific technologies
+    const frenchTech = await detectFrenchTech(
+      page,
+      pageData,
+      responseHeaders,
+      technologies
+    );
+
     return {
       detectedAt: new Date().toISOString(),
       detectedOnUrl: url,
+      frenchTech,
       technologies,
     };
   } catch (error) {
@@ -198,6 +373,7 @@ export async function detectTechnologies({
     return {
       detectedAt: new Date().toISOString(),
       detectedOnUrl: url,
+      frenchTech: { usesDsfr: false },
       technologies: [],
     };
   }

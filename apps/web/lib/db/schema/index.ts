@@ -192,6 +192,11 @@ export const crawlJob = pgTable(
     primaryFramework: text(),
     analyticsTools: jsonb().$type<string[]>(),
     detectedTechCount: integer().default(0),
+    // French-specific technology detection
+    accessibilityTool: text(),
+    consentManager: text(),
+    hostingProvider: text(),
+    usesDsfr: boolean().default(false),
     startedAt: timestamp({ mode: "string", withTimezone: true }),
     completedAt: timestamp({ mode: "string", withTimezone: true }),
     createdAt: timestamp({ mode: "string", withTimezone: true })

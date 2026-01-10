@@ -62,8 +62,17 @@ export type DetectedTechnology = {
   website?: string;
 };
 
+// French-specific technology detection
+export type FrenchTechDetection = {
+  accessibilityTool?: string;
+  consentManager?: string;
+  hostingProvider?: string;
+  usesDsfr: boolean;
+};
+
 export type TechnologyDetectionResult = {
   detectedAt: string;
   detectedOnUrl: string;
   technologies: DetectedTechnology[];
+  frenchTech: FrenchTechDetection;
 };
