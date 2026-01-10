@@ -154,7 +154,7 @@ function CrawlCard(crawl: CrawlResult) {
 }
 
 function CrawlCardSkeleton() {
-  return <Skeleton className="h-[338px] w-[476px] rounded-md" />;
+  return <Skeleton className="h-84.5 w-119 rounded-md" />;
 }
 
 function NoCrawlFound() {
@@ -165,7 +165,7 @@ function NoCrawlFound() {
 
 function ImagePlaceholder() {
   return (
-    <div className="flex h-[225px] w-[400px] items-center justify-center rounded-md bg-muted shadow-md">
+    <div className="flex h-56.25 w-100 items-center justify-center rounded-md bg-muted shadow-md">
       <ImageOffIcon
         className="size-12 text-muted-foreground"
         strokeWidth={1.5}

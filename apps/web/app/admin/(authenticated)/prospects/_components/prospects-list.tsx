@@ -5,6 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { ExternalLinkIcon } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -14,12 +15,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Prospect } from "@/lib/db/schema";
+import { cn } from "@/lib/utils";
+import { useProspectsContext } from "../prospects-context";
+import { ProspectAdd } from "./prospect-add";
 
-export function ProspectsList({ prospects }: { prospects: Prospect[] }) {
-  const table = useProspectsList({ prospects });
+export function ProspectsList() {
+  const { prospects } = useProspectsContext();
+  const table = useProspectsList();
+  if (!prospects) return null;
+
   return (
     <div className="space-y-8 rounded-md bg-sidebar p-8">
-      <h2 className="font-kanit font-semibold text-3xl">Prospects</h2>
+      <div className="flex items-center gap-x-8">
+        <h2 className="font-kanit font-semibold text-3xl">Prospects</h2>
+        <ProspectAdd />
+      </div>
       <div>
         {prospects?.length > 0 ? (
           <Table>
@@ -60,35 +70,41 @@ export function ProspectsList({ prospects }: { prospects: Prospect[] }) {
   );
 }
 
-function useProspectsList({ prospects }: { prospects: Prospect[] }) {
+function useProspectsList() {
+  const { prospects } = useProspectsContext();
   const columnHelper = createColumnHelper<Prospect>();
 
   const defaultColumns = [
+    //🔠 Name
     columnHelper.accessor("name", {
       cell: ({ getValue }) => getValue(),
       header: "Nom",
     }),
+    // 🟡 Type
     columnHelper.accessor("type", {
       cell: ({ getValue }) => <TypeBadge type={getValue()} />,
       header: "Type",
     }),
+    // 🌐 Website
     columnHelper.accessor("website", {
       cell: ({ getValue }) => {
         const url = getValue();
         if (!url) return <span className="text-muted-foreground">-</span>;
         return (
           <a
-            className="cursor-pointer text-blue-500 underline"
+            className="flex cursor-pointer items-center gap-x-2 text-blue-500 underline"
             href={url}
             rel="noopener noreferrer"
             target="_blank"
           >
-            Voir le site
+            <span>Voir le site</span>
+            <ExternalLinkIcon size={16} />
           </a>
         );
       },
       header: "Site web",
     }),
+    // 📌 Location
     columnHelper.accessor("location", {
       cell: ({ getValue }) => {
         const url = getValue();
@@ -106,6 +122,7 @@ function useProspectsList({ prospects }: { prospects: Prospect[] }) {
       },
       header: "Localisation",
     }),
+    //🗓️ Created at
     columnHelper.accessor("createdAt", {
       cell: ({ getValue }) => formatDate(getValue()),
       header: "Ajouté le",
@@ -114,11 +131,14 @@ function useProspectsList({ prospects }: { prospects: Prospect[] }) {
 
   const table = useReactTable({
     columns: defaultColumns,
-    data: prospects,
+    data: prospects ?? [],
     getCoreRowModel: getCoreRowModel(),
   });
   return table;
 }
+
+// -------------------------------------------
+// 🟡 Type badge (city, EPCI, administration)
 
 function TypeBadge({ type }: { type: Prospect["type"] }) {
   const labels: Record<Prospect["type"], string> = {
@@ -137,12 +157,20 @@ function TypeBadge({ type }: { type: Prospect["type"] }) {
 
   return (
     <span
-      className={`rounded-full px-2 py-1 font-medium text-xs ${colors[type]}`}
+      className={cn(
+        "rounded-full",
+        "px-2 py-1",
+        "font-medium text-xs",
+        colors[type]
+      )}
     >
       {labels[type]}
     </span>
   );
 }
+
+// ------------------------------------
+// 🗓️ Format date
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);

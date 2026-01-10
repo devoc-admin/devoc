@@ -116,7 +116,7 @@ export function CrawlStatusPanel() {
                 {crawlJob.latestPage.screenshotUrl && (
                   <Image
                     alt={crawlJob.latestPage.title ?? "Sans titre"}
-                    className="w-[400px] rounded-md border border-border shadow-md"
+                    className="w-100 rounded-md border border-border shadow-md"
                     height={400}
                     src={crawlJob.latestPage.screenshotUrl}
                     width={400}

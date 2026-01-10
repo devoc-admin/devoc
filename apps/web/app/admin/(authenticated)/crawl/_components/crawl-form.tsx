@@ -78,7 +78,7 @@ export function CrawlForm() {
             )}
           </crawlForm.Subscribe>
           {/* 🔢 Sliders */}
-          <div className="flex w-full max-w-[400px] flex-col gap-y-4">
+          <div className="flex w-full max-w-100 flex-col gap-y-4">
             {/* 🔢 Nb. max de résultats */}
             <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
               {(isSubmitting) => (

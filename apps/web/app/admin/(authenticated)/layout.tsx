@@ -22,7 +22,7 @@ export default function AdminLayout({
             <div>
               <Sidebar />
             </div>
-            <div className="relative grow rounded-xl bg-sidebar-strong p-6">
+            <div className="relative grow overflow-auto rounded-xl bg-sidebar-strong p-6">
               {children}
             </div>
           </div>
