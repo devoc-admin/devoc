@@ -5,6 +5,7 @@ import {
   ExternalLinkIcon,
   EyeIcon,
   FileCheckCornerIcon,
+  ImageOffIcon,
   LoaderIcon,
   Trash2Icon,
 } from "lucide-react";
@@ -98,8 +99,8 @@ function CrawlCard(crawl: CrawlResult) {
           </div>*/}
         </div>
       </div>
-      {crawl.screenshotUrl && (
-        <div className="group relative mt-auto w-fit">
+      <div className="group relative mt-auto w-fit">
+        {crawl.screenshotUrl ? (
           <Image
             alt="Screenshot"
             className="rounded-md shadow-md"
@@ -107,12 +108,14 @@ function CrawlCard(crawl: CrawlResult) {
             src={crawl.screenshotUrl}
             width={400}
           />
-          <div className="absolute right-2 bottom-2 flex gap-x-2">
-            <SeeCrawlButton crawlId={crawl.id} />
-            <DeleteCrawlButton crawlId={crawl.id} />
-          </div>
+        ) : (
+          <ImagePlaceholder />
+        )}
+        <div className="absolute right-2 bottom-2 flex gap-x-2">
+          <SeeCrawlButton crawlId={crawl.id} />
+          <DeleteCrawlButton crawlId={crawl.id} />
         </div>
-      )}
+      </div>
     </li>
   );
 }
@@ -124,6 +127,17 @@ function CrawlCardSkeleton() {
 function NoCrawlFound() {
   return (
     <p className="text-center text-muted-foreground">Aucun crawl trouvé</p>
+  );
+}
+
+function ImagePlaceholder() {
+  return (
+    <div className="flex h-[225px] w-[400px] items-center justify-center rounded-md bg-muted shadow-md">
+      <ImageOffIcon
+        className="size-12 text-muted-foreground"
+        strokeWidth={1.5}
+      />
+    </div>
   );
 }
 

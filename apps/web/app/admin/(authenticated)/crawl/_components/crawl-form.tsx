@@ -182,6 +182,25 @@ export function CrawlForm() {
                 </crawlForm.Field>
               )}
             </crawlForm.Subscribe>
+            {/* 📷 Skip screenshots */}
+            <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+              {(isSubmitting) => (
+                <crawlForm.Field name="skipScreenshots">
+                  {(field) => (
+                    <CustomCheckbox
+                      checked={field.state.value}
+                      disabled={currentJobRunning || isSubmitting}
+                      handleChange={(checked) =>
+                        field.handleChange(checked === true)
+                      }
+                      name="skipScreenshots"
+                    >
+                      Ignorer les captures d'ecran
+                    </CustomCheckbox>
+                  )}
+                </crawlForm.Field>
+              )}
+            </crawlForm.Subscribe>
           </div>
           {/* ☑️ Checkboxes */}
           {/*<div className="flex items-center justify-center gap-x-6">*/}
@@ -262,15 +281,24 @@ function useCrawlForm() {
       maxPages: DEFAULT_PAGES_CRAWLED,
       search: "",
       skipResources: false,
+      skipScreenshots: false,
     },
     onSubmit: ({
-      value: { search, maxDepth, maxPages, skipResources, concurrency },
+      value: {
+        search,
+        maxDepth,
+        maxPages,
+        skipResources,
+        skipScreenshots,
+        concurrency,
+      },
     }) => {
       upsertCrawlMutate({
         concurrency,
         maxDepth,
         maxPages,
         skipResources,
+        skipScreenshots,
         url: search,
       });
     },

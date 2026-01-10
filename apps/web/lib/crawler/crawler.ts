@@ -14,11 +14,13 @@ import {
 } from "@/lib/crawler/url-utils";
 import type { CrawlConfig } from "@/lib/db/schema";
 import { detectCategoryPage } from "./category-detector";
+import { detectTechnologies } from "./technology-detector";
 import type {
   CrawlPageResult,
   CrawlProgressCallback,
   CrawlResult,
   QueueItem,
+  TechnologyDetectionResult,
 } from "./types";
 
 const DEFAULT_DELAY_BETWEEN_REQUESTS = 100;
@@ -62,6 +64,7 @@ export class WebCrawler {
       maxPages: config.maxPages ?? DEFAULT_MAX_PAGES,
       respectRobotsTxt: config.respectRobotsTxt ?? true,
       skipResources: config.skipResources ?? false,
+      skipScreenshots: config.skipScreenshots ?? false,
     };
   }
 
@@ -272,14 +275,27 @@ export class WebCrawler {
       const { category, confidence, characteristics } =
         await detectCategoryPage({ page, url });
 
+      // 🔍 Detect technologies (only on homepage / depth 0)
+      let technologies: TechnologyDetectionResult | undefined;
+      if (depth === 0) {
+        const responseHeaders = response.headers();
+        technologies = await detectTechnologies({
+          page,
+          responseHeaders,
+          url,
+        });
+      }
+
       // 🔗 Extract links
       const links = await this.extractLinksFromPage(page);
 
-      // 📸 Take screenshot and upload to Vercel Blob
-      const screenshotUrl = await this.takeAndUploadScreenshot({
-        normalizedUrl,
-        page,
-      });
+      // 📸 Take screenshot and upload to Vercel Blob (if not skipped)
+      const screenshotUrl = this.config.skipScreenshots
+        ? undefined
+        : await this.takeAndUploadScreenshot({
+            normalizedUrl,
+            page,
+          });
 
       // 🎁 Result
       const nowString = new Date().toISOString();
@@ -295,6 +311,7 @@ export class WebCrawler {
         normalizedUrl,
         responseTime,
         screenshotUrl,
+        technologies,
         title,
         url,
       };

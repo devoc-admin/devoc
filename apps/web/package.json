@@ -11,6 +11,7 @@
     "lint": "bun x ultracite fix",
     "format": "biome format --write",
     "create-admin": "bun run scripts/create-admin.ts",
+    "seed-prospects": "bun --env-file=.env.local run scripts/seed-prospects.ts",
     "check-types": "tsc --noEmit",
     "db:generate": "bun --env-file=.env.local drizzle-kit generate",
     "db:migrate": "bun --env-file=.env.local drizzle-kit migrate",
@@ -63,6 +64,7 @@
     "tailwind-merge": "^3.4.0",
     "three": "^0.182.0",
     "usehooks-ts": "^3.1.1",
+    "wapalyzer": "^6.10.65",
     "zod": "^4.3.5"
   },
   "devDependencies": {

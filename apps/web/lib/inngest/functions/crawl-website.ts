@@ -1,7 +1,13 @@
 import { eq } from "drizzle-orm";
 import { WebCrawler } from "@/lib/crawler";
+import type { TechnologyDetectionResult } from "@/lib/crawler/types";
 import { db } from "@/lib/db";
-import { crawledPage, crawlJob } from "@/lib/db/schema";
+import {
+  crawledPage,
+  crawlJob,
+  crawlJobTechnology,
+  technology,
+} from "@/lib/db/schema";
 import { inngest } from "../client";
 
 type CrawlRequestEvent = {
@@ -14,6 +20,7 @@ type CrawlRequestEvent = {
       delayBetweenRequests: number;
       respectRobotsTxt: boolean;
       skipResources?: boolean;
+      skipScreenshots?: boolean;
       concurrency?: number;
       includePaths?: string[];
       excludePaths?: string[];
@@ -105,6 +112,14 @@ export const crawlWebsite = inngest.createFunction(
             .onConflictDoNothing({
               target: [crawledPage.crawlJobId, crawledPage.normalizedUrl],
             });
+
+          // 🔍 Save detected technologies (only for homepage / depth 0)
+          if (progress.crawledPage.technologies?.technologies?.length) {
+            await saveTechnologies(
+              crawlJobId,
+              progress.crawledPage.technologies
+            );
+          }
         },
       });
     });
@@ -184,3 +199,89 @@ export const crawlWebsite = inngest.createFunction(
     };
   }
 );
+
+/**
+ * Save detected technologies to database
+ */
+async function saveTechnologies(
+  crawlJobId: string,
+  detectionResult: TechnologyDetectionResult
+) {
+  const techs = detectionResult.technologies;
+  if (!techs.length) return;
+
+  // Track summary data
+  let primaryCms: string | undefined;
+  let primaryFramework: string | undefined;
+  const analyticsToolsList: string[] = [];
+
+  for (const tech of techs) {
+    // 1. Upsert technology to master table
+    const [insertedTech] = await db
+      .insert(technology)
+      .values({
+        category: tech.category,
+        icon: tech.icon,
+        name: tech.name,
+        slug: tech.slug,
+        website: tech.website,
+      })
+      .onConflictDoUpdate({
+        set: {
+          category: tech.category,
+          icon: tech.icon,
+          name: tech.name,
+          website: tech.website,
+        },
+        target: technology.slug,
+      })
+      .returning({ id: technology.id });
+
+    if (!insertedTech) continue;
+
+    // 2. Link to crawl job via junction table
+    await db
+      .insert(crawlJobTechnology)
+      .values({
+        confidence: tech.confidence,
+        crawlJobId,
+        technologyId: insertedTech.id,
+        version: tech.version,
+      })
+      .onConflictDoNothing({
+        target: [
+          crawlJobTechnology.crawlJobId,
+          crawlJobTechnology.technologyId,
+        ],
+      });
+
+    // 3. Track summary data
+    const categoryLower = tech.category.toLowerCase();
+    if (categoryLower === "cms" && !primaryCms) {
+      primaryCms = tech.name;
+    }
+    if (
+      (categoryLower.includes("framework") ||
+        categoryLower.includes("javascript")) &&
+      !primaryFramework
+    ) {
+      primaryFramework = tech.name;
+    }
+    if (categoryLower.includes("analytics")) {
+      analyticsToolsList.push(tech.name);
+    }
+  }
+
+  // 4. Update crawl job summary columns
+  const nowString = new Date().toISOString();
+  await db
+    .update(crawlJob)
+    .set({
+      analyticsTools: analyticsToolsList.length ? analyticsToolsList : null,
+      detectedTechCount: techs.length,
+      primaryCms: primaryCms ?? null,
+      primaryFramework: primaryFramework ?? null,
+      updatedAt: nowString,
+    })
+    .where(eq(crawlJob.id, crawlJobId));
+}

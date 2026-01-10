@@ -3,6 +3,7 @@ import {
   DoorOpenIcon,
   FileScanIcon,
   type LucideIcon,
+  UsersIcon,
   WaypointsIcon,
 } from "lucide-react";
 import Link from "next/link";
@@ -40,6 +41,13 @@ function Sidebar() {
           pathname="/admin/sites"
         >
           Audits
+        </SidebarLink>
+        <SidebarLink
+          icon={UsersIcon}
+          isActive={pathname === "/admin/prospects"}
+          pathname="/admin/prospects"
+        >
+          Prospects
         </SidebarLink>
       </div>
       {/* ⬇️ Footer */}

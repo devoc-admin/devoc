@@ -162,6 +162,7 @@ export type CrawlConfig = {
   delayBetweenRequests: number;
   respectRobotsTxt: boolean;
   skipResources?: boolean;
+  skipScreenshots?: boolean;
   concurrency?: number;
   includePaths?: string[];
   excludePaths?: string[];
@@ -186,6 +187,11 @@ export const crawlJob = pgTable(
     pagesCrawled: integer().default(0).notNull(),
     errorMessage: text(),
     config: jsonb().$type<CrawlConfig>(),
+    // Technology detection summary
+    primaryCms: text(),
+    primaryFramework: text(),
+    analyticsTools: jsonb().$type<string[]>(),
+    detectedTechCount: integer().default(0),
     startedAt: timestamp({ mode: "string", withTimezone: true }),
     completedAt: timestamp({ mode: "string", withTimezone: true }),
     createdAt: timestamp({ mode: "string", withTimezone: true })
@@ -266,3 +272,97 @@ export const crawledPage = pgTable(
 
 export type CrawledPage = typeof crawledPage.$inferSelect;
 export type NewCrawledPage = typeof crawledPage.$inferInsert;
+
+// Prospects
+
+export const prospectTypeEnum = pgEnum("prospect_type", [
+  "city",
+  "administration",
+  "epci",
+  "other",
+]);
+
+export const prospect = pgTable("prospect", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: text().notNull(),
+  website: text(),
+  location: text(),
+  type: prospectTypeEnum().default("other").notNull(),
+  createdAt: timestamp({ mode: "string", withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp({ mode: "string", withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+});
+
+export type Prospect = typeof prospect.$inferSelect;
+export type NewProspect = typeof prospect.$inferInsert;
+
+// Technology detection
+
+export const technology = pgTable(
+  "technology",
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    name: text().notNull(),
+    slug: text().unique().notNull(),
+    category: text().notNull(),
+    icon: text(),
+    website: text(),
+    createdAt: timestamp({ mode: "string", withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (table) => [
+    index("technology_slug_idx").using("btree", table.slug.asc().nullsLast()),
+    index("technology_category_idx").using(
+      "btree",
+      table.category.asc().nullsLast()
+    ),
+  ]
+);
+
+export type Technology = typeof technology.$inferSelect;
+export type NewTechnology = typeof technology.$inferInsert;
+
+export const crawlJobTechnology = pgTable(
+  "crawl_job_technology",
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    crawlJobId: text().notNull(),
+    technologyId: integer().notNull(),
+    version: text(),
+    confidence: integer().notNull(),
+    createdAt: timestamp({ mode: "string", withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.crawlJobId],
+      foreignColumns: [crawlJob.id],
+      name: "crawl_job_technology_crawlJobId_fkey",
+    }).onDelete("cascade"),
+    foreignKey({
+      columns: [table.technologyId],
+      foreignColumns: [technology.id],
+      name: "crawl_job_technology_technologyId_fkey",
+    }).onDelete("cascade"),
+    index("crawl_job_technology_crawlJobId_idx").using(
+      "btree",
+      table.crawlJobId.asc().nullsLast()
+    ),
+    index("crawl_job_technology_technologyId_idx").using(
+      "btree",
+      table.technologyId.asc().nullsLast()
+    ),
+    unique("crawl_job_technology_unique").on(
+      table.crawlJobId,
+      table.technologyId
+    ),
+  ]
+);
+
+export type CrawlJobTechnology = typeof crawlJobTechnology.$inferSelect;
+export type NewCrawlJobTechnology = typeof crawlJobTechnology.$inferInsert;

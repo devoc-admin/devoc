@@ -1,6 +1,7 @@
 "use server";
 import { del, list } from "@vercel/blob";
 import { and, desc, eq } from "drizzle-orm";
+import { type ActionResult, getErrorMessage } from "@/lib/api";
 import { db } from "@/lib/db";
 import {
   type Crawl,
@@ -23,6 +24,7 @@ export async function upsertCrawl({
   maxDepth,
   maxPages,
   skipResources,
+  skipScreenshots,
   concurrency,
 }: UpsertCrawlParams): Promise<ActionResult<UpsertCrawlResult>> {
   // ✅🌐 Validation de l'URL
@@ -93,6 +95,7 @@ export async function upsertCrawl({
           maxDepth: maxDepth ?? 1,
           maxPages: maxPages ?? 5,
           skipResources: skipResources ?? false,
+          skipScreenshots: skipScreenshots ?? false,
         },
         crawlJobId: insertedCrawlJob.id,
         url: origin,
@@ -121,6 +124,7 @@ type UpsertCrawlParams = {
   maxDepth: number;
   maxPages: number;
   skipResources: boolean;
+  skipScreenshots: boolean;
   concurrency: number;
 };
 
@@ -240,7 +244,7 @@ export async function deleteCrawlJob(
     });
 
     // 2️⃣ Delete all screenshots from Vercel Blob storage (recursively)
-    await deleteScreenshotsForCrawlJob(crawlJobId);
+    await deleteScreenshotsForCrawlJob();
 
     // 3️⃣ Delete records for this crawl job
     await db.delete(crawlJob).where(eq(crawlJob.id, crawlJobId));
@@ -252,7 +256,7 @@ export async function deleteCrawlJob(
   }
 }
 
-async function deleteScreenshotsForCrawlJob(crawlJobId: string): Promise<void> {
+async function deleteScreenshotsForCrawlJob(): Promise<void> {
   const allScreenshotUrls = (
     await db
       .select({
@@ -273,7 +277,7 @@ async function deleteScreenshotsForCrawlJob(crawlJobId: string): Promise<void> {
 export async function deleteCrawl(crawlId: number): Promise<ActionResult> {
   try {
     // 1️⃣ Delete all screenshots from Vercel Blob storage (recursively)
-    await deleteScreenshotsForCrawl(crawlId);
+    await deleteScreenshotsForCrawl();
 
     // 2️⃣ Delete records for this crawl
     await db.delete(crawl).where(eq(crawl.id, crawlId)).execute();
@@ -288,7 +292,7 @@ export async function deleteCrawl(crawlId: number): Promise<ActionResult> {
   }
 }
 
-async function deleteScreenshotsForCrawl(crawlId: number): Promise<void> {
+async function deleteScreenshotsForCrawl(): Promise<void> {
   const allScreenshotUrls = (
     await db
       .select({
@@ -341,23 +345,6 @@ async function deleteAllScreenshots(): Promise<void> {
 
     cursor = response.cursor;
   } while (cursor);
-}
-// ------------------------------------------------------------
-type ActionSuccess<T = void> = T extends void
-  ? { success: true }
-  : { success: true; response: T };
-
-type ActionFailure = { success: false; error: string };
-
-type ActionResult<T = void> = ActionSuccess<T> | ActionFailure;
-
-// ------------------------------------------------------------
-function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return "Erreur inconnue";
 }
 
 // -------------------------------------------------

@@ -1,82 +1,33 @@
-/** biome-ignore-all lint/suspicious/noEmptyBlockStatements: context case */
 /** biome-ignore-all assist/source/useSortedKeys: needs specific order here */
 "use client";
-import {
-  type UseMutateFunction,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
-import { useQueryState } from "nuqs";
+import type { UseMutateFunction } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useEffectEvent } from "react";
-import {
-  type CrawlJobQueryResult,
-  deleteAllCrawls,
-  deleteCrawl,
-  deleteCrawlJob,
-  getCrawlJob,
-  type ListCrawlsResult,
-  listCrawls,
-  type UpsertCrawlResult,
-  upsertCrawl,
+import type {
+  CrawlJobQueryResult,
+  ListCrawlsResult,
+  UpsertCrawlResult,
 } from "./crawl-actions";
+import {
+  useDeleteAllCrawls,
+  useDeleteCrawl,
+  useDeleteCrawlJob,
+  useUpsertCrawl,
+} from "./crawl-mutations";
+import { useCrawlJob, useCrawlsList } from "./crawl-queries";
 
-type CrawlContextType = {
-  // 👁️ See current crawl job
-  crawlJob: CrawlJobQueryResult | undefined;
-  crawlJobId: string | null;
-  handleCrawlJobId: (id: string) => void;
-  removeCrawlJobId: () => void;
-
-  //➕ Upsert crawl
-  upsertCrawlResult: UpsertCrawlResult | undefined;
-  upsertCrawlMutate: UseMutateFunction<
-    UpsertCrawlResult,
-    Error,
-    {
-      url: string;
-      maxDepth: number;
-      maxPages: number;
-      skipResources: boolean;
-      concurrency: number;
-    },
-    unknown
-  >;
-  upsertCrawlIsPending: boolean;
-  upsertCrawlIsError: boolean;
-  upsertCrawlIsSuccess: boolean;
-  upsertCrawlError: string;
-
-  //📝 Crawls
-  crawls?: ListCrawlsResult;
-  crawlsAreLoading: boolean;
-
-  // 🚮 Delete a crawl
-  deletingCrawlId: number | undefined;
-  crawlDeletionIsPending: boolean;
-  deleteCrawlMutate: UseMutateFunction<boolean, Error, number, unknown>;
-
-  //  🚮 Delete a crawl job
-  deleteCrawlJobMutate: UseMutateFunction<boolean, Error, string, unknown>;
-  deleteCrawlJobIsPending: boolean;
-
-  // 🚮🚮🚮 Delete alls crawls
-  deleteAllCrawlsMutate: UseMutateFunction<boolean, Error, void, unknown>;
-  allCrawlsDeletionIsPending: boolean;
-  allCrawlsDeletionIsError: boolean;
-  allCrawlsDeletionIsSuccess: boolean;
-};
+/** biome-ignore lint/suspicious/noEmptyBlockStatements: special case */
+function emptyFn() {}
 
 const CrawlContext = createContext<CrawlContextType>({
   // 👁️ See current crawl job
   crawlJob: undefined,
   crawlJobId: null,
-  handleCrawlJobId: () => {},
-  removeCrawlJobId: () => {},
+  handleCrawlJobId: emptyFn,
+  removeCrawlJobId: emptyFn,
 
   //➕ Upsert crawl
   upsertCrawlResult: undefined,
-  upsertCrawlMutate: () => {},
+  upsertCrawlMutate: emptyFn,
   upsertCrawlIsPending: false,
   upsertCrawlIsError: false,
   upsertCrawlIsSuccess: false,
@@ -89,16 +40,16 @@ const CrawlContext = createContext<CrawlContextType>({
   // 🚮 Delete a crawl
   deletingCrawlId: undefined,
   crawlDeletionIsPending: false,
-  deleteCrawlMutate: () => {},
+  deleteCrawlMutate: emptyFn,
 
   // 🚮🚮🚮 Delete alls crawls
-  deleteAllCrawlsMutate: () => {},
+  deleteAllCrawlsMutate: emptyFn,
   allCrawlsDeletionIsPending: false,
   allCrawlsDeletionIsError: false,
   allCrawlsDeletionIsSuccess: false,
 
   // 🚮 Delete a crawl job
-  deleteCrawlJobMutate: () => {},
+  deleteCrawlJobMutate: emptyFn,
   deleteCrawlJobIsPending: false,
 });
 
@@ -197,6 +148,55 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
 }
 
 // --------------------------------------
+// 🔠 Types
+type CrawlContextType = {
+  // 👁️ See current crawl job
+  crawlJob: CrawlJobQueryResult | undefined;
+  crawlJobId: string | null;
+  handleCrawlJobId: (id: string) => void;
+  removeCrawlJobId: () => void;
+
+  //➕ Upsert crawl
+  upsertCrawlResult: UpsertCrawlResult | undefined;
+  upsertCrawlMutate: UseMutateFunction<
+    UpsertCrawlResult,
+    Error,
+    {
+      url: string;
+      maxDepth: number;
+      maxPages: number;
+      skipResources: boolean;
+      skipScreenshots: boolean;
+      concurrency: number;
+    },
+    unknown
+  >;
+  upsertCrawlIsPending: boolean;
+  upsertCrawlIsError: boolean;
+  upsertCrawlIsSuccess: boolean;
+  upsertCrawlError: string;
+
+  //📝 Crawls
+  crawls?: ListCrawlsResult;
+  crawlsAreLoading: boolean;
+
+  // 🚮 Delete a crawl
+  deletingCrawlId: number | undefined;
+  crawlDeletionIsPending: boolean;
+  deleteCrawlMutate: UseMutateFunction<boolean, Error, number, unknown>;
+
+  //  🚮 Delete a crawl job
+  deleteCrawlJobMutate: UseMutateFunction<boolean, Error, string, unknown>;
+  deleteCrawlJobIsPending: boolean;
+
+  // 🚮🚮🚮 Delete alls crawls
+  deleteAllCrawlsMutate: UseMutateFunction<boolean, Error, void, unknown>;
+  allCrawlsDeletionIsPending: boolean;
+  allCrawlsDeletionIsError: boolean;
+  allCrawlsDeletionIsSuccess: boolean;
+};
+
+// --------------------------------------
 // 🪝 Hook
 export function useCrawlContext() {
   const context = useContext(CrawlContext);
@@ -206,164 +206,4 @@ export function useCrawlContext() {
   }
 
   return context;
-}
-
-// --------------------------------------
-// ➕ Upsert crawl
-
-//🪝
-function useUpsertCrawl() {
-  return useMutation({
-    mutationFn: async ({
-      url,
-      maxDepth,
-      maxPages,
-      skipResources,
-      concurrency,
-    }: {
-      url: string;
-      maxDepth: number;
-      maxPages: number;
-      skipResources: boolean;
-      concurrency: number;
-    }) => {
-      const result = await upsertCrawl({
-        url,
-        maxDepth,
-        maxPages,
-        skipResources,
-        concurrency,
-      });
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      return result.response;
-    },
-  });
-}
-
-// --------------------------------------
-// 👁️ See current crawl job
-function useCrawlJob() {
-  const queryClient = useQueryClient();
-  const [crawlJobId, setCrawlJobId] = useQueryState("crawlJobId");
-
-  function handleCrawlJobId(id: string) {
-    setCrawlJobId(id);
-  }
-
-  function removeCrawlJobId() {
-    setCrawlJobId(null);
-  }
-
-  const { data } = useQuery({
-    enabled: !!crawlJobId,
-    queryFn: async () => {
-      if (!crawlJobId) return null;
-      const result = await getCrawlJob(crawlJobId);
-      if (!result.success) {
-        removeCrawlJobId();
-        throw new Error(result.error);
-      }
-      return result;
-    },
-    queryKey: ["crawl-status", crawlJobId],
-    refetchInterval: (query) => {
-      const data = query.state.data;
-      if (!data) return 2000;
-      // 🥱 Stop polling when job is finished
-      if (["completed", "failed", "cancelled"].includes(data.response.status)) {
-        queryClient.invalidateQueries({ queryKey: ["list-crawls"] });
-        removeCrawlJobId();
-        return false;
-      }
-      return 1000; // Poll every second
-    },
-    select: (data) => data?.response,
-  });
-
-  return {
-    crawlJob: data,
-    crawlJobId,
-    handleCrawlJobId,
-    removeCrawlJobId,
-  };
-}
-
-// --------------------------------------
-// 📝 List crawls
-
-function useCrawlsList() {
-  const { data: crawls, isLoading } = useQuery({
-    queryKey: ["list-crawls"],
-    queryFn: async () => {
-      const result = await listCrawls();
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      return result;
-    },
-    select: (data) => data.response,
-  });
-
-  return {
-    crawls,
-    crawlsAreLoading: isLoading,
-  };
-}
-
-// --------------------------------------
-// 🚮 Delete a crawl job
-
-// 🪝
-function useDeleteCrawlJob() {
-  return useMutation({
-    mutationFn: async (crawlJobId: string) => {
-      const result = await deleteCrawlJob(crawlJobId);
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      return true;
-    },
-  });
-}
-
-// --------------------------------------
-// 🚮 Delete a crawl
-
-// 🪝
-function useDeleteCrawl() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async (crawlId: number) => {
-      const result = await deleteCrawl(crawlId);
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      return true;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["list-crawls"] });
-    },
-  });
-}
-
-// --------------------------------------
-// 🚮🚮🚮 Delete all crawls
-
-// 🪝
-function useDeleteAllCrawls() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: async () => {
-      const result = await deleteAllCrawls();
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      return true;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["list-crawls"] });
-    },
-  });
 }

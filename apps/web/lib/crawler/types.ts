@@ -18,6 +18,7 @@ export type CrawlPageResult = {
   contentType: string;
   responseTime: number;
   screenshotUrl?: string;
+  technologies?: TechnologyDetectionResult;
   links: string[];
   error?: string;
 };
@@ -48,4 +49,21 @@ export type CategoryResult = {
   category: PageCategory;
   confidence: number;
   characteristics: PageCharacteristics;
+};
+
+// Technology detection types
+export type DetectedTechnology = {
+  name: string;
+  slug: string;
+  category: string;
+  version?: string;
+  confidence: number;
+  icon?: string;
+  website?: string;
+};
+
+export type TechnologyDetectionResult = {
+  detectedAt: string;
+  detectedOnUrl: string;
+  technologies: DetectedTechnology[];
 };

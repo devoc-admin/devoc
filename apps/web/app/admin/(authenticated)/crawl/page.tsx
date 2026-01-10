@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { CrawlPageContent } from "./crawl-page-content";
+import { CrawlPageContent } from "./crawl";
 
 export default function CrawlPage() {
   return (
