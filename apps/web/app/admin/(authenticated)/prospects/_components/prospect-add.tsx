@@ -180,6 +180,72 @@ export function ProspectAdd() {
                   </div>
                 )}
               </form.Field>
+              {/* 🗺️ Coordinates (optional) */}
+              <div className="col-span-2">
+                <Label className="text-muted-foreground text-sm">
+                  Coordonnées (optionnel - pour la vue carte)
+                </Label>
+                <div className="mt-1 grid grid-cols-2 gap-x-4">
+                  <form.Field
+                    name="latitude"
+                    validators={{
+                      onSubmit: ({ value }) => {
+                        if (!value) return;
+                        const num = Number.parseFloat(value);
+                        if (Number.isNaN(num) || num < -90 || num > 90)
+                          return "Latitude invalide (-90 à 90)";
+                      },
+                    }}
+                  >
+                    {(field) => (
+                      <div>
+                        <CustomInput
+                          name={field.name}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            field.handleChange(e.target.value)
+                          }
+                          placeholder="Latitude (ex: 48.8566)"
+                          value={field.state.value}
+                        />
+                        {!field.state.meta.isValid && (
+                          <ErrorMessage>
+                            {field.state.meta.errors.join(", ")}
+                          </ErrorMessage>
+                        )}
+                      </div>
+                    )}
+                  </form.Field>
+                  <form.Field
+                    name="longitude"
+                    validators={{
+                      onSubmit: ({ value }) => {
+                        if (!value) return;
+                        const num = Number.parseFloat(value);
+                        if (Number.isNaN(num) || num < -180 || num > 180)
+                          return "Longitude invalide (-180 à 180)";
+                      },
+                    }}
+                  >
+                    {(field) => (
+                      <div>
+                        <CustomInput
+                          name={field.name}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            field.handleChange(e.target.value)
+                          }
+                          placeholder="Longitude (ex: 2.3522)"
+                          value={field.state.value}
+                        />
+                        {!field.state.meta.isValid && (
+                          <ErrorMessage>
+                            {field.state.meta.errors.join(", ")}
+                          </ErrorMessage>
+                        )}
+                      </div>
+                    )}
+                  </form.Field>
+                </div>
+              </div>
             </div>
             <form.Subscribe selector={(state) => state.isSubmitting}>
               {(isSubmitting) => (
@@ -202,15 +268,19 @@ export function ProspectAdd() {
   );
 }
 
-type Prospect = {
+type ProspectFormData = {
   location: string;
   name: string;
   type: ProspectType;
   website: string;
+  latitude: string;
+  longitude: string;
 };
 
-const defaultProspect: Prospect = {
+const defaultProspect: ProspectFormData = {
+  latitude: "",
   location: "",
+  longitude: "",
   name: "",
   type: "city",
   website: "",
@@ -221,7 +291,11 @@ function useProspectForm() {
   const form = useForm({
     defaultValues: defaultProspect,
     onSubmit: ({ value }) => {
-      addProspectMutate(value);
+      addProspectMutate({
+        ...value,
+        latitude: value.latitude || undefined,
+        longitude: value.longitude || undefined,
+      });
     },
   });
 

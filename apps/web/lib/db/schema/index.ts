@@ -299,6 +299,8 @@ export const prospect = pgTable("prospect", {
   name: text().notNull(),
   website: text(),
   location: text(),
+  latitude: text(),
+  longitude: text(),
   type: prospectTypeEnum().default("other").notNull(),
   createdAt: timestamp({ mode: "string", withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)

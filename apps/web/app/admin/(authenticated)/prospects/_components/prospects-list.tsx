@@ -65,57 +65,60 @@ import { isValidMapsUrl, isValidUrlFormat } from "@/utils/valid-url-format";
 import { useProspectsContext } from "../prospects-context";
 import { PROSPECT_TYPES, type ProspectType } from "../prospects-types";
 import { ProspectAdd } from "./prospect-add";
+import { ProspectsMap } from "./prospects-map";
+import { ViewToggle } from "./view-toggle";
 
 export function ProspectsList() {
-  const { prospects } = useProspectsContext();
+  const { prospects, viewMode } = useProspectsContext();
   const table = useProspectsList();
   if (!prospects) return null;
+
+  const ProspectsTable = () =>
+    prospects?.length > 0 ? (
+      <Table>
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <TableHead key={header.id}>
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </TableHead>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows.map((row) => (
+            <TableRow key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <TableCell key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    ) : (
+      <div>Aucun prospect enregistré.</div>
+    );
 
   return (
     <div className="space-y-8 rounded-md bg-sidebar p-8">
       <div className="flex items-center gap-x-8">
         <h2 className="font-kanit font-semibold text-3xl">Prospects</h2>
       </div>
-      <div className="flex items-center gap-x-6">
-        <SearchProspects />
-        <ProspectAdd />
+      <div className="flex items-center justify-between gap-x-6">
+        <div className="flex items-center gap-x-6">
+          <SearchProspects />
+          <ProspectAdd />
+        </div>
+        <ViewToggle />
       </div>
-      <div>
-        {prospects?.length > 0 ? (
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id}>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        ) : (
-          <div>Aucun prospect enregistré.</div>
-        )}
-      </div>
+      <div>{viewMode === "map" ? <ProspectsMap /> : <ProspectsTable />}</div>
     </div>
   );
 }
@@ -538,6 +541,74 @@ function EditProspectButton({ prospect }: { prospect: Prospect }) {
                 </div>
               )}
             </form.Field>
+            {/* 🗺️ Coordinates (optional) */}
+            <div className="col-span-2">
+              <Label className="text-muted-foreground text-sm">
+                Coordonnées (optionnel - pour la vue carte)
+              </Label>
+              <div className="mt-1 grid grid-cols-2 gap-x-4">
+                <form.Field
+                  name="latitude"
+                  validators={{
+                    onSubmit: ({ value }) => {
+                      if (!value) return;
+                      const num = Number.parseFloat(value);
+                      if (Number.isNaN(num) || num < -90 || num > 90)
+                        return "Latitude invalide (-90 à 90)";
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <div>
+                      <Input
+                        className="h-10"
+                        name={field.name}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          field.handleChange(e.target.value)
+                        }
+                        placeholder="Latitude (ex: 48.8566)"
+                        value={field.state.value}
+                      />
+                      {!field.state.meta.isValid && (
+                        <ErrorMessage>
+                          {field.state.meta.errors.join(", ")}
+                        </ErrorMessage>
+                      )}
+                    </div>
+                  )}
+                </form.Field>
+                <form.Field
+                  name="longitude"
+                  validators={{
+                    onSubmit: ({ value }) => {
+                      if (!value) return;
+                      const num = Number.parseFloat(value);
+                      if (Number.isNaN(num) || num < -180 || num > 180)
+                        return "Longitude invalide (-180 à 180)";
+                    },
+                  }}
+                >
+                  {(field) => (
+                    <div>
+                      <Input
+                        className="h-10"
+                        name={field.name}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          field.handleChange(e.target.value)
+                        }
+                        placeholder="Longitude (ex: 2.3522)"
+                        value={field.state.value}
+                      />
+                      {!field.state.meta.isValid && (
+                        <ErrorMessage>
+                          {field.state.meta.errors.join(", ")}
+                        </ErrorMessage>
+                      )}
+                    </div>
+                  )}
+                </form.Field>
+              </div>
+            </div>
           </div>
           <form.Subscribe selector={(state) => state.isSubmitting}>
             {(isSubmitting) => (
@@ -563,7 +634,9 @@ function useEditProspectForm(prospect: Prospect) {
   const { editProspectMutate } = useProspectsContext();
   const form = useForm({
     defaultValues: {
+      latitude: prospect.latitude ?? "",
       location: prospect.location ?? "",
+      longitude: prospect.longitude ?? "",
       name: prospect.name ?? "",
       type: prospect.type as ProspectType,
       website: prospect.website ?? "",
@@ -571,7 +644,9 @@ function useEditProspectForm(prospect: Prospect) {
     onSubmit: ({ value }) => {
       editProspectMutate({
         id: prospect.id,
+        latitude: value.latitude || undefined,
         location: value.location,
+        longitude: value.longitude || undefined,
         name: value.name,
         type: value.type,
         website: value.website,

@@ -38,17 +38,23 @@ export async function addProspect({
   type,
   website,
   location,
+  latitude,
+  longitude,
 }: {
   name: string;
   type: ProspectType;
   website: string;
   location: string;
+  latitude?: string;
+  longitude?: string;
 }) {
   try {
     const prospectResult = await db
       .insert(prospect)
       .values({
+        latitude,
         location,
+        longitude,
         name,
         type,
         website,
@@ -70,18 +76,24 @@ export async function editProspect({
   type,
   website,
   location,
+  latitude,
+  longitude,
 }: {
   id: number;
   name: string;
   type: ProspectType;
   website: string;
   location: string;
+  latitude?: string;
+  longitude?: string;
 }) {
   try {
     const prospectResult = await db
       .update(prospect)
       .set({
+        latitude,
         location,
+        longitude,
         name,
         type,
         website,

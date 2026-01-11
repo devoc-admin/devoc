@@ -32,6 +32,8 @@ const ProspectsContext = createContext<ProspectsContext>({
   prospects: [],
   searchQuery: "",
   setSearchQuery: () => {},
+  setViewMode: () => {},
+  viewMode: "table",
 });
 
 export function ProspectsContextProvider({
@@ -43,6 +45,9 @@ export function ProspectsContextProvider({
 
   // 🔍 Search
   const [searchQuery, setSearchQuery] = useState("");
+
+  // 🗺️ View mode
+  const [viewMode, setViewMode] = useState<"table" | "map">("table");
 
   // ➕ Add prospect
   const {
@@ -104,6 +109,8 @@ export function ProspectsContextProvider({
     website: string;
     location: string;
     type: ProspectType;
+    latitude?: string;
+    longitude?: string;
   }) => {
     setEditingProspectId(data.id);
     editProspectMutateOriginal(data);
@@ -144,6 +151,10 @@ export function ProspectsContextProvider({
         //🔍 Search prospects
         searchQuery,
         setSearchQuery,
+
+        // 🗺️ View mode
+        setViewMode,
+        viewMode,
       }}
     >
       {children}
@@ -161,6 +172,8 @@ type ProspectsContext = {
       website: string;
       location: string;
       type: ProspectType;
+      latitude?: string;
+      longitude?: string;
     },
     unknown
   >;
@@ -172,6 +185,8 @@ type ProspectsContext = {
     website: string;
     location: string;
     type: ProspectType;
+    latitude?: string;
+    longitude?: string;
   }) => void;
   editingProspectId: number | undefined;
   isEditingProspect: boolean;
@@ -181,6 +196,8 @@ type ProspectsContext = {
   isDeletingProspect: boolean;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  viewMode: "table" | "map";
+  setViewMode: (mode: "table" | "map") => void;
 };
 
 // -------------------------

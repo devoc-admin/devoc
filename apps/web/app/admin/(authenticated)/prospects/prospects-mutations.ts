@@ -11,13 +11,24 @@ export function useAddProspectMutation() {
       website,
       location,
       type,
+      latitude,
+      longitude,
     }: {
       name: string;
       website: string;
       location: string;
       type: ProspectType;
+      latitude?: string;
+      longitude?: string;
     }) => {
-      const result = await addProspect({ location, name, type, website });
+      const result = await addProspect({
+        latitude,
+        location,
+        longitude,
+        name,
+        type,
+        website,
+      });
 
       if (!result.success) {
         throw new Error(result.error);
@@ -44,14 +55,26 @@ export function useEditProspectMutation() {
       website,
       location,
       type,
+      latitude,
+      longitude,
     }: {
       id: number;
       name: string;
       website: string;
       location: string;
       type: ProspectType;
+      latitude?: string;
+      longitude?: string;
     }) => {
-      const result = await editProspect({ id, location, name, type, website });
+      const result = await editProspect({
+        id,
+        latitude,
+        location,
+        longitude,
+        name,
+        type,
+        website,
+      });
 
       if (!result.success) {
         throw new Error(result.error);
