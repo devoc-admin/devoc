@@ -71,6 +71,20 @@
       "when": 1768078375794,
       "tag": "0009_unusual_amazoness",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1768147566704,
+      "tag": "0010_remarkable_marten_broadcloak",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1768148355446,
+      "tag": "0011_rare_sway",
+      "breakpoints": true
     }
   ]
 }

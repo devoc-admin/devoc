@@ -317,6 +317,7 @@ function useCrawlForm() {
   // ⛔🍞 Toast error
   useEffect(() => {
     if (upsertCrawlIsError) {
+      console.error(upsertCrawlError);
       toast("Une erreur est survenue lors du crawl du site", {
         description: upsertCrawlError,
         icon: "❌",

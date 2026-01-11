@@ -57,7 +57,7 @@ export function CrawlStatusPanel() {
           <span>
             Pages crawlées :{" "}
             <strong>
-              {crawlJob.pagesCrawled} / {crawlJob.pagesDiscovered}
+              {crawlJob.pagesCrawled} / {crawlJob.maxPages}
             </strong>
           </span>
           {isRunning && (

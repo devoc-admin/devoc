@@ -10,6 +10,7 @@ import {
   ImageOffIcon,
   LoaderIcon,
   Trash2Icon,
+  UserRoundPenIcon,
   XIcon,
 } from "lucide-react";
 import Image from "next/image";
@@ -96,6 +97,28 @@ function CrawlCard(crawl: CrawlResult) {
               )}
             </span>
           </div>
+          {/*🙋 Author */}
+          {(crawl.author || crawl.authorUrl) && (
+            <div className="flex items-center gap-x-1 text-sm">
+              <UserRoundPenIcon size={14} />
+              <Tooltip>
+                <TooltipTrigger className="max-w-60 overflow-hidden text-ellipsis whitespace-nowrap">
+                  {crawl.author}
+                </TooltipTrigger>
+                <TooltipContent>{crawl.author}</TooltipContent>
+              </Tooltip>
+              {crawl.authorUrl && (
+                <a
+                  className="text-blue-500 underline dark:text-blue-500"
+                  href={crawl.authorUrl}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  (site)
+                </a>
+              )}
+            </div>
+          )}
           {/* 📸 Skip screenshots ? */}
           <div className="flex items-center gap-x-1 text-sm">
             {crawl.skipScreenshots ? (

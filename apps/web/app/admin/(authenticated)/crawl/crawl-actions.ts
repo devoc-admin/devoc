@@ -135,8 +135,11 @@ export type UpsertCrawlResult = { crawlId: number; crawlJobId: string };
 
 const crawlJobQuery = db
   .select({
+    author: crawlJob.author,
+    authorUrl: crawlJob.authorUrl,
     crawlUrl: crawl.url,
     errorMessage: crawlJob.errorMessage,
+    maxPages: crawlJob.maxPages,
     pagesCrawled: crawlJob.pagesCrawled,
     pagesDiscovered: crawlJob.pagesDiscovered,
     status: crawlJob.status,
@@ -169,9 +172,12 @@ export async function getCrawlJob(
 ): Promise<ActionResult<CrawlJobQueryResult>> {
   try {
     // 🐝 Fetch crawl job status
-    const [job] = await crawlJobQuery.where(eq(crawlJob.id, crawlJobId));
+    const [selectedCrawlJob] = await crawlJobQuery.where(
+      eq(crawlJob.id, crawlJobId)
+    );
 
-    if (!job) return { error: "Crawl job not found", success: false };
+    if (!selectedCrawlJob)
+      return { error: "Crawl job not found", success: false };
 
     // ⬇️ Fetch the latest crawled page
     const [latestPage] = await latestPageQuery
@@ -181,12 +187,15 @@ export async function getCrawlJob(
 
     return {
       response: {
-        crawlUrl: job.crawlUrl,
-        errorMessage: job.errorMessage,
+        author: selectedCrawlJob.author,
+        authorUrl: selectedCrawlJob.authorUrl,
+        crawlUrl: selectedCrawlJob.crawlUrl,
+        errorMessage: selectedCrawlJob.errorMessage,
         latestPage: latestPage ?? null,
-        pagesCrawled: job.pagesCrawled,
-        pagesDiscovered: job.pagesDiscovered,
-        status: job.status,
+        maxPages: selectedCrawlJob.maxPages,
+        pagesCrawled: selectedCrawlJob.pagesCrawled,
+        pagesDiscovered: selectedCrawlJob.pagesDiscovered,
+        status: selectedCrawlJob.status,
       },
       success: true,
     };
@@ -201,6 +210,8 @@ export async function getCrawlJob(
 // 📝 List crawls
 const crawlsQuery = db
   .select({
+    author: crawlJob.author,
+    authorUrl: crawlJob.authorUrl,
     completedAt: crawlJob.completedAt,
     createdAt: crawl.createdAt,
     id: crawl.id,
@@ -239,11 +250,16 @@ export async function deleteCrawlJob(
   crawlJobId: string
 ): Promise<ActionResult> {
   try {
-    // 1️⃣ Send cancellation event to Inngest to stop the running job
-    await inngest.send({
-      data: { crawlJobId },
-      name: "crawl/crawl.cancelled",
-    });
+    // 1️⃣ Send cancellation event to Inngest to stop the running job (if still running)
+    // This may fail if the job already completed - that's OK, we continue anyway
+    try {
+      await inngest.send({
+        data: { crawlJobId },
+        name: "crawl/crawl.cancelled",
+      });
+    } catch {
+      // Ignore cancellation errors - job may have already finished
+    }
 
     // 2️⃣ Delete all screenshots from Vercel Blob storage (recursively)
     await deleteScreenshotsForCrawlJob({ crawlJobId });
