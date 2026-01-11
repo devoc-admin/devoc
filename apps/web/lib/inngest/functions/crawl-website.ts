@@ -120,6 +120,18 @@ export const crawlWebsite = inngest.createFunction(
               progress.crawledPage.technologies
             );
           }
+
+          // 🏢 Save detected author/signature (only for homepage / depth 0)
+          if (progress.crawledPage.author) {
+            await db
+              .update(crawlJob)
+              .set({
+                author: progress.crawledPage.author.name,
+                authorUrl: progress.crawledPage.author.url,
+                updatedAt: nowString,
+              })
+              .where(eq(crawlJob.id, crawlJobId));
+          }
         },
       });
     });

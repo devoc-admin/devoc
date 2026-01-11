@@ -13,9 +13,11 @@ import {
   toAbsoluteUrl,
 } from "@/lib/crawler/url-utils";
 import type { CrawlConfig } from "@/lib/db/schema";
+import { detectAuthor } from "./author-detector";
 import { detectCategoryPage } from "./category-detector";
 import { detectTechnologies } from "./technology-detector";
 import type {
+  AuthorDetectionResult,
   CrawlPageResult,
   CrawlProgressCallback,
   CrawlResult,
@@ -286,6 +288,12 @@ export class WebCrawler {
         });
       }
 
+      // 🏢 Detect author/signature (only on homepage / depth 0)
+      let author: AuthorDetectionResult | undefined;
+      if (depth === 0) {
+        author = await detectAuthor({ page });
+      }
+
       // 🔗 Extract links
       const links = await this.extractLinksFromPage(page);
 
@@ -300,6 +308,7 @@ export class WebCrawler {
       // 🎁 Result
       const nowString = new Date().toISOString();
       return {
+        author,
         category,
         categoryConfidence: confidence,
         characteristics,

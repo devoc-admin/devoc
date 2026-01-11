@@ -19,6 +19,7 @@ export type CrawlPageResult = {
   responseTime: number;
   screenshotUrl?: string;
   technologies?: TechnologyDetectionResult;
+  author?: AuthorDetectionResult;
   links: string[];
   error?: string;
 };
@@ -75,4 +76,11 @@ export type TechnologyDetectionResult = {
   detectedOnUrl: string;
   technologies: DetectedTechnology[];
   frenchTech: FrenchTechDetection;
+};
+
+// Author/signature detection
+export type AuthorDetectionResult = {
+  name: string;
+  url: string;
+  foundVia: "text" | "title" | "aria-label";
 };

@@ -200,6 +200,9 @@ export const crawlJob = pgTable(
     consentManager: text(),
     hostingProvider: text(),
     usesDsfr: boolean().default(false),
+    // 🏢 Author/signature detection
+    author: text(),
+    authorUrl: text(),
     //🗓️ Dates
     startedAt: timestamp({ mode: "string", withTimezone: true }),
     completedAt: timestamp({ mode: "string", withTimezone: true }),
