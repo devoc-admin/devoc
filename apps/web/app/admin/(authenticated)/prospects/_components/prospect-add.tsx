@@ -2,6 +2,7 @@
 import { useForm } from "@tanstack/react-form";
 import { PlusIcon, UserRoundPlusIcon } from "lucide-react";
 import { VisuallyHidden } from "radix-ui";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,16 +24,24 @@ import { useProspectsContext } from "../prospects-context";
 import { PROSPECT_TYPES, type ProspectType } from "../prospects-types";
 
 export function ProspectAdd() {
+  const [isOpen, setIsOpen] = useState(false);
   const form = useProspectForm();
+  const { isAddedProspect } = useProspectsContext();
+
+  useEffect(() => {
+    if (isAddedProspect) {
+      setIsOpen(false);
+    }
+  }, [isAddedProspect]);
 
   return (
-    <Dialog>
+    <Dialog open={isOpen}>
       <VisuallyHidden.Root>
         <DialogTitle>Ajouter un prospect</DialogTitle>
       </VisuallyHidden.Root>
       <form>
         <DialogTrigger asChild>
-          <Button variant="default">
+          <Button onClick={() => setIsOpen(true)} variant="default">
             <PlusIcon size={18} />
             <span>Ajouter un prospect</span>
           </Button>
