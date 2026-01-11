@@ -1,5 +1,5 @@
 "use server";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { getErrorMessage } from "@/lib/api";
 import { db } from "@/lib/db";
 import { prospect } from "@/lib/db/schema";
@@ -55,6 +55,53 @@ export async function addProspect({
       })
       .returning();
     return { response: prospectResult, success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
+// ✏️ Edit prospect
+
+export async function editProspect({
+  id,
+  name,
+  type,
+  website,
+  location,
+}: {
+  id: number;
+  name: string;
+  type: ProspectType;
+  website: string;
+  location: string;
+}) {
+  try {
+    const prospectResult = await db
+      .update(prospect)
+      .set({
+        location,
+        name,
+        type,
+        website,
+      })
+      .where(eq(prospect.id, id))
+      .returning();
+    return { response: prospectResult, success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
+// 🗑️ Delete prospect
+
+export async function deleteProspect(prospectId: number) {
+  try {
+    await db.delete(prospect).where(eq(prospect.id, prospectId)).execute();
+    return { success: true };
   } catch (error) {
     const message = getErrorMessage(error);
     return { error: message, success: false };

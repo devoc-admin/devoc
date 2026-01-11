@@ -3,13 +3,13 @@ import { useForm } from "@tanstack/react-form";
 import { XIcon } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { isValidWebsite } from "@/actions/validation";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { useCrawlContext } from "../crawl-context";
-import { isValidWebsite } from "../crawl-utils";
 
 const MAX_PAGES_CRAWLED = 500;
 const DEFAULT_PAGES_CRAWLED = 200;

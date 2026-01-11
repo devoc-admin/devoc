@@ -1,8 +1,9 @@
 "use client";
 import { useForm } from "@tanstack/react-form";
-import { PlusIcon, UserRoundPlusIcon } from "lucide-react";
+import { PlusIcon, UserRoundPlusIcon, XIcon } from "lucide-react";
 import { VisuallyHidden } from "radix-ui";
 import { useEffect, useState } from "react";
+import { isValidWebsite } from "@/actions/validation";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { isValidMapsUrl, isValidUrlFormat } from "@/utils/valid-url-format";
 import { useProspectsContext } from "../prospects-context";
 import { PROSPECT_TYPES, type ProspectType } from "../prospects-types";
 
@@ -35,13 +37,13 @@ export function ProspectAdd() {
   }, [isAddedProspect]);
 
   return (
-    <Dialog open={isOpen}>
+    <Dialog onOpenChange={(newOpen) => setIsOpen(newOpen)} open={isOpen}>
       <VisuallyHidden.Root>
         <DialogTitle>Ajouter un prospect</DialogTitle>
       </VisuallyHidden.Root>
       <form>
         <DialogTrigger asChild>
-          <Button onClick={() => setIsOpen(true)} variant="default">
+          <Button variant="default">
             <PlusIcon size={18} />
             <span>Ajouter un prospect</span>
           </Button>
@@ -53,7 +55,14 @@ export function ProspectAdd() {
             </h3>
             <div className="grid grid-cols-2 gap-x-4 gap-y-6 py-4">
               {/* 🔠 Name */}
-              <form.Field name="name">
+              <form.Field
+                name="name"
+                validators={{
+                  onSubmit: ({ value }) => {
+                    if (!value.trim()) return "Le nom est requis";
+                  },
+                }}
+              >
                 {(field) => (
                   <div>
                     <Label>Nom</Label>
@@ -64,6 +73,11 @@ export function ProspectAdd() {
                       }
                       value={field.state.value}
                     />
+                    {!field.state.meta.isValid && (
+                      <ErrorMessage>
+                        {field.state.meta.errors.join(", ")}
+                      </ErrorMessage>
+                    )}
                   </div>
                 )}
               </form.Field>
@@ -97,7 +111,21 @@ export function ProspectAdd() {
                 )}
               </form.Field>
               {/* 🌐 Website */}
-              <form.Field name="website">
+              <form.Field
+                name="website"
+                validators={{
+                  onSubmit: ({ value }) => {
+                    if (!value.trim()) return "Le site web est requis";
+                    if (!isValidUrlFormat(value))
+                      return "L'URL n'est pas valide";
+                  },
+                  onSubmitAsync: async ({ value }) => {
+                    if (!value) return;
+                    const result = await isValidWebsite(value);
+                    if (!result) return "Ce site web n'existe pas";
+                  },
+                }}
+              >
                 {(field) => (
                   <div className="col-span-2">
                     <Label>Site web</Label>
@@ -108,11 +136,32 @@ export function ProspectAdd() {
                       }
                       value={field.state.value}
                     />
+                    {!field.state.meta.isValid && (
+                      <ErrorMessage>
+                        {field.state.meta.errors.join(", ")}
+                      </ErrorMessage>
+                    )}
                   </div>
                 )}
               </form.Field>
               {/* 📌 Location */}
-              <form.Field name="location">
+              <form.Field
+                name="location"
+                validators={{
+                  onSubmit: ({ value }) => {
+                    if (!value.trim()) return "La localisation est requise";
+                    if (!isValidUrlFormat(value))
+                      return "L'URL n'est pas valide";
+                    if (!isValidMapsUrl(value))
+                      return "L'URL doit être un lien Google Maps ou Apple Maps vers un lieu précis";
+                  },
+                  onSubmitAsync: async ({ value }) => {
+                    if (!value) return;
+                    const result = await isValidWebsite(value);
+                    if (!result) return "Cette URL n'existe pas";
+                  },
+                }}
+              >
                 {(field) => (
                   <div className="col-span-2">
                     <Label>Localisation</Label>
@@ -123,18 +172,29 @@ export function ProspectAdd() {
                       }
                       value={field.state.value}
                     />
+                    {!field.state.meta.isValid && (
+                      <ErrorMessage>
+                        {field.state.meta.errors.join(", ")}
+                      </ErrorMessage>
+                    )}
                   </div>
                 )}
               </form.Field>
             </div>
-            <Button
-              className="mx-auto flex items-center gap-x-2"
-              onClick={form.handleSubmit}
-              size="lg"
-            >
-              <UserRoundPlusIcon className="shrink-0" size={22} />
-              <span>Ajouter</span>
-            </Button>
+            <form.Subscribe selector={(state) => state.isSubmitting}>
+              {(isSubmitting) => (
+                <Button
+                  className="mx-auto flex items-center gap-x-2"
+                  disabled={isSubmitting}
+                  loading={isSubmitting}
+                  onClick={form.handleSubmit}
+                  size="lg"
+                >
+                  <UserRoundPlusIcon className="shrink-0" size={22} />
+                  <span>Ajouter</span>
+                </Button>
+              )}
+            </form.Subscribe>
           </div>
         </DialogContent>
       </form>
@@ -170,4 +230,16 @@ function useProspectForm() {
 
 function CustomInput({ ...props }) {
   return <Input className="h-10" {...props} />;
+}
+
+function ErrorMessage({ children }: { children: string }) {
+  return (
+    <div
+      className="flex items-center gap-x-0.5 font-normal text-red-500 text-sm"
+      role="alert"
+    >
+      <XIcon size={16} />
+      {children}
+    </div>
+  );
 }
