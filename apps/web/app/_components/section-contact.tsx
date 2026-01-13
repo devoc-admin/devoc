@@ -2,7 +2,6 @@
 import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import LaserFlow from "@/components/react-bits/laser-flow";
-import GlowLine from "@/components/sera-ui/glow-line";
 import {
   Card,
   CardContent,
@@ -35,6 +34,12 @@ const contactItems: ContactItem[] = [
     title: "Téléphone",
   },
   {
+    content: "+33 6 58 88 97 01",
+    href: "tel:+33658889701",
+    icon: <PhoneIcon size={26} />,
+    title: "Téléphone 2",
+  },
+  {
     content: "Carcassonne, France",
     href: "https://maps.app.goo.gl/HSWRizckJvyuXuDP7",
     icon: <MapPinIcon size={26} />,
@@ -54,7 +59,6 @@ export default function Contact() {
       id="contact"
       ref={sectionRef}
     >
-      <GlowLine color="orange" orientation="horizontal" position="0px" />
       {/* 🆎 Title */}
       <SectionTitle
         className="z-10"
