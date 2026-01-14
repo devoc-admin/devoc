@@ -6,12 +6,10 @@ import type { LucideIcon } from "lucide-react";
 import {
   ArrowRightIcon,
   BotIcon,
-  BrushIcon,
   HandshakeIcon,
   LaptopIcon,
   Repeat2Icon,
   ServerIcon,
-  SmartphoneIcon,
   WandSparklesIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
@@ -67,122 +65,74 @@ type ServiceCardProps = {
   subtitle?: string;
 };
 
-type ServiceCategorieProps = {
-  title: string;
-  services: ServiceCardProps[];
-};
-
-const services: ServiceCategorieProps[] = [
+const services: ServiceCardProps[] = [
   {
-    services: [
-      {
-        description:
-          "Offrez-vous un site web moderne et fluide ! Suivez votre audience avec nos outils et proposez facilement de nouveaux contenus pour vos visiteurs.",
-        features: [
-          "Versions mobile et tablette comprises",
-          "Référencement optimisé",
-          "Amélioration du taux de conversion",
-        ],
-        Icon: LaptopIcon,
-        id: "site-web",
-        subtitle:
-          "Affirmez votre présence en ligne avec un site ultra rapide et moderne",
-        title: "Site web",
-      },
-      {
-        description:
-          "Créez une expérience inédite au plus proche de vos utilisateurs, donnez-leur accès à tous vos services dans la paume de leurs mains.",
-        features: [
-          "Compatible Android et iOS",
-          "Expérience fluide et personnalisée",
-          "Notifications push et accès hors-ligne",
-        ],
-        Icon: SmartphoneIcon,
-        id: "mobile",
-        subtitle: "Offrez une expérience embarquée unique à vos utilisateurs",
-        title: "Mobile",
-      },
-      {
-        description:
-          "Nous vous accompagnons dans la création de votre charte graphique et la confection de vos supports de communication.",
-        features: [
-          "Logo sur mesure",
-          "Charte graphique",
-          "Supports print et web",
-          "Kit communication pour les réseaux",
-        ],
-        Icon: BrushIcon,
-        id: "design",
-        subtitle:
-          "Découvrez votre identité visuelle pour vous démarquer et vous imposer",
-        title: "Design",
-      },
+    description:
+      "Offrez-vous une identité numérique moderne et fluide ! Suivez votre audience avec nos outils et proposez facilement de nouveaux contenus pour vos visiteurs.",
+    features: [
+      "Versions mobile, tablette comprises",
+      "Référencement optimisé",
+      "Logo sur mesure",
+      "Charte graphique",
     ],
-    title: "Identité & Rayonnement",
+    Icon: LaptopIcon,
+    id: "web-design",
+    subtitle:
+      "Affirmez votre présence en ligne avec un site ultra rapide et moderne",
+    title: "Web Design",
   },
   {
-    services: [
-      {
-        description:
-          "Besoin d'automatiser des tâches répétitives ? Nous vous aidons à créer des automatisations pour booster votre productivité.",
-        features: [
-          "Intégration de l'IA dans vos processus",
-          "Amélioration de la productivité",
-          "Réduction des coûts",
-        ],
-        Icon: BotIcon,
-        id: "ai",
-        subtitle: "Automatiser vos tâches et réduire vos coûts.",
-        title: "Automatisation & IA",
-      },
-      {
-        description:
-          "Nous bâtissons des fondations numériques solides et locales. Reprenez le contrôle total de vos données et de vos outils de production.",
-        features: [
-          "Hébergement",
-          "Deploiement de services",
-          "Monitoring & Sauvegardes",
-        ],
-        Icon: ServerIcon,
-        id: "infra",
-        subtitle: "Construisez des infrastructures robustes et résilientes.",
-        title: "Infrastructure",
-      },
-      {
-        description:
-          "Besoin d'améliorer le référencement, la performance ou l'accessibilité de votre site web ? Nous vous livrons un audit complet et une optimisation adaptée à vos besoins.",
-        features: [
-          "Audit SEO et performance",
-          "Conformité RGAA 4.1 pour l'accessibilité",
-          "Conformité RGPD et RGS",
-        ],
-        Icon: WandSparklesIcon,
-        id: "audit",
-        subtitle:
-          "Boostez vos performances, renforcez votre sécurité et votre accessibilité",
-        title: "Audit",
-      },
+    description:
+      "Besoin d'automatiser des tâches répétitives ? Nous vous aidons à créer des automatisations pour booster votre productivité.",
+    features: [
+      "Intégration de l'IA dans vos processus",
+      "Amélioration de la productivité",
+      "Réduction des coûts",
     ],
-    title: "Ingénierie & Systèmes",
+    Icon: BotIcon,
+    id: "automation",
+    subtitle: "Automatisez vos tâches et réduisez vos coûts.",
+    title: "Automatisation",
   },
   {
-    services: [
-      {
-        description:
-          "Appropriez-vous vos outils et devenez complètement autonomes avec notre formation comprise. Nous nous occupons également de la maintenance et des mises à jour de vos applications.",
-        features: [
-          "Formation en présentiel",
-          "Support réactif",
-          "Maintenance continue",
-        ],
-        Icon: HandshakeIcon,
-        id: "support",
-        subtitle:
-          "Restez serein avec notre expertise et notre soutien continu.",
-        title: "Formation",
-      },
+    description:
+      "Nous bâtissons des fondations numériques solides et locales. Reprenez le contrôle total de vos données et de vos outils de production.",
+    features: [
+      "Hébergement",
+      "Deploiement de services",
+      "Monitoring & Sauvegardes",
     ],
-    title: "Accompagnement",
+    Icon: ServerIcon,
+    id: "infra",
+    subtitle: "Construisez des infrastructures robustes et résilientes.",
+    title: "Infrastructure",
+  },
+  {
+    description:
+      "Besoin d'améliorer le référencement, la performance ou l'accessibilité de votre site web ? Nous vous livrons un audit complet et une optimisation adaptée à vos besoins.",
+    features: [
+      "Audit SEO et performance",
+      "Conformité RGAA 4.1 pour l'accessibilité",
+      "Conformité RGPD et RGS",
+    ],
+    Icon: WandSparklesIcon,
+    id: "audit",
+    subtitle:
+      "Boostez vos performances, renforcez votre sécurité et votre accessibilité",
+    title: "Audit",
+  },
+  {
+    description:
+      "Appropriez-vous vos outils et devenez complètement autonomes avec notre formation comprise. Nous nous occupons également de la maintenance et des mises à jour de vos applications.",
+    features: [
+      "Formation en présentiel",
+      "Support réactif",
+      "Maintenance continue",
+    ],
+    Icon: HandshakeIcon,
+    id: "support",
+    subtitle: "Restez serein avec notre expertise et notre soutien continu.",
+    title: "Formation",
   },
 ];
 
@@ -191,7 +141,10 @@ function ServiceCards() {
 
   return (
     <motion.div
-      className={cn("w-full max-w-[1300px]", "flex flex-col gap-16")}
+      className={cn(
+        "w-full max-w-[1300px]",
+        "flex flex-wrap justify-center gap-6"
+      )}
       initial={{ opacity: 0, y: 200 }}
       transition={{
         duration: 0.5,
@@ -200,50 +153,9 @@ function ServiceCards() {
       whileInView={{ opacity: 1, y: 0 }}
     >
       {services.map((service, index) => (
-        <CategorySection
-          index={index}
-          key={service.title}
-          services={service.services}
-          title={service.title}
-        />
+        <ServiceCard index={index} key={service.title} {...service} />
       ))}
     </motion.div>
-  );
-}
-
-function CategorySection({
-  title,
-  services,
-  index,
-}: ServiceCategorieProps & { index: number }) {
-  return (
-    <div className="flex flex-col gap-6">
-      <h3
-        className={cn(
-          "font-kanit font-semibold",
-          "text-2xl text-primary-foreground",
-          "@sm:text-3xl"
-        )}
-      >
-        {title}
-      </h3>
-      <div
-        className={cn(
-          "flex flex-col gap-6",
-          "md:flex-row md:gap-8",
-          services.length === 1 && "md:justify-center"
-        )}
-      >
-        {services.map((service, serviceIndex) => (
-          <div
-            className="md:min-w-[280px] md:max-w-[400px] md:flex-1"
-            key={service.id}
-          >
-            <ServiceCard index={serviceIndex} {...service} />
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -263,6 +175,7 @@ function ServiceCard({
     <div
       className={cn(
         "@container relative aspect-4/5",
+        "w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)]",
         // Only use perspective on desktop
         isDesktop && "perspective-[2000px]"
       )}
