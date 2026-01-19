@@ -300,6 +300,11 @@ export class WebCrawler {
       // 🔗 Extract links
       const links = await this.extractLinksFromPage(page);
 
+      // 🍪 Dismiss cookie banner before screenshot
+      if (!this.config.skipScreenshots) {
+        await this.dismissCookieBanner(page);
+      }
+
       // 📸 Take screenshot and upload to Vercel Blob (if not skipped)
       const screenshotUrl = this.config.skipScreenshots
         ? undefined
@@ -360,6 +365,43 @@ export class WebCrawler {
       }
     }
     return [...new Set(absoluteLinks)];
+  }
+
+  /**
+   * Dismiss cookie consent banner if present
+   */
+  private async dismissCookieBanner(page: Page): Promise<void> {
+    const acceptSelectors = [
+      // Common French accept buttons
+      'button:has-text("Accepter tout")',
+      'button:has-text("Tout accepter")',
+      'button:has-text("Accepter")',
+      'button:has-text("J\'accepte")',
+      // Common English accept buttons
+      'button:has-text("Accept all")',
+      'button:has-text("Accept")',
+      // Common consent libraries
+      ".tarteaucitronAllow",
+      "#onetrust-accept-btn-handler",
+      "#CybsearchotBtnAllowAll",
+      '[data-testid="cookie-accept"]',
+      '[id*="cookie"] button[id*="accept"]',
+      '[class*="cookie"] button[class*="accept"]',
+      '[class*="consent"] button[class*="accept"]',
+    ];
+
+    try {
+      for (const selector of acceptSelectors) {
+        const button = page.locator(selector).first();
+        if (await button.isVisible({ timeout: 200 })) {
+          await button.click();
+          await page.waitForTimeout(300);
+          return;
+        }
+      }
+    } catch {
+      // No banner found or click failed - continue anyway
+    }
   }
 
   /**
