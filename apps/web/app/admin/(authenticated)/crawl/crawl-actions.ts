@@ -139,6 +139,30 @@ type UpsertCrawlParams = {
 export type UpsertCrawlResult = { crawlId: number; crawlJobId: string };
 
 // --------------------------------------
+// 🔍 Get running crawl job (if any)
+
+export async function getRunningCrawlJob(): Promise<
+  ActionResult<{ crawlJobId: string } | null>
+> {
+  try {
+    const [runningJob] = await db
+      .select({ id: crawlJob.id })
+      .from(crawlJob)
+      .where(eq(crawlJob.status, "running"))
+      .limit(1);
+
+    return {
+      response: runningJob ? { crawlJobId: runningJob.id } : null,
+      success: true,
+    };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    console.error("Error checking for running crawl job:", message);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
 // 🔁 Get crawl job
 
 const crawlJobQuery = db

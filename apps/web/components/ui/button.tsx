@@ -73,7 +73,8 @@ const buttonVariants = cva(
           /* 🗿 Icon */ "has-[>svg]:px-2.5",
         ),
         lg: cn(
-          /* ↔️ Size */ "h-10",
+          /* ↔️ Size */ "h-12",
+          /* 🔤 Text */ "text-base",
           /* ⭕ Radius */ "rounded-md",
           /* 🫷Padding */ "px-6",
           /* 🗿 Icon */ "has-[>svg]:px-4",

@@ -393,17 +393,35 @@ export class WebCrawler {
         });
       }
 
-      // Check for token for Vercel Blob
+      // Check for token for Vercel Blob - fall back to local if missing
       if (!process.env.BLOB_READ_WRITE_TOKEN) {
-        console.error("📸 BLOB_READ_WRITE_TOKEN is not set");
-        return undefined;
+        console.warn(
+          "📸 BLOB_READ_WRITE_TOKEN not set, falling back to local storage"
+        );
+        return await this.saveScreenshotLocally({
+          safeFilename,
+          screenshot,
+        });
       }
 
-      const filename = `screenshots/${this.crawlJobId}/${safeFilename}.jpg`;
-      const blob = await put(filename, screenshot, { access: "public" });
-      return blob.url;
+      // Try Vercel Blob upload
+      try {
+        const filename = `screenshots/${this.crawlJobId}/${safeFilename}.jpg`;
+        const blob = await put(filename, screenshot, { access: "public" });
+        return blob.url;
+      } catch (blobError) {
+        // Vercel Blob failed - fall back to local storage
+        console.warn(
+          "📸 Vercel Blob upload failed, falling back to local storage:",
+          blobError
+        );
+        return await this.saveScreenshotLocally({
+          safeFilename,
+          screenshot,
+        });
+      }
     } catch (error) {
-      // Screenshot failed, but don't fail the entire crawl
+      // Screenshot capture itself failed
       console.error(`📸 Screenshot failed for ${normalizedUrl}:`, error);
       return undefined;
     }

@@ -198,13 +198,16 @@ function SeeCrawlButton({ crawlId }: { crawlId: number }) {
   return (
     <Link
       className={cn(
-        "rounded-md bg-primary py-3 text-center font-semibold text-base text-primary-foreground transition-colors hover:bg-primary/90",
+        "rounded-md bg-primary",
+        "py-3",
+        "h-11",
+        "text-center font-semibold text-primary-foreground text-sm transition-colors hover:bg-primary/90",
         "flex items-center justify-center gap-x-2",
         "basis-1/2"
       )}
       href={`/admin/crawl/${crawlId}`}
     >
-      <EyeIcon size={18} strokeWidth={2} />
+      <EyeIcon size={16} strokeWidth={2} />
       <span>Voir ce crawl</span>
     </Link>
   );
@@ -225,12 +228,13 @@ function DeleteCrawlButton({ crawlId }: { crawlId: number }) {
       className={cn(
         "flex cursor-pointer items-center justify-center gap-x-2",
         "rounded-md",
-        "bg-red-600",
+        "h-11",
+        "bg-destructive dark:bg-destructive/60",
         "hover:bg-red-500",
-        "text-primary-foreground",
+        "text-primary-foreground dark:text-white",
         "transition-colors",
         "py-3",
-        "text-center font-semibold text-base",
+        "text-center font-semibold text-sm",
         "basis-1/2",
         otherCrawlDeletionIsPending && "opacity-50"
       )}
@@ -245,7 +249,7 @@ function DeleteCrawlButton({ crawlId }: { crawlId: number }) {
       {isPending ? (
         <LoaderIcon className="animate-spin" size={16} strokeWidth={2} />
       ) : (
-        <Trash2Icon size={18} strokeWidth={2} />
+        <Trash2Icon size={16} strokeWidth={2} />
       )}
       <span>Supprimer ce crawl</span>
     </button>

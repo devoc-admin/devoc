@@ -18,7 +18,7 @@ const MAX_DEPTH = 10;
 const DEFAULT_DEPTH = 3;
 
 const MAX_CONCURRENCY = 8; // Higher values risk rate limiting/memory issues
-const DEFAULT_CONCURRENCY = 5;
+const DEFAULT_CONCURRENCY = 8;
 
 export function CrawlForm() {
   const crawlForm = useCrawlForm();
@@ -276,8 +276,10 @@ export function CrawlForm() {
           <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
             {(isSubmitting) => (
               <Button
+                className="font-semibold"
                 disabled={isSubmitting || currentJobRunning}
                 loading={isSubmitting}
+                size="lg"
                 type="submit"
                 variant="default"
               >
@@ -311,7 +313,7 @@ function useCrawlForm() {
       search: "",
       skipResources: false,
       skipScreenshots: false,
-      useLocalScreenshots: false,
+      useLocalScreenshots: true,
     },
     onSubmit: ({
       value: {

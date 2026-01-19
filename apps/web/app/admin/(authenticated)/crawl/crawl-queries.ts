@@ -1,7 +1,8 @@
 "use client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useQueryState } from "nuqs";
-import { getCrawlJob, listCrawls } from "./crawl-actions";
+import { useEffect } from "react";
+import { getCrawlJob, getRunningCrawlJob, listCrawls } from "./crawl-actions";
 
 // --------------------------------------
 // 👁️ See current crawl job
@@ -71,4 +72,29 @@ export function useCrawlsList() {
     crawls,
     crawlsAreLoading: isLoading,
   };
+}
+
+// --------------------------------------
+// 🔍 Check for running crawl job and auto-set crawlJobId
+
+export function useRunningCrawlJob() {
+  const [crawlJobId, setCrawlJobId] = useQueryState("crawlJobId");
+
+  const { data: runningJob } = useQuery({
+    enabled: !crawlJobId,
+    queryFn: async () => {
+      const result = await getRunningCrawlJob();
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return result.response;
+    },
+    queryKey: ["running-crawl-job"],
+  });
+
+  useEffect(() => {
+    if (runningJob && !crawlJobId) {
+      setCrawlJobId(runningJob.crawlJobId);
+    }
+  }, [runningJob, crawlJobId, setCrawlJobId]);
 }
