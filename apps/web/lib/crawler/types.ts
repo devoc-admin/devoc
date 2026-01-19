@@ -20,6 +20,10 @@ export type CrawlPageResult = {
   screenshotUrl?: string;
   technologies?: TechnologyDetectionResult;
   author?: AuthorDetectionResult;
+  description?: string;
+  rssFeed?: RssFeedDetectionResult;
+  newsletter?: NewsletterDetectionResult;
+  socialLinks?: SocialLinksResult;
   links: string[];
   error?: string;
 };
@@ -84,3 +88,28 @@ export type AuthorDetectionResult = {
   url: string;
   foundVia: "text" | "title" | "aria-label";
 };
+
+// RSS feed detection
+export type RssFeedDetectionResult = {
+  hasRssFeed: boolean;
+  feedUrl?: string;
+};
+
+// Newsletter detection
+export type NewsletterDetectionResult = {
+  hasNewsletter: boolean;
+  provider?: string;
+};
+
+// Social links detection
+export type SocialPlatform =
+  | "facebook"
+  | "twitter"
+  | "linkedin"
+  | "instagram"
+  | "youtube"
+  | "tiktok"
+  | "github"
+  | "mastodon";
+
+export type SocialLinksResult = Partial<Record<SocialPlatform, string>>;

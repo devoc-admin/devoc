@@ -89,6 +89,7 @@ export const crawlWebsite = inngest.createFunction(
             contentType: progress.crawledPage.contentType,
             crawlJobId,
             depth: progress.crawledPage.depth,
+            description: progress.crawledPage.description,
             hasAuthentication:
               progress.crawledPage.characteristics.hasAuthentication,
             hasDocuments: progress.crawledPage.characteristics.hasDocuments,
@@ -129,6 +130,44 @@ export const crawlWebsite = inngest.createFunction(
               .set({
                 author: progress.crawledPage.author.name,
                 authorUrl: progress.crawledPage.author.url,
+                updatedAt: nowString,
+              })
+              .where(eq(crawlJob.id, crawlJobId));
+          }
+
+          // 📡 Save RSS feed detection (only for homepage / depth 0)
+          if (progress.crawledPage.rssFeed?.hasRssFeed) {
+            await db
+              .update(crawlJob)
+              .set({
+                hasRssFeed: true,
+                updatedAt: nowString,
+              })
+              .where(eq(crawlJob.id, crawlJobId));
+          }
+
+          // 📰 Save newsletter detection (only for homepage / depth 0)
+          if (progress.crawledPage.newsletter?.hasNewsletter) {
+            await db
+              .update(crawlJob)
+              .set({
+                hasNewsletter: true,
+                newsletterProvider:
+                  progress.crawledPage.newsletter.provider ?? null,
+                updatedAt: nowString,
+              })
+              .where(eq(crawlJob.id, crawlJobId));
+          }
+
+          // 🔗 Save social links (only for homepage / depth 0)
+          if (
+            progress.crawledPage.socialLinks &&
+            Object.keys(progress.crawledPage.socialLinks).length > 0
+          ) {
+            await db
+              .update(crawlJob)
+              .set({
+                socialLinks: progress.crawledPage.socialLinks,
                 updatedAt: nowString,
               })
               .where(eq(crawlJob.id, crawlJobId));

@@ -205,6 +205,11 @@ export const crawlJob = pgTable(
     // 🏢 Author/signature detection
     author: text(),
     authorUrl: text(),
+    // 📡 RSS, Newsletter & Social detection
+    hasRssFeed: boolean().default(false),
+    hasNewsletter: boolean().default(false),
+    newsletterProvider: text(),
+    socialLinks: jsonb().$type<Record<string, string>>(),
     //🗓️ Dates
     startedAt: timestamp({ mode: "string", withTimezone: true }),
     completedAt: timestamp({ mode: "string", withTimezone: true }),
@@ -259,6 +264,7 @@ export const crawledPage = pgTable(
     contentType: text(),
     responseTime: integer(),
     screenshotUrl: text(),
+    description: text(),
     errorMessage: text(),
     selectedForAudit: boolean().default(false),
     createdAt: timestamp({ mode: "string", withTimezone: true })

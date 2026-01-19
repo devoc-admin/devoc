@@ -17,13 +17,19 @@ import {
 import type { CrawlConfig } from "@/lib/db/schema";
 import { detectAuthor } from "./author-detector";
 import { detectCategoryPage } from "./category-detector";
+import { detectNewsletter } from "./newsletter-detector";
+import { detectRssFeed } from "./rss-detector";
+import { detectSocialLinks } from "./social-detector";
 import { detectTechnologies } from "./technology-detector";
 import type {
   AuthorDetectionResult,
   CrawlPageResult,
   CrawlProgressCallback,
   CrawlResult,
+  NewsletterDetectionResult,
   QueueItem,
+  RssFeedDetectionResult,
+  SocialLinksResult,
   TechnologyDetectionResult,
 } from "./types";
 
@@ -297,6 +303,22 @@ export class WebCrawler {
         author = await detectAuthor({ page });
       }
 
+      // 📝 Meta description (all pages)
+      const description = await page.evaluate(() => {
+        const meta = document.querySelector('meta[name="description"]');
+        return meta?.getAttribute("content") || undefined;
+      });
+
+      // 📡 RSS, Newsletter & Social detection (only on homepage / depth 0)
+      let rssFeed: RssFeedDetectionResult | undefined;
+      let newsletter: NewsletterDetectionResult | undefined;
+      let socialLinks: SocialLinksResult | undefined;
+      if (depth === 0) {
+        rssFeed = await detectRssFeed({ page });
+        newsletter = await detectNewsletter({ page });
+        socialLinks = await detectSocialLinks({ page });
+      }
+
       // 🔗 Extract links
       const links = await this.extractLinksFromPage(page);
 
@@ -323,11 +345,15 @@ export class WebCrawler {
         contentType,
         createdAt: nowString,
         depth,
+        description,
         httpStatus,
         links,
+        newsletter,
         normalizedUrl,
         responseTime,
+        rssFeed,
         screenshotUrl,
+        socialLinks,
         technologies,
         title,
         url,
