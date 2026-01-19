@@ -38,7 +38,7 @@ function ToggleButton({ active, icon, label, onClick }: ToggleButtonProps) {
       className={cn(
         "flex items-center gap-x-2 rounded px-3 py-1.5 text-sm transition-colors",
         active
-          ? "bg-background text-foreground shadow-sm"
+          ? "bg-sidebar-strong text-foreground shadow-sm"
           : "text-muted-foreground hover:text-foreground"
       )}
       onClick={onClick}

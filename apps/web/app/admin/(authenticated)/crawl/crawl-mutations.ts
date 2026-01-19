@@ -3,6 +3,7 @@ import {
   deleteAllCrawls,
   deleteCrawl,
   deleteCrawlJob,
+  retryCrawl,
   upsertCrawl,
 } from "./crawl-actions";
 
@@ -91,6 +92,25 @@ export function useDeleteAllCrawls() {
         throw new Error(result.error);
       }
       return true;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list-crawls"] });
+    },
+  });
+}
+
+// --------------------------------------
+// 🔄 Retry a crawl
+
+export function useRetryCrawl() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (crawlId: number) => {
+      const result = await retryCrawl(crawlId);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return result.response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["list-crawls"] });

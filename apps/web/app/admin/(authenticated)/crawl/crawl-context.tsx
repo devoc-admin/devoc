@@ -11,6 +11,7 @@ import {
   useDeleteAllCrawls,
   useDeleteCrawl,
   useDeleteCrawlJob,
+  useRetryCrawl,
   useUpsertCrawl,
 } from "./crawl-mutations";
 import { useCrawlJob, useCrawlsList } from "./crawl-queries";
@@ -51,6 +52,11 @@ const CrawlContext = createContext<CrawlContextType>({
   // 🚮 Delete a crawl job
   deleteCrawlJobMutate: emptyFn,
   deleteCrawlJobIsPending: false,
+
+  // 🔄 Retry a crawl
+  retryCrawlMutate: emptyFn,
+  retryCrawlIsPending: false,
+  retryingCrawlId: undefined,
 });
 
 export function CrawlProvider({ children }: { children: React.ReactNode }) {
@@ -90,13 +96,22 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
     isSuccess: allCrawlsDeletionIsSuccess,
   } = useDeleteAllCrawls();
 
+  // 🔄 Retry a crawl
+  const {
+    mutate: retryCrawlMutate,
+    isPending: retryCrawlIsPending,
+    variables: retryingCrawlId,
+    data: retryCrawlResult,
+  } = useRetryCrawl();
+
   // 🔄 INTERDEPEND ACTIONS
   const insertedCrawlJobId = upsertCrawlResult?.crawlJobId;
+  const retriedCrawlJobId = retryCrawlResult?.crawlJobId;
 
   // # Insert new crawl job id in URL
-  const onInsertCrawlJobId = useEffectEvent((insertedCrawlJobId: string) => {
-    if (insertedCrawlJobId !== crawlJobId) {
-      handleCrawlJobId(insertedCrawlJobId);
+  const onInsertCrawlJobId = useEffectEvent((newCrawlJobId: string) => {
+    if (newCrawlJobId !== crawlJobId) {
+      handleCrawlJobId(newCrawlJobId);
     }
   });
   useEffect(() => {
@@ -104,6 +119,12 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
       onInsertCrawlJobId(insertedCrawlJobId);
     }
   }, [insertedCrawlJobId]);
+
+  useEffect(() => {
+    if (retriedCrawlJobId) {
+      onInsertCrawlJobId(retriedCrawlJobId);
+    }
+  }, [retriedCrawlJobId]);
 
   return (
     <CrawlContext.Provider
@@ -140,6 +161,11 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
         // 🛑 Interrupt crawl
         deleteCrawlJobMutate,
         deleteCrawlJobIsPending,
+
+        // 🔄 Retry a crawl
+        retryCrawlMutate,
+        retryCrawlIsPending,
+        retryingCrawlId,
       }}
     >
       {children}
@@ -195,6 +221,16 @@ type CrawlContextType = {
   allCrawlsDeletionIsPending: boolean;
   allCrawlsDeletionIsError: boolean;
   allCrawlsDeletionIsSuccess: boolean;
+
+  // 🔄 Retry a crawl
+  retryCrawlMutate: UseMutateFunction<
+    UpsertCrawlResult,
+    Error,
+    number,
+    unknown
+  >;
+  retryCrawlIsPending: boolean;
+  retryingCrawlId: number | undefined;
 };
 
 // --------------------------------------

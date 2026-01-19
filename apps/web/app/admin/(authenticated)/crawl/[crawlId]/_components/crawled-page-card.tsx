@@ -206,7 +206,7 @@ function ToggleSwitch({
     >
       <span
         className={cn(
-          "pointer-events-none flex h-5 w-5 items-center justify-center rounded-full bg-background shadow-lg ring-0 transition-transform",
+          "pointer-events-none flex h-5 w-5 items-center justify-center rounded-full bg-sidebar-strong shadow-lg ring-0 transition-transform",
           checked ? "translate-x-5" : "translate-x-0.5"
         )}
       >

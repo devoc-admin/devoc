@@ -9,6 +9,7 @@ import {
   FileCheckIcon,
   ImageOffIcon,
   LoaderIcon,
+  RotateCcwIcon,
   Trash2Icon,
   UserRoundPenIcon,
   XIcon,
@@ -165,6 +166,7 @@ function CrawlCard(crawl: CrawlResult) {
       {/* 🆕 Buttons */}
       <div className="flex w-full gap-x-2">
         <SeeCrawlButton crawlId={crawl.id} />
+        <RetryCrawlButton crawlId={crawl.id} />
         <DeleteCrawlButton crawlId={crawl.id} />
       </div>
     </li>
@@ -203,13 +205,56 @@ function SeeCrawlButton({ crawlId }: { crawlId: number }) {
         "h-11",
         "text-center font-semibold text-primary-foreground text-sm transition-colors hover:bg-primary/90",
         "flex items-center justify-center gap-x-2",
-        "basis-1/2"
+        "basis-1/3"
       )}
       href={`/admin/crawl/${crawlId}`}
     >
       <EyeIcon size={16} strokeWidth={2} />
-      <span>Voir ce crawl</span>
+      <span>Voir</span>
     </Link>
+  );
+}
+
+// ------------------------------------------------------------
+// 🔄 Retry crawl
+function RetryCrawlButton({ crawlId }: { crawlId: number }) {
+  const { retryCrawlIsPending, retryCrawlMutate, retryingCrawlId } =
+    useCrawlContext();
+
+  const isPending = retryCrawlIsPending && retryingCrawlId === crawlId;
+  const otherCrawlRetryIsPending =
+    retryCrawlIsPending && retryingCrawlId !== crawlId;
+
+  return (
+    <button
+      className={cn(
+        "flex cursor-pointer items-center justify-center gap-x-2",
+        "rounded-md",
+        "h-11",
+        "bg-slate-600 dark:bg-slate-600/60",
+        "hover:bg-slate-500",
+        "text-primary-foreground dark:text-white",
+        "transition-colors",
+        "py-3",
+        "text-center font-semibold text-sm",
+        "basis-1/3",
+        otherCrawlRetryIsPending && "opacity-50"
+      )}
+      disabled={isPending}
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        retryCrawlMutate(crawlId);
+      }}
+      type="button"
+    >
+      {isPending ? (
+        <LoaderIcon className="animate-spin" size={16} strokeWidth={2} />
+      ) : (
+        <RotateCcwIcon size={16} strokeWidth={2} />
+      )}
+      <span>Relancer</span>
+    </button>
   );
 }
 
@@ -235,7 +280,7 @@ function DeleteCrawlButton({ crawlId }: { crawlId: number }) {
         "transition-colors",
         "py-3",
         "text-center font-semibold text-sm",
-        "basis-1/2",
+        "basis-1/3",
         otherCrawlDeletionIsPending && "opacity-50"
       )}
       disabled={isPending}
@@ -251,7 +296,7 @@ function DeleteCrawlButton({ crawlId }: { crawlId: number }) {
       ) : (
         <Trash2Icon size={16} strokeWidth={2} />
       )}
-      <span>Supprimer ce crawl</span>
+      <span>Supprimer</span>
     </button>
   );
 }

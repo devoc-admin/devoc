@@ -446,3 +446,53 @@ async function deleteAllScreenshots(): Promise<void> {
     cursor = response.cursor;
   } while (cursor);
 }
+
+// --------------------------------------
+// 🔄 Retry a crawl
+
+export async function retryCrawl(
+  crawlId: number
+): Promise<ActionResult<UpsertCrawlResult>> {
+  try {
+    // 1️⃣ Get the crawl and its latest job config
+    const [existingCrawl] = await db
+      .select({
+        config: crawlJob.config,
+        maxDepth: crawlJob.maxDepth,
+        maxPages: crawlJob.maxPages,
+        skipResources: crawlJob.skipResources,
+        skipScreenshots: crawlJob.skipScreenshots,
+        url: crawl.url,
+        useLocalScreenshots: crawlJob.useLocalScreenshots,
+      })
+      .from(crawl)
+      .leftJoin(crawlJob, eq(crawl.id, crawlJob.crawlId))
+      .where(eq(crawl.id, crawlId))
+      .orderBy(desc(crawlJob.createdAt))
+      .limit(1);
+
+    if (!existingCrawl) {
+      return { error: "Crawl not found", success: false };
+    }
+
+    // 2️⃣ Delete the old crawl
+    const deleteResult = await deleteCrawl(crawlId);
+    if (!deleteResult.success) {
+      return { error: deleteResult.error, success: false };
+    }
+
+    // 3️⃣ Create a new crawl with the same config
+    return await upsertCrawl({
+      concurrency: existingCrawl.config?.concurrency ?? 5,
+      maxDepth: existingCrawl.maxDepth ?? 3,
+      maxPages: existingCrawl.maxPages ?? 100,
+      skipResources: existingCrawl.skipResources ?? false,
+      skipScreenshots: existingCrawl.skipScreenshots ?? false,
+      url: existingCrawl.url,
+      useLocalScreenshots: existingCrawl.useLocalScreenshots ?? false,
+    });
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}

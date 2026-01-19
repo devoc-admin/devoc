@@ -227,7 +227,7 @@ function SearchProspects() {
         size={18}
       />
       <input
-        className="h-10 w-full rounded-md border border-input bg-background pr-10 pl-10 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+        className="h-10 w-full rounded-md border border-input bg-sidebar-strong pr-10 pl-10 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Rechercher par nom, type ou site web..."
         type="text"
