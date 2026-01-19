@@ -12,7 +12,7 @@ Implémenter un crawler capable d'explorer un site web (y compris les sites Java
 | Base de données | Drizzle + PostgreSQL (existant) | - |
 
 ## Paramètres configurés
-- Profondeur max : **3 niveaux**
+- Max. profondeur : **3 niveaux**
 - Limite pages : **Configurable par l'utilisateur**
 - Authentification : **Architecture prévue, implémentation future**
 

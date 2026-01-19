@@ -16,6 +16,18 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Tooltip,
@@ -40,6 +52,7 @@ function CrawlsCards() {
     <ul className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-4">
       {crawlsAreLoading ? (
         <>
+          <CrawlCardSkeleton />
           <CrawlCardSkeleton />
           <CrawlCardSkeleton />
           <CrawlCardSkeleton />
@@ -256,41 +269,72 @@ function RetryCrawlButton({ crawlId }: { crawlId: number }) {
 function DeleteCrawlButton({ crawlId }: { crawlId: number }) {
   const { crawlDeletionIsPending, deleteCrawlMutate, deletingCrawlId } =
     useCrawlContext();
+  const [open, setOpen] = useState(false);
 
   const isPending = crawlDeletionIsPending && deletingCrawlId === crawlId;
   const otherCrawlDeletionIsPending =
     crawlDeletionIsPending && deletingCrawlId !== crawlId;
 
   return (
-    <button
-      className={cn(
-        "flex cursor-pointer items-center justify-center gap-x-2",
-        "rounded-md",
-        "h-11",
-        "bg-destructive dark:bg-destructive/60",
-        "hover:bg-red-500",
-        "text-primary-foreground dark:text-white",
-        "transition-colors",
-        "py-3",
-        "text-center font-semibold text-sm",
-        "basis-1/3",
-        otherCrawlDeletionIsPending && "opacity-50"
-      )}
-      disabled={isPending}
-      onClick={(e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        deleteCrawlMutate(crawlId);
-      }}
-      type="button"
-    >
-      {isPending ? (
-        <LoaderIcon className="animate-spin" size={16} strokeWidth={2} />
-      ) : (
-        <Trash2Icon size={16} strokeWidth={2} />
-      )}
-      <span>Supprimer</span>
-    </button>
+    <AlertDialog open={open}>
+      <AlertDialogTrigger asChild>
+        <button
+          className={cn(
+            "flex cursor-pointer items-center justify-center gap-x-2",
+            "rounded-md",
+            "h-11",
+            "bg-destructive dark:bg-destructive/60",
+            "hover:bg-red-500",
+            "text-primary-foreground dark:text-white",
+            "transition-colors",
+            "py-3",
+            "text-center font-semibold text-sm",
+            "basis-1/3",
+            (otherCrawlDeletionIsPending || open) && "opacity-50"
+          )}
+          disabled={isPending || open}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            setOpen(true);
+          }}
+          type="button"
+        >
+          {isPending ? (
+            <LoaderIcon className="animate-spin" size={16} strokeWidth={2} />
+          ) : (
+            <Trash2Icon size={16} strokeWidth={2} />
+          )}
+          <span>Supprimer</span>
+        </button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            Êtes-vous sûr de vouloir supprimer ce crawl ?
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            Cette action est irréversible. Le crawl et toutes ses données seront
+            supprimés définitivement.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={() => setOpen(false)}>
+            Annuler
+          </AlertDialogCancel>
+          <AlertDialogAction
+            disabled={isPending}
+            onClick={(e) => {
+              e.preventDefault();
+              setOpen(false);
+              deleteCrawlMutate(crawlId);
+            }}
+          >
+            Supprimer
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 

@@ -83,9 +83,7 @@ export function CrawlForm() {
                 <crawlForm.Field name="maxPages">
                   {(field) => (
                     <div>
-                      <Label className="font-kanit text-lg">
-                        Pages à crawler
-                      </Label>
+                      <Label className="font-kanit text-lg">Max. pages</Label>
                       <div className="flex items-center gap-4">
                         <Slider
                           disabled={currentJobRunning || isSubmitting}
@@ -105,14 +103,14 @@ export function CrawlForm() {
                 </crawlForm.Field>
               )}
             </crawlForm.Subscribe>
-            {/* 🔢 Profondeur max. */}
+            {/* 🔢 Max. profondeur. */}
             <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
               {(isSubmitting) => (
                 <crawlForm.Field name="maxDepth">
                   {(field) => (
                     <div>
                       <Label className="font-kanit text-lg">
-                        Profondeur max.
+                        Max. profondeur
                       </Label>
                       <div className="flex items-center gap-4">
                         <Slider
@@ -140,7 +138,7 @@ export function CrawlForm() {
                   {(field) => (
                     <div>
                       <Label className="font-kanit text-lg">
-                        Pages traitées en parallèle
+                        Max. crawlers
                       </Label>
                       <div className="flex items-center gap-4">
                         <Slider

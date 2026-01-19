@@ -151,7 +151,7 @@ export function CrawlHeader() {
         />
         <StatCard
           icon={<LayersIcon size={18} />}
-          label="Profondeur max"
+          label="Max. profondeur"
           value={crawl.maxDepth ?? 0}
         />
       </div>

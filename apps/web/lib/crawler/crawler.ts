@@ -375,6 +375,7 @@ export class WebCrawler {
       // Common French accept buttons
       'button:has-text("Accepter tout")',
       'button:has-text("Tout accepter")',
+      'button:has-text("Ok, tout accepter")',
       'button:has-text("Accepter")',
       'button:has-text("J\'accepte")',
       // Common English accept buttons
