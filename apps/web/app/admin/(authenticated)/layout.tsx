@@ -19,11 +19,11 @@ export default function AdminLayout({
     >
       <NuqsAdapter>
         <QueryProvider>
-          <div className="flex h-screen w-screen gap-x-4 bg-sidebar p-4">
+          <div className="flex h-screen w-screen gap-x-4 bg-sidebar py-4 pl-4">
             <div>
               <Sidebar />
             </div>
-            <div className="relative grow overflow-auto rounded-xl bg-sidebar-strong p-6">
+            <div className="relative grow overflow-auto rounded-xl bg-sidebar-strong p-4">
               {children}
             </div>
           </div>

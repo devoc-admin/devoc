@@ -21,9 +21,9 @@ function Sidebar() {
         /* ⬇️ Layout */ "flex flex-col",
         /* 🔤 Color */ "text-foreground",
         /* 🖼️ Background */ "bg-transparent",
-        /* ↔️ Size */ "h-full w-62.5",
+        /* ↔️ Size */ "h-full w-48",
         /* ⭕ Radius */ "rounded-md",
-        /*🫸 Padding*/ "px-4 py-1"
+        /*🫸 Padding*/ "py-1"
       )}
     >
       {/* 🔗 Links */}

@@ -27,14 +27,7 @@ import type { CrawlResult } from "../crawl-actions";
 import { useCrawlContext } from "../crawl-context";
 
 export function ListCrawls() {
-  return (
-    <div className="rounded-md bg-sidebar p-8">
-      <h2 className="mb-8 text-center font-kanit font-semibold text-4xl">
-        Derniers crawls
-      </h2>
-      {<CrawlsCards />}
-    </div>
-  );
+  return <div className="rounded-md bg-sidebar p-8">{<CrawlsCards />}</div>;
 }
 
 // -----------------------------------------------------------
@@ -44,7 +37,7 @@ function CrawlsCards() {
   if (noCrawls && !crawlsAreLoading) return <NoCrawlFound />;
   console.log("crawls", crawls);
   return (
-    <ul className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-10">
+    <ul className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-4">
       {crawlsAreLoading ? (
         <>
           <CrawlCardSkeleton />
@@ -210,7 +203,7 @@ function SeeCrawlButton({ crawlId }: { crawlId: number }) {
       href={`/admin/crawl/${crawlId}`}
     >
       <EyeIcon size={16} strokeWidth={2} />
-      <span>Voir</span>
+      <span>Détail</span>
     </Link>
   );
 }

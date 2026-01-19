@@ -12,10 +12,12 @@ export function CrawlPageContent() {
 
   return (
     <CrawlProvider>
-      <div className="h-full space-y-6 overflow-auto">
+      <div className="flex h-full gap-x-6">
         <CrawlForm />
-        <CrawlStatusPanel />
-        <ListCrawls />
+        <div className="grow space-y-6 overflow-auto">
+          <CrawlStatusPanel />
+          <ListCrawls />
+        </div>
         <DeleteCrawlsButton />
       </div>
     </CrawlProvider>

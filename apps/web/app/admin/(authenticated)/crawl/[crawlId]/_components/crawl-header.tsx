@@ -128,7 +128,7 @@ export function CrawlHeader() {
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-4">
         <StatCard
           icon={<CalendarIcon size={18} />}
           label="Date"
@@ -405,7 +405,7 @@ function StatCard({ icon, label, value }: StatCardProps) {
         {icon}
         <span className="text-sm">{label}</span>
       </div>
-      <p className="font-kanit font-semibold text-2xl">{value}</p>
+      <p className="font-kanit font-semibold text-xl">{value}</p>
     </div>
   );
 }

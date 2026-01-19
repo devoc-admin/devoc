@@ -30,18 +30,22 @@ function CrawlDetailsInner() {
   if (isError) return <ErrorMessage>{error}</ErrorMessage>;
 
   return (
-    <div className="h-full space-y-6 overflow-auto">
-      <CrawlHeader />
-      <CrawledPagesSection
-        emptyMessage="Aucune page sélectionnée pour l'audit"
-        pages={selectedPages}
-        title="Pages sélectionnées pour l'audit"
-      />
-      <CrawledPagesSection
-        emptyMessage="Toutes les pages sont sélectionnées pour l'audit"
-        pages={otherPages}
-        title="Autres pages crawlées"
-      />
+    <div className="flex h-full gap-x-6">
+      <div className="max-w-[400px]">
+        <CrawlHeader />
+      </div>
+      <div className="grow space-y-6 overflow-auto">
+        <CrawledPagesSection
+          emptyMessage="Aucune page sélectionnée pour l'audit"
+          pages={selectedPages}
+          title="Pages sélectionnées pour l'audit"
+        />
+        <CrawledPagesSection
+          emptyMessage="Toutes les pages sont sélectionnées pour l'audit"
+          pages={otherPages}
+          title="Autres pages crawlées"
+        />
+      </div>
     </div>
   );
 }

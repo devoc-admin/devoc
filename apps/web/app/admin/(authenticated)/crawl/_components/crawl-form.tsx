@@ -29,8 +29,6 @@ export function CrawlForm() {
   return (
     <div className="rounded-md bg-sidebar p-8">
       <div className="mx-auto flex max-w-150 flex-col items-center justify-center gap-y-4">
-        {/* 🆎 Title */}
-        <h2 className="font-kanit font-semibold text-4xl">Crawler un site</h2>
         {/* 📝 Form */}
         <form
           className="flex w-full flex-col items-center justify-center gap-y-2 space-y-4"
