@@ -10,6 +10,7 @@ import {
   ImageOffIcon,
   LoaderIcon,
   RotateCcwIcon,
+  SearchIcon,
   Trash2Icon,
   UserRoundPenIcon,
   XIcon,
@@ -45,22 +46,70 @@ export function ListCrawls() {
 // -----------------------------------------------------------
 function CrawlsCards() {
   const { crawls, crawlsAreLoading } = useCrawlContext();
+  const [searchQuery, setSearchQuery] = useState("");
+
   const noCrawls = crawls && crawls.length === 0;
   if (noCrawls && !crawlsAreLoading) return <NoCrawlFound />;
-  console.log("crawls", crawls);
+
+  const filteredCrawls = crawls?.filter((crawl) => {
+    if (!searchQuery.trim()) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      crawl.title?.toLowerCase().includes(query) ||
+      crawl.url?.toLowerCase().includes(query) ||
+      crawl.author?.toLowerCase().includes(query)
+    );
+  });
+
+  const NoResults =
+    filteredCrawls && filteredCrawls.length === 0 ? (
+      <p className="text-center text-muted-foreground">
+        Aucun crawl ne correspond à votre recherche
+      </p>
+    ) : (
+      <ul className="grid grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-4">
+        {filteredCrawls?.map(CrawlCard)}
+      </ul>
+    );
+
   return (
-    <ul className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-4">
+    <div className="space-y-6">
+      {/* 🔍 Search bar */}
+      <div className="relative max-w-[500px]">
+        <SearchIcon
+          className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
+          size={18}
+        />
+        <input
+          className="h-10 w-full rounded-md border border-input bg-sidebar-strong pr-10 pl-10 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Rechercher par titre, URL ou prestataire..."
+          type="text"
+          value={searchQuery}
+        />
+        {searchQuery && (
+          <button
+            className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            onClick={() => setSearchQuery("")}
+            type="button"
+          >
+            <XIcon size={18} />
+          </button>
+        )}
+      </div>
+
+      {/* 📝 Results */}
       {crawlsAreLoading ? (
-        <>
+        <ul className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-4">
           <CrawlCardSkeleton />
           <CrawlCardSkeleton />
           <CrawlCardSkeleton />
           <CrawlCardSkeleton />
-        </>
+        </ul>
       ) : (
-        crawls?.map(CrawlCard)
+        NoResults
       )}
-    </ul>
+    </div>
   );
 }
 
@@ -84,7 +133,7 @@ function CrawlCard(crawl: CrawlResult) {
           <ExternalLinkIcon className="shrink-0" size={16} />
         </a>
         {/* Details */}
-        <div className="mt-2 space-y-0.5">
+        <div className="mt-2 grid grid-cols-2 space-y-0.5">
           {/* 🗓️ Started */}
           <div className="flex items-center gap-x-1 text-sm">
             <CalendarIcon size={14} />
@@ -93,7 +142,7 @@ function CrawlCard(crawl: CrawlResult) {
           {/* 🔢 Crawled */}
           <div className="flex items-center gap-x-1 text-sm">
             <FileCheckCornerIcon size={14} />
-            <span>{crawl.pagesCrawled} pages crawlées</span>
+            <span>{crawl.pagesCrawled} pages analysées</span>
           </div>
           {/* ⏳ Duration */}
           <div className="flex items-center gap-x-1 text-sm">
@@ -106,12 +155,12 @@ function CrawlCard(crawl: CrawlResult) {
             </span>
           </div>
           {/*🙋 Author */}
-          {(crawl.author || crawl.authorUrl) && (
+          {
             <div className="flex items-center gap-x-1 text-sm">
-              <UserRoundPenIcon size={14} />
+              <UserRoundPenIcon className="shrink-0" size={14} />
               <Tooltip>
                 <TooltipTrigger className="max-w-60 overflow-hidden text-ellipsis whitespace-nowrap">
-                  {crawl.author}
+                  {crawl.author || crawl.authorUrl ? crawl.author : "—"}
                 </TooltipTrigger>
                 <TooltipContent>{crawl.author}</TooltipContent>
               </Tooltip>
@@ -126,7 +175,7 @@ function CrawlCard(crawl: CrawlResult) {
                 </a>
               )}
             </div>
-          )}
+          }
           {/* 📸 Skip screenshots ? */}
           <div className="flex items-center gap-x-1 text-sm">
             {crawl.skipScreenshots ? (

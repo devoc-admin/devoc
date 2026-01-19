@@ -43,7 +43,7 @@ function CrawlDetailsInner() {
         <CrawledPagesSection
           emptyMessage="Toutes les pages sont sélectionnées pour l'audit"
           pages={otherPages}
-          title="Autres pages crawlées"
+          title="Autres pages analysées"
         />
       </div>
     </div>

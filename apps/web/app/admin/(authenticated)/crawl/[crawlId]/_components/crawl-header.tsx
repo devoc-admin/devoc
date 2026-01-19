@@ -141,7 +141,7 @@ export function CrawlHeader() {
         />
         <StatCard
           icon={<FileCheckIcon size={18} />}
-          label="Pages crawlées"
+          label="Pages analysées"
           value={crawl.pagesCrawled ?? 0}
         />
         <StatCard

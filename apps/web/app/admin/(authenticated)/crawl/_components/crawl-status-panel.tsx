@@ -31,7 +31,7 @@ export function CrawlStatusPanel() {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-kanit font-semibold text-2xl">
-              Progression du crawl
+              Exploration en cours
             </h2>
             {crawlJob.crawlUrl && (
               <a
@@ -55,7 +55,7 @@ export function CrawlStatusPanel() {
         {/* 📊 Progress stats */}
         <div className="flex items-center gap-x-6 text-sm">
           <span>
-            Pages crawlées :{" "}
+            Pages visitées :{" "}
             <strong>
               {crawlJob.pagesCrawled} / {crawlJob.maxPages}
             </strong>
@@ -79,9 +79,6 @@ export function CrawlStatusPanel() {
         {/* 💻 Latest crawled page */}
         {crawlJob.latestPage && (
           <div className="rounded-md border border-border bg-sidebar-strong p-4">
-            <h4 className="mb-2 text-muted-foreground text-xs uppercase tracking-wide">
-              Dernière page crawlée
-            </h4>
             <div className="flex flex-col gap-y-1">
               <a
                 className="space-y-4"

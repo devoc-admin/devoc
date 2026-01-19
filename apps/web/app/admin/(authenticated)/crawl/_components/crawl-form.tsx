@@ -59,10 +59,11 @@ export function CrawlForm() {
                 {(field) => (
                   <div className="flex w-full flex-col gap-y-1">
                     <Input
+                      className="h-10"
                       disabled={currentJobRunning || isSubmitting}
                       name={field.name}
                       onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="Crawler un site..."
+                      placeholder="Explorer un site..."
                       value={field.state.value}
                     />
                     {!field.state.meta.isValid && (
