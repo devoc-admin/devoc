@@ -7,8 +7,11 @@ const nextConfig: NextConfig = {
       {
         hostname: "avatars.githubusercontent.com",
       },
-      new URL(`${process.env.VERCEL_BLOB_URL}/screenshots/**`),
-    ],
+    ].concat(
+      process.env.VERCEL_BLOB_URL
+        ? [new URL(`${process.env.VERCEL_BLOB_URL}/screenshots/**`)]
+        : []
+    ),
   },
   turbopack: {
     root: path.join(__dirname, "../../"),

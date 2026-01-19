@@ -6,11 +6,10 @@ import type { LucideIcon } from "lucide-react";
 import {
   ArrowRightIcon,
   BotIcon,
-  BrushIcon,
   HandshakeIcon,
   LaptopIcon,
   Repeat2Icon,
-  SmartphoneIcon,
+  ServerIcon,
   WandSparklesIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
@@ -69,17 +68,44 @@ type ServiceCardProps = {
 const services: ServiceCardProps[] = [
   {
     description:
-      "Offrez-vous un site web moderne et fluide ! Suivez votre audience avec nos outils et proposez facilement de nouveaux contenus pour vos visiteurs.",
+      "Offrez-vous une identité numérique moderne et fluide ! Suivez votre audience avec nos outils et proposez facilement de nouveaux contenus pour vos visiteurs.",
     features: [
-      "Versions mobile et tablette comprises",
+      "Versions mobile, tablette comprises",
       "Référencement optimisé",
-      "Amélioration du taux de conversion",
+      "Logo sur mesure",
+      "Charte graphique",
     ],
     Icon: LaptopIcon,
-    id: "site-web",
+    id: "web-design",
     subtitle:
       "Affirmez votre présence en ligne avec un site ultra rapide et moderne",
-    title: "Site web",
+    title: "Web Design",
+  },
+  {
+    description:
+      "Besoin d'automatiser des tâches répétitives ? Nous vous aidons à créer des automatisations pour booster votre productivité.",
+    features: [
+      "Intégration de l'IA dans vos processus",
+      "Amélioration de la productivité",
+      "Réduction des coûts",
+    ],
+    Icon: BotIcon,
+    id: "automation",
+    subtitle: "Automatisez vos tâches et réduisez vos coûts.",
+    title: "Automatisation",
+  },
+  {
+    description:
+      "Nous bâtissons des fondations numériques solides et locales. Reprenez le contrôle total de vos données et de vos outils de production.",
+    features: [
+      "Hébergement",
+      "Deploiement de services",
+      "Monitoring & Sauvegardes",
+    ],
+    Icon: ServerIcon,
+    id: "infra",
+    subtitle: "Construisez des infrastructures robustes et résilientes.",
+    title: "Infrastructure",
   },
   {
     description:
@@ -94,47 +120,6 @@ const services: ServiceCardProps[] = [
     subtitle:
       "Boostez vos performances, renforcez votre sécurité et votre accessibilité",
     title: "Audit",
-  },
-  {
-    description:
-      "Créez une expérience inédite au plus proche de vos utilisateurs, donnez-leur accès à tous vos services dans la paume de leurs mains.",
-    features: [
-      "Compatible Android et iOS",
-      "Expérience fluide et personnalisée",
-      "Notifications push et accès hors-ligne",
-    ],
-    Icon: SmartphoneIcon,
-    id: "mobile",
-    subtitle: "Offrez une expérience embarquée unique à vos utilisateurs",
-    title: "Mobile",
-  },
-  {
-    description:
-      "Nous vous accompagnons dans la création de votre charte graphique et la confection de vos supports de communication.",
-    features: [
-      "Logo sur mesure",
-      "Charte graphique",
-      "Supports print et web",
-      "Kit communication pour les réseaux",
-    ],
-    Icon: BrushIcon,
-    id: "design",
-    subtitle:
-      "Découvrez votre identité visuelle pour vous démarquer et vous imposer",
-    title: "Design",
-  },
-  {
-    description:
-      "Besoin d'automatiser des tâches répétitives ? Nous vous aidons à créer des automatisations IA pour booster votre productivité.",
-    features: [
-      "Intégration de l'IA dans vos processus",
-      "Amélioration de la productivité",
-      "Réduction des coûts",
-    ],
-    Icon: BotIcon,
-    id: "ai",
-    subtitle: "Utilisez l'IA pour automatiser vos tâches et réduire vos coûts.",
-    title: "IA",
   },
   {
     description:
@@ -158,8 +143,7 @@ function ServiceCards() {
     <motion.div
       className={cn(
         "w-full max-w-[1300px]",
-        "flex flex-col gap-8",
-        "sm:grid sm:grid-cols-[repeat(auto-fill,minmax(320px,1fr))] sm:gap-8"
+        "flex flex-wrap justify-center gap-6"
       )}
       initial={{ opacity: 0, y: 200 }}
       transition={{
@@ -191,6 +175,7 @@ function ServiceCard({
     <div
       className={cn(
         "@container relative aspect-4/5",
+        "w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)]",
         // Only use perspective on desktop
         isDesktop && "perspective-[2000px]"
       )}

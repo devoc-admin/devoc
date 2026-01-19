@@ -2,7 +2,6 @@
 import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import LaserFlow from "@/components/react-bits/laser-flow";
-import GlowLine from "@/components/sera-ui/glow-line";
 import {
   Card,
   CardContent,
@@ -19,6 +18,7 @@ type ContactItem = {
   href: string;
   icon: React.ReactNode;
   title: string;
+  id: string;
 };
 
 const contactItems: ContactItem[] = [
@@ -26,18 +26,28 @@ const contactItems: ContactItem[] = [
     content: "contact@dev-oc.fr",
     href: "mailto:contact@dev-oc.fr",
     icon: <MailIcon size={26} />,
+    id: "email",
     title: "Email",
   },
   {
     content: "+33 6 20 23 98 38",
     href: "tel:+33620239838",
     icon: <PhoneIcon size={26} />,
+    id: "phone1",
+    title: "Téléphone",
+  },
+  {
+    content: "+33 6 58 88 97 01",
+    href: "tel:+33658889701",
+    icon: <PhoneIcon size={26} />,
+    id: "phone2",
     title: "Téléphone",
   },
   {
     content: "Carcassonne, France",
     href: "https://maps.app.goo.gl/HSWRizckJvyuXuDP7",
     icon: <MapPinIcon size={26} />,
+    id: "address",
     title: "Adresse",
   },
 ];
@@ -54,7 +64,6 @@ export default function Contact() {
       id="contact"
       ref={sectionRef}
     >
-      <GlowLine color="orange" orientation="horizontal" position="0px" />
       {/* 🆎 Title */}
       <SectionTitle
         className="z-10"
@@ -71,7 +80,7 @@ export default function Contact() {
       >
         <div className={cn("flex flex-col gap-6", "order-2", "md:order-1")}>
           {contactItems.map((item) => (
-            <ContactCard key={item.title} {...item} />
+            <ContactCard key={item.id} {...item} />
           ))}
           {/* 📧 Response rapide garantie */}
           <Card

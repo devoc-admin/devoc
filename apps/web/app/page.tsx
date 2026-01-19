@@ -1,7 +1,7 @@
 "use client";
 import Header from "@/app/_components/header";
+import ContactWithUs from "./_components/contact-with-us";
 import Footer from "./_components/footer";
-import Contact from "./_components/section-contact";
 import Hero from "./_components/section-hero";
 import Processus from "./_components/section-processus";
 import Realisations from "./_components/section-realisations";
@@ -17,7 +17,7 @@ export default function Home() {
       <Realisations />
       <Processus />
       <WorkWith />
-      <Contact />
+      <ContactWithUs />
       <Footer />
     </>
   );
