@@ -1,3 +1,5 @@
+import { mkdir, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 import { put } from "@vercel/blob";
 import pLimit from "p-limit";
 import {
@@ -67,6 +69,7 @@ export class WebCrawler {
       respectRobotsTxt: config.respectRobotsTxt ?? true,
       skipResources: config.skipResources ?? false,
       skipScreenshots: config.skipScreenshots ?? false,
+      useLocalScreenshots: config.useLocalScreenshots ?? false,
     };
   }
 
@@ -360,7 +363,7 @@ export class WebCrawler {
   }
 
   /**
-   * Take screenshot and upload to Vercel Blob
+   * Take screenshot and upload to Vercel Blob or save locally
    */
   private async takeAndUploadScreenshot({
     page,
@@ -370,12 +373,6 @@ export class WebCrawler {
     normalizedUrl: string;
   }): Promise<string | undefined> {
     try {
-      // Check for token
-      if (!process.env.BLOB_READ_WRITE_TOKEN) {
-        console.error("📸 BLOB_READ_WRITE_TOKEN is not set");
-        return undefined;
-      }
-
       const screenshot = await page.screenshot({
         fullPage: false,
         quality: 80,
@@ -388,13 +385,57 @@ export class WebCrawler {
         .replace(/[^a-zA-Z0-9]/g, "_")
         .slice(0, 100);
 
-      const filename = `screenshots/${this.crawlJobId}/${safeFilename}.jpg`;
+      // Branch based on config: local or Vercel Blob
+      if (this.config.useLocalScreenshots) {
+        return await this.saveScreenshotLocally({
+          safeFilename,
+          screenshot,
+        });
+      }
 
+      // Check for token for Vercel Blob
+      if (!process.env.BLOB_READ_WRITE_TOKEN) {
+        console.error("📸 BLOB_READ_WRITE_TOKEN is not set");
+        return undefined;
+      }
+
+      const filename = `screenshots/${this.crawlJobId}/${safeFilename}.jpg`;
       const blob = await put(filename, screenshot, { access: "public" });
       return blob.url;
     } catch (error) {
       // Screenshot failed, but don't fail the entire crawl
       console.error(`📸 Screenshot failed for ${normalizedUrl}:`, error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Save screenshot locally to filesystem
+   */
+  private async saveScreenshotLocally({
+    screenshot,
+    safeFilename,
+  }: {
+    screenshot: Buffer;
+    safeFilename: string;
+  }): Promise<string | undefined> {
+    try {
+      const screenshotsDir = join(
+        process.cwd(),
+        "screenshots",
+        this.crawlJobId
+      );
+      await mkdir(screenshotsDir, { recursive: true });
+
+      const filename = `${safeFilename}.jpg`;
+      const filePath = join(screenshotsDir, filename);
+
+      await writeFile(filePath, screenshot);
+
+      // Return URL that will be served by our API route
+      return `/api/screenshots/${this.crawlJobId}/${filename}`;
+    } catch (error) {
+      console.error("📸 Failed to save screenshot locally:", error);
       return undefined;
     }
   }

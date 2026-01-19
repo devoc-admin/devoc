@@ -167,6 +167,7 @@ type CrawlContextType = {
       maxPages: number;
       skipResources: boolean;
       skipScreenshots: boolean;
+      useLocalScreenshots: boolean;
       concurrency: number;
     },
     unknown

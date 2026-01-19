@@ -95,7 +95,7 @@ export function CrawlHeader() {
       <div className="mb-6">
         <h1 className="font-kanit font-semibold text-3xl">Détail du crawl</h1>
         <a
-          className="mt-1 flex items-center gap-x-2 text-muted-foreground hover:underline"
+          className="mt-1 flex items-center gap-x-2 text-muted-foreground underline hover:underline"
           href={crawl.crawlUrl ?? ""}
           rel="noopener noreferrer"
           target="_blank"
@@ -262,10 +262,11 @@ function CategoryIndicator({
           "hover:ring-2 hover:ring-green-500/50 hover:ring-offset-2 dark:hover:ring-green-400/50",
           "focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:ring-offset-2 dark:focus-visible:ring-green-400/50",
           "focus-visible:outline-none",
-          "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+          !isCovered &&
+            "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
           isCovered &&
             isActive &&
-            "bg-primary text-primary-foreground ring-2 ring-primary ring-offset-2 hover:ring-primary",
+            "bg-primary text-primary-foreground hover:ring-primary",
           isCovered &&
             !isActive &&
             "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"

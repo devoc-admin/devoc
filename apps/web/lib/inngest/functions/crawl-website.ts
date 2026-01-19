@@ -21,6 +21,7 @@ type CrawlRequestEvent = {
       respectRobotsTxt: boolean;
       skipResources?: boolean;
       skipScreenshots?: boolean;
+      useLocalScreenshots?: boolean;
       concurrency?: number;
       includePaths?: string[];
       excludePaths?: string[];

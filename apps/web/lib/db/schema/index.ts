@@ -164,6 +164,7 @@ export type CrawlConfig = {
   respectRobotsTxt: boolean;
   skipResources?: boolean;
   skipScreenshots?: boolean;
+  useLocalScreenshots?: boolean;
   concurrency?: number;
   includePaths?: string[];
   excludePaths?: string[];
@@ -188,6 +189,7 @@ export const crawlJob = pgTable(
     pagesCrawled: integer().default(0).notNull(),
     skipResources: boolean().default(false),
     skipScreenshots: boolean().default(false),
+    useLocalScreenshots: boolean().default(false),
     errorMessage: text(),
     config: jsonb().$type<CrawlConfig>(),
     // 🤖 Technology detection summary

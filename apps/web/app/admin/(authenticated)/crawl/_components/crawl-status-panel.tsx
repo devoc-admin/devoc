@@ -60,29 +60,15 @@ export function CrawlStatusPanel() {
               {crawlJob.pagesCrawled} / {crawlJob.maxPages}
             </strong>
           </span>
-          {isRunning && (
-            <>
-              <span className="flex items-center gap-x-1 text-muted-foreground">
-                <LoaderIcon className="animate-spin" size={14} />
-                Crawling en cours...
-              </span>
-              <Button
-                disabled={deleteCrawlJobIsPending}
-                onClick={() => crawlJobId && deleteCrawlJobMutate(crawlJobId)}
-                size="sm"
-                variant="destructive"
-              >
-                {deleteCrawlJobIsPending ? (
-                  <LoaderIcon className="animate-spin" size={14} />
-                ) : (
-                  <StopCircleIcon size={14} />
-                )}
-                Interrompre
-              </Button>
-            </>
-          )}
         </div>
 
+        {/* ✋ Stop crawl */}
+        {isRunning && (
+          <StopCrawlButton
+            onClick={() => crawlJobId && deleteCrawlJobMutate(crawlJobId)}
+            pending={deleteCrawlJobIsPending}
+          />
+        )}
         {/* ❌ Error message if failed */}
         {isFailed && crawlJob.errorMessage && (
           <div className="rounded-md bg-red-500/10 p-3 text-red-500 text-sm">
@@ -148,6 +134,31 @@ export function CrawlStatusPanel() {
   );
 }
 
+// --------------------------------------------
+function StopCrawlButton({
+  onClick,
+  pending,
+}: {
+  onClick: () => void;
+  pending: boolean;
+}) {
+  return (
+    <Button
+      className="w-fit"
+      disabled={pending}
+      onClick={onClick}
+      size="sm"
+      variant="destructive"
+    >
+      {pending ? (
+        <LoaderIcon className="animate-spin" size={14} />
+      ) : (
+        <StopCircleIcon size={14} />
+      )}
+      Interrompre
+    </Button>
+  );
+}
 // --------------------------------------------
 function StatusBadge({
   isRunning,

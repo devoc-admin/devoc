@@ -95,7 +95,8 @@ export function CrawledPageCard({ page }: CrawledPageCardProps) {
         "bg-sidebar-strong",
         "transition-shadow duration-300",
         isRecentlyToggled && "border-2 border-amber-500 dark:border-amber-400",
-        isHighlighted && "shadow-[0_0_20px_4px_oklch(0.7363_0.1697_61.12/0.4)]"
+        isHighlighted &&
+          "shadow-[0_0_20px_4px_oklch(0.7363_0.1697_61.12/0.4)] dark:shadow-3xl dark:shadow-white/10"
       )}
       ref={cardRef}
     >

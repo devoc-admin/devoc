@@ -171,12 +171,41 @@ export function CrawlForm() {
                     <CustomCheckbox
                       checked={field.state.value}
                       disabled={currentJobRunning || isSubmitting}
-                      handleChange={(checked) =>
-                        field.handleChange(checked === true)
-                      }
+                      handleChange={(checked) => {
+                        field.handleChange(checked === true);
+                        if (checked === true) {
+                          crawlForm.setFieldValue("useLocalScreenshots", false);
+                        }
+                      }}
                       name="skipScreenshots"
                     >
                       Ne pas prendre de captures écran
+                    </CustomCheckbox>
+                  )}
+                </crawlForm.Field>
+              )}
+            </crawlForm.Subscribe>
+            {/* 💾 Use local screenshots */}
+            <crawlForm.Subscribe
+              selector={(state) => ({
+                isSubmitting: state.isSubmitting,
+                skipScreenshots: state.values.skipScreenshots,
+              })}
+            >
+              {({ isSubmitting, skipScreenshots }) => (
+                <crawlForm.Field name="useLocalScreenshots">
+                  {(field) => (
+                    <CustomCheckbox
+                      checked={field.state.value}
+                      disabled={
+                        currentJobRunning || isSubmitting || skipScreenshots
+                      }
+                      handleChange={(checked) =>
+                        field.handleChange(checked === true)
+                      }
+                      name="useLocalScreenshots"
+                    >
+                      Stocker les captures écran localement
                     </CustomCheckbox>
                   )}
                 </crawlForm.Field>
@@ -282,6 +311,7 @@ function useCrawlForm() {
       search: "",
       skipResources: false,
       skipScreenshots: false,
+      useLocalScreenshots: false,
     },
     onSubmit: ({
       value: {
@@ -290,6 +320,7 @@ function useCrawlForm() {
         maxPages,
         skipResources,
         skipScreenshots,
+        useLocalScreenshots,
         concurrency,
       },
     }) => {
@@ -300,6 +331,7 @@ function useCrawlForm() {
         skipResources,
         skipScreenshots,
         url: search,
+        useLocalScreenshots,
       });
     },
   });

@@ -40,9 +40,8 @@ export function ListCrawls() {
 function CrawlsCards() {
   const { crawls, crawlsAreLoading } = useCrawlContext();
   const noCrawls = crawls && crawls.length === 0;
-
-  if (!(noCrawls || crawlsAreLoading)) return <NoCrawlFound />;
-
+  if (noCrawls && !crawlsAreLoading) return <NoCrawlFound />;
+  console.log("crawls", crawls);
   return (
     <ul className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-10">
       {crawlsAreLoading ? (
@@ -131,7 +130,7 @@ function CrawlCard(crawl: CrawlResult) {
             <span>
               {crawl.skipScreenshots
                 ? "Pas de captures écran"
-                : "Captures écran"}
+                : `Captures écran (${crawl.useLocalScreenshots ? "local" : "distant"})`}
             </span>
           </div>
           {/* 🖼️ Skip resources ? */}
@@ -150,7 +149,7 @@ function CrawlCard(crawl: CrawlResult) {
         </div>
       </div>
       {/* 🖼️ Cover */}
-      <div className="group relative mt-auto w-fit">
+      <div className="group relative mx-auto mt-auto w-fit">
         {crawl.screenshotUrl ? (
           <Image
             alt="Screenshot"
@@ -162,18 +161,12 @@ function CrawlCard(crawl: CrawlResult) {
         ) : (
           <ImagePlaceholder />
         )}
-        <div className="absolute right-2 bottom-2 flex gap-x-2">
-          <SeeCrawlButton crawlId={crawl.id} />
-          <DeleteCrawlButton crawlId={crawl.id} />
-        </div>
       </div>
-      {/* 🆕 Button */}
-      <Link
-        className="rounded-md bg-primary py-3 text-center font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
-        href={`/admin/crawl/${crawl.id}`}
-      >
-        Voir le crawl
-      </Link>
+      {/* 🆕 Buttons */}
+      <div className="flex w-full gap-x-2">
+        <SeeCrawlButton crawlId={crawl.id} />
+        <DeleteCrawlButton crawlId={crawl.id} />
+      </div>
     </li>
   );
 }
@@ -200,6 +193,24 @@ function ImagePlaceholder() {
 }
 
 // ------------------------------------------------------------
+//👁️ See crawl
+function SeeCrawlButton({ crawlId }: { crawlId: number }) {
+  return (
+    <Link
+      className={cn(
+        "rounded-md bg-primary py-3 text-center font-semibold text-base text-primary-foreground transition-colors hover:bg-primary/90",
+        "flex items-center justify-center gap-x-2",
+        "basis-1/2"
+      )}
+      href={`/admin/crawl/${crawlId}`}
+    >
+      <EyeIcon size={18} strokeWidth={2} />
+      <span>Voir ce crawl</span>
+    </Link>
+  );
+}
+
+// ------------------------------------------------------------
 // 🚮 Delete crawl
 function DeleteCrawlButton({ crawlId }: { crawlId: number }) {
   const { crawlDeletionIsPending, deleteCrawlMutate, deletingCrawlId } =
@@ -210,62 +221,34 @@ function DeleteCrawlButton({ crawlId }: { crawlId: number }) {
     crawlDeletionIsPending && deletingCrawlId !== crawlId;
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <button
-          className={cn(
-            "rounded-full p-2 opacity-0 transition-opacity",
-            "bg-red-200 text-red-900 dark:bg-red-800 dark:text-red-50",
-            !otherCrawlDeletionIsPending &&
-              "group-hover:cursor-pointer group-hover:opacity-100",
-            "disabled:cursor-not-allowed disabled:opacity-50",
-            isPending && "block"
-          )}
-          disabled={isPending}
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            deleteCrawlMutate(crawlId);
-          }}
-          type="button"
-        >
-          {isPending ? (
-            <LoaderIcon className="animate-spin" size={16} strokeWidth={2} />
-          ) : (
-            <Trash2Icon size={16} strokeWidth={2} />
-          )}
-        </button>
-      </TooltipTrigger>
-      <TooltipContent>Supprimer ce crawl</TooltipContent>
-    </Tooltip>
-  );
-}
-
-// ------------------------------------------------------------
-// 👁️ See crawl
-function SeeCrawlButton({ crawlId }: { crawlId: number }) {
-  const { crawlDeletionIsPending, deletingCrawlId } = useCrawlContext();
-
-  const actionPending = crawlDeletionIsPending && deletingCrawlId === crawlId;
-
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Link
-          className={cn(
-            "rounded-full p-2 opacity-0 transition-opacity",
-            "bg-blue-200 text-blue-900 dark:bg-blue-800 dark:text-blue-50",
-            "group-hover:cursor-pointer group-hover:opacity-100",
-            actionPending && "pointer-events-none opacity-50"
-          )}
-          href={`/admin/crawl/${crawlId}`}
-          type="button"
-        >
-          <EyeIcon size={17} strokeWidth={2} />
-        </Link>
-      </TooltipTrigger>
-      <TooltipContent>Voir ce crawl</TooltipContent>
-    </Tooltip>
+    <button
+      className={cn(
+        "flex cursor-pointer items-center justify-center gap-x-2",
+        "rounded-md",
+        "bg-red-600",
+        "hover:bg-red-500",
+        "text-primary-foreground",
+        "transition-colors",
+        "py-3",
+        "text-center font-semibold text-base",
+        "basis-1/2",
+        otherCrawlDeletionIsPending && "opacity-50"
+      )}
+      disabled={isPending}
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        deleteCrawlMutate(crawlId);
+      }}
+      type="button"
+    >
+      {isPending ? (
+        <LoaderIcon className="animate-spin" size={16} strokeWidth={2} />
+      ) : (
+        <Trash2Icon size={18} strokeWidth={2} />
+      )}
+      <span>Supprimer ce crawl</span>
+    </button>
   );
 }
 

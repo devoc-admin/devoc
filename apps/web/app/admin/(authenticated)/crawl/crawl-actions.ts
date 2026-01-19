@@ -1,4 +1,6 @@
 "use server";
+import { rm } from "node:fs/promises";
+import { join } from "node:path";
 import { del, list } from "@vercel/blob";
 import { and, desc, eq } from "drizzle-orm";
 import { type ActionResult, getErrorMessage } from "@/lib/api";
@@ -25,6 +27,7 @@ export async function upsertCrawl({
   maxPages,
   skipResources,
   skipScreenshots,
+  useLocalScreenshots,
   concurrency,
 }: UpsertCrawlParams): Promise<ActionResult<UpsertCrawlResult>> {
   // ✅🌐 Validation de l'URL
@@ -69,8 +72,11 @@ export async function upsertCrawl({
         id: crypto.randomUUID(),
         maxDepth,
         maxPages,
+        skipResources,
+        skipScreenshots,
         status: "pending",
         updatedAt: nowString,
+        useLocalScreenshots,
       })
       .returning();
   } catch (error) {
@@ -96,6 +102,7 @@ export async function upsertCrawl({
           maxPages: maxPages ?? 5,
           skipResources: skipResources ?? false,
           skipScreenshots: skipScreenshots ?? false,
+          useLocalScreenshots: useLocalScreenshots ?? false,
         },
         crawlJobId: insertedCrawlJob.id,
         url: origin,
@@ -125,6 +132,7 @@ type UpsertCrawlParams = {
   maxPages: number;
   skipResources: boolean;
   skipScreenshots: boolean;
+  useLocalScreenshots: boolean;
   concurrency: number;
 };
 
@@ -208,7 +216,7 @@ export async function getCrawlJob(
 
 // --------------------------------------
 // 📝 List crawls
-const crawlsQuery = db
+const listCrawlsQuery = db
   .select({
     author: crawlJob.author,
     authorUrl: crawlJob.authorUrl,
@@ -223,6 +231,7 @@ const crawlsQuery = db
     startedAt: crawlJob.startedAt,
     title: crawledPage.title,
     url: crawl.url,
+    useLocalScreenshots: crawlJob.useLocalScreenshots,
   })
   .from(crawl)
   .leftJoin(crawlJob, eq(crawl.id, crawlJob.crawlId))
@@ -230,12 +239,12 @@ const crawlsQuery = db
   .where(and(eq(crawlJob.status, "completed"), eq(crawledPage.url, crawl.url)))
   .orderBy(desc(crawlJob.createdAt));
 
-export type ListCrawlsResult = Awaited<typeof crawlsQuery>;
+export type ListCrawlsResult = Awaited<typeof listCrawlsQuery>;
 export type CrawlResult = ListCrawlsResult[number];
 
 export async function listCrawls(): Promise<ActionResult<ListCrawlsResult>> {
   try {
-    const crawls = await crawlsQuery;
+    const crawls = await listCrawlsQuery;
     return { response: crawls, success: true };
   } catch (error) {
     const message = getErrorMessage(error);
@@ -291,7 +300,23 @@ async function deleteScreenshotsForCrawlJob({
     .map((row) => row.screenshotUrl)
     .filter(Boolean) as string[];
 
-  await del(allScreenshotUrls);
+  // Check if screenshots are stored locally (URL starts with /api/screenshots/)
+  const hasLocalScreenshots = allScreenshotUrls.some((url) =>
+    url.startsWith("/api/screenshots/")
+  );
+
+  if (hasLocalScreenshots) {
+    // Delete local screenshots folder
+    try {
+      const screenshotsDir = join(process.cwd(), "screenshots", crawlJobId);
+      await rm(screenshotsDir, { force: true, recursive: true });
+    } catch {
+      // Folder may not exist, ignore errors
+    }
+  } else if (allScreenshotUrls.length > 0) {
+    // Delete from Vercel Blob
+    await del(allScreenshotUrls);
+  }
 }
 
 // --------------------------------------
@@ -320,20 +345,43 @@ async function deleteScreenshotsForCrawl({
 }: {
   crawlId: number;
 }): Promise<void> {
-  const allScreenshotUrls = (
-    await db
-      .select({
-        screenshotUrl: crawledPage.screenshotUrl,
-      })
-      .from(crawl)
-      .leftJoin(crawlJob, eq(crawl.id, crawlJob.crawlId))
-      .leftJoin(crawledPage, eq(crawledPage.crawlJobId, crawlJob.id))
-      .where(eq(crawl.id, crawlId))
-  )
+  const rows = await db
+    .select({
+      crawlJobId: crawlJob.id,
+      screenshotUrl: crawledPage.screenshotUrl,
+    })
+    .from(crawl)
+    .leftJoin(crawlJob, eq(crawl.id, crawlJob.crawlId))
+    .leftJoin(crawledPage, eq(crawledPage.crawlJobId, crawlJob.id))
+    .where(eq(crawl.id, crawlId));
+
+  const allScreenshotUrls = rows
     .map((row) => row.screenshotUrl)
     .filter(Boolean) as string[];
 
-  await del(allScreenshotUrls);
+  // Check if screenshots are stored locally
+  const hasLocalScreenshots = allScreenshotUrls.some((url) =>
+    url.startsWith("/api/screenshots/")
+  );
+
+  if (hasLocalScreenshots) {
+    // Get unique crawl job IDs for local screenshot deletion
+    const crawlJobIds = [...new Set(rows.map((row) => row.crawlJobId))].filter(
+      Boolean
+    ) as string[];
+
+    for (const jobId of crawlJobIds) {
+      try {
+        const screenshotsDir = join(process.cwd(), "screenshots", jobId);
+        await rm(screenshotsDir, { force: true, recursive: true });
+      } catch {
+        // Folder may not exist, ignore errors
+      }
+    }
+  } else if (allScreenshotUrls.length > 0) {
+    // Delete from Vercel Blob
+    await del(allScreenshotUrls);
+  }
 }
 
 // --------------------------------------

@@ -17,6 +17,7 @@ export function useUpsertCrawl() {
       maxPages,
       skipResources,
       skipScreenshots,
+      useLocalScreenshots,
       concurrency,
     }: {
       url: string;
@@ -24,6 +25,7 @@ export function useUpsertCrawl() {
       maxPages: number;
       skipResources: boolean;
       skipScreenshots: boolean;
+      useLocalScreenshots: boolean;
       concurrency: number;
     }) => {
       const result = await upsertCrawl({
@@ -33,6 +35,7 @@ export function useUpsertCrawl() {
         skipResources,
         skipScreenshots,
         url,
+        useLocalScreenshots,
       });
       if (!result.success) {
         throw new Error(result.error);
