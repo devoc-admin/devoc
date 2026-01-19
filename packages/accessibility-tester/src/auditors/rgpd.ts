@@ -114,7 +114,7 @@ function detectTrackers(
   return detected;
 }
 
-export async function runRgpdAudit(url: string): Promise<RgpdResult> {
+export function runRgpdAudit(url: string): Promise<RgpdResult> {
   console.log(`  Audit RGPD: ${url}`);
 
   return withPage(async (page) => {
@@ -171,6 +171,7 @@ export async function runRgpdAudit(url: string): Promise<RgpdResult> {
       const consentManager = detectConsentManager(html, cookies);
 
       // Detect consent banner (improved heuristics)
+      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: complex banner detection heuristics
       const bannerDetected = await page.evaluate(() => {
         const keywords = [
           "cookie",
@@ -299,18 +300,19 @@ export async function runRgpdAudit(url: string): Promise<RgpdResult> {
 }
 
 // Detect technology stack
-export async function detectTechnology(url: string): Promise<TechnologyInfo> {
+export function detectTechnology(url: string): Promise<TechnologyInfo> {
   return withPage(async (page) => {
     try {
       await page.goto(url, { timeout: 30_000, waitUntil: "networkidle2" });
 
+      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: complex technology detection heuristics
       const result = await page.evaluate(() => {
         const html = document.documentElement.outerHTML.toLowerCase();
         const meta = Array.from(document.querySelectorAll("meta"));
         const scripts = Array.from(
           document.querySelectorAll("script[src]")
         ).map((s) => (s as HTMLScriptElement).src);
-        const links = Array.from(document.querySelectorAll("link[href]")).map(
+        const _links = Array.from(document.querySelectorAll("link[href]")).map(
           (l) => (l as HTMLLinkElement).href
         );
 
@@ -325,8 +327,9 @@ export async function detectTechnology(url: string): Promise<TechnologyInfo> {
             (m) => m.getAttribute("name") === "generator"
           );
           if (genMeta?.content?.includes("WordPress")) {
+            // biome-ignore lint/performance/useTopLevelRegex: regex must be inline in browser context
             const match = genMeta.content.match(/WordPress\s*([\d.]+)/);
-            if (match && match[1]) cmsVersion = match[1];
+            if (match?.[1]) cmsVersion = match[1];
           }
         }
         // Drupal

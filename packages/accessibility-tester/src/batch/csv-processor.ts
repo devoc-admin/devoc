@@ -43,6 +43,7 @@ function escapeCSVField(value: string): string {
 export async function readProspectsCSV(
   filePath: string
 ): Promise<ProspectRow[]> {
+  // biome-ignore lint/correctness/noUndeclaredVariables: Bun is a global in Bun runtime
   const file = Bun.file(filePath);
   const content = await file.text();
   const lines = content.split("\n").filter((l) => l.trim());
@@ -94,6 +95,7 @@ export async function writeProspectsCSV(
     lines.push(values.join(","));
   }
 
+  // biome-ignore lint/correctness/noUndeclaredVariables: Bun is a global in Bun runtime
   await Bun.write(filePath, lines.join("\n"));
 }
 
@@ -161,7 +163,7 @@ export function filterProspectsForAudit(
 
     // Filter by priority if specified
     if (options.priorityFilter && options.priorityFilter.length > 0) {
-      const currentPriority = Number.parseInt(p.Priorite) as AuditPriority;
+      const currentPriority = Number.parseInt(p.Priorite, 10) as AuditPriority;
       if (!options.priorityFilter.includes(currentPriority)) {
         return false;
       }
@@ -215,7 +217,7 @@ export function getAuditStats(prospects: ProspectRow[]): {
       stats.byStatus[p.Statut_RGAA as RgaaStatus]++;
     }
 
-    const priority = Number.parseInt(p.Priorite) as AuditPriority;
+    const priority = Number.parseInt(p.Priorite, 10) as AuditPriority;
     if (priority >= 1 && priority <= 5) {
       stats.byPriority[priority]++;
     }

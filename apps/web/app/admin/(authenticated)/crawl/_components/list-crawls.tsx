@@ -39,7 +39,9 @@ export function ListCrawls() {
 // -----------------------------------------------------------
 function CrawlsCards() {
   const { crawls, crawlsAreLoading } = useCrawlContext();
-  if (!(crawls || crawlsAreLoading)) return <NoCrawlFound />;
+  const noCrawls = crawls && crawls.length === 0;
+
+  if (!(noCrawls || crawlsAreLoading)) return <NoCrawlFound />;
 
   return (
     <ul className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-10">

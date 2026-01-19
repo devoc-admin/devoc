@@ -1,11 +1,16 @@
+import fs from "node:fs";
+import path from "node:path";
 import { AxePuppeteer } from "@axe-core/puppeteer";
-import fs from "fs";
-import path from "path";
+import type { NodeResult, Result } from "axe-core";
 import puppeteer from "puppeteer";
 
 // Load RGAA Data
 // Bun can import JSON directly
 import rgaaData from "./data/rgaa.json";
+
+// Top-level regex patterns for performance
+const WCAG_DIGIT_REGEX = /\d/;
+const WCAG_VERSION_REGEX = /^(\d+\.\d+\.\d+)/;
 
 interface RgaaCriterion {
   number: number;
@@ -25,8 +30,9 @@ interface RgaaData {
 }
 
 // Helper to normalize strings for comparison
-const normalize = (str: string) => str.toLowerCase().trim();
+const _normalize = (str: string) => str.toLowerCase().trim();
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: complex RGAA mapping logic
 export async function runRgaaAudit(url: string, outputDir = "./reports") {
   console.log(`🇫🇷 Starting RGAA 4.1 Audit for: ${url}`);
 
@@ -46,10 +52,10 @@ export async function runRgaaAudit(url: string, outputDir = "./reports") {
 
     // 2. Map Violations to RGAA
     // We create a map of "RGAA Criterion ID" -> "List of Axe Violations"
-    const violationsMap = new Map<string, any[]>();
+    const violationsMap = new Map<string, Result[]>();
 
     // We also keep track of all unique WCAG violations
-    const wcagViolationsMap = new Map<string, any[]>();
+    const wcagViolationsMap = new Map<string, Result[]>();
 
     for (const violation of results.violations) {
       // Check tags for explicit RGAA references (e.g. "RGAA-1.1.1")
@@ -60,7 +66,7 @@ export async function runRgaaAudit(url: string, outputDir = "./reports") {
 
       if (rgaaTags.length > 0) {
         // Direct mapping found in Axe tags
-        rgaaTags.forEach((tag) => {
+        for (const tag of rgaaTags) {
           // Format seen: "RGAA-1.1.1" or "RGAA-11.1.1"
           const parts = tag.split("-");
           const firstPart = parts[0];
@@ -86,7 +92,7 @@ export async function runRgaaAudit(url: string, outputDir = "./reports") {
               }
             }
           }
-        });
+        }
       }
 
       // Also map via WCAG Tags
@@ -96,8 +102,8 @@ export async function runRgaaAudit(url: string, outputDir = "./reports") {
       // Simplest way: Store violations by their WCAG SC (Success Criterion) derived from tags or helpUrl.
       // Axe tags for WCAG are usually 'wcag2a', 'wcag111'.
       // Let's store the violation for every relevant WCAG tag.
-      violation.tags.forEach((tag) => {
-        if (tag.startsWith("wcag") && /\d/.test(tag)) {
+      for (const tag of violation.tags) {
+        if (tag.startsWith("wcag") && WCAG_DIGIT_REGEX.test(tag)) {
           // e.g. wcag143 -> 1.4.3
           // This is fuzzy. Better to use the rule ID or `wcag` metadata if available.
           // Actually, looking at rgaa.json, it references "1.1.1".
@@ -108,7 +114,7 @@ export async function runRgaaAudit(url: string, outputDir = "./reports") {
             (wcagViolationsMap.get(tag) || []).concat(violation)
           );
         }
-      });
+      }
     }
 
     // 3. Generate Report
@@ -134,11 +140,11 @@ export async function runRgaaAudit(url: string, outputDir = "./reports") {
     }
 
     // Iterate over RGAA Topics
-    (rgaaData as RgaaData).topics.forEach((topic) => {
+    for (const topic of (rgaaData as RgaaData).topics) {
       let topicHasIssues = false;
       let topicMd = `### Thématique ${topic.number}: ${topic.topic}\n\n`;
 
-      topic.criteria.forEach((entry) => {
+      for (const entry of topic.criteria) {
         const crit = entry.criterium;
         const critId = `${topic.number}.${crit.number}`;
 
@@ -148,32 +154,32 @@ export async function runRgaaAudit(url: string, outputDir = "./reports") {
 
         // Also check if any Axe violation tags match the WCAG references of this criterion
         // This is the "Smart Mapping" part
-        const matchedViolations: any[] = [...directViolations];
+        const matchedViolations: Result[] = [...directViolations];
 
         if (crit.references) {
-          crit.references.forEach((ref) => {
+          for (const ref of crit.references) {
             if (ref.wcag) {
-              ref.wcag.forEach((wcagStr) => {
+              for (const wcagStr of ref.wcag) {
                 // wcagStr is like "1.1.1 Non-text Content (A)"
                 // Extract "1.1.1"
-                const match = wcagStr.match(/^(\d+\.\d+\.\d+)/);
-                if (match && match[1]) {
+                const match = wcagStr.match(WCAG_VERSION_REGEX);
+                if (match?.[1]) {
                   const wcagId = match[1]; // "1.1.1"
-                  const axeTag = "wcag" + wcagId.replace(/\./g, ""); // "wcag111"
+                  const axeTag = `wcag${wcagId.replace(/\./g, "")}`; // "wcag111"
 
                   // Check if any *violation* has this tag
-                  results.violations.forEach((v) => {
+                  for (const v of results.violations) {
                     if (
                       v.tags.includes(axeTag) &&
                       !matchedViolations.includes(v)
                     ) {
                       matchedViolations.push(v);
                     }
-                  });
+                  }
                 }
-              });
+              }
             }
-          });
+          }
         }
 
         if (matchedViolations.length > 0) {
@@ -181,28 +187,28 @@ export async function runRgaaAudit(url: string, outputDir = "./reports") {
           topicMd += `#### 🔴 Critère ${critId}: ${crit.title}\n`;
           topicMd += "**Non-conformités automatiques relevées :**\n";
 
-          matchedViolations.forEach((v) => {
-            topicMd += `- **[${v.impact.toUpperCase()}]** ${v.help} (${v.id})\n`;
+          for (const v of matchedViolations) {
+            topicMd += `- **[${v.impact?.toUpperCase() ?? "UNKNOWN"}]** ${v.help} (${v.id})\n`;
             topicMd += `  - *Description:* ${v.description}\n`;
             topicMd += `  - *Noeuds concernés:* ${v.nodes.length}\n`;
             // Only show first 3 nodes to keep report readable
-            v.nodes.slice(0, 3).forEach((n: any) => {
+            for (const n of v.nodes.slice(0, 3) as NodeResult[]) {
               topicMd += `    - \`${n.html}\`\n`;
-            });
+            }
             if (v.nodes.length > 3)
               topicMd += `    - ... (+ ${v.nodes.length - 3} autres)\n`;
-          });
+          }
           topicMd += `\n[Voir la fiche RGAA](https://accessibilite.numerique.gouv.fr/methode/criteres-et-tests/#${critId.replace(".", "-")})\n\n`;
         } else {
           // No issues found for this criterion
         }
-      });
+      }
 
       if (topicHasIssues) {
         md += topicMd;
         md += "---\n";
       }
-    });
+    }
 
     if (!md.includes("#### 🔴")) {
       md += `\n*Aucune violation ne correspond directement à un critère RGAA via le mapping automatique. Veuillez consulter le rapport brut Axe ci-dessous pour plus de détails.*
@@ -210,9 +216,9 @@ export async function runRgaaAudit(url: string, outputDir = "./reports") {
     }
 
     md += "\n## Détail Complet des Violations Axe (Non classées)\n";
-    results.violations.forEach((v) => {
+    for (const v of results.violations) {
       md += `- **${v.id}** (${v.impact}): ${v.help}\n`;
-    });
+    }
 
     // Save Report
     if (!fs.existsSync(outputDir)) {

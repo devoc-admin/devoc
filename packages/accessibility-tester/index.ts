@@ -1,8 +1,8 @@
-import * as chromeLauncher from "chrome-launcher";
-import fs from "fs";
+import fs from "node:fs";
+import path from "node:path";
+import { launch as launchChrome } from "chrome-launcher";
 import lighthouse from "lighthouse";
-import path from "path";
-import { runRgpdAudit } from "./rgpd";
+import { type RgpdResult, runRgpdAudit } from "./rgpd";
 
 // Helper to ensure the output directory exists
 const ensureDirectoryExists = (dirPath: string) => {
@@ -37,10 +37,10 @@ export async function runAudit(
 
   // --- Step 1: RGPD Audit ---
   console.log("--- Phase 1: RGPD & Privacy ---");
-  let rgpdResult;
+  let rgpdResult: RgpdResult;
   try {
     rgpdResult = await runRgpdAudit(url);
-  } catch (e) {
+  } catch (_e) {
     console.error("RGPD Audit skipped due to error.");
     rgpdResult = {
       consentBannerDetected: false,
@@ -56,7 +56,7 @@ export async function runAudit(
   console.log("--- Phase 2: Lighthouse (Accessibility, Performance, etc.) ---");
 
   // Launch Chrome
-  const chrome = await chromeLauncher.launch({ chromeFlags: ["--headless"] });
+  const chrome = await launchChrome({ chromeFlags: ["--headless"] });
 
   const options = {
     logLevel: "info",

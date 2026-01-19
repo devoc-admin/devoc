@@ -30,7 +30,7 @@ export async function createAdmin() {
   }
 
   try {
-    const result = await auth.api.signUpEmail({
+    await auth.api.signUpEmail({
       body: {
         email,
         name,

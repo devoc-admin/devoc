@@ -1,9 +1,13 @@
+import fs from "node:fs";
+import path from "node:path";
 import { AxePuppeteer } from "@axe-core/puppeteer";
-import fs from "fs";
 import lighthouse from "lighthouse";
-import path from "path";
 // Load RGAA reference data
 import rgaaData from "../../data/rgaa.json";
+
+// Top-level regex patterns for performance
+const WCAG_VERSION_REGEX = /^(\d+\.\d+\.\d+)/;
+
 import { detectTechnology, runRgpdAudit } from "../auditors/rgpd";
 import { browserManager, withPage } from "../core/browser";
 import type {
@@ -28,7 +32,8 @@ import {
   writeProspectsCSV,
 } from "./csv-processor";
 
-async function runRgaaAudit(url: string): Promise<RgaaAuditResult> {
+function runRgaaAudit(url: string): Promise<RgaaAuditResult> {
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: complex RGAA mapping logic
   return withPage(async (page) => {
     try {
       await page.goto(url, { timeout: 30_000, waitUntil: "networkidle2" });
@@ -58,10 +63,10 @@ async function runRgaaAudit(url: string): Promise<RgaaAuditResult> {
               for (const ref of crit.references) {
                 if (ref.wcag) {
                   for (const wcagStr of ref.wcag) {
-                    const match = wcagStr.match(/^(\d+\.\d+\.\d+)/);
-                    if (match && match[1]) {
+                    const match = wcagStr.match(WCAG_VERSION_REGEX);
+                    if (match?.[1]) {
                       const wcagId = match[1];
-                      const axeTag = "wcag" + wcagId.replace(/\./g, "");
+                      const axeTag = `wcag${wcagId.replace(/\./g, "")}`;
                       if (violation.tags.includes(axeTag)) {
                         matched = true;
                         break;
@@ -73,26 +78,24 @@ async function runRgaaAudit(url: string): Promise<RgaaAuditResult> {
               }
             }
 
-            if (matched) {
-              // Avoid duplicate criterion entries
-              if (
-                !violations.find(
-                  (v) =>
-                    v.criterionId === critId && v.axeRuleId === violation.id
-                )
-              ) {
-                violations.push({
-                  axeRuleId: violation.id,
-                  criterionId: critId,
-                  criterionTitle: crit.title,
-                  description: violation.description,
-                  help: violation.help,
-                  helpUrl: violation.helpUrl,
-                  impact: violation.impact as RgaaViolation["impact"],
-                  nodes: violation.nodes.length,
-                  wcagTags,
-                });
-              }
+            // Avoid duplicate criterion entries
+            if (
+              matched &&
+              !violations.find(
+                (v) => v.criterionId === critId && v.axeRuleId === violation.id
+              )
+            ) {
+              violations.push({
+                axeRuleId: violation.id,
+                criterionId: critId,
+                criterionTitle: crit.title,
+                description: violation.description,
+                help: violation.help,
+                helpUrl: violation.helpUrl,
+                impact: violation.impact as RgaaViolation["impact"],
+                nodes: violation.nodes.length,
+                wcagTags,
+              });
             }
           }
         }
@@ -431,7 +434,7 @@ Examples:
         outputDir = args[++i] ?? "./reports";
         break;
       case "--concurrency":
-        concurrency = Number.parseInt(args[++i] ?? "3") || 3;
+        concurrency = Number.parseInt(args[++i] ?? "3", 10) || 3;
         break;
       case "--skip-audited":
         skipAudited = true;
@@ -440,10 +443,13 @@ Examples:
         updateCsv = false;
         break;
       case "--priority": {
-        const p = Number.parseInt(args[++i] ?? "0") as AuditPriority;
+        const p = Number.parseInt(args[++i] ?? "0", 10) as AuditPriority;
         if (p >= 1 && p <= 5) priorityFilter.push(p);
         break;
       }
+      default:
+        // Unknown argument, ignore
+        break;
     }
   }
 

@@ -1,13 +1,12 @@
-import * as chromeLauncher from "chrome-launcher";
+import { type LaunchedChrome, launch as launchChrome } from "chrome-launcher";
 import puppeteer, { type Browser, type Page } from "puppeteer";
 
-type ChromeInstance = Awaited<ReturnType<typeof chromeLauncher.launch>>;
+type ChromeInstance = LaunchedChrome;
 
 class BrowserManager {
   private browser: Browser | null = null;
   private chrome: ChromeInstance | null = null;
   private pageCount = 0;
-  private maxPages = 5;
 
   async getBrowser(): Promise<Browser> {
     if (!this.browser) {
@@ -40,7 +39,7 @@ class BrowserManager {
 
   async getChromeForLighthouse(): Promise<{ port: number }> {
     if (!this.chrome) {
-      this.chrome = await chromeLauncher.launch({
+      this.chrome = await launchChrome({
         chromeFlags: ["--headless", "--no-sandbox", "--disable-dev-shm-usage"],
       });
     }

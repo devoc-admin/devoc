@@ -1,3 +1,4 @@
+// biome-ignore-all lint/performance/useTopLevelRegex: regexes must be inside page.evaluate (browser context)
 import type { Page } from "playwright";
 import type { AuthorDetectionResult } from "./types";
 
@@ -10,6 +11,7 @@ export async function detectAuthor({
 }: {
   page: Page;
 }): Promise<AuthorDetectionResult | undefined> {
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: browser code in page.evaluate is difficult to refactor
   return await page.evaluate(() => {
     // Patterns to search for
     const textPatterns = [

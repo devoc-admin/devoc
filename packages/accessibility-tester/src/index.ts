@@ -1,3 +1,4 @@
+// biome-ignore-all lint/performance/noBarrelFile: intentional package exports
 // Main exports for accessibility-tester
 
 // Auditors

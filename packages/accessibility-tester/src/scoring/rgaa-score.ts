@@ -12,7 +12,7 @@ const IMPACT_WEIGHTS: Record<string, number> = {
 };
 
 // RGAA topics and criteria counts
-const RGAA_TOPICS = [
+const _RGAA_TOPICS = [
   { criteria: 9, name: "Images", number: 1 },
   { criteria: 2, name: "Cadres", number: 2 },
   { criteria: 3, name: "Couleurs", number: 3 },

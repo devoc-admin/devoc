@@ -90,9 +90,9 @@ export async function runRgpdAudit(url: string): Promise<RgpdResult> {
     console.log(`   - Cookies found immediately: ${cookies.length}`);
     if (cookies.length > 0) {
       console.log("     ⚠️  Cookies set before consent might be a violation!");
-      cookies
-        .slice(0, 5)
-        .forEach((c) => console.log(`       - ${c.name} (${c.domain})`));
+      for (const c of cookies.slice(0, 5)) {
+        console.log(`       - ${c.name} (${c.domain})`);
+      }
       if (cookies.length > 5)
         console.log(`       ... and ${cookies.length - 5} more.`);
     }
