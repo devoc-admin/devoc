@@ -59,6 +59,7 @@ export const crawlWebsite = inngest.createFunction(
     });
 
     // 2️⃣ 🏃 Running
+    // Note: Return only minimal data to avoid Inngest step output size limit (~4MB)
     const result = await step.run("execute-crawl", async () => {
       const crawler = new WebCrawler({
         baseUrl: url,
@@ -66,8 +67,10 @@ export const crawlWebsite = inngest.createFunction(
         crawlId,
       });
 
+      const errors: string[] = [];
+
       // ⏳ Update progress
-      return await crawler.crawl({
+      const crawlResult = await crawler.crawl({
         onProgress: async (progress) => {
           // 👁️📝 Logs
           const nowString = new Date().toISOString();
@@ -171,9 +174,20 @@ export const crawlWebsite = inngest.createFunction(
           }
         },
       });
+
+      // Collect errors (just messages, not full objects)
+      for (const error of crawlResult.errors ?? []) {
+        errors.push(typeof error === "string" ? error : String(error));
+      }
+
+      // Return minimal data only to stay under Inngest's 4MB limit
+      return {
+        errors,
+        pagesCount: crawlResult.pages.length,
+      };
     });
 
-    for (const error of result.errors ?? []) {
+    for (const error of result.errors) {
       logger.error("🚫 Error during crawl", {
         error,
       });
@@ -181,6 +195,12 @@ export const crawlWebsite = inngest.createFunction(
 
     // 3️⃣ Select pages for RGAA audit
     await step.run("select-pages-for-audit", async () => {
+      // Query pages from database instead of using result.pages (to avoid step output size limit)
+      const pages = await db
+        .select()
+        .from(crawledPage)
+        .where(eq(crawledPage.crawlId, crawlId));
+
       // Helper to check if page has successful HTTP status (2xx)
       const isSuccessfulPage = (page: { httpStatus: number }) =>
         page.httpStatus >= 200 && page.httpStatus < 300;
@@ -198,7 +218,7 @@ export const crawlWebsite = inngest.createFunction(
       // Select first page for each mandatory category (only 2xx pages)
       const selectedMandatory: string[] = [];
       for (const mandatoryCategory of mandatoryCategories) {
-        const selectedPage = result.pages.find(
+        const selectedPage = pages.find(
           (page) =>
             page.category === mandatoryCategory && isSuccessfulPage(page)
         );
@@ -212,13 +232,13 @@ export const crawlWebsite = inngest.createFunction(
       }
 
       // ✨ Select pages with unique characteristics (only 2xx pages)
-      const specialPages = result.pages.filter(
+      const specialPages = pages.filter(
         (page) =>
           isSuccessfulPage(page) &&
-          (page.characteristics.hasMultimedia ||
-            page.characteristics.hasTable ||
-            page.characteristics.hasForm ||
-            page.characteristics.hasDocuments)
+          (page.hasMultimedia ||
+            page.hasTable ||
+            page.hasForm ||
+            page.hasDocuments)
       );
 
       const maxSpecialPages = 15;
@@ -239,8 +259,8 @@ export const crawlWebsite = inngest.createFunction(
         .update(crawl)
         .set({
           completedAt: nowString,
-          pagesCrawled: result.pages.length,
-          pagesDiscovered: result.pages.length,
+          pagesCrawled: result.pagesCount,
+          pagesDiscovered: result.pagesCount,
           status: "completed",
           updatedAt: nowString,
         })
@@ -248,8 +268,8 @@ export const crawlWebsite = inngest.createFunction(
     });
 
     return {
-      errorsCount: result.errors?.length ?? 0,
-      pagesDiscovered: result.pages.length,
+      errorsCount: result.errors.length,
+      pagesDiscovered: result.pagesCount,
       success: true,
     };
   }
