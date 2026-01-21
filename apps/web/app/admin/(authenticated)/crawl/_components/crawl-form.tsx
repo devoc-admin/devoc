@@ -338,12 +338,13 @@ function useCrawlForm() {
   // ✅🍞 Toast success
   useEffect(() => {
     if (upsertCrawlIsSuccess) {
+      form.setFieldValue("search", "");
       toast("Demande de crawl envoyée !", {
         icon: "✅",
         position: "bottom-right",
       });
     }
-  }, [upsertCrawlIsSuccess]);
+  }, [upsertCrawlIsSuccess, form]);
 
   // ⛔🍞 Toast error
   useEffect(() => {
