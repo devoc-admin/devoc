@@ -116,22 +116,6 @@ export const verification = pgTable(
 
 // Crawl
 
-export const crawl = pgTable("crawl", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  url: text().unique().notNull(),
-  createdAt: timestamp({ mode: "string", withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp({ mode: "string", withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-});
-
-export type Crawl = typeof crawl.$inferSelect;
-export type NewCrawl = typeof crawl.$inferInsert;
-
-// Crawler
-
 export const crawlStatusEnum = pgEnum("crawl_status", [
   "pending",
   "running",
@@ -174,14 +158,14 @@ export type CrawlConfig = {
   };
 };
 
-export const crawlJob = pgTable(
-  "crawl_job",
+export const crawl = pgTable(
+  "crawl",
   {
     id: text()
       .primaryKey()
       .notNull()
       .$defaultFn(() => crypto.randomUUID()),
-    crawlId: integer().notNull(),
+    url: text().notNull(),
     status: crawlStatusEnum().default("pending").notNull(),
     maxDepth: integer().default(3).notNull(),
     maxPages: integer().default(50).notNull(),
@@ -221,24 +205,13 @@ export const crawlJob = pgTable(
       .notNull(),
   },
   (table) => [
-    foreignKey({
-      columns: [table.crawlId],
-      foreignColumns: [crawl.id],
-      name: "crawl_job_crawl_id_fkey",
-    }).onDelete("cascade"),
-    index("crawl_job_crawlId_idx").using(
-      "btree",
-      table.crawlId.asc().nullsLast()
-    ),
-    index("crawl_job_status_idx").using(
-      "btree",
-      table.status.asc().nullsLast()
-    ),
+    index("crawl_status_idx").using("btree", table.status.asc().nullsLast()),
+    index("crawl_url_idx").using("btree", table.url.asc().nullsLast()),
   ]
 );
 
-export type CrawlJob = typeof crawlJob.$inferSelect;
-export type NewCrawlJob = typeof crawlJob.$inferInsert;
+export type Crawl = typeof crawl.$inferSelect;
+export type NewCrawl = typeof crawl.$inferInsert;
 
 export const crawledPage = pgTable(
   "crawled_page",
@@ -247,7 +220,7 @@ export const crawledPage = pgTable(
       .primaryKey()
       .notNull()
       .$defaultFn(() => crypto.randomUUID()),
-    crawlJobId: text().notNull(),
+    crawlId: text().notNull(),
     url: text().notNull(),
     normalizedUrl: text().notNull(),
     title: text(),
@@ -273,20 +246,20 @@ export const crawledPage = pgTable(
   },
   (table) => [
     foreignKey({
-      columns: [table.crawlJobId],
-      foreignColumns: [crawlJob.id],
-      name: "crawled_page_crawlJobId_fkey",
+      columns: [table.crawlId],
+      foreignColumns: [crawl.id],
+      name: "crawled_page_crawlId_fkey",
     }).onDelete("cascade"),
-    index("crawled_page_crawlJobId_idx").using(
+    index("crawled_page_crawlId_idx").using(
       "btree",
-      table.crawlJobId.asc().nullsLast()
+      table.crawlId.asc().nullsLast()
     ),
     index("crawled_page_url_idx").using("btree", table.url.asc().nullsLast()),
     index("crawled_page_category_idx").using(
       "btree",
       table.category.asc().nullsLast()
     ),
-    unique("crawled_page_job_url").on(table.crawlJobId, table.normalizedUrl),
+    unique("crawled_page_crawl_url").on(table.crawlId, table.normalizedUrl),
   ]
 );
 
@@ -348,11 +321,11 @@ export const technology = pgTable(
 export type Technology = typeof technology.$inferSelect;
 export type NewTechnology = typeof technology.$inferInsert;
 
-export const crawlJobTechnology = pgTable(
-  "crawl_job_technology",
+export const crawlTechnology = pgTable(
+  "crawl_technology",
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    crawlJobId: text().notNull(),
+    crawlId: text().notNull(),
     technologyId: integer().notNull(),
     version: text(),
     confidence: integer().notNull(),
@@ -362,29 +335,26 @@ export const crawlJobTechnology = pgTable(
   },
   (table) => [
     foreignKey({
-      columns: [table.crawlJobId],
-      foreignColumns: [crawlJob.id],
-      name: "crawl_job_technology_crawlJobId_fkey",
+      columns: [table.crawlId],
+      foreignColumns: [crawl.id],
+      name: "crawl_technology_crawlId_fkey",
     }).onDelete("cascade"),
     foreignKey({
       columns: [table.technologyId],
       foreignColumns: [technology.id],
-      name: "crawl_job_technology_technologyId_fkey",
+      name: "crawl_technology_technologyId_fkey",
     }).onDelete("cascade"),
-    index("crawl_job_technology_crawlJobId_idx").using(
+    index("crawl_technology_crawlId_idx").using(
       "btree",
-      table.crawlJobId.asc().nullsLast()
+      table.crawlId.asc().nullsLast()
     ),
-    index("crawl_job_technology_technologyId_idx").using(
+    index("crawl_technology_technologyId_idx").using(
       "btree",
       table.technologyId.asc().nullsLast()
     ),
-    unique("crawl_job_technology_unique").on(
-      table.crawlJobId,
-      table.technologyId
-    ),
+    unique("crawl_technology_unique").on(table.crawlId, table.technologyId),
   ]
 );
 
-export type CrawlJobTechnology = typeof crawlJobTechnology.$inferSelect;
-export type NewCrawlJobTechnology = typeof crawlJobTechnology.$inferInsert;
+export type CrawlTechnology = typeof crawlTechnology.$inferSelect;
+export type NewCrawlTechnology = typeof crawlTechnology.$inferInsert;

@@ -11,7 +11,7 @@ import {
 export function useUpdatePageCategoryMutation({
   crawlId,
 }: {
-  crawlId: number;
+  crawlId: string;
 }) {
   const crawlDetailsQueryKey = ["crawl-details", crawlId];
   const queryClient = useQueryClient();
@@ -67,7 +67,7 @@ export function useUpdatePageCategoryMutation({
 export function useToggleAuditSelectionMutation({
   crawlId,
 }: {
-  crawlId: number;
+  crawlId: string;
 }) {
   const crawlDetailsQueryKey = ["crawl-details", crawlId];
   const queryClient = useQueryClient();

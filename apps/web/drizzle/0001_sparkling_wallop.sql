@@ -1,1 +1,0 @@
-ALTER TABLE "audit" ADD CONSTRAINT "audit_url_unique" UNIQUE("url");

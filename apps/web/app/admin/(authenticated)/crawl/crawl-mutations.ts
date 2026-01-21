@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   deleteAllCrawls,
   deleteCrawl,
-  deleteCrawlJob,
   retryCrawl,
   upsertCrawl,
 } from "./crawl-actions";
@@ -47,27 +46,12 @@ export function useUpsertCrawl() {
 }
 
 // --------------------------------------
-// 🚮 Delete a crawl job
-
-export function useDeleteCrawlJob() {
-  return useMutation({
-    mutationFn: async (crawlJobId: string) => {
-      const result = await deleteCrawlJob(crawlJobId);
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      return true;
-    },
-  });
-}
-
-// --------------------------------------
 // 🚮 Delete a crawl
 
 export function useDeleteCrawl() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (crawlId: number) => {
+    mutationFn: async (crawlId: string) => {
       const result = await deleteCrawl(crawlId);
       if (!result.success) {
         throw new Error(result.error);
@@ -105,7 +89,7 @@ export function useDeleteAllCrawls() {
 export function useRetryCrawl() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (crawlId: number) => {
+    mutationFn: async (crawlId: string) => {
       const result = await retryCrawl(crawlId);
       if (!result.success) {
         throw new Error(result.error);

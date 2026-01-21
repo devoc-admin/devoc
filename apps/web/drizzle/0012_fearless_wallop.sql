@@ -1,1 +1,0 @@
-ALTER TABLE "crawl_job" ADD COLUMN "useLocalScreenshots" boolean DEFAULT false;

@@ -251,7 +251,7 @@ function ImagePlaceholder() {
 
 // ------------------------------------------------------------
 //👁️ See crawl
-function SeeCrawlButton({ crawlId }: { crawlId: number }) {
+function SeeCrawlButton({ crawlId }: { crawlId: string }) {
   return (
     <Link
       className={cn(
@@ -264,7 +264,7 @@ function SeeCrawlButton({ crawlId }: { crawlId: number }) {
       )}
       href={`/admin/crawl/${crawlId}`}
     >
-      <EyeIcon size={16} strokeWidth={2} />
+      <EyeIcon size={17} strokeWidth={2} />
       <span>Détail</span>
     </Link>
   );
@@ -272,7 +272,7 @@ function SeeCrawlButton({ crawlId }: { crawlId: number }) {
 
 // ------------------------------------------------------------
 // 🔄 Retry crawl
-function RetryCrawlButton({ crawlId }: { crawlId: number }) {
+function RetryCrawlButton({ crawlId }: { crawlId: string }) {
   const { retryCrawlIsPending, retryCrawlMutate, retryingCrawlId } =
     useCrawlContext();
 
@@ -315,7 +315,7 @@ function RetryCrawlButton({ crawlId }: { crawlId: number }) {
 
 // ------------------------------------------------------------
 // 🚮 Delete crawl
-function DeleteCrawlButton({ crawlId }: { crawlId: number }) {
+function DeleteCrawlButton({ crawlId }: { crawlId: string }) {
   const { crawlDeletionIsPending, deleteCrawlMutate, deletingCrawlId } =
     useCrawlContext();
   const [open, setOpen] = useState(false);

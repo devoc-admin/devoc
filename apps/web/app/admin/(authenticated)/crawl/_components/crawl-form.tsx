@@ -22,9 +22,9 @@ const DEFAULT_CONCURRENCY = 8;
 
 export function CrawlForm() {
   const crawlForm = useCrawlForm();
-  const { crawlJobId } = useCrawlContext();
+  const { crawlId } = useCrawlContext();
 
-  const currentJobRunning = crawlJobId !== undefined && crawlJobId !== null;
+  const currentCrawlRunning = crawlId !== undefined && crawlId !== null;
 
   return (
     <div className="rounded-md bg-sidebar p-8">
@@ -60,7 +60,7 @@ export function CrawlForm() {
                   <div className="flex w-full flex-col gap-y-1">
                     <Input
                       className="h-10"
-                      disabled={currentJobRunning || isSubmitting}
+                      disabled={currentCrawlRunning || isSubmitting}
                       name={field.name}
                       onChange={(e) => field.handleChange(e.target.value)}
                       placeholder="Explorer un site..."
@@ -87,7 +87,7 @@ export function CrawlForm() {
                       <Label className="font-kanit text-lg">Max. pages</Label>
                       <div className="flex items-center gap-4">
                         <Slider
-                          disabled={currentJobRunning || isSubmitting}
+                          disabled={currentCrawlRunning || isSubmitting}
                           max={MAX_PAGES_CRAWLED}
                           min={1}
                           name="maxPages"
@@ -115,7 +115,7 @@ export function CrawlForm() {
                       </Label>
                       <div className="flex items-center gap-4">
                         <Slider
-                          disabled={currentJobRunning || isSubmitting}
+                          disabled={currentCrawlRunning || isSubmitting}
                           max={MAX_DEPTH}
                           min={1}
                           name="maxDepth"
@@ -143,7 +143,7 @@ export function CrawlForm() {
                       </Label>
                       <div className="flex items-center gap-4">
                         <Slider
-                          disabled={currentJobRunning || isSubmitting}
+                          disabled={currentCrawlRunning || isSubmitting}
                           max={MAX_CONCURRENCY}
                           min={1}
                           name="concurrency"
@@ -167,7 +167,7 @@ export function CrawlForm() {
                   {(field) => (
                     <CustomCheckbox
                       checked={field.state.value}
-                      disabled={currentJobRunning || isSubmitting}
+                      disabled={currentCrawlRunning || isSubmitting}
                       handleChange={(checked) => {
                         field.handleChange(checked === true);
                         if (checked === true) {
@@ -195,7 +195,7 @@ export function CrawlForm() {
                     <CustomCheckbox
                       checked={field.state.value}
                       disabled={
-                        currentJobRunning || isSubmitting || skipScreenshots
+                        currentCrawlRunning || isSubmitting || skipScreenshots
                       }
                       handleChange={(checked) =>
                         field.handleChange(checked === true)
@@ -215,7 +215,7 @@ export function CrawlForm() {
                   {(field) => (
                     <CustomCheckbox
                       checked={field.state.value}
-                      disabled={currentJobRunning || isSubmitting}
+                      disabled={currentCrawlRunning || isSubmitting}
                       handleChange={(checked) =>
                         field.handleChange(checked === true)
                       }
@@ -274,13 +274,13 @@ export function CrawlForm() {
             {(isSubmitting) => (
               <Button
                 className="font-semibold"
-                disabled={isSubmitting || currentJobRunning}
+                disabled={isSubmitting || currentCrawlRunning}
                 loading={isSubmitting}
                 size="lg"
                 type="submit"
                 variant="default"
               >
-                {currentJobRunning ? "Crawl en cours..." : "Lancer un crawl"}
+                {currentCrawlRunning ? "Crawl en cours..." : "Lancer un crawl"}
               </Button>
             )}
           </crawlForm.Subscribe>

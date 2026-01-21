@@ -10,19 +10,13 @@ import { Button } from "@/components/ui/button";
 import { useCrawlContext } from "../crawl-context";
 
 export function CrawlStatusPanel() {
-  const {
-    crawlJob,
-    crawlJobId,
-    deleteCrawlJobMutate,
-    deleteCrawlJobIsPending,
-  } = useCrawlContext();
-  if (!crawlJob) return null;
+  const { crawl, crawlId, deleteCrawlMutate, crawlDeletionIsPending } =
+    useCrawlContext();
+  if (!crawl) return null;
 
-  const isRunning =
-    crawlJob.status === "running" || crawlJob.status === "pending";
-  const isCompleted = crawlJob.status === "completed";
-  const isFailed =
-    crawlJob.status === "failed" || crawlJob.status === "cancelled";
+  const isRunning = crawl.status === "running" || crawl.status === "pending";
+  const isCompleted = crawl.status === "completed";
+  const isFailed = crawl.status === "failed" || crawl.status === "cancelled";
 
   return (
     <div className="rounded-md bg-sidebar p-6">
@@ -33,14 +27,14 @@ export function CrawlStatusPanel() {
             <h2 className="font-kanit font-semibold text-2xl">
               Exploration en cours
             </h2>
-            {crawlJob.crawlUrl && (
+            {crawl.crawlUrl && (
               <a
                 className="text-sm underline"
-                href={crawlJob.crawlUrl}
+                href={crawl.crawlUrl}
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                {crawlJob.crawlUrl}
+                {crawl.crawlUrl}
               </a>
             )}
           </div>
@@ -48,7 +42,7 @@ export function CrawlStatusPanel() {
             isCompleted={isCompleted}
             isFailed={isFailed}
             isRunning={isRunning}
-            status={crawlJob.status}
+            status={crawl.status}
           />
         </div>
 
@@ -57,7 +51,7 @@ export function CrawlStatusPanel() {
           <span>
             Pages visitées :{" "}
             <strong>
-              {crawlJob.pagesCrawled} / {crawlJob.maxPages}
+              {crawl.pagesCrawled} / {crawl.maxPages}
             </strong>
           </span>
         </div>
@@ -65,43 +59,43 @@ export function CrawlStatusPanel() {
         {/* ✋ Stop crawl */}
         {isRunning && (
           <StopCrawlButton
-            onClick={() => crawlJobId && deleteCrawlJobMutate(crawlJobId)}
-            pending={deleteCrawlJobIsPending}
+            onClick={() => crawlId && deleteCrawlMutate(crawlId)}
+            pending={crawlDeletionIsPending}
           />
         )}
         {/* ❌ Error message if failed */}
-        {isFailed && crawlJob.errorMessage && (
+        {isFailed && crawl.errorMessage && (
           <div className="rounded-md bg-red-500/10 p-3 text-red-500 text-sm">
-            {crawlJob.errorMessage}
+            {crawl.errorMessage}
           </div>
         )}
 
         {/* 💻 Latest crawled page */}
-        {crawlJob.latestPage && (
+        {crawl.latestPage && (
           <div className="rounded-md border border-border bg-sidebar-strong p-4">
             <div className="flex flex-col gap-y-1">
               <a
                 className="space-y-4"
-                href={crawlJob.latestPage.url}
+                href={crawl.latestPage.url}
                 target="_blank"
               >
                 <div>
                   {/* 🔠 Title */}
                   <div className="font-medium text-sm">
-                    {crawlJob.latestPage.title ?? "Sans titre"}
+                    {crawl.latestPage.title ?? "Sans titre"}
                   </div>
                   {/* 🔗 URL */}
                   <div className="truncate text-muted-foreground text-xs underline">
-                    {crawlJob.latestPage.url}
+                    {crawl.latestPage.url}
                   </div>
                 </div>
                 {/* 🖼️ Image */}
-                {crawlJob.latestPage.screenshotUrl && (
+                {crawl.latestPage.screenshotUrl && (
                   <Image
-                    alt={crawlJob.latestPage.title ?? "Sans titre"}
+                    alt={crawl.latestPage.title ?? "Sans titre"}
                     className="w-100 rounded-md border border-border shadow-md"
                     height={400}
-                    src={crawlJob.latestPage.screenshotUrl}
+                    src={crawl.latestPage.screenshotUrl}
                     width={400}
                   />
                 )}
@@ -110,16 +104,16 @@ export function CrawlStatusPanel() {
               <div className="mt-2 flex items-center gap-x-3 text-xs">
                 {/* 🟨 Category */}
                 <span className="rounded bg-primary/10 px-2 py-0.5 text-primary">
-                  {formatCategory(crawlJob.latestPage.category)}
+                  {formatCategory(crawl.latestPage.category)}
                 </span>
                 {/* 🕳️ Depth */}
                 <span className="text-muted-foreground">
-                  Profondeur: {crawlJob.latestPage.depth}
+                  Profondeur: {crawl.latestPage.depth}
                 </span>
                 {/* 🔢 HTTP code */}
-                {crawlJob.latestPage.httpStatus && (
+                {crawl.latestPage.httpStatus && (
                   <span className="text-muted-foreground">
-                    HTTP {crawlJob.latestPage.httpStatus}
+                    HTTP {crawl.latestPage.httpStatus}
                   </span>
                 )}
               </div>

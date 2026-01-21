@@ -1,11 +1,10 @@
 "use server";
-import { and, desc, eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import {
   type CrawledPage,
   crawl,
   crawledPage,
-  crawlJob,
   type pageCategoryEnum,
 } from "@/lib/db/schema";
 
@@ -18,20 +17,18 @@ import {
 
 const crawlDetailsQuery = db
   .select({
-    completedAt: crawlJob.completedAt,
+    completedAt: crawl.completedAt,
     crawlCreatedAt: crawl.createdAt,
     crawlId: crawl.id,
-    crawlJobId: crawlJob.id,
     crawlUrl: crawl.url,
-    maxDepth: crawlJob.maxDepth,
-    maxPages: crawlJob.maxPages,
-    pagesCrawled: crawlJob.pagesCrawled,
-    pagesDiscovered: crawlJob.pagesDiscovered,
-    startedAt: crawlJob.startedAt,
-    status: crawlJob.status,
+    maxDepth: crawl.maxDepth,
+    maxPages: crawl.maxPages,
+    pagesCrawled: crawl.pagesCrawled,
+    pagesDiscovered: crawl.pagesDiscovered,
+    startedAt: crawl.startedAt,
+    status: crawl.status,
   })
   .from(crawl)
-  .leftJoin(crawlJob, eq(crawl.id, crawlJob.crawlId))
   .$dynamic();
 
 export type CrawlDetailsResult = {
@@ -40,28 +37,23 @@ export type CrawlDetailsResult = {
 };
 
 export async function getCrawlDetails(
-  crawlId: number
+  crawlId: string
 ): Promise<ActionResult<CrawlDetailsResult>> {
   try {
-    // 🐝 Fetch crawl with latest completed job
+    // 🐝 Fetch crawl with completed status
     const [crawlDetails] = await crawlDetailsQuery
-      .where(and(eq(crawl.id, crawlId), eq(crawlJob.status, "completed")))
-      .orderBy(desc(crawlJob.createdAt))
+      .where(and(eq(crawl.id, crawlId), eq(crawl.status, "completed")))
       .limit(1);
 
     if (!crawlDetails) {
       return { error: "Ce crawl n'a pas été trouvé", success: false };
     }
 
-    if (!crawlDetails.crawlJobId) {
-      return { error: "Aucun crawl terminé trouvé", success: false };
-    }
-
-    // 🐝🐝🐝 Fetch all pages for this crawl job
+    // 🐝🐝🐝 Fetch all pages for this crawl
     const crawledPages = await db
       .select()
       .from(crawledPage)
-      .where(eq(crawledPage.crawlJobId, crawlDetails.crawlJobId))
+      .where(eq(crawledPage.crawlId, crawlId))
       .orderBy(crawledPage.createdAt);
 
     return {

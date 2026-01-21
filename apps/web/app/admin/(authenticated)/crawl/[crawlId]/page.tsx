@@ -9,10 +9,8 @@ export default async function CrawlDetailsPage({
   params,
 }: CrawlDetailsPageProps) {
   const { crawlId } = await params;
-  const crawlIdNumber = Number.parseInt(crawlId, 10);
-  const notValidCrawlId = Number.isNaN(crawlIdNumber);
 
-  if (notValidCrawlId) {
+  if (!crawlId) {
     return (
       <div className="flex h-full items-center justify-center">
         <p className="text-muted-foreground">
@@ -24,7 +22,7 @@ export default async function CrawlDetailsPage({
 
   return (
     <Suspense fallback={<CrawlDetailsPageSkeleton />}>
-      <CrawlDetailsContent crawlId={crawlIdNumber} />
+      <CrawlDetailsContent crawlId={crawlId} />
     </Suspense>
   );
 }

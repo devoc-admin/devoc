@@ -47,7 +47,7 @@ export class WebCrawler {
   private readonly config: CrawlConfig;
   private readonly baseUrl: string;
   private readonly baseOrigin: string;
-  private readonly crawlJobId: string;
+  private readonly crawlId: string;
   private readonly pages: CrawlPageResult[] = [];
   private readonly errors: Array<{ url: string; error: string }> = [];
 
@@ -55,15 +55,15 @@ export class WebCrawler {
   constructor({
     baseUrl,
     config,
-    crawlJobId,
+    crawlId,
   }: {
     baseUrl: string;
     config: Partial<CrawlConfig>;
-    crawlJobId: string;
+    crawlId: string;
   }) {
     this.baseUrl = baseUrl;
     this.baseOrigin = new URL(baseUrl).origin;
-    this.crawlJobId = crawlJobId;
+    this.crawlId = crawlId;
     this.config = {
       concurrency: config.concurrency ?? DEFAULT_CONCURRENCY,
       delayBetweenRequests:
@@ -475,7 +475,7 @@ export class WebCrawler {
 
       // Try Vercel Blob upload
       try {
-        const filename = `screenshots/${this.crawlJobId}/${safeFilename}.jpg`;
+        const filename = `screenshots/${this.crawlId}/${safeFilename}.jpg`;
         const blob = await put(filename, screenshot, { access: "public" });
         return blob.url;
       } catch (blobError) {
@@ -507,11 +507,7 @@ export class WebCrawler {
     safeFilename: string;
   }): Promise<string | undefined> {
     try {
-      const screenshotsDir = join(
-        process.cwd(),
-        "screenshots",
-        this.crawlJobId
-      );
+      const screenshotsDir = join(process.cwd(), "screenshots", this.crawlId);
       await mkdir(screenshotsDir, { recursive: true });
 
       const filename = `${safeFilename}.jpg`;
@@ -520,7 +516,7 @@ export class WebCrawler {
       await writeFile(filePath, screenshot);
 
       // Return URL that will be served by our API route
-      return `/api/screenshots/${this.crawlJobId}/${filename}`;
+      return `/api/screenshots/${this.crawlId}/${filename}`;
     } catch (error) {
       console.error("📸 Failed to save screenshot locally:", error);
       return undefined;

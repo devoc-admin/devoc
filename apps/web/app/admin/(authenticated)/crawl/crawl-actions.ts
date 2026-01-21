@@ -5,13 +5,7 @@ import { del, list } from "@vercel/blob";
 import { and, desc, eq } from "drizzle-orm";
 import { type ActionResult, getErrorMessage } from "@/lib/api";
 import { db } from "@/lib/db";
-import {
-  type Crawl,
-  type CrawlJob,
-  crawl,
-  crawledPage,
-  crawlJob,
-} from "@/lib/db/schema";
+import { type Crawl, crawl, crawledPage } from "@/lib/db/schema";
 import { inngest } from "@/lib/inngest/client";
 
 // --------------------------------------
@@ -19,7 +13,7 @@ import { inngest } from "@/lib/inngest/client";
 // --------------------------------------
 
 // --------------------------------------
-//➕ Upsert a crawl
+//➕ Create a crawl
 
 export async function upsertCrawl({
   url,
@@ -38,15 +32,23 @@ export async function upsertCrawl({
     return { error: "URL invalide", success: false };
   }
 
-  // 1️⃣ Register the website in database
+  // 1️⃣ Insert the crawl in database
   let crawlResult: Crawl[];
+  const nowString = new Date().toISOString();
   try {
     crawlResult = await db
       .insert(crawl)
-      .values({ url: origin })
-      .onConflictDoUpdate({
-        set: { url: origin },
-        target: crawl.url,
+      .values({
+        createdAt: nowString,
+        id: crypto.randomUUID(),
+        maxDepth,
+        maxPages,
+        skipResources,
+        skipScreenshots,
+        status: "pending",
+        updatedAt: nowString,
+        url: origin,
+        useLocalScreenshots,
       })
       .returning();
   } catch (error) {
@@ -60,39 +62,7 @@ export async function upsertCrawl({
     return { error: "Échec de l'insertion du crawl", success: false };
   }
 
-  // 2️⃣ Register the crawl job in database
-  let crawlJobsResult: CrawlJob[] = [];
-  const nowString = new Date().toISOString();
-  try {
-    crawlJobsResult = await db
-      .insert(crawlJob)
-      .values({
-        crawlId: insertedCrawl.id,
-        createdAt: nowString,
-        id: crypto.randomUUID(),
-        maxDepth,
-        maxPages,
-        skipResources,
-        skipScreenshots,
-        status: "pending",
-        updatedAt: nowString,
-        useLocalScreenshots,
-      })
-      .returning();
-  } catch (error) {
-    const message = getErrorMessage(error);
-    return { error: message, success: false };
-  }
-
-  const insertedCrawlJob = crawlJobsResult[0];
-  if (!insertedCrawlJob) {
-    return {
-      error: "Echec de l'enregistrement du job pour le crawl ",
-      success: false,
-    };
-  }
-
-  // 3️⃣ Launch the crawler as a background job
+  // 2️⃣ Launch the crawler as a background job
   try {
     await inngest.send({
       data: {
@@ -104,7 +74,7 @@ export async function upsertCrawl({
           skipScreenshots: skipScreenshots ?? false,
           useLocalScreenshots: useLocalScreenshots ?? false,
         },
-        crawlJobId: insertedCrawlJob.id,
+        crawlId: insertedCrawl.id,
         url: origin,
       },
       name: "crawl/crawl.requested",
@@ -120,7 +90,6 @@ export async function upsertCrawl({
   return {
     response: {
       crawlId: insertedCrawl.id,
-      crawlJobId: insertedCrawlJob.id,
     },
     success: true,
   };
@@ -136,48 +105,47 @@ type UpsertCrawlParams = {
   concurrency: number;
 };
 
-export type UpsertCrawlResult = { crawlId: number; crawlJobId: string };
+export type UpsertCrawlResult = { crawlId: string };
 
 // --------------------------------------
-// 🔍 Get running crawl job (if any)
+// 🔍 Get running crawl (if any)
 
-export async function getRunningCrawlJob(): Promise<
-  ActionResult<{ crawlJobId: string } | null>
+export async function getRunningCrawl(): Promise<
+  ActionResult<{ crawlId: string } | null>
 > {
   try {
-    const [runningJob] = await db
-      .select({ id: crawlJob.id })
-      .from(crawlJob)
-      .where(eq(crawlJob.status, "running"))
+    const [runningCrawl] = await db
+      .select({ id: crawl.id })
+      .from(crawl)
+      .where(eq(crawl.status, "running"))
       .limit(1);
 
     return {
-      response: runningJob ? { crawlJobId: runningJob.id } : null,
+      response: runningCrawl ? { crawlId: runningCrawl.id } : null,
       success: true,
     };
   } catch (error) {
     const message = getErrorMessage(error);
-    console.error("Error checking for running crawl job:", message);
+    console.error("Error checking for running crawl:", message);
     return { error: message, success: false };
   }
 }
 
 // --------------------------------------
-// 🔁 Get crawl job
+// 🔁 Get crawl
 
-const crawlJobQuery = db
+const crawlQuery = db
   .select({
-    author: crawlJob.author,
-    authorUrl: crawlJob.authorUrl,
+    author: crawl.author,
+    authorUrl: crawl.authorUrl,
     crawlUrl: crawl.url,
-    errorMessage: crawlJob.errorMessage,
-    maxPages: crawlJob.maxPages,
-    pagesCrawled: crawlJob.pagesCrawled,
-    pagesDiscovered: crawlJob.pagesDiscovered,
-    status: crawlJob.status,
+    errorMessage: crawl.errorMessage,
+    maxPages: crawl.maxPages,
+    pagesCrawled: crawl.pagesCrawled,
+    pagesDiscovered: crawl.pagesDiscovered,
+    status: crawl.status,
   })
-  .from(crawlJob)
-  .leftJoin(crawl, eq(crawlJob.crawlId, crawl.id))
+  .from(crawl)
   .$dynamic();
 
 const latestPageQuery = db
@@ -194,40 +162,37 @@ const latestPageQuery = db
   .from(crawledPage)
   .$dynamic();
 
-export type CrawlJobQueryResult = Awaited<typeof crawlJobQuery>[number] & {
+export type CrawlQueryResult = Awaited<typeof crawlQuery>[number] & {
   latestPage: LatestPageResult;
 };
 type LatestPageResult = Awaited<typeof latestPageQuery>[number];
 
-export async function getCrawlJob(
-  crawlJobId: string
-): Promise<ActionResult<CrawlJobQueryResult>> {
+export async function getCrawl(
+  crawlId: string
+): Promise<ActionResult<CrawlQueryResult>> {
   try {
-    // 🐝 Fetch crawl job status
-    const [selectedCrawlJob] = await crawlJobQuery.where(
-      eq(crawlJob.id, crawlJobId)
-    );
+    // 🐝 Fetch crawl status
+    const [selectedCrawl] = await crawlQuery.where(eq(crawl.id, crawlId));
 
-    if (!selectedCrawlJob)
-      return { error: "Crawl job not found", success: false };
+    if (!selectedCrawl) return { error: "Crawl not found", success: false };
 
     // ⬇️ Fetch the latest crawled page
     const [latestPage] = await latestPageQuery
-      .where(eq(crawledPage.crawlJobId, crawlJobId))
+      .where(eq(crawledPage.crawlId, crawlId))
       .orderBy(desc(crawledPage.createdAt))
       .limit(1);
 
     return {
       response: {
-        author: selectedCrawlJob.author,
-        authorUrl: selectedCrawlJob.authorUrl,
-        crawlUrl: selectedCrawlJob.crawlUrl,
-        errorMessage: selectedCrawlJob.errorMessage,
+        author: selectedCrawl.author,
+        authorUrl: selectedCrawl.authorUrl,
+        crawlUrl: selectedCrawl.crawlUrl,
+        errorMessage: selectedCrawl.errorMessage,
         latestPage: latestPage ?? null,
-        maxPages: selectedCrawlJob.maxPages,
-        pagesCrawled: selectedCrawlJob.pagesCrawled,
-        pagesDiscovered: selectedCrawlJob.pagesDiscovered,
-        status: selectedCrawlJob.status,
+        maxPages: selectedCrawl.maxPages,
+        pagesCrawled: selectedCrawl.pagesCrawled,
+        pagesDiscovered: selectedCrawl.pagesDiscovered,
+        status: selectedCrawl.status,
       },
       success: true,
     };
@@ -242,26 +207,25 @@ export async function getCrawlJob(
 // 📝 List crawls
 const listCrawlsQuery = db
   .select({
-    author: crawlJob.author,
-    authorUrl: crawlJob.authorUrl,
-    completedAt: crawlJob.completedAt,
+    author: crawl.author,
+    authorUrl: crawl.authorUrl,
+    completedAt: crawl.completedAt,
     createdAt: crawl.createdAt,
     id: crawl.id,
-    pagesCrawled: crawlJob.pagesCrawled,
-    pagesDiscovered: crawlJob.pagesDiscovered,
+    pagesCrawled: crawl.pagesCrawled,
+    pagesDiscovered: crawl.pagesDiscovered,
     screenshotUrl: crawledPage.screenshotUrl,
-    skipResources: crawlJob.skipResources,
-    skipScreenshots: crawlJob.skipScreenshots,
-    startedAt: crawlJob.startedAt,
+    skipResources: crawl.skipResources,
+    skipScreenshots: crawl.skipScreenshots,
+    startedAt: crawl.startedAt,
     title: crawledPage.title,
     url: crawl.url,
-    useLocalScreenshots: crawlJob.useLocalScreenshots,
+    useLocalScreenshots: crawl.useLocalScreenshots,
   })
   .from(crawl)
-  .leftJoin(crawlJob, eq(crawl.id, crawlJob.crawlId))
-  .leftJoin(crawledPage, eq(crawlJob.id, crawledPage.crawlJobId))
-  .where(and(eq(crawlJob.status, "completed"), eq(crawledPage.url, crawl.url)))
-  .orderBy(desc(crawlJob.createdAt));
+  .leftJoin(crawledPage, eq(crawl.id, crawledPage.crawlId))
+  .where(and(eq(crawl.status, "completed"), eq(crawledPage.url, crawl.url)))
+  .orderBy(desc(crawl.createdAt));
 
 export type ListCrawlsResult = Awaited<typeof listCrawlsQuery>;
 export type CrawlResult = ListCrawlsResult[number];
@@ -277,81 +241,25 @@ export async function listCrawls(): Promise<ActionResult<ListCrawlsResult>> {
 }
 
 // --------------------------------------
-// 🚮 Delete a crawl job
+// 🚮 Delete a crawl
 
-export async function deleteCrawlJob(
-  crawlJobId: string
-): Promise<ActionResult> {
+export async function deleteCrawl(crawlId: string): Promise<ActionResult> {
   try {
     // 1️⃣ Send cancellation event to Inngest to stop the running job (if still running)
     // This may fail if the job already completed - that's OK, we continue anyway
     try {
       await inngest.send({
-        data: { crawlJobId },
+        data: { crawlId },
         name: "crawl/crawl.cancelled",
       });
     } catch {
       // Ignore cancellation errors - job may have already finished
     }
 
-    // 2️⃣ Delete all screenshots from Vercel Blob storage (recursively)
-    await deleteScreenshotsForCrawlJob({ crawlJobId });
-
-    // 3️⃣ Delete records for this crawl job
-    await db.delete(crawlJob).where(eq(crawlJob.id, crawlJobId));
-
-    return { success: true };
-  } catch (error) {
-    const message = getErrorMessage(error);
-    return { error: message, success: false };
-  }
-}
-
-async function deleteScreenshotsForCrawlJob({
-  crawlJobId,
-}: {
-  crawlJobId: string;
-}): Promise<void> {
-  const allScreenshotUrls = (
-    await db
-      .select({
-        screenshotUrl: crawledPage.screenshotUrl,
-      })
-      .from(crawlJob)
-      .leftJoin(crawledPage, eq(crawledPage.crawlJobId, crawlJob.id))
-      .where(eq(crawlJob.id, crawlJobId))
-  )
-    .map((row) => row.screenshotUrl)
-    .filter(Boolean) as string[];
-
-  // Check if screenshots are stored locally (URL starts with /api/screenshots/)
-  const hasLocalScreenshots = allScreenshotUrls.some((url) =>
-    url.startsWith("/api/screenshots/")
-  );
-
-  if (hasLocalScreenshots) {
-    // Delete local screenshots folder
-    try {
-      const screenshotsDir = join(process.cwd(), "screenshots", crawlJobId);
-      await rm(screenshotsDir, { force: true, recursive: true });
-    } catch {
-      // Folder may not exist, ignore errors
-    }
-  } else if (allScreenshotUrls.length > 0) {
-    // Delete from Vercel Blob
-    await del(allScreenshotUrls);
-  }
-}
-
-// --------------------------------------
-// 🚮 Delete a crawl
-
-export async function deleteCrawl(crawlId: number): Promise<ActionResult> {
-  try {
-    // 1️⃣ Delete all screenshots from Vercel Blob storage (recursively)
+    // 2️⃣ Delete all screenshots from storage
     await deleteScreenshotsForCrawl({ crawlId });
 
-    // 2️⃣ Delete records for this crawl
+    // 3️⃣ Delete records for this crawl
     await db.delete(crawl).where(eq(crawl.id, crawlId)).execute();
 
     return { success: true };
@@ -367,40 +275,31 @@ export async function deleteCrawl(crawlId: number): Promise<ActionResult> {
 async function deleteScreenshotsForCrawl({
   crawlId,
 }: {
-  crawlId: number;
+  crawlId: string;
 }): Promise<void> {
-  const rows = await db
-    .select({
-      crawlJobId: crawlJob.id,
-      screenshotUrl: crawledPage.screenshotUrl,
-    })
-    .from(crawl)
-    .leftJoin(crawlJob, eq(crawl.id, crawlJob.crawlId))
-    .leftJoin(crawledPage, eq(crawledPage.crawlJobId, crawlJob.id))
-    .where(eq(crawl.id, crawlId));
-
-  const allScreenshotUrls = rows
+  const allScreenshotUrls = (
+    await db
+      .select({
+        screenshotUrl: crawledPage.screenshotUrl,
+      })
+      .from(crawledPage)
+      .where(eq(crawledPage.crawlId, crawlId))
+  )
     .map((row) => row.screenshotUrl)
     .filter(Boolean) as string[];
 
-  // Check if screenshots are stored locally
+  // Check if screenshots are stored locally (URL starts with /api/screenshots/)
   const hasLocalScreenshots = allScreenshotUrls.some((url) =>
     url.startsWith("/api/screenshots/")
   );
 
   if (hasLocalScreenshots) {
-    // Get unique crawl job IDs for local screenshot deletion
-    const crawlJobIds = [...new Set(rows.map((row) => row.crawlJobId))].filter(
-      Boolean
-    ) as string[];
-
-    for (const jobId of crawlJobIds) {
-      try {
-        const screenshotsDir = join(process.cwd(), "screenshots", jobId);
-        await rm(screenshotsDir, { force: true, recursive: true });
-      } catch {
-        // Folder may not exist, ignore errors
-      }
+    // Delete local screenshots folder
+    try {
+      const screenshotsDir = join(process.cwd(), "screenshots", crawlId);
+      await rm(screenshotsDir, { force: true, recursive: true });
+    } catch {
+      // Folder may not exist, ignore errors
     }
   } else if (allScreenshotUrls.length > 0) {
     // Delete from Vercel Blob
@@ -418,7 +317,6 @@ export async function deleteAllCrawls(): Promise<ActionResult> {
 
     // 2️⃣ Delete all database records
     await db.delete(crawledPage).execute();
-    await db.delete(crawlJob).execute();
     await db.delete(crawl).execute();
 
     return { success: true };
@@ -451,24 +349,22 @@ async function deleteAllScreenshots(): Promise<void> {
 // 🔄 Retry a crawl
 
 export async function retryCrawl(
-  crawlId: number
+  crawlId: string
 ): Promise<ActionResult<UpsertCrawlResult>> {
   try {
-    // 1️⃣ Get the crawl and its latest job config
+    // 1️⃣ Get the crawl config
     const [existingCrawl] = await db
       .select({
-        config: crawlJob.config,
-        maxDepth: crawlJob.maxDepth,
-        maxPages: crawlJob.maxPages,
-        skipResources: crawlJob.skipResources,
-        skipScreenshots: crawlJob.skipScreenshots,
+        config: crawl.config,
+        maxDepth: crawl.maxDepth,
+        maxPages: crawl.maxPages,
+        skipResources: crawl.skipResources,
+        skipScreenshots: crawl.skipScreenshots,
         url: crawl.url,
-        useLocalScreenshots: crawlJob.useLocalScreenshots,
+        useLocalScreenshots: crawl.useLocalScreenshots,
       })
       .from(crawl)
-      .leftJoin(crawlJob, eq(crawl.id, crawlJob.crawlId))
       .where(eq(crawl.id, crawlId))
-      .orderBy(desc(crawlJob.createdAt))
       .limit(1);
 
     if (!existingCrawl) {

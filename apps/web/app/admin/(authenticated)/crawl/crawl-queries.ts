@@ -2,41 +2,41 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useQueryState } from "nuqs";
 import { useEffect } from "react";
-import { getCrawlJob, getRunningCrawlJob, listCrawls } from "./crawl-actions";
+import { getCrawl, getRunningCrawl, listCrawls } from "./crawl-actions";
 
 // --------------------------------------
-// 👁️ See current crawl job
-export function useCrawlJob() {
+// 👁️ See current crawl
+export function useCrawl() {
   const queryClient = useQueryClient();
-  const [crawlJobId, setCrawlJobId] = useQueryState("crawlJobId");
+  const [crawlId, setCrawlId] = useQueryState("crawlId");
 
-  function handleCrawlJobId(id: string) {
-    setCrawlJobId(id);
+  function handleCrawlId(id: string) {
+    setCrawlId(id);
   }
 
-  function removeCrawlJobId() {
-    setCrawlJobId(null);
+  function removeCrawlId() {
+    setCrawlId(null);
   }
 
   const { data } = useQuery({
-    enabled: !!crawlJobId,
+    enabled: !!crawlId,
     queryFn: async () => {
-      if (!crawlJobId) return null;
-      const result = await getCrawlJob(crawlJobId);
+      if (!crawlId) return null;
+      const result = await getCrawl(crawlId);
       if (!result.success) {
-        removeCrawlJobId();
+        removeCrawlId();
         throw new Error(result.error);
       }
       return result;
     },
-    queryKey: ["crawl-status", crawlJobId],
+    queryKey: ["crawl-status", crawlId],
     refetchInterval: (query) => {
       const data = query.state.data;
       if (!data) return 2000;
-      // 🥱 Stop polling when job is finished
+      // 🥱 Stop polling when crawl is finished
       if (["completed", "failed", "cancelled"].includes(data.response.status)) {
         queryClient.invalidateQueries({ queryKey: ["list-crawls"] });
-        removeCrawlJobId();
+        removeCrawlId();
         return false;
       }
       return 1000; // Poll every second
@@ -45,10 +45,10 @@ export function useCrawlJob() {
   });
 
   return {
-    crawlJob: data,
-    crawlJobId,
-    handleCrawlJobId,
-    removeCrawlJobId,
+    crawl: data,
+    crawlId,
+    handleCrawlId,
+    removeCrawlId,
   };
 }
 
@@ -75,26 +75,26 @@ export function useCrawlsList() {
 }
 
 // --------------------------------------
-// 🔍 Check for running crawl job and auto-set crawlJobId
+// 🔍 Check for running crawl and auto-set crawlId
 
-export function useRunningCrawlJob() {
-  const [crawlJobId, setCrawlJobId] = useQueryState("crawlJobId");
+export function useRunningCrawl() {
+  const [crawlId, setCrawlId] = useQueryState("crawlId");
 
-  const { data: runningJob } = useQuery({
-    enabled: !crawlJobId,
+  const { data: runningCrawl } = useQuery({
+    enabled: !crawlId,
     queryFn: async () => {
-      const result = await getRunningCrawlJob();
+      const result = await getRunningCrawl();
       if (!result.success) {
         throw new Error(result.error);
       }
       return result.response;
     },
-    queryKey: ["running-crawl-job"],
+    queryKey: ["running-crawl"],
   });
 
   useEffect(() => {
-    if (runningJob && !crawlJobId) {
-      setCrawlJobId(runningJob.crawlJobId);
+    if (runningCrawl && !crawlId) {
+      setCrawlId(runningCrawl.crawlId);
     }
-  }, [runningJob, crawlJobId, setCrawlJobId]);
+  }, [runningCrawl, crawlId, setCrawlId]);
 }

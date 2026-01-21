@@ -3,7 +3,7 @@ import { getCrawlDetails } from "./crawl-details-actions";
 
 // --------------------------------------
 // 📖 Fetch crawl details
-export function useCrawlDetailsQuery({ crawlId }: { crawlId: number }) {
+export function useCrawlDetailsQuery({ crawlId }: { crawlId: string }) {
   const crawlDetailsQueryKey = ["crawl-details", crawlId];
 
   return useQuery({

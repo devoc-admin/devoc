@@ -330,7 +330,7 @@ type CrawlDetailsContextType = {
 const CrawlDetailsContext = createContext<CrawlDetailsContextType | null>(null);
 
 type CrawlDetailsProviderProps = {
-  crawlId: number;
+  crawlId: string;
   children: React.ReactNode;
 };
 

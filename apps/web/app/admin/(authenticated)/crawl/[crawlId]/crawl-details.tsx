@@ -16,7 +16,7 @@ export function CrawlDetailsContent({ crawlId }: CrawlDetailsContentProps) {
 }
 
 interface CrawlDetailsContentProps {
-  crawlId: number;
+  crawlId: string;
 }
 
 function CrawlDetailsInner() {

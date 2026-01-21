@@ -3,28 +3,27 @@
 import type { UseMutateFunction } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useEffectEvent } from "react";
 import type {
-  CrawlJobQueryResult,
+  CrawlQueryResult,
   ListCrawlsResult,
   UpsertCrawlResult,
 } from "./crawl-actions";
 import {
   useDeleteAllCrawls,
   useDeleteCrawl,
-  useDeleteCrawlJob,
   useRetryCrawl,
   useUpsertCrawl,
 } from "./crawl-mutations";
-import { useCrawlJob, useCrawlsList } from "./crawl-queries";
+import { useCrawl, useCrawlsList } from "./crawl-queries";
 
 /** biome-ignore lint/suspicious/noEmptyBlockStatements: special case */
 function emptyFn() {}
 
 const CrawlContext = createContext<CrawlContextType>({
-  // 👁️ See current crawl job
-  crawlJob: undefined,
-  crawlJobId: null,
-  handleCrawlJobId: emptyFn,
-  removeCrawlJobId: emptyFn,
+  // 👁️ See current crawl
+  crawl: undefined,
+  crawlId: null,
+  handleCrawlId: emptyFn,
+  removeCrawlId: emptyFn,
 
   //➕ Upsert crawl
   upsertCrawlResult: undefined,
@@ -49,10 +48,6 @@ const CrawlContext = createContext<CrawlContextType>({
   allCrawlsDeletionIsError: false,
   allCrawlsDeletionIsSuccess: false,
 
-  // 🚮 Delete a crawl job
-  deleteCrawlJobMutate: emptyFn,
-  deleteCrawlJobIsPending: false,
-
   // 🔄 Retry a crawl
   retryCrawlMutate: emptyFn,
   retryCrawlIsPending: false,
@@ -60,9 +55,8 @@ const CrawlContext = createContext<CrawlContextType>({
 });
 
 export function CrawlProvider({ children }: { children: React.ReactNode }) {
-  //👁️ See current crawl job
-  const { crawlJob, crawlJobId, handleCrawlJobId, removeCrawlJobId } =
-    useCrawlJob();
+  //👁️ See current crawl
+  const { crawl, crawlId, handleCrawlId, removeCrawlId } = useCrawl();
 
   //➕ Upsert crawl
   const {
@@ -76,10 +70,6 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
 
   //📝 List crawls
   const { crawls, crawlsAreLoading } = useCrawlsList();
-
-  // 🚮 Delete a crawl job
-  const { mutate: deleteCrawlJobMutate, isPending: deleteCrawlJobIsPending } =
-    useDeleteCrawlJob();
 
   // 🚮 Delete a crawl
   const {
@@ -105,35 +95,35 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
   } = useRetryCrawl();
 
   // 🔄 INTERDEPEND ACTIONS
-  const insertedCrawlJobId = upsertCrawlResult?.crawlJobId;
-  const retriedCrawlJobId = retryCrawlResult?.crawlJobId;
+  const insertedCrawlId = upsertCrawlResult?.crawlId;
+  const retriedCrawlId = retryCrawlResult?.crawlId;
 
-  // # Insert new crawl job id in URL
-  const onInsertCrawlJobId = useEffectEvent((newCrawlJobId: string) => {
-    if (newCrawlJobId !== crawlJobId) {
-      handleCrawlJobId(newCrawlJobId);
+  // # Insert new crawl id in URL
+  const onInsertCrawlId = useEffectEvent((newCrawlId: string) => {
+    if (newCrawlId !== crawlId) {
+      handleCrawlId(newCrawlId);
     }
   });
   useEffect(() => {
-    if (insertedCrawlJobId) {
-      onInsertCrawlJobId(insertedCrawlJobId);
+    if (insertedCrawlId) {
+      onInsertCrawlId(insertedCrawlId);
     }
-  }, [insertedCrawlJobId]);
+  }, [insertedCrawlId]);
 
   useEffect(() => {
-    if (retriedCrawlJobId) {
-      onInsertCrawlJobId(retriedCrawlJobId);
+    if (retriedCrawlId) {
+      onInsertCrawlId(retriedCrawlId);
     }
-  }, [retriedCrawlJobId]);
+  }, [retriedCrawlId]);
 
   return (
     <CrawlContext.Provider
       value={{
-        // 👁️ See current crawl job
-        crawlJob,
-        crawlJobId,
-        handleCrawlJobId,
-        removeCrawlJobId,
+        // 👁️ See current crawl
+        crawl,
+        crawlId,
+        handleCrawlId,
+        removeCrawlId,
 
         //➕ Upsert crawl
         upsertCrawlMutate,
@@ -158,10 +148,6 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
         allCrawlsDeletionIsError,
         allCrawlsDeletionIsSuccess,
 
-        // 🛑 Interrupt crawl
-        deleteCrawlJobMutate,
-        deleteCrawlJobIsPending,
-
         // 🔄 Retry a crawl
         retryCrawlMutate,
         retryCrawlIsPending,
@@ -176,11 +162,11 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
 // --------------------------------------
 // 🔠 Types
 type CrawlContextType = {
-  // 👁️ See current crawl job
-  crawlJob: CrawlJobQueryResult | undefined;
-  crawlJobId: string | null;
-  handleCrawlJobId: (id: string) => void;
-  removeCrawlJobId: () => void;
+  // 👁️ See current crawl
+  crawl: CrawlQueryResult | undefined;
+  crawlId: string | null;
+  handleCrawlId: (id: string) => void;
+  removeCrawlId: () => void;
 
   //➕ Upsert crawl
   upsertCrawlResult: UpsertCrawlResult | undefined;
@@ -208,13 +194,9 @@ type CrawlContextType = {
   crawlsAreLoading: boolean;
 
   // 🚮 Delete a crawl
-  deletingCrawlId: number | undefined;
+  deletingCrawlId: string | undefined;
   crawlDeletionIsPending: boolean;
-  deleteCrawlMutate: UseMutateFunction<boolean, Error, number, unknown>;
-
-  //  🚮 Delete a crawl job
-  deleteCrawlJobMutate: UseMutateFunction<boolean, Error, string, unknown>;
-  deleteCrawlJobIsPending: boolean;
+  deleteCrawlMutate: UseMutateFunction<boolean, Error, string, unknown>;
 
   // 🚮🚮🚮 Delete alls crawls
   deleteAllCrawlsMutate: UseMutateFunction<boolean, Error, void, unknown>;
@@ -226,11 +208,11 @@ type CrawlContextType = {
   retryCrawlMutate: UseMutateFunction<
     UpsertCrawlResult,
     Error,
-    number,
+    string,
     unknown
   >;
   retryCrawlIsPending: boolean;
-  retryingCrawlId: number | undefined;
+  retryingCrawlId: string | undefined;
 };
 
 // --------------------------------------

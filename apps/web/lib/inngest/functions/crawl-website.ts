@@ -3,16 +3,16 @@ import { WebCrawler } from "@/lib/crawler";
 import type { TechnologyDetectionResult } from "@/lib/crawler/types";
 import { db } from "@/lib/db";
 import {
+  crawl,
   crawledPage,
-  crawlJob,
-  crawlJobTechnology,
+  crawlTechnology,
   technology,
 } from "@/lib/db/schema";
 import { inngest } from "../client";
 
 type CrawlRequestEvent = {
   data: {
-    crawlJobId: string;
+    crawlId: string;
     url: string;
     config: {
       maxDepth: number;
@@ -34,7 +34,7 @@ export const crawlWebsite = inngest.createFunction(
     cancelOn: [
       {
         event: "crawl/crawl.cancelled",
-        match: "data.crawlJobId",
+        match: "data.crawlId",
       },
     ],
     id: "crawl-website",
@@ -43,19 +43,19 @@ export const crawlWebsite = inngest.createFunction(
   },
   { event: "crawl/crawl.requested" },
   async ({ event, step, logger }) => {
-    const { crawlJobId, url, config } = event.data as CrawlRequestEvent["data"];
+    const { crawlId, url, config } = event.data as CrawlRequestEvent["data"];
 
     // 1️⃣ 🏃 Mark as running
-    await step.run("mark-job-running", async () => {
+    await step.run("mark-crawl-running", async () => {
       const nowString = new Date().toISOString();
       await db
-        .update(crawlJob)
+        .update(crawl)
         .set({
           startedAt: nowString,
           status: "running",
           updatedAt: nowString,
         })
-        .where(eq(crawlJob.id, crawlJobId));
+        .where(eq(crawl.id, crawlId));
     });
 
     // 2️⃣ 🏃 Running
@@ -63,7 +63,7 @@ export const crawlWebsite = inngest.createFunction(
       const crawler = new WebCrawler({
         baseUrl: url,
         config,
-        crawlJobId,
+        crawlId,
       });
 
       // ⏳ Update progress
@@ -72,22 +72,22 @@ export const crawlWebsite = inngest.createFunction(
           // 👁️📝 Logs
           const nowString = new Date().toISOString();
 
-          // Update crawl job
+          // Update crawl
           await db
-            .update(crawlJob)
+            .update(crawl)
             .set({
               pagesCrawled: progress.crawled,
               pagesDiscovered: progress.discovered,
               updatedAt: nowString,
             })
-            .where(eq(crawlJob.id, crawlJobId));
+            .where(eq(crawl.id, crawlId));
 
           // ➕ Add result
           const pageToInsert = {
             category: progress.crawledPage.category,
             categoryConfidence: progress.crawledPage.categoryConfidence,
             contentType: progress.crawledPage.contentType,
-            crawlJobId,
+            crawlId,
             depth: progress.crawledPage.depth,
             description: progress.crawledPage.description,
             hasAuthentication:
@@ -112,51 +112,48 @@ export const crawlWebsite = inngest.createFunction(
             .insert(crawledPage)
             .values(pageToInsert)
             .onConflictDoNothing({
-              target: [crawledPage.crawlJobId, crawledPage.normalizedUrl],
+              target: [crawledPage.crawlId, crawledPage.normalizedUrl],
             });
 
           // 🔍 Save detected technologies (only for homepage / depth 0)
           if (progress.crawledPage.technologies?.technologies?.length) {
-            await saveTechnologies(
-              crawlJobId,
-              progress.crawledPage.technologies
-            );
+            await saveTechnologies(crawlId, progress.crawledPage.technologies);
           }
 
           // 🏢 Save detected author/signature (only for homepage / depth 0)
           if (progress.crawledPage.author) {
             await db
-              .update(crawlJob)
+              .update(crawl)
               .set({
                 author: progress.crawledPage.author.name,
                 authorUrl: progress.crawledPage.author.url,
                 updatedAt: nowString,
               })
-              .where(eq(crawlJob.id, crawlJobId));
+              .where(eq(crawl.id, crawlId));
           }
 
           // 📡 Save RSS feed detection (only for homepage / depth 0)
           if (progress.crawledPage.rssFeed?.hasRssFeed) {
             await db
-              .update(crawlJob)
+              .update(crawl)
               .set({
                 hasRssFeed: true,
                 updatedAt: nowString,
               })
-              .where(eq(crawlJob.id, crawlJobId));
+              .where(eq(crawl.id, crawlId));
           }
 
           // 📰 Save newsletter detection (only for homepage / depth 0)
           if (progress.crawledPage.newsletter?.hasNewsletter) {
             await db
-              .update(crawlJob)
+              .update(crawl)
               .set({
                 hasNewsletter: true,
                 newsletterProvider:
                   progress.crawledPage.newsletter.provider ?? null,
                 updatedAt: nowString,
               })
-              .where(eq(crawlJob.id, crawlJobId));
+              .where(eq(crawl.id, crawlId));
           }
 
           // 🔗 Save social links (only for homepage / depth 0)
@@ -165,12 +162,12 @@ export const crawlWebsite = inngest.createFunction(
             Object.keys(progress.crawledPage.socialLinks).length > 0
           ) {
             await db
-              .update(crawlJob)
+              .update(crawl)
               .set({
                 socialLinks: progress.crawledPage.socialLinks,
                 updatedAt: nowString,
               })
-              .where(eq(crawlJob.id, crawlJobId));
+              .where(eq(crawl.id, crawlId));
           }
         },
       });
@@ -235,11 +232,11 @@ export const crawlWebsite = inngest.createFunction(
       }
     });
 
-    //5️⃣ 🎉 Mark job as completed
-    await step.run("mark-job-completed", async () => {
+    //5️⃣ 🎉 Mark crawl as completed
+    await step.run("mark-crawl-completed", async () => {
       const nowString = new Date().toISOString();
       await db
-        .update(crawlJob)
+        .update(crawl)
         .set({
           completedAt: nowString,
           pagesCrawled: result.pages.length,
@@ -247,7 +244,7 @@ export const crawlWebsite = inngest.createFunction(
           status: "completed",
           updatedAt: nowString,
         })
-        .where(eq(crawlJob.id, crawlJobId));
+        .where(eq(crawl.id, crawlId));
     });
 
     return {
@@ -262,7 +259,7 @@ export const crawlWebsite = inngest.createFunction(
  * Save detected technologies to database
  */
 async function saveTechnologies(
-  crawlJobId: string,
+  crawlId: string,
   detectionResult: TechnologyDetectionResult
 ) {
   const techs = detectionResult.technologies;
@@ -297,20 +294,17 @@ async function saveTechnologies(
 
     if (!insertedTech) continue;
 
-    // 2. Link to crawl job via junction table
+    // 2. Link to crawl via junction table
     await db
-      .insert(crawlJobTechnology)
+      .insert(crawlTechnology)
       .values({
         confidence: tech.confidence,
-        crawlJobId,
+        crawlId,
         technologyId: insertedTech.id,
         version: tech.version,
       })
       .onConflictDoNothing({
-        target: [
-          crawlJobTechnology.crawlJobId,
-          crawlJobTechnology.technologyId,
-        ],
+        target: [crawlTechnology.crawlId, crawlTechnology.technologyId],
       });
 
     // 3. Track summary data
@@ -330,11 +324,11 @@ async function saveTechnologies(
     }
   }
 
-  // 4. Update crawl job summary columns (including French tech)
+  // 4. Update crawl summary columns (including French tech)
   const { frenchTech } = detectionResult;
   const nowString = new Date().toISOString();
   await db
-    .update(crawlJob)
+    .update(crawl)
     .set({
       accessibilityTool: frenchTech.accessibilityTool ?? null,
       analyticsTools: analyticsToolsList.length ? analyticsToolsList : null,
@@ -346,5 +340,5 @@ async function saveTechnologies(
       updatedAt: nowString,
       usesDsfr: frenchTech.usesDsfr,
     })
-    .where(eq(crawlJob.id, crawlJobId));
+    .where(eq(crawl.id, crawlId));
 }
