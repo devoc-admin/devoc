@@ -280,7 +280,9 @@ export function CrawlForm() {
                 type="submit"
                 variant="default"
               >
-                {currentCrawlRunning ? "Crawl en cours..." : "Lancer un crawl"}
+                {currentCrawlRunning
+                  ? "Exploration en cours..."
+                  : "Lancer une exploration"}
               </Button>
             )}
           </crawlForm.Subscribe>
