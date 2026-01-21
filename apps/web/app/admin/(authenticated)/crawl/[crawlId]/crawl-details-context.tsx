@@ -12,6 +12,7 @@ import {
 import type { CrawledPage } from "@/lib/db/schema";
 import type { CrawlDetailsResult, PageCategory } from "./crawl-details-actions";
 import {
+  useDeleteCrawledPageMutation,
   useToggleAuditSelectionMutation,
   useUpdatePageCategoryMutation,
 } from "./crawl-details-mutations";
@@ -127,6 +128,13 @@ export function CrawlDetailsProvider({
     variables: auditVariables,
     isPending: isAuditPending,
   } = useToggleAuditSelectionMutation({ crawlId });
+
+  // 🗑️ Delete crawled page mutation
+  const {
+    mutate: deleteCrawledPageMutate,
+    variables: deleteVariables,
+    isPending: isDeletePending,
+  } = useDeleteCrawledPageMutation({ crawlId });
 
   //  🟡 Compute which categories have at least one selected-for-audit page (from raw data, not filtered)
   const coveredCategories = useMemo(() => {
@@ -246,6 +254,12 @@ export function CrawlDetailsProvider({
         updatingCategoryPageId: isCategoryPending
           ? categoryVariables?.crawledPageId
           : undefined,
+
+        // 🗑️ Delete crawled page
+        deleteCrawledPageMutate,
+        deletingPageId: isDeletePending
+          ? deleteVariables?.crawledPageId
+          : undefined,
       }}
     >
       {children}
@@ -313,6 +327,15 @@ type CrawlDetailsContextType = {
     { previousData: CrawlDetailsResult | undefined }
   >;
   togglingAuditPageId: string | undefined;
+
+  // 🗑️ Delete crawled page
+  deleteCrawledPageMutate: UseMutateFunction<
+    void,
+    Error,
+    { crawledPageId: string },
+    { previousData: CrawlDetailsResult | undefined }
+  >;
+  deletingPageId: string | undefined;
 
   // 🏷️ Handle category click
   handleCategoryClick: (category: PageCategory) => void;

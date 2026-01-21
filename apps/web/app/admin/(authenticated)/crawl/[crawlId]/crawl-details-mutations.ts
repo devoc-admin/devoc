@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   type CrawlDetailsResult,
+  deleteCrawledPage,
   type PageCategory,
   updatePageAuditSelection,
   updatePageCategory,
@@ -104,6 +105,56 @@ export function useToggleAuditSelectionMutation({
               crawledPage.id === pageId
                 ? { ...crawledPage, selectedForAudit: selected }
                 : crawledPage
+            ),
+          };
+        }
+      );
+
+      return { previousData };
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: crawlDetailsQueryKey });
+    },
+  });
+}
+
+// -----------------------------------------------
+// 🗑️ Delete crawled page
+
+export function useDeleteCrawledPageMutation({ crawlId }: { crawlId: string }) {
+  const crawlDetailsQueryKey = ["crawl-details", crawlId];
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    void,
+    Error,
+    { crawledPageId: string },
+    { previousData: CrawlDetailsResult | undefined }
+  >({
+    mutationFn: async ({ crawledPageId }) => {
+      const result = await deleteCrawledPage(crawledPageId);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+    },
+    onError: (_err, _variables, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(crawlDetailsQueryKey, context.previousData);
+      }
+    },
+    onMutate: async ({ crawledPageId }) => {
+      await queryClient.cancelQueries({ queryKey: crawlDetailsQueryKey });
+      const previousData =
+        queryClient.getQueryData<CrawlDetailsResult>(crawlDetailsQueryKey);
+
+      queryClient.setQueryData<CrawlDetailsResult>(
+        crawlDetailsQueryKey,
+        (old) => {
+          if (!old) return old;
+          return {
+            ...old,
+            crawledPages: old.crawledPages.filter(
+              (page) => page.id !== crawledPageId
             ),
           };
         }

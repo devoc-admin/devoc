@@ -8,6 +8,7 @@ import {
   LoaderIcon,
   PlayCircleIcon,
   TableIcon,
+  Trash2Icon,
 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -121,13 +122,16 @@ export function CrawledPageCard({ page }: CrawledPageCardProps) {
             </a>
           </div>
 
-          {/* ✅ Select for audit */}
-          <ToggleSwitch
-            checked={page.selectedForAudit ?? false}
-            disabled={isAuditToggling}
-            loading={isAuditToggling}
-            onChange={handleAuditToggle}
-          />
+          {/* ✅ Select for audit + 🗑️ Delete */}
+          <div className="flex items-center gap-x-2">
+            <ToggleSwitch
+              checked={page.selectedForAudit ?? false}
+              disabled={isAuditToggling}
+              loading={isAuditToggling}
+              onChange={handleAuditToggle}
+            />
+            <DeletePageButton pageId={page.id} />
+          </div>
         </div>
 
         {/* 🔛🟡 Toggle category */}
@@ -184,6 +188,9 @@ interface ToggleSwitchProps {
   onChange: () => void;
 }
 
+// ===================================
+// 🧺 Toggle switch
+
 function ToggleSwitch({
   checked,
   disabled,
@@ -218,6 +225,47 @@ function ToggleSwitch({
   );
 }
 
+// --------------------------------—————————
+// 🚮 Delete a crawled page
+function DeletePageButton({ pageId }: { pageId: string }) {
+  const { deleteCrawledPageMutate, deletingPageId } = useCrawlDetailsContext();
+
+  const isDeleting = deletingPageId === pageId;
+
+  function handleDeleteCrawledPage() {
+    deleteCrawledPageMutate({ crawledPageId: pageId });
+  }
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          className={cn(
+            "inline-flex items-center justify-center",
+            "h-8 w-8",
+            "rounded-md transition-colors",
+            "bg-destructive/10 text-destructive",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            "disabled:cursor-not-allowed disabled:opacity-50",
+            "cursor-pointer"
+          )}
+          disabled={isDeleting}
+          onClick={handleDeleteCrawledPage}
+          type="button"
+        >
+          {isDeleting ? (
+            <LoaderIcon className="size-4 animate-spin" />
+          ) : (
+            <Trash2Icon className="size-4" />
+          )}
+        </button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Supprimer cette page</p>
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+// ===================================
 /* 🔛🟡 Select category */
 type CategoryDropdownProps = {
   category: PageCategory;

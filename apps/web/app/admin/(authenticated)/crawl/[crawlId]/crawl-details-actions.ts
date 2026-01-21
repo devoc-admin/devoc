@@ -121,6 +121,26 @@ export async function updatePageAuditSelection(
 }
 
 // --------------------------------------
+// 🗑️ Delete crawled page
+
+export async function deleteCrawledPage(
+  crawledPageId: string
+): Promise<ActionResult> {
+  try {
+    await db.delete(crawledPage).where(eq(crawledPage.id, crawledPageId));
+
+    return { success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    console.error(
+      "Il y a eu une erreur lors de la suppression de la page :",
+      message
+    );
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
 // Export category enum values for UI
 
 // --------------------------------------
