@@ -358,3 +358,126 @@ export const crawlTechnology = pgTable(
 
 export type CrawlTechnology = typeof crawlTechnology.$inferSelect;
 export type NewCrawlTechnology = typeof crawlTechnology.$inferInsert;
+
+// RGAA Accessibility Criteria
+
+export const wcagLevelEnum = pgEnum("wcag_level", ["A", "AA", "AAA"]);
+
+export const testabilityEnum = pgEnum("testability", [
+  "automatic",
+  "semi_automatic",
+  "manual",
+]);
+
+export const auditStatusEnum = pgEnum("audit_status", [
+  "compliant",
+  "non_compliant",
+  "not_applicable",
+  "not_tested",
+]);
+
+export const rgaaTheme = pgTable("rgaa_theme", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  number: integer().notNull().unique(),
+  name: text().notNull(),
+});
+
+export type RgaaTheme = typeof rgaaTheme.$inferSelect;
+export type NewRgaaTheme = typeof rgaaTheme.$inferInsert;
+
+export const rgaaCriterion = pgTable(
+  "rgaa_criterion",
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    themeId: integer().notNull(),
+    number: text().notNull().unique(),
+    title: text().notNull(),
+    wcagCriteria: text(),
+    wcagLevel: wcagLevelEnum(),
+    testability: testabilityEnum().notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.themeId],
+      foreignColumns: [rgaaTheme.id],
+      name: "rgaa_criterion_themeId_fkey",
+    }).onDelete("cascade"),
+    index("rgaa_criterion_themeId_idx").using(
+      "btree",
+      table.themeId.asc().nullsLast()
+    ),
+    index("rgaa_criterion_number_idx").using(
+      "btree",
+      table.number.asc().nullsLast()
+    ),
+  ]
+);
+
+export type RgaaCriterion = typeof rgaaCriterion.$inferSelect;
+export type NewRgaaCriterion = typeof rgaaCriterion.$inferInsert;
+
+export const rgaaTest = pgTable(
+  "rgaa_test",
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    criterionId: integer().notNull(),
+    number: text().notNull().unique(),
+    description: text().notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.criterionId],
+      foreignColumns: [rgaaCriterion.id],
+      name: "rgaa_test_criterionId_fkey",
+    }).onDelete("cascade"),
+    index("rgaa_test_criterionId_idx").using(
+      "btree",
+      table.criterionId.asc().nullsLast()
+    ),
+  ]
+);
+
+export type RgaaTest = typeof rgaaTest.$inferSelect;
+export type NewRgaaTest = typeof rgaaTest.$inferInsert;
+
+export const crawledPageAudit = pgTable(
+  "crawled_page_audit",
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    crawledPageId: text().notNull(),
+    criterionId: integer().notNull(),
+    status: auditStatusEnum().default("not_tested").notNull(),
+    comment: text(),
+    testedAt: timestamp({ mode: "string", withTimezone: true }),
+    createdAt: timestamp({ mode: "string", withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.crawledPageId],
+      foreignColumns: [crawledPage.id],
+      name: "crawled_page_audit_crawledPageId_fkey",
+    }).onDelete("cascade"),
+    foreignKey({
+      columns: [table.criterionId],
+      foreignColumns: [rgaaCriterion.id],
+      name: "crawled_page_audit_criterionId_fkey",
+    }).onDelete("cascade"),
+    index("crawled_page_audit_crawledPageId_idx").using(
+      "btree",
+      table.crawledPageId.asc().nullsLast()
+    ),
+    index("crawled_page_audit_criterionId_idx").using(
+      "btree",
+      table.criterionId.asc().nullsLast()
+    ),
+    unique("crawled_page_audit_unique").on(
+      table.crawledPageId,
+      table.criterionId
+    ),
+  ]
+);
+
+export type CrawledPageAudit = typeof crawledPageAudit.$inferSelect;
+export type NewCrawledPageAudit = typeof crawledPageAudit.$inferInsert;
