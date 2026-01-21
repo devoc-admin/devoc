@@ -55,6 +55,10 @@
       }
     }
   },
+  // 🌍 JavaScript globals for Chrome extension
+  "javascript": {
+    "globals": ["chrome"]
+  },
 
   "extends": ["ultracite/core", "ultracite/next"]
 }

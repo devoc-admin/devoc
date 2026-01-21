@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #ff7711;
+  --color-primary-light: #ffc731;
+}
+
+body {
+  width: 360px;
+  min-height: 400px;
+  padding: 0;
+  margin: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    sans-serif;
+}
+
+#root {
+  width: 100%;
+  min-height: 400px;
+}
