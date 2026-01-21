@@ -65,21 +65,34 @@ export class WebCrawler {
     this.baseOrigin = new URL(baseUrl).origin;
     this.crawlId = crawlId;
     this.config = {
+      //🐇 Concurrency
       concurrency: config.concurrency ?? DEFAULT_CONCURRENCY,
+
+      // ⏳ Delay between requests
       delayBetweenRequests:
         config.delayBetweenRequests ?? DEFAULT_DELAY_BETWEEN_REQUESTS,
+
+      // 🛣️ Paths patterns
       excludePaths: config.excludePaths,
       includePaths: config.includePaths,
+
+      // 🔢 Pages and depth
       maxDepth: config.maxDepth ?? DEFAULT_MAX_DEPTH,
       maxPages: config.maxPages ?? DEFAULT_MAX_PAGES,
+
+      // 🤖 Respect bots
       respectRobotsTxt: config.respectRobotsTxt ?? true,
+
+      // 🖼️ Take assets
       skipResources: config.skipResources ?? false,
+
+      // 📸 Take screenshots
       skipScreenshots: config.skipScreenshots ?? false,
       useLocalScreenshots: config.useLocalScreenshots ?? false,
     };
   }
 
-  // Start crawling
+  // 🏁 Start crawling
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Crawler logic requires sequential checks
   async crawl({
     onProgress,
@@ -90,14 +103,15 @@ export class WebCrawler {
     const limit = pLimit(concurrency);
 
     try {
-      // 1. Init browser
+      // 1️⃣ 🌐 Init browser
       this.browser = await chromium.launch();
 
-      // 2. Add homepage
+      // 2️⃣ 🏡 Add homepage
       const normalizedBaseUrl = normalizeUrl({
         baseUrl: this.baseUrl,
         url: this.baseUrl,
       });
+
       this.queue.push({ depth: 0, url: normalizedBaseUrl });
       this.pending.add(normalizedBaseUrl);
 
@@ -208,7 +222,7 @@ export class WebCrawler {
   }
 
   /**
-   * Create a new browser context with optional resource blocking
+   * 🌐 Create a new browser context with optional resource blocking
    */
   private async createContext(): Promise<BrowserContext> {
     if (!this.browser) {
@@ -221,7 +235,7 @@ export class WebCrawler {
       viewport: { height: 720, width: 1280 },
     });
 
-    // Block unnecessary resources for 50-70% faster crawling (optional)
+    // ✋ Block unnecessary resources for 50-70% faster crawling (optional)
     if (this.config.skipResources) {
       await context.route("**/*", (route) => {
         const resourceType = route.request().resourceType();
@@ -236,7 +250,7 @@ export class WebCrawler {
   }
 
   /**
-   * Crawl page
+   * 🕷️ Crawl page
    */
   private async crawlPage({
     url,
@@ -370,7 +384,7 @@ export class WebCrawler {
   }
 
   /**
-   * Extract links from page
+   * 🔗 Extract links from page
    */
   private async extractLinksFromPage(page: Page): Promise<string[]> {
     const links = await page.evaluate(() => {
@@ -394,7 +408,7 @@ export class WebCrawler {
   }
 
   /**
-   * Dismiss cookie consent banner if present
+   * 🍪 Dismiss cookie consent banner if present
    */
   private async dismissCookieBanner(page: Page): Promise<void> {
     const acceptSelectors = [
@@ -432,7 +446,7 @@ export class WebCrawler {
   }
 
   /**
-   * Take screenshot and upload to Vercel Blob or save locally
+   * 📸 Take screenshot and upload to Vercel Blob or save locally
    */
   private async takeAndUploadScreenshot({
     page,
@@ -497,7 +511,7 @@ export class WebCrawler {
   }
 
   /**
-   * Save screenshot locally to filesystem
+   * 📸⬇️ Save screenshot locally to filesystem
    */
   private async saveScreenshotLocally({
     screenshot,
@@ -524,21 +538,24 @@ export class WebCrawler {
   }
 
   /**
-   * Delay between requests
+   * ⏳ Delay between requests
    */
   private delay(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
-   * Clean up resources
+   * 🧹 Clean up resources
    */
   private async cleanup(): Promise<void> {
     if (this.browser) await this.browser.close();
   }
 }
 
-// Tiered SPA loading strategy - fast first, thorough only when needed
+// =================================================
+// Utils
+
+// ⌚ Tiered SPA loading strategy - fast first, thorough only when needed
 async function waitForSpaLoad(page: Page) {
   // 1. Basic DOM ready
   await page.waitForLoadState("domcontentloaded");
@@ -586,7 +603,7 @@ async function waitForSpaLoad(page: Page) {
   }
 }
 
-// waitForDomStable
+// ⌚ Wait for DOM stable
 async function waitForDomStable(page: Page, timeout = 5000, debounce = 300) {
   await page.evaluate(
     ({ timeout, debounce }) => {
