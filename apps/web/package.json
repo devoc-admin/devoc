@@ -20,6 +20,7 @@
     "db:studio": "bun --env-file=.env.local drizzle-kit studio"
   },
   "dependencies": {
+    "@dev-oc/crawler": "workspace:*",
     "@gsap/react": "^2.1.2",
     "@neondatabase/serverless": "^1.0.2",
     "@number-flow/react": "^0.5.10",

@@ -1,5 +1,5 @@
 import type { Page } from "playwright";
-import type { CategoryResult, PageCharacteristics } from "./types";
+import type { CategoryResult, PageCharacteristics } from "../types";
 
 const URL_PATTERNS: Record<string, RegExp[]> = {
   accessibility: [/\/accessibilite/i, /\/accessibility/i, /\/a11y/i],
@@ -100,7 +100,7 @@ export async function analyzePageCharacteristics(
   page: Page
 ): Promise<PageCharacteristics> {
   return await page.evaluate(() => {
-    // 📝 Check forms
+    // Check forms
     const forms = document.querySelectorAll("form");
     const hasForm =
       forms.length > 0 &&
@@ -109,32 +109,32 @@ export async function analyzePageCharacteristics(
         return inputs.length >= 2;
       });
 
-    // 🧮 Check tables
+    // Check tables
     const tables = document.querySelectorAll("table");
     const hasTable = Array.from(tables).some((table) => {
-      // Ignore les tableaux de présentation
+      // Ignore presentation tables
       if (table.getAttribute("role") === "presentation") return false;
       if (table.closest('[role="presentation"]')) return false;
 
-      // Vérifie qu'il y a des en-têtes ou suffisamment de cellules
+      // Check for headers or enough cells
       const headers = table.querySelectorAll("th");
       const cells = table.querySelectorAll("td");
       return headers.length > 0 || cells.length > 4;
     });
 
-    // 📹 Check multimedia
+    // Check multimedia
     const hasMultimedia =
       document.querySelectorAll(
         'video, audio, iframe[src*="youtube"], iframe[src*="vimeo"], iframe[src*="dailymotion"]'
       ).length > 0;
 
-    // 🔗 Check document links
+    // Check document links
     const docLinks = document.querySelectorAll(
       'a[href$=".pdf"], a[href$=".doc"], a[href$=".docx"], a[href$=".xls"], a[href$=".xlsx"], a[href$=".odt"], a[href$=".ods"]'
     );
     const hasDocuments = docLinks.length > 0;
 
-    //🔒 Check authentication
+    // Check authentication
     const passwordInputs = document.querySelectorAll('input[type="password"]');
     const loginForms = document.querySelectorAll(
       'form[action*="login"], form[action*="auth"], form[action*="signin"], form[action*="connexion"]'
@@ -142,14 +142,14 @@ export async function analyzePageCharacteristics(
     const hasAuthentication =
       passwordInputs.length > 0 || loginForms.length > 0;
 
-    // 📄 Layout signature
+    // Layout signature
     const header = document.querySelector("header, [role='banner']");
     const nav = document.querySelector("nav, [role='navigation']");
     const main = document.querySelector("main, [role='main']");
     const aside = document.querySelector("aside, [role='complementary']");
     const footer = document.querySelector("footer, [role='contentinfo']");
 
-    //🏛️ Columns count
+    // Columns count
     const columns = document.querySelectorAll(
       '[class*="col-"], [class*="column"], [class*="grid"] > *'
     ).length;

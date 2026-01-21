@@ -1,6 +1,6 @@
+import type { TechnologyDetectionResult } from "@dev-oc/crawler";
+import { WebCrawler } from "@dev-oc/crawler";
 import { eq } from "drizzle-orm";
-import { WebCrawler } from "@/lib/crawler";
-import type { TechnologyDetectionResult } from "@/lib/crawler/types";
 import { db } from "@/lib/db";
 import {
   crawl,

@@ -1,7 +1,7 @@
 // biome-ignore-all lint/performance/useTopLevelRegex: regexes must be inside page.evaluate (browser context)
 // biome-ignore-all assist/source/useSortedKeys: hasRssFeed should come before feedUrl for readability
 import type { Page } from "playwright";
-import type { RssFeedDetectionResult } from "./types";
+import type { RssFeedDetectionResult } from "../types";
 
 /**
  * Detects RSS/Atom feeds on a page.

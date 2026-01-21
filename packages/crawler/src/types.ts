@@ -1,5 +1,3 @@
-import type { pageCategoryEnum } from "@/lib/db/schema";
-
 export type CrawlResult = {
   pages: CrawlPageResult[];
   errors?: Array<{ url: string; error: string }>;
@@ -39,7 +37,22 @@ export type CrawlProgressCallback = (progress: {
   crawledPage: CrawlPageResult;
 }) => Promise<void>;
 
-type PageCategory = (typeof pageCategoryEnum.enumValues)[number];
+// Page category - standalone type matching the db enum values
+export type PageCategory =
+  | "homepage"
+  | "contact"
+  | "legal_notices"
+  | "accessibility"
+  | "sitemap"
+  | "help"
+  | "authentication"
+  | "form"
+  | "table"
+  | "multimedia"
+  | "document"
+  | "multi_step_process"
+  | "distinct_layout"
+  | "other";
 
 export type PageCharacteristics = {
   hasForm: boolean;
@@ -54,6 +67,24 @@ export type CategoryResult = {
   category: PageCategory;
   confidence: number;
   characteristics: PageCharacteristics;
+};
+
+// Crawl configuration - standalone type matching the db schema
+export type CrawlConfig = {
+  maxDepth: number;
+  maxPages: number;
+  delayBetweenRequests: number;
+  respectRobotsTxt: boolean;
+  skipResources?: boolean;
+  skipScreenshots?: boolean;
+  useLocalScreenshots?: boolean;
+  concurrency?: number;
+  includePaths?: string[];
+  excludePaths?: string[];
+  auth?: {
+    type: "basic" | "form" | "cookie";
+    credentials?: Record<string, string>;
+  };
 };
 
 // Technology detection types

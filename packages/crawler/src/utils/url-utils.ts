@@ -1,4 +1,4 @@
-import type { CrawlConfig } from "@/lib/db/schema";
+import type { CrawlConfig } from "../types";
 
 export function normalizeUrl({
   url,
@@ -83,7 +83,7 @@ export function shouldCrawlUrl({
     const parsed = new URL(url);
     const path = parsed.pathname.toLowerCase();
 
-    // 📂 Extensions à ignorer (ressources statiques)
+    // Extensions to skip (static resources)
     const skipExtensions = [
       ".pdf",
       ".jpg",
@@ -119,7 +119,7 @@ export function shouldCrawlUrl({
       return false;
     }
 
-    // 🚫 Vérifie les chemins exclus
+    // Check excluded paths
     if (
       config.excludePaths?.some((pattern) =>
         path.includes(pattern.toLowerCase())
@@ -128,7 +128,7 @@ export function shouldCrawlUrl({
       return false;
     }
 
-    // ✅ Vérifie les chemins inclus (si spécifiés)
+    // Check included paths (if specified)
     if (config.includePaths?.length) {
       return config.includePaths.some((pattern) =>
         path.includes(pattern.toLowerCase())
@@ -149,7 +149,7 @@ export function toAbsoluteUrl({
   baseUrl: string;
 }): string | null {
   try {
-    // Ignore les URLs spéciales
+    // Ignore special URLs
     if (
       url.startsWith("#") ||
       url.startsWith("javascript:") ||

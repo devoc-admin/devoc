@@ -7,7 +7,7 @@ import type {
   DetectedTechnology,
   FrenchTechDetection,
   TechnologyDetectionResult,
-} from "./types";
+} from "../types";
 
 // Technology patterns from wapalyzer package
 const techFiles = [
@@ -277,7 +277,7 @@ async function detectFrenchTech(
   responseHeaders: Record<string, string>,
   wappalyzerTechnologies: DetectedTechnology[]
 ): Promise<FrenchTechDetection> {
-  // 1. Detect DSFR (Design System de l'État)
+  // 1. Detect DSFR (Design System de l'Etat)
   const usesDsfr = await page.evaluate(() => {
     const dsfrCss = Array.from(document.querySelectorAll("link[href]")).some(
       (link) => {

@@ -1,10 +1,10 @@
 // biome-ignore-all lint/performance/useTopLevelRegex: regexes must be inside page.evaluate (browser context)
 import type { Page } from "playwright";
-import type { AuthorDetectionResult } from "./types";
+import type { AuthorDetectionResult } from "../types";
 
 /**
  * Detects author/signature (web agency, developer) on a page.
- * Typically found in footer as "Réalisé par...", "Réalisation", "Crédit", etc.
+ * Typically found in footer as "Realise par...", "Realisation", "Credit", etc.
  */
 export async function detectAuthor({
   page,

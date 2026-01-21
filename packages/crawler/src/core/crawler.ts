@@ -8,21 +8,15 @@ import {
   chromium,
   type Page,
 } from "playwright";
-import {
-  isInternalUrl,
-  normalizeUrl,
-  shouldCrawlUrl,
-  toAbsoluteUrl,
-} from "@/lib/crawler/url-utils";
-import type { CrawlConfig } from "@/lib/db/schema";
-import { detectAuthor } from "./author-detector";
-import { detectCategoryPage } from "./category-detector";
-import { detectNewsletter } from "./newsletter-detector";
-import { detectRssFeed } from "./rss-detector";
-import { detectSocialLinks } from "./social-detector";
-import { detectTechnologies } from "./technology-detector";
+import { detectAuthor } from "../detectors/author-detector";
+import { detectCategoryPage } from "../detectors/category-detector";
+import { detectNewsletter } from "../detectors/newsletter-detector";
+import { detectRssFeed } from "../detectors/rss-detector";
+import { detectSocialLinks } from "../detectors/social-detector";
+import { detectTechnologies } from "../detectors/technology-detector";
 import type {
   AuthorDetectionResult,
+  CrawlConfig,
   CrawlPageResult,
   CrawlProgressCallback,
   CrawlResult,
@@ -31,7 +25,13 @@ import type {
   RssFeedDetectionResult,
   SocialLinksResult,
   TechnologyDetectionResult,
-} from "./types";
+} from "../types";
+import {
+  isInternalUrl,
+  normalizeUrl,
+  shouldCrawlUrl,
+  toAbsoluteUrl,
+} from "../utils/url-utils";
 
 const DEFAULT_DELAY_BETWEEN_REQUESTS = 100;
 const DEFAULT_MAX_DEPTH = 3;
@@ -51,7 +51,7 @@ export class WebCrawler {
   private readonly pages: CrawlPageResult[] = [];
   private readonly errors: Array<{ url: string; error: string }> = [];
 
-  // 🏗️ Constructor
+  // Constructor
   constructor({
     baseUrl,
     config,
@@ -79,7 +79,7 @@ export class WebCrawler {
     };
   }
 
-  //💥 Start crawling
+  // Start crawling
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Crawler logic requires sequential checks
   async crawl({
     onProgress,
@@ -90,10 +90,10 @@ export class WebCrawler {
     const limit = pLimit(concurrency);
 
     try {
-      // 1️⃣ Init browser
+      // 1. Init browser
       this.browser = await chromium.launch();
 
-      // 2️⃣🏡 Add homepage
+      // 2. Add homepage
       const normalizedBaseUrl = normalizeUrl({
         baseUrl: this.baseUrl,
         url: this.baseUrl,
@@ -101,12 +101,12 @@ export class WebCrawler {
       this.queue.push({ depth: 0, url: normalizedBaseUrl });
       this.pending.add(normalizedBaseUrl);
 
-      // 3️⃣🔁 Loop through site with parallel processing
+      // 3. Loop through site with parallel processing
       while (
         this.queue.length > 0 &&
         this.pages.length < this.config.maxPages
       ) {
-        // 📦 Get batch of items to process (up to concurrency limit)
+        // Get batch of items to process (up to concurrency limit)
         const batch: QueueItem[] = [];
         const remainingSlots = this.config.maxPages - this.pages.length;
         const batchSize = Math.min(
@@ -124,7 +124,7 @@ export class WebCrawler {
             url: item.url,
           });
 
-          // ⏭️ Skip checks
+          // Skip checks
           if (this.visited.has(normalizedUrl)) {
             this.pending.delete(normalizedUrl);
             continue;
@@ -132,7 +132,7 @@ export class WebCrawler {
           if (item.depth > this.config.maxDepth) continue;
           if (!shouldCrawlUrl({ config: this.config, url: item.url })) continue;
 
-          // ✅➕ Mark as visited before processing (prevents duplicates in parallel)
+          // Mark as visited before processing (prevents duplicates in parallel)
           this.visited.add(normalizedUrl);
           this.pending.delete(normalizedUrl); // Move from pending to visited
           batch.push({ ...item, url: normalizedUrl });
@@ -140,7 +140,7 @@ export class WebCrawler {
 
         if (batch.length === 0) continue;
 
-        // 🚀 Process batch in parallel
+        // Process batch in parallel
         const results = await Promise.all(
           batch.map((item) =>
             limit(async () => {
@@ -160,11 +160,11 @@ export class WebCrawler {
           )
         );
 
-        // 🎁 Process results
+        // Process results
         for (const { item, result } of results) {
           if (!result) continue;
 
-          // 🔔 Notify progress
+          // Notify progress
           if (onProgress) {
             await onProgress({
               crawled: this.pages.length,
@@ -196,7 +196,7 @@ export class WebCrawler {
           }
         }
 
-        // ⏳ Small delay between batches
+        // Small delay between batches
         if (this.config.delayBetweenRequests > 0) {
           await this.delay(this.config.delayBetweenRequests);
         }
@@ -221,7 +221,7 @@ export class WebCrawler {
       viewport: { height: 720, width: 1280 },
     });
 
-    // 🚫 Block unnecessary resources for 50-70% faster crawling (optional)
+    // Block unnecessary resources for 50-70% faster crawling (optional)
     if (this.config.skipResources) {
       await context.route("**/*", (route) => {
         const resourceType = route.request().resourceType();
@@ -252,10 +252,10 @@ export class WebCrawler {
     const page = await context.newPage();
 
     try {
-      //⏰ Start time
+      // Start time
       const startTime = Date.now();
 
-      //⛵ Go to page
+      // Go to page
       const response = await page.goto(url, {
         timeout: 30_000,
         waitUntil: "domcontentloaded",
@@ -271,22 +271,22 @@ export class WebCrawler {
       const httpStatus = response.status();
       const contentType = response.headers()["content-type"] || "";
 
-      // ⏭️ Skip non-HTML pages
+      // Skip non-HTML pages
       if (!contentType.includes("text/html")) {
         return null;
       }
 
-      // ⌚ Wait for SPA content to load
+      // Wait for SPA content to load
       await waitForSpaLoad(page);
 
-      // 🆎 Get title
+      // Get title
       const title = await page.title();
 
-      //📦 Get category
+      // Get category
       const { category, confidence, characteristics } =
         await detectCategoryPage({ page, url });
 
-      // 🔍 Detect technologies (only on homepage / depth 0)
+      // Detect technologies (only on homepage / depth 0)
       let technologies: TechnologyDetectionResult | undefined;
       if (depth === 0) {
         const responseHeaders = response.headers();
@@ -297,19 +297,19 @@ export class WebCrawler {
         });
       }
 
-      // 🏢 Detect author/signature (only on homepage / depth 0)
+      // Detect author/signature (only on homepage / depth 0)
       let author: AuthorDetectionResult | undefined;
       if (depth === 0) {
         author = await detectAuthor({ page });
       }
 
-      // 📝 Meta description (all pages)
+      // Meta description (all pages)
       const description = await page.evaluate(() => {
         const meta = document.querySelector('meta[name="description"]');
         return meta?.getAttribute("content") || undefined;
       });
 
-      // 📡 RSS, Newsletter & Social detection (only on homepage / depth 0)
+      // RSS, Newsletter & Social detection (only on homepage / depth 0)
       let rssFeed: RssFeedDetectionResult | undefined;
       let newsletter: NewsletterDetectionResult | undefined;
       let socialLinks: SocialLinksResult | undefined;
@@ -319,15 +319,15 @@ export class WebCrawler {
         socialLinks = await detectSocialLinks({ page });
       }
 
-      // 🔗 Extract links
+      // Extract links
       const links = await this.extractLinksFromPage(page);
 
-      // 🍪 Dismiss cookie banner before screenshot
+      // Dismiss cookie banner before screenshot
       if (!this.config.skipScreenshots) {
         await this.dismissCookieBanner(page);
       }
 
-      // 📸 Take screenshot and upload to Vercel Blob (if not skipped)
+      // Take screenshot and upload to Vercel Blob (if not skipped)
       const screenshotUrl = this.config.skipScreenshots
         ? undefined
         : await this.takeAndUploadScreenshot({
@@ -335,7 +335,7 @@ export class WebCrawler {
             page,
           });
 
-      // 🎁 Result
+      // Result
       const nowString = new Date().toISOString();
       return {
         author,
@@ -359,12 +359,12 @@ export class WebCrawler {
         url,
       };
     } catch (error) {
-      // 🚫 Errors
+      // Errors
       const message = error instanceof Error ? error.message : String(error);
       this.errors.push({ error: message, url });
       return null;
     } finally {
-      //👋 Close page
+      // Close page
       await page.close();
     }
   }
@@ -465,7 +465,7 @@ export class WebCrawler {
       // Check for token for Vercel Blob - fall back to local if missing
       if (!process.env.BLOB_READ_WRITE_TOKEN) {
         console.warn(
-          "📸 BLOB_READ_WRITE_TOKEN not set, falling back to local storage"
+          "BLOB_READ_WRITE_TOKEN not set, falling back to local storage"
         );
         return await this.saveScreenshotLocally({
           safeFilename,
@@ -481,7 +481,7 @@ export class WebCrawler {
       } catch (blobError) {
         // Vercel Blob failed - fall back to local storage
         console.warn(
-          "📸 Vercel Blob upload failed, falling back to local storage:",
+          "Vercel Blob upload failed, falling back to local storage:",
           blobError
         );
         return await this.saveScreenshotLocally({
@@ -491,7 +491,7 @@ export class WebCrawler {
       }
     } catch (error) {
       // Screenshot capture itself failed
-      console.error(`📸 Screenshot failed for ${normalizedUrl}:`, error);
+      console.error(`Screenshot failed for ${normalizedUrl}:`, error);
       return undefined;
     }
   }
@@ -518,7 +518,7 @@ export class WebCrawler {
       // Return URL that will be served by our API route
       return `/api/screenshots/${this.crawlId}/${filename}`;
     } catch (error) {
-      console.error("📸 Failed to save screenshot locally:", error);
+      console.error("Failed to save screenshot locally:", error);
       return undefined;
     }
   }
@@ -551,14 +551,14 @@ async function waitForSpaLoad(page: Page) {
     return bodyText.length > 100 || hasMainContent;
   });
 
-  // ⚡ Fast path: content already present, skip expensive waits
+  // Fast path: content already present, skip expensive waits
   if (hasContent) {
     // Brief stabilization only (200ms)
     await page.waitForTimeout(200);
     return;
   }
 
-  // 🐢 Slow path: SPA that needs JS rendering
+  // Slow path: SPA that needs JS rendering
   // Wait for initial network burst to settle (cap at 3s)
   await Promise.race([
     page.waitForLoadState("networkidle"),

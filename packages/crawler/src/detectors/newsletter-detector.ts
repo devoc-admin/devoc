@@ -1,6 +1,6 @@
 // biome-ignore-all lint/performance/useTopLevelRegex: regexes must be inside page.evaluate (browser context)
 import type { Page } from "playwright";
-import type { NewsletterDetectionResult } from "./types";
+import type { NewsletterDetectionResult } from "../types";
 
 /**
  * Detects newsletter signup forms on a page.

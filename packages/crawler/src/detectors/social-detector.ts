@@ -1,7 +1,7 @@
 // biome-ignore-all lint/performance/useTopLevelRegex: regexes must be inside page.evaluate (browser context)
 // biome-ignore-all assist/source/useSortedKeys: platform should come before patterns for readability
 import type { Page } from "playwright";
-import type { SocialLinksResult } from "./types";
+import type { SocialLinksResult } from "../types";
 
 /**
  * Detects social media links on a page.
