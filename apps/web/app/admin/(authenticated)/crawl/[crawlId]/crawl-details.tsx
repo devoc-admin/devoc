@@ -1,6 +1,6 @@
 "use client";
 import { AlertCircleIcon } from "lucide-react";
-import { CrawlHeader } from "./_components/crawl-header";
+import { CrawlDetailsSidebar } from "./_components/crawl-details-sidebar";
 import { CrawledPagesSection } from "./_components/crawled-pages-section";
 import {
   CrawlDetailsProvider,
@@ -32,7 +32,7 @@ function CrawlDetailsInner() {
   return (
     <div className="flex h-full gap-x-6">
       <div className="max-w-[400px]">
-        <CrawlHeader />
+        <CrawlDetailsSidebar />
       </div>
       <div className="grow space-y-6 overflow-auto">
         <CrawledPagesSection

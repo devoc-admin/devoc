@@ -1,5 +1,6 @@
 "use client";
 import {
+  ArrowLeftIcon,
   CalendarIcon,
   CheckIcon,
   ClockIcon,
@@ -11,6 +12,7 @@ import {
   SearchIcon,
   XIcon,
 } from "lucide-react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import type { PageCategory } from "../crawl-details-actions";
 import {
@@ -68,7 +70,7 @@ const HTTP_STATUS_LABELS: Record<HttpStatusRange, string> = {
   "5xx": "5xx Erreur serveur",
 };
 
-export function CrawlHeader() {
+export function CrawlDetailsSidebar() {
   const {
     crawlDetails,
     selectedPages,
@@ -228,6 +230,8 @@ export function CrawlHeader() {
           </button>
         </div>
       )}
+
+      <BackCrawlListButton />
     </div>
   );
 }
@@ -411,7 +415,32 @@ function StatCard({ icon, label, value }: StatCardProps) {
 }
 
 // --------------------------------
-// Duration formatter
+// 🔙 Back to crawl list
+function BackCrawlListButton() {
+  return (
+    <div className="mt-12">
+      <Link
+        className={cn(
+          "inline-flex items-center gap-x-2",
+          "rounded-full",
+          "bg-zinc-100 hover:bg-zinc-200/40",
+          "transition-colors",
+          "text-foreground",
+          "px-6 py-3",
+          "text-sm",
+          "transition-colors"
+        )}
+        href="/admin/crawl"
+      >
+        <ArrowLeftIcon size={16} />
+        Retour
+      </Link>
+    </div>
+  );
+}
+
+// --------------------------------
+// ⏳ Duration formatter
 
 function formatDuration(
   startedAt: string | null,

@@ -12,7 +12,7 @@ import { Slider } from "@/components/ui/slider";
 import { useCrawlContext } from "../crawl-context";
 
 const MAX_PAGES_CRAWLED = 500;
-const DEFAULT_PAGES_CRAWLED = 200;
+const DEFAULT_PAGES_CRAWLED = 500;
 
 const MAX_DEPTH = 10;
 const DEFAULT_DEPTH = 3;

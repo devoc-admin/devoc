@@ -209,13 +209,23 @@ export async function getCrawl(
 // 📝 List crawls
 const listCrawlsQuery = db
   .select({
+    accessibilityTool: crawl.accessibilityTool,
+    analyticsTools: crawl.analyticsTools,
     author: crawl.author,
     authorUrl: crawl.authorUrl,
     completedAt: crawl.completedAt,
+    consentManager: crawl.consentManager,
+    contactAddresses: crawl.contactAddresses,
+    contactEmails: crawl.contactEmails,
+    contactPhones: crawl.contactPhones,
     createdAt: crawl.createdAt,
+    detectedTechCount: crawl.detectedTechCount,
+    hostingProvider: crawl.hostingProvider,
     id: crawl.id,
     pagesCrawled: crawl.pagesCrawled,
     pagesDiscovered: crawl.pagesDiscovered,
+    primaryCms: crawl.primaryCms,
+    primaryFramework: crawl.primaryFramework,
     screenshotUrl: crawledPage.screenshotUrl,
     skipResources: crawl.skipResources,
     skipScreenshots: crawl.skipScreenshots,
@@ -224,6 +234,7 @@ const listCrawlsQuery = db
     title: crawledPage.title,
     url: crawl.url,
     useLocalScreenshots: crawl.useLocalScreenshots,
+    usesDsfr: crawl.usesDsfr,
   })
   .from(crawl)
   .leftJoin(crawledPage, eq(crawl.id, crawledPage.crawlId))

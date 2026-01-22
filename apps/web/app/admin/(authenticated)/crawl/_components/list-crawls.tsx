@@ -11,16 +11,25 @@ import {
 } from "@tabler/icons-react";
 import {
   ApertureIcon,
+  BarChart3Icon,
   CalendarIcon,
   ClockIcon,
+  CodeIcon,
+  CookieIcon,
   ExternalLinkIcon,
   EyeIcon,
   FileCheckCornerIcon,
   FileCheckIcon,
   ImageOffIcon,
+  LayoutTemplateIcon,
   LoaderIcon,
+  MailIcon,
+  MapPinIcon,
+  PhoneIcon,
   RotateCcwIcon,
   SearchIcon,
+  ServerIcon,
+  ShieldCheckIcon,
   Trash2Icon,
   UserRoundPenIcon,
   XIcon,
@@ -126,7 +135,7 @@ function CrawlsCards() {
 function CrawlCard(crawl: CrawlResult) {
   return (
     <li
-      className="flex flex-col gap-y-6 rounded-md border border-border bg-sidebar-strong p-4"
+      className="flex flex-col gap-y-6 self-start rounded-md border border-border bg-sidebar-strong p-4"
       key={crawl.id}
     >
       <div>
@@ -165,7 +174,7 @@ function CrawlCard(crawl: CrawlResult) {
           )}
         </div>
         {/* Details */}
-        <div className="mt-4 grid grid-cols-2 space-y-0.5">
+        <div className="mt-4 grid grid-cols-2 space-y-1">
           {/* 🗓️ Started */}
           <div className="flex items-center gap-x-1 text-sm">
             <CalendarIcon size={14} />
@@ -237,7 +246,7 @@ function CrawlCard(crawl: CrawlResult) {
         </div>
       </div>
       {/* 🖼️ Cover */}
-      <div className="group relative mx-auto mt-auto w-fit">
+      <div className="group relative mx-auto w-fit">
         {crawl.screenshotUrl ? (
           <Image
             alt="Screenshot"
@@ -256,6 +265,10 @@ function CrawlCard(crawl: CrawlResult) {
         <RetryCrawlButton crawlId={crawl.id} />
         <DeleteCrawlButton crawlId={crawl.id} />
       </div>
+      {/* 📞 Contact Info */}
+      <ContactInfoSection crawl={crawl} />
+      {/* 🤖 Technologies */}
+      <TechnologiesSection crawl={crawl} />
     </li>
   );
 }
@@ -483,4 +496,193 @@ function SocialIcon({ platform }: { platform: string }) {
   const Icon = socialIcons[platform];
   if (!Icon) return null;
   return <Icon size={18} />;
+}
+
+// ------------------------------------------------------------
+// 📞 Contact Info Section
+function ContactInfoSection({ crawl }: { crawl: CrawlResult }) {
+  const hasPhones = crawl.contactPhones && crawl.contactPhones.length > 0;
+  const hasEmails = crawl.contactEmails && crawl.contactEmails.length > 0;
+  const hasAddresses =
+    crawl.contactAddresses && crawl.contactAddresses.length > 0;
+
+  if (!(hasPhones || hasEmails || hasAddresses)) return null;
+
+  return (
+    <div className="space-y-2 border-border border-t pt-4">
+      <h4 className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
+        Coordonnées
+      </h4>
+      <div className="space-y-1">
+        {/* 📞 Phones */}
+        {hasPhones && (
+          <div className="flex items-start gap-x-2 text-sm">
+            <PhoneIcon className="mt-0.5 shrink-0" size={14} />
+            <div className="flex flex-wrap gap-x-3 gap-y-1">
+              {crawl.contactPhones?.map((phone) => (
+                <Tooltip key={phone.number}>
+                  <TooltipTrigger asChild>
+                    <a
+                      className="hover:underline"
+                      href={`tel:${phone.number.replace(/[\s.-]/g, "")}`}
+                    >
+                      {phone.number}
+                      {phone.type === "mobile" && (
+                        <span className="ml-1 text-muted-foreground text-xs">
+                          (mobile)
+                        </span>
+                      )}
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {getPhoneTypeLabel(phone.type)}
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          </div>
+        )}
+        {/* 📧 Emails */}
+        {hasEmails && (
+          <div className="flex items-start gap-x-2 text-sm">
+            <MailIcon className="mt-0.5 shrink-0" size={14} />
+            <div className="flex flex-wrap gap-x-3 gap-y-1">
+              {crawl.contactEmails?.map((email) => (
+                <Tooltip key={email.email}>
+                  <TooltipTrigger asChild>
+                    <a
+                      className="hover:underline"
+                      href={`mailto:${email.email}`}
+                    >
+                      {email.email}
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {email.isGeneric ? "Email générique" : "Email"}
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          </div>
+        )}
+        {/* 📍 Addresses */}
+        {hasAddresses && (
+          <div className="flex items-start gap-x-2 text-sm">
+            <MapPinIcon className="mt-0.5 shrink-0" size={14} />
+            <div className="flex flex-wrap gap-x-3 gap-y-1">
+              {crawl.contactAddresses?.map((address) => (
+                <span key={address.postalCode}>
+                  {address.postalCode} {address.city}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function getPhoneTypeLabel(
+  type: "mobile" | "landline" | "fax" | "unknown" | undefined
+): string {
+  if (type === "mobile") return "Mobile";
+  if (type === "landline") return "Fixe";
+  if (type === "fax") return "Fax";
+  return "Téléphone";
+}
+
+// ------------------------------------------------------------
+// 🤖 Technologies Section
+function TechnologiesSection({ crawl }: { crawl: CrawlResult }) {
+  const hasTech =
+    crawl.primaryCms ||
+    crawl.primaryFramework ||
+    crawl.hostingProvider ||
+    crawl.consentManager ||
+    crawl.accessibilityTool ||
+    crawl.usesDsfr ||
+    (crawl.analyticsTools && crawl.analyticsTools.length > 0);
+
+  if (!hasTech) return null;
+
+  return (
+    <div className="space-y-2 border-border border-t pt-4">
+      <h4 className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
+        Technologies ({crawl.detectedTechCount ?? 0})
+      </h4>
+      <div className="space-y-1">
+        {/* 🖥️ CMS */}
+        {crawl.primaryCms && (
+          <TechItem
+            icon={LayoutTemplateIcon}
+            label="CMS"
+            value={crawl.primaryCms}
+          />
+        )}
+        {/* 🧩 Framework */}
+        {crawl.primaryFramework && (
+          <TechItem
+            icon={CodeIcon}
+            label="Framework"
+            value={crawl.primaryFramework}
+          />
+        )}
+        {/* 🏢 Hébergeur */}
+        {crawl.hostingProvider && (
+          <TechItem
+            icon={ServerIcon}
+            label="Hébergeur"
+            value={crawl.hostingProvider}
+          />
+        )}
+        {/* 🍪 Gestionnaire de consentement */}
+        {crawl.consentManager && (
+          <TechItem
+            icon={CookieIcon}
+            label="Consentement"
+            value={crawl.consentManager}
+          />
+        )}
+        {/* ♿ Outil d'accessibilité */}
+        {crawl.accessibilityTool && (
+          <TechItem
+            icon={ShieldCheckIcon}
+            label="Accessibilité"
+            value={crawl.accessibilityTool}
+          />
+        )}
+        {/* 📊 Analytics */}
+        {crawl.analyticsTools && crawl.analyticsTools.length > 0 && (
+          <TechItem
+            icon={BarChart3Icon}
+            label="Analytics"
+            value={crawl.analyticsTools.join(", ")}
+          />
+        )}
+        {/* 🇫🇷 DSFR */}
+        {crawl.usesDsfr && (
+          <TechItem icon={ShieldCheckIcon} label="DSFR" value="Oui" />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function TechItem({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: React.ComponentType<{ className?: string; size?: number }>;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex items-center gap-x-2 text-sm">
+      <Icon className="shrink-0 text-muted-foreground" size={14} />
+      <span className="text-muted-foreground">{label}:</span>
+      <span className="truncate">{value}</span>
+    </div>
+  );
 }
