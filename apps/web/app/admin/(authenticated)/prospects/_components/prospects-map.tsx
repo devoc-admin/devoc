@@ -61,23 +61,12 @@ export function ProspectsMap() {
     return filtered;
   }, [prospects, searchQuery]);
 
-  // Default center: France
-  const defaultCenter: [number, number] = [46.603_354, 1.888_334];
-  const defaultZoom = 6;
+  // 🎯 Default center: Carcassonne
+  const defaultCenter: [number, number] = [43.212_161, 2.353_663];
+  const defaultZoom = 9;
 
   if (prospectsWithCoords.length === 0) {
-    return (
-      <div className="flex h-96 items-center justify-center rounded-md border border-dashed">
-        <div className="text-center text-muted-foreground">
-          <MapPinIcon className="mx-auto mb-2 size-8" />
-          <p>Aucun prospect avec des coordonnées.</p>
-          <p className="text-sm">
-            Ajoutez la latitude et longitude pour voir les prospects sur la
-            carte.
-          </p>
-        </div>
-      </div>
-    );
+    return <NoProspectsFound />;
   }
 
   return (
@@ -146,6 +135,22 @@ function ProspectPopupContent({ prospect }: { prospect: Prospect }) {
       <p className="text-muted-foreground text-xs">
         Ajouté le {formatDate(prospect.createdAt)}
       </p>
+    </div>
+  );
+}
+
+// -------------------------------------------
+// 🫙 No prospects
+function NoProspectsFound() {
+  return (
+    <div className="flex h-96 items-center justify-center rounded-md border border-dashed">
+      <div className="text-center text-muted-foreground">
+        <MapPinIcon className="mx-auto mb-2 size-8" />
+        <p>Aucun prospect avec des coordonnées.</p>
+        <p className="text-sm">
+          Ajoutez la latitude et longitude pour voir les prospects sur la carte.
+        </p>
+      </div>
     </div>
   );
 }

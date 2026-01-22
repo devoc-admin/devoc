@@ -51,6 +51,10 @@ export class WebCrawler {
   private readonly pages: CrawlPageResult[] = [];
   private readonly errors: Array<{ url: string; error: string }> = [];
 
+  // 🏊 Context pool for reusing browser contexts
+  private contextPool: BrowserContext[] = [];
+  private readonly maxPoolSize = DEFAULT_CONCURRENCY;
+
   // Constructor
   constructor({
     baseUrl,
@@ -154,11 +158,11 @@ export class WebCrawler {
 
         if (batch.length === 0) continue;
 
-        // Process batch in parallel
+        // Process batch in parallel (using context pool)
         const results = await Promise.all(
           batch.map((item) =>
             limit(async () => {
-              const context = await this.createContext();
+              const context = await this.getContext();
               try {
                 const result = await this.crawlPage({
                   context,
@@ -168,7 +172,7 @@ export class WebCrawler {
                 });
                 return { item, result };
               } finally {
-                await context.close();
+                await this.returnContext(context);
               }
             })
           )
@@ -250,6 +254,29 @@ export class WebCrawler {
   }
 
   /**
+   * 🏊 Get a context from pool or create new one
+   */
+  private async getContext(): Promise<BrowserContext> {
+    const pooledContext = this.contextPool.pop();
+    if (pooledContext) {
+      return pooledContext;
+    }
+    return await this.createContext();
+  }
+
+  /**
+   * 🏊 Return context to pool or close if full
+   */
+  private async returnContext(context: BrowserContext): Promise<void> {
+    if (this.contextPool.length < this.maxPoolSize) {
+      await context.clearCookies();
+      this.contextPool.push(context);
+    } else {
+      await context.close();
+    }
+  }
+
+  /**
    * 🕷️ Crawl page
    */
   private async crawlPage({
@@ -280,6 +307,18 @@ export class WebCrawler {
       if (!response) {
         this.errors.push({ error: "No response received", url });
         return null;
+      }
+
+      // 🛡️ Track final URL after redirects to prevent duplicate crawls
+      const finalUrl = page.url();
+      const normalizedFinalUrl = normalizeUrl({
+        baseUrl: this.baseUrl,
+        url: finalUrl,
+      });
+
+      if (normalizedFinalUrl !== normalizedUrl) {
+        this.visited.add(normalizedFinalUrl);
+        this.pending.delete(normalizedFinalUrl);
       }
 
       const httpStatus = response.status();
@@ -548,6 +587,10 @@ export class WebCrawler {
    * 🧹 Clean up resources
    */
   private async cleanup(): Promise<void> {
+    // Close all pooled contexts
+    await Promise.all(this.contextPool.map((ctx) => ctx.close()));
+    this.contextPool = [];
+
     if (this.browser) await this.browser.close();
   }
 }
