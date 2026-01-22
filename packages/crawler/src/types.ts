@@ -60,6 +60,8 @@ export type PageCharacteristics = {
   hasMultimedia: boolean;
   hasDocuments: boolean;
   hasAuthentication: boolean;
+  hasContactForm?: boolean;
+  hasProgressIndicator?: boolean;
   layoutSignature: string;
 };
 

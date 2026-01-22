@@ -76,6 +76,14 @@ export async function detectCategoryPage({
     return { category: "authentication", characteristics, confidence: 75 };
   }
 
+  if (characteristics.hasContactForm) {
+    return { category: "contact", characteristics, confidence: 70 };
+  }
+
+  if (characteristics.hasProgressIndicator) {
+    return { category: "multi_step_process", characteristics, confidence: 70 };
+  }
+
   if (characteristics.hasMultimedia) {
     return { category: "multimedia", characteristics, confidence: 70 };
   }
@@ -125,12 +133,12 @@ export async function analyzePageCharacteristics(
     // Check multimedia
     const hasMultimedia =
       document.querySelectorAll(
-        'video, audio, iframe[src*="youtube"], iframe[src*="vimeo"], iframe[src*="dailymotion"]'
+        'video, audio, iframe[src*="youtube"], iframe[src*="vimeo"], iframe[src*="dailymotion"], iframe[src*="soundcloud"], iframe[src*="spotify"], iframe[src*="deezer"]'
       ).length > 0;
 
     // Check document links
     const docLinks = document.querySelectorAll(
-      'a[href$=".pdf"], a[href$=".doc"], a[href$=".docx"], a[href$=".xls"], a[href$=".xlsx"], a[href$=".odt"], a[href$=".ods"]'
+      'a[href$=".pdf"], a[href$=".doc"], a[href$=".docx"], a[href$=".xls"], a[href$=".xlsx"], a[href$=".odt"], a[href$=".ods"], a[href$=".pptx"], a[href$=".ppt"], a[href$=".csv"]'
     );
     const hasDocuments = docLinks.length > 0;
 
@@ -141,6 +149,23 @@ export async function analyzePageCharacteristics(
     );
     const hasAuthentication =
       passwordInputs.length > 0 || loginForms.length > 0;
+
+    // Check contact form
+    const contactKeywords = ["contact", "message", "envoyer", "send"];
+    const hasContactForm = Array.from(forms).some((form) => {
+      const formText = form.textContent?.toLowerCase() || "";
+      const hasContactKeywords = contactKeywords.some((keyword) =>
+        formText.includes(keyword)
+      );
+      const hasEmailField = form.querySelector('input[type="email"]') !== null;
+      return hasContactKeywords && hasEmailField;
+    });
+
+    // Check progress indicator (multi-step process)
+    const hasProgressIndicator =
+      document.querySelector(
+        '[role="progressbar"], .stepper, [class*="step-indicator"], [aria-valuenow]'
+      ) !== null;
 
     // Layout signature
     const header = document.querySelector("header, [role='banner']");
@@ -167,9 +192,11 @@ export async function analyzePageCharacteristics(
 
     return {
       hasAuthentication,
+      hasContactForm,
       hasDocuments,
       hasForm,
       hasMultimedia,
+      hasProgressIndicator,
       hasTable,
       layoutSignature,
     };
