@@ -47,6 +47,7 @@ export const crawlWebsite = inngest.createFunction(
 
     // 1️⃣ 🏃 Mark as running
     await step.run("mark-crawl-running", async () => {
+      logger.info("🚀 Starting crawl", { config, crawlId, url });
       const nowString = new Date().toISOString();
       await db
         .update(crawl)
@@ -67,12 +68,30 @@ export const crawlWebsite = inngest.createFunction(
         crawlId,
       });
 
+      logger.info("🕷️ Crawler initialized", {
+        concurrency: config.concurrency,
+        crawlId,
+        maxDepth: config.maxDepth,
+        maxPages: config.maxPages,
+        url,
+      });
+
       const errors: string[] = [];
 
       // ⏳ Update progress
       const crawlResult = await crawler.crawl({
         // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Progress callback handles multiple detection types
         onProgress: async (progress) => {
+          logger.info("📄 Page crawled", {
+            category: progress.crawledPage.category,
+            crawled: progress.crawled,
+            crawlId,
+            depth: progress.crawledPage.depth,
+            discovered: progress.discovered,
+            title: progress.crawledPage.title,
+            url: progress.crawledPage.url,
+          });
+
           // 👁️📝 Logs
           const nowString = new Date().toISOString();
 
@@ -112,18 +131,30 @@ export const crawlWebsite = inngest.createFunction(
           };
 
           // Use onConflictDoNothing to silently skip duplicates (safety net for race conditions)
-          await db
-            .insert(crawledPage)
-            .values(pageToInsert)
-            .onConflictDoNothing({
-              target: [crawledPage.crawlId, crawledPage.normalizedUrl],
+          try {
+            await db
+              .insert(crawledPage)
+              .values(pageToInsert)
+              .onConflictDoNothing({
+                target: [crawledPage.crawlId, crawledPage.normalizedUrl],
+              });
+          } catch (error) {
+            logger.error("❌ Failed to insert crawled page", {
+              crawlId,
+              error: error instanceof Error ? error.message : String(error),
+              url: progress.crawledPage.url,
             });
+          }
 
           // 🖼️ Save homepage screenshot URL (only for homepage / depth 0)
           if (
             progress.crawledPage.depth === 0 &&
             progress.crawledPage.screenshotUrl
           ) {
+            logger.info("🏠 Homepage processed", {
+              crawlId,
+              screenshotUrl: progress.crawledPage.screenshotUrl,
+            });
             await db
               .update(crawl)
               .set({
@@ -135,6 +166,10 @@ export const crawlWebsite = inngest.createFunction(
 
           // 🔍 Save detected technologies (only for homepage / depth 0)
           if (progress.crawledPage.technologies?.technologies?.length) {
+            logger.info("🔧 Technologies detected", {
+              count: progress.crawledPage.technologies.technologies.length,
+              crawlId,
+            });
             await saveTechnologies(crawlId, progress.crawledPage.technologies);
           }
 
@@ -239,6 +274,12 @@ export const crawlWebsite = inngest.createFunction(
         },
       });
 
+      logger.info("✅ Crawl execution finished", {
+        crawlId,
+        errorsCount: crawlResult.errors?.length ?? 0,
+        pagesCount: crawlResult.pages.length,
+      });
+
       // Collect errors (just messages, not full objects)
       for (const error of crawlResult.errors ?? []) {
         errors.push(typeof error === "string" ? error : String(error));
@@ -264,6 +305,11 @@ export const crawlWebsite = inngest.createFunction(
         .select()
         .from(crawledPage)
         .where(eq(crawledPage.crawlId, crawlId));
+
+      logger.info("🎯 Selecting pages for audit", {
+        crawlId,
+        totalPages: pages.length,
+      });
 
       // Helper to check if page has successful HTTP status (2xx)
       const isSuccessfulPage = (page: { httpStatus: number | null }) =>
@@ -316,21 +362,41 @@ export const crawlWebsite = inngest.createFunction(
           .set({ selectedForAudit: true })
           .where(eq(crawledPage.normalizedUrl, page.normalizedUrl));
       }
+
+      logger.info("✅ Pages selected for audit", {
+        crawlId,
+        mandatoryCategories: selectedMandatory,
+        specialPagesCount: selectedSpecial.length,
+      });
     });
 
     //5️⃣ 🎉 Mark crawl as completed
     await step.run("mark-crawl-completed", async () => {
       const nowString = new Date().toISOString();
-      await db
-        .update(crawl)
-        .set({
-          completedAt: nowString,
-          pagesCrawled: result.pagesCount,
-          pagesDiscovered: result.pagesCount,
-          status: "completed",
-          updatedAt: nowString,
-        })
-        .where(eq(crawl.id, crawlId));
+      try {
+        await db
+          .update(crawl)
+          .set({
+            completedAt: nowString,
+            pagesCrawled: result.pagesCount,
+            pagesDiscovered: result.pagesCount,
+            status: "completed",
+            updatedAt: nowString,
+          })
+          .where(eq(crawl.id, crawlId));
+
+        logger.info("🎉 Crawl completed", {
+          crawlId,
+          errorsCount: result.errors.length,
+          pagesCount: result.pagesCount,
+        });
+      } catch (error) {
+        logger.error("❌ Failed to mark crawl as completed", {
+          crawlId,
+          error: error instanceof Error ? error.message : String(error),
+        });
+        throw error; // Re-throw to let Inngest handle retry
+      }
     });
 
     return {
