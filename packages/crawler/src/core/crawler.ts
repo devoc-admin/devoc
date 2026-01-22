@@ -1,7 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { put } from "@vercel/blob";
-import pLimit from "p-limit";
 import {
   type Browser,
   type BrowserContext,
@@ -112,7 +111,6 @@ export class WebCrawler {
     onProgress?: CrawlProgressCallback;
   }): Promise<CrawlResult> {
     const concurrency = this.config.concurrency ?? DEFAULT_CONCURRENCY;
-    const limit = pLimit(concurrency);
 
     try {
       // 1️⃣ 🌐 Init browser
@@ -140,21 +138,19 @@ export class WebCrawler {
       this.queue.push({ depth: 0, url: normalizedBaseUrl });
       this.pending.add(normalizedBaseUrl);
 
-      // 3. Loop through site with parallel processing
+      // 4️⃣ 🔄 Streaming concurrency - process pages as slots become available
+      const inFlight = new Map<Promise<void>, QueueItem>();
+
       while (
-        this.queue.length > 0 &&
+        (this.queue.length > 0 || inFlight.size > 0) &&
         this.pages.length < this.config.maxPages
       ) {
-        // Get batch of items to process (up to concurrency limit)
-        const batch: QueueItem[] = [];
-        const remainingSlots = this.config.maxPages - this.pages.length;
-        const batchSize = Math.min(
-          concurrency,
-          remainingSlots,
-          this.queue.length
-        );
-
-        for (let i = 0; i < batchSize; i++) {
+        // Start new tasks while we have queue items and available slots
+        while (
+          this.queue.length > 0 &&
+          inFlight.size < concurrency &&
+          this.pages.length + inFlight.size < this.config.maxPages
+        ) {
           const item = this.queue.shift();
           if (!item) break;
 
@@ -172,78 +168,94 @@ export class WebCrawler {
           if (!shouldCrawlUrl({ config: this.config, url: item.url })) continue;
           if (!this.isAllowedByRobots(normalizedUrl)) continue;
 
-          // Mark as visited before processing (prevents duplicates in parallel)
+          // Mark as visited before processing
           this.visited.add(normalizedUrl);
-          this.pending.delete(normalizedUrl); // Move from pending to visited
-          batch.push({ ...item, url: normalizedUrl });
+          this.pending.delete(normalizedUrl);
+
+          const taskItem = { ...item, url: normalizedUrl };
+
+          // Start crawl task
+          const task = this.processSinglePage(taskItem, onProgress);
+          inFlight.set(task, taskItem);
+          task.finally(() => inFlight.delete(task));
         }
 
-        if (batch.length === 0) continue;
-
-        // Process batch in parallel (using context pool)
-        const results = await Promise.all(
-          batch.map((item) =>
-            limit(async () => {
-              const context = await this.getContext();
-              try {
-                const result = await this.crawlPage({
-                  context,
-                  depth: item.depth,
-                  normalizedUrl: item.url,
-                  url: item.url,
-                });
-                return { item, result };
-              } finally {
-                await this.returnContext(context);
-              }
-            })
-          )
-        );
-
-        // Process results
-        for (const { item, result } of results) {
-          if (!result) continue;
-
-          // Notify progress
-          if (onProgress) {
-            await onProgress({
-              crawled: this.pages.length,
-              crawledPage: result,
-              discovered: this.visited.size + this.queue.length,
-            });
-          }
-          this.pages.push(result);
-
-          // Add discovered links to queue (check both visited AND pending to prevent duplicates)
-          if (item.depth < this.config.maxDepth) {
-            for (const link of result.links) {
-              const normalizedLink = normalizeUrl({
-                baseUrl: this.baseUrl,
-                url: link,
-              });
-
-              // Skip if already visited or already in queue
-              if (
-                this.visited.has(normalizedLink) ||
-                this.pending.has(normalizedLink)
-              ) {
-                continue;
-              }
-
-              this.pending.add(normalizedLink);
-              this.queue.push({ depth: item.depth + 1, url: normalizedLink });
-            }
-          }
+        // Wait for at least one task to complete if we have in-flight tasks
+        if (inFlight.size > 0) {
+          await Promise.race(inFlight.keys());
         }
 
-        // Small delay between batches
-        if (this.config.delayBetweenRequests > 0) {
-          await this.delay(this.config.delayBetweenRequests);
+        // Small yield to prevent tight loop
+        if (this.queue.length === 0 && inFlight.size > 0) {
+          await this.delay(10);
         }
       }
+
+      // Wait for remaining in-flight tasks
+      if (inFlight.size > 0) {
+        await Promise.all(inFlight.keys());
+      }
+
       return { errors: this.errors, pages: this.pages };
     } finally {
       await this.cleanup();
+    }
+  }
+
+  /**
+   * 🕷️ Process a single page (used by streaming concurrency)
+   */
+  private async processSinglePage(
+    item: QueueItem,
+    onProgress?: CrawlProgressCallback
+  ): Promise<void> {
+    const context = await this.getContext();
+    try {
+      const result = await this.crawlPage({
+        context,
+        depth: item.depth,
+        normalizedUrl: item.url,
+        url: item.url,
+      });
+
+      if (!result) return;
+
+      // Notify progress
+      if (onProgress) {
+        await onProgress({
+          crawled: this.pages.length,
+          crawledPage: result,
+          discovered: this.visited.size + this.queue.length,
+        });
+      }
+      this.pages.push(result);
+
+      // Add discovered links to queue
+      if (item.depth < this.config.maxDepth) {
+        for (const link of result.links) {
+          const normalizedLink = normalizeUrl({
+            baseUrl: this.baseUrl,
+            url: link,
+          });
+
+          if (
+            !(
+              this.visited.has(normalizedLink) ||
+              this.pending.has(normalizedLink)
+            )
+          ) {
+            this.pending.add(normalizedLink);
+            this.queue.push({ depth: item.depth + 1, url: normalizedLink });
+          }
+        }
+      }
+
+      // Apply delay between requests
+      if (this.config.delayBetweenRequests > 0) {
+        await this.delay(this.config.delayBetweenRequests);
+      }
+    } finally {
+      await this.returnContext(context);
     }
   }
 

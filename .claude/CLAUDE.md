@@ -1,4 +1,5 @@
 - Always use types instead of interfaces.
+- Always use bun as the package manager (not npm or yarn).
 
 ## Motion Animation Components
 

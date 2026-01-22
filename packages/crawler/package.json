@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@vercel/blob": "^2.0.0",
-    "p-limit": "^7.2.0",
     "playwright": "^1.57.0",
     "wapalyzer": "^6.10.65"
   }
