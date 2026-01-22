@@ -1,6 +1,7 @@
 // biome-ignore-all lint/suspicious/noEmptyBlockStatements: exception
 // biome-ignore-all assist/source/useSortedKeys: context requires specific order
 import type { UseMutateFunction } from "@tanstack/react-query";
+import { parseAsStringLiteral, useQueryState } from "nuqs";
 import {
   createContext,
   type ReactNode,
@@ -33,8 +34,10 @@ const ProspectsContext = createContext<ProspectsContext>({
   searchQuery: "",
   setSearchQuery: () => {},
   setViewMode: () => {},
-  viewMode: "table",
+  viewMode: "list",
 });
+
+const viewModes = ["list", "map"] as const;
 
 export function ProspectsContextProvider({
   children,
@@ -46,8 +49,11 @@ export function ProspectsContextProvider({
   // 🔍 Search
   const [searchQuery, setSearchQuery] = useState("");
 
-  // 🗺️ View mode
-  const [viewMode, setViewMode] = useState<"table" | "map">("table");
+  // 🗺️ View mode (synced with URL query param via nuqs)
+  const [viewMode, setViewMode] = useQueryState(
+    "view",
+    parseAsStringLiteral(viewModes).withDefault("list")
+  );
 
   // ➕ Add prospect
   const {
@@ -196,8 +202,8 @@ type ProspectsContext = {
   isDeletingProspect: boolean;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  viewMode: "table" | "map";
-  setViewMode: (mode: "table" | "map") => void;
+  viewMode: "list" | "map";
+  setViewMode: (mode: "list" | "map") => void;
 };
 
 // -------------------------

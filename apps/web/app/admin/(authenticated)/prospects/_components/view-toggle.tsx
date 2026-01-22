@@ -10,10 +10,10 @@ export function ViewToggle() {
   return (
     <div className="flex items-center gap-x-1 rounded-md border bg-muted p-1">
       <ToggleButton
-        active={viewMode === "table"}
+        active={viewMode === "list"}
         icon={<TableIcon size={16} />}
         label="Tableau"
-        onClick={() => setViewMode("table")}
+        onClick={() => setViewMode("list")}
       />
       <ToggleButton
         active={viewMode === "map"}
