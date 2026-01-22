@@ -3,7 +3,7 @@
   "name": "Dev-OC Accessibility Auditor",
   "version": "1.0.0",
   "description": "Run accessibility audits on web pages directly from your browser",
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "scripting"],
   "action": {
     "default_popup": "src/popup/popup.html",
     "default_icon": {
@@ -23,12 +23,5 @@
   "background": {
     "service_worker": "src/background/service-worker.ts",
     "type": "module"
-  },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["src/content/content-script.ts"],
-      "run_at": "document_idle"
-    }
-  ]
+  }
 }

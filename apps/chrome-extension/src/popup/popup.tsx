@@ -20,6 +20,206 @@ type AuditResult = {
   };
 };
 
+// This function runs in the page context via chrome.scripting.executeScript
+function runAccessibilityAuditInPage(): AuditResult {
+  type Issue = {
+    type: "error" | "warning" | "info";
+    message: string;
+    element?: string;
+    wcag?: string;
+  };
+
+  function getSelector(el: Element): string {
+    const tag = el.tagName.toLowerCase();
+    const id = el.id ? `#${el.id}` : "";
+    const cls = el.className
+      ? `.${el.className.toString().split(" ").filter(Boolean).join(".")}`
+      : "";
+    return `<${tag}${id}${cls}>`;
+  }
+
+  function checkLang(): Issue[] {
+    if (!document.documentElement.getAttribute("lang")) {
+      return [
+        {
+          message: "Page is missing lang attribute on <html>",
+          type: "error",
+          wcag: "WCAG 3.1.1",
+        },
+      ];
+    }
+    return [];
+  }
+
+  function checkImages(): Issue[] {
+    const result: Issue[] = [];
+    for (const img of document.querySelectorAll("img")) {
+      if (!img.hasAttribute("alt")) {
+        result.push({
+          element: getSelector(img),
+          message: "Image missing alt attribute",
+          type: "error",
+          wcag: "WCAG 1.1.1",
+        });
+      } else if (
+        img.alt === "" &&
+        !img.getAttribute("role")?.includes("presentation")
+      ) {
+        result.push({
+          element: getSelector(img),
+          message: "Image has empty alt. Ensure it's decorative.",
+          type: "warning",
+          wcag: "WCAG 1.1.1",
+        });
+      }
+    }
+    return result;
+  }
+
+  function checkFormLabels(): Issue[] {
+    const result: Issue[] = [];
+    const selector =
+      'input:not([type="hidden"]):not([type="submit"]):not([type="button"]), select, textarea';
+    for (const input of document.querySelectorAll(selector)) {
+      const id = input.id;
+      const hasLabel =
+        (id && document.querySelector(`label[for="${id}"]`)) ||
+        input.closest("label") ||
+        input.getAttribute("aria-label") ||
+        input.getAttribute("aria-labelledby");
+      if (!hasLabel) {
+        result.push({
+          element: getSelector(input),
+          message: "Form input missing associated label",
+          type: "error",
+          wcag: "WCAG 1.3.1",
+        });
+      }
+    }
+    return result;
+  }
+
+  function checkHeadings(): Issue[] {
+    const result: Issue[] = [];
+    let lastLevel = 0;
+    let h1Count = 0;
+    for (const h of document.querySelectorAll("h1,h2,h3,h4,h5,h6")) {
+      const level = Number.parseInt(h.tagName[1], 10);
+      if (level === 1) h1Count++;
+      if (lastLevel > 0 && level > lastLevel + 1) {
+        result.push({
+          element: getSelector(h),
+          message: `Heading level skipped (h${lastLevel} to h${level})`,
+          type: "warning",
+          wcag: "WCAG 1.3.1",
+        });
+      }
+      if (!h.textContent?.trim()) {
+        result.push({
+          element: getSelector(h),
+          message: "Empty heading element",
+          type: "error",
+          wcag: "WCAG 1.3.1",
+        });
+      }
+      lastLevel = level;
+    }
+    if (h1Count === 0) {
+      result.push({
+        message: "Page is missing an h1 heading",
+        type: "warning",
+        wcag: "WCAG 1.3.1",
+      });
+    }
+    return result;
+  }
+
+  function checkLinks(): Issue[] {
+    const result: Issue[] = [];
+    const genericTexts = ["click here", "read more", "here", "more"];
+    for (const link of document.querySelectorAll("a")) {
+      const text = link.textContent?.trim() || "";
+      const hasAccessibleName =
+        text ||
+        link.getAttribute("aria-label") ||
+        link.querySelector("img[alt]");
+      if (!hasAccessibleName) {
+        result.push({
+          element: getSelector(link),
+          message: "Link has no accessible text",
+          type: "error",
+          wcag: "WCAG 2.4.4",
+        });
+      }
+      if (genericTexts.includes(text.toLowerCase())) {
+        result.push({
+          element: getSelector(link),
+          message: `Link text "${text}" is not descriptive`,
+          type: "warning",
+          wcag: "WCAG 2.4.4",
+        });
+      }
+    }
+    return result;
+  }
+
+  function checkButtons(): Issue[] {
+    const result: Issue[] = [];
+    for (const btn of document.querySelectorAll('button, [role="button"]')) {
+      const hasName =
+        btn.textContent?.trim() ||
+        btn.getAttribute("aria-label") ||
+        btn.querySelector("img[alt]") ||
+        btn.getAttribute("title");
+      if (!hasName) {
+        result.push({
+          element: getSelector(btn),
+          message: "Button has no accessible name",
+          type: "error",
+          wcag: "WCAG 4.1.2",
+        });
+      }
+    }
+    return result;
+  }
+
+  function checkLandmarks(): Issue[] {
+    const hasMain =
+      document.querySelector("main") || document.querySelector('[role="main"]');
+    if (!hasMain) {
+      return [
+        {
+          message: "Page is missing a <main> landmark",
+          type: "warning",
+          wcag: "WCAG 1.3.1",
+        },
+      ];
+    }
+    return [];
+  }
+
+  const issues: Issue[] = [
+    ...checkLang(),
+    ...checkImages(),
+    ...checkFormLabels(),
+    ...checkHeadings(),
+    ...checkLinks(),
+    ...checkButtons(),
+    ...checkLandmarks(),
+  ];
+
+  return {
+    issues,
+    summary: {
+      errors: issues.filter((i) => i.type === "error").length,
+      info: issues.filter((i) => i.type === "info").length,
+      warnings: issues.filter((i) => i.type === "warning").length,
+    },
+    timestamp: new Date().toISOString(),
+    url: window.location.href,
+  };
+}
+
 function Popup() {
   const [isAuditing, setIsAuditing] = useState(false);
   const [result, setResult] = useState<AuditResult | null>(null);
@@ -36,21 +236,34 @@ function Popup() {
         currentWindow: true,
       });
 
-      if (!tab.id) {
+      if (!(tab.id && tab.url)) {
         throw new Error("No active tab found");
       }
 
-      const response = await chrome.tabs.sendMessage(tab.id, {
-        action: "runAccessibilityAudit",
-      });
-
-      if (response.error) {
-        throw new Error(response.error);
+      // Check if we can run on this page
+      if (
+        tab.url.startsWith("chrome://") ||
+        tab.url.startsWith("chrome-extension://") ||
+        tab.url.startsWith("about:")
+      ) {
+        throw new Error("Cannot audit browser internal pages");
       }
 
-      setResult(response.result);
+      // Execute the audit directly in the page context
+      const results = await chrome.scripting.executeScript({
+        func: runAccessibilityAuditInPage,
+        target: { tabId: tab.id },
+      });
+
+      if (results[0]?.result) {
+        setResult(results[0].result);
+      } else {
+        throw new Error("No audit results returned");
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to run audit");
+      const message =
+        err instanceof Error ? err.message : "Failed to run audit";
+      setError(message);
     } finally {
       setIsAuditing(false);
     }
