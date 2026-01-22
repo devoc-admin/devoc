@@ -294,3 +294,9 @@
 @utility animation-pause {
   animation-play-state: paused;
 }
+
+/* Custom Leaflet marker icon - remove default divIcon styling */
+.custom-marker-icon {
+  background: transparent;
+  border: none;
+}

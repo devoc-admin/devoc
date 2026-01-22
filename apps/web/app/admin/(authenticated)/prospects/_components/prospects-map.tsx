@@ -1,11 +1,20 @@
 "use client";
 
+import type { DivIcon } from "leaflet";
 import { ExternalLinkIcon, MapPinIcon } from "lucide-react";
 import dynamic from "next/dynamic";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Prospect } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import { useProspectsContext } from "../prospects-context";
+
+// Color map for marker colors matching TypeBadge
+const markerColors: Record<Prospect["type"], string> = {
+  administration: "#c084fc",
+  city: "#60a5fa",
+  epci: "#4ade80",
+  other: "#a1a1aa",
+};
 
 // Dynamic imports to avoid SSR issues with Leaflet
 const MapContainer = dynamic(
@@ -24,25 +33,34 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
   ssr: false,
 });
 
-// Fix Leaflet default marker icon issue with webpack
-function useLeafletIconFix() {
+// Create custom colored marker icon
+function useColoredMarkerIcon(color: string): DivIcon | null {
+  const [icon, setIcon] = useState<DivIcon | null>(null);
+
   useEffect(() => {
     (async () => {
       const L = await import("leaflet");
-      L.Icon.Default.mergeOptions({
-        iconRetinaUrl:
-          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-        shadowUrl:
-          "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+      const svgIcon = `
+        <svg viewBox="0 0 24 24" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+          <path fill="${color}" stroke="#ffffff" stroke-width="1" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+        </svg>
+      `;
+      const markerIcon = L.divIcon({
+        className: "custom-marker-icon",
+        html: svgIcon,
+        iconAnchor: [16, 32],
+        iconSize: [32, 32],
+        popupAnchor: [0, -32],
       });
+      setIcon(markerIcon);
     })();
-  }, []);
+  }, [color]);
+
+  return icon;
 }
 
 export function ProspectsMap() {
   const { prospects, searchQuery } = useProspectsContext();
-  useLeafletIconFix();
 
   const prospectsWithCoords = useMemo(() => {
     if (!prospects) return [];
@@ -71,7 +89,7 @@ export function ProspectsMap() {
   }
 
   return (
-    <div className="h-[150px] w-full grow overflow-hidden rounded-md">
+    <div className="h-37.5 w-full grow overflow-hidden rounded-md">
       <MapContainer
         center={defaultCenter}
         className="h-full w-full"
@@ -94,9 +112,13 @@ function ProspectMarker({ prospect }: { prospect: Prospect }) {
     Number.parseFloat(prospect.latitude ?? "0"),
     Number.parseFloat(prospect.longitude ?? "0"),
   ];
+  const color = markerColors[prospect.type];
+  const icon = useColoredMarkerIcon(color);
+
+  if (!icon) return null;
 
   return (
-    <Marker position={position}>
+    <Marker icon={icon} position={position}>
       <Popup>
         <ProspectPopupContent prospect={prospect} />
       </Popup>
