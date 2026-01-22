@@ -139,40 +139,38 @@ function CrawlCard(crawl: CrawlResult) {
       key={crawl.id}
     >
       <div>
-        <h3 className="now max-w-full truncate font-kanit text-xl">
+        <h3 className="max-w-full truncate font-kanit text-xl">
           {crawl.title}
         </h3>
-        {/* 🌐 Website and social links */}
-        <div className="flex justify-between gap-x-4">
-          <a
-            className="flex items-center gap-x-2 text-muted-foreground hover:underline"
-            href={crawl.url}
-            target="_blank"
-          >
-            <span className="truncate">{crawl.url}</span>
-            <ExternalLinkIcon className="shrink-0" size={16} />
-          </a>
-          {/* 🔗 Social Links */}
-          {crawl.socialLinks && Object.keys(crawl.socialLinks).length > 0 && (
-            <div className="mr-4 flex flex-wrap items-center gap-2">
-              {Object.entries(crawl.socialLinks).map(([platform, url]) => (
-                <Tooltip key={platform}>
-                  <TooltipTrigger asChild>
-                    <a
-                      className="text-foreground"
-                      href={url}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      <SocialIcon platform={platform} />
-                    </a>
-                  </TooltipTrigger>
-                  <TooltipContent>{platformLabels[platform]}</TooltipContent>
-                </Tooltip>
-              ))}
-            </div>
-          )}
-        </div>
+        {/* 🌐 Website */}
+        <a
+          className="flex items-center gap-x-2 text-muted-foreground hover:underline"
+          href={crawl.url}
+          target="_blank"
+        >
+          <span className="truncate">{crawl.url}</span>
+          <ExternalLinkIcon className="shrink-0" size={16} />
+        </a>
+        {/* 🔗 Social Links */}
+        {crawl.socialLinks && Object.keys(crawl.socialLinks).length > 0 && (
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            {Object.entries(crawl.socialLinks).map(([platform, url]) => (
+              <Tooltip key={platform}>
+                <TooltipTrigger asChild>
+                  <a
+                    className="text-foreground"
+                    href={url}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    <SocialIcon platform={platform} />
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>{platformLabels[platform]}</TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
+        )}
         {/* Details */}
         <div className="mt-4 grid grid-cols-2 space-y-1">
           {/* 🗓️ Started */}
@@ -199,22 +197,26 @@ function CrawlCard(crawl: CrawlResult) {
           {
             <div className="flex items-center gap-x-1 text-sm">
               <UserRoundPenIcon className="shrink-0" size={14} />
-              <Tooltip>
-                <TooltipTrigger className="max-w-60 overflow-hidden text-ellipsis whitespace-nowrap">
-                  {crawl.author || crawl.authorUrl ? crawl.author : "—"}
-                </TooltipTrigger>
-                <TooltipContent>{crawl.author}</TooltipContent>
-              </Tooltip>
-              {crawl.authorUrl && (
-                <a
-                  className="text-blue-500 underline dark:text-blue-500"
-                  href={crawl.authorUrl}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  (site)
-                </a>
-              )}
+              <div className="max-w-60 overflow-hidden text-ellipsis whitespace-nowrap">
+                {crawl.author || crawl.authorUrl ? (
+                  // biome-ignore lint/style/noNestedTernary: exception
+                  crawl.authorUrl ? (
+                    <a
+                      className=""
+                      href={crawl.authorUrl}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      title={crawl.author ?? ""}
+                    >
+                      {crawl.author}
+                    </a>
+                  ) : (
+                    crawl.author
+                  )
+                ) : (
+                  "—"
+                )}
+              </div>
             </div>
           }
           {/* 📸 Skip screenshots ? */}
@@ -318,14 +320,24 @@ function SeeCrawlButton({ crawlId }: { crawlId: string }) {
 // ------------------------------------------------------------
 // 🔄 Retry crawl
 function RetryCrawlButton({ crawlId }: { crawlId: string }) {
-  const { retryCrawlIsPending, retryCrawlMutate, retryingCrawlId } =
-    useCrawlContext();
+  const {
+    retryCrawlIsPending,
+    retryCrawlMutate,
+    retryingCrawlId,
+    upsertCrawlIsPending,
+    crawl,
+  } = useCrawlContext();
 
   const isPending = retryCrawlIsPending && retryingCrawlId === crawlId;
   const otherCrawlRetryIsPending =
     retryCrawlIsPending && retryingCrawlId !== crawlId;
 
-  return (
+  const isCrawlRunning =
+    crawl?.status === "running" || crawl?.status === "pending";
+  const isCrawlOngoing =
+    upsertCrawlIsPending || isCrawlRunning || otherCrawlRetryIsPending;
+
+  const button = (
     <button
       className={cn(
         "flex cursor-pointer items-center justify-center gap-x-2",
@@ -338,9 +350,9 @@ function RetryCrawlButton({ crawlId }: { crawlId: string }) {
         "py-3",
         "text-center font-semibold text-sm",
         "basis-1/3",
-        otherCrawlRetryIsPending && "opacity-50"
+        isCrawlOngoing && "cursor-not-allowed opacity-50"
       )}
-      disabled={isPending}
+      disabled={isPending || isCrawlOngoing}
       onClick={(e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -356,6 +368,19 @@ function RetryCrawlButton({ crawlId }: { crawlId: string }) {
       <span>Relancer</span>
     </button>
   );
+
+  if (isCrawlOngoing && !isPending) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{button}</TooltipTrigger>
+        <TooltipContent>
+          Un crawl est déjà en cours. Veuillez patienter avant de relancer.
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return button;
 }
 
 // ------------------------------------------------------------
