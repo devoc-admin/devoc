@@ -4,9 +4,14 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
+  type SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  ChevronDownIcon,
   ExternalLinkIcon,
   LoaderIcon,
   PencilIcon,
@@ -36,6 +41,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -63,7 +75,12 @@ import type { Prospect } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import { isValidMapsUrl, isValidUrlFormat } from "@/utils/valid-url-format";
 import { useProspectsContext } from "../prospects-context";
-import { PROSPECT_TYPES, type ProspectType } from "../prospects-types";
+import {
+  ESTIMATED_OPPORTUNITY,
+  type EstimatedOpportunity,
+  PROSPECT_TYPES,
+  type ProspectType,
+} from "../prospects-types";
 import { ProspectAdd } from "./prospect-add";
 import { ProspectsMap } from "./prospects-map";
 import { ViewToggle } from "./view-toggle";
@@ -126,6 +143,7 @@ export function ProspectsList() {
 function useProspectsList() {
   const { prospects, searchQuery } = useProspectsContext();
   const columnHelper = createColumnHelper<Prospect>();
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   const filteredProspects = useMemo(() => {
     if (!(prospects && searchQuery.trim())) return prospects ?? [];
@@ -195,6 +213,31 @@ function useProspectsList() {
       cell: ({ getValue }) => formatDate(getValue()),
       header: "Ajouté le",
     }),
+    // 🎯 Estimated opportunity (Urgence)
+    columnHelper.accessor("estimatedOpportunity", {
+      cell: ({ getValue, row }) => (
+        <EstimatedOpportunityDropdown
+          prospectId={row.original.id}
+          value={getValue() ?? "medium"}
+        />
+      ),
+      header: ({ column }) => (
+        <button
+          className="flex items-center gap-x-1 hover:text-foreground"
+          onClick={() => column.toggleSorting()}
+          type="button"
+        >
+          Urgence
+          <SortingIcon direction={column.getIsSorted()} />
+        </button>
+      ),
+      sortingFn: (rowA, rowB) => {
+        const order = { medium: 1, strong: 0, weak: 2 };
+        const a = rowA.original.estimatedOpportunity ?? "medium";
+        const b = rowB.original.estimatedOpportunity ?? "medium";
+        return order[a] - order[b];
+      },
+    }),
     // ✏️🗑️ Actions
     columnHelper.display({
       cell: ({ row }) => (
@@ -212,6 +255,9 @@ function useProspectsList() {
     columns: defaultColumns,
     data: filteredProspects,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    state: { sorting },
   });
   return table;
 }
@@ -270,7 +316,7 @@ function TypeBadge({ type }: { type: Prospect["type"] }) {
     <span
       className={cn(
         "rounded-full",
-        "px-2 py-1",
+        "px-3 py-1",
         "font-medium text-xs",
         colors[type]
       )}
@@ -668,5 +714,84 @@ function ErrorMessage({ children }: { children: string }) {
       <XIcon size={16} />
       {children}
     </div>
+  );
+}
+
+// -------------------------------------------
+// 🔃 Sorting icon
+
+function SortingIcon({ direction }: { direction: false | "asc" | "desc" }) {
+  if (direction === "asc") {
+    return <ArrowUpIcon size={14} />;
+  }
+  if (direction === "desc") {
+    return <ArrowDownIcon size={14} />;
+  }
+  return null;
+}
+
+// -------------------------------------------
+// 🎯 Estimated opportunity dropdown
+
+const OPPORTUNITY_COLORS: Record<EstimatedOpportunity, string> = {
+  medium: "bg-yellow-500/10 text-yellow-500",
+  strong: "bg-red-500/10 text-red-500",
+  weak: "bg-green-500/10 text-green-500",
+};
+
+function EstimatedOpportunityDropdown({
+  prospectId,
+  value,
+}: {
+  prospectId: number;
+  value: EstimatedOpportunity;
+}) {
+  const {
+    updateEstimatedOpportunityMutate,
+    updatingEstimatedOpportunityProspectId,
+    isUpdatingEstimatedOpportunity,
+  } = useProspectsContext();
+
+  const isPending =
+    isUpdatingEstimatedOpportunity &&
+    updatingEstimatedOpportunityProspectId === prospectId;
+
+  function handleChange(newValue: string) {
+    updateEstimatedOpportunityMutate({
+      estimatedOpportunity: newValue as EstimatedOpportunity,
+      prospectId,
+    });
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          className={cn(
+            "w-22.5",
+            "flex cursor-pointer items-center gap-x-1 rounded-full px-3 py-1 font-medium text-xs transition-colors",
+            OPPORTUNITY_COLORS[value],
+            "hover:opacity-80"
+          )}
+          disabled={isPending}
+          type="button"
+        >
+          {isPending && <LoaderIcon className="size-3 animate-spin" />}
+          <span>{ESTIMATED_OPPORTUNITY[value]}</span>
+          <ChevronDownIcon className="ml-auto" size={12} />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start">
+        <DropdownMenuRadioGroup onValueChange={handleChange} value={value}>
+          {(Object.keys(ESTIMATED_OPPORTUNITY) as EstimatedOpportunity[]).map(
+            (opportunity) => (
+              <DropdownMenuRadioItem key={opportunity} value={opportunity}>
+                {ESTIMATED_OPPORTUNITY[opportunity]}
+              </DropdownMenuRadioItem>
+            )
+          )}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

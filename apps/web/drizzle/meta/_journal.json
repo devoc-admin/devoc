@@ -43,6 +43,13 @@
       "when": 1769106885926,
       "tag": "0005_strong_cable",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1769107881137,
+      "tag": "0006_brief_harry_osborn",
+      "breakpoints": true
     }
   ]
 }

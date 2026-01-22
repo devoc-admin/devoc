@@ -15,9 +15,10 @@ import {
   useAddProspectMutation,
   useDeleteProspectMutation,
   useEditProspectMutation,
+  useUpdateEstimatedOpportunityMutation,
 } from "./prospects-mutations";
 import { useListProspectsQuery } from "./prospects-queries";
-import type { ProspectType } from "./prospects-types";
+import type { EstimatedOpportunity, ProspectType } from "./prospects-types";
 
 const ProspectsContext = createContext<ProspectsContext>({
   addProspectMutate: () => {},
@@ -30,10 +31,13 @@ const ProspectsContext = createContext<ProspectsContext>({
   isDeletingProspect: false,
   isEditedProspect: false,
   isEditingProspect: false,
+  isUpdatingEstimatedOpportunity: false,
   prospects: [],
   searchQuery: "",
   setSearchQuery: () => {},
   setViewMode: () => {},
+  updateEstimatedOpportunityMutate: () => {},
+  updatingEstimatedOpportunityProspectId: undefined,
   viewMode: "list",
 });
 
@@ -132,6 +136,36 @@ export function ProspectsContextProvider({
     }
   }, [isEditedProspect, isEditProspectError]);
 
+  // 🎯 Update estimated opportunity
+  const [
+    updatingEstimatedOpportunityProspectId,
+    setUpdatingEstimatedOpportunityProspectId,
+  ] = useState<number | undefined>(undefined);
+  const {
+    mutate: updateEstimatedOpportunityMutateOriginal,
+    isPending: isUpdatingEstimatedOpportunity,
+    isSuccess: isUpdatedEstimatedOpportunity,
+    isError: isUpdateEstimatedOpportunityError,
+  } = useUpdateEstimatedOpportunityMutation();
+
+  const updateEstimatedOpportunityMutate = (data: {
+    prospectId: number;
+    estimatedOpportunity: EstimatedOpportunity;
+  }) => {
+    setUpdatingEstimatedOpportunityProspectId(data.prospectId);
+    updateEstimatedOpportunityMutateOriginal(data);
+  };
+
+  // ✅🍞 Toast success/error (update estimated opportunity)
+  useEffect(() => {
+    if (isUpdatedEstimatedOpportunity) {
+      toast.success("Urgence mise à jour avec succès !");
+    }
+    if (isUpdateEstimatedOpportunityError) {
+      toast.error("Erreur lors de la mise à jour de l'urgence.");
+    }
+  }, [isUpdatedEstimatedOpportunity, isUpdateEstimatedOpportunityError]);
+
   return (
     <ProspectsContext.Provider
       value={{
@@ -150,6 +184,11 @@ export function ProspectsContextProvider({
         deleteProspectMutate,
         deletingProspectId,
         isDeletingProspect,
+
+        // 🎯 Update estimated opportunity
+        isUpdatingEstimatedOpportunity,
+        updateEstimatedOpportunityMutate,
+        updatingEstimatedOpportunityProspectId,
 
         // 📋 Prospects
         prospects,
@@ -200,6 +239,12 @@ type ProspectsContext = {
   deleteProspectMutate: (prospectId: number) => void;
   deletingProspectId: number | undefined;
   isDeletingProspect: boolean;
+  updateEstimatedOpportunityMutate: (data: {
+    prospectId: number;
+    estimatedOpportunity: EstimatedOpportunity;
+  }) => void;
+  updatingEstimatedOpportunityProspectId: number | undefined;
+  isUpdatingEstimatedOpportunity: boolean;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   viewMode: "list" | "map";

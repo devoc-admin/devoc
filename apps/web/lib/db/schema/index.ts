@@ -323,6 +323,12 @@ export const prospectTypeEnum = pgEnum("prospect_type", [
   "other",
 ]);
 
+export const estimatedOpportunityEnum = pgEnum("estimated_opportunity", [
+  "strong",
+  "medium",
+  "weak",
+]);
+
 export const prospect = pgTable(
   "prospect",
   {
@@ -333,6 +339,7 @@ export const prospect = pgTable(
     latitude: text(),
     longitude: text(),
     type: prospectTypeEnum().default("other").notNull(),
+    estimatedOpportunity: estimatedOpportunityEnum().default("medium"),
     crawlId: text(),
     createdAt: timestamp({ mode: "string", withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)

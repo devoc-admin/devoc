@@ -3,7 +3,7 @@ import { desc, eq } from "drizzle-orm";
 import { getErrorMessage } from "@/lib/api";
 import { db } from "@/lib/db";
 import { prospect } from "@/lib/db/schema";
-import type { ProspectType } from "./prospects-types";
+import type { EstimatedOpportunity, ProspectType } from "./prospects-types";
 
 // --------------------------------------
 // 💥 ACTIONS
@@ -78,6 +78,7 @@ export async function editProspect({
   location,
   latitude,
   longitude,
+  estimatedOpportunity,
 }: {
   id: number;
   name: string;
@@ -86,11 +87,13 @@ export async function editProspect({
   location: string;
   latitude?: string;
   longitude?: string;
+  estimatedOpportunity?: EstimatedOpportunity;
 }) {
   try {
     const prospectResult = await db
       .update(prospect)
       .set({
+        estimatedOpportunity,
         latitude,
         location,
         longitude,
@@ -113,6 +116,52 @@ export async function editProspect({
 export async function deleteProspect(prospectId: number) {
   try {
     await db.delete(prospect).where(eq(prospect.id, prospectId)).execute();
+    return { success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
+// 🔗 Update prospect website
+
+export async function updateProspectWebsite({
+  prospectId,
+  website,
+}: {
+  prospectId: number;
+  website: string;
+}) {
+  try {
+    await db
+      .update(prospect)
+      .set({ website })
+      .where(eq(prospect.id, prospectId))
+      .execute();
+    return { success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
+// 🎯 Update estimated opportunity
+
+export async function updateEstimatedOpportunity({
+  prospectId,
+  estimatedOpportunity,
+}: {
+  prospectId: number;
+  estimatedOpportunity: EstimatedOpportunity;
+}) {
+  try {
+    await db
+      .update(prospect)
+      .set({ estimatedOpportunity })
+      .where(eq(prospect.id, prospectId))
+      .execute();
     return { success: true };
   } catch (error) {
     const message = getErrorMessage(error);

@@ -135,7 +135,7 @@ function CrawlsCards() {
 function CrawlCard(crawl: CrawlResult) {
   return (
     <li
-      className="flex flex-col gap-y-6 self-start rounded-md border border-border bg-sidebar-strong p-4"
+      className="flex max-w-115 flex-col gap-y-6 self-start rounded-md border border-border bg-sidebar-strong p-4"
       key={crawl.id}
     >
       <div>

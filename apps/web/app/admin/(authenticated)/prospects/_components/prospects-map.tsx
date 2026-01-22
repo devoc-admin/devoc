@@ -6,6 +6,10 @@ import { useCallback, useMemo, useState } from "react";
 import type { Prospect } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import { useProspectsContext } from "../prospects-context";
+import {
+  ESTIMATED_OPPORTUNITY,
+  type EstimatedOpportunity,
+} from "../prospects-types";
 import { useGoogleMaps } from "./google-maps-provider";
 
 // Color map for marker colors matching TypeBadge
@@ -167,6 +171,12 @@ function ProspectPopupContent({ prospect }: { prospect: Prospect }) {
         <span className="font-semibold">{prospect.name}</span>
         <TypeBadge type={prospect.type} />
       </div>
+      <div className="flex items-center gap-x-2">
+        <span className="text-muted-foreground text-xs">Urgence:</span>
+        <EstimatedOpportunityBadge
+          value={prospect.estimatedOpportunity ?? "medium"}
+        />
+      </div>
       {prospect.website && (
         <a
           className="flex items-center gap-x-1 text-blue-500 text-sm hover:underline"
@@ -242,6 +252,28 @@ function TypeBadge({ type }: { type: Prospect["type"] }) {
       )}
     >
       {labels[type]}
+    </span>
+  );
+}
+
+// -------------------------------------------
+// 🎯 Estimated opportunity badge (static)
+
+const OPPORTUNITY_COLORS: Record<EstimatedOpportunity, string> = {
+  medium: "bg-yellow-500/20 text-yellow-400",
+  strong: "bg-red-500/20 text-red-400",
+  weak: "bg-green-500/20 text-green-400",
+};
+
+function EstimatedOpportunityBadge({ value }: { value: EstimatedOpportunity }) {
+  return (
+    <span
+      className={cn(
+        "rounded-full px-2 py-0.5 font-medium text-xs",
+        OPPORTUNITY_COLORS[value]
+      )}
+    >
+      {ESTIMATED_OPPORTUNITY[value]}
     </span>
   );
 }

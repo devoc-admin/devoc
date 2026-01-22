@@ -1,7 +1,7 @@
 "use client";
 import { useForm } from "@tanstack/react-form";
 import { XIcon } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { isValidWebsite } from "@/actions/validation";
 import { Button } from "@/components/ui/button";
@@ -16,8 +16,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
+import { updateProspectWebsite } from "../../prospects/prospects-actions";
 import { useCrawlContext } from "../crawl-context";
 import { useUncrawledProspects } from "../crawl-queries";
+
+type SelectedProspect = {
+  id: number;
+  originalWebsite: string;
+} | null;
 
 const MAX_PAGES_CRAWLED = 500;
 const DEFAULT_PAGES_CRAWLED = 500;
@@ -29,18 +35,22 @@ const MAX_CONCURRENCY = 8; // Higher values risk rate limiting/memory issues
 const DEFAULT_CONCURRENCY = 8;
 
 export function CrawlForm() {
-  const crawlForm = useCrawlForm();
+  const [selectedProspect, setSelectedProspect] =
+    useState<SelectedProspect>(null);
+  const crawlForm = useCrawlForm({ selectedProspect, setSelectedProspect });
   const { crawlId } = useCrawlContext();
   const { prospects, prospectsAreLoading } = useUncrawledProspects();
 
   const currentCrawlRunning = crawlId !== undefined && crawlId !== null;
 
   function handleProspectSelect(prospectId: string) {
-    const selectedProspect = prospects?.find(
-      (p) => p.id.toString() === prospectId
-    );
-    if (selectedProspect?.website) {
-      crawlForm.setFieldValue("search", selectedProspect.website);
+    const prospect = prospects?.find((p) => p.id.toString() === prospectId);
+    if (prospect?.website) {
+      crawlForm.setFieldValue("search", prospect.website);
+      setSelectedProspect({
+        id: prospect.id,
+        originalWebsite: prospect.website,
+      });
     }
   }
 
@@ -350,7 +360,13 @@ export function CrawlForm() {
 }
 
 // --------------------------------------------
-function useCrawlForm() {
+function useCrawlForm({
+  selectedProspect,
+  setSelectedProspect,
+}: {
+  selectedProspect: SelectedProspect;
+  setSelectedProspect: (prospect: SelectedProspect) => void;
+}) {
   const {
     upsertCrawlMutate,
     upsertCrawlIsError,
@@ -371,7 +387,7 @@ function useCrawlForm() {
       skipScreenshots: false,
       useLocalScreenshots: true,
     },
-    onSubmit: ({
+    onSubmit: async ({
       value: {
         search,
         maxDepth,
@@ -382,6 +398,21 @@ function useCrawlForm() {
         concurrency,
       },
     }) => {
+      // Update prospect website if URL was modified
+      if (selectedProspect && search !== selectedProspect.originalWebsite) {
+        const result = await updateProspectWebsite({
+          prospectId: selectedProspect.id,
+          website: search,
+        });
+        if (!result.success) {
+          toast("Impossible de mettre à jour le site du prospect", {
+            description: result.error,
+            icon: "⚠️",
+            position: "bottom-right",
+          });
+        }
+      }
+
       upsertCrawlMutate({
         concurrency,
         maxDepth,
@@ -398,12 +429,13 @@ function useCrawlForm() {
   useEffect(() => {
     if (upsertCrawlIsSuccess) {
       form.setFieldValue("search", "");
+      setSelectedProspect(null);
       toast("Demande de crawl envoyée !", {
         icon: "✅",
         position: "bottom-right",
       });
     }
-  }, [upsertCrawlIsSuccess, form]);
+  }, [upsertCrawlIsSuccess, form, setSelectedProspect]);
 
   // ⛔🍞 Toast error
   useEffect(() => {

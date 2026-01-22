@@ -1,6 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addProspect, deleteProspect, editProspect } from "./prospects-actions";
-import type { ProspectType } from "./prospects-types";
+import {
+  addProspect,
+  deleteProspect,
+  editProspect,
+  updateEstimatedOpportunity,
+} from "./prospects-actions";
+import type { EstimatedOpportunity, ProspectType } from "./prospects-types";
 
 export function useAddProspectMutation() {
   const queryClient = useQueryClient();
@@ -97,6 +102,35 @@ export function useDeleteProspectMutation() {
   return useMutation({
     mutationFn: async (prospectId: number) => {
       const result = await deleteProspect(prospectId);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return true;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["prospects"] });
+    },
+  });
+}
+
+// --------------------------------------
+// 🚨 Update estimated opportunity
+
+export function useUpdateEstimatedOpportunityMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      prospectId,
+      estimatedOpportunity,
+    }: {
+      prospectId: number;
+      estimatedOpportunity: EstimatedOpportunity;
+    }) => {
+      const result = await updateEstimatedOpportunity({
+        estimatedOpportunity,
+        prospectId,
+      });
       if (!result.success) {
         throw new Error(result.error);
       }
