@@ -70,7 +70,7 @@ type PageData = {
   scripts: string[];
   scriptSrc: string[];
   meta: Record<string, string[]>;
-  cookies: Record<string, string>;
+  cookies: Record<string, string[]>;
 };
 
 async function extractPageData(page: Page): Promise<PageData> {
@@ -119,12 +119,13 @@ async function extractPageData(page: Page): Promise<PageData> {
       return meta;
     }
 
-    function extractCookies(): Record<string, string> {
-      const cookies: Record<string, string> = {};
+    function extractCookies(): Record<string, string[]> {
+      const cookies: Record<string, string[]> = {};
       for (const cookie of document.cookie.split(";")) {
         const [name, value] = cookie.trim().split("=");
         if (name) {
-          cookies[name] = value || "";
+          // Wappalyzer expects cookie values as arrays
+          cookies[name.toLowerCase()] = [value || ""];
         }
       }
       return cookies;
