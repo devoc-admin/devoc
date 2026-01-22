@@ -27,6 +27,11 @@ import type {
   TechnologyDetectionResult,
 } from "../types";
 import {
+  fetchRobotsTxt,
+  isPathAllowed,
+  type RobotsRules,
+} from "../utils/robots-parser";
+import {
   isInternalUrl,
   normalizeUrl,
   shouldCrawlUrl,
@@ -54,6 +59,9 @@ export class WebCrawler {
   // 🏊 Context pool for reusing browser contexts
   private contextPool: BrowserContext[] = [];
   private readonly maxPoolSize = DEFAULT_CONCURRENCY;
+
+  // 🤖 Robots.txt rules
+  private robotsRules: RobotsRules | null = null;
 
   // Constructor
   constructor({
@@ -110,7 +118,20 @@ export class WebCrawler {
       // 1️⃣ 🌐 Init browser
       this.browser = await chromium.launch();
 
-      // 2️⃣ 🏡 Add homepage
+      // 2️⃣ 🤖 Fetch robots.txt (if enabled)
+      if (this.config.respectRobotsTxt) {
+        this.robotsRules = await fetchRobotsTxt(this.baseOrigin);
+
+        // Apply crawl-delay if specified
+        if (this.robotsRules?.crawlDelay) {
+          this.config.delayBetweenRequests = Math.max(
+            this.config.delayBetweenRequests,
+            this.robotsRules.crawlDelay
+          );
+        }
+      }
+
+      // 3️⃣ 🏡 Add homepage
       const normalizedBaseUrl = normalizeUrl({
         baseUrl: this.baseUrl,
         url: this.baseUrl,
@@ -149,6 +170,7 @@ export class WebCrawler {
           }
           if (item.depth > this.config.maxDepth) continue;
           if (!shouldCrawlUrl({ config: this.config, url: item.url })) continue;
+          if (!this.isAllowedByRobots(normalizedUrl)) continue;
 
           // Mark as visited before processing (prevents duplicates in parallel)
           this.visited.add(normalizedUrl);
@@ -581,6 +603,20 @@ export class WebCrawler {
    */
   private delay(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  /**
+   * 🤖 Check if URL is allowed by robots.txt
+   */
+  private isAllowedByRobots(url: string): boolean {
+    if (!this.robotsRules) return true;
+
+    try {
+      const urlObj = new URL(url);
+      return isPathAllowed(urlObj.pathname, this.robotsRules.rules);
+    } catch {
+      return true;
+    }
   }
 
   /**
