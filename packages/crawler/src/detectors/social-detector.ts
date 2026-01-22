@@ -60,10 +60,24 @@ export async function detectSocialLinks({
       {
         platform: "mastodon",
         patterns: [
+          // Generic Mastodon patterns
           /mastodon\./i,
           /mstdn\./i,
+          // French instances
           /piaille\.fr/i,
           /framapiaf\.org/i,
+          /mamot\.fr/i,
+          /pouet\.chapril\.org/i,
+          /mastouille\.fr/i,
+          /eldritch\.cafe/i,
+          /diaspodon\.fr/i,
+          /social\.music\.free\.fr/i,
+          /octodon\.social/i,
+          /toot\.aquilenet\.fr/i,
+          /social\.music\.free\.fr/i,
+          // European instances popular with French users
+          /todon\.eu/i,
+          /chaos\.social/i,
         ],
       },
     ];
