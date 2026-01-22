@@ -101,6 +101,8 @@ export type DetectedTechnology = {
 // French-specific technology detection
 export type FrenchTechDetection = {
   accessibilityTool?: string;
+  analytics?: string;
+  cms?: string;
   consentManager?: string;
   hostingProvider?: string;
   usesDsfr: boolean;

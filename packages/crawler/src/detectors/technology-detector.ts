@@ -179,6 +179,29 @@ const HOSTING_PROVIDERS: TechPattern[] = [
   { name: "Cloudflare", patterns: ["cloudflare"] },
 ];
 
+// French CMS patterns
+const FRENCH_CMS: TechPattern[] = [
+  { name: "SPIP", patterns: ["spip", "spip.net", "spip_loader"] },
+  { name: "Dotclear", patterns: ["dotclear"] },
+  { name: "PluXml", patterns: ["pluxml"] },
+  { name: "e-monsite", patterns: ["e-monsite"] },
+  { name: "Jimdo", patterns: ["jimdo"] },
+  { name: "Webnode", patterns: ["webnode"] },
+];
+
+// French Analytics patterns
+const FRENCH_ANALYTICS: TechPattern[] = [
+  {
+    name: "AT Internet/Piano",
+    patterns: ["atinternet", "piano.io", "xiti", "xtcore"],
+  },
+  { name: "Eulerian", patterns: ["eulerian"] },
+  { name: "Matomo", patterns: ["matomo", "piwik"] },
+  { name: "ContentSquare", patterns: ["contentsquare", "cs-analytics"] },
+  { name: "Kameleoon", patterns: ["kameleoon"] },
+  { name: "AB Tasty", patterns: ["abtasty"] },
+];
+
 function findInWappalyzerByName(
   technologies: DetectedTechnology[],
   patterns: TechPattern[]
@@ -297,12 +320,25 @@ async function detectFrenchTech(
     return dsfrCss || dsfrClasses || dsfrWindow;
   });
 
+  // 2. Detect French CMS
+  const frenchCms =
+    findInWappalyzerByName(wappalyzerTechnologies, FRENCH_CMS) ??
+    findInSources(pageData.scriptSrc, FRENCH_CMS) ??
+    findInSources([pageData.html], FRENCH_CMS);
+
+  // 3. Detect French Analytics
+  const frenchAnalytics =
+    findInWappalyzerByName(wappalyzerTechnologies, FRENCH_ANALYTICS) ??
+    findInSources(pageData.scriptSrc, FRENCH_ANALYTICS);
+
   return {
     accessibilityTool: detectAccessibilityTool(
       wappalyzerTechnologies,
       pageData.scriptSrc,
       pageData.html
     ),
+    analytics: frenchAnalytics,
+    cms: frenchCms,
     consentManager: detectConsentManager(
       wappalyzerTechnologies,
       pageData.scriptSrc
