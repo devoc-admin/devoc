@@ -152,9 +152,9 @@ function CrawlCard(crawl: CrawlResult) {
           <ExternalLinkIcon className="shrink-0" size={16} />
         </a>
         {/* 🔗 Social Links */}
-        {crawl.socialLinks && Object.keys(crawl.socialLinks).length > 0 && (
-          <div className="mt-2 flex flex-wrap items-center gap-2">
-            {Object.entries(crawl.socialLinks).map(([platform, url]) => (
+        <div className="mt-2 flex min-h-4.5 flex-wrap items-center gap-2">
+          {crawl?.socialLinks &&
+            Object.entries(crawl.socialLinks).map(([platform, url]) => (
               <Tooltip key={platform}>
                 <TooltipTrigger asChild>
                   <a
@@ -169,8 +169,7 @@ function CrawlCard(crawl: CrawlResult) {
                 <TooltipContent>{platformLabels[platform]}</TooltipContent>
               </Tooltip>
             ))}
-          </div>
-        )}
+        </div>
         {/* Details */}
         <div className="mt-4 grid grid-cols-2 space-y-1">
           {/* 🗓️ Started */}
