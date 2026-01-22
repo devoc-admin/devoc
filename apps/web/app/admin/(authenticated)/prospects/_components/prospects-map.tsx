@@ -63,14 +63,15 @@ export function ProspectsMap() {
 
   // 🎯 Default center: Carcassonne
   const defaultCenter: [number, number] = [43.212_161, 2.353_663];
-  const defaultZoom = 9;
+  const defaultZoom = 12;
 
+  // 🫙 No prospects
   if (prospectsWithCoords.length === 0) {
     return <NoProspectsFound />;
   }
 
   return (
-    <div className="h-150 w-full overflow-hidden rounded-md">
+    <div className="h-[150px] w-full grow overflow-hidden rounded-md">
       <MapContainer
         center={defaultCenter}
         className="h-full w-full"

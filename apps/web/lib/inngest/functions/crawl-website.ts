@@ -202,8 +202,10 @@ export const crawlWebsite = inngest.createFunction(
         .where(eq(crawledPage.crawlId, crawlId));
 
       // Helper to check if page has successful HTTP status (2xx)
-      const isSuccessfulPage = (page: { httpStatus: number }) =>
-        page.httpStatus >= 200 && page.httpStatus < 300;
+      const isSuccessfulPage = (page: { httpStatus: number | null }) =>
+        page.httpStatus !== null &&
+        page.httpStatus >= 200 &&
+        page.httpStatus < 300;
 
       const mandatoryCategories = [
         "homepage",

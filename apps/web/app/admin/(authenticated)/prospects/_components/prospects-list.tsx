@@ -107,7 +107,7 @@ export function ProspectsList() {
     );
 
   return (
-    <div className="space-y-8 rounded-md bg-sidebar p-8">
+    <div className="flex min-h-full flex-col gap-y-8 rounded-md bg-sidebar p-8">
       <div className="flex items-center gap-x-8">
         <h2 className="font-kanit font-semibold text-3xl">Prospects</h2>
       </div>
@@ -118,7 +118,7 @@ export function ProspectsList() {
         </div>
         <ViewToggle />
       </div>
-      <div>{viewMode === "map" ? <ProspectsMap /> : <ProspectsTable />}</div>
+      {viewMode === "map" ? <ProspectsMap /> : <ProspectsTable />}
     </div>
   );
 }
