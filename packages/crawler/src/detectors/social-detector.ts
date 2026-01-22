@@ -5,7 +5,6 @@ import type { SocialLinksResult } from "../types";
 
 /**
  * Detects social media links on a page.
- * Focuses on header and footer areas.
  * Searches for: Facebook, Twitter/X, LinkedIn, Instagram, YouTube, TikTok, GitHub, Mastodon
  */
 export async function detectSocialLinks({
@@ -13,7 +12,7 @@ export async function detectSocialLinks({
 }: {
   page: Page;
 }): Promise<SocialLinksResult> {
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: browser code in page.evaluate is difficult to refactor
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: nested loops for multi-pattern matching
   return await page.evaluate(() => {
     type SocialPlatformLocal =
       | "facebook"
@@ -84,63 +83,21 @@ export async function detectSocialLinks({
 
     const result: Partial<Record<SocialPlatformLocal, string>> = {};
 
-    // Priority search areas: header and footer
-    const searchAreas: Element[] = [];
+    // Search all links on the page
+    const links = document.querySelectorAll("a[href]");
 
-    // Add header areas
-    const headerSelectors = [
-      "header",
-      '[role="banner"]',
-      ".header",
-      "#header",
-      ".site-header",
-    ];
-    for (const selector of headerSelectors) {
-      const element = document.querySelector(selector);
-      if (element) {
-        searchAreas.push(element);
-        break;
-      }
-    }
+    for (const link of links) {
+      const href = link.getAttribute("href");
+      if (!href) continue;
 
-    // Add footer areas
-    const footerSelectors = [
-      "footer",
-      '[role="contentinfo"]',
-      ".footer",
-      "#footer",
-      ".site-footer",
-    ];
-    for (const selector of footerSelectors) {
-      const element = document.querySelector(selector);
-      if (element) {
-        searchAreas.push(element);
-        break;
-      }
-    }
+      for (const { platform, patterns } of platformPatterns) {
+        // Skip if we already found this platform
+        if (result[platform]) continue;
 
-    // Fallback to entire body if no header/footer found
-    if (searchAreas.length === 0) {
-      searchAreas.push(document.body);
-    }
-
-    // Search for social links in each area
-    for (const area of searchAreas) {
-      const links = area.querySelectorAll("a[href]");
-
-      for (const link of links) {
-        const href = link.getAttribute("href");
-        if (!href) continue;
-
-        for (const { platform, patterns } of platformPatterns) {
-          // Skip if we already found this platform
-          if (result[platform]) continue;
-
-          for (const pattern of patterns) {
-            if (pattern.test(href)) {
-              result[platform] = href;
-              break;
-            }
+        for (const pattern of patterns) {
+          if (pattern.test(href)) {
+            result[platform] = href;
+            break;
           }
         }
       }
