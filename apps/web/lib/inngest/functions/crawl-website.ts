@@ -71,6 +71,7 @@ export const crawlWebsite = inngest.createFunction(
 
       // ⏳ Update progress
       const crawlResult = await crawler.crawl({
+        // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Progress callback handles multiple detection types
         onProgress: async (progress) => {
           // 👁️📝 Logs
           const nowString = new Date().toISOString();
@@ -117,6 +118,20 @@ export const crawlWebsite = inngest.createFunction(
             .onConflictDoNothing({
               target: [crawledPage.crawlId, crawledPage.normalizedUrl],
             });
+
+          // 🖼️ Save homepage screenshot URL (only for homepage / depth 0)
+          if (
+            progress.crawledPage.depth === 0 &&
+            progress.crawledPage.screenshotUrl
+          ) {
+            await db
+              .update(crawl)
+              .set({
+                homepageScreenshotUrl: progress.crawledPage.screenshotUrl,
+                updatedAt: nowString,
+              })
+              .where(eq(crawl.id, crawlId));
+          }
 
           // 🔍 Save detected technologies (only for homepage / depth 0)
           if (progress.crawledPage.technologies?.technologies?.length) {
@@ -168,6 +183,55 @@ export const crawlWebsite = inngest.createFunction(
               .update(crawl)
               .set({
                 socialLinks: progress.crawledPage.socialLinks,
+                updatedAt: nowString,
+              })
+              .where(eq(crawl.id, crawlId));
+          }
+
+          // 📞 Save contact info (only for homepage / depth 0)
+          if (progress.crawledPage.contactInfo) {
+            const { phones, emails, addresses } =
+              progress.crawledPage.contactInfo;
+            await db
+              .update(crawl)
+              .set({
+                contactAddresses: addresses.length ? addresses : null,
+                contactEmails: emails.length ? emails : null,
+                contactPhones: phones.length ? phones : null,
+                updatedAt: nowString,
+              })
+              .where(eq(crawl.id, crawlId));
+          }
+
+          // 🔍 Save SEO/structured data (only for homepage / depth 0)
+          if (progress.crawledPage.seo) {
+            const {
+              basicMeta,
+              hasHreflang,
+              hasStructuredData,
+              hreflangCount,
+              jsonLdSchemas,
+              openGraph,
+              twitterCard,
+            } = progress.crawledPage.seo;
+            await db
+              .update(crawl)
+              .set({
+                hasHreflang,
+                hasStructuredData,
+                hreflangCount: hreflangCount ?? null,
+                jsonLdSchemas: jsonLdSchemas.length ? jsonLdSchemas : null,
+                ogDescription: openGraph.description ?? null,
+                ogImage: openGraph.image ?? null,
+                ogTitle: openGraph.title ?? null,
+                ogType: openGraph.type ?? null,
+                seoCanonicalUrl: basicMeta.canonicalUrl ?? null,
+                seoDescription: basicMeta.description ?? null,
+                seoRobotsMeta: basicMeta.robotsMeta ?? null,
+                seoTitle: basicMeta.title ?? null,
+                twitterCard: twitterCard.card ?? null,
+                twitterImage: twitterCard.image ?? null,
+                twitterTitle: twitterCard.title ?? null,
                 updatedAt: nowString,
               })
               .where(eq(crawl.id, crawlId));

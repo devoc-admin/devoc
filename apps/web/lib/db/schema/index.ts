@@ -174,6 +174,7 @@ export const crawl = pgTable(
     skipResources: boolean().default(false),
     skipScreenshots: boolean().default(false),
     useLocalScreenshots: boolean().default(false),
+    homepageScreenshotUrl: text(),
     errorMessage: text(),
     config: jsonb().$type<CrawlConfig>(),
     // 🤖 Technology detection summary
@@ -194,6 +195,52 @@ export const crawl = pgTable(
     hasNewsletter: boolean().default(false),
     newsletterProvider: text(),
     socialLinks: jsonb().$type<Record<string, string>>(),
+    // 📞 Contact info detection
+    contactPhones:
+      jsonb().$type<
+        Array<{
+          number: string;
+          type?: "mobile" | "landline" | "fax" | "unknown";
+          isInternational: boolean;
+        }>
+      >(),
+    contactEmails:
+      jsonb().$type<
+        Array<{
+          email: string;
+          isGeneric: boolean;
+        }>
+      >(),
+    contactAddresses:
+      jsonb().$type<
+        Array<{
+          raw: string;
+          postalCode?: string;
+          city?: string;
+        }>
+      >(),
+    // 🔍 SEO/Structured data detection
+    seoTitle: text(),
+    seoDescription: text(),
+    seoCanonicalUrl: text(),
+    seoRobotsMeta: text(),
+    ogTitle: text(),
+    ogDescription: text(),
+    ogImage: text(),
+    ogType: text(),
+    twitterCard: text(),
+    twitterTitle: text(),
+    twitterImage: text(),
+    jsonLdSchemas:
+      jsonb().$type<
+        Array<{
+          type: string;
+          raw: Record<string, unknown>;
+        }>
+      >(),
+    hasStructuredData: boolean().default(false),
+    hasHreflang: boolean().default(false),
+    hreflangCount: integer(),
     //🗓️ Dates
     startedAt: timestamp({ mode: "string", withTimezone: true }),
     completedAt: timestamp({ mode: "string", withTimezone: true }),

@@ -15,6 +15,20 @@
       "when": 1769033408440,
       "tag": "0001_polite_mad_thinker",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1769092477229,
+      "tag": "0002_slow_zuras",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1769092665990,
+      "tag": "0003_moaning_baron_strucker",
+      "breakpoints": true
     }
   ]
 }

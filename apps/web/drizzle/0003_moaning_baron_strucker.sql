@@ -1,0 +1,1 @@
+ALTER TABLE "crawl" ADD COLUMN "homepageScreenshotUrl" text;

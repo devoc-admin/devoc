@@ -22,6 +22,8 @@ export type CrawlPageResult = {
   rssFeed?: RssFeedDetectionResult;
   newsletter?: NewsletterDetectionResult;
   socialLinks?: SocialLinksResult;
+  contactInfo?: ContactInfoDetectionResult;
+  seo?: SeoDetectionResult;
   links: string[];
   error?: string;
 };
@@ -149,3 +151,76 @@ export type SocialPlatform =
   | "mastodon";
 
 export type SocialLinksResult = Partial<Record<SocialPlatform, string>>;
+
+// Contact info detection
+export type PhoneNumber = {
+  number: string;
+  type?: "mobile" | "landline" | "fax" | "unknown";
+  isInternational: boolean;
+};
+
+export type EmailAddress = {
+  email: string;
+  isGeneric: boolean;
+};
+
+export type PostalAddress = {
+  raw: string;
+  postalCode?: string;
+  city?: string;
+};
+
+export type ContactInfoDetectionResult = {
+  phones: PhoneNumber[];
+  emails: EmailAddress[];
+  addresses: PostalAddress[];
+};
+
+// SEO/Structured data detection
+export type SeoBasicMeta = {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  robotsMeta?: string;
+};
+
+export type OpenGraphData = {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: string;
+  siteName?: string;
+};
+
+export type TwitterCardData = {
+  card?: string;
+  title?: string;
+  description?: string;
+  image?: string;
+};
+
+export type JsonLdSchemaType =
+  | "Organization"
+  | "LocalBusiness"
+  | "Product"
+  | "Article"
+  | "WebSite"
+  | "WebPage"
+  | "BreadcrumbList"
+  | "FAQPage"
+  | "Other";
+
+export type JsonLdSchema = {
+  type: JsonLdSchemaType;
+  raw: Record<string, unknown>;
+};
+
+export type SeoDetectionResult = {
+  basicMeta: SeoBasicMeta;
+  openGraph: OpenGraphData;
+  twitterCard: TwitterCardData;
+  jsonLdSchemas: JsonLdSchema[];
+  hasHreflang: boolean;
+  hreflangCount?: number;
+  hasStructuredData: boolean;
+};

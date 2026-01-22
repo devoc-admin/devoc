@@ -9,12 +9,15 @@ import {
 } from "playwright";
 import { detectAuthor } from "../detectors/author-detector";
 import { detectCategoryPage } from "../detectors/category-detector";
+import { detectContactInfo } from "../detectors/contact-detector";
 import { detectNewsletter } from "../detectors/newsletter-detector";
 import { detectRssFeed } from "../detectors/rss-detector";
+import { detectSeo } from "../detectors/seo-detector";
 import { detectSocialLinks } from "../detectors/social-detector";
 import { detectTechnologies } from "../detectors/technology-detector";
 import type {
   AuthorDetectionResult,
+  ContactInfoDetectionResult,
   CrawlConfig,
   CrawlPageResult,
   CrawlProgressCallback,
@@ -22,6 +25,7 @@ import type {
   NewsletterDetectionResult,
   QueueItem,
   RssFeedDetectionResult,
+  SeoDetectionResult,
   SocialLinksResult,
   TechnologyDetectionResult,
 } from "../types";
@@ -369,6 +373,11 @@ export class WebCrawler {
       // Get title
       const title = await page.title();
 
+      // Skip pages with file extension in title (e.g., ".pdf", ".doc", etc.)
+      if (hasFileExtensionInTitle(title)) {
+        return null;
+      }
+
       // Get category
       const { category, confidence, characteristics } =
         await detectCategoryPage({ page, url });
@@ -406,21 +415,36 @@ export class WebCrawler {
         socialLinks = await detectSocialLinks({ page });
       }
 
+      // Contact info detection (only on homepage / depth 0)
+      let contactInfo: ContactInfoDetectionResult | undefined;
+      if (depth === 0) {
+        contactInfo = await detectContactInfo({ page });
+      }
+
+      // SEO detection (only on homepage / depth 0)
+      let seo: SeoDetectionResult | undefined;
+      if (depth === 0) {
+        seo = await detectSeo({ page });
+      }
+
       // Extract links
       const links = await this.extractLinksFromPage(page);
 
+      // Determine if screenshot should be taken (always for homepage, otherwise respect skipScreenshots)
+      const shouldTakeScreenshot = depth === 0 || !this.config.skipScreenshots;
+
       // Dismiss cookie banner before screenshot
-      if (!this.config.skipScreenshots) {
+      if (shouldTakeScreenshot) {
         await this.dismissCookieBanner(page);
       }
 
-      // Take screenshot and upload to Vercel Blob (if not skipped)
-      const screenshotUrl = this.config.skipScreenshots
-        ? undefined
-        : await this.takeAndUploadScreenshot({
+      // Take screenshot and upload to Vercel Blob (if not skipped, or if homepage)
+      const screenshotUrl = shouldTakeScreenshot
+        ? await this.takeAndUploadScreenshot({
             normalizedUrl,
             page,
-          });
+          })
+        : undefined;
 
       // Result
       const nowString = new Date().toISOString();
@@ -429,6 +453,7 @@ export class WebCrawler {
         category,
         categoryConfidence: confidence,
         characteristics,
+        contactInfo,
         contentType,
         createdAt: nowString,
         depth,
@@ -440,6 +465,7 @@ export class WebCrawler {
         responseTime,
         rssFeed,
         screenshotUrl,
+        seo,
         socialLinks,
         technologies,
         title,
@@ -730,4 +756,14 @@ async function waitForDomStable(page: Page, timeout = 5000, debounce = 300) {
     },
     { debounce, timeout }
   );
+}
+
+// 📄 Check if title ends with a file extension
+const FILE_EXTENSION_REGEX =
+  /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|zip|rar|tar|gz|7z|exe|dmg|iso|mp3|mp4|avi|mov|wmv|flv|wav|ogg|jpg|jpeg|png|gif|bmp|svg|webp|ico|txt|csv|xml|json|rtf|odt|ods|odp)$/i;
+
+function hasFileExtensionInTitle(title: string): boolean {
+  if (!title) return false;
+  const trimmedTitle = title.trim();
+  return FILE_EXTENSION_REGEX.test(trimmedTitle);
 }

@@ -89,13 +89,13 @@ export function CrawlStatusPanel() {
                     {crawl.latestPage.url}
                   </div>
                 </div>
-                {/* 🖼️ Image */}
-                {crawl.latestPage.screenshotUrl && (
+                {/* 🖼️ Homepage screenshot */}
+                {crawl.homepageScreenshotUrl && (
                   <Image
-                    alt={crawl.latestPage.title ?? "Sans titre"}
+                    alt="Page d'accueil"
                     className="w-100 rounded-md border border-border shadow-md"
                     height={400}
-                    src={crawl.latestPage.screenshotUrl}
+                    src={crawl.homepageScreenshotUrl}
                     width={400}
                   />
                 )}
