@@ -2,7 +2,12 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useQueryState } from "nuqs";
 import { useEffect } from "react";
-import { getCrawl, getRunningCrawl, listCrawls } from "./crawl-actions";
+import {
+  getCrawl,
+  getRunningCrawl,
+  listCrawls,
+  listUncrawledProspects,
+} from "./crawl-actions";
 
 // --------------------------------------
 // 👁️ See current crawl
@@ -97,4 +102,26 @@ export function useRunningCrawl() {
       setCrawlId(runningCrawl.crawlId);
     }
   }, [runningCrawl, crawlId, setCrawlId]);
+}
+
+// --------------------------------------
+// 🏢 List prospects with websites not yet crawled
+
+export function useUncrawledProspects() {
+  const { data: prospects, isLoading } = useQuery({
+    queryFn: async () => {
+      const result = await listUncrawledProspects();
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return result;
+    },
+    queryKey: ["uncrawled-prospects"],
+    select: (data) => data.response,
+  });
+
+  return {
+    prospects,
+    prospectsAreLoading: isLoading,
+  };
 }

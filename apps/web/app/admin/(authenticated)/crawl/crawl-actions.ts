@@ -2,10 +2,10 @@
 import { rm } from "node:fs/promises";
 import { join } from "node:path";
 import { del, list } from "@vercel/blob";
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, isNotNull } from "drizzle-orm";
 import { type ActionResult, getErrorMessage } from "@/lib/api";
 import { db } from "@/lib/db";
-import { type Crawl, crawl, crawledPage } from "@/lib/db/schema";
+import { type Crawl, crawl, crawledPage, prospect } from "@/lib/db/schema";
 import { inngest } from "@/lib/inngest/client";
 
 // --------------------------------------
@@ -401,6 +401,59 @@ export async function retryCrawl(
       url: existingCrawl.url,
       useLocalScreenshots: existingCrawl.useLocalScreenshots ?? false,
     });
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
+// 🏢 List prospects with websites not yet crawled
+
+const uncrawledProspectsQuery = db
+  .select({
+    id: prospect.id,
+    name: prospect.name,
+    website: prospect.website,
+  })
+  .from(prospect)
+  .orderBy(desc(prospect.name))
+  .$dynamic();
+
+export type UncrawledProspectResult = {
+  id: number;
+  name: string;
+  website: string;
+};
+
+export async function listUncrawledProspects(): Promise<
+  ActionResult<UncrawledProspectResult[]>
+> {
+  try {
+    // Get all crawled URLs
+    const crawledUrls = await db
+      .select({ url: crawl.url })
+      .from(crawl)
+      .execute();
+    const crawledUrlSet = new Set(crawledUrls.map((c) => c.url));
+
+    // Get prospects with websites
+    const prospects = await uncrawledProspectsQuery
+      .where(isNotNull(prospect.website))
+      .execute();
+
+    // Filter out prospects whose website has already been crawled
+    const uncrawledProspects = prospects.filter((p) => {
+      if (!p.website) return false;
+      try {
+        const origin = new URL(p.website).origin;
+        return !crawledUrlSet.has(origin);
+      } catch {
+        return false;
+      }
+    }) as UncrawledProspectResult[];
+
+    return { response: uncrawledProspects, success: true };
   } catch (error) {
     const message = getErrorMessage(error);
     return { error: message, success: false };

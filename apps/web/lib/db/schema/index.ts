@@ -323,21 +323,36 @@ export const prospectTypeEnum = pgEnum("prospect_type", [
   "other",
 ]);
 
-export const prospect = pgTable("prospect", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  name: text().notNull(),
-  website: text(),
-  location: text(),
-  latitude: text(),
-  longitude: text(),
-  type: prospectTypeEnum().default("other").notNull(),
-  createdAt: timestamp({ mode: "string", withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp({ mode: "string", withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-});
+export const prospect = pgTable(
+  "prospect",
+  {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    name: text().notNull(),
+    website: text(),
+    location: text(),
+    latitude: text(),
+    longitude: text(),
+    type: prospectTypeEnum().default("other").notNull(),
+    crawlId: text(),
+    createdAt: timestamp({ mode: "string", withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp({ mode: "string", withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.crawlId],
+      foreignColumns: [crawl.id],
+      name: "prospect_crawlId_fkey",
+    }).onDelete("set null"),
+    index("prospect_crawlId_idx").using(
+      "btree",
+      table.crawlId.asc().nullsLast()
+    ),
+  ]
+);
 
 export type Prospect = typeof prospect.$inferSelect;
 export type NewProspect = typeof prospect.$inferInsert;

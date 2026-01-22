@@ -8,8 +8,16 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { useCrawlContext } from "../crawl-context";
+import { useUncrawledProspects } from "../crawl-queries";
 
 const MAX_PAGES_CRAWLED = 500;
 const DEFAULT_PAGES_CRAWLED = 500;
@@ -23,8 +31,18 @@ const DEFAULT_CONCURRENCY = 8;
 export function CrawlForm() {
   const crawlForm = useCrawlForm();
   const { crawlId } = useCrawlContext();
+  const { prospects, prospectsAreLoading } = useUncrawledProspects();
 
   const currentCrawlRunning = crawlId !== undefined && crawlId !== null;
+
+  function handleProspectSelect(prospectId: string) {
+    const selectedProspect = prospects?.find(
+      (p) => p.id.toString() === prospectId
+    );
+    if (selectedProspect?.website) {
+      crawlForm.setFieldValue("search", selectedProspect.website);
+    }
+  }
 
   return (
     <div className="rounded-md bg-sidebar p-8">
@@ -38,6 +56,44 @@ export function CrawlForm() {
             crawlForm.handleSubmit();
           }}
         >
+          {/* 🏢 Prospect selector */}
+          <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+            {(isSubmitting) => (
+              <div className="flex w-full flex-col gap-y-1">
+                <Label className="font-kanit text-lg">
+                  Sélectionner un prospect
+                </Label>
+                <Select
+                  disabled={
+                    currentCrawlRunning ||
+                    isSubmitting ||
+                    prospectsAreLoading ||
+                    !prospects?.length
+                  }
+                  onValueChange={handleProspectSelect}
+                >
+                  <SelectTrigger className="h-10 w-full">
+                    <SelectValue
+                      placeholder={getProspectPlaceholder(
+                        prospectsAreLoading,
+                        prospects?.length ?? 0
+                      )}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {prospects?.map((prospect) => (
+                      <SelectItem
+                        key={prospect.id}
+                        value={prospect.id.toString()}
+                      >
+                        {prospect.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+          </crawlForm.Subscribe>
           {/* 🔍 Search */}
           <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
             {(isSubmitting) => (
@@ -58,6 +114,7 @@ export function CrawlForm() {
               >
                 {(field) => (
                   <div className="flex w-full flex-col gap-y-1">
+                    <Label className="font-kanit text-lg">URL du site</Label>
                     <Input
                       className="h-10"
                       disabled={currentCrawlRunning || isSubmitting}
@@ -414,4 +471,11 @@ function CustomCheckbox({
       </Label>
     </div>
   );
+}
+
+// --------------------------------------------
+function getProspectPlaceholder(isLoading: boolean, count: number): string {
+  if (isLoading) return "Chargement...";
+  if (count > 0) return "Choisir un prospect...";
+  return "Aucun prospect disponible";
 }
