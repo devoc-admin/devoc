@@ -1,4 +1,3 @@
-import "leaflet/dist/leaflet.css";
 import { ThemeProvider } from "next-themes";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "@/components/ui/sonner";

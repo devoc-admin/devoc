@@ -2,7 +2,7 @@
 import { useForm } from "@tanstack/react-form";
 import { PlusIcon, UserRoundPlusIcon, XIcon } from "lucide-react";
 import { VisuallyHidden } from "radix-ui";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { isValidWebsite } from "@/actions/validation";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,20 +21,103 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { isValidMapsUrl, isValidUrlFormat } from "@/utils/valid-url-format";
+import { isValidUrlFormat } from "@/utils/valid-url-format";
 import { useProspectsContext } from "../prospects-context";
 import { PROSPECT_TYPES, type ProspectType } from "../prospects-types";
+import { type PlaceResult, PlacesAutocomplete } from "./places-autocomplete";
+
+// Infer prospect type from Google Places types
+function inferProspectType(
+  placeTypes: string[],
+  placeName: string
+): ProspectType {
+  const name = placeName.toLowerCase();
+
+  // Check for EPCI keywords in name
+  if (
+    name.includes("communauté") ||
+    name.includes("métropole") ||
+    name.includes("agglomération") ||
+    name.includes("intercommunal")
+  ) {
+    return "epci";
+  }
+
+  // Check for territorial collectivity keywords (région, département)
+  if (
+    name.includes("conseil départemental") ||
+    name.includes("conseil régional") ||
+    name.includes("conseil général") ||
+    name.includes("région ") ||
+    name.includes("département ")
+  ) {
+    return "territorial_collectivity";
+  }
+
+  // Check for administration types
+  const adminTypes = [
+    "local_government_office",
+    "city_hall",
+    "courthouse",
+    "government",
+    "town_hall",
+  ];
+  if (placeTypes.some((t) => adminTypes.includes(t))) {
+    return "administration";
+  }
+
+  // Check for administration keywords in name
+  if (
+    name.includes("mairie") ||
+    name.includes("hôtel de ville") ||
+    name.includes("préfecture") ||
+    name.includes("sous-préfecture")
+  ) {
+    return "administration";
+  }
+
+  // Check for city/locality types
+  const cityTypes = [
+    "locality",
+    "sublocality",
+    "administrative_area_level_2",
+    "postal_town",
+  ];
+  if (placeTypes.some((t) => cityTypes.includes(t))) {
+    return "city";
+  }
+
+  return "other";
+}
 
 export function ProspectAdd() {
   const [isOpen, setIsOpen] = useState(false);
+  const [formKey, setFormKey] = useState(0);
   const form = useProspectForm();
   const { isAddedProspect } = useProspectsContext();
 
   useEffect(() => {
     if (isAddedProspect) {
       setIsOpen(false);
+      form.reset();
+      setFormKey((prev) => prev + 1);
     }
-  }, [isAddedProspect]);
+  }, [isAddedProspect, form]);
+
+  const handlePlaceSelect = useCallback(
+    (place: PlaceResult) => {
+      // Auto-fill all fields from place selection
+      form.setFieldValue("name", place.name);
+      form.setFieldValue(
+        "type",
+        inferProspectType(place.placeTypes, place.name)
+      );
+      form.setFieldValue("location", place.placeUrl);
+      form.setFieldValue("latitude", place.latitude.toString());
+      form.setFieldValue("longitude", place.longitude.toString());
+    },
+    [form]
+  );
 
   return (
     <Dialog onOpenChange={(newOpen) => setIsOpen(newOpen)} open={isOpen}>
@@ -54,7 +137,32 @@ export function ProspectAdd() {
               Ajouter un prospect
             </h3>
             <div className="grid grid-cols-2 gap-x-4 gap-y-6 py-4">
-              {/* 🔠 Name */}
+              {/* 📌 Location with Google Places Autocomplete - PRIMARY FIELD */}
+              <form.Field
+                name="location"
+                validators={{
+                  onSubmit: ({ value }) => {
+                    if (!value.trim()) return "La localisation est requise";
+                  },
+                }}
+              >
+                {(field) => (
+                  <div className="col-span-2">
+                    <Label>Rechercher un lieu</Label>
+                    <PlacesAutocomplete
+                      key={formKey}
+                      onPlaceSelect={handlePlaceSelect}
+                      placeholder="Mairie, ville, administration..."
+                    />
+                    {!field.state.meta.isValid && (
+                      <ErrorMessage>
+                        {field.state.meta.errors.join(", ")}
+                      </ErrorMessage>
+                    )}
+                  </div>
+                )}
+              </form.Field>
+              {/* 🔠 Name (auto-filled, editable) */}
               <form.Field
                 name="name"
                 validators={{
@@ -71,6 +179,7 @@ export function ProspectAdd() {
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         field.handleChange(e.target.value)
                       }
+                      placeholder="Auto-rempli"
                       value={field.state.value}
                     />
                     {!field.state.meta.isValid && (
@@ -81,7 +190,7 @@ export function ProspectAdd() {
                   </div>
                 )}
               </form.Field>
-              {/* 🟡 Type */}
+              {/* 🟡 Type (auto-inferred, editable) */}
               <form.Field name="type">
                 {(field) => (
                   <div>
@@ -93,7 +202,7 @@ export function ProspectAdd() {
                       value={field.state.value}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Sélectionnez une catégorie" />
+                        <SelectValue placeholder="Auto-détecté" />
                       </SelectTrigger>
                       <SelectContent align="start" className="max-h-64">
                         <SelectGroup>
@@ -134,6 +243,7 @@ export function ProspectAdd() {
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         field.handleChange(e.target.value)
                       }
+                      placeholder="https://..."
                       value={field.state.value}
                     />
                     {!field.state.meta.isValid && (
@@ -144,108 +254,6 @@ export function ProspectAdd() {
                   </div>
                 )}
               </form.Field>
-              {/* 📌 Location */}
-              <form.Field
-                name="location"
-                validators={{
-                  onSubmit: ({ value }) => {
-                    if (!value.trim()) return "La localisation est requise";
-                    if (!isValidUrlFormat(value))
-                      return "L'URL n'est pas valide";
-                    if (!isValidMapsUrl(value))
-                      return "L'URL doit être un lien Google Maps ou Apple Maps vers un lieu précis";
-                  },
-                  onSubmitAsync: async ({ value }) => {
-                    if (!value) return;
-                    const result = await isValidWebsite(value);
-                    if (!result) return "Cette URL n'existe pas";
-                  },
-                }}
-              >
-                {(field) => (
-                  <div className="col-span-2">
-                    <Label>Localisation</Label>
-                    <CustomInput
-                      name={field.name}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        field.handleChange(e.target.value)
-                      }
-                      value={field.state.value}
-                    />
-                    {!field.state.meta.isValid && (
-                      <ErrorMessage>
-                        {field.state.meta.errors.join(", ")}
-                      </ErrorMessage>
-                    )}
-                  </div>
-                )}
-              </form.Field>
-              {/* 🗺️ Coordinates (optional) */}
-              <div className="col-span-2">
-                <Label className="text-muted-foreground text-sm">
-                  Coordonnées (optionnel - pour la vue carte)
-                </Label>
-                <div className="mt-1 grid grid-cols-2 gap-x-4">
-                  <form.Field
-                    name="latitude"
-                    validators={{
-                      onSubmit: ({ value }) => {
-                        if (!value) return;
-                        const num = Number.parseFloat(value);
-                        if (Number.isNaN(num) || num < -90 || num > 90)
-                          return "Latitude invalide (-90 à 90)";
-                      },
-                    }}
-                  >
-                    {(field) => (
-                      <div>
-                        <CustomInput
-                          name={field.name}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            field.handleChange(e.target.value)
-                          }
-                          placeholder="Latitude (ex: 48.8566)"
-                          value={field.state.value}
-                        />
-                        {!field.state.meta.isValid && (
-                          <ErrorMessage>
-                            {field.state.meta.errors.join(", ")}
-                          </ErrorMessage>
-                        )}
-                      </div>
-                    )}
-                  </form.Field>
-                  <form.Field
-                    name="longitude"
-                    validators={{
-                      onSubmit: ({ value }) => {
-                        if (!value) return;
-                        const num = Number.parseFloat(value);
-                        if (Number.isNaN(num) || num < -180 || num > 180)
-                          return "Longitude invalide (-180 à 180)";
-                      },
-                    }}
-                  >
-                    {(field) => (
-                      <div>
-                        <CustomInput
-                          name={field.name}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            field.handleChange(e.target.value)
-                          }
-                          placeholder="Longitude (ex: 2.3522)"
-                          value={field.state.value}
-                        />
-                        {!field.state.meta.isValid && (
-                          <ErrorMessage>
-                            {field.state.meta.errors.join(", ")}
-                          </ErrorMessage>
-                        )}
-                      </div>
-                    )}
-                  </form.Field>
-                </div>
-              </div>
             </div>
             <form.Subscribe selector={(state) => state.isSubmitting}>
               {(isSubmitting) => (

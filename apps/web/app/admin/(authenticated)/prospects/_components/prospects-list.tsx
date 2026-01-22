@@ -111,11 +111,11 @@ export function ProspectsList() {
       <div className="flex items-center gap-x-8">
         <h2 className="font-kanit font-semibold text-3xl">Prospects</h2>
       </div>
-      <div className="flex items-center justify-between gap-x-6">
-        <div className="flex items-center gap-x-6">
-          <SearchProspects />
-          <ProspectAdd />
-        </div>
+      <div className="flex items-center gap-x-6">
+        <SearchProspects />
+        <ProspectAdd />
+      </div>
+      <div className="w-fit">
         <ViewToggle />
       </div>
       {viewMode === "map" ? <ProspectsMap /> : <ProspectsTable />}
@@ -255,6 +255,7 @@ function TypeBadge({ type }: { type: Prospect["type"] }) {
     city: "Ville",
     epci: "EPCI",
     other: "Autre",
+    territorial_collectivity: "Collectivité territoriale",
   };
 
   const colors: Record<Prospect["type"], string> = {
@@ -262,6 +263,7 @@ function TypeBadge({ type }: { type: Prospect["type"] }) {
     city: "bg-blue-500/20 text-blue-400",
     epci: "bg-green-500/20 text-green-400",
     other: "bg-zinc-500/20 text-zinc-400",
+    territorial_collectivity: "bg-orange-500/20 text-orange-400",
   };
 
   return (

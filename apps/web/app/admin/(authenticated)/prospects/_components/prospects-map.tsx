@@ -1,12 +1,12 @@
 "use client";
 
-import type { DivIcon } from "leaflet";
-import { ExternalLinkIcon, MapPinIcon } from "lucide-react";
-import dynamic from "next/dynamic";
-import { useEffect, useMemo, useState } from "react";
+import { GoogleMap, InfoWindowF, MarkerF } from "@react-google-maps/api";
+import { ExternalLinkIcon, LoaderCircleIcon, MapPinIcon } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
 import type { Prospect } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import { useProspectsContext } from "../prospects-context";
+import { useGoogleMaps } from "./google-maps-provider";
 
 // Color map for marker colors matching TypeBadge
 const markerColors: Record<Prospect["type"], string> = {
@@ -14,53 +14,44 @@ const markerColors: Record<Prospect["type"], string> = {
   city: "#60a5fa",
   epci: "#4ade80",
   other: "#a1a1aa",
+  territorial_collectivity: "#f97316",
 };
 
-// Dynamic imports to avoid SSR issues with Leaflet
-const MapContainer = dynamic(
-  () => import("react-leaflet").then((mod) => mod.MapContainer),
-  { ssr: false }
-);
-const TileLayer = dynamic(
-  () => import("react-leaflet").then((mod) => mod.TileLayer),
-  { ssr: false }
-);
-const Marker = dynamic(
-  () => import("react-leaflet").then((mod) => mod.Marker),
-  { ssr: false }
-);
-const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
-  ssr: false,
-});
-
-// Create custom colored marker icon
-function useColoredMarkerIcon(color: string): DivIcon | null {
-  const [icon, setIcon] = useState<DivIcon | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      const L = await import("leaflet");
-      const svgIcon = `
-        <svg viewBox="0 0 24 24" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-          <path fill="${color}" stroke="#ffffff" stroke-width="1" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-        </svg>
-      `;
-      const markerIcon = L.divIcon({
-        className: "custom-marker-icon",
-        html: svgIcon,
-        iconAnchor: [16, 32],
-        iconSize: [32, 32],
-        popupAnchor: [0, -32],
-      });
-      setIcon(markerIcon);
-    })();
-  }, [color]);
-
-  return icon;
+// Create SVG marker icon as data URL
+function createMarkerIcon(color: string): google.maps.Icon {
+  const svg = `
+    <svg viewBox="0 0 24 24" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+      <path fill="${color}" stroke="#ffffff" stroke-width="1" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+    </svg>
+  `;
+  return {
+    // biome-ignore lint/correctness/noUndeclaredVariables: google is a global provided by Google Maps API
+    anchor: new google.maps.Point(16, 32),
+    // biome-ignore lint/correctness/noUndeclaredVariables: google is a global provided by Google Maps API
+    scaledSize: new google.maps.Size(32, 32),
+    url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`,
+  };
 }
+
+// Map container style
+const containerStyle = {
+  height: "100%",
+  width: "100%",
+};
+
+// Map options
+const mapOptions: google.maps.MapOptions = {
+  mapTypeControl: false,
+  streetViewControl: false,
+};
 
 export function ProspectsMap() {
   const { prospects, searchQuery } = useProspectsContext();
+  const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(
+    null
+  );
+
+  const { isLoaded, loadError } = useGoogleMaps();
 
   const prospectsWithCoords = useMemo(() => {
     if (!prospects) return [];
@@ -80,8 +71,48 @@ export function ProspectsMap() {
   }, [prospects, searchQuery]);
 
   // 🎯 Default center: Carcassonne
-  const defaultCenter: [number, number] = [43.212_161, 2.353_663];
-  const defaultZoom = 12;
+  const defaultCenter = useMemo(
+    () => ({
+      lat: 43.212_161,
+      lng: 2.353_663,
+    }),
+    []
+  );
+
+  const handleMarkerClick = useCallback((prospect: Prospect) => {
+    setSelectedProspect(prospect);
+  }, []);
+
+  const handleInfoWindowClose = useCallback(() => {
+    setSelectedProspect(null);
+  }, []);
+
+  // Loading state
+  if (!isLoaded) {
+    return (
+      <div className="flex h-96 items-center justify-center rounded-md border border-dashed">
+        <div className="text-center text-muted-foreground">
+          <LoaderCircleIcon className="mx-auto mb-2 size-8 animate-spin" />
+          <p>Chargement de la carte...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (loadError) {
+    return (
+      <div className="flex h-96 items-center justify-center rounded-md border border-dashed">
+        <div className="text-center text-muted-foreground">
+          <MapPinIcon className="mx-auto mb-2 size-8" />
+          <p>Erreur lors du chargement de la carte.</p>
+          <p className="text-sm">
+            Veuillez vérifier votre clé API Google Maps.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // 🫙 No prospects
   if (prospectsWithCoords.length === 0) {
@@ -89,40 +120,43 @@ export function ProspectsMap() {
   }
 
   return (
-    <div className="h-37.5 w-full grow overflow-hidden rounded-md">
-      <MapContainer
+    <div className="h-96 w-full grow overflow-hidden rounded-md">
+      <GoogleMap
         center={defaultCenter}
-        className="h-full w-full"
-        zoom={defaultZoom}
+        mapContainerStyle={containerStyle}
+        options={mapOptions}
+        zoom={12}
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {prospectsWithCoords.map((prospect) => (
-          <ProspectMarker key={prospect.id} prospect={prospect} />
-        ))}
-      </MapContainer>
+        {prospectsWithCoords.map((prospect) => {
+          const position = {
+            lat: Number.parseFloat(prospect.latitude ?? "0"),
+            lng: Number.parseFloat(prospect.longitude ?? "0"),
+          };
+          const color = markerColors[prospect.type];
+
+          return (
+            <MarkerF
+              icon={createMarkerIcon(color)}
+              key={prospect.id}
+              onClick={() => handleMarkerClick(prospect)}
+              position={position}
+            />
+          );
+        })}
+
+        {selectedProspect && (
+          <InfoWindowF
+            onCloseClick={handleInfoWindowClose}
+            position={{
+              lat: Number.parseFloat(selectedProspect.latitude ?? "0"),
+              lng: Number.parseFloat(selectedProspect.longitude ?? "0"),
+            }}
+          >
+            <ProspectPopupContent prospect={selectedProspect} />
+          </InfoWindowF>
+        )}
+      </GoogleMap>
     </div>
-  );
-}
-
-function ProspectMarker({ prospect }: { prospect: Prospect }) {
-  const position: [number, number] = [
-    Number.parseFloat(prospect.latitude ?? "0"),
-    Number.parseFloat(prospect.longitude ?? "0"),
-  ];
-  const color = markerColors[prospect.type];
-  const icon = useColoredMarkerIcon(color);
-
-  if (!icon) return null;
-
-  return (
-    <Marker icon={icon} position={position}>
-      <Popup>
-        <ProspectPopupContent prospect={prospect} />
-      </Popup>
-    </Marker>
   );
 }
 
@@ -187,6 +221,7 @@ function TypeBadge({ type }: { type: Prospect["type"] }) {
     city: "Ville",
     epci: "EPCI",
     other: "Autre",
+    territorial_collectivity: "Collectivité territoriale",
   };
 
   const colors: Record<Prospect["type"], string> = {
@@ -194,6 +229,7 @@ function TypeBadge({ type }: { type: Prospect["type"] }) {
     city: "bg-blue-500/20 text-blue-400",
     epci: "bg-green-500/20 text-green-400",
     other: "bg-zinc-500/20 text-zinc-400",
+    territorial_collectivity: "bg-orange-500/20 text-orange-400",
   };
 
   return (

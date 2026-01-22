@@ -319,6 +319,7 @@ export const prospectTypeEnum = pgEnum("prospect_type", [
   "city",
   "administration",
   "epci",
+  "territorial_collectivity",
   "other",
 ]);
 
