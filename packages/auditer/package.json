@@ -1,0 +1,23 @@
+{
+  "name": "@dev-oc/auditer",
+  "version": "1.0.0",
+  "description": "RGAA accessibility auditer for automated and semi-automated testing",
+  "module": "src/index.ts",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types.ts"
+  },
+  "scripts": {
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "1.3.6"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "playwright": "^1.57.0"
+  }
+}

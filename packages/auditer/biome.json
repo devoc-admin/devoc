@@ -1,0 +1,15 @@
+{
+  "root": false,
+  "extends": "//",
+  "linter": {
+    "rules": {
+      "performance": {
+        "useTopLevelRegex": "off",
+        "noBarrelFile": "off"
+      },
+      "style": {
+        "noNestedTernary": "off"
+      }
+    }
+  }
+}
