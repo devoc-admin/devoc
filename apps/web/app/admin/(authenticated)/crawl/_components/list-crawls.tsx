@@ -1,5 +1,15 @@
 "use client";
 import {
+  IconBrandFacebook,
+  IconBrandGithub,
+  IconBrandInstagram,
+  IconBrandLinkedin,
+  IconBrandMastodon,
+  IconBrandTiktok,
+  IconBrandX,
+  IconBrandYoutube,
+} from "@tabler/icons-react";
+import {
   ApertureIcon,
   CalendarIcon,
   ClockIcon,
@@ -123,17 +133,39 @@ function CrawlCard(crawl: CrawlResult) {
         <h3 className="now max-w-full truncate font-kanit text-xl">
           {crawl.title}
         </h3>
-        {/* 🌐 Website */}
-        <a
-          className="flex items-center gap-x-2 text-muted-foreground hover:underline"
-          href={crawl.url}
-          target="_blank"
-        >
-          <span className="truncate">{crawl.url}</span>
-          <ExternalLinkIcon className="shrink-0" size={16} />
-        </a>
+        {/* 🌐 Website and social links */}
+        <div className="flex justify-between gap-x-4">
+          <a
+            className="flex items-center gap-x-2 text-muted-foreground hover:underline"
+            href={crawl.url}
+            target="_blank"
+          >
+            <span className="truncate">{crawl.url}</span>
+            <ExternalLinkIcon className="shrink-0" size={16} />
+          </a>
+          {/* 🔗 Social Links */}
+          {crawl.socialLinks && Object.keys(crawl.socialLinks).length > 0 && (
+            <div className="mr-4 flex flex-wrap items-center gap-2">
+              {Object.entries(crawl.socialLinks).map(([platform, url]) => (
+                <Tooltip key={platform}>
+                  <TooltipTrigger asChild>
+                    <a
+                      className="text-foreground"
+                      href={url}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <SocialIcon platform={platform} />
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent>{platformLabels[platform]}</TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          )}
+        </div>
         {/* Details */}
-        <div className="mt-2 grid grid-cols-2 space-y-0.5">
+        <div className="mt-4 grid grid-cols-2 space-y-0.5">
           {/* 🗓️ Started */}
           <div className="flex items-center gap-x-1 text-sm">
             <CalendarIcon size={14} />
@@ -421,4 +453,34 @@ function formatDurationInMinutesAndSeconds(
   if (minutesPart && secondsPart) return minutesPart + secondsPart;
   if (minutesPart && !secondsPart) return minutesPart;
   if (!minutesPart && secondsPart) return secondsPart;
+}
+
+// ------------------------------------------------------------
+// 🔗 Social Icons
+const platformLabels: Record<string, string> = {
+  facebook: "Facebook",
+  github: "GitHub",
+  instagram: "Instagram",
+  linkedin: "LinkedIn",
+  mastodon: "Mastodon",
+  tiktok: "TikTok",
+  twitter: "X (Twitter)",
+  youtube: "YouTube",
+};
+
+const socialIcons: Record<string, React.ComponentType<{ size?: number }>> = {
+  facebook: IconBrandFacebook,
+  github: IconBrandGithub,
+  instagram: IconBrandInstagram,
+  linkedin: IconBrandLinkedin,
+  mastodon: IconBrandMastodon,
+  tiktok: IconBrandTiktok,
+  twitter: IconBrandX,
+  youtube: IconBrandYoutube,
+};
+
+function SocialIcon({ platform }: { platform: string }) {
+  const Icon = socialIcons[platform];
+  if (!Icon) return null;
+  return <Icon size={18} />;
 }

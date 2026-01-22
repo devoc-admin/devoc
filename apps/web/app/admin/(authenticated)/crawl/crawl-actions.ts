@@ -217,6 +217,7 @@ const listCrawlsQuery = db
     screenshotUrl: crawledPage.screenshotUrl,
     skipResources: crawl.skipResources,
     skipScreenshots: crawl.skipScreenshots,
+    socialLinks: crawl.socialLinks,
     startedAt: crawl.startedAt,
     title: crawledPage.title,
     url: crawl.url,
