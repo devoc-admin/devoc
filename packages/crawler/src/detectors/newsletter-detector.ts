@@ -50,6 +50,39 @@ export async function detectNewsletter({
         name: "ActiveCampaign",
         patterns: [/activecampaign/i, /_form\.act-on/i],
       },
+      // French providers
+      {
+        name: "Sarbacane",
+        patterns: [/sarbacane/i, /tipimail/i, /sbc\d+\.com/i],
+      },
+      {
+        name: "Mailify",
+        patterns: [/mailify/i, /mailifyapis/i],
+      },
+      {
+        name: "Digitaleo",
+        patterns: [/digitaleo/i],
+      },
+      {
+        name: "Spot-hit",
+        patterns: [/spot-hit/i, /spothit/i],
+      },
+      {
+        name: "Dolist",
+        patterns: [/dolist/i, /dolist\.net/i],
+      },
+      {
+        name: "Rapidmail",
+        patterns: [/rapidmail/i],
+      },
+      {
+        name: "Message Business",
+        patterns: [/message-business/i, /messagebusiness/i],
+      },
+      {
+        name: "Getresponse",
+        patterns: [/getresponse/i, /gr-form/i],
+      },
     ];
 
     // Newsletter keywords (French & English)
