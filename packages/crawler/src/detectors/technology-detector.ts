@@ -386,34 +386,29 @@ export async function detectTechnologies({
     const detections = Wappalyzer.analyze(items);
     const resolved = Wappalyzer.resolve(detections);
 
-    // Format results
+    // Format results - Wappalyzer.resolve() returns flat objects with categories as objects
     const technologies: DetectedTechnology[] = resolved.map(
       (detection: {
-        technology: {
-          name: string;
-          categories: number[];
-          icon?: string;
-          website?: string;
-        };
+        name: string;
+        categories: Array<{ id: number; name: string }>;
+        icon?: string;
+        website?: string;
         confidence: number;
         version?: string;
       }) => {
-        const tech = detection.technology;
-        const categoryNames = tech.categories
-          .map((catId: number) => {
-            const cat = Wappalyzer.getCategory(catId);
-            return cat?.name || "Other";
-          })
+        // Categories are already resolved as objects with id and name
+        const categoryNames = detection.categories
+          .map((cat) => cat.name)
           .filter(Boolean);
 
         return {
           category: categoryNames[0] || "Other",
           confidence: detection.confidence,
-          icon: tech.icon,
-          name: tech.name,
-          slug: Wappalyzer.slugify(tech.name),
+          icon: detection.icon,
+          name: detection.name,
+          slug: Wappalyzer.slugify(detection.name),
           version: detection.version || undefined,
-          website: tech.website,
+          website: detection.website,
         };
       }
     );
