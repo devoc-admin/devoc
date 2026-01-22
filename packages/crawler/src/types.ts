@@ -124,6 +124,7 @@ export type AuthorDetectionResult = {
 export type RssFeedDetectionResult = {
   hasRssFeed: boolean;
   feedUrl?: string;
+  feedType?: "rss" | "atom" | "json" | "podcast";
 };
 
 // Newsletter detection
