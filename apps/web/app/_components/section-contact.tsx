@@ -14,7 +14,7 @@ import ContactForm from "./contact-form";
 import SectionTitle from "./section-title";
 
 type ContactItem = {
-  content: string;
+  content: string | React.ReactNode;
   href: string;
   icon: React.ReactNode;
   title: string;
@@ -30,17 +30,15 @@ const contactItems: ContactItem[] = [
     title: "Email",
   },
   {
-    content: "+33 6 20 23 98 38",
+    content: (
+      <div className="mt-2 flex flex-col">
+        <span>+33 6 20 23 98 38</span>
+        <span>+33 6 58 88 97 01</span>
+      </div>
+    ),
     href: "tel:+33620239838",
     icon: <PhoneIcon size={26} />,
     id: "phone1",
-    title: "Téléphone",
-  },
-  {
-    content: "+33 6 58 88 97 01",
-    href: "tel:+33658889701",
-    icon: <PhoneIcon size={26} />,
-    id: "phone2",
     title: "Téléphone",
   },
   {
@@ -127,22 +125,13 @@ export default function Contact() {
 }
 
 // ----------------------------------
-function ContactCard({
-  icon,
-  content,
-  title,
-  href,
-}: {
-  icon: React.ReactNode;
-  content: string;
-  title: string;
-  href: string;
-}) {
+function ContactCard({ icon, content, title, href }: ContactItem) {
   return (
     <Card className="hidden bg-linear-to-br from-zinc-950 to-zinc-900 p-0 pr-14 md:block">
-      <a className="flex items-center gap-6 p-6" href={href}>
+      <a className="flex items-start gap-6 p-6" href={href}>
         <div
           className={cn(
+            "mt-1",
             "grid w-fit items-center rounded-lg p-2.5 text-primary",
             "bg-primary/15",
             "group-hover:bg-primary/20"

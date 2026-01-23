@@ -22,9 +22,10 @@ function Footer() {
             {/* 🐲 Logo and contact */}
             <div className="col-span-2 flex flex-col gap-5">
               <Logo />
-              <div className="max-w-[700px] text-muted-foreground text-sm">
-                Collectif de développeurs. Nous créons des solutions digitales
-                sur mesure pour propulser votre entreprise.
+              <div className="max-w-175 text-muted-foreground text-sm">
+                Collectif de développeurs implanté en Occitanie. Nous créons des
+                solutions digitales sur-mesure pour propulser votre
+                organisation.
               </div>
               <ContactLinks />
             </div>
