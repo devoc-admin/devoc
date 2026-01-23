@@ -116,11 +116,11 @@ function DesktopHeader() {
             "[html[data-nav-theme='dark']_&]:bg-zinc-900/70!" // Dark
           )}
         >
-          <div className="flex w-[200px] justify-start">
+          <div className="flex w-50 justify-start">
             <LogoButtonWithText />
           </div>
           <LinksDesktop />
-          <div className="flex w-[200px] justify-end">
+          <div className="flex w-50 justify-end">
             <ContactButton>Contact</ContactButton>
           </div>
         </Glass>
@@ -173,6 +173,7 @@ function CollapseWhileScroll({ children }: { children: React.ReactNode }) {
 }
 
 // ---------------------------------
+// 🆕 Logo button
 function LogoButton({
   children,
   logoSize = 22,
@@ -239,6 +240,7 @@ function LogoButtonWithText() {
 }
 
 // --------------------------------
+// Links 🔗
 const LINKS = [
   {
     href: "#services",
@@ -255,16 +257,20 @@ const LINKS = [
     id: "processus",
     label: "Notre méthode",
   },
-  // {
-  //   href: "/about",
-  //   label: "L'équipe",
-  // },
+  {
+    href: "#us",
+    id: "us",
+    label: "Le collectif",
+  },
   {
     href: "#contact",
     id: "contact",
     label: "Contact",
   },
 ];
+
+// -----------------------------------------------------------
+// Links 📱
 
 function LinksMobile() {
   return (
@@ -292,6 +298,13 @@ function LinksMobile() {
   );
 }
 
+// -----------------------------------------------------------
+// Links 💻
+
+function generateLinkClassName(id: string) {
+  return `[html[data-section-name='${id}']_&]:border-b-primary [html[data-section-name='${id}']_&]:text-primary`;
+}
+
 function LinksDesktop() {
   return (
     <ul
@@ -306,14 +319,7 @@ function LinksDesktop() {
           className={cn(
             "whitespace-nowrap border-2 border-transparent text-center transition-colors duration-300",
             "hover:text-primary",
-            id === "services" &&
-              `[html[data-section-name='services']_&]:border-b-primary [html[data-section-name='services']_&]:text-primary`,
-            id === "realisations" &&
-              `[html[data-section-name='realisations']_&]:border-b-primary [html[data-section-name='realisations']_&]:text-primary`,
-            id === "processus" &&
-              `[html[data-section-name='processus']_&]:border-b-primary [html[data-section-name='processus']_&]:text-primary`,
-            id === "contact" &&
-              `[html[data-section-name='contact']_&]:border-b-primary [html[data-section-name='contact']_&]:text-primary`
+            generateLinkClassName(id)
           )}
           key={href}
         >

@@ -197,6 +197,10 @@ const groupLinks: GroupInternalLink[] = [
         name: "Notre méthode",
       },
       {
+        href: "/#us",
+        name: "Le collectif",
+      },
+      {
         href: "/#contact",
         name: "Contact",
       },

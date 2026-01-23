@@ -1,4 +1,5 @@
 "use client";
+import { isValidUrlFormat } from "@dev-oc/utils/url";
 import { useForm } from "@tanstack/react-form";
 import { PlusIcon, UserRoundPlusIcon, XIcon } from "lucide-react";
 import { VisuallyHidden } from "radix-ui";
@@ -21,7 +22,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { isValidUrlFormat } from "@/utils/valid-url-format";
 import { useProspectsContext } from "../prospects-context";
 import { PROSPECT_TYPES, type ProspectType } from "../prospects-types";
 import { type PlaceResult, PlacesAutocomplete } from "./places-autocomplete";

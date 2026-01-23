@@ -23,7 +23,8 @@ function SectionTitle({
           "text-[40px]",
           "xs:text-5xl",
           "md:text-6xl",
-          "lg:text-8xl"
+          "lg:text-8xl",
+          "leading-none"
         )}
       >
         {title}

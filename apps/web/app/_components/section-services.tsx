@@ -36,10 +36,13 @@ export default function Services() {
   return (
     <motion.div
       className={cn(
-        "relative flex min-h-screen flex-col items-center justify-between gap-32 bg-zinc-950",
+        "relative flex min-h-screen flex-col items-center justify-between",
+        "bg-zinc-950",
         // Pour scroller en dessous du faisceau
-        "sm:-scroll-m-[200px]",
         "px-6 pt-24 pb-12",
+        "gap-y-16",
+        "sm:gap-y-32",
+        "sm:-scroll-m-[200px]",
         "sm:pt-88 sm:pb-48"
       )}
       id="services"
@@ -185,7 +188,7 @@ function ServiceCard({
       <Card
         animation={false}
         className={cn(
-          "relative h-full min-h-[400px] cursor-pointer",
+          "relative h-full min-h-100 cursor-pointer",
           "bg-linear-to-br from-zinc-950 to-zinc-900",
           // Only use 3D transforms on desktop
           isDesktop && "transform-3d transition-all duration-700",
@@ -195,7 +198,9 @@ function ServiceCard({
         {/* 🔼 Front Face */}
         <div
           className={cn(
-            "absolute inset-0 flex h-full flex-col gap-6 py-6",
+            "absolute inset-0 flex h-full flex-col gap-6",
+            "py-4",
+            "@xs:py-6",
             "transition-all duration-700",
             isDesktop && "backface-hidden rotate-y-0",
             isFlipped ? "opacity-0" : "opacity-100",
@@ -249,7 +254,13 @@ function ServiceCard({
             </div>
           </CardContent>
 
-          <CardFooter className="flex items-center justify-between gap-x-8">
+          <CardFooter
+            className={cn(
+              "flex items-center justify-between",
+              "gap-x-4",
+              "@xs:gap-x-8"
+            )}
+          >
             <div>
               {/* 🆎 Title */}
               <CardTitle
@@ -257,8 +268,8 @@ function ServiceCard({
                   "mb-1 font-kanit font-semibold",
                   "text-primary-foreground",
                   "group-hover:text-primary",
-                  "text-3xl",
-                  "@xs:text-[2.2rem]",
+                  "text-2xl",
+                  "@xs:text-[2rem]",
                   "@sm:text-4xl"
                 )}
               >
@@ -335,7 +346,11 @@ function ServiceCard({
             <div className="mb-6 h-[0.5px] w-full bg-linear-to-r from-transparent via-primary to-transparent" />
             <a
               className={cn(
-                "group flex w-full items-center justify-between rounded-lg px-5 py-3 transition-colors",
+                "group flex w-full items-center justify-between",
+                "rounded-lg",
+                "px-5 py-0",
+                "@xs:px-5 @xs:py-3",
+                "transition-colors",
                 "bg-primary/10 text-primary/80",
                 "hover:bg-primary/20 hover:text-primary",
                 !isFlipped && "pointer-events-none"

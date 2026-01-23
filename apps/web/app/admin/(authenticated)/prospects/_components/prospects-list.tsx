@@ -1,4 +1,5 @@
 "use client";
+import { isValidMapsUrl, isValidUrlFormat } from "@dev-oc/utils/url";
 import { useForm } from "@tanstack/react-form";
 import {
   createColumnHelper,
@@ -73,7 +74,6 @@ import {
 } from "@/components/ui/tooltip";
 import type { Prospect } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
-import { isValidMapsUrl, isValidUrlFormat } from "@/utils/valid-url-format";
 import { useProspectsContext } from "../prospects-context";
 import {
   ESTIMATED_OPPORTUNITY,

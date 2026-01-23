@@ -1,15 +1,25 @@
 "use client";
+import useNavTheme from "@/app/_hooks/use-nav-theme";
+import GlowLine from "@/components/sera-ui/glow-line";
 import { cn } from "@/lib/utils";
 import SectionTitle from "./section-title";
-
 export default function SectionUs() {
+  const { ref } = useNavTheme({ sectionName: "services", theme: "dark" });
+
   return (
     <section
       className={cn(
-        "flex w-full flex-col items-center bg-linear-to-br bg-zinc-950 px-6 py-24 text-white"
+        "flex flex-col items-center",
+        "relative overflow-hidden",
+        "px-6 py-24",
+        "w-full",
+        "bg-linear-to-br bg-zinc-950",
+        "text-white"
       )}
-      id="collectif"
+      id="us"
+      ref={ref}
     >
+      <GlowLine color="orange" orientation="horizontal" position="0px" />
       <SectionTitle description="L'ADN Dev'Oc" title="Qui sommes-nous ?" />
       <div className="mt-16 w-full max-w-4xl">
         <span>
@@ -21,7 +31,7 @@ export default function SectionUs() {
           d'améliorer son empreinte numérique.
         </span>
         <h3 className="mt-6 mb-6 font-kanit text-3xl text-primary">L'Equipe</h3>
-        <div className="grid grid-cols-2 justify-items-center">
+        <div className="grid grid-cols-1 justify-items-center gap-4 sm:grid-cols-2">
           <div>
             <h4 className="mb-2 font-bold text-lg text-primary">Clément</h4>
             <span>
