@@ -6,7 +6,7 @@ function SectionTitle({
   className,
 }: {
   title: string;
-  description: string;
+  description?: string;
   className?: string;
 }) {
   return (
@@ -35,7 +35,8 @@ function SectionTitle({
           "mx-auto max-w-3xl text-pretty font-kanit leading-tight! transition-colors",
           "text-lg",
           "xs:text-xl",
-          "md:text-2xl"
+          "md:text-2xl",
+          "empty:hidden"
         )}
       >
         {description}
