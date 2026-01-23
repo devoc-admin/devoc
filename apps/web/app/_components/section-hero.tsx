@@ -32,7 +32,7 @@ export default function Hero() {
       <Shapes />
       <div className="flex flex-col items-center gap-y-6">
         <DevOc />
-        <KeywordsRotating />
+        <Keywords />
         <Description />
         <OpenCarcaWinner />
       </div>
@@ -274,7 +274,7 @@ const keywords = [
   "🎨 Design",
 ];
 
-function KeywordsRotating() {
+function Keywords() {
   return (
     <motion.div
       animate={{ opacity: 1 }}
