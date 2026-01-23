@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
   addProspect,
   deleteProspect,
@@ -43,6 +44,10 @@ export function useAddProspectMutation() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prospects"] });
+      toast("Prospect ajouté avec succès !", {
+        icon: "✅",
+        position: "bottom-right",
+      });
     },
   });
 }
@@ -87,8 +92,12 @@ export function useEditProspectMutation() {
 
       return true;
     },
+    onError: () => {
+      toast.error("Erreur lors de la modification du prospect.");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prospects"] });
+      toast.success("Prospect modifié avec succès !");
     },
   });
 }
@@ -107,8 +116,12 @@ export function useDeleteProspectMutation() {
       }
       return true;
     },
+    onError: () => {
+      toast.error("Erreur lors de la suppression du prospect.");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prospects"] });
+      toast.success("Prospect supprimé avec succès !");
     },
   });
 }
@@ -136,8 +149,12 @@ export function useUpdateEstimatedOpportunityMutation() {
       }
       return true;
     },
+    onError: () => {
+      toast.error("Erreur lors de la mise à jour de l'urgence.");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prospects"] });
+      toast.success("Urgence mise à jour avec succès !");
     },
   });
 }

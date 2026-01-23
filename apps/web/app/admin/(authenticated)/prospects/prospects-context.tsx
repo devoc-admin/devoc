@@ -2,14 +2,7 @@
 // biome-ignore-all assist/source/useSortedKeys: context requires specific order
 import type { UseMutateFunction } from "@tanstack/react-query";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
-import {
-  createContext,
-  type ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { toast } from "sonner";
+import { createContext, type ReactNode, useContext, useState } from "react";
 import type { ProspectResult } from "./prospects-actions";
 import {
   useAddProspectMutation,
@@ -66,105 +59,32 @@ export function ProspectsContextProvider({
     isSuccess: isAddedProspect,
   } = useAddProspectMutation();
 
-  // ✅🍞 Toast success (add)
-  useEffect(() => {
-    if (isAddedProspect) {
-      toast("Prospect ajouté avec succès !", {
-        icon: "✅",
-        position: "bottom-right",
-      });
-    }
-  }, [isAddedProspect]);
-
   // 🗑️ Delete prospect
-  const [deletingProspectId, setDeletingProspectId] = useState<
-    number | undefined
-  >(undefined);
   const {
-    mutate: deleteProspectMutateOriginal,
+    mutate: deleteProspectMutate,
     isPending: isDeletingProspect,
-    isSuccess: isDeletedProspect,
-    isError: isDeleteProspectError,
+    variables: deletingProspectId,
   } = useDeleteProspectMutation();
 
-  const deleteProspectMutate = (prospectId: number) => {
-    setDeletingProspectId(prospectId);
-    deleteProspectMutateOriginal(prospectId);
-  };
-
-  // ✅🍞 Toast success/error (delete)
-  useEffect(() => {
-    if (isDeletedProspect) {
-      toast.success("Prospect supprimé avec succès !");
-    }
-    if (isDeleteProspectError) {
-      toast.error("Erreur lors de la suppression du prospect.");
-    }
-  }, [isDeletedProspect, isDeleteProspectError]);
-
   // ✏️ Edit prospect
-  const [editingProspectId, setEditingProspectId] = useState<
-    number | undefined
-  >(undefined);
   const {
-    mutate: editProspectMutateOriginal,
+    mutate: editProspectMutate,
     isPending: isEditingProspect,
     isSuccess: isEditedProspect,
-    isError: isEditProspectError,
+    variables: editingProspectVariables,
   } = useEditProspectMutation();
 
-  const editProspectMutate = (data: {
-    id: number;
-    name: string;
-    website: string;
-    location: string;
-    type: ProspectType;
-    latitude?: string;
-    longitude?: string;
-  }) => {
-    setEditingProspectId(data.id);
-    editProspectMutateOriginal(data);
-  };
-
-  // ✅🍞 Toast success/error (edit)
-  useEffect(() => {
-    if (isEditedProspect) {
-      toast.success("Prospect modifié avec succès !");
-    }
-    if (isEditProspectError) {
-      toast.error("Erreur lors de la modification du prospect.");
-    }
-  }, [isEditedProspect, isEditProspectError]);
+  const editingProspectId = editingProspectVariables?.id;
 
   // 🎯 Update estimated opportunity
-  const [
-    updatingEstimatedOpportunityProspectId,
-    setUpdatingEstimatedOpportunityProspectId,
-  ] = useState<number | undefined>(undefined);
   const {
-    mutate: updateEstimatedOpportunityMutateOriginal,
+    mutate: updateEstimatedOpportunityMutate,
     isPending: isUpdatingEstimatedOpportunity,
-    isSuccess: isUpdatedEstimatedOpportunity,
-    isError: isUpdateEstimatedOpportunityError,
+    variables: updatingEstimatedOpportunityVariables,
   } = useUpdateEstimatedOpportunityMutation();
 
-  const updateEstimatedOpportunityMutate = (data: {
-    prospectId: number;
-    estimatedOpportunity: EstimatedOpportunity;
-  }) => {
-    setUpdatingEstimatedOpportunityProspectId(data.prospectId);
-    updateEstimatedOpportunityMutateOriginal(data);
-  };
-
-  // ✅🍞 Toast success/error (update estimated opportunity)
-  useEffect(() => {
-    if (isUpdatedEstimatedOpportunity) {
-      toast.success("Urgence mise à jour avec succès !");
-    }
-    if (isUpdateEstimatedOpportunityError) {
-      toast.error("Erreur lors de la mise à jour de l'urgence.");
-    }
-  }, [isUpdatedEstimatedOpportunity, isUpdateEstimatedOpportunityError]);
+  const updatingEstimatedOpportunityProspectId =
+    updatingEstimatedOpportunityVariables?.prospectId;
 
   return (
     <ProspectsContext.Provider
@@ -207,42 +127,45 @@ export function ProspectsContextProvider({
   );
 }
 
+type ProspectAddData = {
+  name: string;
+  website: string;
+  location: string;
+  type: ProspectType;
+  latitude?: string;
+  longitude?: string;
+};
+
+type ProspectEditData = ProspectAddData & { id: number };
+
 type ProspectsContext = {
   prospects: ProspectResult[] | undefined;
   addProspectMutate: UseMutateFunction<
     boolean,
     Error,
-    {
-      name: string;
-      website: string;
-      location: string;
-      type: ProspectType;
-      latitude?: string;
-      longitude?: string;
-    },
+    ProspectAddData,
     unknown
   >;
   isAddingProspect: boolean;
   isAddedProspect: boolean;
-  editProspectMutate: (data: {
-    id: number;
-    name: string;
-    website: string;
-    location: string;
-    type: ProspectType;
-    latitude?: string;
-    longitude?: string;
-  }) => void;
+  editProspectMutate: UseMutateFunction<
+    boolean,
+    Error,
+    ProspectEditData,
+    unknown
+  >;
   editingProspectId: number | undefined;
   isEditingProspect: boolean;
   isEditedProspect: boolean;
-  deleteProspectMutate: (prospectId: number) => void;
+  deleteProspectMutate: UseMutateFunction<boolean, Error, number, unknown>;
   deletingProspectId: number | undefined;
   isDeletingProspect: boolean;
-  updateEstimatedOpportunityMutate: (data: {
-    prospectId: number;
-    estimatedOpportunity: EstimatedOpportunity;
-  }) => void;
+  updateEstimatedOpportunityMutate: UseMutateFunction<
+    boolean,
+    Error,
+    { prospectId: number; estimatedOpportunity: EstimatedOpportunity },
+    unknown
+  >;
   updatingEstimatedOpportunityProspectId: number | undefined;
   isUpdatingEstimatedOpportunity: boolean;
   searchQuery: string;

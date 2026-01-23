@@ -7,7 +7,7 @@ import {
   useTransform,
 } from "motion/react";
 import Image from "next/image";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import LasbordesNew from "../assets/lasbordes_new.webp";
 import LasbordesOld from "../assets/lasbordes_old.webp";
@@ -242,4 +242,4 @@ export const Compare = ({
   );
 };
 
-const MemoizedSparklesCore = React.memo(SparklesCore);
+const MemoizedSparklesCore = memo(SparklesCore);

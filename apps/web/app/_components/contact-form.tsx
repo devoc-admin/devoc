@@ -4,7 +4,10 @@
 import { useForm } from "@tanstack/react-form";
 import { CheckCircleIcon, SendIcon, TriangleAlertIcon } from "lucide-react";
 import { useState } from "react";
-import { type ContactFormData, sendContactEmail } from "@/actions/send-email";
+import {
+  type ContactFormData,
+  sendContactEmail,
+} from "@/app/_actions/send-email";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

@@ -1,5 +1,5 @@
 "use client";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { queryOptions, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useQueryState } from "nuqs";
 import { useEffect } from "react";
 import {
@@ -8,6 +8,41 @@ import {
   listCrawls,
   listUncrawledProspects,
 } from "./crawl-actions";
+
+export const crawlsListQueryOptions = queryOptions({
+  queryFn: async () => {
+    const result = await listCrawls();
+    if (!result.success) {
+      throw new Error(result.error);
+    }
+    return result;
+  },
+  queryKey: ["list-crawls"],
+  select: (data) => data.response,
+});
+
+export const runningCrawlQueryOptions = queryOptions({
+  queryFn: async () => {
+    const result = await getRunningCrawl();
+    if (!result.success) {
+      throw new Error(result.error);
+    }
+    return result.response;
+  },
+  queryKey: ["running-crawl"],
+});
+
+export const uncrawledProspectsQueryOptions = queryOptions({
+  queryFn: async () => {
+    const result = await listUncrawledProspects();
+    if (!result.success) {
+      throw new Error(result.error);
+    }
+    return result;
+  },
+  queryKey: ["uncrawled-prospects"],
+  select: (data) => data.response,
+});
 
 // --------------------------------------
 // 👁️ See current crawl
@@ -61,17 +96,7 @@ export function useCrawl() {
 // 📝 List crawls
 
 export function useCrawlsList() {
-  const { data: crawls, isLoading } = useQuery({
-    queryFn: async () => {
-      const result = await listCrawls();
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      return result;
-    },
-    queryKey: ["list-crawls"],
-    select: (data) => data.response,
-  });
+  const { data: crawls, isLoading } = useQuery(crawlsListQueryOptions);
 
   return {
     crawls,
@@ -86,15 +111,8 @@ export function useRunningCrawl() {
   const [crawlId, setCrawlId] = useQueryState("crawlId");
 
   const { data: runningCrawl } = useQuery({
+    ...runningCrawlQueryOptions,
     enabled: !crawlId,
-    queryFn: async () => {
-      const result = await getRunningCrawl();
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      return result.response;
-    },
-    queryKey: ["running-crawl"],
   });
 
   useEffect(() => {
@@ -108,17 +126,9 @@ export function useRunningCrawl() {
 // 🏢 List prospects with websites not yet crawled
 
 export function useUncrawledProspects() {
-  const { data: prospects, isLoading } = useQuery({
-    queryFn: async () => {
-      const result = await listUncrawledProspects();
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      return result;
-    },
-    queryKey: ["uncrawled-prospects"],
-    select: (data) => data.response,
-  });
+  const { data: prospects, isLoading } = useQuery(
+    uncrawledProspectsQueryOptions
+  );
 
   return {
     prospects,
