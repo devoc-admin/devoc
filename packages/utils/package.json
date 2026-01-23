@@ -1,0 +1,10 @@
+{
+  "name": "@dev-oc/utils",
+  "version": "0.0.1",
+  "type": "module",
+  "module": "src/index.ts",
+  "exports": {
+    "./url": "./src/url/index.ts",
+    "./dates": "./src/dates/index.ts"
+  }
+}

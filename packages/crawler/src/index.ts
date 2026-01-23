@@ -1,4 +1,6 @@
 // biome-ignore-all lint/performance/noBarrelFile: Re-exporting crawler module for clean public API
+
+export { isInternalUrl, normalizeUrl, toAbsoluteUrl } from "@dev-oc/utils/url";
 export { WebCrawler } from "./core/crawler";
 export { detectAuthor } from "./detectors/author-detector";
 export { detectCategoryPage } from "./detectors/category-detector";
@@ -32,9 +34,4 @@ export type {
   TechnologyDetectionResult,
   TwitterCardData,
 } from "./types";
-export {
-  isInternalUrl,
-  normalizeUrl,
-  shouldCrawlUrl,
-  toAbsoluteUrl,
-} from "./utils/url-utils";
+export { shouldCrawlUrl } from "./utils/url-utils";

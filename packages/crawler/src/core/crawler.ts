@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { isInternalUrl, normalizeUrl, toAbsoluteUrl } from "@dev-oc/utils/url";
 import { put } from "@vercel/blob";
 import {
   type Browser,
@@ -34,12 +35,7 @@ import {
   isPathAllowed,
   type RobotsRules,
 } from "../utils/robots-parser";
-import {
-  isInternalUrl,
-  normalizeUrl,
-  shouldCrawlUrl,
-  toAbsoluteUrl,
-} from "../utils/url-utils";
+import { shouldCrawlUrl } from "../utils/url-utils";
 
 const DEFAULT_DELAY_BETWEEN_REQUESTS = 100;
 const DEFAULT_MAX_DEPTH = 3;
