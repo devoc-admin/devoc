@@ -1,5 +1,4 @@
 "use client";
-import { TrophyIcon } from "lucide-react";
 import Image from "next/image";
 import {
   Card,
@@ -16,7 +15,7 @@ export function AchievementsMobile() {
   return (
     <div
       className={cn(
-        "w-full max-w-[1400px] gap-6",
+        "w-full max-w-350 gap-6",
         "flex flex-col",
         "sm:grid sm:grid-cols-[repeat(auto-fit,minmax(320px,1fr))]"
       )}
@@ -27,18 +26,20 @@ export function AchievementsMobile() {
     </div>
   );
 }
+
+// --------------------------
+// 🃏 Card
 function CardAchievement({
   showcase,
   title,
   description,
-  accomplishments,
   companyLogo,
   companyLink,
 }: Achievement) {
   return (
-    <Card className="relative cursor-auto overflow-hidden pt-0">
+    <Card className="container relative cursor-auto overflow-hidden bg-zinc-900 pt-0">
       {/* 🖼️ Image */}
-      <div className="relative h-[250px] overflow-hidden">
+      <div className="relative h-62.5 overflow-hidden">
         <div className="group relative grid h-full w-full place-items-center">
           <Image
             alt="Realisation"
@@ -55,28 +56,14 @@ function CardAchievement({
       </div>
 
       {/* 🔡 Description */}
-      <CardContent className="mb-4">
-        <CardTitle className="mb-1 font-kanit font-semibold text-2xl">
+      <CardContent className={cn("mb-4 space-y-6!", "px-4", "@sm:px-6")}>
+        {/* 🆎 Title */}
+        <CardTitle className="mb-1 font-kanit font-semibold text-2xl leading-none">
           {title}
         </CardTitle>
         <CardDescription className="text-base leading-tight">
           {description}
         </CardDescription>
-        {/* 🏆 Accomplishments */}
-        {accomplishments && accomplishments.length > 0 && (
-          <div className="mt-4 flex flex-col gap-y-2">
-            <div className="font-bold text-sm text-white/80">
-              ✨ Les résultats
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {accomplishments.map((accomplishment) => (
-                <Accomplishment key={accomplishment}>
-                  {accomplishment}
-                </Accomplishment>
-              ))}
-            </div>
-          </div>
-        )}
       </CardContent>
 
       {/* ⚙️ Technologies */}
@@ -92,14 +79,5 @@ function CardAchievement({
         </a>
       </CardFooter>
     </Card>
-  );
-}
-
-function Accomplishment({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex items-center gap-2 rounded-full border border-primary/50 bg-primary/30 px-3 py-1 text-primary">
-      <TrophyIcon size={12} />
-      <span className="text-xs">{children}</span>
-    </div>
   );
 }

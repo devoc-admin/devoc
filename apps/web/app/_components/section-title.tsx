@@ -32,7 +32,7 @@ function SectionTitle({
       {/* 🔡 Description */}
       <div
         className={cn(
-          "mx-auto max-w-3xl text-pretty font-kanit leading-tight! transition-colors",
+          "mx-auto max-w-xl text-pretty font-kanit leading-tight! transition-colors",
           "text-lg",
           "xs:text-xl",
           "md:text-2xl",

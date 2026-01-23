@@ -17,9 +17,14 @@ export default function Realisations() {
   return (
     <div
       className={cn(
+        "relative",
         "bg-black",
-        "relative min-h-screen w-full px-6 py-24",
-        "flex flex-col items-center justify-center gap-2"
+        "flex flex-col items-center justify-center",
+        "min-h-screen w-full",
+        "px-4 py-14",
+        "xs:px-6 xs:py-24",
+        "sm:px-6 sm:py-24",
+        "gap-2"
       )}
       id="realisations"
       ref={ref}
@@ -27,8 +32,8 @@ export default function Realisations() {
       <BackgroundWithBeams />
       <TopBar />
       <SectionTitle
-        className="z-10 mb-24"
-        description="Nos derniers projets qui illustrent notre approche orientée résultats"
+        className={cn("z-10", "mb-8", "xs:mb-12", "sm:mb-16", "md:mb-24")}
+        description="Nos derniers projets qui illustrent notre approche orientée résultats ✨"
         title="Découvrez nos réalisations"
       />
       {isLargeEnough ? <AchievementsDesktop /> : <AchievementsMobile />}
