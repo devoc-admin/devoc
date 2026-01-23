@@ -20,6 +20,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { RatingBadge } from "@/components/untitledui/rating-badge";
 import { cn } from "@/lib/utils";
 
 const heroEntryDelay = 0.5;
@@ -33,9 +34,10 @@ export default function Hero() {
         <DevOc />
         <KeywordsRotating />
         <Description />
+        <OpenCarcaWinner />
       </div>
-      <div className={cn("absolute", "bottom-10")}>
-        <CTA />
+      <div className={cn("absolute", "bottom-6")}>
+        <SeeOurProjects />
         <Founders />
       </div>
     </WithNavbar>
@@ -63,13 +65,48 @@ function WithNavbar({ children }: { children: React.ReactNode }) {
 }
 
 // ----------------------------------
+// 🌿 Wreaths
+function OpenCarcaWinner() {
+  return (
+    <FadeScaleEntry>
+      <a
+        href="https://www.carcassonne-agglo.fr/actualite/carcassonne-agglo-apporte-son-concours-2/#:~:text=prix%20revient%20%C3%A0%20Cl%C3%A9ment%20Dubos%20et%20Thibaut%20Izard%20pour%20%C2%AB%20Dev%E2%80%99Oc%20%C2%BB,%20un%20collectif%20de%20d%C3%A9veloppeurs%20informatique%20qui%20souhaitent%20proposer%20des%20services%20de%20mise%20en%20conformit%C3%A9%20de%20sites%20Internet%20aux%20collectivit%C3%A9s%20territoriales"
+        rel="noopener"
+        target="_blank"
+        title="Lien vers la page d'annnonce des résultats du concours OpenCarca 2025"
+      >
+        <RatingBadge
+          className={cn(
+            "mx-auto text-amber-400",
+            "[@media(max-height:850px)]:hidden" // Hide if viewport height is too small
+          )}
+        >
+          <div
+            className={cn(
+              "mt-4 flex flex-col gap-y-1.5",
+              "max-w-50",
+              "text-center font-bold text-base leading-none",
+              "bg-linear-to-br from-primary-strong via-primary-lighter to-primary bg-clip-text text-transparent"
+            )}
+          >
+            <span>Lauréats concours Open Carca 2025</span>
+            <span className="text-[0.6rem] uppercase">Catégorie émergence</span>
+          </div>
+        </RatingBadge>
+      </a>
+    </FadeScaleEntry>
+  );
+}
+
+// ----------------------------------
+// 🔲 Shapes
 function Shapes() {
   const { effectiveParallaxOffset } = useShapesParallaxEffect();
   return (
     <div
       className={cn(
         "absolute -z-1",
-        "h-full w-full max-w-[1400px]",
+        "h-full w-full max-w-350",
         "opacity-50 blur-xs",
         "sm:opacity-100 sm:blur-none"
       )}
@@ -151,7 +188,7 @@ function Shape({
     <motion.div
       animate={{
         opacity: 1,
-        // Simplified animation on mobile: only 3 keyframes instead of 7
+        // 📱 Simplified animation on mobile: only 3 keyframes instead of 7
         x: isMobile ? [0, 2, 0] : [0, 3, -2, 4, 0, -1, 0],
         y: isMobile
           ? [parallaxValue, parallaxValue - 5, parallaxValue]
@@ -169,11 +206,11 @@ function Shape({
         className,
         "absolute",
         "w-60",
-        "xs:w-[275px]",
-        "sm:w-[300px]",
-        "md:w-[300px]",
-        "lg:w-[350px]",
-        "xl:w-[400px]"
+        "xs:w-68.75",
+        "sm:w-75",
+        "md:w-75",
+        "lg:w-75",
+        "xl:w-100"
       )}
       initial={{ opacity: 0 }}
       style={{ y: parallaxValue }}
@@ -318,32 +355,24 @@ function Description() {
 }
 
 // ----------------------------------
-function CTA() {
+// 📂 See our projects
+function SeeOurProjects() {
   return (
     <FadeMoveUp>
-      <div className={cn("flex flex-col gap-3", "xs:gap-6", "sm:flex-row")}>
-        {/*<DemarrerUnProjet />*/}
-        <VoirNosRealisations />
-      </div>
+      <Link href="#realisations">
+        <ShimmerButton
+          className={cn(
+            "font-kanit",
+            "h-12 px-8 text-md",
+            "xs:h-13 xs:px-12 xs:text-lg",
+            "sm:h-13 sm:px-12 sm:text-xl"
+          )}
+          shimmerSize="2px"
+        >
+          Voir nos réalisations
+        </ShimmerButton>
+      </Link>
     </FadeMoveUp>
-  );
-}
-
-function VoirNosRealisations() {
-  return (
-    <Link href="#realisations">
-      <ShimmerButton
-        className={cn(
-          "font-kanit",
-          "h-12 px-8 text-md",
-          "xs:h-13 xs:px-12 xs:text-lg",
-          "sm:h-13 sm:px-12 sm:text-xl"
-        )}
-        shimmerSize="2px"
-      >
-        Voir nos réalisations
-      </ShimmerButton>
-    </Link>
   );
 }
 
@@ -360,6 +389,7 @@ function FadeMoveUp({ children }: { children: React.ReactNode }) {
 }
 
 // ----------------------------------
+// 👑 Founders
 function Founders() {
   return (
     <div
@@ -432,6 +462,8 @@ function AvatarWithTooltip({
   );
 }
 
+// ------------------------------------------------------
+// 🤹 Animations
 function FadeScaleEntry({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
@@ -469,7 +501,7 @@ function PopEntry({
 }
 
 // ------------------------------------------------------
-//
+// 📱 Mobile
 function useMobile() {
   const [isMobile, setIsMobile] = useState(false);
 

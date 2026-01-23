@@ -16,7 +16,7 @@ import { formatNumber } from "./utils";
 const Onepark = {
   accomplishments: [
     `${formatNumber(50_000)}€ de revenus mensuels`,
-    "Déploiement en France, Espagne et Luxembourg",
+    "Déploiement en France, Espagne, Suisse et Luxembourg",
     "+30 hôtels partenaires en 2025",
   ],
   companyLink: "https://oneparkflow.com",
