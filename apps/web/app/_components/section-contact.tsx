@@ -71,7 +71,7 @@ export default function Contact() {
       {/* 🃏 Cards */}
       <div
         className={cn(
-          "z-1 flex w-full max-w-[1400px] justify-center gap-6",
+          "z-1 flex w-full max-w-350 justify-center gap-6",
           "flex-col",
           "md:flex-row md:items-start"
         )}
@@ -83,7 +83,7 @@ export default function Contact() {
           {/* 📧 Response rapide garantie */}
           <Card
             animation={false}
-            className="border-primary/30 bg-primary/5 md:max-w-[400px]"
+            className="gap-y-2 border-primary/30 bg-primary/5 md:max-w-100"
           >
             <CardHeader>
               <CardTitle className="text-wrap font-kanit font-semibold text-2xl">

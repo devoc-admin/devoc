@@ -29,16 +29,15 @@ function Processus() {
         className={cn(
           "flex flex-1 flex-col items-center bg-white",
           "border-t-6 border-t-orange-600",
-          "rounded-t-[50px] py-26",
-          "sm:rounded-t-[100px] sm:py-26",
+          "rounded-t-[50px] py-16",
+          "sm:rounded-t-[100px] sm:py-22",
           "md:rounded-t-[100px] md:py-36"
         )}
         ref={sectionRef}
       >
         {/* 🆎 Title */}
         <SectionTitle
-          className="text-zinc-950"
-          description=""
+          className={cn("mb-10", "sm:mb-22", "text-zinc-950")}
           title="Notre méthode"
         />
         {isLargeEnough ? <ProcessusDesktop /> : <ProcessusMobile />}
