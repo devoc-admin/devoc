@@ -11,4 +11,5 @@ export type Achievement = {
   accomplishments?: string[];
   snapshots: StaticImageData[];
   showcase: StaticImageData;
+  video?: string;
 };

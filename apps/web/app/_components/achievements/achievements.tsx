@@ -2,6 +2,7 @@ import Image from "next/image";
 import flow1 from "@/assets/projects/flow/flow_1.png";
 import flow2 from "@/assets/projects/flow/flow_2.png";
 import flow3 from "@/assets/projects/flow/flow_3.png";
+import flowManagerPreview from "@/assets/projects/flow/flow_manager_preview.jpg";
 import flowMockup from "@/assets/projects/flow/flow_mockup.avif";
 import OneparkFlowLogo from "@/assets/projects/flow/onepark_flow_logo.svg";
 import frustrationCover from "@/assets/projects/frustration/frustration_cover.webp";
@@ -34,9 +35,10 @@ const Onepark = {
   id: "onepark",
   showcase: flowMockup,
   slug: "dashboard-analytics",
-  snapshots: [flow1, flow2, flow3],
+  snapshots: [flowManagerPreview, flow1, flow2, flow3],
   technologies: ["React", "Typescript", "Tailwind"],
   title: "Une plateforme de réservation",
+  video: "/videos/flow_demo.mp4",
 };
 
 const Frustration = {

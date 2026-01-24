@@ -96,7 +96,7 @@ function AchievementWithWreaths({
   return (
     <RatingBadge className="mx-auto text-yellow-400">
       <WordRotate
-        className="flex max-w-[200px] text-center font-bold text-base leading-none"
+        className="flex max-w-50 text-center font-bold text-base leading-none"
         duration={5000}
         words={accomplishments}
       />
@@ -104,6 +104,8 @@ function AchievementWithWreaths({
   );
 }
 
+// ----------------------------
+// ⬅️➡️ Next/previous achievement
 function AchievementButton({
   delta,
   children,
@@ -123,9 +125,12 @@ function AchievementButton({
   );
 }
 
+// --------------------------------
+// 🖼️ Preview
+
 function AchievementsPreview() {
   return (
-    <div className="perspective-midrange w-[40vw] max-w-[700px] grow px-12">
+    <div className="perspective-midrange w-[40vw] max-w-175 grow px-12">
       {achievements.map(({ id }, index) => (
         <Rotate3dAndFloat index={index} key={id}>
           <MoveAnimation index={index}>
@@ -221,10 +226,20 @@ function AchievementPreview({ index }: { index: number }) {
   const currentAchievement = achievements[index];
   const image = currentAchievement.snapshots[0];
   const url = currentAchievement.companyLink;
+  const video = currentAchievement.video;
 
   const { currentIndex } = useContext(AchievementsContext);
   const positionInStack = index - currentIndex;
   const isInvisible = positionInStack > 0;
+  const isActive = positionInStack === 0;
 
-  return <Safari image={image} invisibleMode={isInvisible} url={url} />;
+  return (
+    <Safari
+      image={image}
+      invisibleMode={isInvisible}
+      isActive={isActive}
+      url={url}
+      video={video}
+    />
+  );
 }
