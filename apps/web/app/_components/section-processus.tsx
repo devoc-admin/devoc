@@ -1,5 +1,6 @@
 /** biome-ignore-all lint/style/noMagicNumbers: exception */
 "use client";
+import { useEffect, useState } from "react";
 import { useWindowSize } from "usehooks-ts";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import { cn } from "@/lib/utils";
@@ -8,6 +9,7 @@ import { ProcessusMobile } from "./processus/processus-mobile";
 import SectionTitle from "./section-title";
 
 function Processus() {
+  const [hasMounted, setHasMounted] = useState(false);
   const { ref: sectionRef } = useNavTheme({
     sectionName: "processus",
     theme: "light",
@@ -16,7 +18,9 @@ function Processus() {
   const { width = 0 } = useWindowSize();
   const isLargeEnough = width >= 1200;
 
-  if (width === 0) return null;
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   return (
     /* ⚫ Black background  */
@@ -35,12 +39,16 @@ function Processus() {
         )}
         ref={sectionRef}
       >
-        {/* 🆎 Title */}
-        <SectionTitle
-          className={cn("mb-10", "sm:mb-22", "text-zinc-950")}
-          title="Notre méthode"
-        />
-        {isLargeEnough ? <ProcessusDesktop /> : <ProcessusMobile />}
+        {hasMounted && (
+          <>
+            {/* 🆎 Title */}
+            <SectionTitle
+              className={cn("mb-10", "sm:mb-22", "text-zinc-950")}
+              title="Notre méthode"
+            />
+            {isLargeEnough ? <ProcessusDesktop /> : <ProcessusMobile />}
+          </>
+        )}
       </div>
     </div>
   );

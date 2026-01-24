@@ -4,7 +4,7 @@ import { MenuIcon, SendIcon, XIcon } from "lucide-react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useClickAnyWhere, useMediaQuery } from "usehooks-ts";
 import { Glass } from "@/components/sera-ui/liquid-glass";
 import { Button } from "@/components/ui/button";
@@ -12,10 +12,17 @@ import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
 
 export default function Header() {
+  const [hasMounted, setHasMounted] = useState(false);
   const isMobile = useMediaQuery("(max-width: 970px)");
-  const isDesktop = useMediaQuery("(min-width: 971px)");
-  if (isMobile) return <MobileHeader />;
-  if (isDesktop) return <DesktopHeader />;
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  // Render nothing on server to avoid hydration mismatch
+  if (!hasMounted) return null;
+
+  return isMobile ? <MobileHeader /> : <DesktopHeader />;
 }
 
 // --------------------------------

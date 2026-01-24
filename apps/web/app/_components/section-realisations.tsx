@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useWindowSize } from "usehooks-ts";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import Beams from "@/components/react-bits/beams";
@@ -8,12 +9,16 @@ import { AchievementsMobile } from "./achievements/achievements-mobile";
 import SectionTitle from "./section-title";
 
 export default function Realisations() {
+  const [hasMounted, setHasMounted] = useState(false);
   const { ref } = useNavTheme({ sectionName: "realisations", theme: "dark" });
   const { width = 0 } = useWindowSize();
   const isLargeEnough = width >= 1400;
 
-  if (width === 0) return null;
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
+  // Always render container with ref so useScroll can attach to it
   return (
     <div
       className={cn(
@@ -29,14 +34,18 @@ export default function Realisations() {
       id="realisations"
       ref={ref}
     >
-      <BackgroundWithBeams />
-      <TopBar />
-      <SectionTitle
-        className={cn("z-10", "mb-8", "xs:mb-12", "sm:mb-16", "md:mb-24")}
-        description="Nos derniers projets qui illustrent notre approche orientée résultats ✨"
-        title="Découvrez nos réalisations"
-      />
-      {isLargeEnough ? <AchievementsDesktop /> : <AchievementsMobile />}
+      {hasMounted && (
+        <>
+          <BackgroundWithBeams />
+          <TopBar />
+          <SectionTitle
+            className={cn("z-10", "mb-8", "xs:mb-12", "sm:mb-16", "md:mb-24")}
+            description="Nos derniers projets qui illustrent notre approche orientée résultats ✨"
+            title="Découvrez nos réalisations"
+          />
+          {isLargeEnough ? <AchievementsDesktop /> : <AchievementsMobile />}
+        </>
+      )}
     </div>
   );
 }

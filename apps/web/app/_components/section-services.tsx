@@ -13,7 +13,7 @@ import {
   WandSparklesIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import Lamp from "@/components/aceternity/lamp";
@@ -143,12 +143,17 @@ const services: ServiceCardProps[] = [
 ];
 
 function ServiceCards() {
+  const [hasMounted, setHasMounted] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 640px)");
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   return (
     <motion.div
       className={cn("flex flex-wrap justify-center gap-6", "w-full max-w-325")}
-      initial={{ opacity: 0, y: isDesktop ? 200 : 0 }}
+      initial={{ opacity: 0, y: hasMounted && isDesktop ? 200 : 0 }}
       transition={{
         duration: 0.5,
       }}
@@ -173,8 +178,14 @@ function ServiceCard({
   index,
 }: ServiceCardProps & { index: number }) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const randomDelay = Math.random() * 1000;
+  // Deterministic delay based on index to avoid hydration mismatch
+  const beamDelay = ((index * 347) % 1000) + 200;
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   const FrontCard = (
     <div
@@ -183,10 +194,10 @@ function ServiceCard({
         "py-4",
         "@xs:py-6",
         "transition-all duration-700",
-        isDesktop && "backface-hidden rotate-y-0",
+        hasMounted && isDesktop && "backface-hidden rotate-y-0",
         isFlipped ? "opacity-0" : "opacity-100",
         // On mobile, hide completely when flipped
-        isDesktop && isFlipped && "pointer-events-none"
+        hasMounted && isDesktop && isFlipped && "pointer-events-none"
       )}
     >
       <CardHeader>
@@ -274,8 +285,8 @@ function ServiceCard({
         </div>
       </CardFooter>
       {/* 🔄 Laser rotating */}
-      {isDesktop && (
-        <BorderBeam delay={randomDelay} reverse={index % 2 === 0} size={100} />
+      {hasMounted && isDesktop && (
+        <BorderBeam delay={beamDelay} reverse={index % 2 === 0} size={100} />
       )}
     </div>
   );
@@ -288,10 +299,10 @@ function ServiceCard({
         "gap-y-4 py-4",
         "@sm:gap-y-6 @sm:py-4",
         "@md:gap-y-6 @md:px-2 @md:py-8",
-        isDesktop && "backface-hidden rotate-y-180",
+        hasMounted && isDesktop && "backface-hidden rotate-y-180",
         isFlipped ? "opacity-100" : "opacity-0",
         // On mobile, hide completely when not flipped
-        isDesktop && !isFlipped && "pointer-events-none"
+        hasMounted && isDesktop && !isFlipped && "pointer-events-none"
       )}
     >
       {/* 🆎 Title */}
@@ -384,8 +395,8 @@ function ServiceCard({
         </a>
       </CardFooter>
       {/* 🔄 Laser rotating */}
-      {isDesktop && (
-        <BorderBeam delay={randomDelay} reverse={index % 2 === 0} size={100} />
+      {hasMounted && isDesktop && (
+        <BorderBeam delay={beamDelay} reverse={index % 2 === 0} size={100} />
       )}
     </div>
   );
@@ -399,7 +410,7 @@ function ServiceCard({
         "sm:aspect-4/5 sm:w-[calc(50%-1.5rem)]",
         "lg:aspect-4/5 lg:w-[calc(33.333%-1.5rem)]",
         // Only use perspective on desktop
-        isDesktop && "perspective-[2000px]"
+        hasMounted && isDesktop && "perspective-[2000px]"
       )}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
@@ -412,9 +423,9 @@ function ServiceCard({
           "cursor-pointer",
           "bg-linear-to-br from-zinc-950 to-zinc-900",
           // 🖥️ 3D flip on desktop
-          isDesktop && "transform-3d transition-all duration-700",
-          isDesktop && isFlipped && "rotate-y-180",
-          isDesktop && !isFlipped && "rotate-y-0"
+          hasMounted && isDesktop && "transform-3d transition-all duration-700",
+          hasMounted && isDesktop && isFlipped && "rotate-y-180",
+          hasMounted && isDesktop && !isFlipped && "rotate-y-0"
         )}
       >
         {FrontCard}
