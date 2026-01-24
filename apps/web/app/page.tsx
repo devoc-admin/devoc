@@ -1,12 +1,11 @@
-"use client";
-import Header from "@/app/_components/header";
-import ContactWithUs from "./_components/contact-with-us";
-import Footer from "./_components/footer";
-import Hero from "./_components/section-hero";
-import Method from "./_components/section-method";
-import Realisations from "./_components/section-realisations";
-import Services from "./_components/section-services";
-import WorkWith from "./_components/section-work-with";
+import Header from "@/app/header";
+import Realisations from "./_components/sections/achievements/achievements";
+import ContactWithUs from "./_components/sections/contact/components/contact-with-us";
+import Hero from "./_components/sections/hero/hero";
+import Method from "./_components/sections/method/method";
+import Services from "./_components/sections/services/services";
+import WorkWith from "./_components/sections/work-with/work-with";
+import Footer from "./footer";
 
 export default function Home() {
   return (

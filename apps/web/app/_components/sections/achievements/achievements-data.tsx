@@ -11,8 +11,8 @@ import statcraft1 from "@/assets/projects/statcraft/statcraft_1.png";
 import statcraft2 from "@/assets/projects/statcraft/statcraft_2.png";
 import statcraft3 from "@/assets/projects/statcraft/statcraft_3.png";
 import statcraftCover from "@/assets/projects/statcraft/statcraft_cover.webp";
-import type { Achievement } from "./type";
-import { formatNumber } from "./utils";
+import type { Achievement } from "./achievements-type";
+import { formatNumber } from "./achievements-utils";
 
 const Onepark = {
   accomplishments: [

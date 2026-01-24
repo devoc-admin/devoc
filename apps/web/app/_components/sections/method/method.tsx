@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { useWindowSize } from "usehooks-ts";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import { cn } from "@/lib/utils";
-import { MethodDesktop } from "./method/method-desktop";
-import { MethodMobile } from "./method/method-mobile";
-import SectionTitle from "./section-title";
+import SectionTitle from "../_components/section-title";
+import { MethodDesktop } from "./components/method-desktop";
+import { MethodMobile } from "./components/method-mobile";
 
 function Method() {
   const [hasMounted, setHasMounted] = useState(false);

@@ -2,7 +2,7 @@
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import GlowLine from "@/components/sera-ui/glow-line";
 import { cn } from "@/lib/utils";
-import SectionTitle from "./section-title";
+import SectionTitle from "../_components/section-title";
 export default function SectionUs() {
   const { ref } = useNavTheme({ sectionName: "services", theme: "dark" });
 

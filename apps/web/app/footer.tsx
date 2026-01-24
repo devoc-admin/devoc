@@ -345,7 +345,7 @@ function Newsletter() {
         className={cn(
           "flex w-full grow flex-col gap-4",
           "sm:w-auto sm:flex-row sm:items-center sm:justify-end",
-          "md:max-w-[500px]"
+          "md:max-w-125"
         )}
       >
         <Input

@@ -5,7 +5,7 @@ import { createContext, useContext, useState } from "react";
 import { Safari } from "@/components/magicui/safari";
 import { WordRotate } from "@/components/magicui/word-rotate";
 import { RatingBadge } from "@/components/untitledui/rating-badge";
-import { achievements } from "./achievements";
+import { achievements } from "../achievements-data";
 
 type AchievementContext = {
   changeAchievementIndex: (delta: number) => void;
@@ -38,7 +38,7 @@ export function AchievementsDesktop() {
         currentIndex,
       }}
     >
-      <div className="mx-auto flex w-full max-w-[1400px] gap-x-12">
+      <div className="mx-auto flex w-full max-w-350 gap-x-12">
         <AchievementsPanel />
         <AchievementsPreview />
       </div>
@@ -53,7 +53,7 @@ function AchievementsPanel() {
   return (
     <div className="perspective-midrange flex flex-col gap-y-2">
       {/* 📝 Description */}
-      <div className="flex h-[430px] max-w-[550px] rotate-y-8 flex-col justify-between gap-y-6 rounded-xl p-8 backdrop-blur-xl">
+      <div className="flex h-107.5 max-w-137.5 rotate-y-8 flex-col justify-between gap-y-6 rounded-xl p-8 backdrop-blur-xl">
         <div className="flex flex-col gap-y-4">
           <h3 className="text-center font-bold font-kanit text-5xl text-white">
             {currentAchievement.title}

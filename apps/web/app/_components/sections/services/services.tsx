@@ -28,7 +28,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import SectionTitle from "./section-title";
+import SectionTitle from "../_components/section-title";
 
 export default function Services() {
   const { ref } = useNavTheme({ sectionName: "services", theme: "dark" });

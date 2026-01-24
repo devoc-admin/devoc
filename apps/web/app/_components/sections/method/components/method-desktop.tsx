@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import Image from "next/image";
-import { type Step, steps } from "./method-type";
+import { type Step, steps } from "../method-type";
 
 export function MethodDesktop() {
   return (

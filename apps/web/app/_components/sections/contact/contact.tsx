@@ -10,8 +10,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import ContactForm from "./contact-form";
-import SectionTitle from "./section-title";
+import SectionTitle from "../_components/section-title";
+import ContactForm from "./components/contact-form";
 
 type ContactItem = {
   content: string | React.ReactNode;

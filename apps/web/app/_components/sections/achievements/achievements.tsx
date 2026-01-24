@@ -4,9 +4,9 @@ import { useWindowSize } from "usehooks-ts";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import Beams from "@/components/react-bits/beams";
 import { cn } from "@/lib/utils";
-import { AchievementsDesktop } from "./achievements/achievements-desktop";
-import { AchievementsMobile } from "./achievements/achievements-mobile";
-import SectionTitle from "./section-title";
+import SectionTitle from "../_components/section-title";
+import { AchievementsDesktop } from "./components/achievements-desktop";
+import { AchievementsMobile } from "./components/achievements-mobile";
 
 export default function Realisations() {
   const [hasMounted, setHasMounted] = useState(false);

@@ -4,7 +4,7 @@ import { useInView } from "motion/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { type Step, steps } from "./method-type";
+import { type Step, steps } from "../method-type";
 
 const animationDuration = 8000; // 8 seconds
 

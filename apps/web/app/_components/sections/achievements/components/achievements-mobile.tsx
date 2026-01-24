@@ -8,8 +8,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { achievements } from "./achievements";
-import type { Achievement } from "./type";
+import { achievements } from "../achievements-data";
+import type { Achievement } from "../achievements-type";
 
 export function AchievementsMobile() {
   return (

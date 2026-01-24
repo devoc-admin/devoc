@@ -1,5 +1,5 @@
-import Contact from "./section-contact";
-import SectionUs from "./section-us";
+import SectionUs from "../../us/us";
+import Contact from "../contact";
 
 export default function ContactWithUs() {
   return (
