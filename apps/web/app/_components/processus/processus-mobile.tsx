@@ -194,7 +194,13 @@ function SlideStep({
       key={title}
       style={{ width: `${100 / steps.length}%` }}
     >
-      <Image alt={title} className="max-w-full" src={image} width={500} />
+      <Image
+        alt={title}
+        className="max-w-full"
+        height={500}
+        src={image}
+        width={500}
+      />
       <h3 className="mb-2 font-kanit font-semibold text-4xl xs:text-5xl md:text-6xl">
         {index + 1}. {title}
       </h3>

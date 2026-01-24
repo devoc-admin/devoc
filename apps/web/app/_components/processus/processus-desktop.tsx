@@ -25,7 +25,13 @@ function CardStep({
     <div className="relative">
       <MoveRotateFromOutside fromLeft={fromLeft}>
         <div className="size-100 rounded-xl border-6 border-primary p-4">
-          <Image alt="meet" className="max-w-full" src={image} width={500} />
+          <Image
+            alt={title}
+            className="max-w-full"
+            height={500}
+            src={image}
+            width={500}
+          />
           <div className="absolute bottom-0 left-1/2 flex size-16 -translate-x-1/2 translate-y-1/2 items-center justify-center rounded-full bg-primary p-3 font-bold font-kanit text-4xl text-white">
             {index + 1}
           </div>
