@@ -87,7 +87,7 @@ export default function SectionUs() {
             <H4>#2 La Souveraineté Numérique</H4>
             <P>
               Vos données sont votre patrimoine. Nous privilégions les solutions
-              <i> Open Source</i> et l'hébergement local pour vous favoriser
+              <i>open source</i> et un hébergement souverain pour favoriser
               votre indépendance.
             </P>
           </li>
