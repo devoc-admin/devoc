@@ -1,6 +1,6 @@
 import { ArrowRightIcon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import Image from "next/image";
-import PurpleCircleImage from "@/assets/purple-circle.png";
+import PurpleCircleImage from "@/assets/purple-circle.webp";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -10,7 +10,7 @@ function Footer() {
   return (
     <div className="relative overflow-hidden bg-zinc-950">
       <div className="rounded-t-4xl border-t border-t-zinc-600/10 bg-linear-to-br from-primary/5 via-transparent to-primary/5 px-6 py-12">
-        <div className="relative mx-auto max-w-[1300px] space-y-8">
+        <div className="relative mx-auto max-w-325 space-y-8">
           <PurpleCircle />
           {/* 1️⃣ Row */}
           <div
