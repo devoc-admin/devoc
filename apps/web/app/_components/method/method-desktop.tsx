@@ -1,10 +1,10 @@
 import { motion } from "motion/react";
 import Image from "next/image";
-import { type Step, steps } from "./processus-type";
+import { type Step, steps } from "./method-type";
 
-export function ProcessusDesktop() {
+export function MethodDesktop() {
   return (
-    <div className="relative w-full space-y-[200px] overflow-x-hidden py-36">
+    <div className="relative w-full space-y-50 overflow-x-hidden py-36">
       {steps.map((props, index) => (
         <CardStep key={props.title} {...props} index={index} />
       ))}

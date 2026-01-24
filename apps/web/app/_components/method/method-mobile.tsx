@@ -4,11 +4,11 @@ import { useInView } from "motion/react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { type Step, steps } from "./processus-type";
+import { type Step, steps } from "./method-type";
 
 const animationDuration = 8000; // 8 seconds
 
-export function ProcessusMobile() {
+export function MethodMobile() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const startingPoint = useRef(0);
@@ -157,7 +157,7 @@ export function ProcessusMobile() {
 
   return (
     <div className="select-none">
-      <div className="group relative flex w-[500px] max-w-[90vw] flex-1 flex-col items-center justify-center gap-3 overflow-hidden">
+      <div className="group relative flex w-125 max-w-[90vw] flex-1 flex-col items-center justify-center gap-3 overflow-hidden">
         <div
           className={cn(
             "relative flex cursor-grab touch-pan-x self-start duration-500",

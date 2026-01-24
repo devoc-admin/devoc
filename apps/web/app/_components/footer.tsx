@@ -194,7 +194,7 @@ const groupLinks: GroupInternalLink[] = [
         name: "Réalisations",
       },
       {
-        href: "/#processus",
+        href: "/#method",
         name: "Notre méthode",
       },
       {

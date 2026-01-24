@@ -8,37 +8,37 @@ export const steps: Step[] = [
   {
     description:
       "Après un premier contact, nous nous rencontrons pour échanger sur vos besoins, vos délais et votre budget.",
-    image: "/processus/meet.avif",
+    image: "/method/meet.avif",
     title: "Rencontre",
   },
   {
     description:
       "Nous élaborons une solution sur-mesure à partir d'un cahier des charges.",
-    image: "/processus/plan.avif",
+    image: "/method/plan.avif",
     title: "Proposition",
   },
   {
     description:
       "Une fois le plan validé, nous lançons la réalisation de votre projet !",
-    image: "/processus/handshake.avif",
+    image: "/method/handshake.avif",
     title: "Validation",
   },
   {
     description:
       "Durant le développement, vous restez informé de l'avancement de votre projet et vous recevez vos livrables selon le calendrier défini.",
-    image: "/processus/machine.avif",
+    image: "/method/machine.avif",
     title: "Production",
   },
   {
     description:
       "Nous vous formons pour vous approprier vos outils afin de devenir complètement autonomes.",
-    image: "/processus/light_bulb.avif",
+    image: "/method/light_bulb.avif",
     title: "Formation",
   },
   {
     description:
       "Nous nous occupons de la maintenance pour que votre projet fonctionne sans interruption et en toute sécurité !",
-    image: "/processus/deck_chair.avif",
+    image: "/method/deck_chair.avif",
     title: "Maintenance",
   },
 ];

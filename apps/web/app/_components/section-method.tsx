@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { useWindowSize } from "usehooks-ts";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import { cn } from "@/lib/utils";
-import { ProcessusDesktop } from "./processus/processus-desktop";
-import { ProcessusMobile } from "./processus/processus-mobile";
+import { MethodDesktop } from "./method/method-desktop";
+import { MethodMobile } from "./method/method-mobile";
 import SectionTitle from "./section-title";
 
-function Processus() {
+function Method() {
   const [hasMounted, setHasMounted] = useState(false);
   const { ref: sectionRef } = useNavTheme({
-    sectionName: "processus",
+    sectionName: "method",
     theme: "light",
   });
 
@@ -26,7 +26,7 @@ function Processus() {
     /* ⚫ Black background  */
     <div
       className="flex min-h-screen flex-col bg-linear-to-b from-black to-zinc-950"
-      id="processus"
+      id="method"
     >
       {/* ⚪ White background  */}
       <div
@@ -46,7 +46,7 @@ function Processus() {
               className={cn("mb-10", "sm:mb-22", "text-zinc-950")}
               title="Notre méthode"
             />
-            {isLargeEnough ? <ProcessusDesktop /> : <ProcessusMobile />}
+            {isLargeEnough ? <MethodDesktop /> : <MethodMobile />}
           </>
         )}
       </div>
@@ -54,4 +54,4 @@ function Processus() {
   );
 }
 
-export default Processus;
+export default Method;

@@ -260,8 +260,8 @@ const LINKS = [
     label: "Réalisations",
   },
   {
-    href: "#processus",
-    id: "processus",
+    href: "#method",
+    id: "method",
     label: "Notre méthode",
   },
   {
