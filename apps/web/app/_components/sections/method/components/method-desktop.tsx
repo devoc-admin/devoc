@@ -79,7 +79,7 @@ function MoveRotateFromOutside({
   children: React.ReactNode;
   fromLeft: boolean;
 }) {
-  const rotationIntensity = Math.round(window.innerWidth / 15);
+  const rotationIntensity = Math.min(Math.round(window.innerWidth / 15), 150);
 
   return (
     <motion.div

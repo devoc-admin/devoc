@@ -269,11 +269,6 @@ const LINKS = [
     id: "us",
     label: "Le collectif",
   },
-  {
-    href: "#contact",
-    id: "contact",
-    label: "Contact",
-  },
 ];
 
 // -----------------------------------------------------------

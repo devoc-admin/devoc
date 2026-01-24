@@ -11,7 +11,11 @@ export default function SectionUs() {
       className={cn(
         "flex flex-col items-center",
         "relative overflow-hidden",
-        "px-6 py-24",
+        "px-6",
+        "pt-24",
+        "md:pt-28",
+        "lg:pt-34",
+        "2xl:pt-48",
         "w-full",
         "bg-linear-to-br bg-zinc-950",
         "text-white"
@@ -21,7 +25,14 @@ export default function SectionUs() {
     >
       <GlowLine color="orange" orientation="horizontal" position="0px" />
       <SectionTitle title="Qui sommes-nous ?" />
-      <div className="mt-16 max-w-[60ch] space-y-12">
+      <div
+        className={cn(
+          "mt-16 max-w-[60ch]",
+          "space-y-12",
+          "lg:space-y-14",
+          "2xl:space-y-20"
+        )}
+      >
         <div className="space-y-4">
           <p>
             Le collectif Dev'Oc naît d'une volonté simple : remettre l'humain et
