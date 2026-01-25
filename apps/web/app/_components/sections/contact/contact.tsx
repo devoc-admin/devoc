@@ -1,5 +1,5 @@
 "use client";
-import LaserFlow from "@/components/react-bits/laser-flow";
+import dynamic from "next/dynamic";
 import {
   Card,
   CardContent,
@@ -12,6 +12,11 @@ import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
 import ContactForm from "./components/contact-form";
 import { type ContactItem, contactItems } from "./contact-data";
+
+// Lazy load WebGL LaserFlow component to reduce initial bundle
+const LaserFlow = dynamic(() => import("@/components/react-bits/laser-flow"), {
+  ssr: false,
+});
 
 export default function Contact() {
   return (

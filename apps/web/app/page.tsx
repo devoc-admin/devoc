@@ -1,13 +1,30 @@
+import dynamic from "next/dynamic";
 import Header from "@/app/header";
-import Realisations from "./_components/sections/achievements/achievements";
-import Contact from "./_components/sections/contact/contact";
 import Hero from "./_components/sections/hero/hero";
-import Method from "./_components/sections/method/method";
-import Services from "./_components/sections/services/services";
-import Us from "./_components/sections/us/us";
-import WorkWith from "./_components/sections/work-with/work-with";
-import ThreadsSeparator from "./_components/separators/threads-separator";
 import Footer from "./footer";
+
+// Lazy load below-the-fold sections to reduce initial JavaScript bundle
+const Services = dynamic(
+  () => import("./_components/sections/services/services")
+);
+
+const Realisations = dynamic(
+  () => import("./_components/sections/achievements/achievements")
+);
+
+const Method = dynamic(() => import("./_components/sections/method/method"));
+
+const WorkWith = dynamic(
+  () => import("./_components/sections/work-with/work-with")
+);
+
+const Us = dynamic(() => import("./_components/sections/us/us"));
+
+const ThreadsSeparator = dynamic(
+  () => import("./_components/separators/threads-separator")
+);
+
+const Contact = dynamic(() => import("./_components/sections/contact/contact"));
 
 export default function Home() {
   return (

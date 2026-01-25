@@ -13,9 +13,9 @@ import {
   WandSparklesIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
-import Lamp from "@/components/aceternity/lamp";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { DotPattern } from "@/components/magicui/dot-pattern";
 import {
@@ -29,6 +29,11 @@ import {
 import { cn } from "@/lib/utils";
 import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
+
+// Lazy load Lamp component (heavy CSS animation, desktop only)
+const Lamp = dynamic(() => import("@/components/aceternity/lamp"), {
+  ssr: false,
+});
 export default function Services() {
   return (
     <Section

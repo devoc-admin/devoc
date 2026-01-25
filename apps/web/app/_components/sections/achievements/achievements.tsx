@@ -1,11 +1,16 @@
 "use client";
+import dynamic from "next/dynamic";
 import { useWindowSize } from "usehooks-ts";
-import Beams from "@/components/react-bits/beams";
 import { cn } from "@/lib/utils";
 import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
 import { AchievementsDesktop } from "./components/achievements-desktop";
 import { AchievementsMobile } from "./components/achievements-mobile";
+
+// Lazy load Three.js Beams component to reduce initial bundle (~580KB)
+const Beams = dynamic(() => import("@/components/react-bits/beams"), {
+  ssr: false,
+});
 
 export default function Realisations() {
   const { width = 0 } = useWindowSize();
