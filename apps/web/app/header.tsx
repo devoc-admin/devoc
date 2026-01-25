@@ -196,7 +196,7 @@ function LogoButton({
   return (
     <button
       aria-label="Retour en haut de la page"
-      className="flex cursor-pointer items-center gap-2 text-2xl"
+      className="group flex cursor-pointer items-center gap-2 text-2xl"
       onClick={() => window.scrollTo({ behavior: "smooth", top: 0 })}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -210,6 +210,7 @@ function LogoButton({
       <Image
         alt=""
         aria-hidden="true"
+        className="group-hover:animate-spin"
         height={logoSize}
         priority
         src={Icon}
