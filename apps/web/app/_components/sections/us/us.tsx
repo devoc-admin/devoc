@@ -18,11 +18,11 @@ export default function SectionUs() {
         )}
       >
         <div className="space-y-4">
-          <p>
+          <P>
             Le collectif Dev'Oc naît d'une volonté simple : remettre l'humain et
             la proximité au centre des projets technologiques.
-          </p>
-          <p>
+          </P>
+          <P>
             <a
               className="underline"
               href="https://www.carcassonne-agglo.fr/actualite/carcassonne-agglo-apporte-son-concours-2/#:~:text=prix%20revient%20%C3%A0%20Cl%C3%A9ment%20Dubos%20et%20Thibaut%20Izard%20pour%20%C2%AB%20Dev%E2%80%99Oc%20%C2%BB,%20un%20collectif%20de%20d%C3%A9veloppeurs%20informatique%20qui%20souhaitent%20proposer%20des%20services%20de%20mise%20en%20conformit%C3%A9%20de%20sites%20Internet%20aux%20collectivit%C3%A9s%20territoriales"
@@ -31,33 +31,33 @@ export default function SectionUs() {
             </a>
             , nous avons choisi de mettre notre expertise au service du tissu
             économique local.
-          </p>
-          <p>
+          </P>
+          <P>
             Nous sommes persuadés que le meilleur moyen de développer un
             territoire est d'améliorer son empreinte numérique.
-          </p>
+          </P>
         </div>
         <H3>L'Équipe</H3>
         <div className="grid grid-cols-1 justify-items-center gap-4 sm:grid-cols-2">
           <div>
             <DeveloperName>Clément</DeveloperName>
-            <span>
+            <P>
               Il s'occupe de la logique, des mécanismes d'interaction, il se
               charge également de l'automatisation.
-            </span>
+            </P>
           </div>
           <div>
             <DeveloperName>Thibaut</DeveloperName>
-            <span>
+            <P>
               C'est le développeur orienté interface, c'est l'expert de
               l'esthétique et du rendu.
-            </span>
+            </P>
           </div>
         </div>
 
         <H3>Nos valeurs</H3>
 
-        <ul className="space-y-8">
+        <ul className="space-y-14">
           <li>
             <H4>#1 La Proximité Géographique</H4>
             <P>
@@ -113,7 +113,14 @@ export default function SectionUs() {
 
 function P({ children }: { children: React.ReactNode }) {
   return (
-    <p className={cn("mt-2 text-base text-zinc-200", "empty:hidden")}>
+    <p
+      className={cn(
+        "mt-2 text-zinc-200",
+        "text-base",
+        "text-lg",
+        "empty:hidden"
+      )}
+    >
       {children}
     </p>
   );
@@ -126,7 +133,7 @@ function H3({ children }: { children: React.ReactNode }) {
         "w-fit",
         "bg-linear-to-br from-primary-strong via-primary to-primary-lighter bg-clip-text text-transparent",
         "my-6",
-        "font-kanit font-semibold text-4xl"
+        "font-kanit font-semibold text-5xl"
       )}
     >
       {children}
@@ -140,7 +147,7 @@ function H4({ children }: { children: React.ReactNode }) {
       className={cn(
         "w-fit",
         "bg-linear-to-tl from-primary to-primary-lighter bg-clip-text text-transparent",
-        "font-bold text-lg"
+        "font-bold text-xl"
       )}
     >
       {children}
@@ -154,7 +161,7 @@ function DeveloperName({ children }: { children: React.ReactNode }) {
       className={cn(
         "w-fit",
         "bg-linear-to-tr from-primary to-primary-lighter bg-clip-text text-transparent uppercase",
-        "font-bold text-base"
+        "font-bold text-lg"
       )}
     >
       {children}
