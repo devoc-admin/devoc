@@ -287,7 +287,7 @@ function ServiceCard({
     </div>
   );
 
-  const FrontBack = (
+  const BackCard = (
     <div
       className={cn(
         "absolute inset-0 flex h-full flex-col",
@@ -310,6 +310,7 @@ function ServiceCard({
             "text-primary-foreground",
             "group-hover:text-primary",
             "underline decoration-primary underline-offset-12",
+            "text-white!",
             // Responsive text-size
             "text-3xl",
             "@sm:text-4xl",
@@ -425,7 +426,7 @@ function ServiceCard({
         )}
       >
         {FrontCard}
-        {FrontBack}
+        {BackCard}
       </Card>
     </div>
   );
