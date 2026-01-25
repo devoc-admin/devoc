@@ -17,6 +17,12 @@ export default function Contact() {
   return (
     <Section
       className={cn(
+        // Margin top for separator
+        "-mt-8",
+        "sm:-mt-16",
+        "md:-mt-22",
+        "lg:-mt-38",
+        "xl:-mt-48",
         // Gap 🕳️
         "gap-y-8",
         "xs:gap-y-14",

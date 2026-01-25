@@ -30,8 +30,10 @@ export default function SectionUs() {
             <a
               className="underline"
               href="https://www.carcassonne-agglo.fr/actualite/carcassonne-agglo-apporte-son-concours-2/#:~:text=prix%20revient%20%C3%A0%20Cl%C3%A9ment%20Dubos%20et%20Thibaut%20Izard%20pour%20%C2%AB%20Dev%E2%80%99Oc%20%C2%BB,%20un%20collectif%20de%20d%C3%A9veloppeurs%20informatique%20qui%20souhaitent%20proposer%20des%20services%20de%20mise%20en%20conformit%C3%A9%20de%20sites%20Internet%20aux%20collectivit%C3%A9s%20territoriales"
+              rel="noopener"
+              target="_blank"
             >
-              Lauréats 2025 du concours entrepreneurial de Carcassonne Agglo
+              Lauréat 2025 du concours entrepreneurial de Carcassonne Agglo
             </a>
             , nous avons choisi de mettre notre expertise au service du tissu
             économique local.
