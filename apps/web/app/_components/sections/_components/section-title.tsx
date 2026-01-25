@@ -12,7 +12,9 @@ function SectionTitle({
   return (
     <div
       className={cn(
-        "mx-auto flex select-none flex-col gap-4 text-center text-white",
+        "flex flex-col gap-y-4 px-6",
+        "mx-auto",
+        "text-center text-white",
         className
       )}
     >
@@ -20,11 +22,14 @@ function SectionTitle({
       <h2
         className={cn(
           "font-kanit font-semibold",
-          "text-[40px]",
+          "max-w-[20ch]",
+          "leading-none!",
+          "text-[45px]",
           "xs:text-5xl",
-          "md:text-6xl",
+          "sm:text-6xl",
+          "md:text-7xl",
           "lg:text-8xl",
-          "leading-none"
+          "xl:text-9xl"
         )}
       >
         {title}

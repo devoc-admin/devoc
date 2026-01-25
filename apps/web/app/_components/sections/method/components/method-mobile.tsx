@@ -201,10 +201,28 @@ function SlideStep({
         src={image}
         width={500}
       />
-      <h3 className="mb-2 font-kanit font-semibold text-4xl xs:text-5xl md:text-6xl">
+      {/* 🆎 Title */}
+      <h3
+        className={cn(
+          "mb-2 font-kanit font-semibold",
+          "text-3xl",
+          "xs:text-4xl",
+          "sm:text-5xl",
+          "md:text-6xl"
+        )}
+      >
         {index + 1}. {title}
       </h3>
-      <div className="max-w-md text-pretty font-kanit text-xl leading-tight">
+      {/* 🔤 Description */}
+      <div
+        className={cn(
+          "max-w-md text-pretty font-kanit",
+          "text-lg",
+          "sm:text-xl",
+          "md:text-2xl",
+          "leading-tight"
+        )}
+      >
         {description}
       </div>
     </div>

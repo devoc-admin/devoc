@@ -15,7 +15,6 @@ import {
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
-import useNavTheme from "@/app/_hooks/use-nav-theme";
 import Lamp from "@/components/aceternity/lamp";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { DotPattern } from "@/components/magicui/dot-pattern";
@@ -28,27 +27,24 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
-
 export default function Services() {
-  const { ref } = useNavTheme({ sectionName: "services", theme: "dark" });
-
   return (
-    <div
+    <Section
       className={cn(
-        "relative flex min-h-screen flex-col items-center justify-between",
-        "bg-zinc-950",
-        // Pour scroller en dessous du faisceau
+        "justify-between",
+        // To scroll under the beam
         "sm:-scroll-m-50",
-        // Responsive gap
+        // 🕳️ Gap
         "gap-y-16",
         "sm:gap-y-32",
-        // Responsive padding
-        "px-6 pt-24 pb-12",
+        // 📱 Responsive padding
+        "pt-24 pb-12",
         "sm:pt-88 sm:pb-48"
       )}
       id="services"
-      ref={ref}
+      theme="dark"
     >
       <Lamp className={cn("hidden", "sm:flex")} />
       <SectionTitle
@@ -56,7 +52,7 @@ export default function Services() {
         title="Nos Services"
       />
       <ServiceCards />
-    </div>
+    </Section>
   );
 }
 

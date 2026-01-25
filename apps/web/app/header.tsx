@@ -10,7 +10,6 @@ import { Glass } from "@/components/sera-ui/liquid-glass";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
-
 export default function Header() {
   const [hasMounted, setHasMounted] = useState(false);
   const isMobile = useMediaQuery("(max-width: 970px)");

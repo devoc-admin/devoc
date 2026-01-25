@@ -1,28 +1,12 @@
 "use client";
-import useNavTheme from "@/app/_hooks/use-nav-theme";
 import GlowLine from "@/components/sera-ui/glow-line";
 import { cn } from "@/lib/utils";
+import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
-export default function SectionUs() {
-  const { ref } = useNavTheme({ sectionName: "services", theme: "dark" });
 
+export default function SectionUs() {
   return (
-    <section
-      className={cn(
-        "flex flex-col items-center",
-        "relative overflow-hidden",
-        "px-6",
-        "pt-24",
-        "md:pt-28",
-        "lg:pt-34",
-        "2xl:pt-48",
-        "w-full",
-        "bg-linear-to-br bg-zinc-950",
-        "text-white"
-      )}
-      id="us"
-      ref={ref}
-    >
+    <Section className="overflow-hidden" id="us" theme="dark">
       <GlowLine color="orange" orientation="horizontal" position="0px" />
       <SectionTitle title="Qui sommes-nous ?" />
       <div
@@ -120,7 +104,7 @@ export default function SectionUs() {
           </li>
         </ul>
       </div>
-    </section>
+    </Section>
   );
 }
 

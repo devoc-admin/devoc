@@ -72,6 +72,9 @@ function CardStep({
 
 // --------------------------------
 // 🤹 Animations
+
+const ANIMATION_DURATION = 1.5;
+
 function MoveRotateFromOutside({
   children,
   fromLeft,
@@ -91,11 +94,11 @@ function MoveRotateFromOutside({
       }}
       transition={{
         bounce: 0,
-        duration: 2.5,
+        duration: ANIMATION_DURATION,
         ease: "easeOut",
         type: "spring",
       }}
-      viewport={{ margin: "0px 0px -300px 0px", once: true }}
+      viewport={{ margin: "-300px 0px -300px 0px", once: true }}
       whileInView={{
         opacity: 1,
         rotate: fromLeft ? 7 : -7,
@@ -123,11 +126,11 @@ function FadeMoveFromOutside({
       }}
       transition={{
         bounce: 0,
-        duration: 2.5,
+        duration: ANIMATION_DURATION,
         ease: "easeOut",
         type: "spring",
       }}
-      viewport={{ margin: "0px 0px -300px 0px", once: true }}
+      viewport={{ margin: "-300px 0px -300px 0px", once: true }}
       whileInView={{ opacity: 1, x: fromLeft ? "-110%" : "25%" }}
     >
       {children}
