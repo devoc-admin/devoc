@@ -3,6 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "browserslist": [
+    "Chrome >= 93",
+    "Firefox >= 92",
+    "Safari >= 15.4",
+    "Edge >= 93"
+  ],
   "scripts": {
     "dev": "echo \"Network: http://$(ipconfig getifaddr en0):3000\" && bun --bun next dev --turbopack -H 0.0.0.0",
     "inngest": "npx inngest-cli@latest dev",
