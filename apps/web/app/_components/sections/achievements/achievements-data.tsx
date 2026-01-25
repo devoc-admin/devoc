@@ -3,7 +3,7 @@ import flow1 from "@/assets/projects/flow/flow_1.png";
 import flow2 from "@/assets/projects/flow/flow_2.png";
 import flow3 from "@/assets/projects/flow/flow_3.png";
 import flowManagerPreview from "@/assets/projects/flow/flow_manager_preview.jpg";
-import flowMockup from "@/assets/projects/flow/flow_mockup.avif";
+import flowMockup from "@/assets/projects/flow/flow_mockup.webp";
 import OneparkFlowLogo from "@/assets/projects/flow/onepark_flow_logo.svg";
 import frustrationCover from "@/assets/projects/frustration/frustration_cover.webp";
 import InseeLogo from "@/assets/projects/statcraft/insee_logo.svg";
