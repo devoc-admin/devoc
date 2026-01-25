@@ -22,7 +22,7 @@ function SectionTitle({
       <h2
         className={cn(
           "font-kanit font-semibold",
-          "max-w-[20ch]",
+          "max-w-[17ch]",
           "leading-none!",
           "text-[50px]",
           "xs:text-[55px]",

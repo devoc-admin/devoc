@@ -10,7 +10,10 @@ pre-commit:
         - "*.jsonc"
         - "*.css"
       stage_fixed: true
-
+pre-push:
+  jobs:
+    - name: "Build apps and packages"
+      run: turbo build --affected
 commit-msg:
   commands:
     commitlint:

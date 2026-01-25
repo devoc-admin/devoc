@@ -18,10 +18,16 @@ export default function Header() {
     setHasMounted(true);
   }, []);
 
-  // Render nothing on server to avoid hydration mismatch
-  if (!hasMounted) return null;
-
-  return isMobile ? <MobileHeader /> : <DesktopHeader />;
+  return (
+    <div
+      className={cn(
+        "transition-opacity duration-300",
+        hasMounted ? "opacity-100" : "opacity-0"
+      )}
+    >
+      {isMobile ? <MobileHeader /> : <DesktopHeader />}
+    </div>
+  );
 }
 
 // --------------------------------
@@ -205,6 +211,7 @@ function LogoButton({
         alt=""
         aria-hidden="true"
         height={logoSize}
+        priority
         src={Icon}
         width={logoSize}
       />

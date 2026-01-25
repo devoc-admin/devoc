@@ -32,7 +32,7 @@ const lobster = Lobster({
 const kanit = Kanit({
   subsets: ["latin"],
   variable: "--font-kanit",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const sarina = Sarina({
@@ -62,7 +62,7 @@ const dancingScript = Dancing_Script({
 const montserrat = Montserrat({
   subsets: ["latin"],
   variable: "--font-montserrat",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const faustina = Faustina({

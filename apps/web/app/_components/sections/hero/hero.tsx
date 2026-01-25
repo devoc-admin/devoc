@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import CubeShape from "@/assets/shapes/cube.webp";
@@ -102,7 +102,7 @@ function OpenCarcaWinner() {
 // ----------------------------------
 // 🔲 Shapes
 function Shapes() {
-  const { effectiveParallaxOffset } = useShapesParallaxEffect();
+  const { containerRef, effectiveParallaxOffset } = useShapesParallaxEffect();
   return (
     <div
       className={cn(
@@ -111,6 +111,7 @@ function Shapes() {
         "opacity-50 blur-xs",
         "md:opacity-100 md:blur-none"
       )}
+      ref={containerRef}
     >
       <Shape
         className={cn(
@@ -124,6 +125,8 @@ function Shapes() {
         )}
         parallaxCoeff={4}
         parallaxOffset={effectiveParallaxOffset}
+        priority
+        sizes="(max-width: 640px) 240px, (max-width: 1024px) 300px, 400px"
         src={CubeShape}
       />
       <Shape
@@ -138,6 +141,8 @@ function Shapes() {
         )}
         parallaxCoeff={3}
         parallaxOffset={effectiveParallaxOffset}
+        priority
+        sizes="(max-width: 640px) 240px, (max-width: 1024px) 300px, 400px"
         src={DiamondShape}
       />
       <Shape
@@ -152,6 +157,8 @@ function Shapes() {
         )}
         parallaxCoeff={2}
         parallaxOffset={effectiveParallaxOffset}
+        priority
+        sizes="(max-width: 640px) 240px, (max-width: 1024px) 300px, 400px"
         src={DonutShape}
       />
       <Shape
@@ -166,6 +173,8 @@ function Shapes() {
         )}
         parallaxCoeff={1}
         parallaxOffset={effectiveParallaxOffset}
+        priority
+        sizes="(max-width: 640px) 240px, (max-width: 1024px) 300px, 400px"
         src={SphereShape}
       />
     </div>
@@ -177,11 +186,15 @@ function Shape({
   className,
   parallaxOffset,
   parallaxCoeff,
+  priority = false,
+  sizes,
 }: {
   src: StaticImageData;
   parallaxOffset: number;
   parallaxCoeff: number;
   className?: string;
+  priority?: boolean;
+  sizes?: string;
 }) {
   const { isMobile } = useMobile();
   const parallaxValue = parallaxOffset * parallaxCoeff;
@@ -227,20 +240,46 @@ function Shape({
         repeat: Number.POSITIVE_INFINITY,
       }}
     >
-      <Image alt="" aria-hidden="true" height={400} src={src} width={400} />
+      <Image
+        alt=""
+        aria-hidden="true"
+        height={400}
+        priority={priority}
+        sizes={sizes}
+        src={src}
+        width={400}
+      />
     </motion.div>
   );
 }
 
 function useShapesParallaxEffect() {
   const [parallaxOffset, setParallaxOffset] = useState(0);
+  const [isInView, setIsInView] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const effectiveParallaxOffset = parallaxOffset * 0.5;
 
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  // ⇅ Parallax effect (disabled on mobile)
+  // 👁️ IntersectionObserver to detect when hero is in viewport
   useEffect(() => {
-    if (isMobile) return;
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  // ⇅ Parallax effect (disabled on mobile, only active when in view)
+  useEffect(() => {
+    if (isMobile || !isInView) return;
     let ticking = false;
 
     const handleScroll = () => {
@@ -260,9 +299,10 @@ function useShapesParallaxEffect() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [isMobile]);
+  }, [isMobile, isInView]);
 
   return {
+    containerRef,
     effectiveParallaxOffset,
   };
 }
