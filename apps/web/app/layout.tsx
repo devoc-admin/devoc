@@ -44,7 +44,7 @@ const sarina = Sarina({
 const firaCode = Fira_Code({
   subsets: ["latin"],
   variable: "--font-fira-code",
-  weight: ["400"],
+  weight: ["400", "700"],
 });
 
 const styleScript = Style_Script({

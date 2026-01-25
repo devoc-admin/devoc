@@ -1,9 +1,9 @@
 "use client";
+import { SparklesText } from "@/components/magicui/sparkles-text";
 import GlowLine from "@/components/sera-ui/glow-line";
 import { cn } from "@/lib/utils";
 import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
-
 export default function SectionUs() {
   return (
     <Section className="overflow-hidden" id="us" theme="dark">
@@ -11,18 +11,22 @@ export default function SectionUs() {
       <SectionTitle title="Qui sommes-nous ?" />
       <div
         className={cn(
-          "mt-16 max-w-[60ch]",
+          "mt-0",
+          "lg:mt-8",
+          "xl:mt-12",
+          "2xl:mt-16",
+          "max-w-[60ch]",
           "space-y-12",
           "lg:space-y-14",
           "2xl:space-y-20"
         )}
       >
         <div className="space-y-4">
-          <P>
+          <P className="font-medium text-xl">
             Le collectif Dev'Oc naît d'une volonté simple : remettre l'humain et
             la proximité au centre des projets technologiques.
           </P>
-          <P>
+          <P className="font-medium text-xl">
             <a
               className="underline"
               href="https://www.carcassonne-agglo.fr/actualite/carcassonne-agglo-apporte-son-concours-2/#:~:text=prix%20revient%20%C3%A0%20Cl%C3%A9ment%20Dubos%20et%20Thibaut%20Izard%20pour%20%C2%AB%20Dev%E2%80%99Oc%20%C2%BB,%20un%20collectif%20de%20d%C3%A9veloppeurs%20informatique%20qui%20souhaitent%20proposer%20des%20services%20de%20mise%20en%20conformit%C3%A9%20de%20sites%20Internet%20aux%20collectivit%C3%A9s%20territoriales"
@@ -32,7 +36,7 @@ export default function SectionUs() {
             , nous avons choisi de mettre notre expertise au service du tissu
             économique local.
           </P>
-          <P>
+          <P className="font-medium text-xl">
             Nous sommes persuadés que le meilleur moyen de développer un
             territoire est d'améliorer son empreinte numérique.
           </P>
@@ -70,9 +74,9 @@ export default function SectionUs() {
           <li>
             <H4>#2 La Souveraineté Numérique</H4>
             <P>
-              Vos données sont votre patrimoine. Nous privilégions les solutions
-              <i>open source</i> et un hébergement souverain pour favoriser
-              votre indépendance.
+              Vos données sont votre patrimoine. Nous privilégions les solutions{" "}
+              <i>open source</i> et un hébergement souverain pour assurer votre
+              indépendance.
             </P>
           </li>
           <li>
@@ -111,14 +115,22 @@ export default function SectionUs() {
 // ==============================
 // 🔠 Typography
 
-function P({ children }: { children: React.ReactNode }) {
+function P({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <p
       className={cn(
         "mt-2 text-zinc-200",
-        "text-base",
         "text-lg",
-        "empty:hidden"
+        "leading-snug",
+        "font-medium",
+        "empty:hidden",
+        className
       )}
     >
       {children}
@@ -160,11 +172,21 @@ function DeveloperName({ children }: { children: React.ReactNode }) {
     <h5
       className={cn(
         "w-fit",
+        "relative",
+        "font-bold font-fira-code",
         "bg-linear-to-tr from-primary to-primary-lighter bg-clip-text text-transparent uppercase",
-        "font-bold text-lg"
+        "font-bold text-xl"
       )}
     >
-      {children}
+      <SparklesText
+        colors={{
+          first: "var(--primary)",
+          second: "var(--primary-lighter)",
+        }}
+        sparklesCount={7}
+      >
+        {children}
+      </SparklesText>
     </h5>
   );
 }

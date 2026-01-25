@@ -148,7 +148,7 @@ function ServiceCards() {
 
   return (
     <motion.div
-      className={cn("flex flex-wrap justify-center gap-6", "w-full max-w-325")}
+      className={cn("flex flex-wrap justify-center gap-8", "w-full max-w-325")}
       initial={{ opacity: 0, y: hasMounted && isDesktop ? 200 : 0 }}
       transition={{
         duration: 0.5,

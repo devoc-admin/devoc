@@ -36,7 +36,7 @@ export default function Hero() {
         <Description />
         <OpenCarcaWinner />
       </div>
-      <div className={cn("absolute", "bottom-6")}>
+      <div className={cn("absolute", "bottom-10")}>
         <SeeOurProjects />
         <Founders />
       </div>
@@ -78,7 +78,8 @@ function OpenCarcaWinner() {
         <RatingBadge
           className={cn(
             "mx-auto text-amber-400",
-            "[@media(max-height:850px)]:hidden" // Hide if viewport height is too small
+            "hidden",
+            "[@media(min-height:850px)]:flex" // Hide if viewport height is too small
           )}
         >
           <div
@@ -108,7 +109,7 @@ function Shapes() {
         "absolute -z-1",
         "h-full w-full max-w-350",
         "opacity-50 blur-xs",
-        "sm:opacity-100 sm:blur-none"
+        "md:opacity-100 md:blur-none"
       )}
     >
       <Shape
@@ -338,10 +339,13 @@ function Description() {
       initial={{ opacity: 0, y: 50 }}
       transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
     >
-      <div
+      <p
         className={cn(
+          "hidden",
+          "[@media(min-height:500px)]:block",
           "mx-auto",
-          "w-[45ch] max-w-[90vw] text-center font-kanit font-semibold text-secondary leading-tight!",
+          "w-[45ch] max-w-[90vw]",
+          "text-center font-kanit font-semibold text-secondary leading-tight!",
           "text-base",
           "xs:text-lg"
         )}
@@ -349,7 +353,7 @@ function Description() {
         Nous créons des sites web, des applications sur mesure et des solutions
         d’automatisation IA pour propulser votre organisation vers le succès
         digital.
-      </div>
+      </p>
     </motion.div>
   );
 }
@@ -362,6 +366,8 @@ function SeeOurProjects() {
       <Link href="#realisations">
         <ShimmerButton
           className={cn(
+            "hidden",
+            "[@media(min-height:500px)]:block",
             "font-kanit",
             "h-12 px-8 text-md",
             "xs:h-13 xs:px-12 xs:text-lg",
@@ -395,7 +401,7 @@ function Founders() {
     <div
       className={cn(
         "hidden",
-        "sm:flex",
+        "[@media(min-height:850px)]:flex",
         "flex-col items-center gap-2 rounded-lg px-6 py-4 font-fira-code"
       )}
     >

@@ -32,7 +32,7 @@ export default function Contact() {
       <SectionTitle
         className="z-10"
         description="Prêt à démarrer votre projet ? Contactez notre équipe pour discuter de vos besoins et obtenir un devis personnalisé."
-        title="Contactez-nous"
+        title="Contact"
       />
       {/* 📱🟢 Contact and guaranteed response */}
       <div
@@ -84,11 +84,7 @@ export default function Contact() {
             />
           </div>
           {/* 📝 Contact form */}
-          <CardHeader>
-            <CardTitle className={cn("text-center text-2xl", "xs:text-left")}>
-              Démarrons votre projet
-            </CardTitle>
-          </CardHeader>
+
           <CardContent className={cn("z-10", "max-xs:p-3")}>
             <ContactForm />
           </CardContent>
