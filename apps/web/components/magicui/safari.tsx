@@ -36,7 +36,7 @@ export type SafariProps = HTMLAttributes<HTMLDivElement> & {
 export function Safari({
   image,
   video,
-  videoDelay = 2000,
+  videoDelay = 500,
   url,
   className,
   invisibleMode = false,
