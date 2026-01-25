@@ -200,7 +200,7 @@
 
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: var(--primary);
 
   /* 🔒 Admin */
   --sidebar: oklch(0.985 0 0);
