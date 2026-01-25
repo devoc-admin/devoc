@@ -21,7 +21,7 @@ function Method() {
       <Section
         className={cn(
           "flex-1",
-          "border-t-6 border-t-orange-600",
+          "border-t-16 border-t-orange-600",
           // Padding ↕️
           "py-16",
           "sm:py-22",
