@@ -143,6 +143,7 @@ export function MethodMobile() {
     <div className="mt-4 flex gap-2 py-1">
       {steps.map(({ title }, index) => (
         <button
+          aria-label={`Voir l'étape ${index + 1} : ${title}`}
           className={cn(
             "size-5",
             "cursor-pointer",
