@@ -40,8 +40,8 @@ export default function Services() {
         "gap-y-16",
         "sm:gap-y-32",
         // 📱 Responsive padding
-        "pt-24 pb-12",
-        "sm:pt-88 sm:pb-48"
+        "pt-24! pb-12",
+        "sm:pt-88! sm:pb-48"
       )}
       id="services"
       theme="dark"
