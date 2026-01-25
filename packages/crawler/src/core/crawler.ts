@@ -8,6 +8,7 @@ import {
   chromium,
   type Page,
 } from "playwright";
+import sharp from "sharp";
 import { detectAuthor } from "../detectors/author-detector";
 import { detectCategoryPage } from "../detectors/category-detector";
 import { detectContactInfo } from "../detectors/contact-detector";
@@ -557,6 +558,11 @@ export class WebCrawler {
         type: "jpeg",
       });
 
+      // Convert to WebP for better compression
+      const webpBuffer = await sharp(screenshot)
+        .webp({ quality: 80 })
+        .toBuffer();
+
       // Create a safe filename from the URL
       const safeFilename = normalizedUrl
         .replace(httpRegex, "")
@@ -567,7 +573,7 @@ export class WebCrawler {
       if (this.config.useLocalScreenshots) {
         return await this.saveScreenshotLocally({
           safeFilename,
-          screenshot,
+          screenshot: webpBuffer,
         });
       }
 
@@ -578,14 +584,14 @@ export class WebCrawler {
         );
         return await this.saveScreenshotLocally({
           safeFilename,
-          screenshot,
+          screenshot: webpBuffer,
         });
       }
 
       // Try Vercel Blob upload
       try {
-        const filename = `screenshots/${this.crawlId}/${safeFilename}.jpg`;
-        const blob = await put(filename, screenshot, { access: "public" });
+        const filename = `screenshots/${this.crawlId}/${safeFilename}.webp`;
+        const blob = await put(filename, webpBuffer, { access: "public" });
         return blob.url;
       } catch (blobError) {
         // Vercel Blob failed - fall back to local storage
@@ -595,7 +601,7 @@ export class WebCrawler {
         );
         return await this.saveScreenshotLocally({
           safeFilename,
-          screenshot,
+          screenshot: webpBuffer,
         });
       }
     } catch (error) {
@@ -619,7 +625,7 @@ export class WebCrawler {
       const screenshotsDir = join(process.cwd(), "screenshots", this.crawlId);
       await mkdir(screenshotsDir, { recursive: true });
 
-      const filename = `${safeFilename}.jpg`;
+      const filename = `${safeFilename}.webp`;
       const filePath = join(screenshotsDir, filename);
 
       await writeFile(filePath, screenshot);
