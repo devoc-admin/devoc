@@ -95,7 +95,7 @@ function MoveRotateFromOutside({
         ease: "easeOut",
         type: "spring",
       }}
-      viewport={{ margin: "-200px 0px 0px 0px", once: true }}
+      viewport={{ margin: "0px 0px -300px 0px", once: true }}
       whileInView={{
         opacity: 1,
         rotate: fromLeft ? 7 : -7,
@@ -127,7 +127,7 @@ function FadeMoveFromOutside({
         ease: "easeOut",
         type: "spring",
       }}
-      viewport={{ margin: "-20px", once: true }}
+      viewport={{ margin: "0px 0px -300px 0px", once: true }}
       whileInView={{ opacity: 1, x: fromLeft ? "-110%" : "25%" }}
     >
       {children}
