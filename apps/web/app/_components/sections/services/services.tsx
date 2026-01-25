@@ -361,6 +361,7 @@ function ServiceCard({
         />
         {/* 🆕 Prendre contact */}
         <a
+          aria-label="Prendre contact"
           className={cn(
             "group",
             "flex items-center justify-between",
@@ -387,7 +388,7 @@ function ServiceCard({
               "group-hover:bg-primary/25 group-hover:text-primary"
             )}
           >
-            <ArrowRightIcon size={18} />
+            <ArrowRightIcon aria-hidden="true" size={18} />
           </div>
         </a>
       </CardFooter>

@@ -70,6 +70,7 @@ function CardAchievement({
       <CardFooter className="mt-auto mr-4 ml-auto flex items-center gap-3">
         <span className="text-sm italic">Réalisé pour</span>
         <a
+          aria-label={`Visiter le site du projet ${title}`}
           className="cursor-pointer"
           href={companyLink}
           rel="noopener noreferrer"

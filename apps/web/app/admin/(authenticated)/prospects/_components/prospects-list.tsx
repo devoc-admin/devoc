@@ -281,6 +281,7 @@ function SearchProspects() {
       />
       {searchQuery && (
         <button
+          aria-label="Effacer la recherche"
           className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
           onClick={() => setSearchQuery("")}
           type="button"

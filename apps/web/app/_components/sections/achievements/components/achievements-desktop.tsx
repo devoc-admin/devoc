@@ -63,8 +63,10 @@ function AchievementsPanel() {
           </p>
         </div>
         <a
+          aria-label={`Visiter le site du projet ${currentAchievement.title}`}
           className="flex justify-center"
           href={currentAchievement.companyLink}
+          rel="noopener noreferrer"
           target="_blank"
         >
           {currentAchievement.companyLogo}
@@ -78,10 +80,10 @@ function AchievementsPanel() {
       {/* ⬅️➡️ Buttons */}
       <div className="flex rotate-y-8 justify-center gap-x-12">
         <AchievementButton delta={-1}>
-          <ArrowLeftIcon size={37} />
+          <ArrowLeftIcon aria-hidden="true" size={37} />
         </AchievementButton>
         <AchievementButton delta={1}>
-          <ArrowRightIcon size={37} />
+          <ArrowRightIcon aria-hidden="true" size={37} />
         </AchievementButton>
       </div>
     </div>
@@ -114,8 +116,10 @@ function AchievementButton({
   children: React.ReactNode;
 }) {
   const { changeAchievementIndex } = useContext(AchievementsContext);
+  const label = delta < 0 ? "Projet précédent" : "Projet suivant";
   return (
     <button
+      aria-label={label}
       className="cursor-pointer rounded-full bg-zinc-900/20 p-5 text-white backdrop-blur-xl"
       onClick={() => changeAchievementIndex(delta)}
       type="button"

@@ -168,16 +168,17 @@ function MissingItem({
 }) {
   return (
     <div className="flex flex-col items-center gap-y-0.5">
-      <XIcon color="var(--color-red-600" size={16} strokeWidth={5} />
+      <XIcon aria-hidden="true" color="var(--color-red-600" size={16} strokeWidth={5} />
       <a
         className="relative flex cursor-pointer items-center gap-x-1"
         href={link}
+        rel="noopener noreferrer"
         target="_blank"
       >
         <div className="text-base text-gray-700">{name}</div>
         <Tooltip>
           <TooltipTrigger className="-right-1.5 absolute translate-x-full">
-            <InfoIcon className="text-gray-500" size={14} />
+            <InfoIcon aria-hidden="true" className="text-gray-500" size={14} />
           </TooltipTrigger>
           <TooltipContent>
             <p>{name}</p>
@@ -211,11 +212,11 @@ function LinkGlass({
     <a
       className="flex items-center gap-x-2 px-6 font-bold text-orange-950 underline"
       href={link}
-      rel="noopener"
+      rel="noopener noreferrer"
       target="_blank"
     >
       {link}
-      <ExternalLinkIcon size={18} strokeWidth={3} />
+      <ExternalLinkIcon aria-hidden="true" size={18} strokeWidth={3} />
     </a>
   </GlassSurface>
 }

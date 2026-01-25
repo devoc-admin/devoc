@@ -281,7 +281,7 @@ function Popup() {
 
       <main className="flex flex-1 flex-col">
         <button
-          className="mb-4 rounded-lg bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-3 font-medium text-white transition-all hover:from-amber-400 hover:to-orange-400 disabled:cursor-not-allowed disabled:opacity-50"
+          className="mb-4 rounded-lg bg-linear-to-r from-amber-500 to-orange-500 px-4 py-3 font-medium text-white transition-all hover:from-amber-400 hover:to-orange-400 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isAuditing}
           onClick={runAudit}
           type="button"

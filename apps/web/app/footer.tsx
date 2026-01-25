@@ -357,6 +357,7 @@ function Newsletter() {
           type="email"
         />
         <Button
+          ariaLabel="S'abonner à la newsletter"
           className={cn(
             "cursor-pointer bg-primary/90 text-primary-foreground text-sm transition-colors hover:bg-primary",
             "xs:text-[1rem]",

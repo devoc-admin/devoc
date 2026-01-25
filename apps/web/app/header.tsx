@@ -336,6 +336,7 @@ function ContactButton({ children = null }: React.PropsWithChildren) {
   return (
     <Link href="#contact">
       <Button
+        aria-label="Nous contacter"
         className={cn(
           "flex cursor-pointer items-center gap-2 rounded-full font-bold text-primary-foreground transition-colors",
           children && "px-5!",
@@ -343,7 +344,7 @@ function ContactButton({ children = null }: React.PropsWithChildren) {
           "hover:bg-linear-to-r hover:from-primary/90 hover:to-primary-lighter/90"
         )}
       >
-        <SendIcon size={20} />
+        <SendIcon aria-hidden="true" size={20} />
         {children && <span>{children}</span>}
       </Button>
     </Link>

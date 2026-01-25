@@ -140,11 +140,15 @@ export function MethodMobile() {
   }, []);
 
   const NavigationDots = (
-    <div className="mt-4 flex gap-2">
+    <div className="mt-4 flex gap-2 py-1">
       {steps.map(({ title }, index) => (
         <button
           className={cn(
-            "size-3.5 cursor-pointer rounded-full bg-primary/20 transition-colors duration-500",
+            "size-5",
+            "cursor-pointer",
+            "rounded-full",
+            "bg-primary/20 transition-colors duration-500",
+            "focus-visible:outline-4 focus-visible:outline-primary-strong",
             currentStep === index && "bg-primary"
           )}
           key={title}

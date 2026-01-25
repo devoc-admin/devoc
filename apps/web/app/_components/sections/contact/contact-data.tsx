@@ -12,7 +12,7 @@ export const contactItems: ContactItem[] = [
   {
     content: "contact@dev-oc.fr",
     href: "mailto:contact@dev-oc.fr",
-    icon: <MailIcon size={26} />,
+    icon: <MailIcon aria-hidden="true" size={26} />,
     id: "email",
     title: "Email",
   },
@@ -24,14 +24,14 @@ export const contactItems: ContactItem[] = [
       </div>
     ),
     href: "tel:+33620239838",
-    icon: <PhoneIcon size={26} />,
+    icon: <PhoneIcon aria-hidden="true" size={26} />,
     id: "phone1",
     title: "Téléphone",
   },
   {
     content: "Carcassonne, France",
     href: "https://maps.app.goo.gl/HSWRizckJvyuXuDP7",
-    icon: <MapPinIcon size={26} />,
+    icon: <MapPinIcon aria-hidden="true" size={26} />,
     id: "address",
     title: "Adresse",
   },

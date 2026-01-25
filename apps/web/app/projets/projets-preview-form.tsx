@@ -92,6 +92,7 @@ function ProjetPreviewForm() {
         <span>{error}</span>
       </div>
       <Button
+        ariaLabel="Accéder à votre projet"
         className="cursor-pointer bg-linear-to-r from-primary to-primary-lighter font-kanit text-primary-foreground focus:ring-primary/40!"
         size="xl"
         type="submit"

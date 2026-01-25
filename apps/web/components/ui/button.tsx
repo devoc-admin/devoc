@@ -103,12 +103,14 @@ function Button({
   asChild = false,
   loading,
   children,
+  ariaLabel,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
     children?: React.ReactNode;
     loading?: boolean;
+    ariaLabel?: string;
   }) {
   const Comp = asChild ? Slot : "button";
 
@@ -116,6 +118,7 @@ function Button({
     <Comp
       className={cn(buttonVariants({ variant, size, className }))}
       data-slot="button"
+      aria-label={ariaLabel}
       {...props}
     >
       {loading && <LoaderIcon className="size-4 animate-spin" />}

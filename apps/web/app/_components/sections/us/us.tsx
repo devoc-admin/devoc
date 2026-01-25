@@ -171,7 +171,7 @@ function H4({ children }: { children: React.ReactNode }) {
 
 function DeveloperName({ children }: { children: React.ReactNode }) {
   return (
-    <h5
+    <h4
       className={cn(
         "w-fit",
         "relative",
@@ -189,6 +189,6 @@ function DeveloperName({ children }: { children: React.ReactNode }) {
       >
         {children}
       </SparklesText>
-    </h5>
+    </h4>
   );
 }
