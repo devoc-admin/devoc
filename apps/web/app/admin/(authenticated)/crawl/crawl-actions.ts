@@ -23,6 +23,7 @@ export async function upsertCrawl({
   skipScreenshots,
   useLocalScreenshots,
   concurrency,
+  prospectId,
 }: UpsertCrawlParams): Promise<ActionResult<UpsertCrawlResult>> {
   // ✅🌐 Validation de l'URL
   let origin: string;
@@ -62,12 +63,25 @@ export async function upsertCrawl({
     return { error: "Échec de l'insertion du crawl", success: false };
   }
 
-  // 2️⃣ Launch the crawler as a background job
+  // 2️⃣ Associate prospect with crawl (if provided)
+  if (prospectId) {
+    try {
+      await db
+        .update(prospect)
+        .set({ crawlId: insertedCrawl.id, updatedAt: nowString })
+        .where(eq(prospect.id, prospectId));
+    } catch (error) {
+      console.error("Erreur association prospect:", getErrorMessage(error));
+      // Continue anyway - crawl is more important than prospect association
+    }
+  }
+
+  // 3️⃣ Launch the crawler as a background job
   try {
     await inngest.send({
       data: {
         config: {
-          concurrency: concurrency ?? 5,
+          concurrency: concurrency ?? 10,
           maxDepth: maxDepth ?? 1,
           maxPages: maxPages ?? 5,
           skipResources: skipResources ?? false,
@@ -103,6 +117,7 @@ type UpsertCrawlParams = {
   skipScreenshots: boolean;
   useLocalScreenshots: boolean;
   concurrency: number;
+  prospectId?: number;
 };
 
 export type UpsertCrawlResult = { crawlId: string };
@@ -213,6 +228,7 @@ const listCrawlsQuery = db
     analyticsTools: crawl.analyticsTools,
     author: crawl.author,
     authorUrl: crawl.authorUrl,
+    availableLanguages: crawl.availableLanguages,
     completedAt: crawl.completedAt,
     consentManager: crawl.consentManager,
     contactAddresses: crawl.contactAddresses,
@@ -220,12 +236,17 @@ const listCrawlsQuery = db
     contactPhones: crawl.contactPhones,
     createdAt: crawl.createdAt,
     detectedTechCount: crawl.detectedTechCount,
+    hasMultipleLanguages: crawl.hasMultipleLanguages,
     hostingProvider: crawl.hostingProvider,
     id: crawl.id,
     pagesCrawled: crawl.pagesCrawled,
     pagesDiscovered: crawl.pagesDiscovered,
     primaryCms: crawl.primaryCms,
     primaryFramework: crawl.primaryFramework,
+    primaryLanguage: crawl.primaryLanguage,
+    prospectId: prospect.id,
+    prospectName: prospect.name,
+    prospectType: prospect.type,
     screenshotUrl: crawledPage.screenshotUrl,
     skipResources: crawl.skipResources,
     skipScreenshots: crawl.skipScreenshots,
@@ -238,6 +259,7 @@ const listCrawlsQuery = db
   })
   .from(crawl)
   .leftJoin(crawledPage, eq(crawl.id, crawledPage.crawlId))
+  .leftJoin(prospect, eq(crawl.id, prospect.crawlId))
   .where(and(eq(crawl.status, "completed"), eq(crawledPage.url, crawl.url)))
   .orderBy(desc(crawl.createdAt));
 
@@ -270,10 +292,16 @@ export async function deleteCrawl(crawlId: string): Promise<ActionResult> {
       // Ignore cancellation errors - job may have already finished
     }
 
-    // 2️⃣ Delete all screenshots from storage
+    // 2️⃣ Clear crawlId from any associated prospect
+    await db
+      .update(prospect)
+      .set({ crawlId: null, updatedAt: new Date().toISOString() })
+      .where(eq(prospect.crawlId, crawlId));
+
+    // 3️⃣ Delete all screenshots from storage
     await deleteScreenshotsForCrawl({ crawlId });
 
-    // 3️⃣ Delete records for this crawl
+    // 4️⃣ Delete records for this crawl
     await db.delete(crawl).where(eq(crawl.id, crawlId)).execute();
 
     return { success: true };
@@ -393,7 +421,7 @@ export async function retryCrawl(
 
     // 3️⃣ Create a new crawl with the same config
     return await upsertCrawl({
-      concurrency: existingCrawl.config?.concurrency ?? 5,
+      concurrency: existingCrawl.config?.concurrency ?? 10,
       maxDepth: existingCrawl.maxDepth ?? 3,
       maxPages: existingCrawl.maxPages ?? 100,
       skipResources: existingCrawl.skipResources ?? false,
@@ -454,6 +482,152 @@ export async function listUncrawledProspects(): Promise<
     }) as UncrawledProspectResult[];
 
     return { response: uncrawledProspects, success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
+// 🏢 List available prospects for a crawl (unassigned + current)
+
+export type AvailableProspect = {
+  id: number;
+  name: string;
+  type:
+    | "city"
+    | "administration"
+    | "cultural_establishment"
+    | "epci"
+    | "territorial_collectivity"
+    | "sme"
+    | "other";
+};
+
+export async function listAvailableProspectsForCrawl(
+  crawlId: string
+): Promise<ActionResult<AvailableProspect[]>> {
+  try {
+    // Get all prospects and filter for unassigned or assigned to this crawl
+    const allProspects = await db
+      .select({
+        crawlId: prospect.crawlId,
+        id: prospect.id,
+        name: prospect.name,
+        type: prospect.type,
+      })
+      .from(prospect)
+      .orderBy(prospect.name);
+
+    const result = allProspects
+      .filter((p) => !p.crawlId || p.crawlId === crawlId)
+      .map((p) => ({
+        id: p.id,
+        name: p.name,
+        type: p.type,
+      }));
+
+    return { response: result, success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
+// 🔗 Assign a prospect to a crawl
+
+export async function assignProspectToCrawl(
+  crawlId: string,
+  prospectId: number | null
+): Promise<ActionResult> {
+  try {
+    if (prospectId === null) {
+      // Unassign: set crawlId to null for any prospect that has this crawlId
+      await db
+        .update(prospect)
+        .set({ crawlId: null, updatedAt: new Date().toISOString() })
+        .where(eq(prospect.crawlId, crawlId));
+    } else {
+      // First, unassign any existing prospect from this crawl
+      await db
+        .update(prospect)
+        .set({ crawlId: null, updatedAt: new Date().toISOString() })
+        .where(eq(prospect.crawlId, crawlId));
+
+      // Then assign the new prospect
+      await db
+        .update(prospect)
+        .set({ crawlId, updatedAt: new Date().toISOString() })
+        .where(eq(prospect.id, prospectId));
+    }
+
+    return { success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
+// ➕ Add prospect and assign to crawl
+
+export type AddProspectForCrawlParams = {
+  crawlId: string;
+  name: string;
+  type:
+    | "city"
+    | "administration"
+    | "cultural_establishment"
+    | "epci"
+    | "territorial_collectivity"
+    | "sme"
+    | "other";
+  location: string;
+  website?: string;
+  latitude?: string;
+  longitude?: string;
+};
+
+export async function addProspectForCrawl({
+  crawlId,
+  name,
+  type,
+  location,
+  website,
+  latitude,
+  longitude,
+}: AddProspectForCrawlParams): Promise<ActionResult<{ prospectId: number }>> {
+  try {
+    const nowString = new Date().toISOString();
+
+    // First, unassign any existing prospect from this crawl
+    await db
+      .update(prospect)
+      .set({ crawlId: null, updatedAt: nowString })
+      .where(eq(prospect.crawlId, crawlId));
+
+    // Create the new prospect with the crawlId
+    const [newProspect] = await db
+      .insert(prospect)
+      .values({
+        crawlId,
+        createdAt: nowString,
+        latitude,
+        location,
+        longitude,
+        name,
+        type,
+        updatedAt: nowString,
+        website: website || null,
+      })
+      .returning({ id: prospect.id });
+
+    if (!newProspect) {
+      return { error: "Échec de la création du prospect", success: false };
+    }
+
+    return { response: { prospectId: newProspect.id }, success: true };
   } catch (error) {
     const message = getErrorMessage(error);
     return { error: message, success: false };

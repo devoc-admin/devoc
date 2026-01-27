@@ -219,17 +219,16 @@ export function ProspectAdd() {
                   </div>
                 )}
               </form.Field>
-              {/* 🌐 Website */}
+              {/* 🌐 Website (optionnel) */}
               <form.Field
                 name="website"
                 validators={{
                   onSubmit: ({ value }) => {
-                    if (!value.trim()) return "Le site web est requis";
-                    if (!isValidUrlFormat(value))
+                    if (value.trim() && !isValidUrlFormat(value))
                       return "L'URL n'est pas valide";
                   },
                   onSubmitAsync: async ({ value }) => {
-                    if (!value) return;
+                    if (!value.trim()) return;
                     const result = await isValidWebsite(value);
                     if (!result) return "Ce site web n'existe pas";
                   },
@@ -237,13 +236,12 @@ export function ProspectAdd() {
               >
                 {(field) => (
                   <div className="col-span-2">
-                    <Label>Site web</Label>
+                    <Label>Site web (optionnel)</Label>
                     <CustomInput
                       name={field.name}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         field.handleChange(e.target.value)
                       }
-                      placeholder="https://..."
                       value={field.state.value}
                     />
                     {!field.state.meta.isValid && (
@@ -299,10 +297,15 @@ function useProspectForm() {
   const form = useForm({
     defaultValues: defaultProspect,
     onSubmit: ({ value }) => {
+      const hasWebsite = value.website.trim() !== "";
       addProspectMutate({
         ...value,
         latitude: value.latitude || undefined,
         longitude: value.longitude || undefined,
+        // Si pas de site web, hasSite = false et estimatedOpportunity = "strong"
+        ...(hasWebsite
+          ? {}
+          : { estimatedOpportunity: "strong", hasSite: false }),
       });
     },
   });

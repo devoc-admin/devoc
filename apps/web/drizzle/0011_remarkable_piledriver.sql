@@ -1,0 +1,1 @@
+ALTER TYPE "public"."prospect_type" ADD VALUE 'sme' BEFORE 'other';

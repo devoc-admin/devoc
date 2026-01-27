@@ -62,6 +62,91 @@ export async function detectContactInfo({
       // Email regex
       const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
 
+      // File extensions to exclude (not valid email TLDs)
+      const fileExtensions = new Set([
+        "png",
+        "jpg",
+        "jpeg",
+        "gif",
+        "webp",
+        "svg",
+        "ico",
+        "bmp",
+        "tiff",
+        "pdf",
+        "doc",
+        "docx",
+        "xls",
+        "xlsx",
+        "ppt",
+        "pptx",
+        "zip",
+        "rar",
+        "tar",
+        "gz",
+        "7z",
+        "mp3",
+        "mp4",
+        "avi",
+        "mov",
+        "wmv",
+        "flv",
+        "wav",
+        "ogg",
+        "js",
+        "css",
+        "html",
+        "htm",
+        "xml",
+        "json",
+        "csv",
+        "txt",
+        "woff",
+        "woff2",
+        "ttf",
+        "eot",
+        "otf",
+      ]);
+
+      // Pattern that looks like image retina suffix (e.g., @2x, @3x)
+      const retinaPattern = /^[0-9]+x(-[0-9]+)?$/i;
+
+      // Validate if string looks like a real email address
+      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Email validation requires multiple sequential checks
+      function isValidEmail(candidate: string): boolean {
+        const parts = candidate.split("@");
+        if (parts.length !== 2) return false;
+
+        const [localPart, domain] = parts;
+        if (!(localPart && domain)) return false;
+
+        // Check if domain part looks like a retina suffix (e.g., 2x-1.png)
+        const domainFirstPart = domain.split(".")[0];
+        if (domainFirstPart && retinaPattern.test(domainFirstPart)) {
+          return false;
+        }
+
+        // Check if TLD is actually a file extension
+        const tld = domain.split(".").pop()?.toLowerCase();
+        if (tld && fileExtensions.has(tld)) {
+          return false;
+        }
+
+        // Domain should have at least one dot and reasonable structure
+        if (!domain.includes(".")) return false;
+
+        // Domain part before TLD should be at least 2 chars
+        const domainParts = domain.split(".");
+        if (domainParts.length < 2) return false;
+        const domainName = domainParts.slice(0, -1).join(".");
+        if (domainName.length < 2) return false;
+
+        // Local part should not be purely numeric
+        if (/^[0-9]+$/.test(localPart)) return false;
+
+        return true;
+      }
+
       // French postal address pattern: 5-digit postal code followed by city name
       const postalAddressRegex =
         /(\d{5})\s+([A-ZÀ-ÿ][a-zA-ZÀ-ÿ\s-]+?)(?=[.,\s]*(?:<|$|\n|[0-9]|Tél|Tel|Fax|Email|@))/gi;
@@ -141,7 +226,43 @@ export async function detectContactInfo({
 
         const text = getTextContent(container);
 
-        // Extract phones
+        // Extract phones from tel: links (most reliable source)
+        if (phones.length < maxPhones) {
+          const telLinks = container.querySelectorAll('a[href^="tel:"]');
+          for (const link of telLinks) {
+            if (phones.length >= maxPhones) break;
+            const href = link.getAttribute("href");
+            if (href) {
+              const rawNumber = href.replace("tel:", "").trim();
+              const normalized = normalizePhone(rawNumber);
+
+              if (normalized && !seenPhones.has(normalized)) {
+                seenPhones.add(normalized);
+
+                const isInternational = rawNumber.startsWith("+");
+
+                // Extract first significant digit for type detection
+                let firstDigit = "0";
+                if (isInternational) {
+                  // Format: +33X... - extract digit after country code
+                  const afterCountryCode = normalized.replace(/^\+\d{2}/, "");
+                  firstDigit = afterCountryCode[0] ?? "0";
+                } else {
+                  // Format: 0X... - extract second digit
+                  firstDigit = normalized[1] ?? "0";
+                }
+
+                phones.push({
+                  isInternational,
+                  number: rawNumber,
+                  type: getPhoneType(firstDigit),
+                });
+              }
+            }
+          }
+        }
+
+        // Extract phones from text (fallback)
         if (phones.length < maxPhones) {
           const phoneMatches = text.matchAll(frenchPhoneRegex);
           for (const match of phoneMatches) {
@@ -168,7 +289,7 @@ export async function detectContactInfo({
             if (emails.length >= maxEmails) break;
             const email = match[0].toLowerCase();
 
-            if (!seenEmails.has(email)) {
+            if (!seenEmails.has(email) && isValidEmail(email)) {
               seenEmails.add(email);
               emails.push({
                 email,
@@ -189,7 +310,7 @@ export async function detectContactInfo({
                 .replace("mailto:", "")
                 .split("?")[0]
                 ?.toLowerCase();
-              if (email && !seenEmails.has(email)) {
+              if (email && !seenEmails.has(email) && isValidEmail(email)) {
                 seenEmails.add(email);
                 emails.push({
                   email,

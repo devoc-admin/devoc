@@ -5,6 +5,7 @@ export { WebCrawler } from "./core/crawler";
 export { detectAuthor } from "./detectors/author-detector";
 export { detectCategoryPage } from "./detectors/category-detector";
 export { detectContactInfo } from "./detectors/contact-detector";
+export { detectLanguages } from "./detectors/language-detector";
 export { detectSeo } from "./detectors/seo-detector";
 export type {
   AuthorDetectionResult,
@@ -19,6 +20,7 @@ export type {
   FrenchTechDetection,
   JsonLdSchema,
   JsonLdSchemaType,
+  LanguageDetectionResult,
   NewsletterDetectionResult,
   OpenGraphData,
   PageCategory,

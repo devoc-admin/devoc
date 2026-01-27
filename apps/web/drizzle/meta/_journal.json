@@ -50,6 +50,41 @@
       "when": 1769107881137,
       "tag": "0006_brief_harry_osborn",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1769465624303,
+      "tag": "0007_brainy_surge",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1769466239022,
+      "tag": "0008_clean_raza",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1769466535730,
+      "tag": "0009_add-language-detection",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1769550000000,
+      "tag": "0010_add-sme-prospect-type",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1769542359440,
+      "tag": "0011_remarkable_piledriver",
+      "breakpoints": true
     }
   ]
 }

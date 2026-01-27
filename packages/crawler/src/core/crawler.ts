@@ -12,6 +12,7 @@ import sharp from "sharp";
 import { detectAuthor } from "../detectors/author-detector";
 import { detectCategoryPage } from "../detectors/category-detector";
 import { detectContactInfo } from "../detectors/contact-detector";
+import { detectLanguages } from "../detectors/language-detector";
 import { detectNewsletter } from "../detectors/newsletter-detector";
 import { detectRssFeed } from "../detectors/rss-detector";
 import { detectSeo } from "../detectors/seo-detector";
@@ -24,6 +25,7 @@ import type {
   CrawlPageResult,
   CrawlProgressCallback,
   CrawlResult,
+  LanguageDetectionResult,
   NewsletterDetectionResult,
   QueueItem,
   RssFeedDetectionResult,
@@ -41,7 +43,7 @@ import { shouldCrawlUrl } from "../utils/url-utils";
 const DEFAULT_DELAY_BETWEEN_REQUESTS = 100;
 const DEFAULT_MAX_DEPTH = 3;
 const DEFAULT_MAX_PAGES = 100;
-const DEFAULT_CONCURRENCY = 5;
+const DEFAULT_CONCURRENCY = 10;
 const httpRegex = /^https?:\/\//;
 
 export class WebCrawler {
@@ -249,6 +251,9 @@ export class WebCrawler {
             this.queue.push({ depth: item.depth + 1, url: normalizedLink });
           }
         }
+
+        // Sort queue by depth (lowest first) to prioritize shallow pages
+        this.queue.sort((a, b) => a.depth - b.depth);
       }
 
       // Apply delay between requests
@@ -424,6 +429,12 @@ export class WebCrawler {
         seo = await detectSeo({ page });
       }
 
+      // Language detection (only on homepage / depth 0)
+      let languageInfo: LanguageDetectionResult | undefined;
+      if (depth === 0) {
+        languageInfo = await detectLanguages({ page });
+      }
+
       // Extract links
       const links = await this.extractLinksFromPage(page);
 
@@ -456,6 +467,7 @@ export class WebCrawler {
         depth,
         description,
         httpStatus,
+        languageInfo,
         links,
         newsletter,
         normalizedUrl,
@@ -510,13 +522,20 @@ export class WebCrawler {
     const acceptSelectors = [
       // Common French accept buttons
       'button:has-text("Accepter tout")',
+      '[role="button"]:has-text("Accepter tout")',
       'button:has-text("Tout accepter")',
+      '[role="button"]:has-text("Tout accepter")',
       'button:has-text("Ok, tout accepter")',
+      '[role="button"]:has-text("Ok, tout accepter")',
       'button:has-text("Accepter")',
+      '[role="button"]:has-text("Accepter")',
       'button:has-text("J\'accepte")',
+      '[role="button"]:has-text("J\'accepte")',
       // Common English accept buttons
       'button:has-text("Accept all")',
+      '[role="button"]:has-text("Accept all")',
       'button:has-text("Accept")',
+      '[role="button"]:has-text("Accept")',
       // Common consent libraries
       ".tarteaucitronAllow",
       "#onetrust-accept-btn-handler",

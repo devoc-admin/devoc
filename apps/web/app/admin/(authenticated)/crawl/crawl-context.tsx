@@ -181,6 +181,7 @@ type CrawlContextType = {
       skipScreenshots: boolean;
       useLocalScreenshots: boolean;
       concurrency: number;
+      prospectId?: number;
     },
     unknown
   >;

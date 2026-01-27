@@ -8,6 +8,7 @@ import {
   useAddProspectMutation,
   useDeleteProspectMutation,
   useEditProspectMutation,
+  useToggleHasSiteMutation,
   useUpdateEstimatedOpportunityMutation,
 } from "./prospects-mutations";
 import { useListProspectsQuery } from "./prospects-queries";
@@ -24,11 +25,16 @@ const ProspectsContext = createContext<ProspectsContext>({
   isDeletingProspect: false,
   isEditedProspect: false,
   isEditingProspect: false,
+  isTogglingHasSite: false,
   isUpdatingEstimatedOpportunity: false,
   prospects: [],
   searchQuery: "",
   setSearchQuery: () => {},
+  setTypeFilter: () => {},
   setViewMode: () => {},
+  toggleHasSiteMutate: () => {},
+  togglingHasSiteProspectId: undefined,
+  typeFilter: null,
   updateEstimatedOpportunityMutate: () => {},
   updatingEstimatedOpportunityProspectId: undefined,
   viewMode: "list",
@@ -45,6 +51,9 @@ export function ProspectsContextProvider({
 
   // 🔍 Search
   const [searchQuery, setSearchQuery] = useState("");
+
+  // 🏷️ Type filter
+  const [typeFilter, setTypeFilter] = useState<ProspectType | null>(null);
 
   // 🗺️ View mode (synced with URL query param via nuqs)
   const [viewMode, setViewMode] = useQueryState(
@@ -86,6 +95,15 @@ export function ProspectsContextProvider({
   const updatingEstimatedOpportunityProspectId =
     updatingEstimatedOpportunityVariables?.prospectId;
 
+  // 🌐 Toggle hasSite
+  const {
+    mutate: toggleHasSiteMutate,
+    isPending: isTogglingHasSite,
+    variables: togglingHasSiteVariables,
+  } = useToggleHasSiteMutation();
+
+  const togglingHasSiteProspectId = togglingHasSiteVariables?.prospectId;
+
   return (
     <ProspectsContext.Provider
       value={{
@@ -110,12 +128,21 @@ export function ProspectsContextProvider({
         updateEstimatedOpportunityMutate,
         updatingEstimatedOpportunityProspectId,
 
+        // 🌐 Toggle hasSite
+        isTogglingHasSite,
+        toggleHasSiteMutate,
+        togglingHasSiteProspectId,
+
         // 📋 Prospects
         prospects,
 
         //🔍 Search prospects
         searchQuery,
         setSearchQuery,
+
+        // 🏷️ Type filter
+        setTypeFilter,
+        typeFilter,
 
         // 🗺️ View mode
         setViewMode,
@@ -168,8 +195,18 @@ type ProspectsContext = {
   >;
   updatingEstimatedOpportunityProspectId: number | undefined;
   isUpdatingEstimatedOpportunity: boolean;
+  toggleHasSiteMutate: UseMutateFunction<
+    boolean,
+    Error,
+    { prospectId: number; hasSite: boolean },
+    unknown
+  >;
+  togglingHasSiteProspectId: number | undefined;
+  isTogglingHasSite: boolean;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  typeFilter: ProspectType | null;
+  setTypeFilter: (type: ProspectType | null) => void;
   viewMode: "list" | "map";
   setViewMode: (mode: "list" | "map") => void;
 };

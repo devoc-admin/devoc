@@ -1,21 +1,22 @@
 "use client";
 import { useForm } from "@tanstack/react-form";
-import { XIcon } from "lucide-react";
+import { ChevronDownIcon, SearchIcon, XIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { isValidWebsite } from "@/actions/validation";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
+import { cn } from "@/lib/utils";
 import { updateProspectWebsite } from "../../prospects/prospects-actions";
 import { useCrawlContext } from "../crawl-context";
 import { useUncrawledProspects } from "../crawl-queries";
@@ -26,24 +27,36 @@ type SelectedProspect = {
 } | null;
 
 const MAX_PAGES_CRAWLED = 500;
-const DEFAULT_PAGES_CRAWLED = 500;
+const DEFAULT_PAGES_CRAWLED = 100;
 
 const MAX_DEPTH = 10;
 const DEFAULT_DEPTH = 3;
 
-const MAX_CONCURRENCY = 8; // Higher values risk rate limiting/memory issues
-const DEFAULT_CONCURRENCY = 8;
+const MAX_CONCURRENCY = 15;
+const DEFAULT_CONCURRENCY = 10;
 
 export function CrawlForm() {
   const [selectedProspect, setSelectedProspect] =
     useState<SelectedProspect>(null);
+  const [prospectSearchQuery, setProspectSearchQuery] = useState("");
   const crawlForm = useCrawlForm({ selectedProspect, setSelectedProspect });
   const { crawlId } = useCrawlContext();
   const { prospects, prospectsAreLoading } = useUncrawledProspects();
 
   const currentCrawlRunning = crawlId !== undefined && crawlId !== null;
 
+  const filteredProspects = prospects?.filter((prospect) =>
+    prospect.name.toLowerCase().includes(prospectSearchQuery.toLowerCase())
+  );
+
   function handleProspectSelect(prospectId: string) {
+    // Handle deselection
+    if (prospectId === "") {
+      setSelectedProspect(null);
+      crawlForm.setFieldValue("search", "");
+      return;
+    }
+
     const prospect = prospects?.find((p) => p.id.toString() === prospectId);
     if (prospect?.website) {
       crawlForm.setFieldValue("search", prospect.website);
@@ -51,6 +64,12 @@ export function CrawlForm() {
         id: prospect.id,
         originalWebsite: prospect.website,
       });
+    }
+  }
+
+  function handleDropdownOpenChange(open: boolean) {
+    if (!open) {
+      setProspectSearchQuery("");
     }
   }
 
@@ -73,34 +92,85 @@ export function CrawlForm() {
                 <Label className="font-kanit text-lg">
                   Sélectionner un prospect
                 </Label>
-                <Select
-                  disabled={
-                    currentCrawlRunning ||
-                    isSubmitting ||
-                    prospectsAreLoading ||
-                    !prospects?.length
-                  }
-                  onValueChange={handleProspectSelect}
-                >
-                  <SelectTrigger className="h-10 w-full">
-                    <SelectValue
-                      placeholder={getProspectPlaceholder(
-                        prospectsAreLoading,
-                        prospects?.length ?? 0
+                <DropdownMenu onOpenChange={handleDropdownOpenChange}>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className={cn(
+                        "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2",
+                        "text-sm ring-offset-background",
+                        "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                        "disabled:cursor-not-allowed disabled:opacity-50",
+                        !selectedProspect && "text-muted-foreground"
                       )}
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {prospects?.map((prospect) => (
-                      <SelectItem
-                        key={prospect.id}
-                        value={prospect.id.toString()}
+                      disabled={
+                        currentCrawlRunning ||
+                        isSubmitting ||
+                        prospectsAreLoading ||
+                        !prospects?.length
+                      }
+                      type="button"
+                    >
+                      <span className="truncate">
+                        {selectedProspect
+                          ? prospects?.find((p) => p.id === selectedProspect.id)
+                              ?.name
+                          : getProspectPlaceholder(
+                              prospectsAreLoading,
+                              prospects?.length ?? 0
+                            )}
+                      </span>
+                      <ChevronDownIcon className="size-4 shrink-0 opacity-50" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="start"
+                    className="w-[var(--radix-dropdown-menu-trigger-width)]"
+                  >
+                    <div className="p-2">
+                      <div className="relative">
+                        <SearchIcon
+                          className="pointer-events-none absolute top-1/2 left-2 -translate-y-1/2 text-muted-foreground"
+                          size={14}
+                        />
+                        <input
+                          className={cn(
+                            "h-8 w-full rounded-md border border-input bg-background pr-2 pl-7",
+                            "text-sm placeholder:text-muted-foreground",
+                            "focus:outline-none focus:ring-1 focus:ring-ring"
+                          )}
+                          onChange={(e) =>
+                            setProspectSearchQuery(e.target.value)
+                          }
+                          onClick={(e) => e.stopPropagation()}
+                          onKeyDown={(e) => e.stopPropagation()}
+                          placeholder="Rechercher un prospect..."
+                          type="text"
+                          value={prospectSearchQuery}
+                        />
+                      </div>
+                    </div>
+                    <div className="max-h-48 overflow-y-auto">
+                      <DropdownMenuRadioGroup
+                        onValueChange={handleProspectSelect}
+                        value={selectedProspect?.id.toString() ?? ""}
                       >
-                        {prospect.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                        <DropdownMenuRadioItem value="">
+                          <span className="text-muted-foreground">
+                            — Aucun prospect —
+                          </span>
+                        </DropdownMenuRadioItem>
+                        {filteredProspects?.map((prospect) => (
+                          <DropdownMenuRadioItem
+                            key={prospect.id}
+                            value={prospect.id.toString()}
+                          >
+                            {prospect.name}
+                          </DropdownMenuRadioItem>
+                        ))}
+                      </DropdownMenuRadioGroup>
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             )}
           </crawlForm.Subscribe>
@@ -417,6 +487,7 @@ function useCrawlForm({
         concurrency,
         maxDepth,
         maxPages,
+        prospectId: selectedProspect?.id,
         skipResources,
         skipScreenshots,
         url: search,

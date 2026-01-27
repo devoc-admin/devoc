@@ -40,6 +40,8 @@ export async function addProspect({
   location,
   latitude,
   longitude,
+  hasSite,
+  estimatedOpportunity,
 }: {
   name: string;
   type: ProspectType;
@@ -47,11 +49,15 @@ export async function addProspect({
   location: string;
   latitude?: string;
   longitude?: string;
+  hasSite?: boolean;
+  estimatedOpportunity?: EstimatedOpportunity;
 }) {
   try {
     const prospectResult = await db
       .insert(prospect)
       .values({
+        estimatedOpportunity,
+        hasSite,
         latitude,
         location,
         longitude,
@@ -160,6 +166,33 @@ export async function updateEstimatedOpportunity({
     await db
       .update(prospect)
       .set({ estimatedOpportunity })
+      .where(eq(prospect.id, prospectId))
+      .execute();
+    return { success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
+// 🌐 Toggle hasSite
+
+export async function toggleHasSite({
+  prospectId,
+  hasSite,
+}: {
+  prospectId: number;
+  hasSite: boolean;
+}) {
+  try {
+    await db
+      .update(prospect)
+      .set({
+        hasSite,
+        // Si hasSite devient false, on met estimatedOpportunity à "strong"
+        ...(hasSite === false && { estimatedOpportunity: "strong" }),
+      })
       .where(eq(prospect.id, prospectId))
       .execute();
     return { success: true };

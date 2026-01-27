@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import {
   getCrawl,
   getRunningCrawl,
+  listAvailableProspectsForCrawl,
   listCrawls,
   listUncrawledProspects,
 } from "./crawl-actions";
@@ -76,6 +77,7 @@ export function useCrawl() {
       // 🥱 Stop polling when crawl is finished
       if (["completed", "failed", "cancelled"].includes(data.response.status)) {
         queryClient.invalidateQueries({ queryKey: ["list-crawls"] });
+        queryClient.invalidateQueries({ queryKey: ["uncrawled-prospects"] });
         removeCrawlId();
         return false;
       }
@@ -133,5 +135,26 @@ export function useUncrawledProspects() {
   return {
     prospects,
     prospectsAreLoading: isLoading,
+  };
+}
+
+// --------------------------------------
+// 🏢 List available prospects for a crawl
+
+export function useAvailableProspectsForCrawl(crawlId: string) {
+  const { data: prospects, isLoading } = useQuery({
+    queryFn: async () => {
+      const result = await listAvailableProspectsForCrawl(crawlId);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return result.response;
+    },
+    queryKey: ["available-prospects", crawlId],
+  });
+
+  return {
+    availableProspects: prospects,
+    availableProspectsAreLoading: isLoading,
   };
 }

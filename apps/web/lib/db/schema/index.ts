@@ -241,6 +241,11 @@ export const crawl = pgTable(
     hasStructuredData: boolean().default(false),
     hasHreflang: boolean().default(false),
     hreflangCount: integer(),
+    // 🌐 Language detection
+    primaryLanguage: text(),
+    availableLanguages: jsonb().$type<string[]>(),
+    hasMultipleLanguages: boolean().default(false),
+    hasGoogleTranslate: boolean().default(false),
     //🗓️ Dates
     startedAt: timestamp({ mode: "string", withTimezone: true }),
     completedAt: timestamp({ mode: "string", withTimezone: true }),
@@ -318,8 +323,10 @@ export type NewCrawledPage = typeof crawledPage.$inferInsert;
 export const prospectTypeEnum = pgEnum("prospect_type", [
   "city",
   "administration",
+  "cultural_establishment",
   "epci",
   "territorial_collectivity",
+  "sme",
   "other",
 ]);
 
@@ -340,6 +347,7 @@ export const prospect = pgTable(
     longitude: text(),
     type: prospectTypeEnum().default("other").notNull(),
     estimatedOpportunity: estimatedOpportunityEnum().default("medium"),
+    hasSite: boolean().default(true).notNull(),
     crawlId: text(),
     createdAt: timestamp({ mode: "string", withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)

@@ -1,4 +1,5 @@
 "use client";
+import { GoogleMapsProvider } from "../prospects/_components/google-maps-provider";
 import { CrawlForm } from "./_components/crawl-form";
 import { CrawlStatusPanel } from "./_components/crawl-status-panel";
 import { DeleteCrawlsButton } from "./_components/delete-crawls-button";
@@ -11,15 +12,17 @@ export function CrawlPageContent() {
   useRunningCrawl();
 
   return (
-    <CrawlProvider>
-      <div className="flex h-full gap-x-6">
-        <CrawlForm />
-        <div className="grow space-y-6 overflow-auto">
-          <CrawlStatusPanel />
-          <ListCrawls />
+    <GoogleMapsProvider>
+      <CrawlProvider>
+        <div className="flex h-full gap-x-6">
+          <CrawlForm />
+          <div className="grow space-y-6 overflow-auto">
+            <CrawlStatusPanel />
+            <ListCrawls />
+          </div>
+          <DeleteCrawlsButton />
         </div>
-        <DeleteCrawlsButton />
-      </div>
-    </CrawlProvider>
+      </CrawlProvider>
+    </GoogleMapsProvider>
   );
 }

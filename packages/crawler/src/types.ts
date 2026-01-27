@@ -24,6 +24,7 @@ export type CrawlPageResult = {
   socialLinks?: SocialLinksResult;
   contactInfo?: ContactInfoDetectionResult;
   seo?: SeoDetectionResult;
+  languageInfo?: LanguageDetectionResult;
   links: string[];
   error?: string;
 };
@@ -122,8 +123,8 @@ export type TechnologyDetectionResult = {
 // Author/signature detection
 export type AuthorDetectionResult = {
   name: string;
-  url: string;
-  foundVia: "text" | "title" | "aria-label";
+  url?: string;
+  foundVia: "text" | "title" | "aria-label" | "url";
 };
 
 // RSS feed detection
@@ -223,4 +224,12 @@ export type SeoDetectionResult = {
   hasHreflang: boolean;
   hreflangCount?: number;
   hasStructuredData: boolean;
+};
+
+// Language detection
+export type LanguageDetectionResult = {
+  primaryLanguage: string | null;
+  availableLanguages: string[];
+  hasMultipleLanguages: boolean;
+  hasGoogleTranslate: boolean;
 };

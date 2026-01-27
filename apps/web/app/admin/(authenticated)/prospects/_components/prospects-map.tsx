@@ -9,6 +9,8 @@ import { useProspectsContext } from "../prospects-context";
 import {
   ESTIMATED_OPPORTUNITY,
   type EstimatedOpportunity,
+  PROSPECT_TYPES,
+  type ProspectType,
 } from "../prospects-types";
 import { useGoogleMaps } from "./google-maps-provider";
 
@@ -16,8 +18,10 @@ import { useGoogleMaps } from "./google-maps-provider";
 const markerColors: Record<Prospect["type"], string> = {
   administration: "#c084fc",
   city: "#60a5fa",
+  cultural_establishment: "#f472b6",
   epci: "#4ade80",
   other: "#a1a1aa",
+  sme: "#fbbf24",
   territorial_collectivity: "#f97316",
 };
 
@@ -50,7 +54,8 @@ const mapOptions: google.maps.MapOptions = {
 };
 
 export function ProspectsMap() {
-  const { prospects, searchQuery } = useProspectsContext();
+  const { prospects, searchQuery, typeFilter, setTypeFilter } =
+    useProspectsContext();
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(
     null
   );
@@ -62,6 +67,12 @@ export function ProspectsMap() {
 
     let filtered = prospects.filter((p) => p.latitude && p.longitude);
 
+    // Filter by type
+    if (typeFilter) {
+      filtered = filtered.filter((prospect) => prospect.type === typeFilter);
+    }
+
+    // Filter by search query
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
       filtered = filtered.filter((prospect) => {
@@ -72,7 +83,7 @@ export function ProspectsMap() {
     }
 
     return filtered;
-  }, [prospects, searchQuery]);
+  }, [prospects, searchQuery, typeFilter]);
 
   // 🎯 Default center: Carcassonne
   const defaultCenter = useMemo(
@@ -120,46 +131,60 @@ export function ProspectsMap() {
 
   // 🫙 No prospects
   if (prospectsWithCoords.length === 0) {
-    return <NoProspectsFound />;
+    return (
+      <div className="flex flex-col gap-y-4">
+        <TypeFilterBadges
+          onSelectType={setTypeFilter}
+          selectedType={typeFilter}
+        />
+        <NoProspectsFound />
+      </div>
+    );
   }
 
   return (
-    <div className="h-96 w-full grow overflow-hidden rounded-md">
-      <GoogleMap
-        center={defaultCenter}
-        mapContainerStyle={containerStyle}
-        options={mapOptions}
-        zoom={12}
-      >
-        {prospectsWithCoords.map((prospect) => {
-          const position = {
-            lat: Number.parseFloat(prospect.latitude ?? "0"),
-            lng: Number.parseFloat(prospect.longitude ?? "0"),
-          };
-          const color = markerColors[prospect.type];
+    <div className="flex flex-col gap-y-4">
+      <TypeFilterBadges
+        onSelectType={setTypeFilter}
+        selectedType={typeFilter}
+      />
+      <div className="h-96 w-full grow overflow-hidden rounded-md">
+        <GoogleMap
+          center={defaultCenter}
+          mapContainerStyle={containerStyle}
+          options={mapOptions}
+          zoom={12}
+        >
+          {prospectsWithCoords.map((prospect) => {
+            const position = {
+              lat: Number.parseFloat(prospect.latitude ?? "0"),
+              lng: Number.parseFloat(prospect.longitude ?? "0"),
+            };
+            const color = markerColors[prospect.type];
 
-          return (
-            <MarkerF
-              icon={createMarkerIcon(color)}
-              key={prospect.id}
-              onClick={() => handleMarkerClick(prospect)}
-              position={position}
-            />
-          );
-        })}
+            return (
+              <MarkerF
+                icon={createMarkerIcon(color)}
+                key={prospect.id}
+                onClick={() => handleMarkerClick(prospect)}
+                position={position}
+              />
+            );
+          })}
 
-        {selectedProspect && (
-          <InfoWindowF
-            onCloseClick={handleInfoWindowClose}
-            position={{
-              lat: Number.parseFloat(selectedProspect.latitude ?? "0"),
-              lng: Number.parseFloat(selectedProspect.longitude ?? "0"),
-            }}
-          >
-            <ProspectPopupContent prospect={selectedProspect} />
-          </InfoWindowF>
-        )}
-      </GoogleMap>
+          {selectedProspect && (
+            <InfoWindowF
+              onCloseClick={handleInfoWindowClose}
+              position={{
+                lat: Number.parseFloat(selectedProspect.latitude ?? "0"),
+                lng: Number.parseFloat(selectedProspect.longitude ?? "0"),
+              }}
+            >
+              <ProspectPopupContent prospect={selectedProspect} />
+            </InfoWindowF>
+          )}
+        </GoogleMap>
+      </div>
     </div>
   );
 }
@@ -229,16 +254,20 @@ function TypeBadge({ type }: { type: Prospect["type"] }) {
   const labels: Record<Prospect["type"], string> = {
     administration: "Administration",
     city: "Ville",
+    cultural_establishment: "Établissement culturel",
     epci: "EPCI",
     other: "Autre",
+    sme: "PME",
     territorial_collectivity: "Collectivité territoriale",
   };
 
   const colors: Record<Prospect["type"], string> = {
     administration: "bg-purple-500/20 text-purple-400",
     city: "bg-blue-500/20 text-blue-400",
+    cultural_establishment: "bg-pink-500/20 text-pink-400",
     epci: "bg-green-500/20 text-green-400",
     other: "bg-zinc-500/20 text-zinc-400",
+    sme: "bg-amber-500/20 text-amber-400",
     territorial_collectivity: "bg-orange-500/20 text-orange-400",
   };
 
@@ -289,4 +318,76 @@ function formatDate(dateString: string): string {
     year: "numeric",
   };
   return new Intl.DateTimeFormat("fr-FR", options).format(date);
+}
+
+// -------------------------------------------
+// 🏷️ Type filter badges
+
+const TYPE_FILTER_COLORS: Record<
+  ProspectType,
+  { active: string; inactive: string }
+> = {
+  administration: {
+    active: "bg-purple-500 text-white",
+    inactive: "bg-purple-500/20 text-purple-400 hover:bg-purple-500/30",
+  },
+  city: {
+    active: "bg-blue-500 text-white",
+    inactive: "bg-blue-500/20 text-blue-400 hover:bg-blue-500/30",
+  },
+  cultural_establishment: {
+    active: "bg-pink-500 text-white",
+    inactive: "bg-pink-500/20 text-pink-400 hover:bg-pink-500/30",
+  },
+  epci: {
+    active: "bg-green-500 text-white",
+    inactive: "bg-green-500/20 text-green-400 hover:bg-green-500/30",
+  },
+  other: {
+    active: "bg-zinc-500 text-white",
+    inactive: "bg-zinc-500/20 text-zinc-400 hover:bg-zinc-500/30",
+  },
+  sme: {
+    active: "bg-amber-500 text-white",
+    inactive: "bg-amber-500/20 text-amber-400 hover:bg-amber-500/30",
+  },
+  territorial_collectivity: {
+    active: "bg-orange-500 text-white",
+    inactive: "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30",
+  },
+};
+
+function TypeFilterBadges({
+  selectedType,
+  onSelectType,
+}: {
+  selectedType: ProspectType | null;
+  onSelectType: (type: ProspectType | null) => void;
+}) {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {(Object.entries(PROSPECT_TYPES) as [ProspectType, string][]).map(
+        ([type, label]) => {
+          const isActive = selectedType === type;
+          return (
+            <button
+              className={cn(
+                "cursor-pointer rounded-full px-3 py-1",
+                "font-medium text-xs",
+                "transition-colors",
+                isActive
+                  ? TYPE_FILTER_COLORS[type].active
+                  : TYPE_FILTER_COLORS[type].inactive
+              )}
+              key={type}
+              onClick={() => onSelectType(isActive ? null : type)}
+              type="button"
+            >
+              {label}
+            </button>
+          );
+        }
+      )}
+    </div>
+  );
 }

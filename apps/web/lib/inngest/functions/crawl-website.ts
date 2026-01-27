@@ -271,6 +271,28 @@ export const crawlWebsite = inngest.createFunction(
               })
               .where(eq(crawl.id, crawlId));
           }
+
+          // 🌐 Save language info (only for homepage / depth 0)
+          if (progress.crawledPage.languageInfo) {
+            const {
+              availableLanguages,
+              hasGoogleTranslate,
+              hasMultipleLanguages,
+              primaryLanguage,
+            } = progress.crawledPage.languageInfo;
+            await db
+              .update(crawl)
+              .set({
+                availableLanguages: availableLanguages.length
+                  ? availableLanguages
+                  : null,
+                hasGoogleTranslate,
+                hasMultipleLanguages,
+                primaryLanguage,
+                updatedAt: nowString,
+              })
+              .where(eq(crawl.id, crawlId));
+          }
         },
       });
 

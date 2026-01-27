@@ -86,7 +86,8 @@ import { ProspectsMap } from "./prospects-map";
 import { ViewToggle } from "./view-toggle";
 
 export function ProspectsList() {
-  const { prospects, viewMode } = useProspectsContext();
+  const { prospects, viewMode, typeFilter, setTypeFilter } =
+    useProspectsContext();
   const table = useProspectsList();
   if (!prospects) return null;
 
@@ -135,60 +136,76 @@ export function ProspectsList() {
       <div className="w-fit">
         <ViewToggle />
       </div>
+      {viewMode === "list" && (
+        <TypeFilterBadges
+          onSelectType={setTypeFilter}
+          selectedType={typeFilter}
+        />
+      )}
       {viewMode === "map" ? <ProspectsMap /> : <ProspectsTable />}
     </div>
   );
 }
 
 function useProspectsList() {
-  const { prospects, searchQuery } = useProspectsContext();
+  const { prospects, searchQuery, typeFilter } = useProspectsContext();
   const columnHelper = createColumnHelper<Prospect>();
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const filteredProspects = useMemo(() => {
-    if (!(prospects && searchQuery.trim())) return prospects ?? [];
+    let filtered = prospects ?? [];
 
-    const query = searchQuery.toLowerCase().trim();
-    return prospects.filter((prospect) => {
-      const name = prospect.name?.toLowerCase() ?? "";
-      const type = prospect.type?.toLowerCase() ?? "";
-      const website = prospect.website?.toLowerCase() ?? "";
+    // Filter by type
+    if (typeFilter) {
+      filtered = filtered.filter((prospect) => prospect.type === typeFilter);
+    }
 
-      return (
-        name.includes(query) || type.includes(query) || website.includes(query)
-      );
-    });
-  }, [prospects, searchQuery]);
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter((prospect) => {
+        const name = prospect.name?.toLowerCase() ?? "";
+        const type = prospect.type?.toLowerCase() ?? "";
+        const website = prospect.website?.toLowerCase() ?? "";
+
+        return (
+          name.includes(query) ||
+          type.includes(query) ||
+          website.includes(query)
+        );
+      });
+    }
+
+    return filtered;
+  }, [prospects, searchQuery, typeFilter]);
 
   const defaultColumns = [
-    //🔠 Name
+    //🔠 Name (clickable to website if available)
     columnHelper.accessor("name", {
-      cell: ({ getValue }) => getValue(),
-      header: "Nom",
+      cell: ({ getValue, row }) => {
+        const name = getValue();
+        const website = row.original.website;
+        if (website) {
+          return (
+            <a
+              className="flex items-center gap-x-1.5 text-blue-500 hover:underline"
+              href={website}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <span>{name}</span>
+              <ExternalLinkIcon className="shrink-0" size={14} />
+            </a>
+          );
+        }
+        return <span>{name}</span>;
+      },
+      header: ({ column }) => <SortableHeader column={column} label="Nom" />,
     }),
     // 🟡 Type
     columnHelper.accessor("type", {
       cell: ({ getValue }) => <TypeBadge type={getValue()} />,
-      header: "Type",
-    }),
-    // 🌐 Website
-    columnHelper.accessor("website", {
-      cell: ({ getValue }) => {
-        const url = getValue();
-        if (!url) return <span className="text-muted-foreground">-</span>;
-        return (
-          <a
-            className="flex cursor-pointer items-center gap-x-2 text-blue-500 underline"
-            href={url}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <span>Voir le site</span>
-            <ExternalLinkIcon size={16} />
-          </a>
-        );
-      },
-      header: "Site web",
+      header: ({ column }) => <SortableHeader column={column} label="Type" />,
     }),
     // 📌 Location
     columnHelper.accessor("location", {
@@ -208,10 +225,12 @@ function useProspectsList() {
       },
       header: "Localisation",
     }),
-    //🗓️ Created at
-    columnHelper.accessor("createdAt", {
-      cell: ({ getValue }) => formatDate(getValue()),
-      header: "Ajouté le",
+    // 🌐 Has site
+    columnHelper.accessor("hasSite", {
+      cell: ({ getValue, row }) => (
+        <HasSiteToggle prospectId={row.original.id} value={getValue()} />
+      ),
+      header: ({ column }) => <SortableHeader column={column} label="Site" />,
     }),
     // 🎯 Estimated opportunity (Urgence)
     columnHelper.accessor("estimatedOpportunity", {
@@ -222,14 +241,7 @@ function useProspectsList() {
         />
       ),
       header: ({ column }) => (
-        <button
-          className="flex items-center gap-x-1 hover:text-foreground"
-          onClick={() => column.toggleSorting()}
-          type="button"
-        >
-          Urgence
-          <SortingIcon direction={column.getIsSorted()} />
-        </button>
+        <SortableHeader column={column} label="Urgence" />
       ),
       sortingFn: (rowA, rowB) => {
         const order = { medium: 1, strong: 0, weak: 2 };
@@ -300,16 +312,20 @@ function TypeBadge({ type }: { type: Prospect["type"] }) {
   const labels: Record<Prospect["type"], string> = {
     administration: "Administration",
     city: "Ville",
+    cultural_establishment: "Établissement culturel",
     epci: "EPCI",
     other: "Autre",
+    sme: "PME/TPE",
     territorial_collectivity: "Collectivité territoriale",
   };
 
   const colors: Record<Prospect["type"], string> = {
     administration: "bg-purple-500/20 text-purple-400",
     city: "bg-blue-500/20 text-blue-400",
+    cultural_establishment: "bg-pink-500/20 text-pink-400",
     epci: "bg-green-500/20 text-green-400",
     other: "bg-zinc-500/20 text-zinc-400",
+    sme: "bg-red-500/20 text-red-400",
     territorial_collectivity: "bg-orange-500/20 text-orange-400",
   };
 
@@ -327,17 +343,76 @@ function TypeBadge({ type }: { type: Prospect["type"] }) {
   );
 }
 
-// ------------------------------------
-// 🗓️ Format date
+// -------------------------------------------
+// 🏷️ Type filter badges
 
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  const options: Intl.DateTimeFormatOptions = {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  };
-  return new Intl.DateTimeFormat("fr-FR", options).format(date);
+const TYPE_FILTER_COLORS: Record<
+  ProspectType,
+  { active: string; inactive: string }
+> = {
+  administration: {
+    active: "bg-purple-500 text-white",
+    inactive: "bg-purple-500/20 text-purple-400 hover:bg-purple-500/30",
+  },
+  city: {
+    active: "bg-blue-500 text-white",
+    inactive: "bg-blue-500/20 text-blue-400 hover:bg-blue-500/30",
+  },
+  cultural_establishment: {
+    active: "bg-pink-500 text-white",
+    inactive: "bg-pink-500/20 text-pink-400 hover:bg-pink-500/30",
+  },
+  epci: {
+    active: "bg-green-500 text-white",
+    inactive: "bg-green-500/20 text-green-400 hover:bg-green-500/30",
+  },
+  other: {
+    active: "bg-zinc-500 text-white",
+    inactive: "bg-zinc-500/20 text-zinc-400 hover:bg-zinc-500/30",
+  },
+  sme: {
+    active: "bg-red-500 text-white",
+    inactive: "bg-red-500/20 text-red-400 hover:bg-red-500/30",
+  },
+  territorial_collectivity: {
+    active: "bg-orange-500 text-white",
+    inactive: "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30",
+  },
+};
+
+function TypeFilterBadges({
+  selectedType,
+  onSelectType,
+}: {
+  selectedType: ProspectType | null;
+  onSelectType: (type: ProspectType | null) => void;
+}) {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {(Object.entries(PROSPECT_TYPES) as [ProspectType, string][]).map(
+        ([type, label]) => {
+          const isActive = selectedType === type;
+          return (
+            <button
+              className={cn(
+                "cursor-pointer rounded-full px-3 py-1",
+                "font-medium text-xs",
+                "transition-colors",
+                isActive
+                  ? TYPE_FILTER_COLORS[type].active
+                  : TYPE_FILTER_COLORS[type].inactive
+              )}
+              key={type}
+              onClick={() => onSelectType(isActive ? null : type)}
+              type="button"
+            >
+              {label}
+            </button>
+          );
+        }
+      )}
+    </div>
+  );
 }
 
 // -------------------------------------------
@@ -719,7 +794,29 @@ function ErrorMessage({ children }: { children: string }) {
 }
 
 // -------------------------------------------
-// 🔃 Sorting icon
+// 🔃 Sortable header
+
+function SortableHeader({
+  column,
+  label,
+}: {
+  column: {
+    toggleSorting: () => void;
+    getIsSorted: () => false | "asc" | "desc";
+  };
+  label: string;
+}) {
+  return (
+    <button
+      className="flex cursor-pointer items-center gap-x-1 hover:text-foreground"
+      onClick={() => column.toggleSorting()}
+      type="button"
+    >
+      {label}
+      <SortingIcon direction={column.getIsSorted()} />
+    </button>
+  );
+}
 
 function SortingIcon({ direction }: { direction: false | "asc" | "desc" }) {
   if (direction === "asc") {
@@ -794,5 +891,46 @@ function EstimatedOpportunityDropdown({
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+// -------------------------------------------
+// 🌐 Has site toggle
+
+function HasSiteToggle({
+  prospectId,
+  value,
+}: {
+  prospectId: number;
+  value: boolean;
+}) {
+  const { toggleHasSiteMutate, togglingHasSiteProspectId, isTogglingHasSite } =
+    useProspectsContext();
+
+  const isPending =
+    isTogglingHasSite && togglingHasSiteProspectId === prospectId;
+
+  function handleToggle() {
+    toggleHasSiteMutate({
+      hasSite: !value,
+      prospectId,
+    });
+  }
+
+  const icon = value ? "✅" : "❌";
+
+  return (
+    <button
+      className={cn(
+        "cursor-pointer text-xl transition-opacity",
+        "hover:opacity-70",
+        "disabled:cursor-not-allowed disabled:opacity-50"
+      )}
+      disabled={isPending}
+      onClick={handleToggle}
+      type="button"
+    >
+      {isPending ? <LoaderIcon className="size-5 animate-spin" /> : icon}
+    </button>
   );
 }

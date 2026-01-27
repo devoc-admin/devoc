@@ -4,6 +4,7 @@ import {
   addProspect,
   deleteProspect,
   editProspect,
+  toggleHasSite,
   updateEstimatedOpportunity,
 } from "./prospects-actions";
 import type { EstimatedOpportunity, ProspectType } from "./prospects-types";
@@ -19,6 +20,8 @@ export function useAddProspectMutation() {
       type,
       latitude,
       longitude,
+      hasSite,
+      estimatedOpportunity,
     }: {
       name: string;
       website: string;
@@ -26,8 +29,12 @@ export function useAddProspectMutation() {
       type: ProspectType;
       latitude?: string;
       longitude?: string;
+      hasSite?: boolean;
+      estimatedOpportunity?: EstimatedOpportunity;
     }) => {
       const result = await addProspect({
+        estimatedOpportunity,
+        hasSite,
         latitude,
         location,
         longitude,
@@ -155,6 +162,38 @@ export function useUpdateEstimatedOpportunityMutation() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prospects"] });
       toast.success("Urgence mise à jour avec succès !");
+    },
+  });
+}
+
+// --------------------------------------
+// 🌐 Toggle hasSite
+
+export function useToggleHasSiteMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      prospectId,
+      hasSite,
+    }: {
+      prospectId: number;
+      hasSite: boolean;
+    }) => {
+      const result = await toggleHasSite({
+        hasSite,
+        prospectId,
+      });
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return true;
+    },
+    onError: () => {
+      toast.error("Erreur lors de la mise à jour.");
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["prospects"] });
     },
   });
 }
