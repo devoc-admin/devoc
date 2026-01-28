@@ -1,6 +1,6 @@
 import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { CrawlPageContent } from "./crawl";
-
 export default function CrawlPage() {
   return (
     <Suspense fallback={<CrawlPageSkeleton />}>
@@ -9,11 +9,14 @@ export default function CrawlPage() {
   );
 }
 
+// ================================
+//💀
+
 function CrawlPageSkeleton() {
   return (
     <div className="space-y-6">
-      <div className="h-32 animate-pulse rounded-lg bg-sidebar" />
-      <div className="h-64 animate-pulse rounded-lg bg-sidebar" />
+      <Skeleton className="h-32" />
+      <Skeleton className="h-64" />
     </div>
   );
 }

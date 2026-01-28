@@ -146,8 +146,6 @@ export type CrawlConfig = {
   maxPages: number;
   delayBetweenRequests: number;
   respectRobotsTxt: boolean;
-  skipResources?: boolean;
-  skipScreenshots?: boolean;
   useLocalScreenshots?: boolean;
   concurrency?: number;
   includePaths?: string[];
@@ -171,8 +169,6 @@ export const crawl = pgTable(
     maxPages: integer().default(50).notNull(),
     pagesDiscovered: integer().default(0).notNull(),
     pagesCrawled: integer().default(0).notNull(),
-    skipResources: boolean().default(false),
-    skipScreenshots: boolean().default(false),
     useLocalScreenshots: boolean().default(false),
     homepageScreenshotUrl: text(),
     errorMessage: text(),

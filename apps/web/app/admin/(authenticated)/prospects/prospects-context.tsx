@@ -2,64 +2,106 @@
 // biome-ignore-all assist/source/useSortedKeys: context requires specific order
 import type { UseMutateFunction } from "@tanstack/react-query";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
-import { createContext, type ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
+import type { Prospect } from "@/lib/db/schema";
 import type { ProspectResult } from "./prospects-actions";
 import {
   useAddProspectMutation,
   useDeleteProspectMutation,
   useEditProspectMutation,
-  useToggleHasSiteMutation,
   useUpdateEstimatedOpportunityMutation,
 } from "./prospects-mutations";
 import { useListProspectsQuery } from "./prospects-queries";
-import type { EstimatedOpportunity, ProspectType } from "./prospects-types";
 
 const ProspectsContext = createContext<ProspectsContext>({
-  addProspectMutate: () => {},
-  deleteProspectMutate: () => {},
-  deletingProspectId: undefined,
-  editProspectMutate: () => {},
-  editingProspectId: undefined,
-  isAddedProspect: false,
-  isAddingProspect: false,
-  isDeletingProspect: false,
-  isEditedProspect: false,
-  isEditingProspect: false,
-  isTogglingHasSite: false,
-  isUpdatingEstimatedOpportunity: false,
+  // 👯 Prospects
   prospects: [],
+  isProspectsLoading: false,
   searchQuery: "",
   setSearchQuery: () => {},
-  setTypeFilter: () => {},
-  setViewMode: () => {},
-  toggleHasSiteMutate: () => {},
-  togglingHasSiteProspectId: undefined,
   typeFilter: null,
+  setTypeFilter: () => {},
+
+  // ➕ Add prospect
+  addProspectMutate: () => {},
+  isAddedProspect: false,
+  isAddingProspect: false,
+
+  // ✏️ Edit prospect
+  editProspectMutate: () => {},
+  editingProspectId: undefined,
+  isEditedProspect: false,
+  isEditingProspect: false,
+
+  // 🗑️ Delete prospect
+  deleteProspectMutate: () => {},
+  isDeletingProspect: false,
+  deletingProspectId: undefined,
+
+  // 🗺️ View mode
+  viewMode: "table",
+  setViewMode: () => {},
+
+  // 🔴 Estimated opportunity
   updateEstimatedOpportunityMutate: () => {},
   updatingEstimatedOpportunityProspectId: undefined,
-  viewMode: "list",
+  isUpdatingEstimatedOpportunity: false,
 });
 
-const viewModes = ["list", "map"] as const;
+const viewModes: ViewMode[] = ["table", "map"] as const;
 
 export function ProspectsContextProvider({
   children,
 }: {
   children: ReactNode;
 }) {
-  const { data: prospects } = useListProspectsQuery();
+  const { data: prospects, isLoading: isProspectsLoading } =
+    useListProspectsQuery();
 
   // 🔍 Search
   const [searchQuery, setSearchQuery] = useState("");
 
   // 🏷️ Type filter
-  const [typeFilter, setTypeFilter] = useState<ProspectType | null>(null);
+  const [typeFilter, setTypeFilter] = useState<Prospect["type"] | null>(null);
 
   // 🗺️ View mode (synced with URL query param via nuqs)
   const [viewMode, setViewMode] = useQueryState(
     "view",
-    parseAsStringLiteral(viewModes).withDefault("list")
+    parseAsStringLiteral(viewModes).withDefault("table")
   );
+
+  const filteredProspects = useMemo(() => {
+    let filtered = prospects ?? [];
+
+    // Filter by type
+    if (typeFilter) {
+      filtered = filtered.filter((prospect) => prospect.type === typeFilter);
+    }
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter((prospect) => {
+        const name = prospect.name?.toLowerCase() ?? "";
+        const type = prospect.type?.toLowerCase() ?? "";
+        const website = prospect.website?.toLowerCase() ?? "";
+
+        return (
+          name.includes(query) ||
+          type.includes(query) ||
+          website.includes(query)
+        );
+      });
+    }
+
+    return filtered;
+  }, [prospects, searchQuery, typeFilter]);
 
   // ➕ Add prospect
   const {
@@ -68,13 +110,6 @@ export function ProspectsContextProvider({
     isSuccess: isAddedProspect,
   } = useAddProspectMutation();
 
-  // 🗑️ Delete prospect
-  const {
-    mutate: deleteProspectMutate,
-    isPending: isDeletingProspect,
-    variables: deletingProspectId,
-  } = useDeleteProspectMutation();
-
   // ✏️ Edit prospect
   const {
     mutate: editProspectMutate,
@@ -82,8 +117,14 @@ export function ProspectsContextProvider({
     isSuccess: isEditedProspect,
     variables: editingProspectVariables,
   } = useEditProspectMutation();
-
   const editingProspectId = editingProspectVariables?.id;
+
+  // 🗑️ Delete prospect
+  const {
+    mutate: deleteProspectMutate,
+    isPending: isDeletingProspect,
+    variables: deletingProspectId,
+  } = useDeleteProspectMutation();
 
   // 🎯 Update estimated opportunity
   const {
@@ -95,18 +136,17 @@ export function ProspectsContextProvider({
   const updatingEstimatedOpportunityProspectId =
     updatingEstimatedOpportunityVariables?.prospectId;
 
-  // 🌐 Toggle hasSite
-  const {
-    mutate: toggleHasSiteMutate,
-    isPending: isTogglingHasSite,
-    variables: togglingHasSiteVariables,
-  } = useToggleHasSiteMutation();
-
-  const togglingHasSiteProspectId = togglingHasSiteVariables?.prospectId;
-
   return (
     <ProspectsContext.Provider
       value={{
+        // 👯  Prospects
+        prospects: filteredProspects,
+        isProspectsLoading,
+        searchQuery,
+        setSearchQuery,
+        typeFilter,
+        setTypeFilter,
+
         // ➕ Add prospect
         addProspectMutate,
         isAddedProspect,
@@ -120,33 +160,17 @@ export function ProspectsContextProvider({
 
         // 🗑️ Delete prospect
         deleteProspectMutate,
-        deletingProspectId,
         isDeletingProspect,
-
-        // 🎯 Update estimated opportunity
-        isUpdatingEstimatedOpportunity,
-        updateEstimatedOpportunityMutate,
-        updatingEstimatedOpportunityProspectId,
-
-        // 🌐 Toggle hasSite
-        isTogglingHasSite,
-        toggleHasSiteMutate,
-        togglingHasSiteProspectId,
-
-        // 📋 Prospects
-        prospects,
-
-        //🔍 Search prospects
-        searchQuery,
-        setSearchQuery,
-
-        // 🏷️ Type filter
-        setTypeFilter,
-        typeFilter,
+        deletingProspectId,
 
         // 🗺️ View mode
-        setViewMode,
         viewMode,
+        setViewMode,
+
+        // 🎯 Update estimated opportunity
+        updateEstimatedOpportunityMutate,
+        updatingEstimatedOpportunityProspectId,
+        isUpdatingEstimatedOpportunity,
       }}
     >
       {children}
@@ -158,7 +182,7 @@ type ProspectAddData = {
   name: string;
   website: string;
   location: string;
-  type: ProspectType;
+  type: Prospect["type"];
   latitude?: string;
   longitude?: string;
 };
@@ -166,7 +190,15 @@ type ProspectAddData = {
 type ProspectEditData = ProspectAddData & { id: number };
 
 type ProspectsContext = {
+  // 👯 Prospects
   prospects: ProspectResult[] | undefined;
+  isProspectsLoading: boolean;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  typeFilter: Prospect["type"] | null;
+  setTypeFilter: (type: Prospect["type"] | null) => void;
+
+  // ➕ Add prospect
   addProspectMutate: UseMutateFunction<
     boolean,
     Error,
@@ -175,6 +207,8 @@ type ProspectsContext = {
   >;
   isAddingProspect: boolean;
   isAddedProspect: boolean;
+
+  // ✏️ Edit prospect
   editProspectMutate: UseMutateFunction<
     boolean,
     Error,
@@ -184,35 +218,34 @@ type ProspectsContext = {
   editingProspectId: number | undefined;
   isEditingProspect: boolean;
   isEditedProspect: boolean;
+
+  // 🗑️ Delete prospect
   deleteProspectMutate: UseMutateFunction<boolean, Error, number, unknown>;
   deletingProspectId: number | undefined;
   isDeletingProspect: boolean;
+
+  // 🔴 Estimated opportunity
   updateEstimatedOpportunityMutate: UseMutateFunction<
     boolean,
     Error,
-    { prospectId: number; estimatedOpportunity: EstimatedOpportunity },
+    {
+      prospectId: number;
+      estimatedOpportunity: Prospect["estimatedOpportunity"];
+    },
     unknown
   >;
   updatingEstimatedOpportunityProspectId: number | undefined;
   isUpdatingEstimatedOpportunity: boolean;
-  toggleHasSiteMutate: UseMutateFunction<
-    boolean,
-    Error,
-    { prospectId: number; hasSite: boolean },
-    unknown
-  >;
-  togglingHasSiteProspectId: number | undefined;
-  isTogglingHasSite: boolean;
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  typeFilter: ProspectType | null;
-  setTypeFilter: (type: ProspectType | null) => void;
-  viewMode: "list" | "map";
-  setViewMode: (mode: "list" | "map") => void;
+
+  // 🗺️ View mode
+  viewMode: ViewMode;
+  setViewMode: (mode: ViewMode) => void;
 };
 
+type ViewMode = "table" | "map";
+
 // -------------------------
-//🪝 Hooks
+// 🪝 Hooks
 export const useProspectsContext = () => {
   const context = useContext(ProspectsContext);
   if (!context) {

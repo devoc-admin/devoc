@@ -1,5 +1,4 @@
 "use client";
-import { Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useCrawlContext } from "@/app/admin/(authenticated)/crawl/crawl-context";
@@ -23,6 +22,7 @@ export function DeleteCrawlsButton() {
     allCrawlsDeletionIsPending,
     allCrawlsDeletionIsError,
     allCrawlsDeletionIsSuccess,
+    lockActions,
   } = useCrawlContext();
   const [open, setOpen] = useState(false);
 
@@ -41,7 +41,7 @@ export function DeleteCrawlsButton() {
     <AlertDialog open={open}>
       <AlertDialogTrigger asChild>
         <ButtonTrigger
-          disabled={open || allCrawlsDeletionIsPending}
+          disabled={open || lockActions}
           loading={allCrawlsDeletionIsPending}
           onClick={() => setOpen(true)}
         />
@@ -82,13 +82,14 @@ function ButtonTrigger({ ...props }) {
     <Button
       {...props}
       className={cn(
-        "absolute right-3 bottom-3 gap-x-2",
+        "w-full",
+        "gap-x-2 font-semibold",
         props.disabled && "pointer-events-none"
       )}
       disabled={props.disabled}
+      size="lg"
       variant="destructive"
     >
-      {!props.loading && <Trash2Icon />}
       <span>Effacer tous les crawls</span>
     </Button>
   );

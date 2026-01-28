@@ -2,8 +2,7 @@
 import { desc, eq } from "drizzle-orm";
 import { getErrorMessage } from "@/lib/api";
 import { db } from "@/lib/db";
-import { prospect } from "@/lib/db/schema";
-import type { EstimatedOpportunity, ProspectType } from "./prospects-types";
+import { type Prospect, prospect } from "@/lib/db/schema";
 
 // --------------------------------------
 // 💥 ACTIONS
@@ -44,13 +43,13 @@ export async function addProspect({
   estimatedOpportunity,
 }: {
   name: string;
-  type: ProspectType;
+  type: Prospect["type"];
   website: string;
   location: string;
   latitude?: string;
   longitude?: string;
   hasSite?: boolean;
-  estimatedOpportunity?: EstimatedOpportunity;
+  estimatedOpportunity?: Prospect["estimatedOpportunity"];
 }) {
   try {
     const prospectResult = await db
@@ -88,12 +87,12 @@ export async function editProspect({
 }: {
   id: number;
   name: string;
-  type: ProspectType;
+  type: Prospect["type"];
   website: string;
   location: string;
   latitude?: string;
   longitude?: string;
-  estimatedOpportunity?: EstimatedOpportunity;
+  estimatedOpportunity?: Prospect["estimatedOpportunity"];
 }) {
   try {
     const prospectResult = await db
@@ -160,7 +159,7 @@ export async function updateEstimatedOpportunity({
   estimatedOpportunity,
 }: {
   prospectId: number;
-  estimatedOpportunity: EstimatedOpportunity;
+  estimatedOpportunity: Prospect["estimatedOpportunity"];
 }) {
   try {
     await db

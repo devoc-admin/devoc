@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import type { Prospect } from "@/lib/db/schema";
 import {
   addProspect,
   deleteProspect,
@@ -7,7 +8,6 @@ import {
   toggleHasSite,
   updateEstimatedOpportunity,
 } from "./prospects-actions";
-import type { EstimatedOpportunity, ProspectType } from "./prospects-types";
 
 export function useAddProspectMutation() {
   const queryClient = useQueryClient();
@@ -26,11 +26,11 @@ export function useAddProspectMutation() {
       name: string;
       website: string;
       location: string;
-      type: ProspectType;
+      type: Prospect["type"];
       latitude?: string;
       longitude?: string;
       hasSite?: boolean;
-      estimatedOpportunity?: EstimatedOpportunity;
+      estimatedOpportunity?: Prospect["estimatedOpportunity"];
     }) => {
       const result = await addProspect({
         estimatedOpportunity,
@@ -79,7 +79,7 @@ export function useEditProspectMutation() {
       name: string;
       website: string;
       location: string;
-      type: ProspectType;
+      type: Prospect["type"];
       latitude?: string;
       longitude?: string;
     }) => {
@@ -145,7 +145,7 @@ export function useUpdateEstimatedOpportunityMutation() {
       estimatedOpportunity,
     }: {
       prospectId: number;
-      estimatedOpportunity: EstimatedOpportunity;
+      estimatedOpportunity: Prospect["estimatedOpportunity"];
     }) => {
       const result = await updateEstimatedOpportunity({
         estimatedOpportunity,

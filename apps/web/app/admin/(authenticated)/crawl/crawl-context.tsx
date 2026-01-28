@@ -1,7 +1,14 @@
 /** biome-ignore-all assist/source/useSortedKeys: needs specific order here */
 "use client";
 import type { UseMutateFunction } from "@tanstack/react-query";
-import { createContext, useContext, useEffect, useEffectEvent } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useEffectEvent,
+  useState,
+} from "react";
+import type { Prospect } from "@/lib/db/schema";
 import type {
   CrawlQueryResult,
   ListCrawlsResult,
@@ -13,7 +20,7 @@ import {
   useRetryCrawl,
   useUpsertCrawl,
 } from "./crawl-mutations";
-import { useCrawl, useCrawlsList } from "./crawl-queries";
+import { useCrawlsList, useCurrentCrawl } from "./crawl-queries";
 
 /** biome-ignore lint/suspicious/noEmptyBlockStatements: special case */
 function emptyFn() {}
@@ -37,6 +44,12 @@ const CrawlContext = createContext<CrawlContextType>({
   crawls: [],
   crawlsAreLoading: false,
 
+  // 🔍 Filter
+  searchCrawl: "",
+  prospectTypeFilter: null,
+  handleSearchCrawl: emptyFn,
+  handleProspectTypeFilter: emptyFn,
+
   // 🚮 Delete a crawl
   deletingCrawlId: undefined,
   crawlDeletionIsPending: false,
@@ -52,11 +65,14 @@ const CrawlContext = createContext<CrawlContextType>({
   retryCrawlMutate: emptyFn,
   retryCrawlIsPending: false,
   retryingCrawlId: undefined,
+
+  //🔒 Lock actions
+  lockActions: false,
 });
 
 export function CrawlProvider({ children }: { children: React.ReactNode }) {
   //👁️ See current crawl
-  const { crawl, crawlId, handleCrawlId, removeCrawlId } = useCrawl();
+  const { crawl, crawlId, handleCrawlId, removeCrawlId } = useCurrentCrawl();
 
   //➕ Upsert crawl
   const {
@@ -70,6 +86,38 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
 
   //📝 List crawls
   const { crawls, crawlsAreLoading } = useCrawlsList();
+
+  //🔍 Search crawls
+  const [searchCrawl, setSearchCrawlQuery] = useState("");
+  const [prospectTypeFilter, setProspectTypeFilter] = useState<
+    Prospect["type"] | null
+  >(null);
+
+  const handleSearchCrawl = (query: string) => {
+    setSearchCrawlQuery(query);
+  };
+
+  const handleProspectTypeFilter = (type: Prospect["type"] | null) => {
+    setProspectTypeFilter(type);
+  };
+
+  const filteredCrawls = crawls
+    ? crawls.filter((crawl) => {
+        // Filter by type
+        if (prospectTypeFilter && crawl.prospectType !== prospectTypeFilter)
+          return false;
+
+        // Filter by search query
+        if (!searchCrawl.trim()) return true;
+        const query = searchCrawl.toLowerCase();
+        return (
+          crawl.title?.toLowerCase().includes(query) ||
+          crawl.prospectName?.toLowerCase().includes(query) ||
+          crawl.url?.toLowerCase().includes(query) ||
+          crawl.author?.toLowerCase().includes(query)
+        );
+      })
+    : undefined;
 
   // 🚮 Delete a crawl
   const {
@@ -94,11 +142,18 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
     data: retryCrawlResult,
   } = useRetryCrawl();
 
+  //🔒 Lock action
+  const lockActions =
+    upsertCrawlIsPending ||
+    crawlDeletionIsPending ||
+    allCrawlsDeletionIsPending ||
+    retryCrawlIsPending;
+
   // 🔄 INTERDEPEND ACTIONS
   const insertedCrawlId = upsertCrawlResult?.crawlId;
   const retriedCrawlId = retryCrawlResult?.crawlId;
 
-  // # Insert new crawl id in URL
+  // ➕🌐 Insert new crawl id in URL
   const onInsertCrawlId = useEffectEvent((newCrawlId: string) => {
     if (newCrawlId !== crawlId) {
       handleCrawlId(newCrawlId);
@@ -134,8 +189,14 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
         upsertCrawlError: upsertCrawlError?.message ?? "",
 
         //📝 Crawls
-        crawls,
+        crawls: filteredCrawls,
         crawlsAreLoading,
+
+        // 🔍 Filter
+        searchCrawl,
+        prospectTypeFilter,
+        handleSearchCrawl,
+        handleProspectTypeFilter,
 
         // 🚮 Delete a crawl
         deletingCrawlId,
@@ -152,6 +213,9 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
         retryCrawlMutate,
         retryCrawlIsPending,
         retryingCrawlId,
+
+        //🔒 Lock actions
+        lockActions,
       }}
     >
       {children}
@@ -177,8 +241,6 @@ type CrawlContextType = {
       url: string;
       maxDepth: number;
       maxPages: number;
-      skipResources: boolean;
-      skipScreenshots: boolean;
       useLocalScreenshots: boolean;
       concurrency: number;
       prospectId?: number;
@@ -193,6 +255,12 @@ type CrawlContextType = {
   //📝 Crawls
   crawls?: ListCrawlsResult;
   crawlsAreLoading: boolean;
+
+  // 🔍 Filter
+  searchCrawl: string;
+  prospectTypeFilter: Prospect["type"] | null;
+  handleSearchCrawl: (query: string) => void;
+  handleProspectTypeFilter: (type: Prospect["type"] | null) => void;
 
   // 🚮 Delete a crawl
   deletingCrawlId: string | undefined;
@@ -214,6 +282,9 @@ type CrawlContextType = {
   >;
   retryCrawlIsPending: boolean;
   retryingCrawlId: string | undefined;
+
+  //🔒 Lock actions
+  lockActions: boolean;
 };
 
 // --------------------------------------

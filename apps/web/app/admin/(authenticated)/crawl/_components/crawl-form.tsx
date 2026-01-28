@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { updateProspectWebsite } from "../../prospects/prospects-actions";
 import { useCrawlContext } from "../crawl-context";
 import { useUncrawledProspects } from "../crawl-queries";
+import { DeleteCrawlsButton } from "./delete-crawls-button";
 
 type SelectedProspect = {
   id: number;
@@ -74,301 +75,248 @@ export function CrawlForm() {
   }
 
   return (
-    <div className="rounded-md bg-sidebar p-8">
-      <div className="mx-auto flex max-w-150 flex-col items-center justify-center gap-y-4">
-        {/* 📝 Form */}
-        <form
-          className="flex w-full flex-col items-center justify-center gap-y-2 space-y-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            crawlForm.handleSubmit();
-          }}
-        >
-          {/* 🏢 Prospect selector */}
-          <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
-            {(isSubmitting) => (
-              <div className="flex w-full flex-col gap-y-1">
-                <Label className="font-kanit text-lg">
-                  Sélectionner un prospect
-                </Label>
-                <DropdownMenu onOpenChange={handleDropdownOpenChange}>
-                  <DropdownMenuTrigger asChild>
-                    <button
-                      className={cn(
-                        "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2",
-                        "text-sm ring-offset-background",
-                        "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-                        "disabled:cursor-not-allowed disabled:opacity-50",
-                        !selectedProspect && "text-muted-foreground"
-                      )}
-                      disabled={
-                        currentCrawlRunning ||
-                        isSubmitting ||
-                        prospectsAreLoading ||
-                        !prospects?.length
-                      }
-                      type="button"
-                    >
-                      <span className="truncate">
-                        {selectedProspect
-                          ? prospects?.find((p) => p.id === selectedProspect.id)
-                              ?.name
-                          : getProspectPlaceholder(
-                              prospectsAreLoading,
-                              prospects?.length ?? 0
-                            )}
-                      </span>
-                      <ChevronDownIcon className="size-4 shrink-0 opacity-50" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="start"
-                    className="w-[var(--radix-dropdown-menu-trigger-width)]"
-                  >
-                    <div className="p-2">
-                      <div className="relative">
-                        <SearchIcon
-                          className="pointer-events-none absolute top-1/2 left-2 -translate-y-1/2 text-muted-foreground"
-                          size={14}
-                        />
-                        <input
-                          className={cn(
-                            "h-8 w-full rounded-md border border-input bg-background pr-2 pl-7",
-                            "text-sm placeholder:text-muted-foreground",
-                            "focus:outline-none focus:ring-1 focus:ring-ring"
-                          )}
-                          onChange={(e) =>
-                            setProspectSearchQuery(e.target.value)
-                          }
-                          onClick={(e) => e.stopPropagation()}
-                          onKeyDown={(e) => e.stopPropagation()}
-                          placeholder="Rechercher un prospect..."
-                          type="text"
-                          value={prospectSearchQuery}
-                        />
-                      </div>
-                    </div>
-                    <div className="max-h-48 overflow-y-auto">
-                      <DropdownMenuRadioGroup
-                        onValueChange={handleProspectSelect}
-                        value={selectedProspect?.id.toString() ?? ""}
-                      >
-                        <DropdownMenuRadioItem value="">
-                          <span className="text-muted-foreground">
-                            — Aucun prospect —
-                          </span>
-                        </DropdownMenuRadioItem>
-                        {filteredProspects?.map((prospect) => (
-                          <DropdownMenuRadioItem
-                            key={prospect.id}
-                            value={prospect.id.toString()}
-                          >
-                            {prospect.name}
-                          </DropdownMenuRadioItem>
-                        ))}
-                      </DropdownMenuRadioGroup>
-                    </div>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            )}
-          </crawlForm.Subscribe>
-          {/* 🔍 Search */}
-          <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
-            {(isSubmitting) => (
-              <crawlForm.Field
-                name="search"
-                validators={{
-                  onSubmit: ({ value: search }) => {
-                    if (!search) return "Veuillez saisir une URL";
-                    if (!isWebsiteUrl(search))
-                      return "La saisie n'est pas une URL valide";
-                    return;
-                  },
-                  onSubmitAsync: async ({ value: search }) => {
-                    const result = await isValidWebsite(search);
-                    if (!result) return "Ce site web n'existe pas";
-                  },
-                }}
-              >
-                {(field) => (
-                  <div className="flex w-full flex-col gap-y-1">
-                    <Label className="font-kanit text-lg">URL du site</Label>
-                    <Input
-                      className="h-10"
-                      disabled={currentCrawlRunning || isSubmitting}
-                      name={field.name}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      placeholder="Explorer un site..."
-                      value={field.state.value}
-                    />
-                    {!field.state.meta.isValid && (
-                      <ErrorMessage>
-                        {field.state.meta.errors.join(", ")}
-                      </ErrorMessage>
+    <div className="rounded-md bg-sidebar p-6">
+      {/* 📝 Form */}
+      <form
+        className="mx-auto flex h-full max-w-75 flex-col items-center justify-center gap-y-4 space-y-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          crawlForm.handleSubmit();
+        }}
+      >
+        {/* 🏢 Prospect selector */}
+        <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+          {(isSubmitting) => (
+            <div className="flex w-full flex-col gap-y-1">
+              <Label className="font-kanit text-lg">
+                Sélectionner un prospect
+              </Label>
+              <DropdownMenu onOpenChange={handleDropdownOpenChange}>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className={cn(
+                      "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2",
+                      "text-sm ring-offset-background",
+                      "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                      "disabled:cursor-not-allowed disabled:opacity-50",
+                      !selectedProspect && "text-muted-foreground"
                     )}
+                    disabled={
+                      currentCrawlRunning ||
+                      isSubmitting ||
+                      prospectsAreLoading ||
+                      !prospects?.length
+                    }
+                    type="button"
+                  >
+                    <span className="truncate">
+                      {selectedProspect
+                        ? prospects?.find((p) => p.id === selectedProspect.id)
+                            ?.name
+                        : getProspectPlaceholder(
+                            prospectsAreLoading,
+                            prospects?.length ?? 0
+                          )}
+                    </span>
+                    <ChevronDownIcon className="size-4 shrink-0 opacity-50" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="start"
+                  className="w-(--radix-dropdown-menu-trigger-width)"
+                >
+                  <div className="p-2">
+                    <div className="relative">
+                      <SearchIcon
+                        className="pointer-events-none absolute top-1/2 left-2 -translate-y-1/2 text-muted-foreground"
+                        size={14}
+                      />
+                      <input
+                        className={cn(
+                          "h-8 w-full rounded-md border border-input bg-background pr-2 pl-7",
+                          "text-sm placeholder:text-muted-foreground",
+                          "focus:outline-none focus:ring-1 focus:ring-ring"
+                        )}
+                        onChange={(e) => setProspectSearchQuery(e.target.value)}
+                        onClick={(e) => e.stopPropagation()}
+                        onKeyDown={(e) => e.stopPropagation()}
+                        placeholder="Rechercher un prospect..."
+                        type="text"
+                        value={prospectSearchQuery}
+                      />
+                    </div>
+                  </div>
+                  <div className="max-h-48 overflow-y-auto">
+                    <DropdownMenuRadioGroup
+                      onValueChange={handleProspectSelect}
+                      value={selectedProspect?.id.toString() ?? ""}
+                    >
+                      <DropdownMenuRadioItem value="">
+                        <span className="text-muted-foreground">
+                          — Aucun prospect —
+                        </span>
+                      </DropdownMenuRadioItem>
+                      {filteredProspects?.map((prospect) => (
+                        <DropdownMenuRadioItem
+                          key={prospect.id}
+                          value={prospect.id.toString()}
+                        >
+                          {prospect.name}
+                        </DropdownMenuRadioItem>
+                      ))}
+                    </DropdownMenuRadioGroup>
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          )}
+        </crawlForm.Subscribe>
+        {/* 🔍 Search */}
+        <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+          {(isSubmitting) => (
+            <crawlForm.Field
+              name="search"
+              validators={{
+                onSubmit: ({ value: search }) => {
+                  if (!search) return "Veuillez saisir une URL";
+                  if (!isWebsiteUrl(search))
+                    return "La saisie n'est pas une URL valide";
+                  return;
+                },
+                onSubmitAsync: async ({ value: search }) => {
+                  const result = await isValidWebsite(search);
+                  if (!result) return "Ce site web n'existe pas";
+                },
+              }}
+            >
+              {(field) => (
+                <div className="flex w-full flex-col gap-y-1">
+                  <Label className="font-kanit text-lg">URL du site</Label>
+                  <Input
+                    className="h-10"
+                    disabled={currentCrawlRunning || isSubmitting}
+                    name={field.name}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    placeholder="Explorer un site..."
+                    value={field.state.value}
+                  />
+                  {!field.state.meta.isValid && (
+                    <ErrorMessage>
+                      {field.state.meta.errors.join(", ")}
+                    </ErrorMessage>
+                  )}
+                </div>
+              )}
+            </crawlForm.Field>
+          )}
+        </crawlForm.Subscribe>
+        {/* 🔢 Sliders */}
+        <div className="flex w-full max-w-100 flex-col gap-y-4">
+          {/* 🔢 Nb. max de résultats */}
+          <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+            {(isSubmitting) => (
+              <crawlForm.Field name="maxPages">
+                {(field) => (
+                  <div>
+                    <Label className="font-kanit text-lg">Max. pages</Label>
+                    <div className="flex items-center gap-4">
+                      <Slider
+                        disabled={currentCrawlRunning || isSubmitting}
+                        max={MAX_PAGES_CRAWLED}
+                        min={1}
+                        name="maxPages"
+                        onValueChange={(values) =>
+                          field.handleChange(values[0])
+                        }
+                        step={1}
+                        value={[field.state.value]}
+                      />
+                      <span>{field.state.value}</span>
+                    </div>
                   </div>
                 )}
               </crawlForm.Field>
             )}
           </crawlForm.Subscribe>
-          {/* 🔢 Sliders */}
-          <div className="flex w-full max-w-100 flex-col gap-y-4">
-            {/* 🔢 Nb. max de résultats */}
-            <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
-              {(isSubmitting) => (
-                <crawlForm.Field name="maxPages">
-                  {(field) => (
-                    <div>
-                      <Label className="font-kanit text-lg">Max. pages</Label>
-                      <div className="flex items-center gap-4">
-                        <Slider
-                          disabled={currentCrawlRunning || isSubmitting}
-                          max={MAX_PAGES_CRAWLED}
-                          min={1}
-                          name="maxPages"
-                          onValueChange={(values) =>
-                            field.handleChange(values[0])
-                          }
-                          step={1}
-                          value={[field.state.value]}
-                        />
-                        <span>{field.state.value}</span>
-                      </div>
-                    </div>
-                  )}
-                </crawlForm.Field>
-              )}
-            </crawlForm.Subscribe>
-            {/* 🔢 Max. profondeur. */}
-            <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
-              {(isSubmitting) => (
-                <crawlForm.Field name="maxDepth">
-                  {(field) => (
-                    <div>
-                      <Label className="font-kanit text-lg">
-                        Max. profondeur
-                      </Label>
-                      <div className="flex items-center gap-4">
-                        <Slider
-                          disabled={currentCrawlRunning || isSubmitting}
-                          max={MAX_DEPTH}
-                          min={1}
-                          name="maxDepth"
-                          onValueChange={(values) =>
-                            field.handleChange(values[0])
-                          }
-                          step={1}
-                          value={[field.state.value]}
-                        />
-                        <span>{field.state.value}</span>
-                      </div>
-                    </div>
-                  )}
-                </crawlForm.Field>
-              )}
-            </crawlForm.Subscribe>
-            {/* 🔀 Concurrency */}
-            <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
-              {(isSubmitting) => (
-                <crawlForm.Field name="concurrency">
-                  {(field) => (
-                    <div>
-                      <Label className="font-kanit text-lg">
-                        Max. crawlers
-                      </Label>
-                      <div className="flex items-center gap-4">
-                        <Slider
-                          disabled={currentCrawlRunning || isSubmitting}
-                          max={MAX_CONCURRENCY}
-                          min={1}
-                          name="concurrency"
-                          onValueChange={(values) =>
-                            field.handleChange(values[0])
-                          }
-                          step={1}
-                          value={[field.state.value]}
-                        />
-                        <span>{field.state.value}</span>
-                      </div>
-                    </div>
-                  )}
-                </crawlForm.Field>
-              )}
-            </crawlForm.Subscribe>
-            {/* 📷🚫 Skip screenshots */}
-            <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
-              {(isSubmitting) => (
-                <crawlForm.Field name="skipScreenshots">
-                  {(field) => (
-                    <CustomCheckbox
-                      checked={field.state.value}
-                      disabled={currentCrawlRunning || isSubmitting}
-                      handleChange={(checked) => {
-                        field.handleChange(checked === true);
-                        if (checked === true) {
-                          crawlForm.setFieldValue("useLocalScreenshots", false);
+          {/* 🔢 Max. profondeur. */}
+          <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+            {(isSubmitting) => (
+              <crawlForm.Field name="maxDepth">
+                {(field) => (
+                  <div>
+                    <Label className="font-kanit text-lg">
+                      Max. profondeur
+                    </Label>
+                    <div className="flex items-center gap-4">
+                      <Slider
+                        disabled={currentCrawlRunning || isSubmitting}
+                        max={MAX_DEPTH}
+                        min={1}
+                        name="maxDepth"
+                        onValueChange={(values) =>
+                          field.handleChange(values[0])
                         }
-                      }}
-                      name="skipScreenshots"
-                    >
-                      Ne pas prendre de captures écran
-                    </CustomCheckbox>
-                  )}
-                </crawlForm.Field>
-              )}
-            </crawlForm.Subscribe>
-            {/* 💾 Use local screenshots */}
-            <crawlForm.Subscribe
-              selector={(state) => ({
-                isSubmitting: state.isSubmitting,
-                skipScreenshots: state.values.skipScreenshots,
-              })}
-            >
-              {({ isSubmitting, skipScreenshots }) => (
-                <crawlForm.Field name="useLocalScreenshots">
-                  {(field) => (
-                    <CustomCheckbox
-                      checked={field.state.value}
-                      disabled={
-                        currentCrawlRunning || isSubmitting || skipScreenshots
-                      }
-                      handleChange={(checked) =>
-                        field.handleChange(checked === true)
-                      }
-                      name="useLocalScreenshots"
-                    >
-                      Stocker les captures écran localement
-                    </CustomCheckbox>
-                  )}
-                </crawlForm.Field>
-              )}
-            </crawlForm.Subscribe>
-            {/* 🖼️🚫 Skip resources */}
-            <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
-              {(isSubmitting) => (
-                <crawlForm.Field name="skipResources">
-                  {(field) => (
-                    <CustomCheckbox
-                      checked={field.state.value}
-                      disabled={currentCrawlRunning || isSubmitting}
-                      handleChange={(checked) =>
-                        field.handleChange(checked === true)
-                      }
-                      name="skipResources"
-                    >
-                      Ignorer les ressources (images, fonts, CSS)
-                    </CustomCheckbox>
-                  )}
-                </crawlForm.Field>
-              )}
-            </crawlForm.Subscribe>
-          </div>
-          {/* ☑️ Checkboxes */}
-          {/*<div className="flex items-center justify-center gap-x-6">*/}
-          {/* 👁️ A11Y */}
-          {/*<form.Field name="checkAccessibility">
+                        step={1}
+                        value={[field.state.value]}
+                      />
+                      <span>{field.state.value}</span>
+                    </div>
+                  </div>
+                )}
+              </crawlForm.Field>
+            )}
+          </crawlForm.Subscribe>
+          {/* 🔀 Concurrency */}
+          <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+            {(isSubmitting) => (
+              <crawlForm.Field name="concurrency">
+                {(field) => (
+                  <div>
+                    <Label className="font-kanit text-lg">Max. crawlers</Label>
+                    <div className="flex items-center gap-4">
+                      <Slider
+                        disabled={currentCrawlRunning || isSubmitting}
+                        max={MAX_CONCURRENCY}
+                        min={1}
+                        name="concurrency"
+                        onValueChange={(values) =>
+                          field.handleChange(values[0])
+                        }
+                        step={1}
+                        value={[field.state.value]}
+                      />
+                      <span>{field.state.value}</span>
+                    </div>
+                  </div>
+                )}
+              </crawlForm.Field>
+            )}
+          </crawlForm.Subscribe>
+          {/* 💾 Use local screenshots */}
+          <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
+            {(isSubmitting) => (
+              <crawlForm.Field name="useLocalScreenshots">
+                {(field) => (
+                  <CustomCheckbox
+                    checked={field.state.value}
+                    disabled={currentCrawlRunning || isSubmitting}
+                    handleChange={(checked) =>
+                      field.handleChange(checked === true)
+                    }
+                    name="useLocalScreenshots"
+                  >
+                    Stocker les captures écran localement
+                  </CustomCheckbox>
+                )}
+              </crawlForm.Field>
+            )}
+          </crawlForm.Subscribe>
+        </div>
+        {/* ☑️ Checkboxes */}
+        {/*<div className="flex items-center justify-center gap-x-6">*/}
+        {/* 👁️ A11Y */}
+        {/*<form.Field name="checkAccessibility">
               {(field) => (
                 <CustomCheckbox
                   checked={field.state.value}
@@ -379,8 +327,8 @@ export function CrawlForm() {
                 </CustomCheckbox>
               )}
             </form.Field>*/}
-          {/* 🔒 Security */}
-          {/*<form.Field name="checkSecurity">
+        {/* 🔒 Security */}
+        {/*<form.Field name="checkSecurity">
               {(field) => (
                 <CustomCheckbox
                   checked={field.state.value}
@@ -392,8 +340,8 @@ export function CrawlForm() {
                 </CustomCheckbox>
               )}
             </form.Field>*/}
-          {/* ⚡ Performance */}
-          {/*<form.Field name="checkPerformance">
+        {/* ⚡ Performance */}
+        {/*<form.Field name="checkPerformance">
               {(field) => (
                 <CustomCheckbox
                   checked={field.state.value}
@@ -406,11 +354,12 @@ export function CrawlForm() {
               )}
             </form.Field>
           </div>*/}
+        <div className="mt-auto space-y-4">
           {/* 🆕 Submit */}
           <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
             {(isSubmitting) => (
               <Button
-                className="font-semibold"
+                className="w-full font-semibold"
                 disabled={isSubmitting || currentCrawlRunning}
                 loading={isSubmitting}
                 size="lg"
@@ -423,8 +372,10 @@ export function CrawlForm() {
               </Button>
             )}
           </crawlForm.Subscribe>
-        </form>
-      </div>
+          {/* 🗑️ Delete all crawls */}
+          <DeleteCrawlsButton />
+        </div>
+      </form>
     </div>
   );
 }
@@ -453,20 +404,10 @@ function useCrawlForm({
       maxDepth: DEFAULT_DEPTH,
       maxPages: DEFAULT_PAGES_CRAWLED,
       search: "",
-      skipResources: false,
-      skipScreenshots: false,
       useLocalScreenshots: true,
     },
     onSubmit: async ({
-      value: {
-        search,
-        maxDepth,
-        maxPages,
-        skipResources,
-        skipScreenshots,
-        useLocalScreenshots,
-        concurrency,
-      },
+      value: { search, maxDepth, maxPages, useLocalScreenshots, concurrency },
     }) => {
       // Update prospect website if URL was modified
       if (selectedProspect && search !== selectedProspect.originalWebsite) {
@@ -488,8 +429,6 @@ function useCrawlForm({
         maxDepth,
         maxPages,
         prospectId: selectedProspect?.id,
-        skipResources,
-        skipScreenshots,
         url: search,
         useLocalScreenshots,
       });

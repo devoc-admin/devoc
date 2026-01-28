@@ -97,11 +97,7 @@ export class WebCrawler {
       // 🤖 Respect bots
       respectRobotsTxt: config.respectRobotsTxt ?? true,
 
-      // 🖼️ Take assets
-      skipResources: config.skipResources ?? false,
-
       // 📸 Take screenshots
-      skipScreenshots: config.skipScreenshots ?? false,
       useLocalScreenshots: config.useLocalScreenshots ?? false,
     };
   }
@@ -198,7 +194,7 @@ export class WebCrawler {
       if (inFlight.size > 0) {
         await Promise.all(inFlight.keys());
       }
-
+      console.log("errors", this.errors);
       return { errors: this.errors, pages: this.pages };
     } finally {
       await this.cleanup();
@@ -278,17 +274,6 @@ export class WebCrawler {
       userAgent: "RGAA-Audit-Crawler/1.0 (Accessibility Audit Tool)",
       viewport: { height: 720, width: 1280 },
     });
-
-    // ✋ Block unnecessary resources for 50-70% faster crawling (optional)
-    if (this.config.skipResources) {
-      await context.route("**/*", (route) => {
-        const resourceType = route.request().resourceType();
-        if (["image", "font", "stylesheet", "media"].includes(resourceType)) {
-          return route.abort();
-        }
-        return route.continue();
-      });
-    }
 
     return context;
   }
@@ -438,21 +423,14 @@ export class WebCrawler {
       // Extract links
       const links = await this.extractLinksFromPage(page);
 
-      // Determine if screenshot should be taken (always for homepage, otherwise respect skipScreenshots)
-      const shouldTakeScreenshot = depth === 0 || !this.config.skipScreenshots;
-
       // Dismiss cookie banner before screenshot
-      if (shouldTakeScreenshot) {
-        await this.dismissCookieBanner(page);
-      }
+      await this.dismissCookieBanner(page);
 
-      // Take screenshot and upload to Vercel Blob (if not skipped, or if homepage)
-      const screenshotUrl = shouldTakeScreenshot
-        ? await this.takeAndUploadScreenshot({
-            normalizedUrl,
-            page,
-          })
-        : undefined;
+      // Take screenshot and upload to Vercel Blob (always take screenshots)
+      const screenshotUrl = await this.takeAndUploadScreenshot({
+        normalizedUrl,
+        page,
+      });
 
       // Result
       const nowString = new Date().toISOString();

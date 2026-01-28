@@ -2,8 +2,7 @@
 import { GoogleMapsProvider } from "../prospects/_components/google-maps-provider";
 import { CrawlForm } from "./_components/crawl-form";
 import { CrawlStatusPanel } from "./_components/crawl-status-panel";
-import { DeleteCrawlsButton } from "./_components/delete-crawls-button";
-import { ListCrawls } from "./_components/list-crawls";
+import { CrawlsCards } from "./_components/crawls-list";
 import { CrawlProvider } from "./crawl-context";
 import { useRunningCrawl } from "./crawl-queries";
 
@@ -18,9 +17,8 @@ export function CrawlPageContent() {
           <CrawlForm />
           <div className="grow space-y-6 overflow-auto">
             <CrawlStatusPanel />
-            <ListCrawls />
+            <CrawlsCards />
           </div>
-          <DeleteCrawlsButton />
         </div>
       </CrawlProvider>
     </GoogleMapsProvider>

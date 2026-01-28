@@ -80,8 +80,6 @@ export type CrawlConfig = {
   maxPages: number;
   delayBetweenRequests: number;
   respectRobotsTxt: boolean;
-  skipResources?: boolean;
-  skipScreenshots?: boolean;
   useLocalScreenshots?: boolean;
   concurrency?: number;
   includePaths?: string[];

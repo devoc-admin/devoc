@@ -11,33 +11,43 @@ export async function detectAuthor({
 }: {
   page: Page;
 }): Promise<AuthorDetectionResult | undefined> {
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: browser code in page.evaluate is difficult to refactor
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: exception
   return await page.evaluate(() => {
-    // Patterns to search for
-    const textPatterns = [
-      /réalis[ée]s?\s+par/i,
-      /réalisation\s*[:.]?/i,
-      /cr[ée]dit[s]?\s*[:.]?/i,
-      /con[cç]u\s+par/i,
-      /d[ée]velopp[ée]\s+par/i,
-      /cr[ée]ation\s*[:.]?/i,
-      /site\s+(web\s+)?par/i,
-      /powered\s+by/i,
-      /made\s+by/i,
-      /built\s+by/i,
-      /\bby\s+/i,
-      /designer\s*[:.]?/i,
-      /d[ée]veloppeur\s*[:.]?/i,
-      /developer\s*[:.]?/i,
-    ];
+    // ========================================
+    // Constants and patterns
+    // ========================================
+    const PATTERNS = {
+      // Keywords indicating a web agency in title/aria-label/text
+      agencyKeywords:
+        /agence|conseil|communication|digital|web|studio|design|d[ée]veloppement|cr[ée]ation/i,
+      // More restrictive pattern for footer text (requires uppercase start)
+      footerSignature:
+        /(?:réalis[ée]s?\s+par|réalisation\s*[:.]?|cr[ée]dit[s]?\s*[:.]?|con[cç]u\s+par|d[ée]velopp[ée]\s+par|cr[ée]ation\s*[:.]?|site\s+(?:web\s+)?par|powered\s+by|made\s+by|built\s+by|\bby\s+|designer\s*[:.]?|d[ée]veloppeur\s*[:.]?|developer\s*[:.]?)\s*([A-ZÀ-ÿ][\w\sÀ-ÿ&.-]+)/i,
+      // Pattern to extract name after signature keywords
+      signatureExtraction:
+        /(?:réalis[ée]s?\s+par|réalisation\s*[:.]?|cr[ée]dit[s]?\s*[:.]?|con[cç]u\s+par|d[ée]velopp[ée]\s+par|cr[ée]ation\s*[:.]?|site\s+(?:web\s+)?par|powered\s+by|made\s+by|built\s+by|\bby\s+|designer\s*[:.]?|d[ée]veloppeur\s*[:.]?|developer\s*[:.]?)\s*(.+)/i,
+      // Keywords indicating a signature in aria-label
+      signatureKeywords: /réalis|créa|agence|site\s+par/i,
+      // Patterns to detect signature text
+      text: [
+        /réalis[ée]s?\s+par/i,
+        /réalisation\s*[:.]?/i,
+        /cr[ée]dit[s]?\s*[:.]?/i,
+        /con[cç]u\s+par/i,
+        /d[ée]velopp[ée]\s+par/i,
+        /cr[ée]ation\s*[:.]?/i,
+        /site\s+(web\s+)?par/i,
+        /powered\s+by/i,
+        /made\s+by/i,
+        /built\s+by/i,
+        /\bby\s+/i,
+        /designer\s*[:.]?/i,
+        /d[ée]veloppeur\s*[:.]?/i,
+        /developer\s*[:.]?/i,
+      ],
+    };
 
-    // Keywords indicating a web agency in title/aria-label
-    const agencyKeywords =
-      /agence|conseil|communication|digital|web|studio|design|d[ée]veloppement|cr[ée]ation/i;
-    const signatureKeywords = /réalis|créa|agence|site\s+par/i;
-
-    // 1. Search in footer first, then body
-    const footerSelectors = [
+    const FOOTER_SELECTORS = [
       "footer",
       '[role="contentinfo"]',
       ".footer",
@@ -45,65 +55,94 @@ export async function detectAuthor({
       ".site-footer",
       "#site-footer",
     ];
-    let searchArea: Element = document.body;
-    for (const selector of footerSelectors) {
-      const footer = document.querySelector(selector);
-      if (footer) {
-        searchArea = footer;
-        break;
+
+    // ========================================
+    // Helper functions (browser context)
+    // ========================================
+
+    /**
+     * Finds the search area (footer or body)
+     */
+    function findSearchArea(): Element {
+      for (const selector of FOOTER_SELECTORS) {
+        const footer = document.querySelector(selector);
+        if (footer) return footer;
+      }
+      return document.body;
+    }
+
+    /**
+     * Checks if a link is a valid external link
+     */
+    function isValidExternalLink(href: string): boolean {
+      if (!href || href.startsWith("#") || href.startsWith("/")) return false;
+
+      try {
+        const linkUrl = new URL(href, window.location.origin);
+        return linkUrl.origin !== window.location.origin;
+      } catch {
+        return false;
       }
     }
 
-    // 2. Find links with relevant title/aria-label or surrounding text
-    const links = searchArea.querySelectorAll("a[href]");
-
-    // Fallback: store first link containing "agence" in text
-    let agenceFallback: { name: string; url: string } | null = null;
-
-    for (const link of links) {
-      const href = link.getAttribute("href");
-      if (!href || href.startsWith("#") || href.startsWith("/")) continue;
-
-      // Skip internal links and common non-author links
-      try {
-        const linkUrl = new URL(href, window.location.origin);
-        if (linkUrl.origin === window.location.origin) continue;
-      } catch {
-        continue;
-      }
-
-      const title = link.getAttribute("title") || "";
-      const ariaLabel = link.getAttribute("aria-label") || "";
-      const text = link.textContent?.trim() || "";
-
-      // Check title attribute for agency signature
-      if (title && agencyKeywords.test(title)) {
+    /**
+     * Checks the title attribute for agency keywords
+     */
+    function checkLinkTitle(
+      title: string,
+      href: string
+    ): AuthorDetectionResult | null {
+      if (title && PATTERNS.agencyKeywords.test(title)) {
         return {
           foundVia: "title" as const,
           name: title,
           url: href,
         };
       }
+      return null;
+    }
 
-      // Check aria-label for signature
-      if (ariaLabel && signatureKeywords.test(ariaLabel)) {
+    /**
+     * Checks the aria-label attribute for signature keywords
+     */
+    function checkLinkAriaLabel(
+      ariaLabel: string,
+      href: string
+    ): AuthorDetectionResult | null {
+      if (ariaLabel && PATTERNS.signatureKeywords.test(ariaLabel)) {
         return {
           foundVia: "aria-label" as const,
           name: ariaLabel,
           url: href,
         };
       }
+      return null;
+    }
 
-      // Check link text for agency keywords (e.g., "V3RT agence de communication")
-      if (text && agencyKeywords.test(text)) {
+    /**
+     * Checks the link text for agency keywords
+     */
+    function checkLinkText(
+      text: string,
+      href: string
+    ): AuthorDetectionResult | null {
+      if (text && PATTERNS.agencyKeywords.test(text)) {
         return {
           foundVia: "text" as const,
           name: text,
           url: href,
         };
       }
+      return null;
+    }
 
-      // Check if URL hostname contains "agence" (e.g., vert-agence.fr)
+    /**
+     * Checks if the URL hostname contains "agence"
+     */
+    function checkLinkUrl(
+      text: string,
+      href: string
+    ): AuthorDetectionResult | null {
       try {
         const linkUrl = new URL(href);
         if (/agence/i.test(linkUrl.hostname)) {
@@ -114,31 +153,54 @@ export async function detectAuthor({
           };
         }
       } catch {
-        // Invalid URL, continue
+        // Invalid URL
+      }
+      return null;
+    }
+
+    /**
+     * Extracts the name from a signature pattern match
+     */
+    function extractNameFromSignature(
+      text: string,
+      parentText: string,
+      href: string
+    ): string {
+      const textMatch = text.match(PATTERNS.signatureExtraction);
+      const parentMatch = parentText.match(PATTERNS.signatureExtraction);
+
+      if (textMatch?.[1]) {
+        return textMatch[1].trim();
+      }
+      if (parentMatch?.[1]) {
+        return parentMatch[1].trim();
       }
 
-      // Check surrounding text and link text
+      // Fallback to hostname
+      try {
+        return new URL(href).hostname.replace("www.", "");
+      } catch {
+        return href;
+      }
+    }
+
+    /**
+     * Checks surrounding text and link text for signature patterns
+     */
+    function checkSurroundingText(
+      link: Element,
+      text: string,
+      href: string
+    ): AuthorDetectionResult | null {
       const parent = link.parentElement;
       const parentText = parent?.textContent || "";
 
-      for (const pattern of textPatterns) {
+      for (const pattern of PATTERNS.text) {
         if (pattern.test(parentText) || pattern.test(text)) {
-          // Extract clean name from link text or hostname
           let name = text;
+
           if (!name || pattern.test(name)) {
-            // If link text is the pattern itself, try to extract just the name
-            const match = parentText.match(
-              /(?:réalis[ée]s?\s+par|réalisation\s*[:.]?|cr[ée]dit[s]?\s*[:.]?|con[cç]u\s+par|d[ée]velopp[ée]\s+par|cr[ée]ation\s*[:.]?|site\s+(?:web\s+)?par|powered\s+by|made\s+by|built\s+by|\bby\s+|designer\s*[:.]?|d[ée]veloppeur\s*[:.]?|developer\s*[:.]?)\s*(.+)/i
-            );
-            if (match?.[1]) {
-              name = match[1].trim();
-            } else {
-              try {
-                name = new URL(href).hostname.replace("www.", "");
-              } catch {
-                name = href;
-              }
-            }
+            name = extractNameFromSignature(text, parentText, href);
           }
 
           return {
@@ -149,13 +211,77 @@ export async function detectAuthor({
         }
       }
 
+      return null;
+    }
+
+    /**
+     * Searches the footer text for signature patterns (fallback without links)
+     */
+    function searchFooterText(
+      searchArea: Element
+    ): AuthorDetectionResult | null {
+      const footerText = searchArea.textContent || "";
+      const footerMatch = footerText.match(PATTERNS.footerSignature);
+
+      if (footerMatch?.[1]) {
+        const extractedName = footerMatch[1]
+          .trim()
+          .replace(/[.,;:!?]+$/, "")
+          .slice(0, 100);
+
+        if (extractedName.length >= 2) {
+          return {
+            foundVia: "text" as const,
+            name: extractedName,
+          };
+        }
+      }
+
+      return null;
+    }
+
+    // *** Execution
+    const searchArea = findSearchArea();
+    const links = searchArea.querySelectorAll("a[href]");
+
+    // Fallback: store first link containing "agence" in text
+    let agenceFallback: { name: string; url: string } | null = null;
+
+    for (const link of links) {
+      const href = link.getAttribute("href");
+      if (!(href && isValidExternalLink(href))) continue;
+
+      const title = link.getAttribute("title") || "";
+      const ariaLabel = link.getAttribute("aria-label") || "";
+      const text = link.textContent?.trim() || "";
+
+      // Check title attribute for agency signature
+      const titleResult = checkLinkTitle(title, href);
+      if (titleResult) return titleResult;
+
+      // Check aria-label for signature
+      const ariaResult = checkLinkAriaLabel(ariaLabel, href);
+      if (ariaResult) return ariaResult;
+
+      // Check link text for agency keywords
+      const textResult = checkLinkText(text, href);
+      if (textResult) return textResult;
+
+      // Check if URL hostname contains "agence"
+      const urlResult = checkLinkUrl(text, href);
+      if (urlResult) return urlResult;
+
+      // Check surrounding text for signature patterns
+      const surroundingResult = checkSurroundingText(link, text, href);
+      if (surroundingResult) return surroundingResult;
+
       // Store first link containing "agence" as fallback
       if (!agenceFallback && /agence/i.test(text)) {
         agenceFallback = { name: text, url: href };
       }
     }
 
-    // 3. Fallback: return link containing "agence" if nothing else found
+    // Return link containing "agence" if nothing else found
     if (agenceFallback) {
       return {
         foundVia: "text" as const,
@@ -164,27 +290,7 @@ export async function detectAuthor({
       };
     }
 
-    // 4. Final fallback: search footer text for signature patterns (even without links)
-    const footerText = searchArea.textContent || "";
-    const signatureExtractionPattern =
-      /(?:réalis[ée]s?\s+par|réalisation\s*[:.]?|cr[ée]dit[s]?\s*[:.]?|con[cç]u\s+par|d[ée]velopp[ée]\s+par|cr[ée]ation\s*[:.]?|site\s+(?:web\s+)?par|powered\s+by|made\s+by|built\s+by|\bby\s+|designer\s*[:.]?|d[ée]veloppeur\s*[:.]?|developer\s*[:.]?)\s*([A-ZÀ-ÿ][\w\sÀ-ÿ&.-]+)/i;
-
-    const textMatch = footerText.match(signatureExtractionPattern);
-    if (textMatch?.[1]) {
-      // Clean up the extracted name (remove trailing punctuation, limit length)
-      const extractedName = textMatch[1]
-        .trim()
-        .replace(/[.,;:!?]+$/, "")
-        .slice(0, 100);
-
-      if (extractedName.length >= 2) {
-        return {
-          foundVia: "text" as const,
-          name: extractedName,
-        };
-      }
-    }
-
-    return undefined;
+    // Final fallback: search footer text for signature patterns
+    return searchFooterText(searchArea) ?? undefined;
   });
 }

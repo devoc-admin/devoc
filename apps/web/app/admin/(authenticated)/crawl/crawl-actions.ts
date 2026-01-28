@@ -2,7 +2,7 @@
 import { rm } from "node:fs/promises";
 import { join } from "node:path";
 import { del, list } from "@vercel/blob";
-import { and, desc, eq, isNotNull } from "drizzle-orm";
+import { and, asc, desc, eq, isNotNull } from "drizzle-orm";
 import { type ActionResult, getErrorMessage } from "@/lib/api";
 import { db } from "@/lib/db";
 import { type Crawl, crawl, crawledPage, prospect } from "@/lib/db/schema";
@@ -19,8 +19,6 @@ export async function upsertCrawl({
   url,
   maxDepth,
   maxPages,
-  skipResources,
-  skipScreenshots,
   useLocalScreenshots,
   concurrency,
   prospectId,
@@ -44,8 +42,6 @@ export async function upsertCrawl({
         id: crypto.randomUUID(),
         maxDepth,
         maxPages,
-        skipResources,
-        skipScreenshots,
         status: "pending",
         updatedAt: nowString,
         url: origin,
@@ -84,8 +80,6 @@ export async function upsertCrawl({
           concurrency: concurrency ?? 10,
           maxDepth: maxDepth ?? 1,
           maxPages: maxPages ?? 5,
-          skipResources: skipResources ?? false,
-          skipScreenshots: skipScreenshots ?? false,
           useLocalScreenshots: useLocalScreenshots ?? false,
         },
         crawlId: insertedCrawl.id,
@@ -113,8 +107,6 @@ type UpsertCrawlParams = {
   url: string;
   maxDepth: number;
   maxPages: number;
-  skipResources: boolean;
-  skipScreenshots: boolean;
   useLocalScreenshots: boolean;
   concurrency: number;
   prospectId?: number;
@@ -248,8 +240,6 @@ const listCrawlsQuery = db
     prospectName: prospect.name,
     prospectType: prospect.type,
     screenshotUrl: crawledPage.screenshotUrl,
-    skipResources: crawl.skipResources,
-    skipScreenshots: crawl.skipScreenshots,
     socialLinks: crawl.socialLinks,
     startedAt: crawl.startedAt,
     title: crawledPage.title,
@@ -400,8 +390,6 @@ export async function retryCrawl(
         config: crawl.config,
         maxDepth: crawl.maxDepth,
         maxPages: crawl.maxPages,
-        skipResources: crawl.skipResources,
-        skipScreenshots: crawl.skipScreenshots,
         url: crawl.url,
         useLocalScreenshots: crawl.useLocalScreenshots,
       })
@@ -424,8 +412,6 @@ export async function retryCrawl(
       concurrency: existingCrawl.config?.concurrency ?? 10,
       maxDepth: existingCrawl.maxDepth ?? 3,
       maxPages: existingCrawl.maxPages ?? 100,
-      skipResources: existingCrawl.skipResources ?? false,
-      skipScreenshots: existingCrawl.skipScreenshots ?? false,
       url: existingCrawl.url,
       useLocalScreenshots: existingCrawl.useLocalScreenshots ?? false,
     });
@@ -436,7 +422,7 @@ export async function retryCrawl(
 }
 
 // --------------------------------------
-// 🏢 List prospects with websites not yet crawled
+// 👬❓ List prospects with websites not yet crawled
 
 const uncrawledProspectsQuery = db
   .select({
@@ -445,7 +431,7 @@ const uncrawledProspectsQuery = db
     website: prospect.website,
   })
   .from(prospect)
-  .orderBy(desc(prospect.name))
+  .orderBy(asc(prospect.name))
   .$dynamic();
 
 export type UncrawledProspectResult = {
@@ -482,152 +468,6 @@ export async function listUncrawledProspects(): Promise<
     }) as UncrawledProspectResult[];
 
     return { response: uncrawledProspects, success: true };
-  } catch (error) {
-    const message = getErrorMessage(error);
-    return { error: message, success: false };
-  }
-}
-
-// --------------------------------------
-// 🏢 List available prospects for a crawl (unassigned + current)
-
-export type AvailableProspect = {
-  id: number;
-  name: string;
-  type:
-    | "city"
-    | "administration"
-    | "cultural_establishment"
-    | "epci"
-    | "territorial_collectivity"
-    | "sme"
-    | "other";
-};
-
-export async function listAvailableProspectsForCrawl(
-  crawlId: string
-): Promise<ActionResult<AvailableProspect[]>> {
-  try {
-    // Get all prospects and filter for unassigned or assigned to this crawl
-    const allProspects = await db
-      .select({
-        crawlId: prospect.crawlId,
-        id: prospect.id,
-        name: prospect.name,
-        type: prospect.type,
-      })
-      .from(prospect)
-      .orderBy(prospect.name);
-
-    const result = allProspects
-      .filter((p) => !p.crawlId || p.crawlId === crawlId)
-      .map((p) => ({
-        id: p.id,
-        name: p.name,
-        type: p.type,
-      }));
-
-    return { response: result, success: true };
-  } catch (error) {
-    const message = getErrorMessage(error);
-    return { error: message, success: false };
-  }
-}
-
-// --------------------------------------
-// 🔗 Assign a prospect to a crawl
-
-export async function assignProspectToCrawl(
-  crawlId: string,
-  prospectId: number | null
-): Promise<ActionResult> {
-  try {
-    if (prospectId === null) {
-      // Unassign: set crawlId to null for any prospect that has this crawlId
-      await db
-        .update(prospect)
-        .set({ crawlId: null, updatedAt: new Date().toISOString() })
-        .where(eq(prospect.crawlId, crawlId));
-    } else {
-      // First, unassign any existing prospect from this crawl
-      await db
-        .update(prospect)
-        .set({ crawlId: null, updatedAt: new Date().toISOString() })
-        .where(eq(prospect.crawlId, crawlId));
-
-      // Then assign the new prospect
-      await db
-        .update(prospect)
-        .set({ crawlId, updatedAt: new Date().toISOString() })
-        .where(eq(prospect.id, prospectId));
-    }
-
-    return { success: true };
-  } catch (error) {
-    const message = getErrorMessage(error);
-    return { error: message, success: false };
-  }
-}
-
-// --------------------------------------
-// ➕ Add prospect and assign to crawl
-
-export type AddProspectForCrawlParams = {
-  crawlId: string;
-  name: string;
-  type:
-    | "city"
-    | "administration"
-    | "cultural_establishment"
-    | "epci"
-    | "territorial_collectivity"
-    | "sme"
-    | "other";
-  location: string;
-  website?: string;
-  latitude?: string;
-  longitude?: string;
-};
-
-export async function addProspectForCrawl({
-  crawlId,
-  name,
-  type,
-  location,
-  website,
-  latitude,
-  longitude,
-}: AddProspectForCrawlParams): Promise<ActionResult<{ prospectId: number }>> {
-  try {
-    const nowString = new Date().toISOString();
-
-    // First, unassign any existing prospect from this crawl
-    await db
-      .update(prospect)
-      .set({ crawlId: null, updatedAt: nowString })
-      .where(eq(prospect.crawlId, crawlId));
-
-    // Create the new prospect with the crawlId
-    const [newProspect] = await db
-      .insert(prospect)
-      .values({
-        crawlId,
-        createdAt: nowString,
-        latitude,
-        location,
-        longitude,
-        name,
-        type,
-        updatedAt: nowString,
-        website: website || null,
-      })
-      .returning({ id: prospect.id });
-
-    if (!newProspect) {
-      return { error: "Échec de la création du prospect", success: false };
-    }
-
-    return { response: { prospectId: newProspect.id }, success: true };
   } catch (error) {
     const message = getErrorMessage(error);
     return { error: message, success: false };

@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import {
   getCrawl,
   getRunningCrawl,
-  listAvailableProspectsForCrawl,
   listCrawls,
   listUncrawledProspects,
 } from "./crawl-actions";
@@ -47,7 +46,7 @@ export const uncrawledProspectsQueryOptions = queryOptions({
 
 // --------------------------------------
 // 👁️ See current crawl
-export function useCrawl() {
+export function useCurrentCrawl() {
   const queryClient = useQueryClient();
   const [crawlId, setCrawlId] = useQueryState("crawlId");
 
@@ -135,26 +134,5 @@ export function useUncrawledProspects() {
   return {
     prospects,
     prospectsAreLoading: isLoading,
-  };
-}
-
-// --------------------------------------
-// 🏢 List available prospects for a crawl
-
-export function useAvailableProspectsForCrawl(crawlId: string) {
-  const { data: prospects, isLoading } = useQuery({
-    queryFn: async () => {
-      const result = await listAvailableProspectsForCrawl(crawlId);
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      return result.response;
-    },
-    queryKey: ["available-prospects", crawlId],
-  });
-
-  return {
-    availableProspects: prospects,
-    availableProspectsAreLoading: isLoading,
   };
 }

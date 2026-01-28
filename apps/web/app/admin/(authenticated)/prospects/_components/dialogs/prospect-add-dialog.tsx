@@ -22,15 +22,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useProspectsContext } from "../prospects-context";
-import { PROSPECT_TYPES, type ProspectType } from "../prospects-types";
-import { type PlaceResult, PlacesAutocomplete } from "./places-autocomplete";
+import type { Prospect } from "@/lib/db/schema";
+import { useProspectsContext } from "../../prospects-context";
+import { PROSPECT_TYPES } from "../buttons/prospect-type-button";
+import { type PlaceResult, PlacesAutocomplete } from "../places-autocomplete";
 
 // Infer prospect type from Google Places types
 function inferProspectType(
   placeTypes: string[],
   placeName: string
-): ProspectType {
+): Prospect["type"] {
   const name = placeName.toLowerCase();
 
   // Check for EPCI keywords in name
@@ -90,7 +91,7 @@ function inferProspectType(
   return "other";
 }
 
-export function ProspectAdd() {
+export function ProspectAddDialog() {
   const [isOpen, setIsOpen] = useState(false);
   const [formKey, setFormKey] = useState(0);
   const form = useProspectForm();
@@ -197,7 +198,7 @@ export function ProspectAdd() {
                     <Label>Type</Label>
                     <Select
                       onValueChange={(newValue) =>
-                        field.handleChange(newValue as ProspectType)
+                        field.handleChange(newValue as Prospect["type"])
                       }
                       value={field.state.value}
                     >
@@ -206,13 +207,13 @@ export function ProspectAdd() {
                       </SelectTrigger>
                       <SelectContent align="start" className="max-h-64">
                         <SelectGroup>
-                          {Object.entries(PROSPECT_TYPES).map(
-                            ([type, label]) => (
-                              <SelectItem key={type} value={type}>
-                                {label}
-                              </SelectItem>
-                            )
-                          )}
+                          {(
+                            Object.keys(PROSPECT_TYPES) as Prospect["type"][]
+                          ).map((type) => (
+                            <SelectItem key={type} value={type}>
+                              {PROSPECT_TYPES[type]}
+                            </SelectItem>
+                          ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -277,7 +278,7 @@ export function ProspectAdd() {
 type ProspectFormData = {
   location: string;
   name: string;
-  type: ProspectType;
+  type: Prospect["type"];
   website: string;
   latitude: string;
   longitude: string;
