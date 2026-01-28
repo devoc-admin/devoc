@@ -107,6 +107,9 @@ export function ProspectsMap() {
         {selectedProspect && (
           <InfoWindowF
             onCloseClick={handleInfoWindowClose}
+            options={{
+              headerDisabled: true,
+            }}
             position={{
               lat: Number.parseFloat(selectedProspect.latitude ?? "0"),
               lng: Number.parseFloat(selectedProspect.longitude ?? "0"),
@@ -123,38 +126,44 @@ export function ProspectsMap() {
 function ProspectPopupContent({ prospect }: { prospect: Prospect }) {
   return (
     <div className="min-w-48 space-y-2 p-1">
+      {/* 🆎 Name */}
       <div className="flex items-center gap-x-2">
-        <span className="font-semibold">{prospect.name}</span>
+        <span className="font-semibold text-lg">{prospect.name}</span>
         <ProspectTypeBadge type={prospect.type} />
       </div>
-      <div className="flex items-center gap-x-2">
-        <span className="text-muted-foreground text-xs">Urgence:</span>
-        <EstimatedOpportunityBadge
-          value={prospect.estimatedOpportunity ?? "medium"}
-        />
+      {/* 🔴 Estimated opportunity */}
+      {prospect.estimatedOpportunity && (
+        <div className="flex items-center gap-x-2">
+          <span className="text-muted-foreground text-xs">Urgence :</span>
+          <EstimatedOpportunityBadge value={prospect.estimatedOpportunity} />
+        </div>
+      )}
+      <div className="space-y-1">
+        {/* 🌐 Website */}
+        {prospect.website && (
+          <a
+            className="flex items-center gap-x-1 text-blue-500 text-xs hover:underline"
+            href={prospect.website}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span>Site web</span>
+            <ExternalLinkIcon size={11} />
+          </a>
+        )}
+        {/* 📍 Location */}
+        {prospect.location && (
+          <a
+            className="flex items-center gap-x-1 text-blue-500 text-xs hover:underline"
+            href={prospect.location}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span>Voir sur Google Maps</span>
+            <ExternalLinkIcon size={11} />
+          </a>
+        )}
       </div>
-      {prospect.website && (
-        <a
-          className="flex items-center gap-x-1 text-blue-500 text-sm hover:underline"
-          href={prospect.website}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <span>Site web</span>
-          <ExternalLinkIcon size={14} />
-        </a>
-      )}
-      {prospect.location && (
-        <a
-          className="flex items-center gap-x-1 text-blue-500 text-sm hover:underline"
-          href={prospect.location}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <span>Voir sur Google Maps</span>
-          <ExternalLinkIcon size={14} />
-        </a>
-      )}
       <p className="text-muted-foreground text-xs">
         Ajouté le {formatDate(prospect.createdAt)}
       </p>
