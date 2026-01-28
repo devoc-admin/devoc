@@ -40,7 +40,7 @@ export function DeleteCrawlsButton() {
   return (
     <AlertDialog open={open}>
       <AlertDialogTrigger asChild>
-        <ButtonTrigger
+        <DeleteButton
           disabled={open || lockActions}
           loading={allCrawlsDeletionIsPending}
           onClick={() => setOpen(true)}
@@ -77,13 +77,14 @@ export function DeleteCrawlsButton() {
 }
 
 // ----------------------------------------
-function ButtonTrigger({ ...props }) {
+function DeleteButton({ ...props }) {
   return (
     <Button
       {...props}
       className={cn(
         "w-full",
         "gap-x-2 font-semibold",
+        "disabled:cursor-not-allowed disabled:opacity-50",
         props.disabled && "pointer-events-none"
       )}
       disabled={props.disabled}
