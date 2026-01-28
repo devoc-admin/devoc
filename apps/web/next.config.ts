@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
         : []
     ),
   },
+  outputFileTracingExcludes: {
+    "/api/screenshots": ["./screenshots/**"],
+  },
   outputFileTracingRoot: path.join(__dirname, "../../"),
   turbopack: {
     root: path.join(__dirname, "../../"),
