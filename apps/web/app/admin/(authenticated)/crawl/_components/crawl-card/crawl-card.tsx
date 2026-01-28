@@ -1,5 +1,5 @@
 "use client";
-import { ExternalLinkIcon, ImageOffIcon } from "lucide-react";
+import { ExternalLinkIcon } from "lucide-react";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { CrawlResult } from "../../crawl-actions";
@@ -17,7 +17,6 @@ import {
   CrawlCardContextProvider,
   useCrawlCardContext,
 } from "./crawl-card-context";
-
 export function CrawlCard(crawl: CrawlResult) {
   const showScreenshot =
     crawl.screenshotUrl && process.env.NODE_ENV === "development";
@@ -36,8 +35,8 @@ export function CrawlCard(crawl: CrawlResult) {
           <CrawlCardDetails />
         </div>
         {/* 🖼️ Screenshot */}
-        <div className="group relative mx-auto w-fit">
-          {showScreenshot ? (
+        {showScreenshot && (
+          <div className="group relative mx-auto w-fit">
             <Image
               alt="Screenshot"
               className="rounded-md shadow-md"
@@ -45,10 +44,8 @@ export function CrawlCard(crawl: CrawlResult) {
               src={crawl.screenshotUrl ?? ""}
               width={400}
             />
-          ) : (
-            <ImagePlaceholder />
-          )}
-        </div>
+          </div>
+        )}
         {/* 🆕 Buttons */}
         <div className="flex w-full gap-x-2">
           <SeeCrawlButton />
@@ -105,18 +102,5 @@ function Website() {
       <span className="truncate">{url ?? "—"}</span>
       <ExternalLinkIcon className="shrink-0" size={16} />
     </a>
-  );
-}
-
-// -------------------------------------------------
-// 🖼️❓
-function ImagePlaceholder() {
-  return (
-    <div className="flex h-56.25 w-100 items-center justify-center rounded-md bg-muted shadow-md">
-      <ImageOffIcon
-        className="size-12 text-muted-foreground"
-        strokeWidth={1.5}
-      />
-    </div>
   );
 }
