@@ -10,13 +10,13 @@ export default function CrawlPage() {
 }
 
 // ================================
-//💀
+// 💀
 
 function CrawlPageSkeleton() {
   return (
-    <div className="space-y-6">
-      <Skeleton className="h-32" />
-      <Skeleton className="h-64" />
+    <div className="flex h-full w-full gap-x-6">
+      <Skeleton className="basis-1/5" />
+      <Skeleton className="basis-4/5" />
     </div>
   );
 }
