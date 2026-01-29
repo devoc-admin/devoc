@@ -1,18 +1,18 @@
 "use client";
-import { GoogleMapsProvider } from "../prospects/_components/google-maps-provider";
+import { GoogleMapsProvider } from "../prospects/_components/map/google-maps-provider";
 import { CrawlForm } from "./_components/crawl-form";
 import { CrawlStatusPanel } from "./_components/crawl-status-panel";
 import { CrawlsCards } from "./_components/crawls-list";
-import { CrawlProvider } from "./crawl-context";
-import { useRunningCrawl } from "./crawl-queries";
+import { CrawlsProvider } from "./crawls-context";
+import { useRunningCrawl } from "./crawls-queries";
 
-export function CrawlPageContent() {
-  // Auto-set crawlId if there's a running crawl
+export function CrawlsPageContent() {
+  // 🔁 Auto-set a crawlId in URL if there's a running crawl
   useRunningCrawl();
 
   return (
     <GoogleMapsProvider>
-      <CrawlProvider>
+      <CrawlsProvider>
         <div className="flex h-full gap-x-6">
           <CrawlForm />
           <div className="grow space-y-6 overflow-auto">
@@ -20,7 +20,7 @@ export function CrawlPageContent() {
             <CrawlsCards />
           </div>
         </div>
-      </CrawlProvider>
+      </CrawlsProvider>
     </GoogleMapsProvider>
   );
 }

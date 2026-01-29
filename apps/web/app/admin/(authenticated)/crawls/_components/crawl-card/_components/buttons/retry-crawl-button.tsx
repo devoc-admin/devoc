@@ -1,7 +1,7 @@
 "use client";
 import { LoaderIcon, RotateCcwIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useCrawlContext } from "../../../../crawl-context";
+import { useCrawlsContext } from "../../../../crawls-context";
 import { useCrawlCardContext } from "../../crawl-card-context";
 
 export function RetryCrawlButton() {
@@ -10,7 +10,7 @@ export function RetryCrawlButton() {
     retryCrawlMutate,
     retryingCrawlId,
     lockActions,
-  } = useCrawlContext();
+  } = useCrawlsContext();
   const { crawl } = useCrawlCardContext();
   if (!crawl) return null;
 

@@ -7,11 +7,11 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { useCrawlContext } from "../crawl-context";
+import { useCrawlsContext } from "../crawls-context";
 
 export function CrawlStatusPanel() {
   const { crawl, crawlId, deleteCrawlMutate, crawlDeletionIsPending } =
-    useCrawlContext();
+    useCrawlsContext();
   if (!crawl) return null;
 
   const isRunning = crawl.status === "running" || crawl.status === "pending";

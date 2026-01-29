@@ -7,7 +7,7 @@ import type { Prospect } from "@/lib/db/schema";
 import { useProspectsContext } from "../prospects-context";
 import { EstimatedOpportunityBadge } from "./buttons/estimated-opportunity-button";
 import { ProspectTypeBadge } from "./buttons/prospect-type-button";
-import { useGoogleMaps } from "./google-maps-provider";
+import { useGoogleMaps } from "./map/google-maps-provider";
 
 // ↕️ Container style
 const containerStyle = {

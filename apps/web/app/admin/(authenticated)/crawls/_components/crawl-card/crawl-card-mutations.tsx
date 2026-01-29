@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { listCrawlsKey } from "../../crawl-keys";
+import { listCrawlsKey } from "../../crawls-keys";
 import {
   type AddProspectForCrawlParams,
   addProspectForCrawl,

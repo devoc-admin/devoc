@@ -1,5 +1,6 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { listProspects } from "./prospects-actions";
+import { prospectsKey } from "./prospects-keys";
 
 export const prospectsQueryOptions = queryOptions({
   queryFn: async () => {
@@ -7,7 +8,7 @@ export const prospectsQueryOptions = queryOptions({
     if (!result.success) throw new Error(result.error);
     return result.response;
   },
-  queryKey: ["prospects"],
+  queryKey: prospectsKey(),
 });
 
 export function useListProspectsQuery() {

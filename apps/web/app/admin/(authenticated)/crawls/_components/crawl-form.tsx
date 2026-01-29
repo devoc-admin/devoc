@@ -18,8 +18,8 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { updateProspectWebsite } from "../../prospects/prospects-actions";
-import { useCrawlContext } from "../crawl-context";
-import { useUncrawledProspects } from "../crawl-queries";
+import { useCrawlsContext } from "../crawls-context";
+import { useUncrawledProspects } from "../crawls-queries";
 import { DeleteCrawlsButton } from "./delete-crawls-button";
 
 type SelectedProspect = {
@@ -41,7 +41,7 @@ export function CrawlForm() {
     useState<SelectedProspect>(null);
   const [prospectSearchQuery, setProspectSearchQuery] = useState("");
   const crawlForm = useCrawlForm({ selectedProspect, setSelectedProspect });
-  const { crawlId } = useCrawlContext();
+  const { crawlId } = useCrawlsContext();
   const { prospects, prospectsAreLoading } = useUncrawledProspects();
 
   const currentCrawlRunning = crawlId !== undefined && crawlId !== null;
@@ -393,7 +393,7 @@ function useCrawlForm({
     upsertCrawlIsError,
     upsertCrawlError,
     upsertCrawlIsSuccess,
-  } = useCrawlContext();
+  } = useCrawlsContext();
 
   const form = useForm({
     defaultValues: {

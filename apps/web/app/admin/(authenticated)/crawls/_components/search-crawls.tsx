@@ -1,9 +1,9 @@
 "use client";
 import { SearchIcon, XIcon } from "lucide-react";
-import { useCrawlContext } from "../crawl-context";
+import { useCrawlsContext } from "../crawls-context";
 
 export function SearchCrawlsInput() {
-  const { searchCrawl, handleSearchCrawl } = useCrawlContext();
+  const { searchCrawl, handleSearchCrawl } = useCrawlsContext();
   return (
     <div className="relative max-w-125">
       <SearchIcon

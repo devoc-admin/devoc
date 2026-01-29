@@ -13,7 +13,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
-import { useCrawlContext } from "../../../../crawl-context";
+import { useCrawlsContext } from "../../../../crawls-context";
 import { useCrawlCardContext } from "../../crawl-card-context";
 export function DeleteCrawlButton() {
   const { crawl } = useCrawlCardContext();
@@ -23,7 +23,7 @@ export function DeleteCrawlButton() {
     deleteCrawlMutate,
     deletingCrawlId,
     lockActions,
-  } = useCrawlContext();
+  } = useCrawlsContext();
   const [open, setOpen] = useState(false);
 
   if (!crawl) return null;

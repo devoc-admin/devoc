@@ -3,11 +3,11 @@ import { SearchIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import type { Prospect } from "@/lib/db/schema";
 import { ProspectTypesButtons } from "../../prospects/_components/buttons/prospect-type-button";
-import { useCrawlContext } from "../crawl-context";
+import { useCrawlsContext } from "../crawls-context";
 import { CrawlCard, CrawlCardSkeleton } from "./crawl-card/crawl-card";
 
 export function CrawlsCards() {
-  const { crawls, crawlsAreLoading } = useCrawlContext();
+  const { crawls, crawlsAreLoading } = useCrawlsContext();
   const [typeFilter, setTypeFilter] = useState<Prospect["type"] | null>(null);
 
   const noCrawls = crawls && crawls.length === 0;

@@ -1,6 +1,6 @@
 "use client";
 import { createContext, use } from "react";
-import type { CrawlResult } from "../../crawl-actions";
+import type { CrawlResult } from "../../crawls-actions";
 
 const CrawlCardContext = createContext<{ crawl: CrawlResult | null }>({
   crawl: null,

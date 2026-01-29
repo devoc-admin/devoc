@@ -7,7 +7,7 @@ import {
   getRunningCrawl,
   listCrawls,
   listUncrawledProspects,
-} from "./crawl-actions";
+} from "./crawls-actions";
 
 export const crawlsListQueryOptions = queryOptions({
   queryFn: async () => {

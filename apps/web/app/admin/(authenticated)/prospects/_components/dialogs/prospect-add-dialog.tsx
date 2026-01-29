@@ -25,7 +25,10 @@ import {
 import type { Prospect } from "@/lib/db/schema";
 import { useProspectsContext } from "../../prospects-context";
 import { PROSPECT_TYPES } from "../buttons/prospect-type-button";
-import { type PlaceResult, PlacesAutocomplete } from "../places-autocomplete";
+import {
+  type PlaceResult,
+  PlacesAutocomplete,
+} from "../map/places-autocomplete";
 
 // Infer prospect type from Google Places types
 function inferProspectType(

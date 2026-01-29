@@ -2,7 +2,7 @@
 
 import { MapIcon, TableIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useProspectsContext } from "../prospects-context";
+import { useProspectsContext } from "../../prospects-context";
 
 export function ViewToggle() {
   const { viewMode, setViewMode } = useProspectsContext();

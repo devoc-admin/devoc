@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useCrawlContext } from "@/app/admin/(authenticated)/crawl/crawl-context";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useCrawlsContext } from "../crawls-context";
 
 export function DeleteCrawlsButton() {
   const {
@@ -23,7 +23,7 @@ export function DeleteCrawlsButton() {
     allCrawlsDeletionIsError,
     allCrawlsDeletionIsSuccess,
     lockActions,
-  } = useCrawlContext();
+  } = useCrawlsContext();
   const [open, setOpen] = useState(false);
 
   // 🍞 Toast actions

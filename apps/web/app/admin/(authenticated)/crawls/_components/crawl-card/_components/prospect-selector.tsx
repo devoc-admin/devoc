@@ -42,7 +42,7 @@ import { PROSPECT_TYPES } from "../../../../prospects/_components/buttons/prospe
 import {
   type PlaceResult,
   PlacesAutocomplete,
-} from "../../../../prospects/_components/places-autocomplete";
+} from "../../../../prospects/_components/map/places-autocomplete";
 import { inferProspectType } from "../../../../prospects/prospects-utils";
 import { useCrawlCardContext } from "../crawl-card-context";
 import {

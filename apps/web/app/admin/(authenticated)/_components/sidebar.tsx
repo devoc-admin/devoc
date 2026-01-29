@@ -1,7 +1,6 @@
 "use client";
 import {
   DoorOpenIcon,
-  FileScanIcon,
   type LucideIcon,
   UsersIcon,
   WaypointsIcon,
@@ -29,25 +28,18 @@ function Sidebar() {
       {/* 🔗 Links */}
       <div className="mt-4 w-full space-y-2 text-base text-zinc-200">
         <SidebarLink
-          icon={WaypointsIcon}
-          isActive={pathname.startsWith("/admin/crawl")}
-          pathname="/admin/crawl"
-        >
-          Crawls
-        </SidebarLink>
-        <SidebarLink
-          icon={FileScanIcon}
-          isActive={pathname.startsWith("/admin/sites")}
-          pathname="/admin/sites"
-        >
-          Audits
-        </SidebarLink>
-        <SidebarLink
           icon={UsersIcon}
           isActive={pathname.startsWith("/admin/prospects")}
           pathname="/admin/prospects"
         >
           Prospects
+        </SidebarLink>
+        <SidebarLink
+          icon={WaypointsIcon}
+          isActive={pathname.startsWith("/admin/crawl")}
+          pathname="/admin/crawls"
+        >
+          Crawls
         </SidebarLink>
       </div>
       {/* ⬇️ Footer */}

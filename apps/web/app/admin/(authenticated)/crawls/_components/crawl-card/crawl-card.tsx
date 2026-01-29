@@ -2,7 +2,7 @@
 import { ExternalLinkIcon } from "lucide-react";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { CrawlResult } from "../../crawl-actions";
+import type { CrawlResult } from "../../crawls-actions";
 import { DeleteCrawlButton } from "./_components/buttons/delete-crawl-button";
 import { RetryCrawlButton } from "./_components/buttons/retry-crawl-button";
 import { SeeCrawlButton } from "./_components/buttons/see-crawl-button";

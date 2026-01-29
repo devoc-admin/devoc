@@ -12,6 +12,8 @@ import { Separator } from "@/components/ui/separator";
 import { signIn } from "@/lib/auth/auth-client";
 import DevOcIcon from "@/public/icon.svg";
 
+const REDIRECTION_PATH_AFTER_LOGIN = "/admin/prospects";
+
 export function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -19,7 +21,7 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
@@ -36,7 +38,7 @@ export function LoginForm() {
         return;
       }
 
-      router.push("/admin/crawl");
+      router.push(REDIRECTION_PATH_AFTER_LOGIN);
       router.refresh();
     } catch {
       setError("Une erreur est survenue lors de la connexion");

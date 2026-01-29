@@ -13,19 +13,19 @@ import type {
   CrawlQueryResult,
   ListCrawlsResult,
   UpsertCrawlResult,
-} from "./crawl-actions";
+} from "./crawls-actions";
 import {
   useDeleteAllCrawls,
   useDeleteCrawl,
   useRetryCrawl,
   useUpsertCrawl,
-} from "./crawl-mutations";
-import { useCrawlsList, useCurrentCrawl } from "./crawl-queries";
+} from "./crawls-mutations";
+import { useCrawlsList, useCurrentCrawl } from "./crawls-queries";
 
 /** biome-ignore lint/suspicious/noEmptyBlockStatements: special case */
 function emptyFn() {}
 
-const CrawlContext = createContext<CrawlContextType>({
+const CrawlsContext = createContext<CrawlsContextType>({
   // 👁️ See current crawl
   crawl: undefined,
   crawlId: null,
@@ -70,7 +70,7 @@ const CrawlContext = createContext<CrawlContextType>({
   lockActions: false,
 });
 
-export function CrawlProvider({ children }: { children: React.ReactNode }) {
+export function CrawlsProvider({ children }: { children: React.ReactNode }) {
   //👁️ See current crawl
   const { crawl, crawlId, handleCrawlId, removeCrawlId } = useCurrentCrawl();
 
@@ -172,7 +172,7 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
   }, [retriedCrawlId]);
 
   return (
-    <CrawlContext.Provider
+    <CrawlsContext.Provider
       value={{
         // 👁️ See current crawl
         crawl,
@@ -219,13 +219,13 @@ export function CrawlProvider({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
-    </CrawlContext.Provider>
+    </CrawlsContext.Provider>
   );
 }
 
 // --------------------------------------
 // 🔠 Types
-type CrawlContextType = {
+type CrawlsContextType = {
   // 👁️ See current crawl
   crawl: CrawlQueryResult | undefined;
   crawlId: string | null;
@@ -289,8 +289,8 @@ type CrawlContextType = {
 
 // --------------------------------------
 // 🪝 Hook
-export function useCrawlContext() {
-  const context = useContext(CrawlContext);
+export function useCrawlsContext() {
+  const context = useContext(CrawlsContext);
 
   if (!context) {
     throw new Error("useCrawlContext must be used within an CrawlProvider");

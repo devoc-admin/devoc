@@ -1,5 +1,6 @@
 // biome-ignore-all lint/suspicious/noEmptyBlockStatements: exception
 // biome-ignore-all assist/source/useSortedKeys: context requires specific order
+"use client";
 import type { UseMutateFunction } from "@tanstack/react-query";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 import {
@@ -20,38 +21,38 @@ import {
 import { useListProspectsQuery } from "./prospects-queries";
 
 const ProspectsContext = createContext<ProspectsContext>({
-  // 👯 Prospects
-  prospects: [],
-  isProspectsLoading: false,
-  searchQuery: "",
-  setSearchQuery: () => {},
-  typeFilter: null,
-  setTypeFilter: () => {},
-
   // ➕ Add prospect
   addProspectMutate: () => {},
-  isAddedProspect: false,
-  isAddingProspect: false,
-
-  // ✏️ Edit prospect
-  editProspectMutate: () => {},
-  editingProspectId: undefined,
-  isEditedProspect: false,
-  isEditingProspect: false,
 
   // 🗑️ Delete prospect
   deleteProspectMutate: () => {},
-  isDeletingProspect: false,
   deletingProspectId: undefined,
+  editingProspectId: undefined,
 
-  // 🗺️ View mode
-  viewMode: "table",
+  // ✏️ Edit prospect
+  editProspectMutate: () => {},
+  isAddedProspect: false,
+  isAddingProspect: false,
+  isDeletingProspect: false,
+  isEditedProspect: false,
+  isEditingProspect: false,
+  isProspectsLoading: false,
+  isUpdatingEstimatedOpportunity: false,
+
+  // 👯 Prospects
+  prospects: [],
+  searchQuery: "",
+  setSearchQuery: () => {},
+  setTypeFilter: () => {},
   setViewMode: () => {},
+  typeFilter: null,
 
   // 🔴 Estimated opportunity
   updateEstimatedOpportunityMutate: () => {},
   updatingEstimatedOpportunityProspectId: undefined,
-  isUpdatingEstimatedOpportunity: false,
+
+  // 🗺️ View mode
+  viewMode: "table",
 });
 
 const viewModes: ViewMode[] = ["table", "map"] as const;
@@ -139,38 +140,37 @@ export function ProspectsContextProvider({
   return (
     <ProspectsContext.Provider
       value={{
-        // 👯  Prospects
-        prospects: filteredProspects,
-        isProspectsLoading,
-        searchQuery,
-        setSearchQuery,
-        typeFilter,
-        setTypeFilter,
-
         // ➕ Add prospect
         addProspectMutate,
-        isAddedProspect,
-        isAddingProspect,
-
-        // ✏️ Edit prospect
-        editProspectMutate,
-        editingProspectId,
-        isEditedProspect,
-        isEditingProspect,
 
         // 🗑️ Delete prospect
         deleteProspectMutate,
-        isDeletingProspect,
         deletingProspectId,
+        editingProspectId,
 
-        // 🗺️ View mode
-        viewMode,
+        // ✏️ Edit prospect
+        editProspectMutate,
+        isAddedProspect,
+        isAddingProspect,
+        isDeletingProspect,
+        isEditedProspect,
+        isEditingProspect,
+        isProspectsLoading,
+        isUpdatingEstimatedOpportunity,
+        // 👯  Prospects
+        prospects: filteredProspects,
+        searchQuery,
+        setSearchQuery,
+        setTypeFilter,
         setViewMode,
+        typeFilter,
 
         // 🎯 Update estimated opportunity
         updateEstimatedOpportunityMutate,
         updatingEstimatedOpportunityProspectId,
-        isUpdatingEstimatedOpportunity,
+
+        // 🗺️ View mode
+        viewMode,
       }}
     >
       {children}

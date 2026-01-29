@@ -1,18 +1,17 @@
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CrawlPageContent } from "./crawl";
+import { CrawlsPageContent } from "./crawls";
 export default function CrawlPage() {
   return (
-    <Suspense fallback={<CrawlPageSkeleton />}>
-      <CrawlPageContent />
+    <Suspense fallback={<CrawlsPageSkeleton />}>
+      <CrawlsPageContent />
     </Suspense>
   );
 }
 
 // ================================
 // 💀
-
-function CrawlPageSkeleton() {
+function CrawlsPageSkeleton() {
   return (
     <div className="flex h-full w-full gap-x-6">
       <Skeleton className="basis-1/5" />
