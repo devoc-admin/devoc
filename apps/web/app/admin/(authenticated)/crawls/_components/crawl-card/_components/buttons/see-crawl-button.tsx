@@ -1,5 +1,5 @@
 "use client";
-import { EyeIcon } from "lucide-react";
+import { FileSpreadsheetIcon } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useCrawlCardContext } from "../../crawl-card-context";
@@ -21,8 +21,8 @@ export function SeeCrawlButton() {
       )}
       href={`/admin/crawls/${crawl.id}`}
     >
-      <EyeIcon size={18} strokeWidth={2} />
-      <span>Voir</span>
+      <FileSpreadsheetIcon size={18} strokeWidth={2} />
+      <span>Pages</span>
     </Link>
   );
 }

@@ -1,2 +1,0 @@
-CREATE TYPE "public"."estimated_opportunity" AS ENUM('strong', 'medium', 'weak');--> statement-breakpoint
-ALTER TABLE "prospect" ADD COLUMN "estimatedOpportunity" "estimated_opportunity" DEFAULT 'medium';

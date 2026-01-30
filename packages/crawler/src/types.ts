@@ -25,6 +25,7 @@ export type CrawlPageResult = {
   contactInfo?: ContactInfoDetectionResult;
   seo?: SeoDetectionResult;
   languageInfo?: LanguageDetectionResult;
+  performance?: PerformanceDetectionResult;
   links: string[];
   error?: string;
 };
@@ -230,4 +231,33 @@ export type LanguageDetectionResult = {
   availableLanguages: string[];
   hasMultipleLanguages: boolean;
   hasGoogleTranslate: boolean;
+};
+
+// Performance detection
+export type PerformanceResourceBreakdown = {
+  scripts: number;
+  stylesheets: number;
+  images: number;
+  fonts: number;
+  other: number;
+};
+
+export type PerformanceDetectionResult = {
+  // Core timing metrics (in milliseconds)
+  ttfb: number;
+  fcp: number | null;
+  lcp: number | null;
+  domContentLoaded: number;
+  pageLoadTime: number;
+
+  // Size metrics
+  pageSizeKb: number;
+  requestCount: number;
+
+  // Resource breakdown (in KB)
+  resourceBreakdown: PerformanceResourceBreakdown;
+
+  // Metadata
+  detectedAt: string;
+  detectedOnUrl: string;
 };

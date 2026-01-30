@@ -1,6 +1,6 @@
 {
-  "id": "8c909746-ef32-4c74-876a-2f1524a1bfa4",
-  "prevId": "a6ee46e1-9175-4f31-9573-4866d14da0ac",
+  "id": "92149ab5-e0a1-423f-9c80-30eb0fdf43a2",
+  "prevId": "35a8bdca-b97c-4386-b019-7a29558d226c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -123,6 +123,188 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.audit": {
+      "name": "audit",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "name": "type",
+          "type": "audit_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'rgaa'"
+        },
+        "status": {
+          "name": "status",
+          "type": "crawl_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "crawlId": {
+          "name": "crawlId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "totalCriteria": {
+          "name": "totalCriteria",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "compliantCount": {
+          "name": "compliantCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "nonCompliantCount": {
+          "name": "nonCompliantCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "notApplicableCount": {
+          "name": "notApplicableCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "notTestedCount": {
+          "name": "notTestedCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "complianceRate": {
+          "name": "complianceRate",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "errorMessage": {
+          "name": "errorMessage",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "startedAt": {
+          "name": "startedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "completedAt": {
+          "name": "completedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {
+        "audit_status_idx": {
+          "name": "audit_status_idx",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "audit_url_idx": {
+          "name": "audit_url_idx",
+          "columns": [
+            {
+              "expression": "url",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "audit_type_idx": {
+          "name": "audit_type_idx",
+          "columns": [
+            {
+              "expression": "type",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "audit_crawlId_fkey": {
+          "name": "audit_crawlId_fkey",
+          "tableFrom": "audit",
+          "tableTo": "crawl",
+          "columnsFrom": ["crawlId"],
+          "columnsTo": ["id"],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.crawl": {
       "name": "crawl",
       "schema": "",
@@ -175,26 +357,18 @@
           "notNull": true,
           "default": 0
         },
-        "skipResources": {
-          "name": "skipResources",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "skipScreenshots": {
-          "name": "skipScreenshots",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
         "useLocalScreenshots": {
           "name": "useLocalScreenshots",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
           "default": false
+        },
+        "homepageScreenshotUrl": {
+          "name": "homepageScreenshotUrl",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "errorMessage": {
           "name": "errorMessage",
@@ -292,6 +466,190 @@
         },
         "socialLinks": {
           "name": "socialLinks",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contactPhones": {
+          "name": "contactPhones",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contactEmails": {
+          "name": "contactEmails",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contactAddresses": {
+          "name": "contactAddresses",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "seoTitle": {
+          "name": "seoTitle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "seoDescription": {
+          "name": "seoDescription",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "seoCanonicalUrl": {
+          "name": "seoCanonicalUrl",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "seoRobotsMeta": {
+          "name": "seoRobotsMeta",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ogTitle": {
+          "name": "ogTitle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ogDescription": {
+          "name": "ogDescription",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ogImage": {
+          "name": "ogImage",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ogType": {
+          "name": "ogType",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "twitterCard": {
+          "name": "twitterCard",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "twitterTitle": {
+          "name": "twitterTitle",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "twitterImage": {
+          "name": "twitterImage",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "jsonLdSchemas": {
+          "name": "jsonLdSchemas",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hasStructuredData": {
+          "name": "hasStructuredData",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "hasHreflang": {
+          "name": "hasHreflang",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "hreflangCount": {
+          "name": "hreflangCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "primaryLanguage": {
+          "name": "primaryLanguage",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "availableLanguages": {
+          "name": "availableLanguages",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "hasMultipleLanguages": {
+          "name": "hasMultipleLanguages",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "hasGoogleTranslate": {
+          "name": "hasGoogleTranslate",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "perfTtfb": {
+          "name": "perfTtfb",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "perfFcp": {
+          "name": "perfFcp",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "perfLcp": {
+          "name": "perfLcp",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "perfDomContentLoaded": {
+          "name": "perfDomContentLoaded",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "perfPageLoadTime": {
+          "name": "perfPageLoadTime",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "perfPageSizeKb": {
+          "name": "perfPageSizeKb",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "perfRequestCount": {
+          "name": "perfRequestCount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "perfResourceBreakdown": {
+          "name": "perfResourceBreakdown",
           "type": "jsonb",
           "primaryKey": false,
           "notNull": false
@@ -880,6 +1238,27 @@
           "notNull": true,
           "default": "'other'"
         },
+        "estimatedOpportunity": {
+          "name": "estimatedOpportunity",
+          "type": "estimated_opportunity",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'medium'"
+        },
+        "hasSite": {
+          "name": "hasSite",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "crawlId": {
+          "name": "crawlId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp with time zone",
@@ -895,8 +1274,34 @@
           "default": "CURRENT_TIMESTAMP"
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
+      "indexes": {
+        "prospect_crawlId_idx": {
+          "name": "prospect_crawlId_idx",
+          "columns": [
+            {
+              "expression": "crawlId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "prospect_crawlId_fkey": {
+          "name": "prospect_crawlId_fkey",
+          "tableFrom": "prospect",
+          "tableTo": "crawl",
+          "columnsFrom": ["crawlId"],
+          "columnsTo": ["id"],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -1483,10 +1888,20 @@
       "schema": "public",
       "values": ["compliant", "non_compliant", "not_applicable", "not_tested"]
     },
+    "public.audit_type": {
+      "name": "audit_type",
+      "schema": "public",
+      "values": ["rgaa", "wcag"]
+    },
     "public.crawl_status": {
       "name": "crawl_status",
       "schema": "public",
       "values": ["pending", "running", "completed", "failed", "cancelled"]
+    },
+    "public.estimated_opportunity": {
+      "name": "estimated_opportunity",
+      "schema": "public",
+      "values": ["strong", "medium", "weak"]
     },
     "public.page_category": {
       "name": "page_category",
@@ -1511,7 +1926,15 @@
     "public.prospect_type": {
       "name": "prospect_type",
       "schema": "public",
-      "values": ["city", "administration", "epci", "other"]
+      "values": [
+        "city",
+        "administration",
+        "cultural_establishment",
+        "epci",
+        "territorial_collectivity",
+        "sme",
+        "other"
+      ]
     },
     "public.testability": {
       "name": "testability",

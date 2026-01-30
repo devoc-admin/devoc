@@ -13,6 +13,7 @@ import { ProspectSelector } from "./_components/prospect-selector";
 import { AuthorSection } from "./_components/sections/author-section";
 import { ContactInfoSection } from "./_components/sections/contact-info-section";
 import { LanguageSection } from "./_components/sections/language-section";
+import { PerformanceSection } from "./_components/sections/performance-section";
 import { TechnologiesSection } from "./_components/sections/technologies-section";
 import { SocialLinks } from "./_components/social-links";
 import {
@@ -55,12 +56,13 @@ export function CrawlCard(crawl: CrawlResult) {
           <RetryCrawlButton />
           <DeleteCrawlButton />
         </div>
-        {/* 🙎📞🤖🌐 Sections info */}
+        {/* 🙎📞🚀🤖🌐 Sections info */}
         <div
           className={cn("space-y-6", cardViewMode === "simple" ? "hidden" : "")}
         >
           <ContactInfoSection />
           <AuthorSection />
+          <PerformanceSection />
           <TechnologiesSection />
           <LanguageSection />
         </div>

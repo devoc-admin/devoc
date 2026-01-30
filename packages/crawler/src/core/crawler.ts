@@ -14,6 +14,7 @@ import { detectCategoryPage } from "../detectors/category-detector";
 import { detectContactInfo } from "../detectors/contact-detector";
 import { detectLanguages } from "../detectors/language-detector";
 import { detectNewsletter } from "../detectors/newsletter-detector";
+import { detectPerformance } from "../detectors/performance-detector";
 import { detectRssFeed } from "../detectors/rss-detector";
 import { detectSeo } from "../detectors/seo-detector";
 import { detectSocialLinks } from "../detectors/social-detector";
@@ -27,6 +28,7 @@ import type {
   CrawlResult,
   LanguageDetectionResult,
   NewsletterDetectionResult,
+  PerformanceDetectionResult,
   QueueItem,
   RssFeedDetectionResult,
   SeoDetectionResult,
@@ -420,6 +422,12 @@ export class WebCrawler {
         languageInfo = await detectLanguages({ page });
       }
 
+      // Performance detection (only on homepage / depth 0)
+      let performance: PerformanceDetectionResult | undefined;
+      if (depth === 0) {
+        performance = await detectPerformance({ page, url });
+      }
+
       // Extract links
       const links = await this.extractLinksFromPage(page);
 
@@ -449,6 +457,7 @@ export class WebCrawler {
         links,
         newsletter,
         normalizedUrl,
+        performance,
         responseTime,
         rssFeed,
         screenshotUrl,

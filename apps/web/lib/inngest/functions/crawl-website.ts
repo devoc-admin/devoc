@@ -291,6 +291,34 @@ export const crawlWebsite = inngest.createFunction(
               })
               .where(eq(crawl.id, crawlId));
           }
+
+          // 🚀 Save performance metrics (only for homepage / depth 0)
+          if (progress.crawledPage.performance) {
+            const {
+              domContentLoaded,
+              fcp,
+              lcp,
+              pageLoadTime,
+              pageSizeKb,
+              requestCount,
+              resourceBreakdown,
+              ttfb,
+            } = progress.crawledPage.performance;
+            await db
+              .update(crawl)
+              .set({
+                perfDomContentLoaded: domContentLoaded,
+                perfFcp: fcp,
+                perfLcp: lcp,
+                perfPageLoadTime: pageLoadTime,
+                perfPageSizeKb: Math.round(pageSizeKb),
+                perfRequestCount: requestCount,
+                perfResourceBreakdown: resourceBreakdown,
+                perfTtfb: ttfb,
+                updatedAt: nowString,
+              })
+              .where(eq(crawl.id, crawlId));
+          }
         },
       });
 

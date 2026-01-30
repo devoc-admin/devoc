@@ -1,1 +1,0 @@
-ALTER TABLE "prospect" ADD COLUMN "hasSite" boolean DEFAULT true NOT NULL;

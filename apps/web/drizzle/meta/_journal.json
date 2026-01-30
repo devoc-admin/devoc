@@ -5,92 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1768993228740,
-      "tag": "0000_damp_talon",
+      "when": 1769783247407,
+      "tag": "0000_overjoyed_winter_soldier",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1769033408440,
-      "tag": "0001_polite_mad_thinker",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1769092477229,
-      "tag": "0002_slow_zuras",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1769092665990,
-      "tag": "0003_moaning_baron_strucker",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1769105175880,
-      "tag": "0004_loose_mongu",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1769106885926,
-      "tag": "0005_strong_cable",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1769107881137,
-      "tag": "0006_brief_harry_osborn",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1769465624303,
-      "tag": "0007_brainy_surge",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "7",
-      "when": 1769466239022,
-      "tag": "0008_clean_raza",
-      "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "7",
-      "when": 1769466535730,
-      "tag": "0009_add-language-detection",
-      "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "7",
-      "when": 1769550000000,
-      "tag": "0010_add-sme-prospect-type",
-      "breakpoints": true
-    },
-    {
-      "idx": 11,
-      "version": "7",
-      "when": 1769542359440,
-      "tag": "0011_remarkable_piledriver",
-      "breakpoints": true
-    },
-    {
-      "idx": 12,
-      "version": "7",
-      "when": 1769636823322,
-      "tag": "0012_flowery_steel_serpent",
+      "when": 1769783540744,
+      "tag": "0001_parched_spectrum",
       "breakpoints": true
     }
   ]

@@ -242,6 +242,21 @@ export const crawl = pgTable(
     availableLanguages: jsonb().$type<string[]>(),
     hasMultipleLanguages: boolean().default(false),
     hasGoogleTranslate: boolean().default(false),
+    // 🚀 Performance metrics
+    perfTtfb: integer(),
+    perfFcp: integer(),
+    perfLcp: integer(),
+    perfDomContentLoaded: integer(),
+    perfPageLoadTime: integer(),
+    perfPageSizeKb: integer(),
+    perfRequestCount: integer(),
+    perfResourceBreakdown: jsonb().$type<{
+      scripts: number;
+      stylesheets: number;
+      images: number;
+      fonts: number;
+      other: number;
+    }>(),
     //🗓️ Dates
     startedAt: timestamp({ mode: "string", withTimezone: true }),
     completedAt: timestamp({ mode: "string", withTimezone: true }),
@@ -555,3 +570,52 @@ export const crawledPageAudit = pgTable(
 
 export type CrawledPageAudit = typeof crawledPageAudit.$inferSelect;
 export type NewCrawledPageAudit = typeof crawledPageAudit.$inferInsert;
+
+// Audit (RGAA/WCAG compliance audits)
+
+export const auditTypeEnum = pgEnum("audit_type", ["rgaa", "wcag"]);
+
+export const audit = pgTable(
+  "audit",
+  {
+    id: text()
+      .primaryKey()
+      .notNull()
+      .$defaultFn(() => crypto.randomUUID()),
+    url: text().notNull(),
+    name: text(),
+    type: auditTypeEnum().default("rgaa").notNull(),
+    status: crawlStatusEnum().default("pending").notNull(),
+    crawlId: text(),
+    // Results summary (populated after completion)
+    totalCriteria: integer().default(0),
+    compliantCount: integer().default(0),
+    nonCompliantCount: integer().default(0),
+    notApplicableCount: integer().default(0),
+    notTestedCount: integer().default(0),
+    complianceRate: integer(),
+    // Metadata
+    errorMessage: text(),
+    startedAt: timestamp({ mode: "string", withTimezone: true }),
+    completedAt: timestamp({ mode: "string", withTimezone: true }),
+    createdAt: timestamp({ mode: "string", withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp({ mode: "string", withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.crawlId],
+      foreignColumns: [crawl.id],
+      name: "audit_crawlId_fkey",
+    }).onDelete("set null"),
+    index("audit_status_idx").using("btree", table.status.asc().nullsLast()),
+    index("audit_url_idx").using("btree", table.url.asc().nullsLast()),
+    index("audit_type_idx").using("btree", table.type.asc().nullsLast()),
+  ]
+);
+
+export type Audit = typeof audit.$inferSelect;
+export type NewAudit = typeof audit.$inferInsert;
