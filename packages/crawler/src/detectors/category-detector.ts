@@ -61,12 +61,14 @@ export async function analyzePageCharacteristics(
   page: Page
 ): Promise<PageCharacteristics> {
   return await page.evaluate(() => {
-    // 📝 Check forms (at least 2 inputs)
+    // 📝 Check forms (at least 2 inputs non hidden)
     const forms = document.querySelectorAll("form");
     const hasForm =
       forms.length > 0 &&
       Array.from(forms).some((form) => {
-        const inputs = form.querySelectorAll("input, textarea, select");
+        const inputs = form.querySelectorAll(
+          "input:not([hidden]), textarea:not([hidden]), select:not([hidden])"
+        );
         return inputs.length >= 2;
       });
 
