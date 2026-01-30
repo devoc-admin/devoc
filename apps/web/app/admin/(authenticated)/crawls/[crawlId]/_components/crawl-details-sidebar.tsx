@@ -1,18 +1,10 @@
 "use client";
 import {
-  ArrowLeftIcon,
-  CalendarIcon,
   CheckIcon,
-  ClockIcon,
   ExternalLinkIcon,
-  FileCheckIcon,
-  LayersIcon,
-  ListChecksIcon,
   RotateCcwIcon,
-  SearchIcon,
   XIcon,
 } from "lucide-react";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import type { PageCategory } from "../crawl-details-actions";
 import {
@@ -73,9 +65,6 @@ const HTTP_STATUS_LABELS: Record<HttpStatusRange, string> = {
 export function CrawlDetailsSidebar() {
   const {
     crawlDetails,
-    selectedPages,
-    searchQuery,
-    setSearchQuery,
     selectedCategoryFilter,
     selectedHttpStatusFilter,
     hoveredHttpStatusRange,
@@ -95,7 +84,7 @@ export function CrawlDetailsSidebar() {
   return (
     <div className="rounded-lg bg-sidebar p-6">
       <div className="mb-6">
-        <h1 className="font-kanit font-semibold text-3xl">Détail du crawl</h1>
+        <h1 className="font-kanit font-semibold text-3xl">Pages</h1>
         <a
           className="mt-1 flex items-center gap-x-2 text-muted-foreground underline hover:underline"
           href={crawl.crawlUrl ?? ""}
@@ -106,64 +95,11 @@ export function CrawlDetailsSidebar() {
           <ExternalLinkIcon className="shrink-0" size={16} />
         </a>
       </div>
-
-      <div className="relative mb-6 max-w-[700px]">
-        <SearchIcon
-          className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
-          size={18}
-        />
-        <input
-          className="h-10 w-full rounded-md border border-input bg-sidebar-strong pr-10 pl-10 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Rechercher par titre, URL, catégorie ou statut HTTP..."
-          type="text"
-          value={searchQuery}
-        />
-        {searchQuery && (
-          <button
-            aria-label="Effacer la recherche"
-            className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-            onClick={() => setSearchQuery("")}
-            type="button"
-          >
-            <XIcon size={18} />
-          </button>
-        )}
-      </div>
-
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-4">
-        <StatCard
-          icon={<CalendarIcon size={18} />}
-          label="Date"
-          value={formatDate(crawl.crawlCreatedAt)}
-        />
-        <StatCard
-          icon={<ClockIcon size={18} />}
-          label="Durée"
-          value={formatDuration(crawl.startedAt, crawl.completedAt)}
-        />
-        <StatCard
-          icon={<FileCheckIcon size={18} />}
-          label="Pages analysées"
-          value={crawl.pagesCrawled ?? 0}
-        />
-        <StatCard
-          icon={<ListChecksIcon size={18} />}
-          label="Sélectionnées"
-          value={selectedPages.length}
-        />
-        <StatCard
-          icon={<LayersIcon size={18} />}
-          label="Max. profondeur"
-          value={crawl.maxDepth ?? 0}
-        />
-      </div>
-
       <div className="mt-6">
         <h2 className="mb-3 font-kanit font-medium text-lg">
           Catégories pour l'audit
         </h2>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-col items-start gap-3">
           {ALL_CATEGORIES.map((category) => {
             const isCovered = coveredCategories.has(category);
             const isActive = selectedCategoryFilter === category;
@@ -184,7 +120,7 @@ export function CrawlDetailsSidebar() {
 
       <div className="mt-6">
         <h2 className="mb-3 font-kanit font-medium text-lg">Statuts HTTP</h2>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col items-start gap-y-2">
           {ALL_HTTP_STATUS_RANGES.map((range) => {
             const count = httpStatusCounts[range];
             const hasPages = count > 0;
@@ -231,8 +167,6 @@ export function CrawlDetailsSidebar() {
           </button>
         </div>
       )}
-
-      <BackCrawlListButton />
     </div>
   );
 }
@@ -392,81 +326,4 @@ function HttpStatusIndicator({
       </span>
     </button>
   );
-}
-
-// --------------------------------
-// 🃏 Stat card
-
-type StatCardProps = {
-  icon: React.ReactNode;
-  label: string;
-  value: string | number;
-};
-
-function StatCard({ icon, label, value }: StatCardProps) {
-  return (
-    <div className="rounded-md bg-sidebar-strong p-4">
-      <div className="mb-2 flex items-center gap-x-2 text-muted-foreground">
-        {icon}
-        <span className="text-sm">{label}</span>
-      </div>
-      <p className="font-kanit font-semibold text-xl">{value}</p>
-    </div>
-  );
-}
-
-// --------------------------------
-// 🔙 Back to crawl list
-function BackCrawlListButton() {
-  return (
-    <div className="mt-12">
-      <Link
-        className={cn(
-          "inline-flex items-center gap-x-2",
-          "rounded-full",
-          "bg-zinc-100 hover:bg-zinc-200/40",
-          "transition-colors",
-          "text-foreground",
-          "px-6 py-3",
-          "text-sm",
-          "transition-colors"
-        )}
-        href="/admin/crawls"
-      >
-        <ArrowLeftIcon size={16} />
-        Retour
-      </Link>
-    </div>
-  );
-}
-
-// --------------------------------
-// ⏳ Duration formatter
-
-function formatDuration(
-  startedAt: string | null,
-  completedAt: string | null
-): string {
-  if (!(startedAt && completedAt)) return "N/A";
-
-  const start = new Date(startedAt);
-  const end = new Date(completedAt);
-  const duration = end.getTime() - start.getTime();
-
-  const minutes = Math.floor(duration / (60 * 1000));
-  const seconds = Math.floor((duration % (60 * 1000)) / 1000);
-
-  if (minutes === 0) return `${seconds}s`;
-  if (seconds === 0) return `${minutes}m`;
-  return `${minutes}m ${seconds}s`;
-}
-
-function formatDate(date: string | null): string {
-  if (!date) return "N/A";
-  const d = new Date(date);
-  return d.toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
 }
