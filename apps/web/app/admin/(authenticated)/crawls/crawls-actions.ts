@@ -229,6 +229,7 @@ const listCrawlsQuery = db
     createdAt: crawl.createdAt,
     detectedTechCount: crawl.detectedTechCount,
     hasMultipleLanguages: crawl.hasMultipleLanguages,
+    hasRssFeed: crawl.hasRssFeed,
     hostingProvider: crawl.hostingProvider,
     id: crawl.id,
     pagesCrawled: crawl.pagesCrawled,
