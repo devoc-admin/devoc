@@ -8,6 +8,14 @@ import type {
   FrenchTechDetection,
   TechnologyDetectionResult,
 } from "../types";
+import {
+  ACCESSIBILITY_TOOLS,
+  CONSENT_MANAGERS,
+  FRENCH_ANALYTICS,
+  FRENCH_CMS,
+  HOSTING_PROVIDERS,
+  type TechPattern,
+} from "./patterns";
 
 // Technology patterns from wapalyzer package
 const techFiles = [
@@ -142,66 +150,6 @@ async function extractPageData(page: Page): Promise<PageData> {
 
   return data;
 }
-
-type TechPattern = { name: string; patterns: string[] };
-
-const CONSENT_MANAGERS: TechPattern[] = [
-  { name: "Tarteaucitron", patterns: ["tarteaucitron"] },
-  { name: "Axeptio", patterns: ["axeptio"] },
-  { name: "Didomi", patterns: ["didomi"] },
-  { name: "OneTrust", patterns: ["onetrust", "optanon"] },
-  { name: "Cookiebot", patterns: ["cookiebot"] },
-  { name: "CookieFirst", patterns: ["cookiefirst"] },
-  { name: "Quantcast", patterns: ["quantcast"] },
-  { name: "TrustCommander", patterns: ["trustcommander", "trustpid"] },
-];
-
-const ACCESSIBILITY_TOOLS: TechPattern[] = [
-  { name: "RGAA", patterns: ["rgaa"] },
-  { name: "Axe", patterns: ["axe-core", "deque"] },
-  { name: "WAVE", patterns: ["wave.webaim"] },
-  { name: "Siteimprove", patterns: ["siteimprove"] },
-  { name: "AccessiBe", patterns: ["accessibe", "acsbapp"] },
-  { name: "UserWay", patterns: ["userway"] },
-  { name: "EqualWeb", patterns: ["equalweb"] },
-];
-
-const HOSTING_PROVIDERS: TechPattern[] = [
-  { name: "OVH", patterns: ["ovh"] },
-  { name: "Scaleway", patterns: ["scaleway", "scw"] },
-  { name: "Clever Cloud", patterns: ["clever-cloud", "cleverapps"] },
-  { name: "Gandi", patterns: ["gandi"] },
-  { name: "Online.net", patterns: ["online.net", "scaleway"] },
-  { name: "AWS", patterns: ["aws", "amazon", "cloudfront"] },
-  { name: "Google Cloud", patterns: ["google", "gcp", "appspot"] },
-  { name: "Azure", patterns: ["azure", "microsoft"] },
-  { name: "Vercel", patterns: ["vercel"] },
-  { name: "Netlify", patterns: ["netlify"] },
-  { name: "Cloudflare", patterns: ["cloudflare"] },
-];
-
-// French CMS patterns
-const FRENCH_CMS: TechPattern[] = [
-  { name: "SPIP", patterns: ["spip", "spip.net", "spip_loader"] },
-  { name: "Dotclear", patterns: ["dotclear"] },
-  { name: "PluXml", patterns: ["pluxml"] },
-  { name: "e-monsite", patterns: ["e-monsite"] },
-  { name: "Jimdo", patterns: ["jimdo"] },
-  { name: "Webnode", patterns: ["webnode"] },
-];
-
-// French Analytics patterns
-const FRENCH_ANALYTICS: TechPattern[] = [
-  {
-    name: "AT Internet/Piano",
-    patterns: ["atinternet", "piano.io", "xiti", "xtcore"],
-  },
-  { name: "Eulerian", patterns: ["eulerian"] },
-  { name: "Matomo", patterns: ["matomo", "piwik"] },
-  { name: "ContentSquare", patterns: ["contentsquare", "cs-analytics"] },
-  { name: "Kameleoon", patterns: ["kameleoon"] },
-  { name: "AB Tasty", patterns: ["abtasty"] },
-];
 
 function findInWappalyzerByName(
   technologies: DetectedTechnology[],

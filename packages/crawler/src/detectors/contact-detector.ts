@@ -41,7 +41,7 @@ export async function detectContactInfo({
       const seenPhones = new Set<string>();
       const seenEmails = new Set<string>();
 
-      // Generic email prefixes that indicate a general contact rather than personal
+      // 🌐 Generic email prefixes that indicate a general contact rather than personal
       const genericEmailPrefixes = [
         "info",
         "contact",
@@ -55,14 +55,14 @@ export async function detectContactInfo({
         "secretariat",
       ];
 
-      // French phone regex - matches formats like:
+      // 📞 French phone regex - matches formats like:
       // 01 23 45 67 89, 01.23.45.67.89, 0123456789, +33 1 23 45 67 89
       const frenchPhoneRegex = /(?:\+33[\s.-]?|0)([1-9])(?:[\s.-]?\d{2}){4}/g;
 
-      // Email regex
+      // 📨 Email regex
       const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
 
-      // File extensions to exclude (not valid email TLDs)
+      // 📄 File extensions to exclude (not valid email TLDs)
       const fileExtensions = new Set([
         "png",
         "jpg",
@@ -108,7 +108,7 @@ export async function detectContactInfo({
         "otf",
       ]);
 
-      // Pattern that looks like image retina suffix (e.g., @2x, @3x)
+      // 🖼️ Pattern that looks like image retina suffix (e.g., @2x, @3x) to avoid counting them as emails
       const retinaPattern = /^[0-9]+x(-[0-9]+)?$/i;
 
       // Validate if string looks like a real email address
@@ -126,7 +126,7 @@ export async function detectContactInfo({
           return false;
         }
 
-        // Check if TLD is actually a file extension
+        // 📄 Check if TLD is actually a file extension
         const tld = domain.split(".").pop()?.toLowerCase();
         if (tld && fileExtensions.has(tld)) {
           return false;
@@ -147,11 +147,11 @@ export async function detectContactInfo({
         return true;
       }
 
-      // French postal address pattern: 5-digit postal code followed by city name
+      // 📬 French postal address pattern: 5-digit postal code followed by city name
       const postalAddressRegex =
         /(\d{5})\s+([A-ZÀ-ÿ][a-zA-ZÀ-ÿ\s-]+?)(?=[.,\s]*(?:<|$|\n|[0-9]|Tél|Tel|Fax|Email|@))/gi;
 
-      // Determine phone type based on first digit after country code
+      // 📞 Determine phone type based on first digit after country code
       function getPhoneType(
         firstDigit: string
       ): "mobile" | "landline" | "fax" | "unknown" {
@@ -162,7 +162,7 @@ export async function detectContactInfo({
         return "unknown";
       }
 
-      // Check if email is generic
+      // 📨 Check if email is generic
       function isGenericEmail(email: string): boolean {
         const localPart = email.split("@")[0]?.toLowerCase() ?? "";
         return genericEmailPrefixes.some(
@@ -170,7 +170,7 @@ export async function detectContactInfo({
         );
       }
 
-      // Normalize phone number for deduplication
+      // 📞 Normalize phone number for deduplication
       function normalizePhone(phone: string): string {
         return phone.replace(/[\s.-]/g, "");
       }
@@ -182,6 +182,7 @@ export async function detectContactInfo({
         // 1. Footer / contentinfo
         const footer =
           document.querySelector("footer") ??
+          document.querySelector(".footer") ??
           document.querySelector('[role="contentinfo"]');
         if (footer) containers.push(footer);
 
@@ -196,6 +197,7 @@ export async function detectContactInfo({
         // 3. Header
         const header =
           document.querySelector("header") ??
+          document.querySelector(".header") ??
           document.querySelector('[role="banner"]');
         if (header && !containers.includes(header)) containers.push(header);
 
