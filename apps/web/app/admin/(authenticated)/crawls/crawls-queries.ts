@@ -19,6 +19,7 @@ export const crawlsListQueryOptions = queryOptions({
   },
   queryKey: ["list-crawls"],
   select: (data) => data.response,
+  staleTime: 30_000,
 });
 
 export const runningCrawlQueryOptions = queryOptions({
@@ -42,6 +43,7 @@ export const uncrawledProspectsQueryOptions = queryOptions({
   },
   queryKey: ["uncrawled-prospects"],
   select: (data) => data.response,
+  staleTime: 60_000,
 });
 
 // --------------------------------------
@@ -80,7 +82,7 @@ export function useCurrentCrawl() {
         removeCrawlId();
         return false;
       }
-      return 1000; // Poll every second
+      return 2000; // Poll every 2 seconds
     },
     select: (data) => data?.response,
   });
