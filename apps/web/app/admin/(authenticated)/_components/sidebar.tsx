@@ -1,5 +1,6 @@
 "use client";
 import {
+  ClipboardCheckIcon,
   DoorOpenIcon,
   type LucideIcon,
   UsersIcon,
@@ -40,6 +41,13 @@ function Sidebar() {
           pathname="/admin/crawls"
         >
           Crawls
+        </SidebarLink>
+        <SidebarLink
+          icon={ClipboardCheckIcon}
+          isActive={pathname.startsWith("/admin/audit")}
+          pathname="/admin/audits"
+        >
+          Audits
         </SidebarLink>
       </div>
       {/* ⬇️ Footer */}
