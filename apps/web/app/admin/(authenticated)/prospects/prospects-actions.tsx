@@ -2,7 +2,7 @@
 import { desc, eq } from "drizzle-orm";
 import { getErrorMessage } from "@/lib/api";
 import { db } from "@/lib/db";
-import { type Prospect, prospect } from "@/lib/db/schema";
+import { crawl, type Prospect, prospect } from "@/lib/db/schema";
 
 // --------------------------------------
 // 💥 ACTIONS
@@ -12,8 +12,23 @@ import { type Prospect, prospect } from "@/lib/db/schema";
 // 📝 Get prospects
 
 const prospectsQuery = db
-  .select()
+  .select({
+    crawlId: prospect.crawlId,
+    crawlStatus: crawl.status,
+    createdAt: prospect.createdAt,
+    estimatedOpportunity: prospect.estimatedOpportunity,
+    hasSite: prospect.hasSite,
+    id: prospect.id,
+    latitude: prospect.latitude,
+    location: prospect.location,
+    longitude: prospect.longitude,
+    name: prospect.name,
+    type: prospect.type,
+    updatedAt: prospect.updatedAt,
+    website: prospect.website,
+  })
   .from(prospect)
+  .leftJoin(crawl, eq(prospect.crawlId, crawl.id))
   .orderBy(desc(prospect.createdAt));
 
 export type ListProspectsResult = Awaited<typeof prospectsQuery>;

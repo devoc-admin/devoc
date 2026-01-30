@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import type { Prospect } from "@/lib/db/schema";
+import { upsertCrawl } from "../crawls/crawls-actions";
 import {
   addProspect,
   deleteProspect,
@@ -194,6 +195,43 @@ export function useToggleHasSiteMutation() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prospects"] });
+    },
+  });
+}
+
+// --------------------------------------
+// 🕷️ Launch crawl
+
+export function useLaunchCrawlMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      prospectId,
+      website,
+    }: {
+      prospectId: number;
+      website: string;
+    }) => {
+      const result = await upsertCrawl({
+        concurrency: 10,
+        maxDepth: 3,
+        maxPages: 100,
+        prospectId,
+        url: website,
+        useLocalScreenshots: false,
+      });
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return result.response;
+    },
+    onError: () => {
+      toast.error("Erreur lors du lancement du crawl.");
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["prospects"] });
+      toast.success("Crawl lancé avec succès !");
     },
   });
 }

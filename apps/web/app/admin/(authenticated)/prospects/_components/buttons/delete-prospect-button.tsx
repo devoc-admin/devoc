@@ -36,7 +36,7 @@ export function DeleteProspectButton({ prospectId }: { prospectId: number }) {
               className={cn(
                 "rounded-full p-2 transition-colors",
                 "cursor-pointer text-red-500",
-                "hover:bg-red-500/10",
+                "hover:bg-red-500/5",
                 "disabled:cursor-not-allowed disabled:opacity-50"
               )}
               disabled={isPending}

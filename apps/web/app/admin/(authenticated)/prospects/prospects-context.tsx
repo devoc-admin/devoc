@@ -16,6 +16,7 @@ import {
   useAddProspectMutation,
   useDeleteProspectMutation,
   useEditProspectMutation,
+  useLaunchCrawlMutation,
   useUpdateEstimatedOpportunityMutation,
 } from "./prospects-mutations";
 import { useListProspectsQuery } from "./prospects-queries";
@@ -36,8 +37,13 @@ const ProspectsContext = createContext<ProspectsContext>({
   isDeletingProspect: false,
   isEditedProspect: false,
   isEditingProspect: false,
+  isLaunchingCrawl: false,
   isProspectsLoading: false,
   isUpdatingEstimatedOpportunity: false,
+
+  // 🕷️ Launch crawl
+  launchCrawlMutate: () => {},
+  launchingCrawlProspectId: undefined,
 
   // 👯 Prospects
   prospects: [],
@@ -137,6 +143,15 @@ export function ProspectsContextProvider({
   const updatingEstimatedOpportunityProspectId =
     updatingEstimatedOpportunityVariables?.prospectId;
 
+  // 🕷️ Launch crawl
+  const {
+    mutate: launchCrawlMutate,
+    isPending: isLaunchingCrawl,
+    variables: launchingCrawlVariables,
+  } = useLaunchCrawlMutation();
+
+  const launchingCrawlProspectId = launchingCrawlVariables?.prospectId;
+
   return (
     <ProspectsContext.Provider
       value={{
@@ -155,8 +170,14 @@ export function ProspectsContextProvider({
         isDeletingProspect,
         isEditedProspect,
         isEditingProspect,
+        isLaunchingCrawl,
         isProspectsLoading,
         isUpdatingEstimatedOpportunity,
+
+        // 🕷️ Launch crawl
+        launchCrawlMutate,
+        launchingCrawlProspectId,
+
         // 👯  Prospects
         prospects: filteredProspects,
         searchQuery,
@@ -236,6 +257,16 @@ type ProspectsContext = {
   >;
   updatingEstimatedOpportunityProspectId: number | undefined;
   isUpdatingEstimatedOpportunity: boolean;
+
+  // 🕷️ Launch crawl
+  launchCrawlMutate: UseMutateFunction<
+    { crawlId: string },
+    Error,
+    { prospectId: number; website: string },
+    unknown
+  >;
+  launchingCrawlProspectId: number | undefined;
+  isLaunchingCrawl: boolean;
 
   // 🗺️ View mode
   viewMode: ViewMode;

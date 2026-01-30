@@ -17,11 +17,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Prospect } from "@/lib/db/schema";
+import type { ProspectResult } from "../prospects-actions";
 import { useProspectsContext } from "../prospects-context";
 import { DeleteProspectButton } from "./buttons/delete-prospect-button";
 import { EditProspectButton } from "./buttons/edit-prospect-button";
+import { GoCrawlDetailsPageButton } from "./buttons/go-crawl-details-page";
+import { LaunchCrawlButton } from "./buttons/launch-crawl-button";
 import { ProspectTypeBadge } from "./buttons/prospect-type-button";
+import { CrawlStatusCell } from "./cells/crawl-status-cell";
 import { EstimatedOpportunitySelect } from "./selects/estimated-opportunity-select";
 
 export function ProspectsTable() {
@@ -64,7 +67,7 @@ export function ProspectsTable() {
 
 function useProspectsTable() {
   const { prospects } = useProspectsContext();
-  const columnHelper = createColumnHelper<Prospect>();
+  const columnHelper = createColumnHelper<ProspectResult>();
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const defaultColumns = [
@@ -113,15 +116,48 @@ function useProspectsTable() {
         return order[a] - order[b];
       },
     }),
-    // ✏️🗑️ Actions
+    // 🟡🕷️ Crawl status
+    columnHelper.accessor("crawlStatus", {
+      cell: ({ getValue, row }) => (
+        <CrawlStatusCell
+          crawlStatus={getValue()}
+          website={row.original.website}
+        />
+      ),
+      header: ({ column }) => (
+        <SortableHeader column={column} label="Exploration" />
+      ),
+      sortingFn: (rowA, rowB) => {
+        const order = {
+          cancelled: 4,
+          completed: 2,
+          failed: 3,
+          pending: 1,
+          running: 0,
+        };
+        const a = rowA.original.crawlStatus;
+        const b = rowB.original.crawlStatus;
+        const aOrder = a ? order[a] : 5;
+        const bOrder = b ? order[b] : 5;
+        return aOrder - bOrder;
+      },
+    }),
+    // ✏️↩️➡️🗑️ Actions
     columnHelper.display({
       cell: ({ row }) => (
-        <div className="flex items-center gap-x-1">
+        <div className="flex items-center">
           <EditProspectButton prospect={row.original} />
+          <LaunchCrawlButton
+            crawlId={row.original.crawlId}
+            crawlStatus={row.original.crawlStatus}
+            prospectId={row.original.id}
+            website={row.original.website}
+          />
+          <GoCrawlDetailsPageButton crawlId={row.original.crawlId} />
           <DeleteProspectButton prospectId={row.original.id} />
         </div>
       ),
-      header: "",
+      header: "Actions",
       id: "actions",
     }),
   ];
