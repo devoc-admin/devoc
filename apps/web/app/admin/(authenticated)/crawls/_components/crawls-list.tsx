@@ -1,14 +1,20 @@
 "use client";
-import { SearchIcon, XIcon } from "lucide-react";
+import { Rows2Icon, Rows4Icon, SearchIcon, XIcon } from "lucide-react";
 import { useState } from "react";
-import type { Prospect } from "@/lib/db/schema";
+import { Toggle, ToggleButton } from "@/components/ui/toggle";
 import { ProspectTypesButtons } from "../../prospects/_components/buttons/prospect-type-button";
 import { useCrawlsContext } from "../crawls-context";
 import { CrawlCard, CrawlCardSkeleton } from "./crawl-card/crawl-card";
 
 export function CrawlsCards() {
-  const { crawls, crawlsAreLoading } = useCrawlsContext();
-  const [typeFilter, setTypeFilter] = useState<Prospect["type"] | null>(null);
+  const {
+    crawls,
+    crawlsAreLoading,
+    prospectTypeFilter,
+    handleProspectTypeFilter,
+    cardViewMode,
+    handleCardViewMode,
+  } = useCrawlsContext();
 
   const noCrawls = crawls && crawls.length === 0;
   if (noCrawls && !crawlsAreLoading) return <NoCrawlFound />;
@@ -32,15 +38,31 @@ export function CrawlsCards() {
       {/* 🔍 Search bar */}
       <SearchCrawls />
 
-      {/* 🏷️ Prospect type filter */}
-      <ProspectTypesButtons
-        onSelectType={setTypeFilter}
-        selectedType={typeFilter}
-      />
+      <div className="flex items-center justify-between">
+        {/* 🏷️ Prospect type filter */}
+        <ProspectTypesButtons
+          onSelectType={handleProspectTypeFilter}
+          selectedType={prospectTypeFilter}
+        />
+        <Toggle>
+          <ToggleButton
+            active={cardViewMode === "simple"}
+            icon={<Rows2Icon size={20} />}
+            label="Simple"
+            onClick={() => handleCardViewMode("simple")}
+          />
+          <ToggleButton
+            active={cardViewMode === "dense"}
+            icon={<Rows4Icon size={20} />}
+            label="Dense"
+            onClick={() => handleCardViewMode("dense")}
+          />
+        </Toggle>
+      </div>
 
       {/* 📝 Results */}
       {crawlsAreLoading ? (
-        <ul className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] gap-4">
+        <ul className="grid grid-cols-[repeat(auto-fit,minmax(370px,1fr))] gap-4">
           <CrawlCardSkeleton />
           <CrawlCardSkeleton />
           <CrawlCardSkeleton />

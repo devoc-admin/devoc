@@ -23,8 +23,11 @@ export function DeleteCrawlsButton() {
     allCrawlsDeletionIsError,
     allCrawlsDeletionIsSuccess,
     lockActions,
+    crawl,
   } = useCrawlsContext();
   const [open, setOpen] = useState(false);
+
+  const currentCrawlRunning = crawl?.status === "running";
 
   // 🍞 Toast actions
   useEffect(() => {
@@ -41,7 +44,7 @@ export function DeleteCrawlsButton() {
     <AlertDialog open={open}>
       <AlertDialogTrigger asChild>
         <DeleteButton
-          disabled={open || lockActions}
+          disabled={open || lockActions || currentCrawlRunning}
           loading={allCrawlsDeletionIsPending}
           onClick={() => setOpen(true)}
         />

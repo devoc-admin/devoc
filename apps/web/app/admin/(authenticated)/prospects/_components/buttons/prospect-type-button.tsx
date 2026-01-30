@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 export const PROSPECT_TYPES: Record<Exclude<Prospect["type"], null>, string> = {
   administration: "Administration",
   city: "Ville",
-  cultural_establishment: "Établissement culturel",
+  cultural_establishment: "Établ. culturel",
   epci: "EPCI",
   sme: "PME/TPE",
   territorial_collectivity: "Collectivité territoriale",

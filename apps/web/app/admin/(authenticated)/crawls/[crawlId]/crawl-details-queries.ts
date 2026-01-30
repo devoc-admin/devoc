@@ -4,8 +4,6 @@ import { getCrawlDetails } from "./crawl-details-actions";
 // --------------------------------------
 // 📖 Fetch crawl details
 export function useCrawlDetailsQuery({ crawlId }: { crawlId: string }) {
-  const crawlDetailsQueryKey = ["crawl-details", crawlId];
-
   return useQuery({
     queryFn: async () => {
       const result = await getCrawlDetails(crawlId);
@@ -14,6 +12,6 @@ export function useCrawlDetailsQuery({ crawlId }: { crawlId: string }) {
       }
       return result.response;
     },
-    queryKey: crawlDetailsQueryKey,
+    queryKey: ["crawl-details", crawlId],
   });
 }

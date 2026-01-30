@@ -1,26 +1,12 @@
 "use client";
 import { AlertCircleIcon } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { CrawlDetailsSidebar } from "./_components/crawl-details-sidebar";
 import { CrawledPagesSection } from "./_components/crawled-pages-section";
-import {
-  CrawlDetailsProvider,
-  useCrawlDetailsContext,
-} from "./crawl-details-context";
+import { useCrawlDetailsContext } from "./crawl-details-context";
 
-export function CrawlDetailsContent({ crawlId }: CrawlDetailsContentProps) {
-  return (
-    <CrawlDetailsProvider crawlId={crawlId}>
-      <CrawlDetailsInner />
-    </CrawlDetailsProvider>
-  );
-}
-
-interface CrawlDetailsContentProps {
-  crawlId: string;
-}
-
-function CrawlDetailsInner() {
-  const { isLoading, isError, error, selectedPages, otherPages } =
+export function CrawlDetailsContent() {
+  const { isError, error, selectedPages, isLoading, otherPages } =
     useCrawlDetailsContext();
 
   // ⏳ Loading
@@ -31,10 +17,10 @@ function CrawlDetailsInner() {
 
   return (
     <div className="flex h-full gap-x-6">
-      <div className="max-w-[400px]">
+      <div className="basis-1/6">
         <CrawlDetailsSidebar />
       </div>
-      <div className="grow space-y-6 overflow-auto">
+      <div className="basis-5/6 space-y-6 overflow-auto">
         <CrawledPagesSection
           emptyMessage="Aucune page sélectionnée pour l'audit"
           pages={selectedPages}
@@ -53,10 +39,9 @@ function CrawlDetailsInner() {
 //💀 Skeleton
 function CrawlDetailsSkeleton() {
   return (
-    <div className="space-y-6">
-      <div className="h-48 animate-pulse rounded-lg bg-sidebar" />
-      <div className="h-96 animate-pulse rounded-lg bg-sidebar" />
-      <div className="h-96 animate-pulse rounded-lg bg-sidebar" />
+    <div className="flex h-full w-full gap-x-6">
+      <Skeleton className="basis-1/6" />
+      <Skeleton className="basis-5/6" />
     </div>
   );
 }

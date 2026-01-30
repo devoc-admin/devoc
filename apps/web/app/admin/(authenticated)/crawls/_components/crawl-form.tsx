@@ -1,7 +1,7 @@
 "use client";
 import { useForm } from "@tanstack/react-form";
 import { ChevronDownIcon, SearchIcon, XIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { isValidWebsite } from "@/actions/validation";
 import { Button } from "@/components/ui/button";
@@ -43,7 +43,7 @@ export function CrawlForm() {
   const crawlForm = useCrawlForm({ selectedProspect, setSelectedProspect });
   const { crawlId } = useCrawlsContext();
   const { prospects, prospectsAreLoading } = useUncrawledProspects();
-
+  const inputSelectProspectRef = useRef<HTMLInputElement>(null);
   const currentCrawlRunning = crawlId !== undefined && crawlId !== null;
 
   const filteredProspects = prospects?.filter((prospect) =>
@@ -71,6 +71,10 @@ export function CrawlForm() {
   function handleDropdownOpenChange(open: boolean) {
     if (!open) {
       setProspectSearchQuery("");
+    }
+
+    if (open) {
+      inputSelectProspectRef.current?.focus();
     }
   }
 
@@ -142,6 +146,7 @@ export function CrawlForm() {
                         onClick={(e) => e.stopPropagation()}
                         onKeyDown={(e) => e.stopPropagation()}
                         placeholder="Rechercher un prospect..."
+                        ref={inputSelectProspectRef}
                         type="text"
                         value={prospectSearchQuery}
                       />

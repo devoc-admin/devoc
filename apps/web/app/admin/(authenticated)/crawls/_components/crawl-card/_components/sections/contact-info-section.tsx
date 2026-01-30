@@ -6,6 +6,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useCrawlCardContext } from "../../crawl-card-context";
+import {
+  Section,
+  SectionContent,
+  SectionInformation,
+  SectionInformationIcon,
+  SectionTitle,
+} from "./section";
 
 export function ContactInfoSection() {
   const { crawl } = useCrawlCardContext();
@@ -17,14 +24,12 @@ export function ContactInfoSection() {
     crawl.contactAddresses && crawl.contactAddresses.length > 0;
 
   return (
-    <div className="space-y-2 border-border border-t pt-4">
-      <h4 className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
-        Coordonnées
-      </h4>
-      <div className="space-y-1">
+    <Section>
+      <SectionTitle>Coordonnées</SectionTitle>
+      <SectionContent>
         {/* 📞 Phones */}
-        <div className="flex items-start gap-x-2 text-sm">
-          <PhoneIcon className="mt-0.5 shrink-0" size={14} />
+        <SectionInformation>
+          <SectionInformationIcon Icon={PhoneIcon} />
           {hasPhones ? (
             <div className="flex flex-wrap gap-x-3 gap-y-1">
               {crawl.contactPhones?.map((phone) => (
@@ -51,10 +56,10 @@ export function ContactInfoSection() {
           ) : (
             "—"
           )}
-        </div>
+        </SectionInformation>
         {/* 📧 Emails */}
-        <div className="flex items-start gap-x-2 text-sm">
-          <MailIcon className="mt-0.5 shrink-0" size={14} />
+        <SectionInformation>
+          <SectionInformationIcon Icon={MailIcon} />
           {hasEmails ? (
             <div className="flex flex-wrap gap-x-3 gap-y-1">
               {crawl.contactEmails?.map((email) => (
@@ -76,10 +81,10 @@ export function ContactInfoSection() {
           ) : (
             "—"
           )}
-        </div>
+        </SectionInformation>
         {/* 📍 Addresses */}
-        <div className="flex items-start gap-x-2 text-sm">
-          <MapPinIcon className="mt-0.5 shrink-0" size={14} />
+        <SectionInformation>
+          <SectionInformationIcon Icon={MapPinIcon} />
           {hasAddresses ? (
             <div className="flex flex-wrap gap-x-3 gap-y-1">
               {crawl.contactAddresses?.map((address) => (
@@ -91,9 +96,9 @@ export function ContactInfoSection() {
           ) : (
             "—"
           )}
-        </div>
-      </div>
-    </div>
+        </SectionInformation>
+      </SectionContent>
+    </Section>
   );
 }
 

@@ -114,6 +114,7 @@ export function ProspectSelector() {
                 size={14}
               />
               <input
+                autoFocus
                 className={cn(
                   "h-8 w-full rounded-md border border-input bg-background pr-2 pl-7",
                   "text-sm placeholder:text-muted-foreground",
@@ -298,7 +299,7 @@ function AddProspectForCrawlButton({
                 </div>
               )}
             </form.Field>
-            {/* 🟡 Type */}
+            {/* 🟡 Prospect type */}
             <form.Field name="type">
               {(field) => (
                 <div>

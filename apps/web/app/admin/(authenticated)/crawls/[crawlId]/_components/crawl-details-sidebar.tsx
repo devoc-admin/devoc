@@ -431,7 +431,7 @@ function BackCrawlListButton() {
           "text-sm",
           "transition-colors"
         )}
-        href="/admin/crawl"
+        href="/admin/crawls"
       >
         <ArrowLeftIcon size={16} />
         Retour

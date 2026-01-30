@@ -50,6 +50,10 @@ const CrawlsContext = createContext<CrawlsContextType>({
   handleSearchCrawl: emptyFn,
   handleProspectTypeFilter: emptyFn,
 
+  // 👾 View mode
+  cardViewMode: "simple",
+  handleCardViewMode: emptyFn,
+
   // 🚮 Delete a crawl
   deletingCrawlId: undefined,
   crawlDeletionIsPending: false,
@@ -118,6 +122,14 @@ export function CrawlsProvider({ children }: { children: React.ReactNode }) {
         );
       })
     : undefined;
+
+  // 👾 View mode
+  const [cardViewMode, setCardViewMode] = useState<"simple" | "dense">(
+    "simple"
+  );
+  const handleCardViewMode = (mode: "simple" | "dense") => {
+    setCardViewMode(mode);
+  };
 
   // 🚮 Delete a crawl
   const {
@@ -198,6 +210,10 @@ export function CrawlsProvider({ children }: { children: React.ReactNode }) {
         handleSearchCrawl,
         handleProspectTypeFilter,
 
+        // 👾 View mode
+        cardViewMode,
+        handleCardViewMode,
+
         // 🚮 Delete a crawl
         deletingCrawlId,
         deleteCrawlMutate,
@@ -261,6 +277,10 @@ type CrawlsContextType = {
   prospectTypeFilter: Prospect["type"] | null;
   handleSearchCrawl: (query: string) => void;
   handleProspectTypeFilter: (type: Prospect["type"] | null) => void;
+
+  // 👾 View mode
+  cardViewMode: "simple" | "dense";
+  handleCardViewMode: (mode: "simple" | "dense") => void;
 
   // 🚮 Delete a crawl
   deletingCrawlId: string | undefined;

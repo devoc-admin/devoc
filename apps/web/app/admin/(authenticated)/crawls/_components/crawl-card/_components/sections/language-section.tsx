@@ -1,36 +1,36 @@
 "use client";
 import { GlobeIcon } from "lucide-react";
 import { useCrawlCardContext } from "../../crawl-card-context";
-
+import {
+  Section,
+  SectionContent,
+  SectionInformation,
+  SectionInformationIcon,
+  SectionInformationName,
+  SectionTitle,
+} from "./section";
 export function LanguageSection() {
   const { crawl } = useCrawlCardContext();
   if (!crawl) return null;
 
   return (
-    <div className="space-y-2 border-border border-t pt-4">
-      <h4 className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
-        Langues
-      </h4>
-      <div className="space-y-1">
+    <Section>
+      <SectionTitle>Langues</SectionTitle>
+      <SectionContent>
         {/* 🌐 Primary Language */}
-        {
-          <div className="flex items-center gap-x-2 text-sm">
-            <GlobeIcon className="shrink-0 text-muted-foreground" size={14} />
-            <span className="text-muted-foreground">Langue principale:</span>
-            <span>
-              {crawl.primaryLanguage
-                ? getLanguageName(crawl.primaryLanguage)
-                : "—"}
-            </span>
-          </div>
-        }
+        <SectionInformation>
+          <SectionInformationIcon Icon={GlobeIcon} />
+          <SectionInformationName>Langue principale</SectionInformationName>
+          <span>
+            {crawl.primaryLanguage
+              ? getLanguageName(crawl.primaryLanguage)
+              : "—"}
+          </span>
+        </SectionInformation>
         {/* 🌍 Available Languages */}
-        <div className="flex items-start gap-x-2 text-sm">
-          <GlobeIcon
-            className="mt-0.5 shrink-0 text-muted-foreground"
-            size={14}
-          />
-          <span className="text-muted-foreground">Multilingue:</span>
+        <SectionInformation>
+          <SectionInformationIcon Icon={GlobeIcon} />
+          <SectionInformationName>Multilingue</SectionInformationName>
           <span className="flex flex-wrap gap-1">
             {crawl.availableLanguages && crawl.availableLanguages.length > 1
               ? crawl.availableLanguages.map((lang) => (
@@ -43,9 +43,9 @@ export function LanguageSection() {
                 ))
               : "—"}
           </span>
-        </div>
-      </div>
-    </div>
+        </SectionInformation>
+      </SectionContent>
+    </Section>
   );
 }
 

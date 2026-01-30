@@ -19,7 +19,7 @@ export function SeeCrawlButton() {
         "rounded-md",
         "text-center font-semibold text-primary-foreground text-sm"
       )}
-      href={`/admin/crawl/${crawl.id}`}
+      href={`/admin/crawls/${crawl.id}`}
     >
       <EyeIcon size={18} strokeWidth={2} />
       <span>Voir</span>

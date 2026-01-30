@@ -8,6 +8,14 @@ import {
   ShieldCheckIcon,
 } from "lucide-react";
 import { useCrawlCardContext } from "../../crawl-card-context";
+import {
+  Section,
+  SectionContent,
+  SectionInformation,
+  SectionInformationIcon,
+  SectionInformationName,
+  SectionTitle,
+} from "./section";
 
 export function TechnologiesSection() {
   const { crawl } = useCrawlCardContext();
@@ -25,76 +33,58 @@ export function TechnologiesSection() {
   if (!hasTech) return null;
 
   return (
-    <div className="space-y-2 border-border border-t pt-4">
-      <h4 className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
+    <Section>
+      <SectionTitle>
         Technologies détectées ({crawl.detectedTechCount ?? 0})
-      </h4>
-      <div className="space-y-1">
+      </SectionTitle>
+      <SectionContent>
         {/* 🖥️ CMS */}
-        <TechItem
-          icon={LayoutTemplateIcon}
-          label="CMS"
-          value={crawl.primaryCms ?? "—"}
-        />
+        <SectionInformation>
+          <SectionInformationIcon Icon={LayoutTemplateIcon} />
+          <SectionInformationName>CMS</SectionInformationName>
+          <span>{crawl.primaryCms ?? "—"} </span>
+        </SectionInformation>
         {/* 🧩 Framework */}
-        <TechItem
-          icon={CodeIcon}
-          label="Framework"
-          value={crawl.primaryFramework ?? "—"}
-        />
+        <SectionInformation>
+          <SectionInformationIcon Icon={CodeIcon} />
+          <SectionInformationName>Framework</SectionInformationName>
+          <span>{crawl.primaryFramework ?? "—"} </span>
+        </SectionInformation>
         {/* 🏢 Hébergeur */}
-        <TechItem
-          icon={ServerIcon}
-          label="Hébergeur"
-          value={crawl.hostingProvider ?? "—"}
-        />
+        <SectionInformation>
+          <SectionInformationIcon Icon={ServerIcon} />
+          <SectionInformationName>Hébergeur</SectionInformationName>
+          <span>{crawl.hostingProvider ?? "—"} </span>
+        </SectionInformation>
         {/* 🍪 Gestionnaire de consentement */}
-        <TechItem
-          icon={CookieIcon}
-          label="Consentement"
-          value={crawl.consentManager ?? "—"}
-        />
+        <SectionInformation>
+          <SectionInformationIcon Icon={CookieIcon} />
+          <SectionInformationName>Consentement</SectionInformationName>
+          <span>{crawl.consentManager ?? "—"} </span>
+        </SectionInformation>
         {/* ♿ Outil d'accessibilité */}
-        <TechItem
-          icon={ShieldCheckIcon}
-          label="Accessibilité"
-          value={crawl.accessibilityTool ?? "—"}
-        />
+        <SectionInformation>
+          <SectionInformationIcon Icon={ShieldCheckIcon} />
+          <SectionInformationName>Accessibilité</SectionInformationName>
+          <span>{crawl.accessibilityTool ?? "—"} </span>
+        </SectionInformation>
         {/* 📊 Analytics */}
-        <TechItem
-          icon={BarChart3Icon}
-          label="Analytics"
-          value={
-            crawl.analyticsTools && crawl.analyticsTools.length > 0
+        <SectionInformation>
+          <SectionInformationIcon Icon={BarChart3Icon} />
+          <SectionInformationName>Analytiques</SectionInformationName>
+          <span>
+            {crawl.analyticsTools && crawl.analyticsTools.length > 0
               ? crawl.analyticsTools.join(", ")
-              : "—"
-          }
-        />
+              : "—"}{" "}
+          </span>
+        </SectionInformation>
         {/* 🇫🇷 DSFR */}
-        <TechItem
-          icon={ShieldCheckIcon}
-          label="DSFR"
-          value={crawl.usesDsfr ? "Oui" : "Non"}
-        />
-      </div>
-    </div>
-  );
-}
-
-function TechItem({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: React.ComponentType<{ className?: string; size?: number }>;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="flex items-center gap-x-2 text-sm">
-      <Icon className="shrink-0 text-muted-foreground" size={14} />
-      <span className="text-muted-foreground">{label}:</span>
-      <span className="truncate">{value}</span>
-    </div>
+        <SectionInformation>
+          <SectionInformationIcon Icon={ShieldCheckIcon} />
+          <SectionInformationName>DSFR</SectionInformationName>
+          <span>{crawl.usesDsfr ? "Oui" : "Non"}</span>
+        </SectionInformation>
+      </SectionContent>
+    </Section>
   );
 }

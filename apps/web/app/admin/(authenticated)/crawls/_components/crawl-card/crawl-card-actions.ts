@@ -2,7 +2,7 @@
 import { asc, eq } from "drizzle-orm";
 import { type ActionResult, getErrorMessage } from "@/lib/api";
 import { db } from "@/lib/db";
-import { prospect } from "@/lib/db/schema";
+import { crawl, prospect } from "@/lib/db/schema";
 
 // --------------------------------------
 // 🏢 List available prospects for a crawl (unassigned + current)
@@ -143,6 +143,29 @@ export async function addProspectForCrawl({
     }
 
     return { response: { prospectId: newProspect.id }, success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
+// ✏️ Update crawl author information
+export async function updateCrawlAuthor(
+  crawlId: string,
+  author: string | null,
+  authorUrl: string | null
+): Promise<ActionResult> {
+  try {
+    await db
+      .update(crawl)
+      .set({
+        author: author || null,
+        authorUrl: authorUrl || null,
+      })
+      .where(eq(crawl.id, crawlId));
+
+    return { success: true };
   } catch (error) {
     const message = getErrorMessage(error);
     return { error: message, success: false };

@@ -2,7 +2,9 @@
 import { ExternalLinkIcon } from "lucide-react";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 import type { CrawlResult } from "../../crawls-actions";
+import { useCrawlsContext } from "../../crawls-context";
 import { DeleteCrawlButton } from "./_components/buttons/delete-crawl-button";
 import { RetryCrawlButton } from "./_components/buttons/retry-crawl-button";
 import { SeeCrawlButton } from "./_components/buttons/see-crawl-button";
@@ -18,6 +20,7 @@ import {
   useCrawlCardContext,
 } from "./crawl-card-context";
 export function CrawlCard(crawl: CrawlResult) {
+  const { cardViewMode } = useCrawlsContext();
   const showScreenshot =
     crawl.screenshotUrl && process.env.NODE_ENV === "development";
   return (
@@ -53,10 +56,14 @@ export function CrawlCard(crawl: CrawlResult) {
           <DeleteCrawlButton />
         </div>
         {/* 🙎📞🤖🌐 Sections info */}
-        <ContactInfoSection />
-        <AuthorSection />
-        <TechnologiesSection />
-        <LanguageSection />
+        <div
+          className={cn("space-y-6", cardViewMode === "simple" ? "hidden" : "")}
+        >
+          <ContactInfoSection />
+          <AuthorSection />
+          <TechnologiesSection />
+          <LanguageSection />
+        </div>
       </li>
     </CrawlCardContextProvider>
   );
