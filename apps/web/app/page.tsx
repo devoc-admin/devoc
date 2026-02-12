@@ -24,7 +24,7 @@ const Us = dynamic(() => import("./_components/sections/us/us"));
 //   () => import("./_components/separators/threads-separator")
 // );
 
-// const Contact = dynamic(() => import("./_components/sections/contact/contact"));
+const Contact = dynamic(() => import("./_components/sections/contact/contact"));
 
 // =============================
 
@@ -39,7 +39,7 @@ export default function Home() {
       {/*<Realisations />*/}
       <Method />
       {/*<ThreadsSeparator />*/}
-      {/*<Contact />*/}
+      <Contact />
       <Footer />
     </>
   );
