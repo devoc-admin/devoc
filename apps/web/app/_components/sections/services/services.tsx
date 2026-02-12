@@ -43,7 +43,6 @@ export default function Services() {
         // 🕳️ Gap
         "gap-y-16",
         "sm:gap-y-32"
-        // 📱 Responsive padding
       )}
       id="services"
       theme="dark"

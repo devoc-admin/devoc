@@ -4,31 +4,20 @@ import { MenuIcon, SendIcon, XIcon } from "lucide-react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useClickAnyWhere, useMediaQuery } from "usehooks-ts";
 import { Glass } from "@/components/sera-ui/liquid-glass";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
+
 export default function Header() {
-  const [hasMounted, setHasMounted] = useState(false);
   const isMobile = useMediaQuery("(max-width: 970px)");
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-  return null;
-
   return (
-    <div
-      className={cn(
-        "transition-opacity duration-300",
-        hasMounted ? "opacity-100" : "opacity-0"
-      )}
-    >
+    <motion.div animate={{ opacity: 1 }} initial={{ opacity: 0 }}>
       {isMobile ? <MobileHeader /> : <DesktopHeader />}
-    </div>
+    </motion.div>
   );
 }
 
