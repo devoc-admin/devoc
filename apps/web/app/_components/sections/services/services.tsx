@@ -13,10 +13,9 @@ import {
   WandSparklesIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
-import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
-import { BorderBeam } from "@/components/magicui/border-beam";
+// import { BorderBeam } from "@/components/magicui/border-beam";
 import { DotPattern } from "@/components/magicui/dot-pattern";
 import {
   Card,
@@ -31,9 +30,9 @@ import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
 
 // Lazy load Lamp component (heavy CSS animation, desktop only)
-const Lamp = dynamic(() => import("@/components/aceternity/lamp"), {
-  ssr: false,
-});
+// const Lamp = dynamic(() => import("@/components/aceternity/lamp"), {
+//   ssr: false,
+// });
 export default function Services() {
   return (
     <Section
@@ -43,19 +42,16 @@ export default function Services() {
         "sm:-scroll-m-50",
         // 🕳️ Gap
         "gap-y-16",
-        "sm:gap-y-32",
-        // 📱 Responsive padding
-        "pt-24! pb-12",
-        "sm:pt-88! sm:pb-48"
+        "sm:gap-y-32"
       )}
       id="services"
       theme="dark"
     >
-      <Lamp className={cn("hidden", "sm:flex")} />
       <SectionTitle
         description="Une gamme complète de services pour booster votre présence numérique, de la conception à la mise en ligne et au-delà 🚀"
         title="Nos Services"
       />
+      {/*<Lamp className={cn("hidden", "sm:flex")} />*/}
       <ServiceCards />
     </Section>
   );
@@ -176,13 +172,13 @@ function ServiceCard({
   features,
   Icon,
   subtitle,
-  index,
+  // index,
 }: ServiceCardProps & { index: number }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   // Deterministic delay based on index to avoid hydration mismatch
-  const beamDelay = ((index * 347) % 1000) + 200;
+  // const beamDelay = ((index * 347) % 1000) + 200;
 
   useEffect(() => {
     setHasMounted(true);
@@ -229,6 +225,7 @@ function ServiceCard({
             "text-primary/70",
             "mask-[radial-gradient(60cqw_circle_at_center,white,transparent)]"
           )}
+          glow={false}
         />
         {/* 🟪 Icon */}
         <div
@@ -286,9 +283,9 @@ function ServiceCard({
         </div>
       </CardFooter>
       {/* 🔄 Laser rotating */}
-      {hasMounted && isDesktop && (
+      {/*{hasMounted && isDesktop && (
         <BorderBeam delay={beamDelay} reverse={index % 2 === 0} size={100} />
-      )}
+      )}*/}
     </div>
   );
 
@@ -398,9 +395,9 @@ function ServiceCard({
         </a>
       </CardFooter>
       {/* 🔄 Laser rotating */}
-      {hasMounted && isDesktop && (
+      {/*{hasMounted && isDesktop && (
         <BorderBeam delay={beamDelay} reverse={index % 2 === 0} size={100} />
-      )}
+      )}*/}
     </div>
   );
 

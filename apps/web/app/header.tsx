@@ -1,57 +1,57 @@
 "use client";
 
 import { MenuIcon, SendIcon, XIcon } from "lucide-react";
-import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import {
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+} from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useClickAnyWhere, useMediaQuery } from "usehooks-ts";
 import { Glass } from "@/components/sera-ui/liquid-glass";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
+
 export default function Header() {
-  const [hasMounted, setHasMounted] = useState(false);
   const isMobile = useMediaQuery("(max-width: 970px)");
+  if (isMobile) return <MobileHeader />;
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-  return (
-    <div
-      className={cn(
-        "transition-opacity duration-300",
-        hasMounted ? "opacity-100" : "opacity-0"
-      )}
-    >
-      {isMobile ? <MobileHeader /> : <DesktopHeader />}
-    </div>
-  );
+  return <DesktopHeader />;
 }
 
 // --------------------------------
+const mobileHeaderVariants = {
+  hidden: { opacity: 0, y: -100 },
+  visible: { opacity: 1, y: 0 },
+};
+
 function MobileHeader() {
   const { iconRef, isOpened } = useToogleNavbarLink();
   const { scrollY } = useScroll();
   const [isVisible, setIsVisible] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   useMotionValueEvent(scrollY, "change", (currentScrollY) => {
     const scrollThreshold = 100;
-    const isScrollingUp = currentScrollY < lastScrollY;
+    const isScrollingUp = currentScrollY < (scrollY.getPrevious() ?? 0);
     const isBelowThreshold = currentScrollY > scrollThreshold;
 
     setIsVisible(isScrollingUp && isBelowThreshold);
-    setLastScrollY(currentScrollY);
   });
 
   return (
     <motion.div
-      animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : -100 }}
-      className="fixed top-3 left-1/2 z-5000 mx-auto mt-0 -translate-x-1/2"
-      initial={{ opacity: 0, y: -100 }}
+      animate={isVisible ? "visible" : "hidden"}
+      className={cn(
+        "fixed top-3 left-1/2 z-5000 mx-auto mt-0 -translate-x-1/2",
+        "will-change-transform"
+      )}
+      initial="hidden"
       transition={{ duration: 0.3, ease: "easeInOut" }}
+      variants={mobileHeaderVariants}
     >
       <div
         className={cn(
@@ -118,26 +118,38 @@ function useToogleNavbarLink() {
 // --------------------------------
 function DesktopHeader() {
   return (
-    <SlideFadeAnimation>
-      <CollapseWhileScroll>
-        <Glass
-          borderRadius={1000}
-          className={cn(
-            "mx-auto flex items-center justify-between rounded-full px-8 py-3",
-            "bg-white/80! text-secondary hover:text-secondary", // Light
-            "[html[data-nav-theme='dark']_&]:bg-zinc-900/70!" // Dark
-          )}
-        >
-          <div className="flex w-50 justify-start">
-            <LogoButtonWithText />
-          </div>
-          <LinksDesktop />
-          <div className="flex w-50 justify-end">
-            <ContactButton>Contact</ContactButton>
-          </div>
-        </Glass>
-      </CollapseWhileScroll>
-    </SlideFadeAnimation>
+    <div
+      className={cn(
+        "fixed z-5000",
+        "mx-auto mt-0",
+        "top-0 left-1/2 -translate-x-1/2",
+        "rounded-full"
+      )}
+    >
+      <SlideFadeAnimation>
+        <CollapseWhileScroll>
+          <Glass
+            borderRadius={1000}
+            className={cn(
+              "flex items-center justify-between",
+              "rounded-full",
+              "mx-auto",
+              "px-8 py-3",
+              "bg-white/80! text-secondary hover:text-secondary", // ☀️ Light
+              "[html[data-nav-theme='dark']_&]:bg-zinc-900/70!" // 🌙 Dark
+            )}
+          >
+            <div className="flex w-50 justify-start">
+              <LogoButtonWithText />
+            </div>
+            <LinksDesktop />
+            <div className="flex w-50 justify-end">
+              <ContactButton>Contact</ContactButton>
+            </div>
+          </Glass>
+        </CollapseWhileScroll>
+      </SlideFadeAnimation>
+    </div>
   );
 }
 
@@ -149,6 +161,7 @@ function SlideFadeAnimation({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
       animate={{ opacity: 1, y: 0 }}
+      className="will-change-transform"
       exit={{ opacity: 0, y: -20 }}
       initial={{ opacity: 0, y: -20 }}
       transition={{ delay: baseDelay, duration: baseDuration }}
@@ -161,23 +174,18 @@ function SlideFadeAnimation({ children }: { children: React.ReactNode }) {
 // ---------------------------------
 function CollapseWhileScroll({ children }: { children: React.ReactNode }) {
   const { scrollY } = useScroll();
-  const [isScrolled, setIsScrolled] = useState(false);
 
-  useMotionValueEvent(scrollY, "change", (value) => {
-    setIsScrolled(value > 50);
+  const { y, maxWidth, width } = useTransform(scrollY, [0, 50], {
+    maxWidth: ["100vw", "80vw"],
+    width: [1600, 1200],
+    y: [10, 25],
   });
 
   return (
     <motion.div
-      animate={isScrolled ? "scrolled" : "unscrolled"}
-      className={cn(
-        "fixed left-1/2 z-5000 mx-auto mt-0 -translate-x-1/2 rounded-full transition-[background] duration-300"
-      )}
+      className="will-change-transform"
       initial={false}
-      variants={{
-        scrolled: { maxWidth: "1200px", top: "25px", width: "80vw" },
-        unscrolled: { maxWidth: "1600px", top: "10px", width: "100vw" },
-      }}
+      style={{ maxWidth, width, y }}
     >
       {children}
     </motion.div>
@@ -287,15 +295,22 @@ function LinksMobile() {
       className={cn(
         "border-t-2 border-t-primary",
         "flex w-full flex-col gap-y-2",
-        "absolute top-full left-1/2 -translate-x-1/2 rounded-br-lg rounded-bl-lg bg-white/70 py-2 pt-4 backdrop-blur-sm transition-colors duration-300",
-        "[html[data-nav-theme='dark']_&]:text-secondary", // Light
-        "[html[data-nav-theme='dark']_&]:bg-zinc-900/20 [html[data-nav-theme='dark']_&]:text-white" // Dark
+        "absolute top-full left-1/2 -translate-x-1/2",
+        "rounded-br-lg rounded-bl-lg",
+        "bg-white/70",
+        "py-2 pt-4",
+        "backdrop-blur-sm",
+        "transition-colors duration-300",
+        "[html[data-nav-theme='dark']_&]:text-secondary", // ☀️ Light
+        "[html[data-nav-theme='dark']_&]:bg-zinc-900/20 [html[data-nav-theme='dark']_&]:text-white" // 🌙 Dark
       )}
     >
       {LINKS.map(({ href, label }) => (
         <Link
           className={cn(
-            "px-4 py-2 text-left font-kira font-semibold uppercase"
+            "px-4 py-2",
+            "text-left",
+            "font-kira font-semibold uppercase"
           )}
           href={href}
           key={href}
@@ -346,7 +361,11 @@ function ContactButton({ children = null }: React.PropsWithChildren) {
       <Button
         aria-label="Nous contacter"
         className={cn(
-          "flex cursor-pointer items-center gap-2 rounded-full font-bold text-primary-foreground transition-colors",
+          "flex items-center gap-2",
+          "cursor-pointer",
+          "rounded-full",
+          "font-bold text-primary-foreground",
+          "transition-colors",
           children && "px-5!",
           "bg-linear-to-r from-primary to-primary-lighter",
           "hover:bg-linear-to-r hover:from-primary/90 hover:to-primary-lighter/90"

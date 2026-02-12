@@ -9,7 +9,7 @@ export default function ThreadsSeparator() {
   });
   return (
     <div
-      className="relative w-screen bg-zinc-950"
+      className="relative bg-zinc-950"
       ref={separatorRef}
       style={{
         height: "min(50vw, 700px)",

@@ -6,7 +6,8 @@ export default function Lamp({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "absolute top-0 z-0 flex min-h-[600px] w-full flex-col items-center justify-center overflow-hidden rounded-md",
+        "flex flex-col items-center justify-center ",
+        "min-h-150 w-full",
         className
       )}
     >
