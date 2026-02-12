@@ -18,6 +18,8 @@ export default function Header() {
     setHasMounted(true);
   }, []);
 
+  return null;
+
   return (
     <div
       className={cn(

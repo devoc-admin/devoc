@@ -1,10 +1,9 @@
 "use client";
-import { motion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { useMediaQuery } from "usehooks-ts";
+import { useCallback, useEffect, useState } from "react";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import CubeShape from "@/assets/shapes/cube.webp";
 import DiamondShape from "@/assets/shapes/diamond.webp";
@@ -102,16 +101,17 @@ function OpenCarcaWinner() {
 // ----------------------------------
 // 🔲 Shapes
 function Shapes() {
-  const { containerRef, effectiveParallaxOffset } = useShapesParallaxEffect();
   return (
     <div
       className={cn(
         "absolute -z-1",
-        "h-full w-full max-w-350",
+        "size-full",
+        "max-w-350",
+        //📱 Mobile
         "opacity-50 blur-xs",
+        // 💻 Tablet/Desktop
         "md:opacity-100 md:blur-none"
       )}
-      ref={containerRef}
     >
       <Shape
         className={cn(
@@ -124,9 +124,6 @@ function Shapes() {
           "lg:left-[19%] xl:top-[25%]"
         )}
         parallaxCoeff={4}
-        parallaxOffset={effectiveParallaxOffset}
-        priority
-        sizes="(max-width: 640px) 240px, (max-width: 1024px) 300px, 400px"
         src={CubeShape}
       />
       <Shape
@@ -140,9 +137,6 @@ function Shapes() {
           "xl:top-[36%] xl:right-[19%]"
         )}
         parallaxCoeff={3}
-        parallaxOffset={effectiveParallaxOffset}
-        priority
-        sizes="(max-width: 640px) 240px, (max-width: 1024px) 300px, 400px"
         src={DiamondShape}
       />
       <Shape
@@ -156,13 +150,11 @@ function Shapes() {
           "xl:bottom-[24%] xl:left-[19%]"
         )}
         parallaxCoeff={2}
-        parallaxOffset={effectiveParallaxOffset}
-        priority
-        sizes="(max-width: 640px) 240px, (max-width: 1024px) 300px, 400px"
         src={DonutShape}
       />
       <Shape
         className={cn(
+          //📍Position
           "translate-x-1/2 translate-y-1/2",
           "right-[16%] bottom-[27%]",
           "xs:right-[22%] xs:bottom-[20%]",
@@ -172,50 +164,49 @@ function Shapes() {
           "xl:right-[20%] xl:bottom-[18%]"
         )}
         parallaxCoeff={1}
-        parallaxOffset={effectiveParallaxOffset}
-        priority
-        sizes="(max-width: 640px) 240px, (max-width: 1024px) 300px, 400px"
         src={SphereShape}
       />
     </div>
   );
 }
 
+const keyFramesMobileX = [0];
+const keyFramesDesktopX = [0, 3, -2, 4, 0, -1, 0];
+
+const keyframesMobileY = [0];
+const keyframesDesktopY = [0, -8, -5, -10, -15, -8, 0];
+
 function Shape({
   src,
   className,
-  parallaxOffset,
   parallaxCoeff,
-  priority = false,
-  sizes,
 }: {
   src: StaticImageData;
-  parallaxOffset: number;
   parallaxCoeff: number;
   className?: string;
-  priority?: boolean;
-  sizes?: string;
 }) {
   const { isMobile } = useMobile();
-  const parallaxValue = parallaxOffset * parallaxCoeff;
+  const { scrollY } = useScroll();
+  const parallaxValue = useTransform(
+    scrollY,
+    [0, 1000],
+    [0, -100 * parallaxCoeff]
+  );
+
+  const keyFramesX = isMobile ? keyFramesMobileX : keyFramesDesktopX;
+  const keyFramesY = isMobile ? keyframesMobileY : keyframesDesktopY;
+
+  const randomDurationOffset = Math.random();
+  const durationMovementMobile = 12 + randomDurationOffset * 6;
+  const durationMovementDesktop = 9 + randomDurationOffset * 3;
+
+  const durationMovement = isMobile
+    ? durationMovementMobile
+    : durationMovementDesktop;
+
   return (
+    /* With parallax effect */
     <motion.div
-      animate={{
-        opacity: 1,
-        // 📱 Simplified animation on mobile: only 3 keyframes instead of 7
-        x: isMobile ? [0, 2, 0] : [0, 3, -2, 4, 0, -1, 0],
-        y: isMobile
-          ? [parallaxValue, parallaxValue - 5, parallaxValue]
-          : [
-              parallaxValue,
-              parallaxValue - 8,
-              parallaxValue - 5,
-              parallaxValue - 10,
-              parallaxValue - 15,
-              parallaxValue - 8,
-              parallaxValue,
-            ],
-      }}
       className={cn(
         className,
         "absolute",
@@ -224,87 +215,36 @@ function Shape({
         "sm:w-75",
         "md:w-75",
         "lg:w-75",
-        "xl:w-100"
+        "xl:w-80",
+        "2xl:w-100"
       )}
-      initial={{ opacity: 0 }}
-      style={{ y: parallaxValue }}
-      transition={{
-        delay: Math.random(),
-        // Slower animation on mobile (12-18s instead of 9-12s)
-        duration: isMobile ? 12 + Math.random() * 6 : 9 + Math.random() * 3,
-        ease: "easeInOut",
-        opacity: {
-          duration: 1,
-          ease: "easeInOut",
-        },
-        repeat: Number.POSITIVE_INFINITY,
-      }}
+      style={{ y: isMobile ? 0 : parallaxValue }}
     >
-      <Image
-        alt=""
-        aria-hidden="true"
-        height={400}
-        priority={priority}
-        sizes={sizes}
-        src={src}
-        width={400}
-      />
+      {/* With floating effect */}
+      <motion.div
+        animate={{ opacity: 1, x: keyFramesX, y: keyFramesY }}
+        initial={{ opacity: 0, x: 0, y: 0 }}
+        transition={{
+          opacity: {
+            duration: 1,
+            ease: "easeInOut",
+          },
+          x: {
+            duration: durationMovement,
+            ease: "easeInOut",
+            repeat: Number.POSITIVE_INFINITY,
+          },
+          y: {
+            duration: durationMovement,
+            ease: "easeInOut",
+            repeat: Number.POSITIVE_INFINITY,
+          },
+        }}
+      >
+        <Image alt="" aria-hidden height={400} priority src={src} width={400} />
+      </motion.div>
     </motion.div>
   );
-}
-
-function useShapesParallaxEffect() {
-  const [parallaxOffset, setParallaxOffset] = useState(0);
-  const [isInView, setIsInView] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const effectiveParallaxOffset = parallaxOffset * 0.5;
-
-  const isMobile = useMediaQuery("(max-width: 768px)");
-
-  // 👁️ IntersectionObserver to detect when hero is in viewport
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsInView(entry.isIntersecting);
-      },
-      { threshold: 0 }
-    );
-
-    observer.observe(container);
-    return () => observer.disconnect();
-  }, []);
-
-  // ⇅ Parallax effect (disabled on mobile, only active when in view)
-  useEffect(() => {
-    if (isMobile || !isInView) return;
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scrollY = window.scrollY;
-          const displacement = scrollY * -0.3;
-          setParallaxOffset(displacement);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [isMobile, isInView]);
-
-  return {
-    containerRef,
-    effectiveParallaxOffset,
-  };
 }
 
 // ----------------------------------
@@ -550,22 +490,40 @@ function PopEntry({
 // 📱 Mobile
 function useMobile() {
   const [isMobile, setIsMobile] = useState(false);
+  const checkMobile = useCallback(
+    () => setIsMobile(window.innerWidth < 768),
+    []
+  );
+  const throttledCheckMobile = useThrottle({
+    callback: checkMobile,
+    delayInMs: 150,
+  });
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
-
-    let timeoutId: NodeJS.Timeout;
-    const debouncedCheckMobile = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(checkMobile, 150);
-    };
-
-    window.addEventListener("resize", debouncedCheckMobile);
+    window.addEventListener("resize", throttledCheckMobile);
     return () => {
-      window.removeEventListener("resize", debouncedCheckMobile);
-      clearTimeout(timeoutId);
+      window.removeEventListener("resize", throttledCheckMobile);
     };
-  }, []);
+  }, [throttledCheckMobile, checkMobile]);
   return { isMobile };
+}
+
+function useThrottle({
+  callback,
+  delayInMs,
+}: {
+  // biome-ignore lint/suspicious/noExplicitAny: exception
+  callback: (...args: any[]) => void;
+  delayInMs: number;
+}) {
+  let lastCall = 0;
+  // biome-ignore lint/suspicious/noExplicitAny: exception
+  return (...args: any[]) => {
+    const now = Date.now();
+    if (now - lastCall >= delayInMs) {
+      lastCall = now;
+      callback(...args);
+    }
+  };
 }

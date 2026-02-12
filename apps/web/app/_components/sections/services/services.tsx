@@ -16,7 +16,7 @@ import { motion } from "motion/react";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
-import { BorderBeam } from "@/components/magicui/border-beam";
+// import { BorderBeam } from "@/components/magicui/border-beam";
 import { DotPattern } from "@/components/magicui/dot-pattern";
 import {
   Card,
@@ -176,13 +176,13 @@ function ServiceCard({
   features,
   Icon,
   subtitle,
-  index,
+  // index,
 }: ServiceCardProps & { index: number }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   // Deterministic delay based on index to avoid hydration mismatch
-  const beamDelay = ((index * 347) % 1000) + 200;
+  // const beamDelay = ((index * 347) % 1000) + 200;
 
   useEffect(() => {
     setHasMounted(true);
@@ -229,6 +229,7 @@ function ServiceCard({
             "text-primary/70",
             "mask-[radial-gradient(60cqw_circle_at_center,white,transparent)]"
           )}
+          glow={isDesktop}
         />
         {/* 🟪 Icon */}
         <div
@@ -286,9 +287,9 @@ function ServiceCard({
         </div>
       </CardFooter>
       {/* 🔄 Laser rotating */}
-      {hasMounted && isDesktop && (
+      {/*{hasMounted && isDesktop && (
         <BorderBeam delay={beamDelay} reverse={index % 2 === 0} size={100} />
-      )}
+      )}*/}
     </div>
   );
 
@@ -398,9 +399,9 @@ function ServiceCard({
         </a>
       </CardFooter>
       {/* 🔄 Laser rotating */}
-      {hasMounted && isDesktop && (
+      {/*{hasMounted && isDesktop && (
         <BorderBeam delay={beamDelay} reverse={index % 2 === 0} size={100} />
-      )}
+      )}*/}
     </div>
   );
 

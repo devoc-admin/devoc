@@ -13,6 +13,7 @@ import {
   Style_Script,
 } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { ReactScan } from "@/components/react-scan";
 import SkipLink from "@/components/ui/skip-link";
 
 import "./globals.css";
@@ -78,6 +79,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
+      <ReactScan />
       <body
         className={`${geistSans.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} flex min-h-screen flex-col font-sans`}
       >
