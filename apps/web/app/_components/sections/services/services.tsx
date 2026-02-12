@@ -42,10 +42,8 @@ export default function Services() {
         "sm:-scroll-m-50",
         // 🕳️ Gap
         "gap-y-16",
-        "sm:gap-y-32",
+        "sm:gap-y-32"
         // 📱 Responsive padding
-        "pt-0! pb-12",
-        "sm:pb-48"
       )}
       id="services"
       theme="dark"
