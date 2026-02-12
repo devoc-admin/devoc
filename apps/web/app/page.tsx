@@ -4,13 +4,13 @@ import Hero from "./_components/sections/hero/hero";
 import Footer from "./footer";
 
 // Lazy load below-the-fold sections to reduce initial JavaScript bundle
-// const Services = dynamic(
-//   () => import("./_components/sections/services/services")
-// );
-
-const Realisations = dynamic(
-  () => import("./_components/sections/achievements/achievements")
+const Services = dynamic(
+  () => import("./_components/sections/services/services")
 );
+
+// const Realisations = dynamic(
+//   () => import("./_components/sections/achievements/achievements")
+// );
 
 const Method = dynamic(() => import("./_components/sections/method/method"));
 
@@ -35,8 +35,8 @@ export default function Home() {
       <Hero />
       <WorkWith />
       <Us />
-      {/*<Services />*/}
-      <Realisations />
+      <Services />
+      {/*<Realisations />*/}
       <Method />
       {/*<ThreadsSeparator />*/}
       <Contact />

@@ -229,7 +229,7 @@ function ServiceCard({
             "text-primary/70",
             "mask-[radial-gradient(60cqw_circle_at_center,white,transparent)]"
           )}
-          glow={isDesktop}
+          glow={false}
         />
         {/* 🟪 Icon */}
         <div
