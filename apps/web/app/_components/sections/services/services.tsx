@@ -13,7 +13,6 @@ import {
   WandSparklesIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
-import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 // import { BorderBeam } from "@/components/magicui/border-beam";
@@ -31,9 +30,9 @@ import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
 
 // Lazy load Lamp component (heavy CSS animation, desktop only)
-const Lamp = dynamic(() => import("@/components/aceternity/lamp"), {
-  ssr: false,
-});
+// const Lamp = dynamic(() => import("@/components/aceternity/lamp"), {
+//   ssr: false,
+// });
 export default function Services() {
   return (
     <Section
@@ -45,17 +44,17 @@ export default function Services() {
         "gap-y-16",
         "sm:gap-y-32",
         // 📱 Responsive padding
-        "pt-24! pb-12",
-        "sm:pt-88! sm:pb-48"
+        "pt-0! pb-12",
+        "sm:pb-48"
       )}
       id="services"
       theme="dark"
     >
-      <Lamp className={cn("hidden", "sm:flex")} />
       <SectionTitle
         description="Une gamme complète de services pour booster votre présence numérique, de la conception à la mise en ligne et au-delà 🚀"
         title="Nos Services"
       />
+      {/*<Lamp className={cn("hidden", "sm:flex")} />*/}
       <ServiceCards />
     </Section>
   );
@@ -229,7 +228,7 @@ function ServiceCard({
             "text-primary/70",
             "mask-[radial-gradient(60cqw_circle_at_center,white,transparent)]"
           )}
-          glow={isDesktop}
+          glow={false}
         />
         {/* 🟪 Icon */}
         <div

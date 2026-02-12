@@ -6,7 +6,7 @@ import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
 export default function SectionUs() {
   return (
-    <Section className="overflow-hidden" id="us" theme="dark">
+    <Section className="overflow-hidden pb-0!" id="us" theme="dark">
       <GlowLine color="orange" orientation="horizontal" position="0px" />
       <SectionTitle title="Qui sommes-nous ?" />
       <div
