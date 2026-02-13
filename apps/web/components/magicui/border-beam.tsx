@@ -1,7 +1,5 @@
 "use client"
-
 import { motion, MotionStyle, Transition } from "motion/react"
-
 import { cn } from "@/lib/utils"
 
 
@@ -20,7 +18,13 @@ export function BorderBeam({
 }: BorderBeamProps) {
   return (
     <div
-      className="pointer-events-none rounded-lg absolute inset-0 border-(length:--border-beam-width) border-transparent mask-[linear-gradient(transparent,transparent),linear-gradient(#000,#000)] mask-intersect [mask-clip:padding-box,border-box]"
+      className={cn(
+        "absolute inset-0",
+        "pointer-events-none",
+        "rounded-lg",
+        "border-(length:--border-beam-width)",
+        "border-transparent",
+        "mask-[linear-gradient(transparent,transparent),linear-gradient(#000,#000)] mask-intersect [mask-clip:padding-box,border-box]")}
       style={
         {
           "--border-beam-width": `${borderWidth}px`,
@@ -29,7 +33,8 @@ export function BorderBeam({
     >
       <motion.div
         className={cn(
-          "absolute aspect-square",
+          "absolute",
+          "aspect-square",
           "bg-linear-to-l",
           "from-(--color-from) via-(--color-to) to-transparent",
           reverse && "from-transparent via-(--color-to) to-(--color-from)",

@@ -13,10 +13,8 @@ import {
   WandSparklesIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
-// import { BorderBeam } from "@/components/magicui/border-beam";
-import { DotPattern } from "@/components/magicui/dot-pattern";
 import {
   Card,
   CardContent,
@@ -140,17 +138,11 @@ const services: ServiceCardProps[] = [
 ];
 
 function ServiceCards() {
-  const [hasMounted, setHasMounted] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 640px)");
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
   return (
     <motion.div
       className={cn("flex flex-wrap justify-center gap-8", "w-full max-w-325")}
-      initial={{ opacity: 0, y: hasMounted && isDesktop ? 200 : 0 }}
+      initial={{ opacity: 0, y: isDesktop ? 200 : 0 }}
       transition={{
         duration: 0.5,
       }}
@@ -172,82 +164,130 @@ function ServiceCard({
   features,
   Icon,
   subtitle,
-  // index,
 }: ServiceCardProps & { index: number }) {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  // Deterministic delay based on index to avoid hydration mismatch
-  // const beamDelay = ((index * 347) % 1000) + 200;
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-  const FrontCard = (
+  return (
     <div
       className={cn(
-        "absolute inset-0 flex h-full flex-col gap-6",
+        "@container relative",
+        // 📱 Responsive size
+        "aspect-square w-full",
+        "sm:aspect-4/5 sm:w-[calc(50%-1.5rem)]",
+        "lg:aspect-4/5 lg:w-[calc(33.333%-1.5rem)]",
+        // Only use perspective on desktop
+        isDesktop && "perspective-[2000px]"
+      )}
+      onMouseEnter={() => setIsFlipped(true)}
+      onMouseLeave={() => setIsFlipped(false)}
+    >
+      <Card
+        animation={false}
+        className={cn(
+          "relative",
+          "h-full",
+          "cursor-pointer",
+          "bg-linear-to-br from-zinc-950 to-zinc-900",
+          // 🖥️ 3D flip on desktop
+          isDesktop && "transform-3d transition-all duration-700",
+          isDesktop && isFlipped && "rotate-y-180",
+          isDesktop && !isFlipped && "rotate-y-0"
+        )}
+      >
+        <FrontCard
+          description={subtitle}
+          Icon={Icon}
+          isDesktop={isDesktop}
+          isFlipped={isFlipped}
+          title={title}
+        />
+        <BackCard
+          description={description}
+          features={features}
+          isDesktop={isDesktop}
+          isFlipped={isFlipped}
+          title={title}
+        />
+      </Card>
+    </div>
+  );
+}
+
+// ==============================
+function AnimatedCardBar() {
+  return (
+    <motion.div
+      className={cn(
+        "h-1",
+        "w-[30%]",
+        "origin-right",
+        "mb-10",
+        "ml-auto",
+        "rounded-lg",
+        "bg-primary"
+      )}
+      initial={{ scaleX: 0 }}
+      transition={{ delay: 0.5, duration: 0.5 }}
+      viewport={{ amount: 0.5, once: true }}
+      whileInView={{ scaleX: 1 }}
+    />
+  );
+}
+
+// ==============================
+// ⬆️🃏 FRONT CARD
+function FrontCard({
+  title,
+  description,
+  Icon,
+  isFlipped,
+  isDesktop,
+}: {
+  title: string;
+  description: string | undefined;
+  Icon: LucideIcon;
+  isFlipped: boolean;
+  isDesktop: boolean;
+}) {
+  const isMobile = !isDesktop;
+  return (
+    <div
+      className={cn(
+        "absolute inset-0",
+        "flex flex-col gap-y-6",
+        "h-full",
+        // ↔️ Padding
         "py-4",
         "@xs:py-6",
-        "transition-all duration-700",
-        hasMounted && isDesktop && "backface-hidden rotate-y-0",
-        isFlipped ? "opacity-0" : "opacity-100",
-        // On mobile, hide completely when flipped
-        hasMounted && isDesktop && isFlipped && "pointer-events-none"
+        "backface-hidden",
+        // 🤹 Animation
+        "transition-opacity duration-700",
+        isFlipped && isMobile && "opacity-0",
+        isFlipped && "pointer-events-none"
       )}
     >
+      {/* ••• Dot pattern */}
+      <div
+        className={cn(
+          "absolute",
+          "size-full",
+          "-translate-y-10",
+          "mask-[radial-gradient(50cqw_circle_at_center,white,transparent)]", // Fade out the edges
+          "bg-[radial-gradient(circle,var(--color-primary)_1px,transparent_1px)] bg-size-[15px_15px]" // Repeating dot
+        )}
+      />
+      {/* 👉 Progress Bar */}
       <CardHeader>
-        <div className="mb-3 flex h-7 items-center justify-between">
-          {/* 👉 Progress Bar */}
-          <motion.div
-            className={cn(
-              "h-1",
-              "w-[30%]",
-              "origin-right",
-              "ml-auto",
-              "rounded-lg",
-              "bg-primary"
-            )}
-            initial={{ scaleX: 0 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-            viewport={{ amount: 0.5, once: true }}
-            whileInView={{ scaleX: 1 }}
-          />
-        </div>
+        <AnimatedCardBar />
       </CardHeader>
 
-      {/* 🔡 Description */}
+      {/* 🗿 Icon */}
       <CardContent className="grid grow place-items-center">
-        <DotPattern
-          className={cn(
-            "z-0",
-            "text-primary/70",
-            "mask-[radial-gradient(60cqw_circle_at_center,white,transparent)]"
-          )}
-          glow={false}
-        />
-        {/* 🟪 Icon */}
-        <div
-          className={cn(
-            "animate-pulse-shadow",
-            "mx-auto -mt-10 h-[40cqw]",
-            "grid aspect-square place-items-center rounded-full",
-            "z-1",
-            "border-[3px] border-primary/3",
-            "bg-linear-to-br from-[#392413] to-[#392413]"
-          )}
-        >
-          <div className="relative size-[50%]">
-            <Icon
-              className="absolute h-full w-full animate-blur-glow text-primary blur-xs"
-              strokeWidth={1.3}
-            />
-            <Icon className="h-full w-full text-primary" strokeWidth={1.3} />
-          </div>
-        </div>
+        <FrontCardIcon Icon={Icon} />
       </CardContent>
 
+      {/* 🆎🔠🔁 Title + Description + Flip icon */}
       <CardFooter
         className={cn(
           "flex items-center justify-between",
@@ -255,41 +295,36 @@ function ServiceCard({
           "@xs:gap-x-8"
         )}
       >
+        {/* 🆎🔠 Title + Description */}
         <div>
-          {/* 🆎 Title */}
-          <CardTitle
-            className={cn(
-              "mb-1 font-kanit font-semibold",
-              "text-primary-foreground",
-              "group-hover:text-primary",
-              "text-2xl",
-              "@xs:text-[2rem]",
-              "@sm:text-4xl"
-            )}
-          >
-            {title}
-          </CardTitle>
-          <div
-            className={cn(
-              "text-base text-muted-foreground leading-tight",
-              "@sm:block hidden"
-            )}
-          >
-            {subtitle}
-          </div>
+          {/* 🆎 */}
+          <ServiceTitle>{title}</ServiceTitle>
+          {/* 🔠 */}
+          <ServiceDescription>{description}</ServiceDescription>
         </div>
-        <div className="grid shrink-0 place-items-center rounded-lg bg-primary/15 p-1.5 text-primary">
-          <Repeat2Icon className={cn("@lg:size-9 @md:size-8 size-7")} />
-        </div>
+        {/* 🔁 */}
+        <FlipIcon />
       </CardFooter>
-      {/* 🔄 Laser rotating */}
-      {/*{hasMounted && isDesktop && (
-        <BorderBeam delay={beamDelay} reverse={index % 2 === 0} size={100} />
-      )}*/}
     </div>
   );
+}
 
-  const BackCard = (
+// ==============================
+// ⬇️🃏 BACK CARD
+function BackCard({
+  title,
+  description,
+  isDesktop,
+  isFlipped,
+  features,
+}: {
+  title: string;
+  description: string;
+  isDesktop: boolean;
+  isFlipped: boolean;
+  features: string[];
+}) {
+  return (
     <div
       className={cn(
         "absolute inset-0 flex h-full flex-col",
@@ -297,10 +332,10 @@ function ServiceCard({
         "gap-y-4 py-4",
         "@sm:gap-y-6 @sm:py-4",
         "@md:gap-y-6 @md:px-2 @md:py-8",
-        hasMounted && isDesktop && "backface-hidden rotate-y-180",
+        isDesktop && "backface-hidden rotate-y-180",
         isFlipped ? "opacity-100" : "opacity-0",
         // On mobile, hide completely when not flipped
-        hasMounted && isDesktop && !isFlipped && "pointer-events-none"
+        isDesktop && !isFlipped && "pointer-events-none"
       )}
     >
       {/* 🆎 Title */}
@@ -394,43 +429,85 @@ function ServiceCard({
           </div>
         </a>
       </CardFooter>
-      {/* 🔄 Laser rotating */}
-      {/*{hasMounted && isDesktop && (
-        <BorderBeam delay={beamDelay} reverse={index % 2 === 0} size={100} />
-      )}*/}
     </div>
   );
+}
 
+// ==============================
+// 🆎 Service title
+function ServiceTitle({ children }: { children: string }) {
+  return (
+    <CardTitle
+      className={cn(
+        "mb-1 font-kanit font-semibold",
+        "text-primary-foreground",
+        "group-hover:text-primary",
+        "text-2xl",
+        "@xs:text-[2rem]",
+        "@sm:text-4xl"
+      )}
+    >
+      {children}
+    </CardTitle>
+  );
+}
+
+// ==============================
+// 🔠 Service description
+function ServiceDescription({ children }: { children: string | undefined }) {
+  if (!children) return null;
   return (
     <div
       className={cn(
-        "@container relative",
-        // 📱 Responsive size
-        "aspect-square w-full",
-        "sm:aspect-4/5 sm:w-[calc(50%-1.5rem)]",
-        "lg:aspect-4/5 lg:w-[calc(33.333%-1.5rem)]",
-        // Only use perspective on desktop
-        hasMounted && isDesktop && "perspective-[2000px]"
+        "text-base text-muted-foreground leading-tight",
+        "@sm:block hidden"
       )}
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
     >
-      <Card
-        animation={false}
-        className={cn(
-          "relative",
-          "h-full",
-          "cursor-pointer",
-          "bg-linear-to-br from-zinc-950 to-zinc-900",
-          // 🖥️ 3D flip on desktop
-          hasMounted && isDesktop && "transform-3d transition-all duration-700",
-          hasMounted && isDesktop && isFlipped && "rotate-y-180",
-          hasMounted && isDesktop && !isFlipped && "rotate-y-0"
-        )}
-      >
-        {FrontCard}
-        {BackCard}
-      </Card>
+      {children}
+    </div>
+  );
+}
+
+// ==============================
+// 🔁 Flip icon
+function FlipIcon() {
+  return (
+    <div className="shrink-0 rounded-lg bg-primary/15 p-1.5 text-primary">
+      <Repeat2Icon className={cn("@lg:size-9 @md:size-8 size-7")} />
+    </div>
+  );
+}
+// ==============================
+// 🗿 Icon
+function FrontCardIcon({ Icon }: { Icon: LucideIcon }) {
+  return (
+    <div
+      className={cn(
+        "grid place-items-center",
+        "animate-pulse-shadow",
+        "mx-auto -mt-10",
+        "aspect-square h-[40cqw]",
+        "rounded-full",
+        "z-1",
+        "border-[3px] border-primary/3",
+        "bg-primary-muted"
+      )}
+    >
+      <div className="relative size-[50%]">
+        {/* 🌫️ Blur version */}
+        <Icon
+          className={cn(
+            "absolute",
+            "size-full",
+            "animate-blur-glow",
+            "text-primary",
+            "blur-xs"
+          )}
+          strokeWidth={1.3}
+        />
+        {/* 🗿 Icon */}
+        <Icon className="h-full w-full text-primary" strokeWidth={1.3} />
+      </div>
     </div>
   );
 }
