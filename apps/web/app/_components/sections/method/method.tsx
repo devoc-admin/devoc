@@ -22,10 +22,10 @@ function Method() {
         className={cn(
           "flex-1",
           "border-t-16 border-t-orange-600",
-          // Padding ↕️
-          "py-16",
-          "sm:py-22",
-          "md:py-36",
+          // Custom padding ↕️
+          "pt-12!",
+          "sm:pt-22!",
+          "md:pt-36!",
           // ⭕ Rounded
           "rounded-t-[50px]",
           "sm:rounded-t-[100px]",

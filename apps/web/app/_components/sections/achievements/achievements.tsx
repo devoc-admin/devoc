@@ -46,7 +46,6 @@ function BackgroundWithBeams() {
         scale={0.2}
         speed={2}
       />
-      )
     </div>
   );
 }
