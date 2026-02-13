@@ -8,9 +8,9 @@ const Services = dynamic(
   () => import("./_components/sections/services/services")
 );
 
-// const Realisations = dynamic(
-//   () => import("./_components/sections/achievements/achievements")
-// );
+const Realisations = dynamic(
+  () => import("./_components/sections/achievements/achievements")
+);
 
 const Method = dynamic(() => import("./_components/sections/method/method"));
 
@@ -37,7 +37,7 @@ export default function Home() {
       <Us />
       {/*<ThreadsSeparator />*/}
       <Services />
-      {/*<Realisations />*/}
+      <Realisations />
       <Method />
       <Contact />
       <Footer />

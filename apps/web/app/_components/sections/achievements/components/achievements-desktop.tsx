@@ -1,7 +1,14 @@
 "use client";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { motion } from "motion/react";
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Safari } from "@/components/magicui/safari";
 import { WordRotate } from "@/components/magicui/word-rotate";
 import { RatingBadge } from "@/components/untitledui/rating-badge";
@@ -24,20 +31,21 @@ const AchievementsContext = createContext<AchievementContext>(
 
 export function AchievementsDesktop() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const changeAchievementIndex = (delta: number) => {
+
+  const changeAchievementIndex = useCallback((delta: number) => {
     setCurrentIndex((prevIndex) => {
       let newIndex = (prevIndex + delta) % achievements.length;
       if (newIndex < 0) newIndex = achievements.length - 1;
       return newIndex;
     });
-  };
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({ changeAchievementIndex, currentIndex }),
+    [changeAchievementIndex, currentIndex]
+  );
   return (
-    <AchievementsContext
-      value={{
-        changeAchievementIndex,
-        currentIndex,
-      }}
-    >
+    <AchievementsContext value={contextValue}>
       <div className="mx-auto flex w-full max-w-350 gap-x-12">
         <AchievementsPanel />
         <AchievementsPreview />
@@ -156,7 +164,7 @@ function Rotate3dAndFloat({
   children: React.ReactNode;
   index: number;
 }) {
-  const randomDelay = Math.random() * 2;
+  const randomDelay = useRef(Math.random() * 2).current;
   return (
     <motion.div
       animate={{
@@ -202,11 +210,6 @@ function MoveAnimation({
     translateZ: -depth * positionInStack,
   };
 
-  // const initialPosition = {
-  //   translateX: position.translateX + depth,
-  //   translateY: position.translateY - depth,
-  //   translateZ: -(position.translateZ + depth),
-  // };
   return (
     <motion.div
       animate={{

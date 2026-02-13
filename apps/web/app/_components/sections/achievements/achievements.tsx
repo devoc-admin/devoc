@@ -1,6 +1,5 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useWindowSize } from "usehooks-ts";
 import { cn } from "@/lib/utils";
 import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
@@ -13,19 +12,21 @@ const Beams = dynamic(() => import("@/components/react-bits/beams"), {
 });
 
 export default function Realisations() {
-  const { width = 0 } = useWindowSize();
-  const isDesktop = width >= 1400;
-
   return (
     <Section id="realisations" theme="dark">
       <BackgroundWithBeams />
       <TopBar />
       <SectionTitle
-        className={cn("z-10", "mb-8", "xs:mb-12", "sm:mb-16", "md:mb-24")}
+        className={cn("z-10", "mb-8 xs:mb-12 sm:mb-16 md:mb-24")}
         description="Nos derniers projets qui illustrent notre approche orientée résultats ✨"
         title="Découvrez nos réalisations"
       />
-      {isDesktop ? <AchievementsDesktop /> : <AchievementsMobile />}
+      <div className="3xl:hidden">
+        <AchievementsMobile />
+      </div>
+      <div className="3xl:block hidden">
+        <AchievementsDesktop />
+      </div>
     </Section>
   );
 }
@@ -34,7 +35,7 @@ export default function Realisations() {
 // 🖼️ Background with beams
 function BackgroundWithBeams() {
   return (
-    <div className="absolute top-0 z-0 h-full w-full">
+    <div className={cn("absolute inset-0 z-0", "size-full")}>
       <Beams
         beamHeight={15}
         beamNumber={12}
@@ -45,6 +46,7 @@ function BackgroundWithBeams() {
         scale={0.2}
         speed={2}
       />
+      )
     </div>
   );
 }
