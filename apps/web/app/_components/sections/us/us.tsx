@@ -11,11 +11,14 @@ export default function SectionUs() {
       <SectionTitle title="Qui sommes-nous ?" />
       <div
         className={cn(
+          //⬆️ Margin top
           "mt-0",
           "lg:mt-8",
           "xl:mt-12",
           "2xl:mt-16",
+          // ↔️ Width
           "max-w-[60ch]",
+          // ↕️ Spacing
           "space-y-12",
           "lg:space-y-14",
           "2xl:space-y-20"

@@ -5,29 +5,45 @@ import { companies } from "./work-with-data";
 
 function WorkWith() {
   return (
-    <div className="mb-22 w-full text-center text-2xl">
-      <div className="mb-6 px-6 font-kanit font-regular text-3xl">
-        Nos experts ont travaillé avec eux
-      </div>
-      <div className="flex w-full">
-        <div className="grow border-border border-y" />
+    <div className={cn("my-22")}>
+      <NoxExpertsOntTravailléAvecEux />
+      <div className="flex w-full text-2xl">
+        <Border />
         <div
           className={cn(
-            "grid max-w-200 grid-cols-3 grid-rows-2 border-b border-l",
-            // Responsive
+            "max-w-200",
+            "border-b border-l",
+            // 📱 Responsive
+            "grid",
             "grid-cols-1 grid-rows-auto",
             "xs:grid-cols-2 xs:grid-rows-auto",
             "sm:grid-cols-3 sm:grid-rows-2"
           )}
         >
-          {companies.map(({ name, logo, link }) => (
-            <Company key={name} link={link} logo={logo} name={name} />
+          {companies.map((props) => (
+            <Company key={props.name} {...props} />
           ))}
         </div>
-        <div className="grow border-border border-y" />
+        <Border />
       </div>
     </div>
   );
+}
+
+// ==========================
+// 🆎 Header
+function NoxExpertsOntTravailléAvecEux() {
+  return (
+    <div className="mb-6 px-6 text-center font-kanit font-regular text-3xl">
+      Nos experts ont travaillé avec eux
+    </div>
+  );
+}
+
+// ==========================
+// ― Border
+function Border() {
+  return <div className="grow border-border border-y" />;
 }
 
 export default WorkWith;
