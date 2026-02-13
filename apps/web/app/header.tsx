@@ -204,12 +204,12 @@ const collapsedWidth = 1200;
 const expandedWidth = 1600;
 
 const maxCollapsedWidth = "80vw";
-const maxExpandedWidth = "100vw";
+const maxExpandedWidth = "95vw";
 
 function CollapseWhileScrolling({ children }: { children: React.ReactNode }) {
   const { scrollY } = useScroll();
 
-  const { y, maxWidth, width } = useTransform(scrollY, [0, 50], {
+  const { y, maxWidth, width } = useTransform(scrollY, [0, 150], {
     maxWidth: [maxExpandedWidth, maxCollapsedWidth],
     width: [expandedWidth, collapsedWidth],
     y: [expandedOffset, collapsedOffset],
