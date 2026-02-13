@@ -1,5 +1,4 @@
 "use client";
-
 import { MenuIcon, SendIcon, XIcon } from "lucide-react";
 import {
   motion,
@@ -9,96 +8,103 @@ import {
 } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
-import { useClickAnyWhere, useMediaQuery } from "usehooks-ts";
+import { type RefObject, useCallback, useRef, useState } from "react";
+import { useClickAnyWhere } from "usehooks-ts";
 import { Glass } from "@/components/sera-ui/liquid-glass";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
 
 export default function Header() {
-  const isMobile = useMediaQuery("(max-width: 970px)");
-  if (isMobile) return <MobileHeader />;
-
-  return <DesktopHeader />;
+  return (
+    <>
+      <div className="lg:hidden">
+        <MobileHeader />
+      </div>
+      <div className="hidden lg:block">
+        <DesktopHeader />
+      </div>
+    </>
+  );
 }
 
 // --------------------------------
+// 📱
 const mobileHeaderVariants = {
   hidden: { opacity: 0, y: -100 },
   visible: { opacity: 1, y: 0 },
 };
 
+const scrollThreshold = 100;
+
 function MobileHeader() {
   const { iconRef, isOpened } = useToogleNavbarLink();
-  const { scrollY } = useScroll();
-  const [isVisible, setIsVisible] = useState(false);
-
-  useMotionValueEvent(scrollY, "change", (currentScrollY) => {
-    const scrollThreshold = 100;
-    const isScrollingUp = currentScrollY < (scrollY.getPrevious() ?? 0);
-    const isBelowThreshold = currentScrollY > scrollThreshold;
-
-    setIsVisible(isScrollingUp && isBelowThreshold);
-  });
 
   return (
-    <motion.div
-      animate={isVisible ? "visible" : "hidden"}
-      className={cn(
-        "fixed top-3 left-1/2 z-5000 mx-auto mt-0 -translate-x-1/2",
-        "will-change-transform"
-      )}
-      initial="hidden"
-      transition={{ duration: 0.3, ease: "easeInOut" }}
-      variants={mobileHeaderVariants}
-    >
+    <RevealOnScroll>
       <div
         className={cn(
-          "flex w-[95vw] items-center justify-between",
+          "flex items-center justify-between",
+          "w-[95vw]",
           "px-4 py-2",
-          "rounded-full backdrop-blur-sm transition-[background] duration-300",
+          "backdrop-blur-sm",
+          // ⭕ Rounded
+          "rounded-full",
           isOpened &&
             "rounded-tl-lg rounded-tr-lg rounded-br-none! rounded-bl-none!",
-          "bg-white/50 text-secondary hover:text-secondary", // Light
-          "[html[data-nav-theme='dark']_&]:bg-zinc-900/20" // Dark
+          // 🖼️ Background
+          "transition-[background] duration-300",
+          "bg-white/50 text-secondary hover:text-secondary", // ☀️ Light
+          "[html[data-nav-theme='dark']_&]:bg-zinc-900/20" // 🌙 Dark
         )}
       >
-        <LogoButtonWithText />
-        <div className="flex items-center">
-          <button
-            aria-expanded={isOpened}
-            aria-label={
-              isOpened
-                ? "Fermer le menu de navigation"
-                : "Ouvrir le menu de navigation"
-            }
-            className="px-4 py-1"
-            ref={iconRef}
-            type="button"
-          >
-            {isOpened ? (
-              <XIcon
-                aria-hidden="true"
-                color="var(--primary)"
-                strokeWidth={2.5}
-              />
-            ) : (
-              <MenuIcon
-                aria-hidden="true"
-                color="var(--primary)"
-                strokeWidth={3}
-              />
-            )}
-          </button>
+        {/* ♻️ Logo */}
+        <DevOc />
+        {/* 🆕📨 Buttons */}
+        <div className="flex">
+          {/* 🆕 Open/close */}
+          <OpenCloseButton iconRef={iconRef} isOpened={isOpened} />
+          {/* 📨 Contact */}
           <ContactButton />
         </div>
       </div>
       {isOpened && <LinksMobile />}
-    </motion.div>
+    </RevealOnScroll>
   );
 }
 
+// --------------------------------
+function OpenCloseButton({
+  isOpened,
+  iconRef,
+}: {
+  isOpened: boolean;
+  iconRef: RefObject<HTMLButtonElement | null>;
+}) {
+  return (
+    <button
+      aria-expanded={isOpened}
+      aria-label={
+        isOpened
+          ? "Fermer le menu de navigation"
+          : "Ouvrir le menu de navigation"
+      }
+      className="cursor-pointer px-4 py-1"
+      ref={iconRef}
+      type="button"
+    >
+      {isOpened ? <CloseIcon /> : <OpenIcon />}
+    </button>
+  );
+}
+function CloseIcon() {
+  return <XIcon aria-hidden="true" color="var(--primary)" strokeWidth={2.5} />;
+}
+function OpenIcon() {
+  return <MenuIcon aria-hidden="true" color="var(--primary)" strokeWidth={3} />;
+}
+
+// --------------------------------
 function useToogleNavbarLink() {
   const [isOpened, setIsOpened] = useState(false);
   const iconRef = useRef<HTMLButtonElement>(null);
@@ -116,38 +122,57 @@ function useToogleNavbarLink() {
 }
 
 // --------------------------------
+function RevealOnScroll({ children }: { children: React.ReactNode }) {
+  const { scrollY } = useScroll();
+  const [isVisible, setIsVisible] = useState(false);
+
+  // 👆⚙️ Determine whether the header should be visible or not depending on scroll direction and threshold
+  useMotionValueEvent(scrollY, "change", (currentScrollY) => {
+    const isScrollingUp =
+      typeof scrollY.getPrevious() === "number" &&
+      currentScrollY < (scrollY.getPrevious() ?? 0);
+    const isBelowThreshold = currentScrollY > scrollThreshold;
+    setIsVisible(isScrollingUp && isBelowThreshold);
+  });
+
+  return (
+    <motion.div
+      animate={isVisible ? "visible" : "hidden"}
+      className={cn(
+        "fixed top-3 left-1/2 z-5000",
+        "mx-auto mt-0",
+        "-translate-x-1/2",
+        "will-change-transform"
+      )}
+      initial="hidden"
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      variants={mobileHeaderVariants}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// --------------------------------
+// 💻
 function DesktopHeader() {
   return (
-    <div
-      className={cn(
-        "fixed z-5000",
-        "mx-auto mt-0",
-        "top-0 left-1/2 -translate-x-1/2",
-        "rounded-full"
-      )}
-    >
+    <div className={cn("fixed z-5000", "top-0 left-1/2 -translate-x-1/2")}>
       <SlideFadeAnimation>
-        <CollapseWhileScroll>
-          <Glass
-            borderRadius={1000}
-            className={cn(
-              "flex items-center justify-between",
-              "rounded-full",
-              "mx-auto",
-              "px-8 py-3",
-              "bg-white/80! text-secondary hover:text-secondary", // ☀️ Light
-              "[html[data-nav-theme='dark']_&]:bg-zinc-900/70!" // 🌙 Dark
-            )}
-          >
+        <CollapseWhileScrolling>
+          <CustomGlass>
+            {/* ♻️ */}
             <div className="flex w-50 justify-start">
-              <LogoButtonWithText />
+              <DevOc />
             </div>
+            {/* 🔗 */}
             <LinksDesktop />
+            {/* 📨 */}
             <div className="flex w-50 justify-end">
               <ContactButton>Contact</ContactButton>
             </div>
-          </Glass>
-        </CollapseWhileScroll>
+          </CustomGlass>
+        </CollapseWhileScrolling>
       </SlideFadeAnimation>
     </div>
   );
@@ -172,23 +197,52 @@ function SlideFadeAnimation({ children }: { children: React.ReactNode }) {
 }
 
 // ---------------------------------
-function CollapseWhileScroll({ children }: { children: React.ReactNode }) {
+const collapsedOffset = 25;
+const expandedOffset = 10;
+
+const collapsedWidth = 1200;
+const expandedWidth = 1600;
+
+const maxCollapsedWidth = "80vw";
+const maxExpandedWidth = "100vw";
+
+function CollapseWhileScrolling({ children }: { children: React.ReactNode }) {
   const { scrollY } = useScroll();
 
   const { y, maxWidth, width } = useTransform(scrollY, [0, 50], {
-    maxWidth: ["100vw", "80vw"],
-    width: [1600, 1200],
-    y: [10, 25],
+    maxWidth: [maxExpandedWidth, maxCollapsedWidth],
+    width: [expandedWidth, collapsedWidth],
+    y: [expandedOffset, collapsedOffset],
   });
 
   return (
     <motion.div
       className="will-change-transform"
-      initial={false}
       style={{ maxWidth, width, y }}
     >
       {children}
     </motion.div>
+  );
+}
+
+// ---------------------------------
+//🧊 Custom glass
+function CustomGlass({ children }: { children: React.ReactNode }) {
+  return (
+    <Glass
+      borderRadius={1000}
+      className={cn(
+        "flex items-center justify-between",
+        "rounded-full",
+        "mx-auto",
+        "px-8 py-3",
+        "text-secondary hover:text-secondary",
+        "bg-white/80!", // ☀️ Light
+        "[html[data-nav-theme='dark']_&]:bg-zinc-900/70!" // 🌙 Dark
+      )}
+    >
+      {children}
+    </Glass>
   );
 }
 
@@ -201,17 +255,31 @@ function LogoButton({
   children?: React.ReactNode;
   logoSize?: number;
 }) {
+  const backToTop = useCallback(
+    () => window.scrollTo({ behavior: "smooth", top: 0 }),
+    []
+  );
+  const enterBackToTop = useCallback(
+    (e: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        backToTop();
+      }
+    },
+    [backToTop]
+  );
   return (
     <button
       aria-label="Retour en haut de la page"
-      className="group flex cursor-pointer items-center gap-2 text-2xl"
-      onClick={() => window.scrollTo({ behavior: "smooth", top: 0 })}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          window.scrollTo({ behavior: "smooth", top: 0 });
-        }
-      }}
+      className={cn(
+        "group",
+        "flex items-center gap-2",
+        "cursor-pointer",
+        "text-2xl",
+        "outline-offset-4"
+      )}
+      onClick={backToTop}
+      onKeyDown={(e) => enterBackToTop(e)}
       title="Retour en haut"
       type="button"
     >
@@ -229,19 +297,25 @@ function LogoButton({
   );
 }
 
-function LogoButtonWithText() {
-  const DevOc = (
+function DevOc() {
+  const Text = (
     <>
       <span
         className={cn(
-          "font-bold tracking-tighter transition-colors duration-300",
-          "text-secondary", // Light
-          "[html[data-nav-theme='dark']_&]:text-white" // Dark
+          "font-bold tracking-tighter",
+          "transition-colors duration-300",
+          "text-secondary", // ☀️ Light
+          "[html[data-nav-theme='dark']_&]:text-white" // 🌙 Dark
         )}
       >
         Dev'
       </span>
-      <span className="bg-linear-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black text-transparent tracking-tighter">
+      <span
+        className={cn(
+          "bg-linear-to-br from-[#FF5709] to-[#FFC731] bg-clip-text",
+          "font-black text-transparent tracking-tighter"
+        )}
+      >
         Oc
       </span>
     </>
@@ -250,12 +324,18 @@ function LogoButtonWithText() {
   return (
     <LogoButton>
       <div className="relative">
-        {/* Blurry copy */}
-        <div className="absolute opacity-70 blur-sm [html[data-nav-theme='light']_&]:hidden">
-          {DevOc}
+        {/* 🌫️ Blurry copy */}
+        <div
+          className={cn(
+            "absolute opacity-70",
+            "blur-sm",
+            "[html[data-nav-theme='light']_&]:hidden" // ☀️ Light
+          )}
+        >
+          {Text}
         </div>
-        {/* Real text */}
-        <div>{DevOc}</div>
+        {/* 🔠 Real text */}
+        <div>{Text}</div>
       </div>
     </LogoButton>
   );
@@ -264,6 +344,16 @@ function LogoButtonWithText() {
 // --------------------------------
 // Links 🔗
 const LINKS = [
+  {
+    href: "#us",
+    id: "us",
+    label: "Le collectif",
+  },
+  {
+    href: "#method",
+    id: "method",
+    label: "Notre méthode",
+  },
   {
     href: "#services",
     id: "services",
@@ -274,28 +364,18 @@ const LINKS = [
     id: "realisations",
     label: "Réalisations",
   },
-  {
-    href: "#method",
-    id: "method",
-    label: "Notre méthode",
-  },
-  {
-    href: "#us",
-    id: "us",
-    label: "Le collectif",
-  },
 ];
 
 // -----------------------------------------------------------
 // Links 📱
-
 function LinksMobile() {
   return (
     <div
       className={cn(
-        "border-t-2 border-t-primary",
-        "flex w-full flex-col gap-y-2",
         "absolute top-full left-1/2 -translate-x-1/2",
+        "flex flex-col gap-y-2",
+        "w-full",
+        "border-t-2 border-t-primary",
         "rounded-br-lg rounded-bl-lg",
         "bg-white/70",
         "py-2 pt-4",
@@ -324,28 +404,24 @@ function LinksMobile() {
 
 // -----------------------------------------------------------
 // Links 💻
-
-function generateLinkClassName(id: string) {
-  return `[html[data-section-name='${id}']_&]:border-b-primary [html[data-section-name='${id}']_&]:text-primary`;
-}
-
 function LinksDesktop() {
   return (
     <ul
       className={cn(
-        "flex items-center gap-12 font-semibold",
-        "text-secondary", // Light
-        "[html[data-nav-theme='dark']_&]:text-white" // Dark
+        "flex items-center gap-x-12",
+        "font-semibold",
+        "text-secondary", // ☀️ Light
+        "[html[data-nav-theme='dark']_&]:text-white" // 🌙 Dark
       )}
     >
       {LINKS.map(({ href, label, id }) => (
         <li
           className={cn(
-            "whitespace-nowrap border-2 border-transparent text-center transition-colors duration-300",
-            "hover:text-primary",
-            generateLinkClassName(id)
+            "whitespace-nowrap",
+            "text-center hover:text-primary",
+            "transition-colors duration-300"
           )}
-          key={href}
+          key={id}
         >
           <Link href={href}>{label}</Link>
         </li>
@@ -355,6 +431,7 @@ function LinksDesktop() {
 }
 
 // ----------------------------------
+// 📨 Contact button
 function ContactButton({ children = null }: React.PropsWithChildren) {
   return (
     <Link href="#contact">
@@ -367,7 +444,7 @@ function ContactButton({ children = null }: React.PropsWithChildren) {
           "font-bold text-primary-foreground",
           "transition-colors",
           children && "px-5!",
-          "bg-linear-to-r from-primary to-primary-lighter",
+          "bg-linear-to-r bg-transparent! from-primary to-primary-lighter",
           "hover:bg-linear-to-r hover:from-primary/90 hover:to-primary-lighter/90"
         )}
       >
