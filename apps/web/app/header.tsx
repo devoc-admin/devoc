@@ -283,15 +283,25 @@ function LogoButton({
       title="Retour en haut"
       type="button"
     >
-      <Image
-        alt=""
-        aria-hidden="true"
-        className="group-hover:animate-spin"
-        height={logoSize}
-        priority
-        src={Icon}
-        width={logoSize}
-      />
+      <motion.div
+        transition={{
+          damping: 10,
+          duration: 1,
+          mass: 1,
+          stiffness: 100,
+          type: "spring",
+        }}
+        whileHover={{ rotate: 360 }}
+      >
+        <Image
+          alt=""
+          aria-hidden="true"
+          height={logoSize}
+          priority
+          src={Icon}
+          width={logoSize}
+        />
+      </motion.div>
       {children}
     </button>
   );
