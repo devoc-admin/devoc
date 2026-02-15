@@ -496,22 +496,23 @@ function CustomCheckbox({
   handleChange,
   name,
   children,
-  ...props
-}: React.ComponentProps<"button"> & {
+  disabled,
+}: {
   checked: boolean;
   handleChange: (value: boolean) => void;
   name: string;
   children: React.ReactNode;
+  disabled?: boolean;
 }) {
   return (
     <div className="flex items-center gap-x-2">
       <Checkbox
         checked={checked}
         className="cursor-pointer"
+        disabled={disabled}
         id={name}
         name={name}
         onCheckedChange={() => handleChange(!checked)}
-        {...props}
       />
       <Label className="mb-0 cursor-pointer" htmlFor={name}>
         {children}
