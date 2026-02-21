@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Lato, Playfair_Display } from "next/font/google";
-import "../globals.css";
+import { notFound } from "next/navigation";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { routing } from "@/i18n/routing";
+import "../../globals.css";
 
 const playfair = Playfair_Display({
   display: "swap",
@@ -31,17 +34,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default function FrontendLayout({
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export default async function LocaleLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
+  const { locale } = await params;
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${playfair.variable} ${lato.variable} ${cormorant.variable}`}
       >
-        {children}
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
   );

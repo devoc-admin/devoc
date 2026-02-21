@@ -1,0 +1,89 @@
+{
+  "common": {
+    "addToCart": "Ajouter au panier",
+    "backToHome": "Retour à l'accueil",
+    "cart": "Panier",
+    "close": "Fermer",
+    "closedNow": "Fermé",
+    "contact": "Contact",
+    "freeShipping": "Livraison offerte dès {threshold}€",
+    "language": "Langue",
+    "loading": "Chargement...",
+    "menu": "Menu",
+    "openNow": "Ouvert",
+    "outOfStock": "Rupture de stock",
+    "readMore": "Lire la suite",
+    "search": "Rechercher",
+    "seeAll": "Voir tout"
+  },
+  "nav": {
+    "about": "À propos",
+    "blog": "Blog",
+    "cart": "Panier",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "home": "Accueil",
+    "reviews": "Avis",
+    "shop": "Boutique"
+  },
+  "home": {
+    "featuredCategories": "Nos catégories",
+    "heroSubtitle": "Spécialités artisanales du Sud de la France",
+    "heroTitle": "Saveurs d'Aude",
+    "shopNow": "Découvrir la boutique"
+  },
+  "shop": {
+    "allCategories": "Toutes les catégories",
+    "filters": "Filtres",
+    "noProducts": "Aucun produit trouvé",
+    "onSale": "En promotion",
+    "price": "Prix",
+    "results": "{count, plural, =0 {Aucun produit} one {# produit} other {# produits}}",
+    "sortBy": "Trier par",
+    "sortNewest": "Nouveautés",
+    "sortPriceAsc": "Prix croissant",
+    "sortPriceDesc": "Prix décroissant"
+  },
+  "product": {
+    "addToCart": "Ajouter au panier",
+    "description": "Description",
+    "inStock": "En stock",
+    "outOfStock": "Rupture de stock",
+    "relatedProducts": "Produits similaires",
+    "selectVariant": "Choisir une variante",
+    "sku": "Réf."
+  },
+  "cart": {
+    "checkout": "Commander",
+    "continueShopping": "Continuer mes achats",
+    "empty": "Votre panier est vide",
+    "freeShippingProgress": "Plus que {remaining}€ pour la livraison offerte !",
+    "freeShippingReached": "Livraison offerte !",
+    "quantity": "Quantité",
+    "remove": "Retirer",
+    "shippingCost": "Frais de livraison",
+    "subtotal": "Sous-total",
+    "title": "Mon panier",
+    "total": "Total"
+  },
+  "contact": {
+    "email": "Email",
+    "message": "Message",
+    "name": "Nom",
+    "send": "Envoyer",
+    "subject": "Sujet",
+    "success": "Votre message a bien été envoyé !",
+    "title": "Nous contacter"
+  },
+  "footer": {
+    "allRightsReserved": "Tous droits réservés",
+    "cgv": "CGV",
+    "followUs": "Suivez-nous",
+    "legalNotice": "Mentions légales",
+    "newsletter": "Newsletter",
+    "newsletterPlaceholder": "Votre email",
+    "newsletterSubscribe": "S'inscrire",
+    "openingHours": "Horaires d'ouverture",
+    "privacyPolicy": "Politique de confidentialité"
+  }
+}

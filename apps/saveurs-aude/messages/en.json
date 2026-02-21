@@ -1,0 +1,89 @@
+{
+  "common": {
+    "addToCart": "Add to cart",
+    "backToHome": "Back to home",
+    "cart": "Cart",
+    "close": "Close",
+    "closedNow": "Closed",
+    "contact": "Contact",
+    "freeShipping": "Free shipping from €{threshold}",
+    "language": "Language",
+    "loading": "Loading...",
+    "menu": "Menu",
+    "openNow": "Open",
+    "outOfStock": "Out of stock",
+    "readMore": "Read more",
+    "search": "Search",
+    "seeAll": "See all"
+  },
+  "nav": {
+    "about": "About",
+    "blog": "Blog",
+    "cart": "Cart",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "home": "Home",
+    "reviews": "Reviews",
+    "shop": "Shop"
+  },
+  "home": {
+    "featuredCategories": "Our categories",
+    "heroSubtitle": "Artisanal specialties from the South of France",
+    "heroTitle": "Saveurs d'Aude",
+    "shopNow": "Discover our shop"
+  },
+  "shop": {
+    "allCategories": "All categories",
+    "filters": "Filters",
+    "noProducts": "No products found",
+    "onSale": "On sale",
+    "price": "Price",
+    "results": "{count, plural, =0 {No products} one {# product} other {# products}}",
+    "sortBy": "Sort by",
+    "sortNewest": "Newest",
+    "sortPriceAsc": "Price: low to high",
+    "sortPriceDesc": "Price: high to low"
+  },
+  "product": {
+    "addToCart": "Add to cart",
+    "description": "Description",
+    "inStock": "In stock",
+    "outOfStock": "Out of stock",
+    "relatedProducts": "Related products",
+    "selectVariant": "Select a variant",
+    "sku": "Ref."
+  },
+  "cart": {
+    "checkout": "Checkout",
+    "continueShopping": "Continue shopping",
+    "empty": "Your cart is empty",
+    "freeShippingProgress": "Only €{remaining} left for free shipping!",
+    "freeShippingReached": "Free shipping!",
+    "quantity": "Quantity",
+    "remove": "Remove",
+    "shippingCost": "Shipping",
+    "subtotal": "Subtotal",
+    "title": "My cart",
+    "total": "Total"
+  },
+  "contact": {
+    "email": "Email",
+    "message": "Message",
+    "name": "Name",
+    "send": "Send",
+    "subject": "Subject",
+    "success": "Your message has been sent!",
+    "title": "Contact us"
+  },
+  "footer": {
+    "allRightsReserved": "All rights reserved",
+    "cgv": "Terms & Conditions",
+    "followUs": "Follow us",
+    "legalNotice": "Legal notice",
+    "newsletter": "Newsletter",
+    "newsletterPlaceholder": "Your email",
+    "newsletterSubscribe": "Subscribe",
+    "openingHours": "Opening hours",
+    "privacyPolicy": "Privacy policy"
+  }
+}
