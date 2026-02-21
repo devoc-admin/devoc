@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --breakpoint-xs: 25rem;
+
+  /* Fonts */
+  --font-heading: var(--font-playfair);
+  --font-body: var(--font-lato);
+  --font-accent: var(--font-cormorant);
+
+  /* Semantic color tokens */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+
+  /* Radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.5rem;
+
+  /* Saveurs d'Aude — palette crème / marron / cuivre */
+  --background: oklch(0.965 0.015 75);       /* Crème lin #FAF3E8 */
+  --foreground: oklch(0.22 0.04 45);         /* Brun profond #2C1810 */
+
+  --card: oklch(0.945 0.02 75);              /* Sable chaud #EDE0CC */
+  --card-foreground: oklch(0.22 0.04 45);    /* Brun profond */
+
+  --popover: oklch(0.965 0.015 75);          /* Crème lin */
+  --popover-foreground: oklch(0.22 0.04 45); /* Brun profond */
+
+  --primary: oklch(0.38 0.08 30);            /* Marron chaud #6B3A2A */
+  --primary-foreground: oklch(0.965 0.015 75); /* Crème lin */
+
+  --secondary: oklch(0.92 0.025 70);         /* Beige rosé #E8D5C0 */
+  --secondary-foreground: oklch(0.22 0.04 45); /* Brun profond */
+
+  --muted: oklch(0.945 0.02 75);             /* Sable chaud */
+  --muted-foreground: oklch(0.48 0.025 55);  /* Brun grisé #6B5E54 */
+
+  --accent: oklch(0.62 0.12 60);             /* Cuivre #B87333 */
+  --accent-foreground: oklch(0.965 0.015 75); /* Crème lin */
+
+  --destructive: oklch(0.52 0.12 35);        /* Terracotta #A0522D */
+
+  --success: oklch(0.55 0.06 140);           /* Vert sauge #7A8B6F */
+  --success-foreground: oklch(0.965 0.015 75);
+
+  --border: oklch(0.82 0.025 70);            /* Beige foncé #D1C4B2 */
+  --input: oklch(0.82 0.025 70);             /* Beige foncé */
+  --ring: oklch(0.62 0.12 60);               /* Cuivre */
+
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background font-body text-foreground antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading;
+  }
+}

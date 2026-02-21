@@ -1,5 +1,5 @@
 "use client";
-import { CalendarIcon, FileCheckCornerIcon } from "lucide-react";
+import { CalendarIcon, FileCheckIcon } from "lucide-react";
 import { useCrawlCardContext } from "../crawl-card-context";
 
 export function CrawlCardDetails() {
@@ -15,7 +15,7 @@ export function CrawlCardDetails() {
       </div>
       {/* 🔢 Crawled */}
       <div className="flex items-center gap-x-1 text-sm">
-        <FileCheckCornerIcon size={14} />
+        <FileCheckIcon size={14} />
         <span>{crawl.pagesCrawled} pages analysées</span>
       </div>
     </div>
