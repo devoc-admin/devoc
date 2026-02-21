@@ -10,7 +10,8 @@
     "lint": "bun x ultracite fix",
     "format": "biome format --write",
     "check-types": "tsc --noEmit",
-    "payload": "payload"
+    "payload": "payload",
+    "seed": "bun --bun run payload/seed.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.69.0",
