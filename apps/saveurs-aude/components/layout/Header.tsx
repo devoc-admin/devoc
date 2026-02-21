@@ -1,6 +1,6 @@
-import { ShoppingBag } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { CartBadge } from "./CartBadge";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileMenu } from "./MobileMenu";
 
@@ -41,13 +41,7 @@ export async function Header() {
 
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
-          <Link
-            aria-label={t("cart")}
-            className="relative rounded-full p-2 text-foreground/70 transition-colors hover:bg-secondary hover:text-primary"
-            href="/panier"
-          >
-            <ShoppingBag className="size-5" />
-          </Link>
+          <CartBadge label={t("cart")} />
           <MobileMenu />
         </div>
       </div>
