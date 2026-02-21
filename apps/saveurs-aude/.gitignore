@@ -2,5 +2,4 @@
 node_modules
 .env.local
 .env
-payload-types.ts
 app/(payload)/admin/importMap.js

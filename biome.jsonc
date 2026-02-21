@@ -39,7 +39,8 @@
       "!**/components/sera-ui",
       "!**/components/magicui",
       "!**/components/tailgrids",
-      "!**/bilan"
+      "!**/bilan",
+      "!**/payload-types.ts"
     ]
   },
   "formatter": {

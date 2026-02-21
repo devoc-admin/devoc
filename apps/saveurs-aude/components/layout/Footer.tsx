@@ -3,16 +3,6 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getPayloadClient } from "@/lib/payload";
 
-type OpeningHoursSlot = {
-  id: string;
-  day: string;
-  openMorning?: string | null;
-  closeMorning?: string | null;
-  openAfternoon?: string | null;
-  closeAfternoon?: string | null;
-  closed?: boolean | null;
-};
-
 const quickLinks = [
   { href: "/boutique" as const, tKey: "shop" as const },
   { href: "/a-propos" as const, tKey: "about" as const },
@@ -139,7 +129,7 @@ export async function Footer() {
             </h4>
             {hours && hours.length > 0 ? (
               <dl className="mt-4 flex flex-col gap-1.5 text-muted-foreground text-sm">
-                {hours.map((slot: OpeningHoursSlot) => (
+                {hours.map((slot) => (
                   <div className="flex justify-between gap-2" key={slot.id}>
                     <dt className="capitalize">{slot.day}</dt>
                     <dd>

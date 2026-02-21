@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import type { Where } from "payload";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { getPayloadClient } from "@/lib/payload";
 import type { Category, Product } from "@/payload-types";
@@ -36,7 +37,7 @@ export default async function ShopPage({
   });
 
   // Build product query
-  const where: Record<string, unknown> = {
+  const where: Where = {
     status: { equals: "published" },
   };
 
