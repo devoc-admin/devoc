@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Lato, Playfair_Display } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
 import { routing } from "@/i18n/routing";
 import "../../globals.css";
 
@@ -56,7 +58,11 @@ export default async function LocaleLayout({
       <body
         className={`${playfair.variable} ${lato.variable} ${cormorant.variable}`}
       >
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <Header />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

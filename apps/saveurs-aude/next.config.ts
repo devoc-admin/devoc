@@ -14,5 +14,5 @@ const nextConfig: NextConfig = {
   },
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: withPayload expects NextConfig from its own bundled next version
-export default withPayload(withNextIntl(nextConfig) as any);
+// biome-ignore lint/suspicious/noExplicitAny: withPayload/withNextIntl expect NextConfig from different next versions in the monorepo
+export default withPayload(withNextIntl(nextConfig as any) as any);
