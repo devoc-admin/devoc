@@ -7,6 +7,7 @@ import sharp from "sharp";
 
 import { Categories } from "./payload/collections/Categories";
 import { Media } from "./payload/collections/Media";
+import { Orders } from "./payload/collections/Orders";
 import { Products } from "./payload/collections/Products";
 import { Users } from "./payload/collections/Users";
 import { Homepage } from "./payload/globals/Homepage";
@@ -22,7 +23,7 @@ export default buildConfig({
     user: "users",
   },
 
-  collections: [Users, Media, Categories, Products],
+  collections: [Users, Media, Categories, Products, Orders],
 
   db: postgresAdapter({
     pool: {

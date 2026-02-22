@@ -28,6 +28,14 @@ export const routing = defineRouting({
       en: "/terms",
       fr: "/cgv",
     },
+    "/commande": {
+      en: "/checkout",
+      fr: "/commande",
+    },
+    "/commande/confirmation": {
+      en: "/checkout/confirmation",
+      fr: "/commande/confirmation",
+    },
     "/contact": "/contact",
     "/faq": "/faq",
     "/mentions-legales": {

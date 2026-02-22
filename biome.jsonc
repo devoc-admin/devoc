@@ -40,7 +40,8 @@
       "!**/components/magicui",
       "!**/components/tailgrids",
       "!**/bilan",
-      "!**/payload-types.ts"
+      "!**/payload-types.ts",
+      "!**/migrations"
     ]
   },
   "formatter": {

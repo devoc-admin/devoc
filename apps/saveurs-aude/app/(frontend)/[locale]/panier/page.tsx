@@ -134,12 +134,12 @@ export default function CartPage() {
           >
             {t("continueShopping")}
           </Link>
-          <button
+          <Link
             className="rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
-            type="button"
+            href="/commande"
           >
             {t("checkout")}
-          </button>
+          </Link>
         </div>
       </div>
     </div>

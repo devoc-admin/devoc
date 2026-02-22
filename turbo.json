@@ -34,7 +34,9 @@
         "PGUSER",
         "POSTGRES_URL_NO_SSL",
         "POSTGRES_HOST",
-        "NEON_PROJECT_ID"
+        "NEON_PROJECT_ID",
+        "SECRET_STRIPE_API_KEY",
+        "STRIPE_WEBHOOK_SECRET"
       ]
     },
     "lint": {
