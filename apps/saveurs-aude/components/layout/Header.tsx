@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { CartBadge } from "./CartBadge";
@@ -18,9 +19,15 @@ export async function Header() {
     <header className="sticky top-0 z-40 border-border/50 border-b bg-background/95 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link
-          className="font-heading text-2xl text-primary tracking-tight"
+          className="flex items-center gap-2 font-heading text-2xl text-primary tracking-tight"
           href="/"
         >
+          <Image
+            alt=""
+            height={36}
+            src="/saveurs_aude_no_margin_no_title.svg"
+            width={36}
+          />
           Saveurs d&apos;Aude
         </Link>
 

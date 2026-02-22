@@ -2,6 +2,8 @@ import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import type { Payload } from "payload";
 import type Stripe from "stripe";
+import type { OrderEmailData } from "@/lib/email";
+import { sendNewOrderNotification, sendOrderConfirmation } from "@/lib/email";
 import { getPayloadClient } from "@/lib/payload";
 import { getStripe } from "@/lib/stripe";
 
@@ -12,6 +14,88 @@ type ItemMeta = {
   vid: string;
   vl: string;
 };
+
+function parseShippingAddress(
+  metadata: Record<string, string>,
+  deliveryMethod: string
+) {
+  if (deliveryMethod !== "shipping") return undefined;
+  return {
+    city: metadata.shippingCity || "",
+    country: metadata.shippingCountry || "",
+    street: metadata.shippingStreet || "",
+    zipCode: metadata.shippingZipCode || "",
+  };
+}
+
+function parseCustomer(metadata: Record<string, string>) {
+  return {
+    email: metadata.customerEmail || "",
+    firstName: metadata.customerFirstName || "",
+    lastName: metadata.customerLastName || "",
+    phone: metadata.customerPhone || "",
+  };
+}
+
+async function updateStock(
+  payload: Payload,
+  items: ItemMeta[]
+): Promise<Map<number, string>> {
+  const productNames = new Map<number, string>();
+  for (const item of items) {
+    const product = await payload.findByID({
+      collection: "products",
+      id: item.pid,
+    });
+
+    productNames.set(item.pid, product.title);
+
+    const updatedVariants = product.variants?.map((v) =>
+      v.id === item.vid ? { ...v, stock: Math.max(0, v.stock - item.q) } : v
+    );
+
+    await payload.update({
+      collection: "products",
+      data: { variants: updatedVariants },
+      id: item.pid,
+    });
+  }
+  return productNames;
+}
+
+async function sendOrderEmails(
+  metadata: Record<string, string>,
+  items: ItemMeta[],
+  productNames: Map<number, string>,
+  orderNumber: string,
+  deliveryMethod: "shipping" | "clickAndCollect",
+  shippingCost: number,
+  totalAmount: number
+) {
+  try {
+    const emailData: OrderEmailData = {
+      customer: parseCustomer(metadata),
+      deliveryMethod,
+      items: items.map((item) => ({
+        name: productNames.get(item.pid) ?? "Produit",
+        price: item.up,
+        quantity: item.q,
+        variant: item.vl,
+      })),
+      orderNumber,
+      shippingAddress: parseShippingAddress(metadata, deliveryMethod),
+      shippingCost,
+      totalAmount,
+    };
+
+    await Promise.all([
+      sendOrderConfirmation(emailData),
+      sendNewOrderNotification(emailData),
+    ]);
+  } catch (err) {
+    console.error("Failed to send order emails:", err);
+  }
+}
 
 async function processCheckoutCompleted(
   session: Stripe.Checkout.Session,
@@ -29,18 +113,16 @@ async function processCheckoutCompleted(
 
   const items: ItemMeta[] = JSON.parse(metadata.items || "[]");
 
-  await payload.create({
+  const deliveryMethod =
+    (metadata.deliveryMethod as "shipping" | "clickAndCollect") || "shipping";
+  const shippingCost = Number(metadata.shippingCost) || 0;
+  const totalAmount = session.amount_total ?? 0;
+
+  const createdOrder = await payload.create({
     collection: "orders",
     data: {
-      customer: {
-        email: metadata.customerEmail || "",
-        firstName: metadata.customerFirstName || "",
-        lastName: metadata.customerLastName || "",
-        phone: metadata.customerPhone || "",
-      },
-      deliveryMethod:
-        (metadata.deliveryMethod as "shipping" | "clickAndCollect") ||
-        "shipping",
+      customer: parseCustomer(metadata),
+      deliveryMethod,
       items: items.map((item) => ({
         product: item.pid,
         quantity: item.q,
@@ -48,46 +130,35 @@ async function processCheckoutCompleted(
         variantLabel: item.vl,
       })),
       orderNumber: "",
-      shippingAddress:
-        metadata.deliveryMethod === "shipping"
-          ? {
-              city: metadata.shippingCity || "",
-              country: metadata.shippingCountry || "",
-              street: metadata.shippingStreet || "",
-              zipCode: metadata.shippingZipCode || "",
-            }
-          : undefined,
-      shippingCost: Number(metadata.shippingCost) || 0,
+      shippingAddress: parseShippingAddress(metadata, deliveryMethod),
+      shippingCost,
       status: "confirmed",
       stripePaymentIntentId:
         typeof session.payment_intent === "string"
           ? session.payment_intent
           : "",
       stripeSessionId: session.id,
-      totalAmount: session.amount_total ?? 0,
+      totalAmount,
     },
     draft: false,
   });
 
-  for (const item of items) {
-    const product = await payload.findByID({
-      collection: "products",
-      id: item.pid,
-    });
+  const productNames = await updateStock(payload, items);
 
-    const updatedVariants = product.variants?.map((v) =>
-      v.id === item.vid ? { ...v, stock: Math.max(0, v.stock - item.q) } : v
-    );
-
-    await payload.update({
-      collection: "products",
-      data: { variants: updatedVariants },
-      id: item.pid,
-    });
-  }
+  await sendOrderEmails(
+    metadata,
+    items,
+    productNames,
+    createdOrder.orderNumber,
+    deliveryMethod,
+    shippingCost,
+    totalAmount
+  );
 }
 
 export async function POST(request: Request) {
+  console.log("[webhook] POST /api/stripe/webhook called");
+
   const body = await request.text();
   const headersList = await headers();
   const signature = headersList.get("stripe-signature");
