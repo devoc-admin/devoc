@@ -57,6 +57,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <meta content="Saveurs d'Aude" name="apple-mobile-web-app-title" />
       <body
         className={`${playfair.variable} ${lato.variable} ${cormorant.variable}`}
       >
