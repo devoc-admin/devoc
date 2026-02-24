@@ -1,11 +1,11 @@
 import puppeteer from "puppeteer";
 
 export interface RgpdResult {
+  consentBannerDetected: boolean;
   cookiesDetected: { name: string; domain: string; secure: boolean }[];
+  httpsSecure: boolean;
   localStorageDetected: { key: string }[];
   sessionStorageDetected: { key: string }[];
-  consentBannerDetected: boolean;
-  httpsSecure: boolean;
 }
 
 export async function runRgpdAudit(url: string): Promise<RgpdResult> {

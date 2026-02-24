@@ -14,15 +14,15 @@ const WCAG_VERSION_REGEX = /^(\d+\.\d+\.\d+)/;
 
 interface RgaaCriterion {
   number: number;
-  title: string;
-  tests: Record<string, string[]>;
   references?: { wcag?: string[] }[];
+  tests: Record<string, string[]>;
+  title: string;
 }
 
 interface RgaaTopic {
-  topic: string;
-  number: number;
   criteria: { criterium: RgaaCriterion }[];
+  number: number;
+  topic: string;
 }
 
 interface RgaaData {

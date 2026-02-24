@@ -12,19 +12,19 @@ const ensureDirectoryExists = (dirPath: string) => {
 };
 
 interface AuditResult {
-  url: string;
   lighthouseScores: {
     accessibility: number | null;
     bestPractices: number | null;
     performance: number | null;
     seo: number | null;
   };
+  reportPath: string;
   rgpd: {
     cookiesDetected: number;
     bannerDetected: boolean;
     httpsSecure: boolean;
   };
-  reportPath: string;
+  url: string;
 }
 
 export async function runAudit(
