@@ -1,5 +1,7 @@
 import type { CollectionConfig } from "payload";
 
+import { sendOrderStatusEmail } from "@/payload/hooks/sendOrderStatusEmail";
+
 export const Orders: CollectionConfig = {
   admin: {
     defaultColumns: [
@@ -123,6 +125,7 @@ export const Orders: CollectionConfig = {
     },
   ],
   hooks: {
+    afterChange: [sendOrderStatusEmail],
     beforeValidate: [
       async ({ data, operation, req }) => {
         if (operation === "create" && data && !data.orderNumber) {
