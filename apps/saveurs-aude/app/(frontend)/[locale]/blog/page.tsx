@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import type { Where } from "payload";
 import { JsonLd } from "@/components/JsonLd";
+import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
 import { Link } from "@/i18n/navigation";
 import { buildBreadcrumbList } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
@@ -82,7 +83,9 @@ export default async function BlogPage({
           { name: "Blog", url: `${baseUrl}/fr/blog` },
         ])}
       />
-      <h1 className="font-heading text-3xl text-primary">{t("title")}</h1>
+      <FadeInUp>
+        <h1 className="font-heading text-3xl text-primary">{t("title")}</h1>
+      </FadeInUp>
 
       {/* Tag filter */}
       {allTags.length > 0 && (
@@ -115,63 +118,67 @@ export default async function BlogPage({
 
       {/* Posts grid */}
       {posts.length > 0 ? (
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <StaggerContainer className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => {
             const cover =
               typeof post.coverImage === "object"
                 ? (post.coverImage as Media)
                 : null;
             return (
-              <Link
-                className="group overflow-hidden rounded-lg border border-border/50 bg-card transition-colors hover:border-primary/30"
-                href={{ params: { slug: post.slug }, pathname: "/blog/[slug]" }}
-                key={post.id}
-              >
-                {cover?.url && (
-                  <div className="relative aspect-[16/9] overflow-hidden">
-                    <Image
-                      alt={cover.alt}
-                      className="object-cover transition-transform group-hover:scale-105"
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      src={cover.url}
-                    />
-                  </div>
-                )}
-                <div className="p-4">
-                  {post.tags && post.tags.length > 0 && (
-                    <div className="mb-2 flex flex-wrap gap-1">
-                      {post.tags.map((tag) => (
-                        <span
-                          className="rounded-full bg-secondary/50 px-2 py-0.5 text-muted-foreground text-xs"
-                          key={tag.tag}
-                        >
-                          {tag.tag}
-                        </span>
-                      ))}
+              <StaggerItem key={post.id}>
+                <Link
+                  className="group overflow-hidden rounded-lg border border-border/50 bg-card transition-colors hover:border-primary/30"
+                  href={{
+                    params: { slug: post.slug },
+                    pathname: "/blog/[slug]",
+                  }}
+                >
+                  {cover?.url && (
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <Image
+                        alt={cover.alt}
+                        className="object-cover transition-transform group-hover:scale-105"
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        src={cover.url}
+                      />
                     </div>
                   )}
-                  <h2 className="font-heading text-foreground text-lg">
-                    {post.title}
-                  </h2>
-                  {post.excerpt && (
-                    <p className="mt-1 line-clamp-2 text-muted-foreground text-sm">
-                      {post.excerpt}
+                  <div className="p-4">
+                    {post.tags && post.tags.length > 0 && (
+                      <div className="mb-2 flex flex-wrap gap-1">
+                        {post.tags.map((tag) => (
+                          <span
+                            className="rounded-full bg-secondary/50 px-2 py-0.5 text-muted-foreground text-xs"
+                            key={tag.tag}
+                          >
+                            {tag.tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <h2 className="font-heading text-foreground text-lg">
+                      {post.title}
+                    </h2>
+                    {post.excerpt && (
+                      <p className="mt-1 line-clamp-2 text-muted-foreground text-sm">
+                        {post.excerpt}
+                      </p>
+                    )}
+                    <p className="mt-3 text-muted-foreground/70 text-xs">
+                      {t("publishedOn", {
+                        date: new Date(post.publishedAt).toLocaleDateString(
+                          "fr-FR",
+                          { day: "numeric", month: "long", year: "numeric" }
+                        ),
+                      })}
                     </p>
-                  )}
-                  <p className="mt-3 text-muted-foreground/70 text-xs">
-                    {t("publishedOn", {
-                      date: new Date(post.publishedAt).toLocaleDateString(
-                        "fr-FR",
-                        { day: "numeric", month: "long", year: "numeric" }
-                      ),
-                    })}
-                  </p>
-                </div>
-              </Link>
+                  </div>
+                </Link>
+              </StaggerItem>
             );
           })}
-        </div>
+        </StaggerContainer>
       ) : (
         <div className="mt-16 text-center">
           <p className="text-muted-foreground">{t("noPosts")}</p>

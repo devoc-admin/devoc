@@ -230,8 +230,10 @@
     "followUs": "Follow us",
     "legalNotice": "Legal notice",
     "newsletter": "Newsletter",
+    "newsletterError": "An error occurred. Please try again.",
     "newsletterPlaceholder": "Your email",
     "newsletterSubscribe": "Subscribe",
+    "newsletterSuccess": "Thank you for subscribing!",
     "openingHours": "Opening hours",
     "privacyPolicy": "Privacy policy"
   }

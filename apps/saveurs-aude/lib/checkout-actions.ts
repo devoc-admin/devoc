@@ -4,7 +4,8 @@ import { z } from "zod/v4";
 import type { ActionResult } from "@/lib/api";
 import { getErrorMessage } from "@/lib/api";
 import { getPayloadClient } from "@/lib/payload";
-import { calculateShipping, getShippingConfig } from "@/lib/shipping";
+import { calculateShipping } from "@/lib/shipping";
+import { getShippingConfig } from "@/lib/shipping.server";
 import { getStripe } from "@/lib/stripe";
 
 const checkoutItemSchema = z.object({

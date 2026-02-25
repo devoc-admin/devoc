@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { JsonLd } from "@/components/JsonLd";
+import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { formatPrice } from "@/lib/format";
 import { buildBreadcrumbList, buildProduct } from "@/lib/json-ld";
@@ -111,55 +112,57 @@ export default async function ProductPage({ params }: Props) {
       />
       {/* Product detail */}
       <div className="grid gap-8 md:grid-cols-2 md:gap-12">
-        <ProductGallery images={images} />
+        <ProductGallery images={images} slug={product.slug} />
 
-        <div className="flex flex-col gap-4">
-          {categoryTitle && (
-            <span className="font-medium text-accent text-xs uppercase tracking-wider">
-              {categoryTitle}
-            </span>
-          )}
-
-          <h1 className="font-heading text-3xl text-foreground">
-            {product.title}
-          </h1>
-
-          {product.shortDescription && (
-            <p className="text-muted-foreground leading-relaxed">
-              {product.shortDescription}
-            </p>
-          )}
-
-          {/* Price */}
-          <div className="flex items-baseline gap-3">
-            <span className="font-accent font-semibold text-2xl text-primary">
-              {hasRange ? "dès " : ""}
-              {formatPrice(discounted)}
-            </span>
-            {promo && (
-              <span className="text-lg text-muted-foreground line-through">
-                {formatPrice(min)}
+        <FadeInUp delay={0.1}>
+          <div className="flex flex-col gap-4">
+            {categoryTitle && (
+              <span className="font-medium text-accent text-xs uppercase tracking-wider">
+                {categoryTitle}
               </span>
             )}
-            {promo && (
-              <span className="rounded bg-destructive/10 px-2 py-0.5 font-semibold text-destructive text-xs">
-                {product.promotion?.type === "percentage"
-                  ? `-${product.promotion.value}%`
-                  : `-${formatPrice(product.promotion?.value ?? 0)}`}
+
+            <h1 className="font-heading text-3xl text-foreground">
+              {product.title}
+            </h1>
+
+            {product.shortDescription && (
+              <p className="text-muted-foreground leading-relaxed">
+                {product.shortDescription}
+              </p>
+            )}
+
+            {/* Price */}
+            <div className="flex items-baseline gap-3">
+              <span className="font-accent font-semibold text-2xl text-primary">
+                {hasRange ? "dès " : ""}
+                {formatPrice(discounted)}
               </span>
+              {promo && (
+                <span className="text-lg text-muted-foreground line-through">
+                  {formatPrice(min)}
+                </span>
+              )}
+              {promo && (
+                <span className="rounded bg-destructive/10 px-2 py-0.5 font-semibold text-destructive text-xs">
+                  {product.promotion?.type === "percentage"
+                    ? `-${product.promotion.value}%`
+                    : `-${formatPrice(product.promotion?.value ?? 0)}`}
+                </span>
+              )}
+            </div>
+
+            <hr className="border-border/50" />
+
+            <AddToCartButton image={mainImage} product={product} />
+
+            {product.variants?.[0]?.sku && (
+              <p className="text-muted-foreground/60 text-xs">
+                {t("sku")}: {product.variants[0].sku}
+              </p>
             )}
           </div>
-
-          <hr className="border-border/50" />
-
-          <AddToCartButton image={mainImage} product={product} />
-
-          {product.variants?.[0]?.sku && (
-            <p className="text-muted-foreground/60 text-xs">
-              {t("sku")}: {product.variants[0].sku}
-            </p>
-          )}
-        </div>
+        </FadeInUp>
       </div>
 
       {/* Related products */}
@@ -168,11 +171,13 @@ export default async function ProductPage({ params }: Props) {
           <h2 className="font-heading text-2xl text-foreground">
             {t("relatedProducts")}
           </h2>
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+          <StaggerContainer className="mt-6 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
             {(relatedResult.docs as Product[]).map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <StaggerItem key={p.id}>
+                <ProductCard product={p} />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </section>
       )}
     </div>

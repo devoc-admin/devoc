@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { JsonLd } from "@/components/JsonLd";
+import { FadeIn } from "@/components/motion";
 import { buildBreadcrumbList, buildLocalBusiness } from "@/lib/json-ld";
 import { getBaseUrl } from "@/lib/seo";
 
@@ -29,16 +30,18 @@ export default function HomePage() {
           buildBreadcrumbList([{ name: "Accueil", url: baseUrl }]),
         ]}
       />
-      <div className="flex flex-col items-center justify-center px-4 py-20">
-        <h1 className="sr-only">Saveurs d'Aude - Épicerie Fine</h1>
-        <Image
-          alt="Saveurs d'Aude - Épicerie Fine"
-          height={314}
-          priority
-          src="/saveurs_aude_logo_no_margin.svg"
-          width={336}
-        />
-      </div>
+      <FadeIn>
+        <div className="flex flex-col items-center justify-center px-4 py-20">
+          <h1 className="sr-only">Saveurs d'Aude - Épicerie Fine</h1>
+          <Image
+            alt="Saveurs d'Aude - Épicerie Fine"
+            height={314}
+            priority
+            src="/saveurs_aude_logo_no_margin.svg"
+            width={336}
+          />
+        </div>
+      </FadeIn>
     </>
   );
 }

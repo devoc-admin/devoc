@@ -8,6 +8,7 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 const nextConfig: NextConfig = {
   experimental: {
     reactCompiler: false,
+    viewTransition: true,
   },
   turbopack: {
     root: path.join(import.meta.dirname, "../../"),

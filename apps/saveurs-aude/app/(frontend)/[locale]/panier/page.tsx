@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { getShippingConfig } from "@/lib/shipping";
+import { getShippingConfig } from "@/lib/shipping.server";
 import { CartContent } from "./_components/CartContent";
 
 export async function generateMetadata({

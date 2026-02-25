@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
 import { getPayloadClient } from "@/lib/payload";
 import type { Review } from "@/payload-types";
 
@@ -51,47 +52,48 @@ export default async function ReviewsPage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-      <h1 className="font-heading text-3xl text-primary">{t("title")}</h1>
+      <FadeInUp>
+        <h1 className="font-heading text-3xl text-primary">{t("title")}</h1>
 
-      {/* Average rating */}
-      {reviews.length > 0 && (
-        <div className="mt-4 flex items-center gap-3">
-          <div className="flex items-center gap-1">
-            <Stars rating={Math.round(avgRating)} />
+        {/* Average rating */}
+        {reviews.length > 0 && (
+          <div className="mt-4 flex items-center gap-3">
+            <div className="flex items-center gap-1">
+              <Stars rating={Math.round(avgRating)} />
+            </div>
+            <span className="font-heading text-foreground text-lg">
+              {avgRating.toFixed(1)}
+            </span>
+            <span className="text-muted-foreground text-sm">
+              {t("outOf")} ({reviews.length})
+            </span>
           </div>
-          <span className="font-heading text-foreground text-lg">
-            {avgRating.toFixed(1)}
-          </span>
-          <span className="text-muted-foreground text-sm">
-            {t("outOf")} ({reviews.length})
-          </span>
-        </div>
-      )}
+        )}
+      </FadeInUp>
 
       {/* Reviews list */}
       {reviews.length > 0 ? (
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <StaggerContainer className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {reviews.map((review) => (
-            <div
-              className="rounded-lg border border-border/50 bg-card p-5"
-              key={review.id}
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-medium text-foreground text-sm">
-                  {review.customerName}
-                </span>
-                <div className="flex items-center gap-0.5">
-                  <Stars rating={review.rating} small />
+            <StaggerItem key={review.id}>
+              <div className="rounded-lg border border-border/50 bg-card p-5">
+                <div className="flex items-center justify-between">
+                  <span className="font-medium text-foreground text-sm">
+                    {review.customerName}
+                  </span>
+                  <div className="flex items-center gap-0.5">
+                    <Stars rating={review.rating} small />
+                  </div>
                 </div>
+                {review.comment && (
+                  <p className="mt-3 text-muted-foreground text-sm leading-relaxed">
+                    {review.comment}
+                  </p>
+                )}
               </div>
-              {review.comment && (
-                <p className="mt-3 text-muted-foreground text-sm leading-relaxed">
-                  {review.comment}
-                </p>
-              )}
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       ) : (
         <div className="mt-16 text-center">
           <p className="text-muted-foreground">{t("noReviews")}</p>

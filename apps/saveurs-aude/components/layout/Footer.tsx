@@ -2,6 +2,7 @@ import { Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getPayloadClient } from "@/lib/payload";
+import { NewsletterForm } from "./NewsletterForm";
 
 const quickLinks = [
   { href: "/boutique" as const, tKey: "shop" as const },
@@ -27,6 +28,18 @@ export async function Footer() {
 
   return (
     <footer className="border-border/50 border-t bg-secondary/50">
+      {/* Newsletter banner */}
+      <div className="border-border/50 border-b">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-8 text-center sm:px-6">
+          <h3 className="font-heading text-foreground text-lg">
+            {t("newsletter")}
+          </h3>
+          <div className="w-full max-w-md">
+            <NewsletterForm />
+          </div>
+        </div>
+      </div>
+
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}

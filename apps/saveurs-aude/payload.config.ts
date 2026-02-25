@@ -10,6 +10,7 @@ import { Categories } from "./payload/collections/Categories";
 import { Customers } from "./payload/collections/Customers";
 import { FAQ } from "./payload/collections/FAQ";
 import { Media } from "./payload/collections/Media";
+import { NewsletterSubscribers } from "./payload/collections/NewsletterSubscribers";
 import { Orders } from "./payload/collections/Orders";
 import { Pages } from "./payload/collections/Pages";
 import { Products } from "./payload/collections/Products";
@@ -41,6 +42,7 @@ export default buildConfig({
     Reviews,
     FAQ,
     Pages,
+    NewsletterSubscribers,
   ],
 
   db: postgresAdapter({

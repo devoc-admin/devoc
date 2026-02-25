@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { getShippingConfig } from "@/lib/shipping";
+import { getShippingConfig } from "@/lib/shipping.server";
 import { CheckoutForm } from "./_components/CheckoutForm";
 
 export async function generateMetadata({
