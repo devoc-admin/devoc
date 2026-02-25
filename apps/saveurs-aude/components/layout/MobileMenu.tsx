@@ -14,6 +14,7 @@ const navLinks = [
   { href: "/avis" as const, tKey: "reviews" as const },
   { href: "/faq" as const, tKey: "faq" as const },
   { href: "/contact" as const, tKey: "contact" as const },
+  { href: "/compte" as const, tKey: "account" as const },
 ];
 
 export function MobileMenu() {

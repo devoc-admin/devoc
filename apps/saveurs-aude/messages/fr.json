@@ -18,11 +18,14 @@
   },
   "nav": {
     "about": "À propos",
+    "account": "Mon compte",
     "blog": "Blog",
     "cart": "Panier",
     "contact": "Contact",
     "faq": "FAQ",
     "home": "Accueil",
+    "login": "Connexion",
+    "logout": "Déconnexion",
     "reviews": "Avis",
     "shop": "Boutique"
   },
@@ -111,6 +114,77 @@
     "subject": "Sujet",
     "success": "Votre message a bien été envoyé !",
     "title": "Nous contacter"
+  },
+  "auth": {
+    "login": {
+      "email": "Email",
+      "error": "Email ou mot de passe incorrect",
+      "noAccount": "Pas encore de compte ?",
+      "password": "Mot de passe",
+      "register": "Créer un compte",
+      "submit": "Se connecter",
+      "title": "Connexion"
+    },
+    "register": {
+      "email": "Email",
+      "error": "Impossible de créer le compte",
+      "firstName": "Prénom",
+      "hasAccount": "Déjà un compte ?",
+      "lastName": "Nom",
+      "login": "Se connecter",
+      "password": "Mot de passe",
+      "passwordMin": "8 caractères minimum",
+      "phone": "Téléphone",
+      "submit": "Créer mon compte",
+      "title": "Créer un compte"
+    }
+  },
+  "account": {
+    "addresses": {
+      "add": "Ajouter une adresse",
+      "city": "Ville",
+      "country": "Pays",
+      "default": "Par défaut",
+      "empty": "Aucune adresse enregistrée",
+      "label": "Libellé",
+      "remove": "Supprimer",
+      "setDefault": "Définir par défaut",
+      "street": "Adresse",
+      "title": "Mes adresses",
+      "zipCode": "Code postal"
+    },
+    "dashboard": "Mon compte",
+    "fieldRequired": "Ce champ est requis",
+    "orders": {
+      "amount": "Montant",
+      "date": "Date",
+      "empty": "Vous n'avez pas encore passé de commande.",
+      "number": "N° de commande",
+      "shopNow": "Découvrir la boutique",
+      "status": "Statut",
+      "title": "Mes commandes"
+    },
+    "profile": {
+      "email": "Email",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "newsletter": "S'inscrire à la newsletter",
+      "phone": "Téléphone",
+      "save": "Enregistrer",
+      "saved": "Profil mis à jour",
+      "title": "Mon profil"
+    },
+    "status": {
+      "cancelled": "Annulée",
+      "collected": "Récupérée",
+      "confirmed": "Confirmée",
+      "delivered": "Livrée",
+      "pending": "En attente",
+      "preparing": "En préparation",
+      "ready": "Prête",
+      "shipped": "Expédiée"
+    },
+    "welcome": "Bienvenue, {name}"
   },
   "footer": {
     "allRightsReserved": "Tous droits réservés",

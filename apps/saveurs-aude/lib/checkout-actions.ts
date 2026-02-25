@@ -23,6 +23,7 @@ const checkoutSchema = z.object({
     lastName: z.string().min(1),
     phone: z.string().min(1),
   }),
+  customerId: z.number().int().optional(),
   deliveryMethod: z.enum(["shipping", "clickAndCollect"]),
   items: z.array(checkoutItemSchema).min(1),
   locale: z.enum(["fr", "en"]),
@@ -142,6 +143,10 @@ export async function createCheckoutSession(
       ),
       shippingCost: String(shippingCost),
     };
+
+    if (parsed.customerId) {
+      metadata.customerId = String(parsed.customerId);
+    }
 
     if (parsed.deliveryMethod === "shipping" && parsed.shippingAddress) {
       metadata.shippingStreet = parsed.shippingAddress.street;

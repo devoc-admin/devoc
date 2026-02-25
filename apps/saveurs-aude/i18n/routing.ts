@@ -36,6 +36,26 @@ export const routing = defineRouting({
       en: "/checkout/confirmation",
       fr: "/commande/confirmation",
     },
+    "/compte": {
+      en: "/account",
+      fr: "/compte",
+    },
+    "/compte/commandes": {
+      en: "/account/orders",
+      fr: "/compte/commandes",
+    },
+    "/compte/connexion": {
+      en: "/account/login",
+      fr: "/compte/connexion",
+    },
+    "/compte/inscription": {
+      en: "/account/register",
+      fr: "/compte/inscription",
+    },
+    "/compte/profil": {
+      en: "/account/profile",
+      fr: "/compte/profil",
+    },
     "/contact": "/contact",
     "/faq": "/faq",
     "/mentions-legales": {

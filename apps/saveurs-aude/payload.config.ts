@@ -6,6 +6,7 @@ import { buildConfig } from "payload";
 import sharp from "sharp";
 
 import { Categories } from "./payload/collections/Categories";
+import { Customers } from "./payload/collections/Customers";
 import { Media } from "./payload/collections/Media";
 import { Orders } from "./payload/collections/Orders";
 import { Products } from "./payload/collections/Products";
@@ -23,7 +24,7 @@ export default buildConfig({
     user: "users",
   },
 
-  collections: [Users, Media, Categories, Products, Orders],
+  collections: [Users, Media, Categories, Products, Orders, Customers],
 
   db: postgresAdapter({
     pool: {

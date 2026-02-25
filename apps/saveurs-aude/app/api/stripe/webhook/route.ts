@@ -122,6 +122,9 @@ async function processCheckoutCompleted(
     collection: "orders",
     data: {
       customer: parseCustomer(metadata),
+      customerAccount: metadata.customerId
+        ? Number(metadata.customerId)
+        : undefined,
       deliveryMethod,
       items: items.map((item) => ({
         product: item.pid,

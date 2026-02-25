@@ -119,6 +119,12 @@ export const Orders: CollectionConfig = {
       type: "text",
     },
     {
+      admin: { description: "Compte client associé" },
+      name: "customerAccount",
+      relationTo: "customers",
+      type: "relationship",
+    },
+    {
       admin: { description: "Notes internes" },
       name: "notes",
       type: "textarea",

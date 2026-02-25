@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { CartBadge } from "./CartBadge";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileMenu } from "./MobileMenu";
+import { UserMenu } from "./UserMenu";
 
 const navLinks = [
   { href: "/boutique" as const, tKey: "shop" as const },
@@ -48,6 +49,7 @@ export async function Header() {
 
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
+          <UserMenu />
           <CartBadge label={t("cart")} />
           <MobileMenu />
         </div>

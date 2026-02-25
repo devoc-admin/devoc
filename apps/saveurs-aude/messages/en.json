@@ -18,11 +18,14 @@
   },
   "nav": {
     "about": "About",
+    "account": "My account",
     "blog": "Blog",
     "cart": "Cart",
     "contact": "Contact",
     "faq": "FAQ",
     "home": "Home",
+    "login": "Log in",
+    "logout": "Log out",
     "reviews": "Reviews",
     "shop": "Shop"
   },
@@ -111,6 +114,77 @@
     "subject": "Subject",
     "success": "Your message has been sent!",
     "title": "Contact us"
+  },
+  "auth": {
+    "login": {
+      "email": "Email",
+      "error": "Invalid email or password",
+      "noAccount": "Don't have an account?",
+      "password": "Password",
+      "register": "Create an account",
+      "submit": "Log in",
+      "title": "Log in"
+    },
+    "register": {
+      "email": "Email",
+      "error": "Unable to create account",
+      "firstName": "First name",
+      "hasAccount": "Already have an account?",
+      "lastName": "Last name",
+      "login": "Log in",
+      "password": "Password",
+      "passwordMin": "8 characters minimum",
+      "phone": "Phone",
+      "submit": "Create my account",
+      "title": "Create an account"
+    }
+  },
+  "account": {
+    "addresses": {
+      "add": "Add an address",
+      "city": "City",
+      "country": "Country",
+      "default": "Default",
+      "empty": "No saved addresses",
+      "label": "Label",
+      "remove": "Remove",
+      "setDefault": "Set as default",
+      "street": "Address",
+      "title": "My addresses",
+      "zipCode": "Zip code"
+    },
+    "dashboard": "My account",
+    "fieldRequired": "This field is required",
+    "orders": {
+      "amount": "Amount",
+      "date": "Date",
+      "empty": "You haven't placed any orders yet.",
+      "number": "Order number",
+      "shopNow": "Discover the shop",
+      "status": "Status",
+      "title": "My orders"
+    },
+    "profile": {
+      "email": "Email",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "newsletter": "Subscribe to newsletter",
+      "phone": "Phone",
+      "save": "Save",
+      "saved": "Profile updated",
+      "title": "My profile"
+    },
+    "status": {
+      "cancelled": "Cancelled",
+      "collected": "Collected",
+      "confirmed": "Confirmed",
+      "delivered": "Delivered",
+      "pending": "Pending",
+      "preparing": "Preparing",
+      "ready": "Ready",
+      "shipped": "Shipped"
+    },
+    "welcome": "Welcome, {name}"
   },
   "footer": {
     "allRightsReserved": "All rights reserved",

@@ -6,6 +6,8 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { routing } from "@/i18n/routing";
+import { AuthProvider } from "@/lib/auth";
+import { getCurrentCustomer } from "@/lib/auth-actions";
 import { CartProvider } from "@/lib/cart";
 import "../../globals.css";
 
@@ -55,6 +57,8 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  const customer = await getCurrentCustomer();
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <meta content="Saveurs d'Aude" name="apple-mobile-web-app-title" />
@@ -63,11 +67,13 @@ export default async function LocaleLayout({
       >
         <NuqsAdapter>
           <NextIntlClientProvider>
-            <CartProvider>
-              <Header />
-              <main className="min-h-screen">{children}</main>
-              <Footer />
-            </CartProvider>
+            <AuthProvider initialCustomer={customer}>
+              <CartProvider>
+                <Header />
+                <main className="min-h-screen">{children}</main>
+                <Footer />
+              </CartProvider>
+            </AuthProvider>
           </NextIntlClientProvider>
         </NuqsAdapter>
       </body>

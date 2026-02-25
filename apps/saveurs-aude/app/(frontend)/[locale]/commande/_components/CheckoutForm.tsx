@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
+import { useAuth } from "@/lib/auth";
 import { useCart } from "@/lib/cart";
 import { createCheckoutSession } from "@/lib/checkout-actions";
 import { formatPrice } from "@/lib/format";
@@ -17,23 +18,26 @@ export function CheckoutForm() {
   const t = useTranslations("checkout");
   const locale = useLocale();
   const { items, totalPrice } = useCart();
+  const { customer: authCustomer } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const defaultAddress = authCustomer?.addresses?.find((a) => a.isDefault);
 
   const form = useForm({
     defaultValues: {
       customer: {
-        email: "",
-        firstName: "",
-        lastName: "",
-        phone: "",
+        email: authCustomer?.email ?? "",
+        firstName: authCustomer?.firstName ?? "",
+        lastName: authCustomer?.lastName ?? "",
+        phone: authCustomer?.phone ?? "",
       },
       deliveryMethod: "shipping" as "shipping" | "clickAndCollect",
       shippingAddress: {
-        city: "",
-        country: "France",
-        street: "",
-        zipCode: "",
+        city: defaultAddress?.city ?? "",
+        country: defaultAddress?.country ?? "France",
+        street: defaultAddress?.street ?? "",
+        zipCode: defaultAddress?.zipCode ?? "",
       },
     },
     onSubmit: async ({ value }) => {
@@ -43,6 +47,7 @@ export function CheckoutForm() {
       try {
         const result = await createCheckoutSession({
           customer: value.customer,
+          customerId: authCustomer?.id,
           deliveryMethod: value.deliveryMethod,
           items: items.map((item) => ({
             price: item.price,
