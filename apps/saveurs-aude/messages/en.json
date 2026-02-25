@@ -186,6 +186,30 @@
     },
     "welcome": "Welcome, {name}"
   },
+  "blog": {
+    "allTags": "All tags",
+    "byAuthor": "By {author}",
+    "noPosts": "No posts yet",
+    "publishedOn": "Published on {date}",
+    "readMore": "Read more",
+    "title": "Blog"
+  },
+  "reviews": {
+    "averageRating": "Average rating",
+    "noReviews": "No reviews yet",
+    "outOf": "out of 5",
+    "title": "Customer reviews"
+  },
+  "faq": {
+    "title": "Frequently asked questions"
+  },
+  "pages": {
+    "about": "About",
+    "cgv": "Terms & Conditions",
+    "legalNotice": "Legal notice",
+    "notFound": "Page not found",
+    "privacyPolicy": "Privacy policy"
+  },
   "footer": {
     "allRightsReserved": "All rights reserved",
     "cgv": "Terms & Conditions",

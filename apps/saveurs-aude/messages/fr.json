@@ -186,6 +186,30 @@
     },
     "welcome": "Bienvenue, {name}"
   },
+  "blog": {
+    "allTags": "Tous les tags",
+    "byAuthor": "Par {author}",
+    "noPosts": "Aucun article pour le moment",
+    "publishedOn": "Publié le {date}",
+    "readMore": "Lire la suite",
+    "title": "Blog"
+  },
+  "reviews": {
+    "averageRating": "Note moyenne",
+    "noReviews": "Aucun avis pour le moment",
+    "outOf": "sur 5",
+    "title": "Avis clients"
+  },
+  "faq": {
+    "title": "Foire aux questions"
+  },
+  "pages": {
+    "about": "À propos",
+    "cgv": "Conditions générales de vente",
+    "legalNotice": "Mentions légales",
+    "notFound": "Page non trouvée",
+    "privacyPolicy": "Politique de confidentialité"
+  },
   "footer": {
     "allRightsReserved": "Tous droits réservés",
     "cgv": "CGV",

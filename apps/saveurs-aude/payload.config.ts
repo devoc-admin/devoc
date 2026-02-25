@@ -5,11 +5,15 @@ import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 
+import { BlogPosts } from "./payload/collections/BlogPosts";
 import { Categories } from "./payload/collections/Categories";
 import { Customers } from "./payload/collections/Customers";
+import { FAQ } from "./payload/collections/FAQ";
 import { Media } from "./payload/collections/Media";
 import { Orders } from "./payload/collections/Orders";
+import { Pages } from "./payload/collections/Pages";
 import { Products } from "./payload/collections/Products";
+import { Reviews } from "./payload/collections/Reviews";
 import { Users } from "./payload/collections/Users";
 import { Homepage } from "./payload/globals/Homepage";
 import { SiteConfig } from "./payload/globals/SiteConfig";
@@ -24,7 +28,18 @@ export default buildConfig({
     user: "users",
   },
 
-  collections: [Users, Media, Categories, Products, Orders, Customers],
+  collections: [
+    Users,
+    Media,
+    Categories,
+    Products,
+    Orders,
+    Customers,
+    BlogPosts,
+    Reviews,
+    FAQ,
+    Pages,
+  ],
 
   db: postgresAdapter({
     pool: {
