@@ -3,8 +3,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { JsonLd } from "@/components/JsonLd";
 import { RichText } from "@/components/RichText";
+import { buildBlogPosting, buildBreadcrumbList } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
+import { buildOgImage, getBaseUrl } from "@/lib/seo";
 import type { BlogPost, Media } from "@/payload-types";
 
 type Props = {
@@ -30,8 +33,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPost(slug);
   if (!post) return {};
 
+  const coverImage =
+    typeof post.coverImage === "object" ? (post.coverImage as Media) : null;
+  const ogImage = buildOgImage(post.seo?.image ?? coverImage);
+
   return {
-    description: post.excerpt ?? undefined,
+    description: post.seo?.description ?? post.excerpt ?? undefined,
+    openGraph: {
+      images: ogImage ? [ogImage] : undefined,
+      publishedTime: post.publishedAt,
+      type: "article",
+    },
     title: post.seo?.title ?? post.title,
   };
 }
@@ -45,8 +57,20 @@ export default async function BlogPostPage({ params }: Props) {
   const cover =
     typeof post.coverImage === "object" ? (post.coverImage as Media) : null;
 
+  const baseUrl = getBaseUrl();
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+      <JsonLd
+        data={[
+          buildBlogPosting(post),
+          buildBreadcrumbList([
+            { name: "Accueil", url: baseUrl },
+            { name: "Blog", url: `${baseUrl}/fr/blog` },
+            { name: post.title, url: `${baseUrl}/fr/blog/${post.slug}` },
+          ]),
+        ]}
+      />
       {/* Header */}
       <header>
         {post.tags && post.tags.length > 0 && (

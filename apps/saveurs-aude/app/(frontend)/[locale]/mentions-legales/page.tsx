@@ -1,8 +1,11 @@
 import type { SerializedEditorState } from "lexical";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { JsonLd } from "@/components/JsonLd";
 import { RichText } from "@/components/RichText";
+import { buildBreadcrumbList } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
+import { buildOgImage, getBaseUrl } from "@/lib/seo";
 import type { Page } from "@/payload-types";
 
 async function getPage(): Promise<Page | null> {
@@ -18,8 +21,12 @@ async function getPage(): Promise<Page | null> {
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage();
   if (!page) return {};
+  const ogImage = buildOgImage(page.seo?.image);
   return {
     description: page.seo?.description ?? undefined,
+    openGraph: {
+      images: ogImage ? [ogImage] : undefined,
+    },
     title: page.seo?.title ?? page.title,
   };
 }
@@ -31,8 +38,16 @@ export default async function LegalNoticePage() {
     notFound();
   }
 
+  const baseUrl = getBaseUrl();
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+      <JsonLd
+        data={buildBreadcrumbList([
+          { name: "Accueil", url: baseUrl },
+          { name: page.title, url: `${baseUrl}/fr/mentions-legales` },
+        ])}
+      />
       <h1 className="font-heading text-3xl text-primary">{page.title}</h1>
       {page.content && (
         <div className="mt-8">

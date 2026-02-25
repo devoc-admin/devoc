@@ -6,7 +6,7 @@ import { formatPrice } from "@/lib/format";
 
 export async function generateMetadata() {
   const t = await getTranslations("account.orders");
-  return { title: t("title") };
+  return { robots: { index: false }, title: t("title") };
 }
 
 export default async function OrdersPage() {

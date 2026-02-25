@@ -210,6 +210,20 @@
     "notFound": "Page non trouvée",
     "privacyPolicy": "Politique de confidentialité"
   },
+  "cookies": {
+    "message": "Ce site utilise des cookies pour améliorer votre expérience.",
+    "accept": "Accepter",
+    "reject": "Refuser",
+    "learnMore": "En savoir plus"
+  },
+  "seo": {
+    "homeDescription": "Boutique de spécialités audoises et occitanes artisanales. Cassoulet, vins, miels, confits et douceurs du Sud. Livraison et retrait en boutique à Carcassonne.",
+    "shopDescription": "Découvrez nos spécialités artisanales du Sud : cassoulet, confits, miels, vins et douceurs d'Occitanie. Livraison partout en France.",
+    "blogDescription": "Recettes, conseils et actualités autour des produits du terroir audois et occitan.",
+    "contactDescription": "Contactez Saveurs d'Aude, votre épicerie fine de spécialités artisanales à Carcassonne.",
+    "faqDescription": "Retrouvez les réponses à vos questions sur nos produits, la livraison, le retrait en boutique et les paiements.",
+    "reviewsDescription": "Découvrez les avis de nos clients sur nos spécialités artisanales du Sud de la France."
+  },
   "footer": {
     "allRightsReserved": "Tous droits réservés",
     "cgv": "CGV",

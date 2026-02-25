@@ -210,6 +210,20 @@
     "notFound": "Page not found",
     "privacyPolicy": "Privacy policy"
   },
+  "cookies": {
+    "message": "This site uses cookies to improve your experience.",
+    "accept": "Accept",
+    "reject": "Reject",
+    "learnMore": "Learn more"
+  },
+  "seo": {
+    "homeDescription": "Artisanal specialties from southern France. Cassoulet, wines, honeys, confits and delicacies from Occitania. Delivery and store pickup in Carcassonne.",
+    "shopDescription": "Discover our artisanal specialties from the South of France: cassoulet, confits, honeys, wines and Occitanian delicacies. Delivery throughout France.",
+    "blogDescription": "Recipes, tips and news about artisanal products from the Aude and Occitania regions.",
+    "contactDescription": "Contact Saveurs d'Aude, your fine grocery store for artisanal specialties in Carcassonne.",
+    "faqDescription": "Find answers to your questions about our products, delivery, store pickup and payments.",
+    "reviewsDescription": "Read our customers' reviews of our artisanal specialties from the South of France."
+  },
   "footer": {
     "allRightsReserved": "All rights reserved",
     "cgv": "Terms & Conditions",

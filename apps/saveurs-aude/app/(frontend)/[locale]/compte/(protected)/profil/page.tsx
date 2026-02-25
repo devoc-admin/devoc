@@ -5,7 +5,7 @@ import { ProfileForm } from "./_components/ProfileForm";
 
 export async function generateMetadata() {
   const t = await getTranslations("account.profile");
-  return { title: t("title") };
+  return { robots: { index: false }, title: t("title") };
 }
 
 export default async function ProfilePage() {

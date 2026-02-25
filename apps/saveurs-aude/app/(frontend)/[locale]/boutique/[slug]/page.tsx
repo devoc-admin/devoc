@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { JsonLd } from "@/components/JsonLd";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { formatPrice } from "@/lib/format";
+import { buildBreadcrumbList, buildProduct } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
 import {
   applyDiscount,
@@ -10,6 +12,7 @@ import {
   getProductImage,
   hasActivePromotion,
 } from "@/lib/product";
+import { buildOgImage, getBaseUrl } from "@/lib/seo";
 import type { Media, Product } from "@/payload-types";
 import { AddToCartButton } from "./_components/AddToCartButton";
 import { ProductGallery } from "./_components/ProductGallery";
@@ -37,8 +40,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getProduct(slug);
   if (!product) return {};
 
+  const firstImage = getProductImage(product);
+  const ogImage = buildOgImage(product.seo?.image ?? firstImage);
+
   return {
-    description: product.shortDescription ?? undefined,
+    description:
+      product.seo?.description ?? product.shortDescription ?? undefined,
+    openGraph: {
+      images: ogImage ? [ogImage] : undefined,
+      type: "website",
+    },
     title: product.seo?.title ?? product.title,
   };
 }
@@ -81,8 +92,23 @@ export default async function ProductPage({ params }: Props) {
     },
   });
 
+  const baseUrl = getBaseUrl();
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <JsonLd
+        data={[
+          buildProduct(product),
+          buildBreadcrumbList([
+            { name: "Accueil", url: baseUrl },
+            { name: "Boutique", url: `${baseUrl}/fr/boutique` },
+            {
+              name: product.title,
+              url: `${baseUrl}/fr/boutique/${product.slug}`,
+            },
+          ]),
+        ]}
+      />
       {/* Product detail */}
       <div className="grid gap-8 md:grid-cols-2 md:gap-12">
         <ProductGallery images={images} />

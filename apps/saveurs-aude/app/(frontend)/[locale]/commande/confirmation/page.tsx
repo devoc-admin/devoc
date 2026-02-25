@@ -1,8 +1,25 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import type Stripe from "stripe";
 import { Link } from "@/i18n/navigation";
 import { getPayloadClient } from "@/lib/payload";
 import { getStripe } from "@/lib/stripe";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({
+    locale,
+    namespace: "checkout.confirmation",
+  });
+  return {
+    robots: { index: false },
+    title: t("title"),
+  };
+}
 
 export default async function ConfirmationPage({
   searchParams,

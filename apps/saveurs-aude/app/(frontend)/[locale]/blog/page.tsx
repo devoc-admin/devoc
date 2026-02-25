@@ -1,9 +1,27 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import type { Where } from "payload";
+import { JsonLd } from "@/components/JsonLd";
 import { Link } from "@/i18n/navigation";
+import { buildBreadcrumbList } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
+import { getBaseUrl } from "@/lib/seo";
 import type { BlogPost, Media } from "@/payload-types";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "seo" });
+  const tBlog = await getTranslations({ locale, namespace: "blog" });
+  return {
+    description: t("blogDescription"),
+    title: tBlog("title"),
+  };
+}
 
 const POSTS_PER_PAGE = 9;
 
@@ -54,8 +72,16 @@ export default async function BlogPage({
     ),
   ];
 
+  const baseUrl = getBaseUrl();
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <JsonLd
+        data={buildBreadcrumbList([
+          { name: "Accueil", url: baseUrl },
+          { name: "Blog", url: `${baseUrl}/fr/blog` },
+        ])}
+      />
       <h1 className="font-heading text-3xl text-primary">{t("title")}</h1>
 
       {/* Tag filter */}

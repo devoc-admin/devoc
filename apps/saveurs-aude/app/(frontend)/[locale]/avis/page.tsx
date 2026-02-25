@@ -1,6 +1,21 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { getPayloadClient } from "@/lib/payload";
 import type { Review } from "@/payload-types";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "seo" });
+  const tReviews = await getTranslations({ locale, namespace: "reviews" });
+  return {
+    description: t("reviewsDescription"),
+    title: tReviews("title"),
+  };
+}
 
 const REVIEWS_PER_PAGE = 20;
 

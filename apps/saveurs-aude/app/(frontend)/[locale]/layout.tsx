@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Lato, Playfair_Display } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { AnalyticsWrapper } from "@/components/Analytics";
+import { CookieConsent } from "@/components/CookieConsent";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { routing } from "@/i18n/routing";
 import { AuthProvider } from "@/lib/auth";
 import { getCurrentCustomer } from "@/lib/auth-actions";
 import { CartProvider } from "@/lib/cart";
+import { getBaseUrl } from "@/lib/seo";
 import "../../globals.css";
 
 const playfair = Playfair_Display({
@@ -31,14 +35,42 @@ const cormorant = Cormorant_Garamond({
   weight: ["400", "600", "700"],
 });
 
-export const metadata: Metadata = {
-  description:
-    "Boutique de spécialités audoises et occitanes artisanales. Cassoulet, vins, miels, confits et douceurs du Sud. Livraison et retrait en boutique à Carcassonne.",
-  title: {
-    default: "Saveurs d'Aude — Spécialités artisanales de Carcassonne",
-    template: "%s | Saveurs d'Aude",
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const baseUrl = getBaseUrl();
+  const t = await getTranslations({ locale, namespace: "seo" });
+
+  return {
+    alternates: {
+      languages: {
+        en: `${baseUrl}/en`,
+        fr: `${baseUrl}/fr`,
+      },
+    },
+    description: t("homeDescription"),
+    metadataBase: new URL(baseUrl),
+    openGraph: {
+      locale: locale === "fr" ? "fr_FR" : "en_GB",
+      siteName: "Saveurs d'Aude",
+      type: "website",
+    },
+    robots: {
+      follow: true,
+      index: true,
+    },
+    title: {
+      default: "Saveurs d'Aude — Spécialités artisanales de Carcassonne",
+      template: "%s | Saveurs d'Aude",
+    },
+    twitter: {
+      card: "summary_large_image",
+    },
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -72,6 +104,8 @@ export default async function LocaleLayout({
                 <Header />
                 <main className="min-h-screen">{children}</main>
                 <Footer />
+                <CookieConsent />
+                <AnalyticsWrapper />
               </CartProvider>
             </AuthProvider>
           </NextIntlClientProvider>

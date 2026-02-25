@@ -5,7 +5,7 @@ import { RegisterForm } from "./_components/RegisterForm";
 
 export async function generateMetadata() {
   const t = await getTranslations("auth.register");
-  return { title: t("title") };
+  return { robots: { index: false }, title: t("title") };
 }
 
 export default async function RegisterPage({
