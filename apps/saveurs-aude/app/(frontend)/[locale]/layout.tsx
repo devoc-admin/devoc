@@ -5,13 +5,17 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { AnalyticsWrapper } from "@/components/Analytics";
-import { CookieConsent } from "@/components/CookieConsent";
+import {
+  CookieConsent,
+  type CookieConsentConfig,
+} from "@/components/CookieConsent";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { routing } from "@/i18n/routing";
 import { AuthProvider } from "@/lib/auth";
 import { getCurrentCustomer } from "@/lib/auth-actions";
 import { CartProvider } from "@/lib/cart";
+import { getPayloadClient } from "@/lib/payload";
 import { getBaseUrl } from "@/lib/seo";
 import "../../globals.css";
 
@@ -89,7 +93,10 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const customer = await getCurrentCustomer();
+  const [customer, cookieConsentData] = await Promise.all([
+    getCurrentCustomer(),
+    getCookieConsentConfig(locale),
+  ]);
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -104,7 +111,7 @@ export default async function LocaleLayout({
                 <Header />
                 <main className="min-h-screen">{children}</main>
                 <Footer />
-                <CookieConsent />
+                <CookieConsent config={cookieConsentData} />
                 <AnalyticsWrapper />
               </CartProvider>
             </AuthProvider>
@@ -113,4 +120,21 @@ export default async function LocaleLayout({
       </body>
     </html>
   );
+}
+
+async function getCookieConsentConfig(
+  locale: string
+): Promise<CookieConsentConfig> {
+  const payload = await getPayloadClient();
+  const data = await payload.findGlobal({
+    locale: locale as "fr" | "en",
+    slug: "cookie-consent",
+  });
+
+  return {
+    acceptLabel: data.acceptLabel,
+    message: data.message,
+    privacyPolicyLink: data.privacyPolicyLink ?? undefined,
+    rejectLabel: data.rejectLabel,
+  };
 }

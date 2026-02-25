@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { getShippingConfig } from "@/lib/shipping";
 import { CartContent } from "./_components/CartContent";
 
 export async function generateMetadata({
@@ -15,6 +16,13 @@ export async function generateMetadata({
   };
 }
 
-export default function CartPage() {
-  return <CartContent />;
+export default async function CartPage() {
+  const shippingConfig = await getShippingConfig();
+
+  return (
+    <CartContent
+      freeShippingThreshold={shippingConfig.freeShippingThreshold}
+      shippingCost={shippingConfig.shippingCost}
+    />
+  );
 }

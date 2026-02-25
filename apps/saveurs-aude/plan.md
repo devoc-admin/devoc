@@ -875,7 +875,7 @@ L'implémentation se fait **étape par étape** pour valider chaque brique avant
 - Formulaire newsletter (footer)
 - Collection/logique NewsletterSubscribers
 - Formulaire de contact (Tanstack Form + Zod + Resend)
-- Animations Motion (fade-in, transitions de page)
+- Animations Motion (fade-in, transitions de page) or using view transitions with css or experimental Next.js
 - Responsive final pass
 - **Vérification** : test complet du site sur mobile et desktop
 

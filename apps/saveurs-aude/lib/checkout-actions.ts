@@ -4,7 +4,7 @@ import { z } from "zod/v4";
 import type { ActionResult } from "@/lib/api";
 import { getErrorMessage } from "@/lib/api";
 import { getPayloadClient } from "@/lib/payload";
-import { calculateShipping } from "@/lib/shipping";
+import { calculateShipping, getShippingConfig } from "@/lib/shipping";
 import { getStripe } from "@/lib/stripe";
 
 const checkoutItemSchema = z.object({
@@ -112,7 +112,12 @@ export async function createCheckoutSession(
       (sum, i) => sum + i.unitPrice * i.quantity,
       0
     );
-    const shippingCost = calculateShipping(subtotal, parsed.deliveryMethod);
+    const shippingConfig = await getShippingConfig();
+    const shippingCost = calculateShipping(
+      subtotal,
+      parsed.deliveryMethod,
+      shippingConfig
+    );
 
     if (shippingCost > 0) {
       lineItems.push({

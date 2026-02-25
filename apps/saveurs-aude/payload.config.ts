@@ -15,7 +15,9 @@ import { Pages } from "./payload/collections/Pages";
 import { Products } from "./payload/collections/Products";
 import { Reviews } from "./payload/collections/Reviews";
 import { Users } from "./payload/collections/Users";
+import { CookieConsent } from "./payload/globals/CookieConsent";
 import { Homepage } from "./payload/globals/Homepage";
+import { ShippingConfig } from "./payload/globals/ShippingConfig";
 import { SiteConfig } from "./payload/globals/SiteConfig";
 
 const dirname = path.dirname(new URL(import.meta.url).pathname);
@@ -49,7 +51,7 @@ export default buildConfig({
 
   editor: lexicalEditor(),
 
-  globals: [SiteConfig, Homepage],
+  globals: [SiteConfig, Homepage, ShippingConfig, CookieConsent],
 
   localization: {
     defaultLocale: "fr",

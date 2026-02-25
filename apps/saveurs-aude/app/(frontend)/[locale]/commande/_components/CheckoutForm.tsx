@@ -9,12 +9,16 @@ import { useAuth } from "@/lib/auth";
 import { useCart } from "@/lib/cart";
 import { createCheckoutSession } from "@/lib/checkout-actions";
 import { formatPrice } from "@/lib/format";
-import { calculateShipping } from "@/lib/shipping";
+import { calculateShipping, type ShippingConfig } from "@/lib/shipping";
 import { cn } from "@/lib/utils";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function CheckoutForm() {
+export function CheckoutForm({
+  shippingConfig,
+}: {
+  shippingConfig: ShippingConfig;
+}) {
   const t = useTranslations("checkout");
   const locale = useLocale();
   const { items, totalPrice } = useCart();
@@ -81,7 +85,11 @@ export function CheckoutForm() {
     form.store,
     (state) => state.values.deliveryMethod
   );
-  const shippingCost = calculateShipping(totalPrice, deliveryMethod);
+  const shippingCost = calculateShipping(
+    totalPrice,
+    deliveryMethod,
+    shippingConfig
+  );
   const total = totalPrice + shippingCost;
 
   if (items.length === 0) {
@@ -236,31 +244,36 @@ export function CheckoutForm() {
             {t("deliveryMethod")}
           </h2>
           <form.Field
-            children={(field) => (
-              <div className="grid gap-3 sm:grid-cols-2">
-                {(["shipping", "clickAndCollect"] as const).map((method) => (
-                  <label
-                    className={cn(
-                      "flex cursor-pointer items-center gap-3 rounded-lg border p-4 transition-colors",
-                      field.state.value === method
-                        ? "border-primary bg-primary/5"
-                        : "border-border/50 hover:border-primary/50"
-                    )}
-                    key={method}
-                  >
-                    <input
-                      checked={field.state.value === method}
-                      className="accent-primary"
-                      name="deliveryMethod"
-                      onChange={() => field.handleChange(method)}
-                      type="radio"
-                      value={method}
-                    />
-                    <span className="font-medium text-sm">{t(method)}</span>
-                  </label>
-                ))}
-              </div>
-            )}
+            children={(field) => {
+              const methods = shippingConfig.clickAndCollectEnabled
+                ? (["shipping", "clickAndCollect"] as const)
+                : (["shipping"] as const);
+              return (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {methods.map((method) => (
+                    <label
+                      className={cn(
+                        "flex cursor-pointer items-center gap-3 rounded-lg border p-4 transition-colors",
+                        field.state.value === method
+                          ? "border-primary bg-primary/5"
+                          : "border-border/50 hover:border-primary/50"
+                      )}
+                      key={method}
+                    >
+                      <input
+                        checked={field.state.value === method}
+                        className="accent-primary"
+                        name="deliveryMethod"
+                        onChange={() => field.handleChange(method)}
+                        type="radio"
+                        value={method}
+                      />
+                      <span className="font-medium text-sm">{t(method)}</span>
+                    </label>
+                  ))}
+                </div>
+              );
+            }}
             name="deliveryMethod"
           />
         </section>

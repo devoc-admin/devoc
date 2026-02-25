@@ -1,8 +1,15 @@
 "use client";
 
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { Link } from "@/i18n/navigation";
+
+export type CookieConsentConfig = {
+  message?: string;
+  acceptLabel?: string;
+  rejectLabel?: string;
+  privacyPolicyLink?: string;
+};
 
 function getCookie(name: string): string | null {
   const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
@@ -16,7 +23,7 @@ function setCookie(name: string, value: string, days: number) {
   document.cookie = `${name}=${encodeURIComponent(value)};expires=${date.toUTCString()};path=/;SameSite=Lax`;
 }
 
-export function CookieConsent() {
+export function CookieConsent({ config }: { config?: CookieConsentConfig }) {
   const [visible, setVisible] = useState(false);
   const t = useTranslations("cookies");
 
@@ -37,14 +44,19 @@ export function CookieConsent() {
 
   if (!visible) return null;
 
+  const message = config?.message || t("message");
+  const acceptLabel = config?.acceptLabel || t("accept");
+  const rejectLabel = config?.rejectLabel || t("reject");
+  const privacyLink = config?.privacyPolicyLink || "/politique-confidentialite";
+
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 border-border/50 border-t bg-background/95 p-4 backdrop-blur-sm">
       <div className="mx-auto flex max-w-4xl flex-col items-center gap-3 sm:flex-row sm:justify-between">
         <p className="text-muted-foreground text-sm">
-          {t("message")}{" "}
+          {message}{" "}
           <Link
             className="text-primary underline hover:text-primary/80"
-            href="/politique-confidentialite"
+            href={privacyLink}
           >
             {t("learnMore")}
           </Link>
@@ -55,14 +67,14 @@ export function CookieConsent() {
             onClick={handleReject}
             type="button"
           >
-            {t("reject")}
+            {rejectLabel}
           </button>
           <button
             className="rounded-lg bg-primary px-4 py-2 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
             onClick={handleAccept}
             type="button"
           >
-            {t("accept")}
+            {acceptLabel}
           </button>
         </div>
       </div>

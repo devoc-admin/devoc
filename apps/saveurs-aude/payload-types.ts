@@ -107,10 +107,14 @@ export interface Config {
   globals: {
     'site-config': SiteConfig;
     homepage: Homepage;
+    'shipping-config': ShippingConfig;
+    'cookie-consent': CookieConsent;
   };
   globalsSelect: {
     'site-config': SiteConfigSelect<false> | SiteConfigSelect<true>;
     homepage: HomepageSelect<false> | HomepageSelect<true>;
+    'shipping-config': ShippingConfigSelect<false> | ShippingConfigSelect<true>;
+    'cookie-consent': CookieConsentSelect<false> | CookieConsentSelect<true>;
   };
   locale: 'fr' | 'en';
   user: User | Customer;
@@ -978,6 +982,66 @@ export interface Homepage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shipping-config".
+ */
+export interface ShippingConfig {
+  id: number;
+  /**
+   * Montant en centimes (ex: 690 = 6,90€)
+   */
+  shippingCost: number;
+  /**
+   * Montant en centimes au-delà duquel la livraison est offerte (ex: 6000 = 60€)
+   */
+  freeShippingThreshold: number;
+  shippingZones?:
+    | {
+        label: string;
+        /**
+         * Ex: 11, 34, 31
+         */
+        zipCodePrefix: string;
+        /**
+         * Montant en centimes
+         */
+        cost: number;
+        id?: string | null;
+      }[]
+    | null;
+  clickAndCollectEnabled?: boolean | null;
+  clickAndCollectInstructions?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cookie-consent".
+ */
+export interface CookieConsent {
+  id: number;
+  message: string;
+  acceptLabel: string;
+  rejectLabel: string;
+  privacyPolicyLink: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-config_select".
  */
 export interface SiteConfigSelect<T extends boolean = true> {
@@ -1045,6 +1109,40 @@ export interface HomepageSelect<T extends boolean = true> {
         link?: T;
         active?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shipping-config_select".
+ */
+export interface ShippingConfigSelect<T extends boolean = true> {
+  shippingCost?: T;
+  freeShippingThreshold?: T;
+  shippingZones?:
+    | T
+    | {
+        label?: T;
+        zipCodePrefix?: T;
+        cost?: T;
+        id?: T;
+      };
+  clickAndCollectEnabled?: T;
+  clickAndCollectInstructions?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cookie-consent_select".
+ */
+export interface CookieConsentSelect<T extends boolean = true> {
+  message?: T;
+  acceptLabel?: T;
+  rejectLabel?: T;
+  privacyPolicyLink?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

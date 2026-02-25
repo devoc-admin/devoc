@@ -8,7 +8,13 @@ import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
-export function CartContent() {
+export function CartContent({
+  freeShippingThreshold,
+  shippingCost,
+}: {
+  freeShippingThreshold: number;
+  shippingCost: number;
+}) {
   const t = useTranslations("cart");
   const { items, removeItem, totalPrice, updateQuantity } = useCart();
 
@@ -28,9 +34,40 @@ export function CartContent() {
     );
   }
 
+  const isFreeShipping = totalPrice >= freeShippingThreshold;
+  const remaining = Math.max(0, freeShippingThreshold - totalPrice);
+  const progress = Math.min(100, (totalPrice / freeShippingThreshold) * 100);
+  const estimatedShipping = isFreeShipping ? 0 : shippingCost;
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
       <h1 className="font-heading text-3xl text-primary">{t("title")}</h1>
+
+      {/* Free shipping progress */}
+      <div className="mt-6 rounded-lg border border-border/50 bg-card p-4">
+        <p className="text-sm">
+          {isFreeShipping ? (
+            <span className="font-medium text-success">
+              {t("freeShippingReached")}
+            </span>
+          ) : (
+            <span className="text-muted-foreground">
+              {t("freeShippingProgress", {
+                remaining: (remaining / 100).toFixed(2).replace(".00", ""),
+              })}
+            </span>
+          )}
+        </p>
+        <div className="mt-2 h-2 overflow-hidden rounded-full bg-secondary/50">
+          <div
+            className={cn(
+              "h-full rounded-full transition-all duration-500",
+              isFreeShipping ? "bg-success" : "bg-accent"
+            )}
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
 
       <div className="mt-8 flex flex-col gap-4">
         {items.map((item) => (
@@ -118,11 +155,26 @@ export function CartContent() {
 
       {/* Summary */}
       <div className="mt-8 flex flex-col items-end gap-4 border-border/50 border-t pt-6">
-        <div className="flex items-baseline gap-3">
-          <span className="text-muted-foreground text-sm">{t("total")}</span>
-          <span className="font-heading text-2xl text-primary">
-            {formatPrice(totalPrice)}
-          </span>
+        <div className="flex w-full max-w-xs flex-col gap-2">
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">{t("subtotal")}</span>
+            <span>{formatPrice(totalPrice)}</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">{t("shippingCost")}</span>
+            <span>
+              {estimatedShipping === 0
+                ? t("freeShippingReached")
+                : formatPrice(estimatedShipping)}
+            </span>
+          </div>
+          <hr className="my-1 border-border/50" />
+          <div className="flex justify-between">
+            <span className="font-heading text-lg">{t("total")}</span>
+            <span className="font-heading text-lg text-primary">
+              {formatPrice(totalPrice + estimatedShipping)}
+            </span>
+          </div>
         </div>
         <div className="flex gap-3">
           <Link
