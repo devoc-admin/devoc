@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { JsonLd } from "@/components/JsonLd";
-import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
+import {
+  FadeInUp,
+  StaggerContainerOnScroll,
+  StaggerItem,
+} from "@/components/motion";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { formatPrice } from "@/lib/format";
 import { buildBreadcrumbList, buildProduct } from "@/lib/json-ld";
@@ -112,7 +116,7 @@ export default async function ProductPage({ params }: Props) {
       />
       {/* Product detail */}
       <div className="grid gap-8 md:grid-cols-2 md:gap-12">
-        <ProductGallery images={images} slug={product.slug} />
+        <ProductGallery images={images} />
 
         <FadeInUp delay={0.1}>
           <div className="flex flex-col gap-4">
@@ -122,7 +126,7 @@ export default async function ProductPage({ params }: Props) {
               </span>
             )}
 
-            <h1 className="font-heading text-3xl text-foreground">
+            <h1 className="font-heading text-2xl text-foreground sm:text-3xl">
               {product.title}
             </h1>
 
@@ -171,13 +175,13 @@ export default async function ProductPage({ params }: Props) {
           <h2 className="font-heading text-2xl text-foreground">
             {t("relatedProducts")}
           </h2>
-          <StaggerContainer className="mt-6 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+          <StaggerContainerOnScroll className="mt-6 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
             {(relatedResult.docs as Product[]).map((p) => (
               <StaggerItem key={p.id}>
                 <ProductCard product={p} />
               </StaggerItem>
             ))}
-          </StaggerContainer>
+          </StaggerContainerOnScroll>
         </section>
       )}
     </div>

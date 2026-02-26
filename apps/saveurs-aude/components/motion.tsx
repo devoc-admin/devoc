@@ -57,6 +57,48 @@ export function StaggerContainer({
   );
 }
 
+export function FadeInUpOnScroll({
+  children,
+  className,
+  delay = 0,
+}: AnimationProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      transition={{ delay, duration: 0.5 }}
+      viewport={{ margin: "-50px", once: true }}
+      whileInView={{ opacity: 1, y: 0 }}
+    >
+      <div className={className}>{children}</div>
+    </motion.div>
+  );
+}
+
+export function StaggerContainerOnScroll({
+  children,
+  className,
+  delay = 0,
+}: AnimationProps) {
+  return (
+    <motion.div
+      initial="hidden"
+      variants={{
+        hidden: {},
+        visible: {
+          transition: {
+            delayChildren: delay,
+            staggerChildren: 0.1,
+          },
+        },
+      }}
+      viewport={{ margin: "-50px", once: true }}
+      whileInView="visible"
+    >
+      <div className={className}>{children}</div>
+    </motion.div>
+  );
+}
+
 export function StaggerItem({ children, className }: AnimationProps) {
   return (
     <motion.div

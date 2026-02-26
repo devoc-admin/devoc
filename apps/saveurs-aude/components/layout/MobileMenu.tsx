@@ -48,7 +48,7 @@ export function MobileMenu() {
       {/* Panel */}
       <div
         className={cn(
-          "fixed inset-y-0 right-0 z-50 w-72 bg-background shadow-xl transition-transform duration-300 ease-out",
+          "fixed inset-y-0 right-0 z-50 w-72 max-w-[calc(100vw-3rem)] bg-background shadow-xl transition-transform duration-300 ease-out",
           open ? "translate-x-0" : "translate-x-full"
         )}
       >

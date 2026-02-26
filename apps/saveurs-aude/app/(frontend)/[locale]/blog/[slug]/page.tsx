@@ -4,6 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { JsonLd } from "@/components/JsonLd";
+import { FadeInUp, FadeInUpOnScroll } from "@/components/motion";
 import { RichText } from "@/components/RichText";
 import { buildBlogPosting, buildBreadcrumbList } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
@@ -72,42 +73,44 @@ export default async function BlogPostPage({ params }: Props) {
         ]}
       />
       {/* Header */}
-      <header>
-        {post.tags && post.tags.length > 0 && (
-          <div className="mb-3 flex flex-wrap gap-1">
-            {post.tags.map((tag) => (
-              <span
-                className="rounded-full bg-secondary/50 px-2 py-0.5 text-muted-foreground text-xs"
-                key={tag.tag}
-              >
-                {tag.tag}
-              </span>
-            ))}
-          </div>
-        )}
-
-        <h1 className="font-heading text-3xl text-foreground sm:text-4xl">
-          {post.title}
-        </h1>
-
-        <div className="mt-3 flex flex-wrap items-center gap-3 text-muted-foreground text-sm">
-          <span>
-            {t("publishedOn", {
-              date: new Date(post.publishedAt).toLocaleDateString("fr-FR", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              }),
-            })}
-          </span>
-          {post.author && (
-            <>
-              <span>&middot;</span>
-              <span>{t("byAuthor", { author: post.author })}</span>
-            </>
+      <FadeInUp>
+        <header>
+          {post.tags && post.tags.length > 0 && (
+            <div className="mb-3 flex flex-wrap gap-1">
+              {post.tags.map((tag) => (
+                <span
+                  className="rounded-full bg-secondary/50 px-2 py-0.5 text-muted-foreground text-xs"
+                  key={tag.tag}
+                >
+                  {tag.tag}
+                </span>
+              ))}
+            </div>
           )}
-        </div>
-      </header>
+
+          <h1 className="font-heading text-2xl text-foreground sm:text-3xl md:text-4xl">
+            {post.title}
+          </h1>
+
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-muted-foreground text-sm">
+            <span>
+              {t("publishedOn", {
+                date: new Date(post.publishedAt).toLocaleDateString("fr-FR", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                }),
+              })}
+            </span>
+            {post.author && (
+              <>
+                <span>&middot;</span>
+                <span>{t("byAuthor", { author: post.author })}</span>
+              </>
+            )}
+          </div>
+        </header>
+      </FadeInUp>
 
       {/* Cover image */}
       {cover?.url && (
@@ -125,9 +128,11 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Content */}
       {post.content && (
-        <div className="mt-8">
-          <RichText data={post.content as unknown as SerializedEditorState} />
-        </div>
+        <FadeInUpOnScroll>
+          <div className="mt-8">
+            <RichText data={post.content as unknown as SerializedEditorState} />
+          </div>
+        </FadeInUpOnScroll>
       )}
     </div>
   );

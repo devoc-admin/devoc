@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { ViewTransition } from "react";
 import { Link } from "@/i18n/navigation";
 import { formatPrice } from "@/lib/format";
 import {
@@ -29,15 +28,13 @@ export function ProductCard({ product }: { product: Product }) {
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-secondary/30">
         {image?.url ? (
-          <ViewTransition name={`product-image-${product.slug}`}>
-            <Image
-              alt={image.alt || product.title}
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              src={image.url}
-            />
-          </ViewTransition>
+          <Image
+            alt={image.alt || product.title}
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            src={image.url}
+          />
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground/40">
             <span className="font-heading text-4xl">S</span>

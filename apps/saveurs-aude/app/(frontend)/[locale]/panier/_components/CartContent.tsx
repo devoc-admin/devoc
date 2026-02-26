@@ -3,6 +3,7 @@
 import { Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { FadeInUp } from "@/components/motion";
 import { Link } from "@/i18n/navigation";
 import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
@@ -41,33 +42,39 @@ export function CartContent({
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-      <h1 className="font-heading text-3xl text-primary">{t("title")}</h1>
+      <FadeInUp>
+        <h1 className="font-heading text-2xl text-primary sm:text-3xl">
+          {t("title")}
+        </h1>
+      </FadeInUp>
 
       {/* Free shipping progress */}
-      <div className="mt-6 rounded-lg border border-border/50 bg-card p-4">
-        <p className="text-sm">
-          {isFreeShipping ? (
-            <span className="font-medium text-success">
-              {t("freeShippingReached")}
-            </span>
-          ) : (
-            <span className="text-muted-foreground">
-              {t("freeShippingProgress", {
-                remaining: (remaining / 100).toFixed(2).replace(".00", ""),
-              })}
-            </span>
-          )}
-        </p>
-        <div className="mt-2 h-2 overflow-hidden rounded-full bg-secondary/50">
-          <div
-            className={cn(
-              "h-full rounded-full transition-all duration-500",
-              isFreeShipping ? "bg-success" : "bg-accent"
+      <FadeInUp delay={0.1}>
+        <div className="mt-6 rounded-lg border border-border/50 bg-card p-4">
+          <p className="text-sm">
+            {isFreeShipping ? (
+              <span className="font-medium text-success">
+                {t("freeShippingReached")}
+              </span>
+            ) : (
+              <span className="text-muted-foreground">
+                {t("freeShippingProgress", {
+                  remaining: (remaining / 100).toFixed(2).replace(".00", ""),
+                })}
+              </span>
             )}
-            style={{ width: `${progress}%` }}
-          />
+          </p>
+          <div className="mt-2 h-2 overflow-hidden rounded-full bg-secondary/50">
+            <div
+              className={cn(
+                "h-full rounded-full transition-all duration-500",
+                isFreeShipping ? "bg-success" : "bg-accent"
+              )}
+              style={{ width: `${progress}%` }}
+            />
+          </div>
         </div>
-      </div>
+      </FadeInUp>
 
       <div className="mt-8 flex flex-col gap-4">
         {items.map((item) => (
@@ -114,7 +121,7 @@ export function CartContent({
             {/* Quantity */}
             <div className="flex items-center gap-1">
               <button
-                className="rounded p-1 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                className="rounded p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                 onClick={() =>
                   updateQuantity(item.variantId, item.quantity - 1)
                 }
@@ -126,7 +133,7 @@ export function CartContent({
                 {item.quantity}
               </span>
               <button
-                className="rounded p-1 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                className="rounded p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                 onClick={() =>
                   updateQuantity(item.variantId, item.quantity + 1)
                 }
@@ -176,10 +183,10 @@ export function CartContent({
             </span>
           </div>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3">
           <Link
             className={cn(
-              "rounded-lg border border-border px-6 py-3 font-medium text-muted-foreground text-sm",
+              "w-full rounded-lg border border-border px-6 py-3 text-center font-medium text-muted-foreground text-sm sm:w-auto",
               "transition-colors hover:border-primary hover:text-primary"
             )}
             href="/boutique"
@@ -187,7 +194,7 @@ export function CartContent({
             {t("continueShopping")}
           </Link>
           <Link
-            className="rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
+            className="w-full rounded-lg bg-primary px-6 py-3 text-center font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90 sm:w-auto"
             href="/commande"
           >
             {t("checkout")}

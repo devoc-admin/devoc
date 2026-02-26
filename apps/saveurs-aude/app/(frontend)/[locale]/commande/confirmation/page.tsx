@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import type Stripe from "stripe";
+import { FadeIn, FadeInUp } from "@/components/motion";
 import { Link } from "@/i18n/navigation";
 import { getPayloadClient } from "@/lib/payload";
 import { getStripe } from "@/lib/stripe";
@@ -79,33 +80,43 @@ export default async function ConfirmationPage({
     session?.customer_details?.email ?? session?.metadata?.customerEmail;
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
-      <h1 className="font-heading text-3xl text-primary">{t("title")}</h1>
-      <p className="mt-3 text-muted-foreground">{t("subtitle")}</p>
+    <FadeIn>
+      <div className="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
+        <h1 className="font-heading text-2xl text-primary sm:text-3xl">
+          {t("title")}
+        </h1>
+        <p className="mt-3 text-muted-foreground">{t("subtitle")}</p>
 
-      {orderNumber ? (
-        <div className="mt-8 rounded-lg border border-border/50 bg-card p-6">
-          <p className="text-muted-foreground text-sm">{t("orderNumber")}</p>
-          <p className="mt-1 font-heading text-2xl text-foreground">
-            {orderNumber}
+        {orderNumber ? (
+          <FadeInUp delay={0.3}>
+            <div className="mt-8 rounded-lg border border-border/50 bg-card p-6">
+              <p className="text-muted-foreground text-sm">
+                {t("orderNumber")}
+              </p>
+              <p className="mt-1 font-heading text-2xl text-foreground">
+                {orderNumber}
+              </p>
+            </div>
+          </FadeInUp>
+        ) : (
+          <p className="mt-8 text-muted-foreground text-sm">
+            {t("processing")}
           </p>
-        </div>
-      ) : (
-        <p className="mt-8 text-muted-foreground text-sm">{t("processing")}</p>
-      )}
+        )}
 
-      {customerEmail && (
-        <p className="mt-4 text-muted-foreground text-sm">
-          {t("emailSent", { email: customerEmail })}
-        </p>
-      )}
+        {customerEmail && (
+          <p className="mt-4 text-muted-foreground text-sm">
+            {t("emailSent", { email: customerEmail })}
+          </p>
+        )}
 
-      <Link
-        className="mt-8 inline-block rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
-        href="/boutique"
-      >
-        {t("backToShop")}
-      </Link>
-    </div>
+        <Link
+          className="mt-8 inline-block rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
+          href="/boutique"
+        >
+          {t("backToShop")}
+        </Link>
+      </div>
+    </FadeIn>
   );
 }

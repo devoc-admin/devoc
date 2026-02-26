@@ -3,7 +3,11 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import type { Where } from "payload";
 import { JsonLd } from "@/components/JsonLd";
-import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
+import {
+  FadeInUp,
+  StaggerContainerOnScroll,
+  StaggerItem,
+} from "@/components/motion";
 import { Link } from "@/i18n/navigation";
 import { buildBreadcrumbList } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
@@ -84,7 +88,9 @@ export default async function BlogPage({
         ])}
       />
       <FadeInUp>
-        <h1 className="font-heading text-3xl text-primary">{t("title")}</h1>
+        <h1 className="font-heading text-2xl text-primary sm:text-3xl">
+          {t("title")}
+        </h1>
       </FadeInUp>
 
       {/* Tag filter */}
@@ -118,7 +124,7 @@ export default async function BlogPage({
 
       {/* Posts grid */}
       {posts.length > 0 ? (
-        <StaggerContainer className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <StaggerContainerOnScroll className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => {
             const cover =
               typeof post.coverImage === "object"
@@ -178,7 +184,7 @@ export default async function BlogPage({
               </StaggerItem>
             );
           })}
-        </StaggerContainer>
+        </StaggerContainerOnScroll>
       ) : (
         <div className="mt-16 text-center">
           <p className="text-muted-foreground">{t("noPosts")}</p>

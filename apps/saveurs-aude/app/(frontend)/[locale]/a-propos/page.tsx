@@ -2,6 +2,7 @@ import type { SerializedEditorState } from "lexical";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/JsonLd";
+import { FadeInUp, FadeInUpOnScroll } from "@/components/motion";
 import { RichText } from "@/components/RichText";
 import { buildBreadcrumbList } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
@@ -48,11 +49,17 @@ export default async function AboutPage() {
           { name: page.title, url: `${baseUrl}/fr/a-propos` },
         ])}
       />
-      <h1 className="font-heading text-3xl text-primary">{page.title}</h1>
+      <FadeInUp>
+        <h1 className="font-heading text-2xl text-primary sm:text-3xl">
+          {page.title}
+        </h1>
+      </FadeInUp>
       {page.content && (
-        <div className="mt-8">
-          <RichText data={page.content as unknown as SerializedEditorState} />
-        </div>
+        <FadeInUpOnScroll delay={0.1}>
+          <div className="mt-8">
+            <RichText data={page.content as unknown as SerializedEditorState} />
+          </div>
+        </FadeInUpOnScroll>
       )}
     </div>
   );

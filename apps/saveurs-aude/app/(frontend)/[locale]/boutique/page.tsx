@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import type { Where } from "payload";
 import { JsonLd } from "@/components/JsonLd";
-import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
+import {
+  FadeInUp,
+  StaggerContainerOnScroll,
+  StaggerItem,
+} from "@/components/motion";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { buildBreadcrumbList } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
@@ -96,7 +100,7 @@ export default async function ShopPage({
         ])}
       />
       <FadeInUp>
-        <h1 className="font-heading text-3xl text-primary">
+        <h1 className="font-heading text-2xl text-primary sm:text-3xl">
           {t("allCategories")}
         </h1>
         <p className="mt-1 text-muted-foreground text-sm">
@@ -116,13 +120,13 @@ export default async function ShopPage({
 
       {/* Product grid */}
       {products.length > 0 ? (
-        <StaggerContainer className="mt-8 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+        <StaggerContainerOnScroll className="mt-8 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
           {products.map((product) => (
             <StaggerItem key={product.id}>
               <ProductCard product={product} />
             </StaggerItem>
           ))}
-        </StaggerContainer>
+        </StaggerContainerOnScroll>
       ) : (
         <div className="mt-16 text-center">
           <p className="text-muted-foreground">{t("noProducts")}</p>

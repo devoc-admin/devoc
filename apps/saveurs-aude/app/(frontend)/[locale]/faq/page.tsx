@@ -2,7 +2,7 @@ import type { SerializedEditorState } from "lexical";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { JsonLd } from "@/components/JsonLd";
-import { FadeInUp } from "@/components/motion";
+import { FadeInUp, FadeInUpOnScroll } from "@/components/motion";
 import { RichText } from "@/components/RichText";
 import { buildBreadcrumbList, buildFAQPage } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
@@ -57,12 +57,14 @@ export default async function FAQPage() {
         ]}
       />
       <FadeInUp>
-        <h1 className="font-heading text-3xl text-primary">{t("title")}</h1>
+        <h1 className="font-heading text-2xl text-primary sm:text-3xl">
+          {t("title")}
+        </h1>
       </FadeInUp>
 
       <div className="mt-8 flex flex-col gap-8">
         {[...grouped.entries()].map(([category, items], index) => (
-          <FadeInUp delay={index * 0.1} key={category}>
+          <FadeInUpOnScroll delay={index * 0.1} key={category}>
             <section>
               {category && (
                 <h2 className="mb-4 font-heading text-foreground text-xl">
@@ -99,7 +101,7 @@ export default async function FAQPage() {
                 ))}
               </div>
             </section>
-          </FadeInUp>
+          </FadeInUpOnScroll>
         ))}
       </div>
     </div>

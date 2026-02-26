@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { JsonLd } from "@/components/JsonLd";
+import { FadeInUp } from "@/components/motion";
 import { buildBreadcrumbList, buildLocalBusiness } from "@/lib/json-ld";
 import { getBaseUrl } from "@/lib/seo";
 import { ContactForm } from "./_components/ContactForm";
@@ -34,10 +35,16 @@ export default async function ContactPage() {
           ]),
         ]}
       />
-      <h1 className="font-heading text-3xl text-primary">{t("title")}</h1>
-      <div className="mt-8">
-        <ContactForm />
-      </div>
+      <FadeInUp>
+        <h1 className="font-heading text-2xl text-primary sm:text-3xl">
+          {t("title")}
+        </h1>
+      </FadeInUp>
+      <FadeInUp delay={0.15}>
+        <div className="mt-8">
+          <ContactForm />
+        </div>
+      </FadeInUp>
     </div>
   );
 }

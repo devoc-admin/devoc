@@ -1,17 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useState, ViewTransition } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { Media } from "@/payload-types";
 
-export function ProductGallery({
-  images,
-  slug,
-}: {
-  images: Media[];
-  slug: string;
-}) {
+export function ProductGallery({ images }: { images: Media[] }) {
   const [selected, setSelected] = useState(0);
   const current = images[selected];
 
@@ -29,28 +23,16 @@ export function ProductGallery({
     <div className="flex flex-col gap-3">
       {/* Main image */}
       <div className="relative aspect-square overflow-hidden rounded-lg bg-secondary/30">
-        {current?.url &&
-          (selected === 0 ? (
-            <ViewTransition name={`product-image-${slug}`}>
-              <Image
-                alt={current.alt || ""}
-                className="object-cover"
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-                src={current.url}
-              />
-            </ViewTransition>
-          ) : (
-            <Image
-              alt={current.alt || ""}
-              className="object-cover"
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-              src={current.url}
-            />
-          ))}
+        {current?.url && (
+          <Image
+            alt={current.alt || ""}
+            className="object-cover"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 50vw"
+            src={current.url}
+          />
+        )}
       </div>
 
       {/* Thumbnails */}
