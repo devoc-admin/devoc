@@ -102,12 +102,13 @@ export function StaggerContainerOnScroll({
 export function StaggerItem({ children, className }: AnimationProps) {
   return (
     <motion.div
+      className={className}
       variants={{
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0 },
       }}
     >
-      <div className={className}>{children}</div>
+      {children}
     </motion.div>
   );
 }

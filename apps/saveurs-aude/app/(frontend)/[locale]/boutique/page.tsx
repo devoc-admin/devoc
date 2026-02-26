@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import type { Where } from "payload";
 import { JsonLd } from "@/components/JsonLd";
@@ -11,55 +10,26 @@ import { ProductCard } from "@/components/shop/ProductCard";
 import { buildBreadcrumbList } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
 import { getBaseUrl } from "@/lib/seo";
-import type { Category, Product } from "@/payload-types";
+import { cn } from "@/lib/utils";
+import type { Product } from "@/payload-types";
 import { ProductFilters } from "./_components/ProductFilters";
 import { searchParamsCache } from "./_search-params";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "seo" });
-  const tShop = await getTranslations({ locale, namespace: "shop" });
-  return {
-    description: t("shopDescription"),
-    title: tShop("allCategories"),
-  };
-}
-
 const PRODUCTS_PER_PAGE = 12;
-
-function getSortField(sort: string): string {
-  switch (sort) {
-    case "price-asc":
-      return "variants.price";
-    case "price-desc":
-      return "-variants.price";
-    default:
-      return "-createdAt";
-  }
-}
 
 export default async function ShopPage({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  // 🌐 Search params
   const { category, onSale, page, q, sort } =
     await searchParamsCache.parse(searchParams);
-  const t = await getTranslations("shop");
+
+  // 📦 CMS
   const payload = await getPayloadClient();
 
-  // Fetch categories for filter bar
-  const categoriesResult = await payload.find({
-    collection: "categories",
-    limit: 50,
-    sort: "order",
-  });
-
-  // Build product query
+  // 🐝 Build product query
   const where: Where = {
     status: { equals: "published" },
   };
@@ -86,41 +56,45 @@ export default async function ShopPage({
   });
 
   const products = productsResult.docs as Product[];
-  const categories = categoriesResult.docs as Category[];
-  const { totalDocs, totalPages } = productsResult;
+  const { totalDocs: count, totalPages } = productsResult;
 
+  // 🌐 URL
   const baseUrl = getBaseUrl();
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+    <div
+      className={cn(
+        "space-y-8",
+        "mx-auto",
+        "max-w-6xl",
+        "px-4 py-8",
+        "sm:px-6"
+      )}
+    >
       <JsonLd
         data={buildBreadcrumbList([
           { name: "Accueil", url: baseUrl },
           { name: "Boutique", url: `${baseUrl}/fr/boutique` },
         ])}
       />
+      {/* 🆎 */}
       <FadeInUp>
-        <h1 className="font-heading text-2xl text-primary sm:text-3xl">
-          {t("allCategories")}
-        </h1>
-        <p className="mt-1 text-muted-foreground text-sm">
-          {t("results", { count: totalDocs })}
-        </p>
+        <AllCategories />
+        <Results count={count} />
       </FadeInUp>
 
-      <div className="mt-6">
-        <ProductFilters
-          categories={categories.map((c) => ({
-            id: c.id,
-            slug: c.slug,
-            title: c.title,
-          }))}
-        />
-      </div>
+      {/* 🟡🟡🟡 */}
+      <Categories />
 
-      {/* Product grid */}
+      {/* 🪴🪴🪴 */}
       {products.length > 0 ? (
-        <StaggerContainerOnScroll className="mt-8 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
+        <StaggerContainerOnScroll
+          className={cn(
+            "grid",
+            "grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
+            "gap-4 sm:gap-6"
+          )}
+        >
           {products.map((product) => (
             <StaggerItem key={product.id}>
               <ProductCard product={product} />
@@ -128,12 +102,11 @@ export default async function ShopPage({
           ))}
         </StaggerContainerOnScroll>
       ) : (
-        <div className="mt-16 text-center">
-          <p className="text-muted-foreground">{t("noProducts")}</p>
-        </div>
+        /*🙅🪴*/
+        <NoProducts />
       )}
 
-      {/* Pagination */}
+      {/* 📃 */}
       {totalPages > 1 && (
         <Pagination currentPage={page} totalPages={totalPages} />
       )}
@@ -141,6 +114,68 @@ export default async function ShopPage({
   );
 }
 
+// =================================
+// 🆎
+async function AllCategories() {
+  // 🗣️ i18n
+  const t = await getTranslations("shop");
+  return (
+    <h1 className="font-heading text-2xl text-primary sm:text-3xl">
+      {t("allCategories")}
+    </h1>
+  );
+}
+
+async function Results({ count }: { count: number }) {
+  // 🗣️ i18n
+  const t = await getTranslations("shop");
+
+  return (
+    <p className="mt-1 text-muted-foreground text-sm">
+      {t("results", { count })}
+    </p>
+  );
+}
+
+// =================================
+// 🟡 Categories
+
+const MAX_CATEGORIES = 50;
+async function Categories() {
+  // 📦 CMS
+  const payload = await getPayloadClient();
+
+  // 🐝 Fetch categories for filter bar
+  const categoriesResult = await payload.find({
+    collection: "categories",
+    limit: MAX_CATEGORIES,
+    sort: "order",
+  });
+
+  const categories = categoriesResult.docs as Category[];
+  const formattedCategories = categories.map(({ id, slug, title }) => ({
+    id,
+    slug,
+    title,
+  }));
+
+  return <ProductFilters categories={formattedCategories} />;
+}
+
+// =================================
+// 🙅🪴
+async function NoProducts() {
+  // 🗣️ i18n
+  const t = await getTranslations("shop");
+  return (
+    <div className="mt-16 text-center">
+      <p className="text-muted-foreground">{t("noProducts")}</p>
+    </div>
+  );
+}
+
+// =================================
+// 📃
 function Pagination({
   currentPage,
   totalPages,
@@ -153,7 +188,7 @@ function Pagination({
   return (
     <nav
       aria-label="Pagination"
-      className="mt-10 flex items-center justify-center gap-2"
+      className="flex items-center justify-center gap-2"
     >
       {pages.map((p) => (
         <a
@@ -170,4 +205,33 @@ function Pagination({
       ))}
     </nav>
   );
+}
+
+// ================================
+// 🐵 Metadata
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "seo" });
+  const tShop = await getTranslations({ locale, namespace: "shop" });
+  return {
+    description: t("shopDescription"),
+    title: tShop("allCategories"),
+  };
+}
+
+// ================================
+// 🔧 Utils
+function getSortField(sort: string): string {
+  switch (sort) {
+    case "price-asc":
+      return "variants.price";
+    case "price-desc":
+      return "-variants.price";
+    default:
+      return "-createdAt";
+  }
 }
