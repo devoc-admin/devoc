@@ -106,7 +106,14 @@ export async function Footer() {
               {contact?.address && (
                 <div className="flex items-start gap-2">
                   <MapPin className="mt-0.5 size-4 shrink-0 text-accent" />
-                  <span>{contact.address}</span>
+                  <a
+                    className="transition-colors hover:text-primary"
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address)}`}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {contact.address}
+                  </a>
                 </div>
               )}
               {contact?.phone && (
