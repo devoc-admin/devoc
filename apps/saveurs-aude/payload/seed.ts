@@ -902,6 +902,337 @@ const PRODUCTS: ProductSeed[] = [
   },
 ];
 
+// ── Lexical richtext helpers ────────────────────────────────────────────────
+
+function txt(content: string, format = 0) {
+  return {
+    detail: 0,
+    format,
+    mode: "normal" as const,
+    style: "",
+    text: content,
+    type: "text" as const,
+    version: 1,
+  };
+}
+
+function h2(content: string) {
+  return {
+    children: [txt(content)],
+    direction: "ltr" as const,
+    format: "" as const,
+    indent: 0,
+    tag: "h2" as const,
+    type: "heading" as const,
+    version: 1,
+  };
+}
+
+function p(content: string) {
+  return {
+    children: [txt(content)],
+    direction: "ltr" as const,
+    format: "" as const,
+    indent: 0,
+    textFormat: 0,
+    textStyle: "",
+    type: "paragraph" as const,
+    version: 1,
+  };
+}
+
+function richText(...nodes: ReturnType<typeof h2 | typeof p>[]) {
+  return {
+    root: {
+      children: nodes,
+      direction: "ltr" as const,
+      format: "" as const,
+      indent: 0,
+      type: "root" as const,
+      version: 1,
+    },
+  };
+}
+
+// ── Pages ───────────────────────────────────────────────────────────────────
+
+type PageSeed = {
+  contentEn: ReturnType<typeof richText>;
+  contentFr: ReturnType<typeof richText>;
+  seoDescEn: string;
+  seoDescFr: string;
+  seoTitleEn: string;
+  seoTitleFr: string;
+  slug: string;
+  titleEn: string;
+  titleFr: string;
+};
+
+const PAGES: PageSeed[] = [
+  {
+    contentEn: richText(
+      h2("Our story"),
+      p(
+        "Saveurs d'Aude was born from the passion of two lovers of the Aude terroir, eager to share the gastronomic treasures of our beautiful region. From our shop in the heart of the Cité de Carcassonne, we carefully select the finest artisanal products from Occitania."
+      ),
+      p(
+        "Every product we offer tells a story — that of a passionate producer, a know-how passed down through generations, a unique terroir between the Mediterranean and the Pyrenees."
+      ),
+      h2("Our values"),
+      p(
+        "Authenticity — We favor products made using traditional methods, with no compromise on ingredient quality."
+      ),
+      p(
+        "Proximity — We work directly with local producers from the Aude and neighboring areas, promoting short supply chains."
+      ),
+      p(
+        "Passion — Every product is tasted and approved by our team before being offered for sale. We select only the best."
+      ),
+      h2("Our producers"),
+      p(
+        "We work with over thirty local artisans and producers: beekeepers from the Corbières, olive growers from the Minervois, winemakers from Limoux, confectioners from Carcassonne and many more. This diversity is the richness of our catalog and reflects the variety of the Aude terroir."
+      )
+    ),
+    contentFr: richText(
+      h2("Notre histoire"),
+      p(
+        "Saveurs d'Aude est née de la passion de deux amoureux du terroir audois, désireux de partager les richesses gastronomiques de notre belle région. Depuis notre boutique située au cœur de la Cité de Carcassonne, nous sélectionnons avec soin les meilleurs produits artisanaux d'Occitanie."
+      ),
+      p(
+        "Chaque produit que nous proposons raconte une histoire, celle d'un producteur passionné, d'un savoir-faire transmis de génération en génération, d'un terroir unique entre Méditerranée et Pyrénées."
+      ),
+      h2("Nos valeurs"),
+      p(
+        "Authenticité — Nous privilégions les produits fabriqués selon des méthodes traditionnelles, sans compromis sur la qualité des ingrédients."
+      ),
+      p(
+        "Proximité — Nous travaillons en direct avec des producteurs locaux de l'Aude et des départements voisins, favorisant les circuits courts."
+      ),
+      p(
+        "Passion — Chaque produit est goûté et approuvé par notre équipe avant d'être proposé à la vente. Nous ne sélectionnons que le meilleur."
+      ),
+      h2("Nos producteurs"),
+      p(
+        "Nous collaborons avec plus d'une trentaine d'artisans et producteurs locaux : apiculteurs des Corbières, oléiculteurs du Minervois, vignerons de Limoux, confiseurs de Carcassonne et bien d'autres. Cette diversité fait la richesse de notre catalogue et reflète la variété du terroir audois."
+      )
+    ),
+    seoDescEn:
+      "Discover the story of Saveurs d'Aude, a fine grocery store for artisanal specialties in Carcassonne. Our values, producers and passion for the Aude terroir.",
+    seoDescFr:
+      "Découvrez l'histoire de Saveurs d'Aude, épicerie fine de spécialités artisanales à Carcassonne. Nos valeurs, nos producteurs et notre passion pour le terroir audois.",
+    seoTitleEn: "About Saveurs d'Aude",
+    seoTitleFr: "À propos de Saveurs d'Aude",
+    slug: "a-propos",
+    titleEn: "About",
+    titleFr: "À propos",
+  },
+  {
+    contentEn: richText(
+      h2("Site publisher"),
+      p(
+        "The website saveurs-aude.fr is published by Saveurs d'Aude, sole proprietorship."
+      ),
+      p("Address: 3 Rue Cros-Mayrevieille, 11000 Carcassonne, France"),
+      p("Phone: +33 4 68 25 30 45"),
+      p("Email: contact@saveursdaude.fr"),
+      p("Publication director: Saveurs d'Aude"),
+      h2("Hosting"),
+      p(
+        "The website is hosted by Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, United States."
+      ),
+      h2("Intellectual property"),
+      p(
+        "All content on this website (texts, images, logos, videos) is protected by copyright. Any reproduction, even partial, is prohibited without prior written authorization from Saveurs d'Aude."
+      ),
+      h2("Liability"),
+      p(
+        "Saveurs d'Aude strives to ensure the accuracy of information published on this site, but cannot guarantee its completeness or the absence of errors. Saveurs d'Aude reserves the right to modify the site content at any time without notice."
+      ),
+      h2("Applicable law"),
+      p(
+        "These legal notices are governed by French law. In case of dispute, the courts of Carcassonne shall have sole jurisdiction."
+      )
+    ),
+    contentFr: richText(
+      h2("Éditeur du site"),
+      p(
+        "Le site saveurs-aude.fr est édité par Saveurs d'Aude, entreprise individuelle."
+      ),
+      p("Adresse : 3 Rue Cros-Mayrevieille, 11000 Carcassonne, France"),
+      p("Téléphone : +33 4 68 25 30 45"),
+      p("Email : contact@saveursdaude.fr"),
+      p("Directeur de la publication : Saveurs d'Aude"),
+      h2("Hébergement"),
+      p(
+        "Le site est hébergé par Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis."
+      ),
+      h2("Propriété intellectuelle"),
+      p(
+        "L'ensemble du contenu de ce site (textes, images, logos, vidéos) est protégé par le droit d'auteur. Toute reproduction, même partielle, est interdite sans autorisation préalable écrite de Saveurs d'Aude."
+      ),
+      h2("Responsabilité"),
+      p(
+        "Saveurs d'Aude s'efforce d'assurer l'exactitude des informations diffusées sur ce site, mais ne peut garantir l'exhaustivité ou l'absence d'erreurs. Saveurs d'Aude se réserve le droit de modifier le contenu du site à tout moment et sans préavis."
+      ),
+      h2("Droit applicable"),
+      p(
+        "Les présentes mentions légales sont régies par le droit français. En cas de litige, les tribunaux de Carcassonne seront seuls compétents."
+      )
+    ),
+    seoDescEn:
+      "Legal notice for the Saveurs d'Aude website: publisher, hosting, intellectual property and applicable law.",
+    seoDescFr:
+      "Mentions légales du site Saveurs d'Aude : éditeur, hébergement, propriété intellectuelle et droit applicable.",
+    seoTitleEn: "Legal notice",
+    seoTitleFr: "Mentions légales",
+    slug: "mentions-legales",
+    titleEn: "Legal notice",
+    titleFr: "Mentions légales",
+  },
+  {
+    contentEn: richText(
+      h2("Data collected"),
+      p(
+        "As part of your use of the website and your purchases, we may collect the following personal data: last name, first name, email address, postal address, phone number and order information."
+      ),
+      h2("Processing purposes"),
+      p(
+        "Your data is used for processing your orders, managing your customer account, sending communications related to your purchases and, with your consent, sending our newsletter."
+      ),
+      h2("Legal basis"),
+      p(
+        "The processing of your data is based on the performance of the sales contract (for orders), your consent (for the newsletter) and our legitimate interest (for improving our services)."
+      ),
+      h2("Cookies"),
+      p(
+        "This website uses functional cookies necessary for its proper operation, as well as analytics cookies to understand how the site is used. You can manage your cookie preferences at any time via the consent banner."
+      ),
+      h2("Data retention"),
+      p(
+        "Your data is retained for the period necessary for the purposes described above, and for a maximum of 3 years after your last activity on the site. Order-related data is retained in accordance with legal obligations (10 years)."
+      ),
+      h2("Your rights"),
+      p(
+        "In accordance with the GDPR, you have the right to access, rectify, delete, restrict and port your data. You can exercise these rights by contacting us at contact@saveursdaude.fr."
+      ),
+      h2("Contact"),
+      p(
+        "For any questions regarding the protection of your personal data, you can write to us at: contact@saveursdaude.fr or by mail to Saveurs d'Aude, 3 Rue Cros-Mayrevieille, 11000 Carcassonne, France."
+      )
+    ),
+    contentFr: richText(
+      h2("Données collectées"),
+      p(
+        "Dans le cadre de votre utilisation du site et de vos achats, nous sommes amenés à collecter les données personnelles suivantes : nom, prénom, adresse email, adresse postale, numéro de téléphone et informations de commande."
+      ),
+      h2("Finalités du traitement"),
+      p(
+        "Vos données sont utilisées pour le traitement de vos commandes, la gestion de votre compte client, l'envoi de communications relatives à vos achats et, avec votre consentement, l'envoi de notre newsletter."
+      ),
+      h2("Base légale"),
+      p(
+        "Le traitement de vos données repose sur l'exécution du contrat de vente (pour les commandes), votre consentement (pour la newsletter) et notre intérêt légitime (pour l'amélioration de nos services)."
+      ),
+      h2("Cookies"),
+      p(
+        "Ce site utilise des cookies fonctionnels nécessaires à son bon fonctionnement, ainsi que des cookies d'analyse pour comprendre comment le site est utilisé. Vous pouvez gérer vos préférences de cookies à tout moment via le bandeau de consentement."
+      ),
+      h2("Conservation des données"),
+      p(
+        "Vos données sont conservées pendant la durée nécessaire aux finalités décrites ci-dessus, et au maximum 3 ans après votre dernière activité sur le site. Les données relatives aux commandes sont conservées conformément aux obligations légales (10 ans)."
+      ),
+      h2("Vos droits"),
+      p(
+        "Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, de suppression, de limitation et de portabilité de vos données. Vous pouvez exercer ces droits en nous contactant à contact@saveursdaude.fr."
+      ),
+      h2("Contact"),
+      p(
+        "Pour toute question relative à la protection de vos données personnelles, vous pouvez nous écrire à : contact@saveursdaude.fr ou par courrier à l'adresse Saveurs d'Aude, 3 Rue Cros-Mayrevieille, 11000 Carcassonne, France."
+      )
+    ),
+    seoDescEn:
+      "Saveurs d'Aude privacy policy: data collected, cookies, your GDPR rights and data retention.",
+    seoDescFr:
+      "Politique de confidentialité de Saveurs d'Aude : données collectées, cookies, vos droits RGPD et conservation des données.",
+    seoTitleEn: "Privacy policy",
+    seoTitleFr: "Politique de confidentialité",
+    slug: "politique-confidentialite",
+    titleEn: "Privacy policy",
+    titleFr: "Politique de confidentialité",
+  },
+  {
+    contentEn: richText(
+      h2("Purpose"),
+      p(
+        "These general terms and conditions of sale govern all transactions made on the website saveurs-aude.fr, published by Saveurs d'Aude."
+      ),
+      h2("Products and pricing"),
+      p(
+        "Products are described as accurately as possible. Prices are shown in euros including all taxes. Saveurs d'Aude reserves the right to modify prices at any time, with products being invoiced at the rate in effect at the time of order validation."
+      ),
+      h2("Orders"),
+      p(
+        "Any order implies acceptance of these general terms and conditions of sale. Order validation constitutes a purchase commitment. A confirmation email is sent upon receipt of payment."
+      ),
+      h2("Payment"),
+      p(
+        "Payment is made online by credit card through the secure Stripe platform. The charge is made at the time of order validation."
+      ),
+      h2("Delivery"),
+      p(
+        "Orders are shipped within 2 to 5 business days. Delivery costs are calculated based on the total weight of the order and the delivery address. Free delivery is available above a certain purchase amount, as indicated on the website. In-store pickup is also available."
+      ),
+      h2("Right of withdrawal"),
+      p(
+        "In accordance with Article L221-18 of the French Consumer Code, you have 14 days from receipt of your order to exercise your right of withdrawal. Opened food products or those past their expiration date cannot be returned."
+      ),
+      h2("Complaints and disputes"),
+      p(
+        "For any complaint, please contact us by email at contact@saveursdaude.fr. In case of unresolved dispute, you may refer to the consumer mediator. These terms are governed by French law."
+      )
+    ),
+    contentFr: richText(
+      h2("Objet"),
+      p(
+        "Les présentes conditions générales de vente régissent l'ensemble des transactions effectuées sur le site saveurs-aude.fr, édité par Saveurs d'Aude."
+      ),
+      h2("Produits et prix"),
+      p(
+        "Les produits proposés sont décrits avec la plus grande exactitude possible. Les prix sont indiqués en euros TTC. Saveurs d'Aude se réserve le droit de modifier ses prix à tout moment, les produits étant facturés au tarif en vigueur lors de la validation de la commande."
+      ),
+      h2("Commandes"),
+      p(
+        "Toute commande suppose l'acceptation des présentes conditions générales de vente. La validation de la commande vaut engagement d'achat. Un email de confirmation vous est envoyé dès réception du paiement."
+      ),
+      h2("Paiement"),
+      p(
+        "Le paiement s'effectue en ligne par carte bancaire via la plateforme sécurisée Stripe. Le débit est effectué au moment de la validation de la commande."
+      ),
+      h2("Livraison"),
+      p(
+        "Les commandes sont expédiées sous 2 à 5 jours ouvrés. Les frais de livraison sont calculés en fonction du poids total de la commande et de l'adresse de livraison. La livraison est offerte à partir d'un certain montant d'achat, indiqué sur le site. Le retrait en boutique est également disponible."
+      ),
+      h2("Droit de rétractation"),
+      p(
+        "Conformément à l'article L221-18 du Code de la consommation, vous disposez d'un délai de 14 jours à compter de la réception de votre commande pour exercer votre droit de rétractation. Les produits alimentaires ouverts ou dont la date de péremption est dépassée ne peuvent être retournés."
+      ),
+      h2("Réclamations et litiges"),
+      p(
+        "Pour toute réclamation, merci de nous contacter par email à contact@saveursdaude.fr. En cas de litige non résolu, vous pouvez recourir au médiateur de la consommation. Les présentes CGV sont soumises au droit français."
+      )
+    ),
+    seoDescEn:
+      "Saveurs d'Aude terms and conditions: orders, payment, delivery, right of withdrawal and complaints.",
+    seoDescFr:
+      "Conditions générales de vente de Saveurs d'Aude : commandes, paiement, livraison, droit de rétractation et réclamations.",
+    seoTitleEn: "Terms & Conditions",
+    seoTitleFr: "Conditions générales de vente",
+    slug: "cgv",
+    titleEn: "Terms & Conditions",
+    titleFr: "Conditions générales de vente",
+  },
+];
+
 // ── Seed functions ──────────────────────────────────────────────────────────
 
 async function seedCategories(payload: Payload) {
@@ -1127,6 +1458,46 @@ async function seedHomepage(
   console.log("  Homepage updated.");
 }
 
+async function seedPages(payload: Payload) {
+  console.log(`Creating ${PAGES.length} pages...`);
+
+  for (const page of PAGES) {
+    const created = await payload.create({
+      collection: "pages",
+      data: {
+        content: page.contentFr,
+        seo: {
+          description: page.seoDescFr,
+          title: page.seoTitleFr,
+        },
+        slug: page.slug,
+        title: page.titleFr,
+      },
+      locale: "fr",
+      overrideAccess: true,
+    });
+
+    await payload.update({
+      collection: "pages",
+      data: {
+        content: page.contentEn,
+        seo: {
+          description: page.seoDescEn,
+          title: page.seoTitleEn,
+        },
+        title: page.titleEn,
+      },
+      id: created.id,
+      locale: "en",
+      overrideAccess: true,
+    });
+
+    console.log(`  + ${page.titleFr}`);
+  }
+
+  console.log(`  ${PAGES.length} pages created.`);
+}
+
 // ── Reset ───────────────────────────────────────────────────────────────────
 
 async function resetData(payload: Payload) {
@@ -1159,13 +1530,54 @@ async function resetData(payload: Payload) {
     });
   }
   console.log(`  Deleted ${categories.totalDocs} categories.`);
+
+  const pages = await payload.find({
+    collection: "pages",
+    limit: 0,
+    overrideAccess: true,
+  });
+  for (const page of pages.docs) {
+    await payload.delete({
+      collection: "pages",
+      id: page.id,
+      overrideAccess: true,
+    });
+  }
+  console.log(`  Deleted ${pages.totalDocs} pages.`);
 }
 
 // ── Main ────────────────────────────────────────────────────────────────────
 
+async function resetPages(payload: Payload) {
+  const pages = await payload.find({
+    collection: "pages",
+    limit: 0,
+    overrideAccess: true,
+  });
+  for (const page of pages.docs) {
+    await payload.delete({
+      collection: "pages",
+      id: page.id,
+      overrideAccess: true,
+    });
+  }
+  if (pages.totalDocs > 0) {
+    console.log(`  Deleted ${pages.totalDocs} existing pages.`);
+  }
+}
+
 async function seed() {
   const force = process.argv.includes("--force");
+  const pagesOnly = process.argv.includes("--pages-only");
   const payload = await getPayload({ config });
+
+  if (pagesOnly) {
+    console.log("Seeding pages only...\n");
+    await resetPages(payload);
+    await seedPages(payload);
+    console.log("\nPages seed completed!");
+    process.exit(0);
+  }
 
   const { totalDocs } = await payload.find({
     collection: "categories",
@@ -1185,6 +1597,7 @@ async function seed() {
 
   const categoryMap = await seedCategories(payload);
   await seedProducts(payload, categoryMap);
+  await seedPages(payload);
   await seedSiteConfig(payload);
   await seedHomepage(payload, categoryMap);
 

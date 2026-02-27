@@ -2,6 +2,7 @@ import path from "node:path";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
+import { fr } from "@payloadcms/translations/languages/fr";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 
@@ -54,6 +55,11 @@ export default buildConfig({
   editor: lexicalEditor(),
 
   globals: [SiteConfig, Homepage, ShippingConfig, CookieConsent],
+
+  i18n: {
+    fallbackLanguage: "fr",
+    supportedLanguages: { fr },
+  },
 
   localization: {
     defaultLocale: "fr",

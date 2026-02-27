@@ -222,6 +222,10 @@
     "blogDescription": "Recettes, conseils et actualités autour des produits du terroir audois et occitan.",
     "contactDescription": "Contactez Saveurs d'Aude, votre épicerie fine de spécialités artisanales à Carcassonne.",
     "faqDescription": "Retrouvez les réponses à vos questions sur nos produits, la livraison, le retrait en boutique et les paiements.",
+    "aboutDescription": "Découvrez l'histoire de Saveurs d'Aude, épicerie fine de spécialités artisanales à Carcassonne. Nos valeurs, nos producteurs et notre passion pour le terroir audois.",
+    "cgvDescription": "Conditions générales de vente de Saveurs d'Aude : commandes, paiement, livraison, droit de rétractation et réclamations.",
+    "legalDescription": "Mentions légales du site Saveurs d'Aude : éditeur, hébergement, propriété intellectuelle et droit applicable.",
+    "privacyDescription": "Politique de confidentialité de Saveurs d'Aude : données collectées, cookies, vos droits RGPD et conservation des données.",
     "reviewsDescription": "Découvrez les avis de nos clients sur nos spécialités artisanales du Sud de la France."
   },
   "footer": {

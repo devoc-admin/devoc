@@ -1,6 +1,7 @@
 import type { SerializedEditorState } from "lexical";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { JsonLd } from "@/components/JsonLd";
 import { FadeInUp, FadeInUpOnScroll } from "@/components/motion";
 import { RichText } from "@/components/RichText";
@@ -9,19 +10,29 @@ import { getPayloadClient } from "@/lib/payload";
 import { buildOgImage, getBaseUrl } from "@/lib/seo";
 import type { Page } from "@/payload-types";
 
-async function getPage(): Promise<Page | null> {
+async function getPage(locale: string): Promise<Page | null> {
   const payload = await getPayloadClient();
   const result = await payload.find({
     collection: "pages",
     limit: 1,
+    locale: locale as "fr" | "en",
     where: { slug: { equals: "cgv" } },
   });
   return (result.docs[0] as Page) ?? null;
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  const page = await getPage();
-  if (!page) return {};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const page = await getPage(locale);
+  if (!page) {
+    const t = await getTranslations({ locale, namespace: "seo" });
+    const tPages = await getTranslations({ locale, namespace: "pages" });
+    return { description: t("cgvDescription"), title: tPages("cgv") };
+  }
   const ogImage = buildOgImage(page.seo?.image);
   return {
     description: page.seo?.description ?? undefined,
@@ -32,8 +43,13 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function CGVPage() {
-  const page = await getPage();
+export default async function CGVPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const page = await getPage(locale);
 
   if (!page) {
     notFound();
@@ -46,7 +62,7 @@ export default async function CGVPage() {
       <JsonLd
         data={buildBreadcrumbList([
           { name: "Accueil", url: baseUrl },
-          { name: page.title, url: `${baseUrl}/fr/cgv` },
+          { name: page.title, url: `${baseUrl}/${locale}/cgv` },
         ])}
       />
       <FadeInUp>
