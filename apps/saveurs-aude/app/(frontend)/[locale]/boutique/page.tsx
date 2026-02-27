@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import type { Where } from "payload";
 import { JsonLd } from "@/components/JsonLd";
@@ -11,7 +12,7 @@ import { buildBreadcrumbList } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
 import { getBaseUrl } from "@/lib/seo";
 import { cn } from "@/lib/utils";
-import type { Product } from "@/payload-types";
+import type { Category, Product } from "@/payload-types";
 import { ProductFilters } from "./_components/ProductFilters";
 import { searchParamsCache } from "./_search-params";
 

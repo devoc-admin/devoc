@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun run lint
+        working-directory: apps/saveurs-aude
+      - run: bun run check-types
+        working-directory: apps/saveurs-aude
+      - run: bunx turbo build --filter=saveurs-aude
+        env:
+          DATABASE_URL: "postgresql://fake:fake@localhost:5432/fake"
+          PAYLOAD_SECRET: "ci-secret-at-least-32-characters-long-for-payload"
+          NEXT_PUBLIC_SITE_URL: "https://saveurs-aude.fr"
+          NEXT_PUBLIC_URL: "https://saveurs-aude.fr"
