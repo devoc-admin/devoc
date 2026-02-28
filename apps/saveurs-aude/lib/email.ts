@@ -11,7 +11,7 @@ import OrderShipped from "@/emails/OrderShipped";
 import OrderStatusUpdate from "@/emails/OrderStatusUpdate";
 import Welcome from "@/emails/Welcome";
 
-const FROM = "Saveurs d'Aude <onboarding@resend.dev>";
+const FROM = "Saveurs d'Aude <contact@saveurs-aude.fr>";
 const ADMIN_EMAIL = "internal.devoc@gmail.com";
 
 let _resend: Resend | null = null;

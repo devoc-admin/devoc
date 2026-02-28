@@ -11,6 +11,7 @@ import {
 } from "@/components/CookieConsent";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { Navbar } from "@/components/layout/Navbar";
 import { routing } from "@/i18n/routing";
 import { AuthProvider } from "@/lib/auth";
 import { getCurrentCustomer } from "@/lib/auth-actions";
@@ -109,6 +110,7 @@ export default async function LocaleLayout({
             <AuthProvider initialCustomer={customer}>
               <CartProvider>
                 <Header />
+                <Navbar />
                 <main className="min-h-screen">{children}</main>
                 <Footer />
                 <CookieConsent config={cookieConsentData} />
