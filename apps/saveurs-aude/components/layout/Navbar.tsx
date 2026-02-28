@@ -4,7 +4,8 @@ export function Navbar() {
   return (
     <div
       className={cn(
-        "flex gap-x-4",
+        "flex items-center gap-x-4",
+        "py-2",
         "w-full",
         "bg-primary",
         "text-primary-foreground"

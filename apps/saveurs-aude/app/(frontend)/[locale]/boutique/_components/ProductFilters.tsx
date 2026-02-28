@@ -13,25 +13,26 @@ export function ProductFilters({
 }: {
   categories: CustomCategory[];
 }) {
+  // 🔍
+  const [q, setQ] = useQueryState("q", parseAsString.withDefault(""));
   // 🏷️ Categories
   const [selectedCategory, setSelectedCategory] = useQueryState(
     "category",
     parseAsString.withDefault("")
   );
-
-  // 🔍 Search
-  const [q, setQ] = useQueryState("q", parseAsString.withDefault(""));
+  // ↕️
   const [sort, setSort] = useQueryState(
     "sort",
     parseAsString.withDefault("newest")
   );
+  // 💱
   const [onSale, setOnSale] = useQueryState(
     "onSale",
     parseAsBoolean.withDefault(false)
   );
 
+  // ↩️
   const hasFilters = selectedCategory || q || onSale;
-
   function clearFilters() {
     setSelectedCategory(null);
     setQ(null);
