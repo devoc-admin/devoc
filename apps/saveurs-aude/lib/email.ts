@@ -13,6 +13,7 @@ import Welcome from "@/emails/Welcome";
 
 const FROM = "Saveurs d'Aude <contact@saveurs-aude.fr>";
 const ADMIN_EMAIL = "internal.devoc@gmail.com";
+const NEWSLETTER_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID ?? "";
 
 let _resend: Resend | null = null;
 
@@ -279,7 +280,24 @@ export async function sendWelcomeEmail(data: WelcomeEmailData) {
 export async function sendNewsletterConfirmation(data: NewsletterEmailData) {
   console.log("[email] Sending newsletter confirmation to:", data.email);
 
-  const result = await getResend().emails.send({
+  const resend = getResend();
+
+  // Add contact to Resend audience
+  const contactResult = await resend.contacts.create({
+    audienceId: NEWSLETTER_AUDIENCE_ID,
+    email: data.email,
+    unsubscribed: false,
+  });
+
+  if (contactResult.error) {
+    console.error("[email] Resend error (add contact):", contactResult.error);
+    throw new Error(contactResult.error.message);
+  }
+
+  console.log("[email] Contact added to audience:", contactResult.data?.id);
+
+  // Send confirmation email
+  const result = await resend.emails.send({
     from: FROM,
     react: NewsletterSubscription({ email: data.email }),
     subject: "Inscription à la newsletter confirmée",
