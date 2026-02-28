@@ -124,6 +124,8 @@ export default async function LocaleLayout({
   );
 }
 
+// ================================
+// 🍪
 async function getCookieConsentConfig(
   locale: string
 ): Promise<CookieConsentConfig> {
