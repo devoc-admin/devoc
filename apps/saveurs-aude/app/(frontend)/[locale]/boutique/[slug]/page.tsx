@@ -18,13 +18,10 @@ import {
   hasActivePromotion,
 } from "@/lib/product";
 import { buildOgImage, getBaseUrl } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 import type { Media, Product } from "@/payload-types";
 import { AddToCartButton } from "./_components/AddToCartButton";
 import { ProductGallery } from "./_components/ProductGallery";
-
-type Props = {
-  params: Promise<{ locale: string; slug: string }>;
-};
 
 async function getProduct(slug: string): Promise<Product | null> {
   const payload = await getPayloadClient();
@@ -40,7 +37,11 @@ async function getProduct(slug: string): Promise<Product | null> {
   return (result.docs[0] as Product) ?? null;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProduct(slug);
   if (!product) return {};
@@ -59,27 +60,37 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ProductPage({ params }: Props) {
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
   const { slug } = await params;
   const product = await getProduct(slug);
   if (!product) notFound();
 
+  // 🌐
   const t = await getTranslations("product");
+  // 📦
   const payload = await getPayloadClient();
 
-  // Extract images
+  // 🖼️
   const images: Media[] = (product.images ?? [])
     .map((entry) => (typeof entry.image === "number" ? null : entry.image))
     .filter(Boolean) as Media[];
 
   const mainImage = getProductImage(product);
+
+  // 💰
   const promo = hasActivePromotion(product.promotion);
   const { hasRange, min } = getPriceRange(product);
   const discounted = promo ? applyDiscount(min, product.promotion) : min;
+
+  // 🟡
   const categoryTitle =
     typeof product.category === "object" ? product.category.title : null;
 
-  // Related products (same category, excluding current)
+  // 🔗
   const categoryId =
     typeof product.category === "object"
       ? product.category.id
@@ -114,52 +125,47 @@ export default async function ProductPage({ params }: Props) {
           ]),
         ]}
       />
-      {/* Product detail */}
+
+      {/* 📦 */}
       <div className="grid gap-8 md:grid-cols-2 md:gap-12">
+        {/* 🖼️ */}
         <ProductGallery images={images} />
 
+        {/* 📝 */}
         <FadeInUp delay={0.1}>
           <div className="flex flex-col gap-4">
+            {/* 🟡 */}
             {categoryTitle && (
-              <span className="font-medium text-accent text-xs uppercase tracking-wider">
-                {categoryTitle}
-              </span>
+              <ProductCategory>{categoryTitle}</ProductCategory>
             )}
 
+            {/* 🆎 */}
             <h1 className="font-heading text-2xl text-foreground sm:text-3xl">
               {product.title}
             </h1>
 
+            {/* 📝 */}
             {product.shortDescription && (
               <p className="text-muted-foreground leading-relaxed">
                 {product.shortDescription}
               </p>
             )}
 
-            {/* Price */}
-            <div className="flex items-baseline gap-3">
-              <span className="font-accent font-semibold text-2xl text-primary">
-                {hasRange ? "dès " : ""}
-                {formatPrice(discounted)}
-              </span>
-              {promo && (
-                <span className="text-lg text-muted-foreground line-through">
-                  {formatPrice(min)}
-                </span>
-              )}
-              {promo && (
-                <span className="rounded bg-destructive/10 px-2 py-0.5 font-semibold text-destructive text-xs">
-                  {product.promotion?.type === "percentage"
-                    ? `-${product.promotion.value}%`
-                    : `-${formatPrice(product.promotion?.value ?? 0)}`}
-                </span>
-              )}
-            </div>
+            {/* 💰 */}
+            <ProductPrice
+              discounted={discounted}
+              hasRange={hasRange}
+              min={min}
+              promo={promo}
+              promotion={product.promotion}
+            />
 
             <hr className="border-border/50" />
 
+            {/* 🛒 */}
             <AddToCartButton image={mainImage} product={product} />
 
+            {/* 🔖 */}
             {product.variants?.[0]?.sku && (
               <p className="text-muted-foreground/60 text-xs">
                 {t("sku")}: {product.variants[0].sku}
@@ -169,21 +175,108 @@ export default async function ProductPage({ params }: Props) {
         </FadeInUp>
       </div>
 
-      {/* Related products */}
+      {/* 🔗 */}
       {relatedResult.docs.length > 0 && (
-        <section className="mt-16">
-          <h2 className="font-heading text-2xl text-foreground">
-            {t("relatedProducts")}
-          </h2>
-          <StaggerContainerOnScroll className="mt-6 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
-            {(relatedResult.docs as Product[]).map((p) => (
-              <StaggerItem key={p.id}>
-                <ProductCard product={p} />
-              </StaggerItem>
-            ))}
-          </StaggerContainerOnScroll>
-        </section>
+        <RelatedProducts products={relatedResult.docs as Product[]} t={t} />
       )}
     </div>
+  );
+}
+
+// =================================
+// 🟡
+function ProductCategory({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      className={cn(
+        "font-medium",
+        "text-accent text-xs",
+        "uppercase tracking-wider"
+      )}
+    >
+      {children}
+    </span>
+  );
+}
+
+// =================================
+// 💰
+function ProductPrice({
+  discounted,
+  hasRange,
+  min,
+  promo,
+  promotion,
+}: {
+  discounted: number;
+  hasRange: boolean;
+  min: number;
+  promo: boolean;
+  promotion: Product["promotion"];
+}) {
+  return (
+    <div className="flex items-baseline gap-3">
+      <span className="font-accent font-semibold text-2xl text-primary">
+        {hasRange ? "dès " : ""}
+        {formatPrice(discounted)}
+      </span>
+      {promo && (
+        <span className="text-lg text-muted-foreground line-through">
+          {formatPrice(min)}
+        </span>
+      )}
+      {promo && <PromoBadge promotion={promotion} />}
+    </div>
+  );
+}
+
+// =================================
+// 🏷️
+function PromoBadge({ promotion }: { promotion: Product["promotion"] }) {
+  return (
+    <span
+      className={cn(
+        "rounded",
+        "bg-destructive/10",
+        "px-2 py-0.5",
+        "font-semibold text-destructive text-xs"
+      )}
+    >
+      {promotion?.type === "percentage"
+        ? `-${promotion.value}%`
+        : `-${formatPrice(promotion?.value ?? 0)}`}
+    </span>
+  );
+}
+
+// =================================
+// 🔗
+function RelatedProducts({
+  products,
+  t,
+}: {
+  products: Product[];
+  t: Awaited<ReturnType<typeof getTranslations>>;
+}) {
+  return (
+    <section className="mt-16">
+      <h2 className="font-heading text-2xl text-foreground">
+        {t("relatedProducts")}
+      </h2>
+      <StaggerContainerOnScroll
+        className={cn(
+          "mt-6",
+          "grid",
+          "grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
+          "gap-4 sm:gap-6"
+        )}
+      >
+        {products.map((p) => (
+          <StaggerItem key={p.id}>
+            <ProductCard product={p} />
+          </StaggerItem>
+        ))}
+      </StaggerContainerOnScroll>
+    </section>
   );
 }

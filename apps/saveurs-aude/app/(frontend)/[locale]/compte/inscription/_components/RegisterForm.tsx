@@ -6,14 +6,19 @@ import { useState } from "react";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useAuth } from "@/lib/auth";
 import { registerCustomer } from "@/lib/auth-actions";
+import { cn } from "@/lib/utils";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function RegisterForm() {
+  // 🌐
   const t = useTranslations("auth.register");
   const tc = useTranslations("checkout");
+  // 🧭
   const router = useRouter();
+  // 👤
   const { setCustomer } = useAuth();
+  // ⚠️
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -53,15 +58,14 @@ export function RegisterForm() {
         form.handleSubmit();
       }}
     >
+      {/* 🆎 */}
       <h1 className="mb-8 text-center font-heading text-3xl">{t("title")}</h1>
 
-      {error && (
-        <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-destructive text-sm">
-          {error}
-        </div>
-      )}
+      {/* ⚠️ */}
+      {error && <ErrorBanner message={error} />}
 
       <div className="flex flex-col gap-4">
+        {/* 👤 */}
         <div className="grid gap-4 sm:grid-cols-2">
           <form.Field
             children={(field) => (
@@ -115,6 +119,7 @@ export function RegisterForm() {
           />
         </div>
 
+        {/* 📧 */}
         <form.Field
           children={(field) => (
             <FieldWrapper
@@ -144,6 +149,7 @@ export function RegisterForm() {
           }}
         />
 
+        {/* 📞 */}
         <form.Field
           children={(field) => (
             <FieldWrapper
@@ -166,6 +172,7 @@ export function RegisterForm() {
           name="phone"
         />
 
+        {/* 🔑 */}
         <form.Field
           children={(field) => (
             <FieldWrapper
@@ -196,30 +203,90 @@ export function RegisterForm() {
           }}
         />
 
-        <button
-          className="mt-2 w-full rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70"
-          disabled={isSubmitting}
-          type="submit"
-        >
-          {isSubmitting ? "..." : t("submit")}
-        </button>
+        {/* 🔘 */}
+        <SubmitButton isSubmitting={isSubmitting} t={t} />
       </div>
 
-      <p className="mt-6 text-center text-muted-foreground text-sm">
-        {t("hasAccount")}{" "}
-        <Link
-          className="font-medium text-primary hover:underline"
-          href="/compte/connexion"
-        >
-          {t("login")}
-        </Link>
-      </p>
+      {/* 🔗 */}
+      <LoginLink t={t} />
     </form>
   );
 }
 
-const inputClass =
-  "w-full rounded-lg border border-border/50 bg-background px-3 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none";
+// ==============================================
+// ⚠️
+function ErrorBanner({ message }: { message: string }) {
+  return (
+    <div
+      className={cn(
+        "mb-4",
+        "rounded-lg",
+        "border border-destructive/30",
+        "bg-destructive/5",
+        "px-4 py-3",
+        "text-destructive text-sm"
+      )}
+    >
+      {message}
+    </div>
+  );
+}
+
+// ==============================================
+// 🔘
+function SubmitButton({
+  isSubmitting,
+  t,
+}: {
+  isSubmitting: boolean;
+  t: ReturnType<typeof useTranslations>;
+}) {
+  return (
+    <button
+      className={cn(
+        "mt-2 w-full",
+        "rounded-lg",
+        "bg-primary",
+        "px-6 py-3",
+        "font-medium text-primary-foreground text-sm",
+        "transition-colors hover:bg-primary/90",
+        "disabled:cursor-not-allowed disabled:opacity-70"
+      )}
+      disabled={isSubmitting}
+      type="submit"
+    >
+      {isSubmitting ? "..." : t("submit")}
+    </button>
+  );
+}
+
+// ==============================================
+// 🔗
+function LoginLink({ t }: { t: ReturnType<typeof useTranslations> }) {
+  return (
+    <p className="mt-6 text-center text-muted-foreground text-sm">
+      {t("hasAccount")}{" "}
+      <Link
+        className="font-medium text-primary hover:underline"
+        href="/compte/connexion"
+      >
+        {t("login")}
+      </Link>
+    </p>
+  );
+}
+
+// ==============================================
+// 🔧
+const inputClass = cn(
+  "w-full",
+  "rounded-lg",
+  "border border-border/50",
+  "bg-background",
+  "px-3 py-2.5",
+  "text-sm",
+  "transition-colors focus:border-primary focus:outline-none"
+);
 
 function FieldWrapper({
   children,

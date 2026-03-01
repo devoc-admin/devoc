@@ -4,15 +4,23 @@ import { User } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { useAuth } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 
 export function UserMenu() {
+  // 🌐
   const t = useTranslations("nav");
+  // 👤
   const { customer } = useAuth();
 
   if (customer) {
     return (
       <Link
-        className="flex items-center gap-1.5 p-2 text-foreground/70 transition-colors hover:text-primary"
+        className={cn(
+          "flex items-center gap-1.5",
+          "p-2",
+          "text-foreground/70",
+          "transition-colors hover:text-primary"
+        )}
         href="/compte/commandes"
         title={t("account")}
       >
@@ -24,7 +32,11 @@ export function UserMenu() {
 
   return (
     <Link
-      className="p-2 text-foreground/70 transition-colors hover:text-primary"
+      className={cn(
+        "p-2",
+        "text-foreground/70",
+        "transition-colors hover:text-primary"
+      )}
       href="/compte/connexion"
       title={t("login")}
     >

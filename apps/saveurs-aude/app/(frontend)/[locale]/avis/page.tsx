@@ -6,6 +6,7 @@ import {
   StaggerItem,
 } from "@/components/motion";
 import { getPayloadClient } from "@/lib/payload";
+import { cn } from "@/lib/utils";
 import type { Review } from "@/payload-types";
 
 export async function generateMetadata({
@@ -31,7 +32,9 @@ export default async function ReviewsPage({
 }) {
   const params = await searchParams;
   const page = Number(params.page) || 1;
+  // 🌐
   const t = await getTranslations("reviews");
+  // 📦
   const payload = await getPayloadClient();
 
   const result = await payload.find({
@@ -48,7 +51,7 @@ export default async function ReviewsPage({
   const reviews = result.docs as Review[];
   const { totalPages } = result;
 
-  // Calculate average rating
+  // ⭐
   const avgRating =
     reviews.length > 0
       ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
@@ -56,57 +59,34 @@ export default async function ReviewsPage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      {/* 🆎 */}
       <FadeInUp>
         <h1 className="font-heading text-2xl text-primary sm:text-3xl">
           {t("title")}
         </h1>
 
-        {/* Average rating */}
+        {/* ⭐ */}
         {reviews.length > 0 && (
-          <div className="mt-4 flex items-center gap-3">
-            <div className="flex items-center gap-1">
-              <Stars rating={Math.round(avgRating)} />
-            </div>
-            <span className="font-heading text-foreground text-lg">
-              {avgRating.toFixed(1)}
-            </span>
-            <span className="text-muted-foreground text-sm">
-              {t("outOf")} ({reviews.length})
-            </span>
-          </div>
+          <AverageRating avgRating={avgRating} count={reviews.length} t={t} />
         )}
       </FadeInUp>
 
-      {/* Reviews list */}
+      {/* 📝 */}
       {reviews.length > 0 ? (
-        <StaggerContainerOnScroll className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <StaggerContainerOnScroll
+          className={cn("mt-8", "grid gap-4", "sm:grid-cols-2 lg:grid-cols-3")}
+        >
           {reviews.map((review) => (
             <StaggerItem key={review.id}>
-              <div className="rounded-lg border border-border/50 bg-card p-5">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium text-foreground text-sm">
-                    {review.customerName}
-                  </span>
-                  <div className="flex items-center gap-0.5">
-                    <Stars rating={review.rating} small />
-                  </div>
-                </div>
-                {review.comment && (
-                  <p className="mt-3 text-muted-foreground text-sm leading-relaxed">
-                    {review.comment}
-                  </p>
-                )}
-              </div>
+              <ReviewCard review={review} />
             </StaggerItem>
           ))}
         </StaggerContainerOnScroll>
       ) : (
-        <div className="mt-16 text-center">
-          <p className="text-muted-foreground">{t("noReviews")}</p>
-        </div>
+        <NoReviews t={t} />
       )}
 
-      {/* Pagination */}
+      {/* 📃 */}
       {totalPages > 1 && (
         <Pagination currentPage={page} totalPages={totalPages} />
       )}
@@ -114,6 +94,68 @@ export default async function ReviewsPage({
   );
 }
 
+// =================================
+// ⭐
+function AverageRating({
+  avgRating,
+  count,
+  t,
+}: {
+  avgRating: number;
+  count: number;
+  t: Awaited<ReturnType<typeof getTranslations>>;
+}) {
+  return (
+    <div className="mt-4 flex items-center gap-3">
+      <div className="flex items-center gap-1">
+        <Stars rating={Math.round(avgRating)} />
+      </div>
+      <span className="font-heading text-foreground text-lg">
+        {avgRating.toFixed(1)}
+      </span>
+      <span className="text-muted-foreground text-sm">
+        {t("outOf")} ({count})
+      </span>
+    </div>
+  );
+}
+
+// =================================
+// 📝
+function ReviewCard({ review }: { review: Review }) {
+  return (
+    <div
+      className={cn("rounded-lg", "border border-border/50", "bg-card", "p-5")}
+    >
+      <div className="flex items-center justify-between">
+        <span className="font-medium text-foreground text-sm">
+          {review.customerName}
+        </span>
+        <div className="flex items-center gap-0.5">
+          <Stars rating={review.rating} small />
+        </div>
+      </div>
+      {review.comment && (
+        <p className="mt-3 text-muted-foreground text-sm leading-relaxed">
+          {review.comment}
+        </p>
+      )}
+    </div>
+  );
+}
+
+// =================================
+// 🙅
+function NoReviews({ t }: { t: Awaited<ReturnType<typeof getTranslations>> }) {
+  return (
+    <div className="mt-16 text-center">
+      <p className="text-muted-foreground">{t("noReviews")}</p>
+    </div>
+  );
+}
+
+// =================================
+// ⭐
 const STAR_KEYS = ["s1", "s2", "s3", "s4", "s5"] as const;
 
 function Stars({ rating, small }: { rating: number; small?: boolean }) {
@@ -142,6 +184,8 @@ function Stars({ rating, small }: { rating: number; small?: boolean }) {
   );
 }
 
+// =================================
+// 📃
 function Pagination({
   currentPage,
   totalPages,
@@ -158,11 +202,14 @@ function Pagination({
     >
       {pages.map((p) => (
         <a
-          className={
-            p === currentPage
-              ? "rounded-lg bg-primary px-3 py-1.5 font-medium text-primary-foreground text-sm"
-              : "rounded-lg border border-border px-3 py-1.5 text-muted-foreground text-sm transition-colors hover:border-primary hover:text-primary"
-          }
+          className={cn(
+            "rounded-lg",
+            "px-3 py-1.5",
+            "text-sm",
+            "border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary",
+            p === currentPage &&
+              "border-transparent bg-primary font-medium text-primary-foreground hover:border-transparent hover:text-primary-foreground"
+          )}
           href={p > 1 ? `?page=${p}` : "?"}
           key={p}
         >

@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 export function LanguageSwitcher() {
+  // 🌐
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
@@ -15,31 +16,44 @@ export function LanguageSwitcher() {
 
   return (
     <div className="flex items-center gap-0.5 text-sm">
-      <button
-        className={cn(
-          "rounded px-1.5 py-0.5 transition-colors",
-          locale === "fr"
-            ? "font-semibold text-primary"
-            : "text-muted-foreground hover:text-foreground"
-        )}
+      <LangButton
+        active={locale === "fr"}
+        label="FR"
         onClick={() => switchTo("fr")}
-        type="button"
-      >
-        FR
-      </button>
+      />
       <span className="text-border">|</span>
-      <button
-        className={cn(
-          "rounded px-1.5 py-0.5 transition-colors",
-          locale === "en"
-            ? "font-semibold text-primary"
-            : "text-muted-foreground hover:text-foreground"
-        )}
+      <LangButton
+        active={locale === "en"}
+        label="EN"
         onClick={() => switchTo("en")}
-        type="button"
-      >
-        EN
-      </button>
+      />
     </div>
+  );
+}
+
+// ==============================================
+// 🔤
+function LangButton({
+  active,
+  label,
+  onClick,
+}: {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      className={cn(
+        "rounded px-1.5 py-0.5",
+        "transition-colors",
+        "text-muted-foreground hover:text-foreground",
+        active && "font-semibold text-primary"
+      )}
+      onClick={onClick}
+      type="button"
+    >
+      {label}
+    </button>
   );
 }

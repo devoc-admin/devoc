@@ -15,7 +15,7 @@ export function ProductFilters({
 }) {
   // 🔍
   const [q, setQ] = useQueryState("q", parseAsString.withDefault(""));
-  // 🏷️ Categories
+  // 🏷️
   const [selectedCategory, setSelectedCategory] = useQueryState(
     "category",
     parseAsString.withDefault("")
@@ -52,7 +52,7 @@ export function ProductFilters({
         setSelectedCategory={setSelectedCategory}
       />
 
-      {/* Sort + on sale */}
+      {/* ↕️💱 */}
       <div className="flex flex-wrap items-center gap-x-3">
         <SlidersHorizontal className="size-4 text-muted-foreground" />
         {/*↕️*/}
@@ -69,7 +69,7 @@ export function ProductFilters({
 // ==============================================
 // 🔍
 function SearchBar({ q, setQ }: { q: string; setQ: (value: string) => void }) {
-  // 🌐 i18n
+  // 🌐
   const t = useTranslations("shop");
 
   return (
@@ -95,17 +95,16 @@ function SearchBar({ q, setQ }: { q: string; setQ: (value: string) => void }) {
 }
 
 // ==============================================
-// ↕️ Sort
-function Sort({
-  sort,
-  setSort,
-}: {
+// ↕️
+type SortProps = {
   sort: string;
   setSort: (
     value: string | ((old: string) => string | null) | null
   ) => Promise<URLSearchParams>;
-}) {
-  // 🌐 i18n
+};
+
+function Sort({ sort, setSort }: SortProps) {
+  // 🌐
   const t = useTranslations("shop");
   return (
     <select
@@ -129,27 +128,29 @@ function Sort({
 
 // ==============================================
 // 🏷️
-function Categories({
-  selectedCategory,
-  setSelectedCategory,
-  categories,
-}: {
+type CategoriesProps = {
   selectedCategory: string;
   categories: CustomCategory[];
   setSelectedCategory: (
     value: string | ((old: string) => string | null) | null
   ) => Promise<URLSearchParams>;
-}) {
-  // 🌐 i18n
+};
+
+function Categories({
+  selectedCategory,
+  setSelectedCategory,
+  categories,
+}: CategoriesProps) {
+  // 🌐
   const t = useTranslations("shop");
   return (
     <div className="flex flex-wrap items-center gap-2">
       <button
         className={cn(
           "rounded-full border px-3 py-1.5 font-medium text-xs transition-colors",
-          selectedCategory
-            ? "border-border text-muted-foreground hover:border-primary hover:text-primary"
-            : "border-primary bg-primary text-primary-foreground"
+          "border-primary bg-primary text-primary-foreground",
+          selectedCategory &&
+            "border-border bg-transparent text-muted-foreground hover:border-primary hover:text-primary"
         )}
         onClick={() => setSelectedCategory(null)}
         type="button"
@@ -168,17 +169,19 @@ function Categories({
   );
 }
 
-function CategoryButton({
-  selectedCategory,
-  category,
-  setSelectedCategory,
-}: {
+type CategoryButtonProps = {
   selectedCategory: string;
   category: CustomCategory;
   setSelectedCategory: (
     value: string | ((old: string) => string | null) | null
   ) => Promise<URLSearchParams>;
-}) {
+};
+
+function CategoryButton({
+  selectedCategory,
+  category,
+  setSelectedCategory,
+}: CategoryButtonProps) {
   const { slug, id, title } = category;
   const isSelected = selectedCategory === slug;
   return (
@@ -206,7 +209,7 @@ function CategoryButton({
 }
 
 // ==============================================
-// 💱 On Sale
+// 💱
 function OnSaleFilter({
   onSale,
   setOnSale,
@@ -214,7 +217,7 @@ function OnSaleFilter({
   onSale: boolean;
   setOnSale: (value: boolean | null) => void;
 }) {
-  // 🌐 i18n
+  // 🌐
   const t = useTranslations("shop");
 
   return (
@@ -231,9 +234,9 @@ function OnSaleFilter({
 }
 
 // ==============================================
-// ↩️ Reset
+// ↩️
 function ResetFilters({ clearFilters }: { clearFilters: () => void }) {
-  // 🌐 i18n
+  // 🌐
   const t = useTranslations("shop");
 
   return (

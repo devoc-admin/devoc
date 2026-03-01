@@ -12,21 +12,21 @@ import { cn } from "@/lib/utils";
 import type { Product } from "@/payload-types";
 
 export function ProductCard({ product }: { product: Product }) {
-  // 🖼️ Image
+  // 🖼️
   const image = getProductImage(product);
   const imageUrl = image?.url;
   const imageAlt = image?.alt || product.title;
 
-  // 🏷️ Badges
+  // 🏷️
   const promotion = product.promotion;
   const promo = hasActivePromotion(promotion);
   const outOfStock = !isInStock(product);
 
-  // 🟡 Category
+  // 🟡
   const categoryTitle =
     typeof product.category === "object" ? product.category.title : null;
 
-  // 💰 Price
+  // 💰
   const { min, hasRange } = getPriceRange(product);
   const discounted = promo ? applyDiscount(min, promotion) : min;
 
@@ -63,7 +63,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
       </div>
 
-      {/* 📝 Description */}
+      {/* 📝 */}
       <div className={cn("flex flex-1 flex-col", "gap-y-1", "p-3")}>
         <Category>{categoryTitle}</Category>
         <ProductTitle>{product.title}</ProductTitle>
@@ -181,27 +181,25 @@ function ProductTitle({ children }: { children: React.ReactNode }) {
 }
 
 // =================================
-// 💰 Price
-function Price({
-  promo,
-  hasRange,
-  discounted,
-  min,
-}: {
+// 💰
+type PriceProps = {
   promo: boolean;
   hasRange: boolean;
   discounted: number;
   min: number;
-}) {
+};
+
+function Price({ promo, hasRange, discounted, min }: PriceProps) {
   return (
     <div className="mt-auto flex items-baseline gap-2 pt-2">
       <span
         className={cn(
           "font-accent font-semibold text-lg",
-          promo ? "text-destructive" : "text-primary"
+          "text-primary",
+          promo && "text-destructive"
         )}
       >
-        {hasRange ? "dès " : ""}
+        {hasRange ? "d\u00E8s " : ""}
         {formatPrice(discounted)}
       </span>
       {promo && (

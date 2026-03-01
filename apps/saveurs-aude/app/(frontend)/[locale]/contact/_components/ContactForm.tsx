@@ -4,11 +4,14 @@ import { useForm } from "@tanstack/react-form";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { submitContactForm } from "@/lib/contact-actions";
+import { cn } from "@/lib/utils";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function ContactForm() {
+  // 🌐
   const t = useTranslations("contact");
+  // ⚠️
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,12 +45,9 @@ export function ContactForm() {
     },
   });
 
+  // ✅
   if (success) {
-    return (
-      <div className="rounded-lg border border-green-200 bg-green-50 px-6 py-8 text-center">
-        <p className="font-medium text-green-800">{t("success")}</p>
-      </div>
-    );
+    return <SuccessMessage t={t} />;
   }
 
   return (
@@ -58,12 +58,10 @@ export function ContactForm() {
         form.handleSubmit();
       }}
     >
-      {error && (
-        <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-destructive text-sm">
-          {error}
-        </div>
-      )}
+      {/* ⚠️ */}
+      {error && <ErrorBanner message={error} />}
 
+      {/* 👤 */}
       <div className="grid gap-5 sm:grid-cols-2">
         <form.Field
           children={(field) => (
@@ -120,6 +118,7 @@ export function ContactForm() {
         />
       </div>
 
+      {/* 📝 */}
       <form.Field
         children={(field) => (
           <FieldWrapper
@@ -146,6 +145,7 @@ export function ContactForm() {
         }}
       />
 
+      {/* 💬 */}
       <form.Field
         children={(field) => (
           <FieldWrapper
@@ -157,7 +157,7 @@ export function ContactForm() {
             label={t("message")}
           >
             <textarea
-              className={`${inputClass} min-h-[150px] resize-y`}
+              className={cn(inputClass, "min-h-[150px] resize-y")}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
               value={field.state.value}
@@ -171,19 +171,87 @@ export function ContactForm() {
         }}
       />
 
-      <button
-        className="w-full rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto sm:self-end"
-        disabled={isSubmitting}
-        type="submit"
-      >
-        {isSubmitting ? "..." : t("send")}
-      </button>
+      {/* 🔘 */}
+      <SubmitButton isSubmitting={isSubmitting} t={t} />
     </form>
   );
 }
 
-const inputClass =
-  "w-full rounded-lg border border-border/50 bg-background px-3 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none";
+// ==============================================
+// ✅
+function SuccessMessage({ t }: { t: ReturnType<typeof useTranslations> }) {
+  return (
+    <div
+      className={cn(
+        "rounded-lg",
+        "border border-green-200",
+        "bg-green-50",
+        "px-6 py-8",
+        "text-center"
+      )}
+    >
+      <p className="font-medium text-green-800">{t("success")}</p>
+    </div>
+  );
+}
+
+// ==============================================
+// ⚠️
+function ErrorBanner({ message }: { message: string }) {
+  return (
+    <div
+      className={cn(
+        "rounded-lg",
+        "border border-destructive/30",
+        "bg-destructive/5",
+        "px-4 py-3",
+        "text-destructive text-sm"
+      )}
+    >
+      {message}
+    </div>
+  );
+}
+
+// ==============================================
+// 🔘
+function SubmitButton({
+  isSubmitting,
+  t,
+}: {
+  isSubmitting: boolean;
+  t: ReturnType<typeof useTranslations>;
+}) {
+  return (
+    <button
+      className={cn(
+        "w-full sm:w-auto sm:self-end",
+        "rounded-lg",
+        "bg-primary",
+        "px-6 py-3",
+        "font-medium text-primary-foreground text-sm",
+        "transition-colors hover:bg-primary/90",
+        "disabled:cursor-not-allowed disabled:opacity-70"
+      )}
+      disabled={isSubmitting}
+      type="submit"
+    >
+      {isSubmitting ? "..." : t("send")}
+    </button>
+  );
+}
+
+// ==============================================
+// 🔧
+const inputClass = cn(
+  "w-full",
+  "rounded-lg",
+  "border border-border/50",
+  "bg-background",
+  "px-3 py-2.5",
+  "text-sm",
+  "transition-colors focus:border-primary focus:outline-none"
+);
 
 function FieldWrapper({
   children,

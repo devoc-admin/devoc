@@ -12,6 +12,7 @@ import { Link } from "@/i18n/navigation";
 import { buildBreadcrumbList } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
 import { getBaseUrl } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 import type { BlogPost, Media } from "@/payload-types";
 
 export async function generateMetadata({
@@ -39,9 +40,12 @@ export default async function BlogPage({
   const page = Number(params.page) || 1;
   const tagFilter = typeof params.tag === "string" ? params.tag : undefined;
 
+  // 🌐
   const t = await getTranslations("blog");
+  // 📦
   const payload = await getPayloadClient();
 
+  // 🐝
   const where: Where = {
     status: { equals: "published" },
   };
@@ -62,7 +66,7 @@ export default async function BlogPage({
   const posts = result.docs as BlogPost[];
   const { totalPages } = result;
 
-  // Collect all unique tags
+  // 🏷️
   const allTagsResult = await payload.find({
     collection: "blog-posts",
     depth: 0,
@@ -77,6 +81,7 @@ export default async function BlogPage({
     ),
   ];
 
+  // 🌐
   const baseUrl = getBaseUrl();
 
   return (
@@ -87,111 +92,35 @@ export default async function BlogPage({
           { name: "Blog", url: `${baseUrl}/fr/blog` },
         ])}
       />
+
+      {/* 🆎 */}
       <FadeInUp>
         <h1 className="font-heading text-2xl text-primary sm:text-3xl">
           {t("title")}
         </h1>
       </FadeInUp>
 
-      {/* Tag filter */}
+      {/* 🏷️ */}
       {allTags.length > 0 && (
-        <div className="mt-4 flex flex-wrap gap-2">
-          <a
-            className={
-              tagFilter
-                ? "rounded-full border border-border px-3 py-1 text-muted-foreground text-xs transition-colors hover:border-primary hover:text-primary"
-                : "rounded-full bg-primary px-3 py-1 font-medium text-primary-foreground text-xs"
-            }
-            href="/blog"
-          >
-            {t("allTags")}
-          </a>
-          {allTags.map((tag) => (
-            <a
-              className={
-                tagFilter === tag
-                  ? "rounded-full bg-primary px-3 py-1 font-medium text-primary-foreground text-xs"
-                  : "rounded-full border border-border px-3 py-1 text-muted-foreground text-xs transition-colors hover:border-primary hover:text-primary"
-              }
-              href={`/blog?tag=${encodeURIComponent(tag)}`}
-              key={tag}
-            >
-              {tag}
-            </a>
-          ))}
-        </div>
+        <TagFilter allTags={allTags} t={t} tagFilter={tagFilter} />
       )}
 
-      {/* Posts grid */}
+      {/* 📰 */}
       {posts.length > 0 ? (
-        <StaggerContainerOnScroll className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => {
-            const cover =
-              typeof post.coverImage === "object"
-                ? (post.coverImage as Media)
-                : null;
-            return (
-              <StaggerItem key={post.id}>
-                <Link
-                  className="group overflow-hidden rounded-lg border border-border/50 bg-card transition-colors hover:border-primary/30"
-                  href={{
-                    params: { slug: post.slug },
-                    pathname: "/blog/[slug]",
-                  }}
-                >
-                  {cover?.url && (
-                    <div className="relative aspect-[16/9] overflow-hidden">
-                      <Image
-                        alt={cover.alt}
-                        className="object-cover transition-transform group-hover:scale-105"
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        src={cover.url}
-                      />
-                    </div>
-                  )}
-                  <div className="p-4">
-                    {post.tags && post.tags.length > 0 && (
-                      <div className="mb-2 flex flex-wrap gap-1">
-                        {post.tags.map((tag) => (
-                          <span
-                            className="rounded-full bg-secondary/50 px-2 py-0.5 text-muted-foreground text-xs"
-                            key={tag.tag}
-                          >
-                            {tag.tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    <h2 className="font-heading text-foreground text-lg">
-                      {post.title}
-                    </h2>
-                    {post.excerpt && (
-                      <p className="mt-1 line-clamp-2 text-muted-foreground text-sm">
-                        {post.excerpt}
-                      </p>
-                    )}
-                    <p className="mt-3 text-muted-foreground/70 text-xs">
-                      {t("publishedOn", {
-                        date: new Date(post.publishedAt).toLocaleDateString(
-                          "fr-FR",
-                          { day: "numeric", month: "long", year: "numeric" }
-                        ),
-                      })}
-                    </p>
-                  </div>
-                </Link>
-              </StaggerItem>
-            );
-          })}
+        <StaggerContainerOnScroll
+          className={cn("mt-8", "grid gap-6", "sm:grid-cols-2 lg:grid-cols-3")}
+        >
+          {posts.map((post) => (
+            <StaggerItem key={post.id}>
+              <BlogPostCard post={post} t={t} />
+            </StaggerItem>
+          ))}
         </StaggerContainerOnScroll>
       ) : (
-        <div className="mt-16 text-center">
-          <p className="text-muted-foreground">{t("noPosts")}</p>
-        </div>
+        <NoPosts t={t} />
       )}
 
-      {/* Pagination */}
+      {/* 📃 */}
       {totalPages > 1 && (
         <Pagination
           currentPage={page}
@@ -203,6 +132,154 @@ export default async function BlogPage({
   );
 }
 
+// =================================
+// 🏷️
+function TagFilter({
+  allTags,
+  t,
+  tagFilter,
+}: {
+  allTags: string[];
+  t: Awaited<ReturnType<typeof getTranslations>>;
+  tagFilter?: string;
+}) {
+  return (
+    <div className="mt-4 flex flex-wrap gap-2">
+      <a
+        className={cn(
+          "rounded-full",
+          "px-3 py-1",
+          "text-xs",
+          "bg-primary font-medium text-primary-foreground",
+          tagFilter &&
+            "border border-border bg-transparent font-normal text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+        )}
+        href="/blog"
+      >
+        {t("allTags")}
+      </a>
+      {allTags.map((tag) => (
+        <a
+          className={cn(
+            "rounded-full",
+            "px-3 py-1",
+            "text-xs",
+            "border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary",
+            tagFilter === tag &&
+              "border-transparent bg-primary font-medium text-primary-foreground hover:border-transparent hover:text-primary-foreground"
+          )}
+          href={`/blog?tag=${encodeURIComponent(tag)}`}
+          key={tag}
+        >
+          {tag}
+        </a>
+      ))}
+    </div>
+  );
+}
+
+// =================================
+// 📰
+function BlogPostCard({
+  post,
+  t,
+}: {
+  post: BlogPost;
+  t: Awaited<ReturnType<typeof getTranslations>>;
+}) {
+  const cover =
+    typeof post.coverImage === "object" ? (post.coverImage as Media) : null;
+
+  return (
+    <Link
+      className={cn(
+        "group",
+        "overflow-hidden rounded-lg",
+        "border border-border/50",
+        "bg-card",
+        "transition-colors hover:border-primary/30"
+      )}
+      href={{
+        params: { slug: post.slug },
+        pathname: "/blog/[slug]",
+      }}
+    >
+      {/* 🖼️ */}
+      {cover?.url && (
+        <div className="relative aspect-[16/9] overflow-hidden">
+          <Image
+            alt={cover.alt}
+            className="object-cover transition-transform group-hover:scale-105"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            src={cover.url}
+          />
+        </div>
+      )}
+
+      <div className="p-4">
+        {/* 🏷️ */}
+        {post.tags && post.tags.length > 0 && <PostTags tags={post.tags} />}
+
+        {/* 🆎 */}
+        <h2 className="font-heading text-foreground text-lg">{post.title}</h2>
+
+        {/* 📝 */}
+        {post.excerpt && (
+          <p className="mt-1 line-clamp-2 text-muted-foreground text-sm">
+            {post.excerpt}
+          </p>
+        )}
+
+        {/* 📅 */}
+        <p className="mt-3 text-muted-foreground/70 text-xs">
+          {t("publishedOn", {
+            date: new Date(post.publishedAt).toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }),
+          })}
+        </p>
+      </div>
+    </Link>
+  );
+}
+
+// =================================
+// 🏷️
+function PostTags({ tags }: { tags: NonNullable<BlogPost["tags"]> }) {
+  return (
+    <div className="mb-2 flex flex-wrap gap-1">
+      {tags.map((tag) => (
+        <span
+          className={cn(
+            "rounded-full",
+            "bg-secondary/50",
+            "px-2 py-0.5",
+            "text-muted-foreground text-xs"
+          )}
+          key={tag.tag}
+        >
+          {tag.tag}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+// =================================
+// 🙅
+function NoPosts({ t }: { t: Awaited<ReturnType<typeof getTranslations>> }) {
+  return (
+    <div className="mt-16 text-center">
+      <p className="text-muted-foreground">{t("noPosts")}</p>
+    </div>
+  );
+}
+
+// =================================
+// 📃
 function Pagination({
   currentPage,
   tag,
@@ -227,11 +304,14 @@ function Pagination({
 
         return (
           <a
-            className={
-              p === currentPage
-                ? "rounded-lg bg-primary px-3 py-1.5 font-medium text-primary-foreground text-sm"
-                : "rounded-lg border border-border px-3 py-1.5 text-muted-foreground text-sm transition-colors hover:border-primary hover:text-primary"
-            }
+            className={cn(
+              "rounded-lg",
+              "px-3 py-1.5",
+              "text-sm",
+              "border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary",
+              p === currentPage &&
+                "border-transparent bg-primary font-medium text-primary-foreground hover:border-transparent hover:text-primary-foreground"
+            )}
             href={`/blog${qs ? `?${qs}` : ""}`}
             key={p}
           >

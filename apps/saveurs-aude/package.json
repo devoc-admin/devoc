@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --bun next dev --turbopack -H 0.0.0.0",
+    "dev": "rm -rf ./.next && bun --bun next dev --turbopack -H 0.0.0.0",
     "build": "payload generate:importmap && next build",
     "start": "next start",
     "lint": "bun x ultracite fix",

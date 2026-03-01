@@ -5,6 +5,7 @@ import { FadeIn, FadeInUp } from "@/components/motion";
 import { Link } from "@/i18n/navigation";
 import { getPayloadClient } from "@/lib/payload";
 import { getStripe } from "@/lib/stripe";
+import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
   params,
@@ -28,20 +29,12 @@ export default async function ConfirmationPage({
   searchParams: Promise<{ session_id?: string }>;
 }) {
   const { session_id } = await searchParams;
+  // 🌐
   const t = await getTranslations("checkout.confirmation");
 
+  // 🙅
   if (!session_id) {
-    return (
-      <div className="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
-        <p className="text-muted-foreground">{t("error")}</p>
-        <Link
-          className="mt-6 inline-block rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
-          href="/boutique"
-        >
-          {t("backToShop")}
-        </Link>
-      </div>
-    );
+    return <ErrorState t={t} />;
   }
 
   let session: Stripe.Response<Stripe.Checkout.Session> | null = null;
@@ -63,17 +56,7 @@ export default async function ConfirmationPage({
       }
     }
   } catch {
-    return (
-      <div className="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
-        <p className="text-muted-foreground">{t("error")}</p>
-        <Link
-          className="mt-6 inline-block rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
-          href="/boutique"
-        >
-          {t("backToShop")}
-        </Link>
-      </div>
-    );
+    return <ErrorState t={t} />;
   }
 
   const customerEmail =
@@ -82,41 +65,95 @@ export default async function ConfirmationPage({
   return (
     <FadeIn>
       <div className="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
+        {/* 🆎 */}
         <h1 className="font-heading text-2xl text-primary sm:text-3xl">
           {t("title")}
         </h1>
         <p className="mt-3 text-muted-foreground">{t("subtitle")}</p>
 
+        {/* 📦 */}
         {orderNumber ? (
-          <FadeInUp delay={0.3}>
-            <div className="mt-8 rounded-lg border border-border/50 bg-card p-6">
-              <p className="text-muted-foreground text-sm">
-                {t("orderNumber")}
-              </p>
-              <p className="mt-1 font-heading text-2xl text-foreground">
-                {orderNumber}
-              </p>
-            </div>
-          </FadeInUp>
+          <OrderNumberCard orderNumber={orderNumber} t={t} />
         ) : (
           <p className="mt-8 text-muted-foreground text-sm">
             {t("processing")}
           </p>
         )}
 
+        {/* 📧 */}
         {customerEmail && (
           <p className="mt-4 text-muted-foreground text-sm">
             {t("emailSent", { email: customerEmail })}
           </p>
         )}
 
-        <Link
-          className="mt-8 inline-block rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
-          href="/boutique"
-        >
-          {t("backToShop")}
-        </Link>
+        {/* 🔗 */}
+        <BackToShopLink t={t} />
       </div>
     </FadeIn>
+  );
+}
+
+// =================================
+// ⚠️
+function ErrorState({ t }: { t: Awaited<ReturnType<typeof getTranslations>> }) {
+  return (
+    <div className="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
+      <p className="text-muted-foreground">{t("error")}</p>
+      <BackToShopLink t={t} />
+    </div>
+  );
+}
+
+// =================================
+// 📦
+function OrderNumberCard({
+  orderNumber,
+  t,
+}: {
+  orderNumber: string;
+  t: Awaited<ReturnType<typeof getTranslations>>;
+}) {
+  return (
+    <FadeInUp delay={0.3}>
+      <div
+        className={cn(
+          "mt-8",
+          "rounded-lg",
+          "border border-border/50",
+          "bg-card",
+          "p-6"
+        )}
+      >
+        <p className="text-muted-foreground text-sm">{t("orderNumber")}</p>
+        <p className="mt-1 font-heading text-2xl text-foreground">
+          {orderNumber}
+        </p>
+      </div>
+    </FadeInUp>
+  );
+}
+
+// =================================
+// 🔗
+function BackToShopLink({
+  t,
+}: {
+  t: Awaited<ReturnType<typeof getTranslations>>;
+}) {
+  return (
+    <Link
+      className={cn(
+        "mt-8 inline-block",
+        "rounded-lg",
+        "bg-primary",
+        "px-6 py-3",
+        "font-medium text-primary-foreground text-sm",
+        "transition-colors hover:bg-primary/90"
+      )}
+      href="/boutique"
+    >
+      {t("backToShop")}
+    </Link>
   );
 }

@@ -23,14 +23,14 @@ export default async function ShopPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  // 🌐 Search params
+  // 🌐
   const { category, onSale, page, q, sort } =
     await searchParamsCache.parse(searchParams);
 
-  // 📦 CMS
+  // 📦
   const payload = await getPayloadClient();
 
-  // 🐝 Build product query
+  // 🐝
   const where: Where = {
     status: { equals: "published" },
   };
@@ -59,7 +59,7 @@ export default async function ShopPage({
   const products = productsResult.docs as Product[];
   const { totalDocs: count, totalPages } = productsResult;
 
-  // 🌐 URL
+  // 🌐
   const baseUrl = getBaseUrl();
 
   return (
@@ -118,7 +118,7 @@ export default async function ShopPage({
 // =================================
 // 🆎
 async function AllCategories() {
-  // 🗣️ i18n
+  // 🗣️
   const t = await getTranslations("shop");
   return (
     <h1 className="font-heading text-2xl text-primary sm:text-3xl">
@@ -128,7 +128,7 @@ async function AllCategories() {
 }
 
 async function Results({ count }: { count: number }) {
-  // 🗣️ i18n
+  // 🗣️
   const t = await getTranslations("shop");
 
   return (
@@ -139,14 +139,14 @@ async function Results({ count }: { count: number }) {
 }
 
 // =================================
-// 🟡 Categories
+// 🟡
 
 const MAX_CATEGORIES = 50;
 async function Categories() {
-  // 📦 CMS
+  // 📦
   const payload = await getPayloadClient();
 
-  // 🐝 Fetch categories for filter bar
+  // 🐝
   const categoriesResult = await payload.find({
     collection: "categories",
     limit: MAX_CATEGORIES,
@@ -166,7 +166,7 @@ async function Categories() {
 // =================================
 // 🙅🪴
 async function NoProducts() {
-  // 🗣️ i18n
+  // 🗣️
   const t = await getTranslations("shop");
   return (
     <div className="mt-16 text-center">
@@ -177,13 +177,12 @@ async function NoProducts() {
 
 // =================================
 // 📃
-function Pagination({
-  currentPage,
-  totalPages,
-}: {
+type PaginationProps = {
   currentPage: number;
   totalPages: number;
-}) {
+};
+
+function Pagination({ currentPage, totalPages }: PaginationProps) {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
@@ -193,11 +192,12 @@ function Pagination({
     >
       {pages.map((p) => (
         <a
-          className={
-            p === currentPage
-              ? "rounded-lg bg-primary px-3 py-1.5 font-medium text-primary-foreground text-sm"
-              : "rounded-lg border border-border px-3 py-1.5 text-muted-foreground text-sm transition-colors hover:border-primary hover:text-primary"
-          }
+          className={cn(
+            "rounded-lg px-3 py-1.5 text-sm",
+            "border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary",
+            p === currentPage &&
+              "border-transparent bg-primary font-medium text-primary-foreground hover:text-primary-foreground"
+          )}
           href={`?page=${p}`}
           key={p}
         >
@@ -209,7 +209,7 @@ function Pagination({
 }
 
 // ================================
-// 🐵 Metadata
+// 🐵
 export async function generateMetadata({
   params,
 }: {
@@ -225,7 +225,7 @@ export async function generateMetadata({
 }
 
 // ================================
-// 🔧 Utils
+// 🔧
 function getSortField(sort: string): string {
   switch (sort) {
     case "price-asc":

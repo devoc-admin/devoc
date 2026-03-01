@@ -7,16 +7,23 @@ import { useState } from "react";
 import { useAuth } from "@/lib/auth";
 import type { CustomerData } from "@/lib/auth-actions";
 import { addAddress, removeAddress } from "@/lib/auth-actions";
+import { cn } from "@/lib/utils";
 
-type Address = CustomerData["addresses"][number];
-
-export function AddressList({ addresses }: { addresses: Address[] }) {
+export function AddressList({
+  addresses,
+}: {
+  addresses: CustomerData["addresses"][number][];
+}) {
+  // 🌐
   const t = useTranslations("account.addresses");
   const ta = useTranslations("account");
+  // 👤
   const { setCustomer } = useAuth();
+  // ⚠️
   const [showForm, setShowForm] = useState(false);
   const [isRemoving, setIsRemoving] = useState<number | null>(null);
 
+  // ❌
   async function handleRemove(index: number) {
     setIsRemoving(index);
     const result = await removeAddress(index);
@@ -28,6 +35,7 @@ export function AddressList({ addresses }: { addresses: Address[] }) {
 
   return (
     <div>
+      {/* 🆎 */}
       <div className="mb-4 flex items-center justify-between">
         <h2 className="font-heading text-xl">{t("title")}</h2>
         <button
@@ -40,6 +48,7 @@ export function AddressList({ addresses }: { addresses: Address[] }) {
         </button>
       </div>
 
+      {/* ➕ */}
       {showForm && (
         <AddressForm
           onCancel={() => setShowForm(false)}
@@ -52,6 +61,7 @@ export function AddressList({ addresses }: { addresses: Address[] }) {
         />
       )}
 
+      {/* 📍 */}
       {addresses.length === 0 && !showForm ? (
         <p className="py-8 text-center text-muted-foreground text-sm">
           {t("empty")}
@@ -59,35 +69,13 @@ export function AddressList({ addresses }: { addresses: Address[] }) {
       ) : (
         <div className="flex flex-col gap-3">
           {addresses.map((addr, idx) => (
-            <div
-              className="flex items-start justify-between rounded-lg border border-border/50 p-4"
+            <AddressCard
+              address={addr}
+              isRemoving={isRemoving === idx}
               key={addr.id ?? idx}
-            >
-              <div className="flex items-start gap-3">
-                <MapPin className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
-                <div className="text-sm">
-                  <p className="font-medium">
-                    {addr.label}
-                    {addr.isDefault && (
-                      <span className="ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-primary text-xs">
-                        {t("default")}
-                      </span>
-                    )}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {addr.street}, {addr.zipCode} {addr.city}, {addr.country}
-                  </p>
-                </div>
-              </div>
-              <button
-                className="p-1 text-muted-foreground transition-colors hover:text-destructive disabled:opacity-50"
-                disabled={isRemoving === idx}
-                onClick={() => handleRemove(idx)}
-                type="button"
-              >
-                <Trash2 className="size-4" />
-              </button>
-            </div>
+              onRemove={() => handleRemove(idx)}
+              t={t}
+            />
           ))}
         </div>
       )}
@@ -95,6 +83,78 @@ export function AddressList({ addresses }: { addresses: Address[] }) {
   );
 }
 
+// ==============================================
+// 📍
+function AddressCard({
+  address,
+  isRemoving,
+  onRemove,
+  t,
+}: {
+  address: CustomerData["addresses"][number];
+  isRemoving: boolean;
+  onRemove: () => void;
+  t: ReturnType<typeof useTranslations>;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex items-start justify-between",
+        "rounded-lg",
+        "border border-border/50",
+        "p-4"
+      )}
+    >
+      <div className="flex items-start gap-3">
+        <MapPin className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+        <div className="text-sm">
+          <p className="font-medium">
+            {address.label}
+            {address.isDefault && <DefaultBadge t={t} />}
+          </p>
+          <p className="text-muted-foreground">
+            {address.street}, {address.zipCode} {address.city},{" "}
+            {address.country}
+          </p>
+        </div>
+      </div>
+      <button
+        className={cn(
+          "p-1",
+          "text-muted-foreground",
+          "transition-colors hover:text-destructive",
+          "disabled:opacity-50"
+        )}
+        disabled={isRemoving}
+        onClick={onRemove}
+        type="button"
+      >
+        <Trash2 className="size-4" />
+      </button>
+    </div>
+  );
+}
+
+// ==============================================
+// 🏷️
+function DefaultBadge({ t }: { t: ReturnType<typeof useTranslations> }) {
+  return (
+    <span
+      className={cn(
+        "ml-2",
+        "rounded-full",
+        "bg-primary/10",
+        "px-2 py-0.5",
+        "text-primary text-xs"
+      )}
+    >
+      {t("default")}
+    </span>
+  );
+}
+
+// ==============================================
+// ➕
 function AddressForm({
   onCancel,
   onSuccess,
@@ -106,6 +166,7 @@ function AddressForm({
   t: ReturnType<typeof useTranslations>;
   ta: ReturnType<typeof useTranslations>;
 }) {
+  // ⚠️
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -140,15 +201,17 @@ function AddressForm({
 
   return (
     <form
-      className="mb-6 rounded-lg border border-border/50 p-4"
+      className={cn("mb-6", "rounded-lg", "border border-border/50", "p-4")}
       onSubmit={(e) => {
         e.preventDefault();
         form.handleSubmit();
       }}
     >
+      {/* ⚠️ */}
       {error && <div className="mb-3 text-destructive text-sm">{error}</div>}
 
       <div className="flex flex-col gap-3">
+        {/* 🏷️ */}
         <form.Field
           children={(field) => (
             <FieldWrapper
@@ -175,6 +238,8 @@ function AddressForm({
               value.trim() ? undefined : ta("fieldRequired"),
           }}
         />
+
+        {/* 📍 */}
         <form.Field
           children={(field) => (
             <FieldWrapper
@@ -200,6 +265,8 @@ function AddressForm({
               value.trim() ? undefined : ta("fieldRequired"),
           }}
         />
+
+        {/* 📮 */}
         <div className="grid gap-3 sm:grid-cols-2">
           <form.Field
             children={(field) => (
@@ -252,6 +319,8 @@ function AddressForm({
             }}
           />
         </div>
+
+        {/* 🌍 */}
         <form.Field
           children={(field) => (
             <FieldWrapper label={t("country")}>
@@ -266,6 +335,8 @@ function AddressForm({
           )}
           name="country"
         />
+
+        {/* ☑️ */}
         <form.Field
           children={(field) => (
             <label className="flex items-center gap-2 text-sm">
@@ -282,16 +353,29 @@ function AddressForm({
         />
       </div>
 
+      {/* 🔘 */}
       <div className="mt-4 flex gap-3">
         <button
-          className="rounded-lg bg-primary px-4 py-2 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90 disabled:opacity-70"
+          className={cn(
+            "rounded-lg",
+            "bg-primary",
+            "px-4 py-2",
+            "font-medium text-primary-foreground text-sm",
+            "transition-colors hover:bg-primary/90",
+            "disabled:opacity-70"
+          )}
           disabled={isSubmitting}
           type="submit"
         >
           {isSubmitting ? "..." : t("add")}
         </button>
         <button
-          className="rounded-lg px-4 py-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
+          className={cn(
+            "rounded-lg",
+            "px-4 py-2",
+            "text-muted-foreground text-sm",
+            "transition-colors hover:text-foreground"
+          )}
           onClick={onCancel}
           type="button"
         >
@@ -302,8 +386,17 @@ function AddressForm({
   );
 }
 
-const inputClass =
-  "w-full rounded-lg border border-border/50 bg-background px-3 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none";
+// ==============================================
+// 🔧
+const inputClass = cn(
+  "w-full",
+  "rounded-lg",
+  "border border-border/50",
+  "bg-background",
+  "px-3 py-2.5",
+  "text-sm",
+  "transition-colors focus:border-primary focus:outline-none"
+);
 
 function FieldWrapper({
   children,

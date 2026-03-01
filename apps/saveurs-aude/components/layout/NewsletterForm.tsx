@@ -4,11 +4,14 @@ import { useForm } from "@tanstack/react-form";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { subscribeNewsletter } from "@/lib/newsletter-actions";
+import { cn } from "@/lib/utils";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function NewsletterForm() {
+  // 🌐
   const t = useTranslations("footer");
+  // 📬
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,12 +40,9 @@ export function NewsletterForm() {
     },
   });
 
+  // ✅
   if (success) {
-    return (
-      <p className="font-medium text-green-600 text-sm">
-        {t("newsletterSuccess")}
-      </p>
-    );
+    return <SuccessMessage t={t} />;
   }
 
   return (
@@ -53,11 +53,20 @@ export function NewsletterForm() {
         form.handleSubmit();
       }}
     >
+      {/* 📧 */}
       <form.Field
         children={(field) => (
           <div className="flex flex-1 flex-col gap-1">
             <input
-              className="w-full rounded-lg border border-border/50 bg-background px-3 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none"
+              className={cn(
+                "w-full",
+                "rounded-lg",
+                "border border-border/50",
+                "bg-background",
+                "px-3 py-2.5",
+                "text-sm",
+                "transition-colors focus:border-primary focus:outline-none"
+              )}
               onBlur={field.handleBlur}
               onChange={(e) => field.handleChange(e.target.value)}
               placeholder={t("newsletterPlaceholder")}
@@ -81,13 +90,47 @@ export function NewsletterForm() {
           },
         }}
       />
-      <button
-        className="shrink-0 self-start rounded-lg bg-primary px-5 py-2.5 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-70"
-        disabled={isSubmitting}
-        type="submit"
-      >
-        {isSubmitting ? "..." : t("newsletterSubscribe")}
-      </button>
+
+      {/* 🔘 */}
+      <SubmitButton isSubmitting={isSubmitting} t={t} />
     </form>
+  );
+}
+
+// ==============================================
+// ✅
+function SuccessMessage({ t }: { t: ReturnType<typeof useTranslations> }) {
+  return (
+    <p className="font-medium text-green-600 text-sm">
+      {t("newsletterSuccess")}
+    </p>
+  );
+}
+
+// ==============================================
+// 🔘
+function SubmitButton({
+  isSubmitting,
+  t,
+}: {
+  isSubmitting: boolean;
+  t: ReturnType<typeof useTranslations>;
+}) {
+  return (
+    <button
+      className={cn(
+        "shrink-0 self-start",
+        "rounded-lg",
+        "bg-primary",
+        "px-5 py-2.5",
+        "font-medium text-primary-foreground text-sm",
+        "transition-colors hover:bg-primary/90",
+        "disabled:cursor-not-allowed disabled:opacity-70"
+      )}
+      disabled={isSubmitting}
+      type="submit"
+    >
+      {isSubmitting ? "..." : t("newsletterSubscribe")}
+    </button>
   );
 }
