@@ -235,7 +235,7 @@ async function OpeningHoursSection({
       {hours && hours.length > 0 ? (
         <dl className="mt-4 flex flex-col gap-1.5 text-muted-foreground text-sm">
           {hours.map((hour) => (
-            <div className="flex justify-between gap-2" key={hour.id}>
+            <div className="flex justify-between gap-x-5" key={hour.id}>
               {/* 📅 */}
               <dt className="capitalize">{hour.day}</dt>
               {/* 🕰️ */}
