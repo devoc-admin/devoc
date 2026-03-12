@@ -2,12 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { JsonLd } from "@/components/JsonLd";
-import {
-  FadeInUp,
-  StaggerContainerOnScroll,
-  StaggerItem,
-} from "@/components/motion";
-import { ProductCard } from "@/components/shop/ProductCard";
+import { FadeInUp } from "@/components/motion";
+import { ProductCard } from "@/components/shop/product-card";
 import { formatPrice } from "@/lib/format";
 import { buildBreadcrumbList, buildProduct } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
@@ -263,7 +259,7 @@ function RelatedProducts({
       <h2 className="font-heading text-2xl text-foreground">
         {t("relatedProducts")}
       </h2>
-      <StaggerContainerOnScroll
+      <div
         className={cn(
           "mt-6",
           "grid",
@@ -272,11 +268,9 @@ function RelatedProducts({
         )}
       >
         {products.map((p) => (
-          <StaggerItem key={p.id}>
-            <ProductCard product={p} />
-          </StaggerItem>
+          <ProductCard key={p.id} product={p} />
         ))}
-      </StaggerContainerOnScroll>
+      </div>
     </section>
   );
 }

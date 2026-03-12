@@ -2,18 +2,15 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import type { Where } from "payload";
 import { JsonLd } from "@/components/JsonLd";
-import {
-  FadeInUp,
-  StaggerContainerOnScroll,
-  StaggerItem,
-} from "@/components/motion";
-import { ProductCard } from "@/components/shop/ProductCard";
+import { ProductCard } from "@/components/shop/product-card";
+
+import { getTypedLocale } from "@/i18n/routing";
 import { buildBreadcrumbList } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
 import { getBaseUrl } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import type { Category, Product } from "@/payload-types";
-import { ProductFilters } from "./_components/ProductFilters";
+import { ProductFilters } from "./_components/product-filters";
 import { searchParamsCache } from "./_search-params";
 
 const PRODUCTS_PER_PAGE = 12;
@@ -29,6 +26,7 @@ export default async function ShopPage({
 
   // 📦
   const payload = await getPayloadClient();
+  const locale = await getTypedLocale();
 
   // 🐝
   const where: Where = {
@@ -51,6 +49,7 @@ export default async function ShopPage({
     collection: "products",
     depth: 2,
     limit: PRODUCTS_PER_PAGE,
+    locale,
     page,
     sort: getSortField(sort),
     where,
@@ -59,15 +58,34 @@ export default async function ShopPage({
   const products = productsResult.docs as Product[];
   const { totalDocs: count, totalPages } = productsResult;
 
+  // 🟡
+  const categoriesResult = await payload.find({
+    collection: "categories",
+    limit: MAX_CATEGORIES,
+    locale,
+    sort: "order",
+  });
+  const categories = categoriesResult.docs as Category[];
+  const formattedCategories = categories.map(({ id, slug, title }) => ({
+    id,
+    slug,
+    title,
+  }));
+
+  const categoryTitle = category
+    ? categories.find((c) => c.slug === category)?.title
+    : null;
+
   // 🌐
   const baseUrl = getBaseUrl();
+  const t = await getTranslations("shop");
 
   return (
     <div
       className={cn(
         "space-y-8",
-        "mx-auto",
         "max-w-6xl",
+        "mx-auto",
         "px-4 py-8",
         "sm:px-6"
       )}
@@ -79,32 +97,33 @@ export default async function ShopPage({
         ])}
       />
       {/* 🆎 */}
-      <FadeInUp>
-        <AllCategories />
-        <Results count={count} />
-      </FadeInUp>
+      <div>
+        <CurrentCategory title={categoryTitle ?? t("allCategories")} />
+        <p className="mt-1 text-muted-foreground text-sm">
+          {t("results", { count })}
+        </p>
+      </div>
 
       {/* 🟡🟡🟡 */}
-      <Categories />
+      <ProductFilters categories={formattedCategories} />
 
       {/* 🪴🪴🪴 */}
       {products.length > 0 ? (
-        <StaggerContainerOnScroll
+        <div
           className={cn(
             "grid",
             "grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
             "gap-4 sm:gap-6"
           )}
+          key={`${category}-${q}-${sort}-${onSale}-${page}`}
         >
           {products.map((product) => (
-            <StaggerItem key={product.id}>
-              <ProductCard product={product} />
-            </StaggerItem>
+            <ProductCard key={product.id} product={product} />
           ))}
-        </StaggerContainerOnScroll>
+        </div>
       ) : (
         /*🙅🪴*/
-        <NoProducts />
+        <NoProducts message={t("noProducts")} />
       )}
 
       {/* 📃 */}
@@ -117,60 +136,20 @@ export default async function ShopPage({
 
 // =================================
 // 🆎
-async function AllCategories() {
-  // 🗣️
-  const t = await getTranslations("shop");
-  return (
-    <h1 className="font-heading text-2xl text-primary sm:text-3xl">
-      {t("allCategories")}
-    </h1>
-  );
-}
-
-async function Results({ count }: { count: number }) {
-  // 🗣️
-  const t = await getTranslations("shop");
-
-  return (
-    <p className="mt-1 text-muted-foreground text-sm">
-      {t("results", { count })}
-    </p>
-  );
-}
-
-// =================================
-// 🟡
-
 const MAX_CATEGORIES = 50;
-async function Categories() {
-  // 📦
-  const payload = await getPayloadClient();
 
-  // 🐝
-  const categoriesResult = await payload.find({
-    collection: "categories",
-    limit: MAX_CATEGORIES,
-    sort: "order",
-  });
-
-  const categories = categoriesResult.docs as Category[];
-  const formattedCategories = categories.map(({ id, slug, title }) => ({
-    id,
-    slug,
-    title,
-  }));
-
-  return <ProductFilters categories={formattedCategories} />;
+function CurrentCategory({ title }: { title: string }) {
+  return (
+    <h1 className="font-heading text-2xl text-primary sm:text-3xl">{title}</h1>
+  );
 }
 
 // =================================
 // 🙅🪴
-async function NoProducts() {
-  // 🗣️
-  const t = await getTranslations("shop");
+function NoProducts({ message }: { message: string }) {
   return (
     <div className="mt-16 text-center">
-      <p className="text-muted-foreground">{t("noProducts")}</p>
+      <p className="text-muted-foreground">{message}</p>
     </div>
   );
 }

@@ -38,6 +38,7 @@
   "shop": {
     "allCategories": "Toutes les catégories",
     "filters": "Filtres",
+    "searchProduct": "Rechercher un produit",
     "noProducts": "Aucun produit trouvé",
     "onSale": "En promotion",
     "price": "Prix",

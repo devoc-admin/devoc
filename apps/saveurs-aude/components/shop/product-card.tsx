@@ -1,4 +1,8 @@
+"use client";
+
+import { motion } from "motion/react";
 import Image from "next/image";
+import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import { formatPrice } from "@/lib/format";
 import {
@@ -17,6 +21,9 @@ export function ProductCard({ product }: { product: Product }) {
   const imageUrl = image?.url;
   const imageAlt = image?.alt || product.title;
 
+  // ✨
+  const [loaded, setLoaded] = useState(!imageUrl);
+
   // 🏷️
   const promotion = product.promotion;
   const promo = hasActivePromotion(promotion);
@@ -31,56 +38,90 @@ export function ProductCard({ product }: { product: Product }) {
   const discounted = promo ? applyDiscount(min, promotion) : min;
 
   return (
-    <Link
-      className={cn(
-        "group",
-        "flex flex-col",
-        "h-full",
-        "overflow-hidden",
-        "rounded-lg",
-        "border border-border/50",
-        "bg-card",
-        "transition-shadow hover:shadow-md"
-      )}
-      href={{ params: { slug: product.slug }, pathname: "/boutique/[slug]" }}
-    >
-      {/* 🖼️🏷️ */}
-      <div
-        className={cn(
-          "relative",
-          "aspect-square",
-          "overflow-hidden",
-          "bg-secondary-900/30"
-        )}
-      >
-        {/* 🖼️ */}
-        <ProductImage alt={imageAlt} url={imageUrl} />
-
-        {/* 🏷️ */}
-        <div className={cn("absolute top-2 left-2", "flex flex-col gap-1")}>
-          {promo && <Promotion promotion={promotion} />}
-          {outOfStock && <OutOfStock />}
+    <div className="relative">
+      {/* 💀 Skeleton — visible while image loads */}
+      {!loaded && (
+        <div className="space-y-3">
+          <div className="aspect-square w-full animate-pulse rounded-lg bg-muted" />
+          <div className="h-4 w-3/4 animate-pulse rounded bg-muted" />
+          <div className="h-4 w-1/2 animate-pulse rounded bg-muted" />
         </div>
-      </div>
+      )}
 
-      {/* 📝 */}
-      <div className={cn("flex flex-1 flex-col", "gap-y-1", "p-3")}>
-        <Category>{categoryTitle}</Category>
-        <ProductTitle>{product.title}</ProductTitle>
-        <Price
-          discounted={discounted}
-          hasRange={hasRange}
-          min={min}
-          promo={promo}
-        />
-      </div>
-    </Link>
+      {/* 🃏 Real card — fades in once image is ready */}
+      <motion.div
+        animate={loaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        className={cn(!loaded && "absolute inset-0")}
+        initial={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.4 }}
+      >
+        <Link
+          className={cn(
+            "group",
+            "flex flex-col",
+            "h-full",
+            "overflow-hidden",
+            "rounded-lg",
+            "border border-border/50",
+            "bg-card",
+            "transition-shadow hover:shadow-md"
+          )}
+          href={{
+            params: { slug: product.slug },
+            pathname: "/boutique/[slug]",
+          }}
+        >
+          {/* 🖼️🏷️ */}
+          <div
+            className={cn(
+              "relative",
+              "aspect-square",
+              "overflow-hidden",
+              "bg-secondary-900/30"
+            )}
+          >
+            {/* 🖼️ */}
+            <ProductImage
+              alt={imageAlt}
+              onLoad={() => setLoaded(true)}
+              url={imageUrl}
+            />
+
+            {/* 🏷️ */}
+            <div className={cn("absolute top-2 left-2", "flex flex-col gap-1")}>
+              {promo && <Promotion promotion={promotion} />}
+              {outOfStock && <OutOfStock />}
+            </div>
+          </div>
+
+          {/* 📝 */}
+          <div className={cn("flex flex-1 flex-col", "gap-y-1", "p-3")}>
+            <Category>{categoryTitle}</Category>
+            <ProductTitle>{product.title}</ProductTitle>
+            <Price
+              discounted={discounted}
+              hasRange={hasRange}
+              min={min}
+              promo={promo}
+            />
+          </div>
+        </Link>
+      </motion.div>
+    </div>
   );
 }
 
 // =================================
 // 🖼️
-function ProductImage({ url, alt }: { url?: string | null; alt: string }) {
+function ProductImage({
+  url,
+  alt,
+  onLoad,
+}: {
+  url?: string | null;
+  alt: string;
+  onLoad: () => void;
+}) {
   if (!url) return <NoProductImage />;
   return (
     <Image
@@ -91,6 +132,7 @@ function ProductImage({ url, alt }: { url?: string | null; alt: string }) {
         "group-hover:scale-105"
       )}
       fill
+      onLoad={onLoad}
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
       src={url}
     />

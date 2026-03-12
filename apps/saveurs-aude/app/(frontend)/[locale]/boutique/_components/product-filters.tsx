@@ -2,7 +2,12 @@
 
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { parseAsBoolean, parseAsString, useQueryState } from "nuqs";
+import {
+  parseAsBoolean,
+  parseAsInteger,
+  parseAsString,
+  useQueryState,
+} from "nuqs";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/payload-types";
 
@@ -14,30 +19,41 @@ export function ProductFilters({
   categories: CustomCategory[];
 }) {
   // 🔍
-  const [q, setQ] = useQueryState("q", parseAsString.withDefault(""));
+  const [q, setQ] = useQueryState(
+    "q",
+    parseAsString
+      .withDefault("")
+      .withOptions({ shallow: false, throttleMs: 300 })
+  );
   // 🏷️
   const [selectedCategory, setSelectedCategory] = useQueryState(
     "category",
-    parseAsString.withDefault("")
+    parseAsString.withDefault("").withOptions({ shallow: false })
+  );
+  // 📃
+  const [page, setPage] = useQueryState(
+    "page",
+    parseAsInteger.withDefault(1).withOptions({ shallow: false })
   );
   // ↕️
   const [sort, setSort] = useQueryState(
     "sort",
-    parseAsString.withDefault("newest")
+    parseAsString.withDefault("newest").withOptions({ shallow: false })
   );
   // 💱
   const [onSale, setOnSale] = useQueryState(
     "onSale",
-    parseAsBoolean.withDefault(false)
+    parseAsBoolean.withDefault(false).withOptions({ shallow: false })
   );
 
   // ↩️
-  const hasFilters = selectedCategory || q || onSale;
+  const hasFilters = selectedCategory || q || onSale || sort || page;
   function clearFilters() {
     setSelectedCategory(null);
     setQ(null);
     setSort(null);
     setOnSale(null);
+    setPage(null);
   }
 
   return (
@@ -49,6 +65,7 @@ export function ProductFilters({
       <Categories
         categories={categories}
         selectedCategory={selectedCategory}
+        setPage={setPage}
         setSelectedCategory={setSelectedCategory}
       />
 
@@ -86,7 +103,7 @@ function SearchBar({ q, setQ }: { q: string; setQ: (value: string) => void }) {
           "placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-ring/50"
         )}
         onChange={(e) => setQ(e.target.value)}
-        placeholder={t("filters")}
+        placeholder={t("searchProduct")}
         type="search"
         value={q}
       />
@@ -131,6 +148,7 @@ function Sort({ sort, setSort }: SortProps) {
 type CategoriesProps = {
   selectedCategory: string;
   categories: CustomCategory[];
+  setPage: (value: number | null) => Promise<URLSearchParams>;
   setSelectedCategory: (
     value: string | ((old: string) => string | null) | null
   ) => Promise<URLSearchParams>;
@@ -139,10 +157,17 @@ type CategoriesProps = {
 function Categories({
   selectedCategory,
   setSelectedCategory,
+  setPage,
   categories,
 }: CategoriesProps) {
   // 🌐
   const t = useTranslations("shop");
+
+  function handleCategoryChange(value: string | null) {
+    setSelectedCategory(value);
+    setPage(null);
+  }
+
   return (
     <div className="flex flex-wrap items-center gap-2">
       <button
@@ -152,7 +177,7 @@ function Categories({
           selectedCategory &&
             "border-border bg-transparent text-muted-foreground hover:border-primary hover:text-primary"
         )}
-        onClick={() => setSelectedCategory(null)}
+        onClick={() => handleCategoryChange(null)}
         type="button"
       >
         {t("allCategories")}
@@ -161,8 +186,8 @@ function Categories({
         <CategoryButton
           category={category}
           key={category.id}
+          onCategoryChange={handleCategoryChange}
           selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
         />
       ))}
     </div>
@@ -172,15 +197,13 @@ function Categories({
 type CategoryButtonProps = {
   selectedCategory: string;
   category: CustomCategory;
-  setSelectedCategory: (
-    value: string | ((old: string) => string | null) | null
-  ) => Promise<URLSearchParams>;
+  onCategoryChange: (value: string | null) => void;
 };
 
 function CategoryButton({
   selectedCategory,
   category,
-  setSelectedCategory,
+  onCategoryChange,
 }: CategoryButtonProps) {
   const { slug, id, title } = category;
   const isSelected = selectedCategory === slug;
@@ -198,9 +221,7 @@ function CategoryButton({
           "border-primary bg-primary text-primary-foreground hover:text-primary-foreground"
       )}
       key={id}
-      onClick={() =>
-        setSelectedCategory(selectedCategory === slug ? null : slug)
-      }
+      onClick={() => onCategoryChange(selectedCategory === slug ? null : slug)}
       type="button"
     >
       {title}
