@@ -231,9 +231,23 @@
   },
   "footer": {
     "allRightsReserved": "Tous droits réservés",
+    "brandName": "Saveurs d'Aude",
+    "brandDescription": "Épicerie fine de spécialités artisanales du Sud de la France, au cœur de Carcassonne.",
     "cgv": "CGV",
+    "closed": "Fermé",
+    "contact": "Contact",
+    "days": {
+      "lundi": "Lundi",
+      "mardi": "Mardi",
+      "mercredi": "Mercredi",
+      "jeudi": "Jeudi",
+      "vendredi": "Vendredi",
+      "samedi": "Samedi",
+      "dimanche": "Dimanche"
+    },
     "followUs": "Suivez-nous",
     "legalNotice": "Mentions légales",
+    "navigation": "Navigation",
     "newsletter": "Newsletter",
     "newsletterError": "Une erreur est survenue. Veuillez réessayer.",
     "newsletterPlaceholder": "Votre email",

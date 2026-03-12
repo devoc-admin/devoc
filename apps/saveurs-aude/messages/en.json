@@ -231,9 +231,23 @@
   },
   "footer": {
     "allRightsReserved": "All rights reserved",
+    "brandName": "Saveurs d'Aude",
+    "brandDescription": "Fine grocery store of artisanal specialties from the South of France, in the heart of Carcassonne.",
     "cgv": "Terms & Conditions",
+    "closed": "Closed",
+    "contact": "Contact",
+    "days": {
+      "lundi": "Monday",
+      "mardi": "Tuesday",
+      "mercredi": "Wednesday",
+      "jeudi": "Thursday",
+      "vendredi": "Friday",
+      "samedi": "Saturday",
+      "dimanche": "Sunday"
+    },
     "followUs": "Follow us",
     "legalNotice": "Legal notice",
+    "navigation": "Navigation",
     "newsletter": "Newsletter",
     "newsletterError": "An error occurred. Please try again.",
     "newsletterPlaceholder": "Your email",

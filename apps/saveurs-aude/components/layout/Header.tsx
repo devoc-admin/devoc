@@ -21,16 +21,20 @@ export async function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40",
+        "sticky",
+        "top-0",
+        "z-40",
         "border-border/50 border-b",
-        "bg-background/95 backdrop-blur-sm"
+        "bg-background/95",
+        "backdrop-blur-sm"
       )}
     >
       <div
         className={cn(
-          "mx-auto max-w-6xl",
           "flex items-center justify-between",
+          "max-w-6xl",
           "h-16",
+          "mx-auto",
           "px-4 sm:px-6"
         )}
       >
@@ -38,7 +42,7 @@ export async function Header() {
         <Logo />
 
         {/* 🧭 */}
-        <DesktopNav t={t} />
+        <DesktopNav />
 
         {/* 🔧 */}
         <div className="flex items-center gap-2">
@@ -78,11 +82,14 @@ function Logo() {
 
 // ==============================================
 // 🧭
-function DesktopNav({ t }: { t: Awaited<ReturnType<typeof getTranslations>> }) {
+async function DesktopNav() {
+  // 🌐
+  const t = await getTranslations("nav");
+
   return (
     <nav
       aria-label="Navigation principale"
-      className="hidden items-center gap-8 md:flex"
+      className={cn("hidden md:flex", "md:items-center", "gap-8")}
     >
       {navLinks.map(({ href, tKey }) => (
         <Link
