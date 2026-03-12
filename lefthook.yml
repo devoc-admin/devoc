@@ -1,6 +1,8 @@
 pre-commit:
+  # 🧽 Linter with safe fixs applied
   jobs:
-    - run: bun x ultracite fix
+    - name: Lint changed files
+      run: bun x ultracite fix {staged_files}
       glob:
         - "*.js"
         - "*.jsx"
