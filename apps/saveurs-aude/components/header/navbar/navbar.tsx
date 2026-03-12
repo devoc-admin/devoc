@@ -1,4 +1,4 @@
-import { NavbarCategoryLink } from "@/components/layout/navbar/category-link";
+import { NavbarCategoryLink } from "@/components/header/navbar/category-link";
 import { getPayloadClient } from "@/lib/payload";
 import { cn } from "@/lib/utils";
 

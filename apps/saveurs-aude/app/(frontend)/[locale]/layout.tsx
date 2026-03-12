@@ -9,9 +9,9 @@ import {
   CookieConsent,
   type CookieConsentConfig,
 } from "@/components/CookieConsent";
-import { Footer } from "@/components/layout/footer";
-import { Header } from "@/components/layout/header";
-import { Navbar } from "@/components/layout/navbar/navbar";
+import { Footer } from "@/components/footer/footer";
+import { Header } from "@/components/header/header";
+import { Navbar } from "@/components/header/navbar/navbar";
 import { routing } from "@/i18n/routing";
 import { AuthProvider } from "@/lib/auth";
 import { getCurrentCustomer } from "@/lib/auth-actions";

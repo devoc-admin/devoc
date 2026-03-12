@@ -73,19 +73,21 @@ export function NewsletterForm() {
               type="email"
               value={field.state.value}
             />
+            {/* 0️⃣🚫 Error client */}
             {field.state.meta.isTouched && field.state.meta.errors[0] && (
               <span className="text-destructive text-xs">
                 {field.state.meta.errors[0]}
               </span>
             )}
+            {/* 1️⃣🚫 Error server */}
             {error && <span className="text-destructive text-xs">{error}</span>}
           </div>
         )}
         name="email"
         validators={{
           onBlur: ({ value }) => {
-            if (!value.trim()) return "Ce champ est requis";
-            if (!EMAIL_REGEX.test(value)) return "Email invalide";
+            if (!value.trim()) return t("newsletterRequired");
+            if (!EMAIL_REGEX.test(value)) return t("newsletterInvalidEmail");
             return undefined;
           },
         }}
@@ -122,6 +124,7 @@ function SubmitButton({
         "shrink-0 self-start",
         "rounded-lg",
         "bg-primary",
+        "cursor-pointer",
         "px-5 py-2.5",
         "font-medium text-primary-foreground text-sm",
         "transition-colors hover:bg-primary/90",
