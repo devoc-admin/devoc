@@ -45,10 +45,13 @@ function LangButton({
   return (
     <button
       className={cn(
-        "rounded px-1.5 py-0.5",
+        "rounded",
+        "cursor-pointer",
+        "px-1.5 py-0.5",
         "transition-colors",
         "text-muted-foreground hover:text-foreground",
-        active && "font-semibold text-primary"
+        active && "font-semibold",
+        active && "text-primary"
       )}
       onClick={onClick}
       type="button"

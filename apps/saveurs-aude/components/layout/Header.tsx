@@ -2,10 +2,10 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-import { CartBadge } from "./CartBadge";
-import { LanguageSwitcher } from "./LanguageSwitcher";
-import { MobileMenu } from "./MobileMenu";
-import { UserMenu } from "./UserMenu";
+import { CartBadge } from "./cart-badge";
+import { LanguageSwitcher } from "./language-switcher";
+import { MobileMenu } from "./mobile-menu";
+import { UserMenu } from "./user-menu";
 
 const navLinks = [
   { href: "/boutique" as const, tKey: "shop" as const },

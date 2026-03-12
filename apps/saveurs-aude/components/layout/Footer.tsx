@@ -4,7 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { getPayloadClient } from "@/lib/payload";
 import { cn } from "@/lib/utils";
 import type { SiteConfig } from "@/payload-types";
-import { NewsletterForm } from "./NewsletterForm";
+import { NewsletterForm } from "./newsletter-form";
 
 const quickLinks = [
   { href: "/boutique" as const, tKey: "shop" as const },
