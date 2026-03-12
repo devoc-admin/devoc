@@ -19,7 +19,11 @@ export function NavbarCategoryLink({
 
   return (
     <Link
-      className={cn(isActive && "underline underline-offset-4")}
+      className={cn(
+        "underline-offset-4",
+        "hover:underline",
+        isActive && "underline"
+      )}
       href={{ pathname: "/boutique", query: { category: slug } }}
     >
       {children}
