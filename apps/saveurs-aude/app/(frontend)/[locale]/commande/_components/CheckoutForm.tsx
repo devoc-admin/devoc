@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Link } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
 import { useAuth } from "@/lib/auth";
 import { useCart } from "@/lib/cart";
 import { createCheckoutSession } from "@/lib/checkout-actions";
@@ -65,7 +66,7 @@ export function CheckoutForm({
             variantId: item.variantId,
             variantLabel: item.variantLabel,
           })),
-          locale: locale as "fr" | "en",
+          locale: locale as Locale,
           shippingAddress:
             value.deliveryMethod === "shipping"
               ? value.shippingAddress

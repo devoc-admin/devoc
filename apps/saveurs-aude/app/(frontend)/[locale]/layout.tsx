@@ -12,7 +12,7 @@ import {
 import { Footer } from "@/components/footer/footer";
 import { Header } from "@/components/header/header";
 import { Navbar } from "@/components/header/navbar/navbar";
-import { routing } from "@/i18n/routing";
+import { type Locale, routing } from "@/i18n/routing";
 import { AuthProvider } from "@/lib/auth";
 import { getCurrentCustomer } from "@/lib/auth-actions";
 import { CartProvider } from "@/lib/cart";
@@ -127,11 +127,11 @@ export default async function LocaleLayout({
 // ================================
 // 🍪
 async function getCookieConsentConfig(
-  locale: string
+  locale: Locale
 ): Promise<CookieConsentConfig> {
   const payload = await getPayloadClient();
   const data = await payload.findGlobal({
-    locale: locale as "fr" | "en",
+    locale,
     slug: "cookie-consent",
   });
 

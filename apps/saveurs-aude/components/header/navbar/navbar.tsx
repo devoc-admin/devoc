@@ -1,11 +1,13 @@
 import { NavbarCategoryLink } from "@/components/header/navbar/category-link";
+import { getTypedLocale } from "@/i18n/routing";
 import { getPayloadClient } from "@/lib/payload";
 import { cn } from "@/lib/utils";
 
 const MAX_CATEGORIES = 5;
-const categories = await getCategoriesForNavbar();
 
-export function Navbar() {
+export async function Navbar() {
+  const categories = await getCategoriesForNavbar();
+
   return (
     <div
       className={cn(
@@ -30,12 +32,17 @@ export function Navbar() {
 // =================================
 // 🟡 Categories
 async function getCategoriesForNavbar() {
+  // 🌐
+  const locale = await getTypedLocale();
+
+  // 📦
   const payload = await getPayloadClient();
 
   // Fetch all categories
   const { docs: categories } = await payload.find({
     collection: "categories",
     limit: 0,
+    locale,
   });
 
   // Count products per category
@@ -43,13 +50,14 @@ async function getCategoriesForNavbar() {
     categories.map(async ({ id, slug, title }) => {
       const { totalDocs } = await payload.count({
         collection: "products",
+        locale,
         where: { category: { equals: id } },
       });
       return { id, productCount: totalDocs, slug, title };
     })
   );
 
-  // Return top 5 by product count
+  // 🏆 Return top 5 by product count
   return categoriesWithCount
     .sort((a, b) => b.productCount - a.productCount)
     .slice(0, MAX_CATEGORIES)

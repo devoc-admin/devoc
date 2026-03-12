@@ -5,17 +5,19 @@ import { getTranslations } from "next-intl/server";
 import { JsonLd } from "@/components/JsonLd";
 import { FadeInUp, FadeInUpOnScroll } from "@/components/motion";
 import { RichText } from "@/components/RichText";
+import { getTypedLocale } from "@/i18n/routing";
 import { buildBreadcrumbList } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";
 import { buildOgImage, getBaseUrl } from "@/lib/seo";
 import type { Page } from "@/payload-types";
 
-async function getPage(locale: string): Promise<Page | null> {
+async function getPage(): Promise<Page | null> {
+  const locale = await getTypedLocale();
   const payload = await getPayloadClient();
   const result = await payload.find({
     collection: "pages",
     limit: 1,
-    locale: locale as "fr" | "en",
+    locale,
     where: { slug: { equals: "cgv" } },
   });
   return (result.docs[0] as Page) ?? null;
@@ -27,7 +29,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const page = await getPage(locale);
+  const page = await getPage();
   if (!page) {
     const t = await getTranslations({ locale, namespace: "seo" });
     const tPages = await getTranslations({ locale, namespace: "pages" });
@@ -49,7 +51,7 @@ export default async function CGVPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const page = await getPage(locale);
+  const page = await getPage();
 
   if (!page) {
     notFound();

@@ -1,4 +1,6 @@
+import { hasLocale } from "next-intl";
 import { defineRouting } from "next-intl/routing";
+import { getLocale } from "next-intl/server";
 
 export const routing = defineRouting({
   defaultLocale: "fr",
@@ -72,3 +74,11 @@ export const routing = defineRouting({
     },
   },
 });
+
+export type Locale = (typeof routing.locales)[number];
+
+export async function getTypedLocale(): Promise<Locale> {
+  const locale = await getLocale();
+  if (hasLocale(routing.locales, locale)) return locale;
+  return routing.defaultLocale;
+}
