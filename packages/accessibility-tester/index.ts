@@ -119,16 +119,16 @@ export async function runAudit(
 
     console.log("  --- Quality (Lighthouse) ---");
     console.log(
-      `   - Accessibility: ${lighthouseScores.accessibility !== null ? (lighthouseScores.accessibility * 100).toFixed(0) : "N/A"}`
+      `   - Accessibility: ${lighthouseScores.accessibility === null ? "N/A" : (lighthouseScores.accessibility * 100).toFixed(0)}`
     );
     console.log(
-      `   - Best Practices: ${lighthouseScores.bestPractices !== null ? (lighthouseScores.bestPractices * 100).toFixed(0) : "N/A"}`
+      `   - Best Practices: ${lighthouseScores.bestPractices === null ? "N/A" : (lighthouseScores.bestPractices * 100).toFixed(0)}`
     );
     console.log(
-      `   - Performance: ${lighthouseScores.performance !== null ? (lighthouseScores.performance * 100).toFixed(0) : "N/A"}`
+      `   - Performance: ${lighthouseScores.performance === null ? "N/A" : (lighthouseScores.performance * 100).toFixed(0)}`
     );
     console.log(
-      `   - SEO: ${lighthouseScores.seo !== null ? (lighthouseScores.seo * 100).toFixed(0) : "N/A"}`
+      `   - SEO: ${lighthouseScores.seo === null ? "N/A" : (lighthouseScores.seo * 100).toFixed(0)}`
     );
 
     return {

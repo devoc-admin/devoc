@@ -5,6 +5,8 @@ import React, { useState, useEffect, useId } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
+const graphemeSplitter = new Intl.Segmenter("fr", { granularity: "grapheme" });
+
 export interface ContainerTextFlipProps {
   /** Array of words to cycle through in the animation */
   words?: string[];
@@ -87,24 +89,26 @@ export function ContainerTextFlip({
         layoutId={`word-div-${words[currentWordIndex]}-${id}`}
       >
         <motion.div className="inline-block">
-          {words[currentWordIndex].split("").map((letter, index) => (
-            <motion.span
-              key={index}
-              initial={{
-                opacity: 0,
-                filter: "blur(10px)",
-              }}
-              animate={{
-                opacity: 1,
-                filter: "blur(0px)",
-              }}
-              transition={{
-                delay: index * 0.02,
-              }}
-            >
-              {letter}
-            </motion.span>
-          ))}
+          {[...graphemeSplitter.segment(words[currentWordIndex])].map(
+            ({ segment }, index) => (
+              <motion.span
+                key={index}
+                initial={{
+                  opacity: 0,
+                  filter: "blur(10px)",
+                }}
+                animate={{
+                  opacity: 1,
+                  filter: "blur(0px)",
+                }}
+                transition={{
+                  delay: index * 0.02,
+                }}
+              >
+                {segment}
+              </motion.span>
+            ),
+          )}
         </motion.div>
       </motion.div>
     </motion.div>

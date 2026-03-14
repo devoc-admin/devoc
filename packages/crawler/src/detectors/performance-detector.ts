@@ -111,7 +111,7 @@ export async function detectPerformance({
 
     return {
       domContentLoaded: Math.round(domContentLoaded),
-      fcp: fcp !== null ? Math.round(fcp) : null,
+      fcp: fcp === null ? null : Math.round(fcp),
       pageLoadTime: Math.round(pageLoadTime),
       pageSizeKb: bytesToKb(totalSize),
       requestCount: resources.length,

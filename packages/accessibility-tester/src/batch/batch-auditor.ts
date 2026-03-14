@@ -273,7 +273,7 @@ export async function auditSingleUrl(
   console.log(`  RGAA: ${rgaa.score}% (${rgaa.status})`);
   console.log(`  RGPD: ${rgpdScore}%`);
   console.log(
-    `  Lighthouse Accessibilite: ${lighthouse.accessibility !== null ? Math.round(lighthouse.accessibility * 100) : "N/A"}%`
+    `  Lighthouse Accessibilite: ${lighthouse.accessibility === null ? "N/A" : Math.round(lighthouse.accessibility * 100)}%`
   );
   console.log(`  Technologies: ${technology.cms || "Non detecte"}`);
   console.log(`  Priorite: ${priority}`);
