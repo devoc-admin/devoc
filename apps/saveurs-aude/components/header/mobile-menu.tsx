@@ -19,16 +19,17 @@ const navLinks = [
 
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
+
   // 🌐
   const t = useTranslations("nav");
 
   return (
     <div className="md:hidden">
       {/* ☰ */}
-      <MenuTrigger label={t("home")} onOpen={() => setOpen(true)} />
+      <MenuTrigger label={t("home")} onOpen={() => setOpen(false)} />
 
       {/* 🫥 */}
-      <Backdrop onClose={() => setOpen(false)} open={open} />
+      {/*<Backdrop onClose={() => setOpen(false)} open={open} />*/}
 
       {/* 📋 */}
       <Panel onClose={() => setOpen(false)} open={open} t={t} />
@@ -57,7 +58,7 @@ function MenuTrigger({ label, onOpen }: { label: string; onOpen: () => void }) {
 
 // ==============================================
 // 🫥
-function Backdrop({ onClose, open }: { onClose: () => void; open: boolean }) {
+function _Backdrop({ onClose, open }: { onClose: () => void; open: boolean }) {
   return (
     <button
       aria-label="Close menu"
@@ -90,8 +91,12 @@ function Panel({
   return (
     <div
       className={cn(
-        "fixed inset-y-0 right-0 z-50",
+        "fixed",
+        "inset-y-0",
+        "right-0",
+        "z-50",
         "w-72 max-w-[calc(100vw-3rem)]",
+        "h-fit",
         "bg-background shadow-xl",
         "transition-transform duration-300 ease-out",
         "translate-x-full",

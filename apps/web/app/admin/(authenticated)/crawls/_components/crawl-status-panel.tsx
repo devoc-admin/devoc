@@ -77,6 +77,7 @@ export function CrawlStatusPanel() {
               <a
                 className="space-y-4"
                 href={crawl.latestPage.url}
+                rel="noopener"
                 target="_blank"
               >
                 <div>

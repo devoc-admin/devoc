@@ -47,7 +47,7 @@ export function NewsletterForm() {
 
   return (
     <form
-      className="flex flex-col gap-2 sm:flex-row"
+      className={cn("flex flex-col gap-2", "flex-col", "sm:flex-row")}
       onSubmit={(e) => {
         e.preventDefault();
         form.handleSubmit();
@@ -123,6 +123,7 @@ function SubmitButton({
       className={cn(
         "shrink-0 self-start",
         "rounded-lg",
+        "mx-auto",
         "bg-primary",
         "cursor-pointer",
         "px-5 py-2.5",

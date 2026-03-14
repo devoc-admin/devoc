@@ -80,6 +80,7 @@ function useSitesList({ sites }: { sites: Crawl[] }) {
         <a
           className="cursor-pointer underline"
           href={getValue()}
+          rel="noopener"
           target="_blank"
         >
           {getValue()}

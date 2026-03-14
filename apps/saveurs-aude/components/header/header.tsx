@@ -75,7 +75,7 @@ function Logo() {
         src="/saveurs_aude_no_margin_no_title.svg"
         width={36}
       />
-      Saveurs d&apos;Aude
+      <h2 className={cn("text-lg")}>Saveurs d&apos;Aude</h2>
     </Link>
   );
 }

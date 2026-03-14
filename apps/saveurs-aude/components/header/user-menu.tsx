@@ -16,7 +16,8 @@ export function UserMenu() {
     return (
       <Link
         className={cn(
-          "flex items-center gap-1.5",
+          "hidden",
+          "xs:flex items-center gap-1.5",
           "p-2",
           "text-foreground/70",
           "transition-colors hover:text-primary"
@@ -33,9 +34,12 @@ export function UserMenu() {
   return (
     <Link
       className={cn(
+        "hidden",
+        "xs:block",
         "p-2",
         "text-foreground/70",
-        "transition-colors hover:text-primary"
+        "hover:text-primary",
+        "transition-colors"
       )}
       href="/compte/connexion"
       title={t("login")}

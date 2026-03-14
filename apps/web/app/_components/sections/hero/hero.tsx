@@ -4,23 +4,27 @@ import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import useNavTheme from "@/app/_hooks/use-nav-theme";
+import useNavTheme from "@/app/_hooks/use-nav-theme.ts";
 import CubeShape from "@/assets/shapes/cube.webp";
 import DiamondShape from "@/assets/shapes/diamond.webp";
 import DonutShape from "@/assets/shapes/donut.webp";
 import SphereShape from "@/assets/shapes/sphere.webp";
-import { ContainerTextFlip } from "@/components/aceternity/container-text-flip";
-import { AvatarStack } from "@/components/kibo-ui/avatar-stack";
-import { AuroraText } from "@/components/magicui/aurora-text";
-import { ShimmerButton } from "@/components/magicui/shimmer-button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ContainerTextFlip } from "@/components/aceternity/container-text-flip.tsx";
+import { AvatarStack } from "@/components/kibo-ui/avatar-stack/index.tsx";
+import { AuroraText } from "@/components/magicui/aurora-text.tsx";
+import { ShimmerButton } from "@/components/magicui/shimmer-button.tsx";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar.tsx";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { RatingBadge } from "@/components/untitledui/rating-badge";
-import { cn } from "@/lib/utils";
+} from "@/components/ui/tooltip.tsx";
+import { RatingBadge } from "@/components/untitledui/rating-badge.tsx";
+import { cn } from "@/lib/utils.ts";
 
 const heroEntryDelay = 0.5;
 const heroEntryDuration = 0.5;
@@ -262,7 +266,7 @@ function Keywords() {
       initial={{ opacity: 0 }}
       transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
     >
-      <div className={cn("flex flex-col gap-y-1", "-mt-8", "xs:-mt-10")}>
+      <div className={cn("flex flex-col gap-y-1", "-mt-8 xs:-mt-10")}>
         <div className="text-center font-kanit font-normal text-base">
           Votre expert de proximité en
         </div>

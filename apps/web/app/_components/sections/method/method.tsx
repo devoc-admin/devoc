@@ -1,11 +1,11 @@
 /** biome-ignore-all lint/style/noMagicNumbers: exception */
 "use client";
 import { useWindowSize } from "usehooks-ts";
-import { cn } from "@/lib/utils";
-import Section from "../_components/section";
-import SectionTitle from "../_components/section-title";
-import { MethodDesktop } from "./components/method-desktop";
-import { MethodMobile } from "./components/method-mobile";
+import { cn } from "@/lib/utils.ts";
+import Section from "../_components/section.tsx";
+import SectionTitle from "../_components/section-title.tsx";
+import { MethodDesktop } from "./components/method-desktop.tsx";
+import { MethodMobile } from "./components/method-mobile.tsx";
 
 function Method() {
   const { width = 0 } = useWindowSize();

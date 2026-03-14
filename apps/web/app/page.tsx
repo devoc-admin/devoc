@@ -1,30 +1,34 @@
 import dynamic from "next/dynamic";
-import Header from "@/app/header";
-import Hero from "./_components/sections/hero/hero";
-import Footer from "./footer";
+import Header from "@/app/header.tsx";
+import Hero from "./_components/sections/hero/hero.tsx";
+import Footer from "./footer.tsx";
 
 // Lazy load below-the-fold sections to reduce initial JavaScript bundle
 const Services = dynamic(
-  () => import("./_components/sections/services/services")
+  () => import("./_components/sections/services/services.tsx")
 );
 
 const Realisations = dynamic(
-  () => import("./_components/sections/achievements/achievements")
+  () => import("./_components/sections/achievements/achievements.tsx")
 );
 
-const Method = dynamic(() => import("./_components/sections/method/method"));
+const Method = dynamic(
+  () => import("./_components/sections/method/method.tsx")
+);
 
 const WorkWith = dynamic(
-  () => import("./_components/sections/work-with/work-with")
+  () => import("./_components/sections/work-with/work-with.tsx")
 );
 
-const Us = dynamic(() => import("./_components/sections/us/us"));
+const Us = dynamic(() => import("./_components/sections/us/us.tsx"));
 
 // const ThreadsSeparator = dynamic(
 //   () => import("./_components/separators/threads-separator")
 // );
 
-const Contact = dynamic(() => import("./_components/sections/contact/contact"));
+const Contact = dynamic(
+  () => import("./_components/sections/contact/contact.tsx")
+);
 
 // =============================
 

@@ -106,6 +106,7 @@ function Website() {
     <a
       className="flex items-center gap-x-2 text-muted-foreground hover:underline"
       href={url}
+      rel="noopener"
       target="_blank"
     >
       <span className="truncate">{url ?? "—"}</span>
