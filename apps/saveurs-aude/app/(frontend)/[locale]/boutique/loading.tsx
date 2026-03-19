@@ -20,10 +20,10 @@ export default function Loading() {
       {/* 🔍 */}
       <div className="space-y-4">
         <div className="h-10 w-full animate-pulse rounded-lg bg-muted" />
-        <div className="flex gap-2">
-          {Array.from({ length: 4 }).map((_, i) => (
+        <div className="flex flex-wrap gap-2">
+          {Array.from({ length: 12 }).map((_, i) => (
             <div
-              className="h-8 w-20 animate-pulse rounded-full bg-muted"
+              className="h-8 w-30 animate-pulse rounded-full bg-muted"
               key={i}
             />
           ))}

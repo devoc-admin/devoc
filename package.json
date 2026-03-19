@@ -32,9 +32,6 @@
         "next": "^16.2.0",
         "@types/node": "^25.5.0"
       },
-      "next-legacy": {
-        "next": ">=15.4.11 <15.5.0"
-      },
       "tailwind": {
         "tailwindcss": "^4.2.2",
         "@tailwindcss/postcss": "^4.2.2"
