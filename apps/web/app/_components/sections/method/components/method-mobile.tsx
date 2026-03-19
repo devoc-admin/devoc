@@ -119,7 +119,6 @@ export function MethodMobile() {
     }
   }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: exception
   useEffect(() => {
     progressBarRef.current?.addEventListener("animationiteration", goNextStep);
     document.addEventListener("dragstart", stopBrowserDragging);

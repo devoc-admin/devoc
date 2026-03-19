@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
     reactCompiler: false,
     viewTransition: true,
   },
+  serverExternalPackages: ["resend"],
   turbopack: {
     root: path.join(import.meta.dirname, "../../"),
   },

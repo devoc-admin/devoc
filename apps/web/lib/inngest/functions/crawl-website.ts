@@ -38,8 +38,8 @@ export const crawlWebsite = inngest.createFunction(
     id: "crawl-website",
     name: "Crawl Website for audit",
     retries: 2,
+    triggers: [{ event: "crawl/crawl.requested" }],
   },
-  { event: "crawl/crawl.requested" },
   async ({ event, step, logger }) => {
     const { crawlId, url, config } = event.data as CrawlRequestEvent["data"];
 

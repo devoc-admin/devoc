@@ -188,7 +188,6 @@ export default function Balatro({
   ]);
 
   // Initialize WebGL context once on mount
-  // biome-ignore lint/correctness/useExhaustiveDependencies: exception
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;

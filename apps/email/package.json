@@ -11,16 +11,16 @@
     "format": "biome format --write"
   },
   "dependencies": {
-    "@react-email/components": "^1.0.9",
+    "@react-email/components": "catalog:email",
     "react": "catalog:react",
     "react-dom": "catalog:react"
   },
   "devDependencies": {
-    "@react-email/preview-server": "^5.2.9",
+    "@react-email/preview-server": "^5.2.10",
     "@types/node": "catalog:next",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "next": "catalog:next",
-    "react-email": "^5.2.9"
+    "react-email": "^5.2.10"
   }
 }
