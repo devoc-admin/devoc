@@ -11,13 +11,13 @@ export default function Loading() {
         "sm:px-6"
       )}
     >
-      {/* Title + results skeleton */}
+      {/* 🆎 */}
       <div className="space-y-2">
         <div className="h-8 w-48 animate-pulse rounded bg-muted" />
         <div className="h-4 w-24 animate-pulse rounded bg-muted" />
       </div>
 
-      {/* Filters skeleton */}
+      {/* 🔍 */}
       <div className="space-y-4">
         <div className="h-10 w-full animate-pulse rounded-lg bg-muted" />
         <div className="flex gap-2">
@@ -30,7 +30,7 @@ export default function Loading() {
         </div>
       </div>
 
-      {/* Product grid skeleton */}
+      {/* 🪴🪴🪴 */}
       <div
         className={cn(
           "grid",

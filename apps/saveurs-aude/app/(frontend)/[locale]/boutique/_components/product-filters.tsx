@@ -1,6 +1,7 @@
 "use client";
 
 import { Search, SlidersHorizontal, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   parseAsBoolean,
@@ -21,25 +22,27 @@ export function ProductFilters({
   // 🔍
   const [q, setQ] = useQueryState(
     "q",
-    parseAsString
-      .withDefault("")
-      .withOptions({ shallow: false, throttleMs: 300 })
+    parseAsString.withDefault("").withOptions({ shallow: false })
   );
+
   // 🏷️
   const [selectedCategory, setSelectedCategory] = useQueryState(
     "category",
     parseAsString.withDefault("").withOptions({ shallow: false })
   );
+
   // 📃
   const [page, setPage] = useQueryState(
     "page",
     parseAsInteger.withDefault(1).withOptions({ shallow: false })
   );
+
   // ↕️
   const [sort, setSort] = useQueryState(
     "sort",
     parseAsString.withDefault("newest").withOptions({ shallow: false })
   );
+
   // 💱
   const [onSale, setOnSale] = useQueryState(
     "onSale",
@@ -89,6 +92,19 @@ function SearchBar({ q, setQ }: { q: string; setQ: (value: string) => void }) {
   // 🌐
   const t = useTranslations("shop");
 
+  const [localQ, setLocalQ] = useState(q);
+
+  useEffect(() => {
+    setLocalQ(q);
+  }, [q]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setQ(localQ);
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [localQ, setQ]);
+
   return (
     <div className="relative">
       <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -102,10 +118,10 @@ function SearchBar({ q, setQ }: { q: string; setQ: (value: string) => void }) {
           "text-sm",
           "placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-ring/50"
         )}
-        onChange={(e) => setQ(e.target.value)}
+        onChange={(e) => setLocalQ(e.target.value)}
         placeholder={t("searchProduct")}
         type="search"
-        value={q}
+        value={localQ}
       />
     </div>
   );

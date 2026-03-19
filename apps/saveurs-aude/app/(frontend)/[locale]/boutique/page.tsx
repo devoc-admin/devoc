@@ -77,7 +77,6 @@ export default async function ShopPage({
     : null;
 
   // 🌐
-  const baseUrl = getBaseUrl();
   const t = await getTranslations("shop");
 
   return (
@@ -90,12 +89,7 @@ export default async function ShopPage({
         "sm:px-6"
       )}
     >
-      <JsonLd
-        data={buildBreadcrumbList([
-          { name: "Accueil", url: baseUrl },
-          { name: "Boutique", url: `${baseUrl}/fr/boutique` },
-        ])}
-      />
+      <SEO />
       {/* 🆎 */}
       <div>
         <CurrentCategory title={categoryTitle ?? t("allCategories")} />
@@ -131,6 +125,21 @@ export default async function ShopPage({
         <Pagination currentPage={page} totalPages={totalPages} />
       )}
     </div>
+  );
+}
+
+// =================================
+//🤖
+function SEO() {
+  const baseUrl = getBaseUrl();
+
+  return (
+    <JsonLd
+      data={buildBreadcrumbList([
+        { name: "Accueil", url: baseUrl },
+        { name: "Boutique", url: `${baseUrl}/fr/boutique` },
+      ])}
+    />
   );
 }
 
