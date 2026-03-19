@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, ViewTransition } from "react";
 import { Link } from "@/i18n/navigation";
 import { formatPrice } from "@/lib/format";
 import {
@@ -84,6 +84,7 @@ export function ProductCard({ product }: { product: Product }) {
             <ProductImage
               alt={imageAlt}
               onLoad={() => setLoaded(true)}
+              slug={product.slug}
               url={imageUrl}
             />
 
@@ -117,25 +118,29 @@ function ProductImage({
   url,
   alt,
   onLoad,
+  slug,
 }: {
   url?: string | null;
   alt: string;
   onLoad: () => void;
+  slug?: string;
 }) {
   if (!url) return <NoProductImage />;
   return (
-    <Image
-      alt={alt}
-      className={cn(
-        "object-cover",
-        "transition-transform duration-500",
-        "group-hover:scale-105"
-      )}
-      fill
-      onLoad={onLoad}
-      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-      src={url}
-    />
+    <ViewTransition name={`product-image-${slug}`}>
+      <Image
+        alt={alt}
+        className={cn(
+          "object-cover",
+          "transition-transform duration-500",
+          "group-hover:scale-105"
+        )}
+        fill
+        onLoad={onLoad}
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+        src={url}
+      />
+    </ViewTransition>
   );
 }
 

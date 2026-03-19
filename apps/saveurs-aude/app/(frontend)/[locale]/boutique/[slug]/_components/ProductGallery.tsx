@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useParams } from "next/navigation";
+import { useState, ViewTransition } from "react";
 import { cn } from "@/lib/utils";
 import type { Media } from "@/payload-types";
 
@@ -34,6 +35,7 @@ export function ProductGallery({ images }: { images: Media[] }) {
 // ==============================================
 // 🖼️
 function MainImage({ alt, url }: { alt?: string; url?: string | null }) {
+  const { slug } = useParams();
   return (
     <div
       className={cn(
@@ -44,14 +46,16 @@ function MainImage({ alt, url }: { alt?: string; url?: string | null }) {
       )}
     >
       {url && (
-        <Image
-          alt={alt || ""}
-          className="object-cover"
-          fill
-          priority
-          sizes="(max-width: 768px) 100vw, 50vw"
-          src={url}
-        />
+        <ViewTransition name={`product-image-${slug}`}>
+          <Image
+            alt={alt || ""}
+            className="object-cover"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 50vw"
+            src={url}
+          />
+        </ViewTransition>
       )}
     </div>
   );

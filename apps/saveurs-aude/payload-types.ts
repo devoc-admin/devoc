@@ -119,6 +119,9 @@ export interface Config {
     'cookie-consent': CookieConsentSelect<false> | CookieConsentSelect<true>;
   };
   locale: 'fr' | 'en';
+  widgets: {
+    collections: CollectionsWidget;
+  };
   user: User | Customer;
   jobs: {
     tasks: unknown;
@@ -1173,6 +1176,16 @@ export interface CookieConsentSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collections_widget".
+ */
+export interface CollectionsWidget {
+  data?: {
+    [k: string]: unknown;
+  };
+  width: 'full';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

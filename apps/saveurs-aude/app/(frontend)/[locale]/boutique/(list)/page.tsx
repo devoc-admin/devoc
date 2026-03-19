@@ -10,8 +10,8 @@ import { getPayloadClient } from "@/lib/payload";
 import { getBaseUrl } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import type { Category, Product } from "@/payload-types";
-import { ProductFilters } from "./_components/product-filters";
-import { searchParamsCache } from "./_search-params";
+import { ProductFilters } from "../_components/product-filters";
+import { searchParamsCache } from "../_search-params";
 
 const PRODUCTS_PER_PAGE = 12;
 
