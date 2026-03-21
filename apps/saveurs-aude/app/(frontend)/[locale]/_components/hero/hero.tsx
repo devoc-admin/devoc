@@ -10,7 +10,7 @@ const Hero: FC = () => {
         "relative",
         "h-[calc(100vh-65px)] lg:h-[calc(100vh-105px)]",
         "min-h-100",
-        "max-h-175",
+        "lg:max-h-175",
         "min-w-full",
         "overflow-hidden"
       )}

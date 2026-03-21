@@ -18,6 +18,7 @@ import { getCurrentCustomer } from "@/lib/auth-actions";
 import { CartProvider } from "@/lib/cart";
 import { getPayloadClient } from "@/lib/payload";
 import { getBaseUrl } from "@/lib/seo";
+import { SiteDemo } from "./_components/site-demo/site-demo";
 import "../../globals.css";
 
 const playfair = Playfair_Display({
@@ -109,6 +110,7 @@ export default async function LocaleLayout({
           <NextIntlClientProvider>
             <AuthProvider initialCustomer={customer}>
               <CartProvider>
+                <SiteDemo />
                 <Header />
                 <Navbar />
                 <main className="min-h-screen">{children}</main>
