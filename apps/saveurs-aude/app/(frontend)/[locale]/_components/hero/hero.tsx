@@ -2,13 +2,16 @@ import Image from "next/image";
 import type { FC } from "react";
 import { cn } from "@/lib/utils";
 import HeroImage from "./hero.avif";
+import { VineLeaf } from "./vine-leaf";
 
 const Hero: FC = () => {
   return (
     <div
       className={cn(
         "relative",
-        "h-[calc(100vh-65px)] lg:h-[calc(100vh-105px)]",
+        "h-[calc(100dvh-65px)]",
+        // When navbar appears reduce hero height to fit the whole screen
+        "lg:h-[calc(100dvh-105px)]",
         "min-h-100",
         "lg:max-h-175",
         "min-w-full",
@@ -17,7 +20,8 @@ const Hero: FC = () => {
     >
       <div
         className={cn(
-          "absolute top-1/2 left-1/2 z-1 -translate-x-1/2 -translate-y-1/2",
+          "absolute top-[calc(50%-20px)] left-1/2 z-1",
+          "-translate-x-1/2 -translate-y-1/2",
           "flex flex-col gap-y-6",
           "w-[90%]",
           "max-w-[100ch]",
@@ -76,10 +80,12 @@ function DecouvrezNotreSelection() {
   return (
     <button
       className={cn(
+        "text-black",
+        "flex items-center gap-x-2",
         "bg-secondary",
         "w-fit",
         "mx-auto",
-        "px-5 py-2.5",
+        "px-4 py-2.5",
         "rounded-md",
         "font-extrabold",
         "text-sm",
@@ -89,7 +95,8 @@ function DecouvrezNotreSelection() {
       )}
       type="button"
     >
-      Découvrez notre sélection
+      <VineLeaf className="size-4.5" />
+      <span className="mr-1.5">Découvrez notre sélection</span>
     </button>
   );
 }

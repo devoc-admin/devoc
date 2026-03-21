@@ -6,9 +6,11 @@ export function SiteDemo() {
       className={cn(
         "absolute",
         // Mobile
-        "bottom-0 w-full rotate-0", // Desktop
+        "bottom-0 w-full rotate-0",
+        "z-1",
+        // Desktop
         "md:top-8 md:bottom-auto md:-left-13 md:w-auto md:-rotate-35",
-        "z-50",
+        "md:z-50",
         "py-1",
         "text-white",
         "bg-primary"
