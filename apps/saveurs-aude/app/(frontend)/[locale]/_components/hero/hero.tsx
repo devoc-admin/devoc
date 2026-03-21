@@ -81,7 +81,7 @@ function DecouvrezNotreSelection() {
     <button
       className={cn(
         "text-black",
-        "flex items-center gap-x-2",
+        "flex items-center gap-1.5",
         "bg-secondary",
         "w-fit",
         "mx-auto",
@@ -96,7 +96,7 @@ function DecouvrezNotreSelection() {
       type="button"
     >
       <VineLeaf className="size-4.5" />
-      <span className="mr-1.5">Découvrez notre sélection</span>
+      <div className="mr-1.5">Découvrez notre sélection</div>
     </button>
   );
 }

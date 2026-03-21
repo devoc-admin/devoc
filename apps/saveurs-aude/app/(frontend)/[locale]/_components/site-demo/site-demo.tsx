@@ -4,9 +4,8 @@ export function SiteDemo() {
   return (
     <div
       className={cn(
-        "absolute",
-        // Mobile
-        "bottom-0 w-full rotate-0",
+        "absolute", // Mobile
+        "top-[65px] w-full rotate-0",
         "z-1",
         // Desktop
         "md:top-8 md:bottom-auto md:-left-13 md:w-auto md:-rotate-35",
