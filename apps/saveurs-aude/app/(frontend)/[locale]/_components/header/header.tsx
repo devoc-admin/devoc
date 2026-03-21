@@ -2,10 +2,9 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
-import { CartBadge } from "./cart-badge";
-import { LanguageSwitcher } from "./language-switcher";
-import { MobileMenu } from "./mobile-menu";
-import { UserMenu } from "./user-menu";
+import { CartBadge } from "./_components/cart-badge";
+import { LanguageSwitcher } from "./_components/language-switcher";
+import { UserMenu } from "./_components/user-menu";
 
 const navLinks = [
   { href: "/boutique" as const, tKey: "shop" as const },
@@ -24,8 +23,7 @@ export async function Header() {
         "sticky",
         "top-0",
         "z-40",
-        "border-border/50 border-b",
-        "bg-background/95",
+        "bg-background/90",
         "backdrop-blur-sm"
       )}
     >
@@ -49,7 +47,7 @@ export async function Header() {
           <LanguageSwitcher />
           <UserMenu />
           <CartBadge label={t("cart")} />
-          <MobileMenu />
+          {/*<MobileMenu />*/}
         </div>
       </div>
     </header>

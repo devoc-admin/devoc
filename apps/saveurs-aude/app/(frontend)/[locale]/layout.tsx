@@ -4,14 +4,14 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { Footer } from "@/app/(frontend)/[locale]/_components/footer/footer";
+import { Header } from "@/app/(frontend)/[locale]/_components/header/header";
+import { Navbar } from "@/app/(frontend)/[locale]/_components/navbar/navbar";
 import { AnalyticsWrapper } from "@/components/Analytics";
 import {
   CookieConsent,
   type CookieConsentConfig,
 } from "@/components/CookieConsent";
-import { Footer } from "@/components/footer/footer";
-import { Header } from "@/components/header/header";
-import { Navbar } from "@/components/header/navbar/navbar";
 import { type Locale, routing } from "@/i18n/routing";
 import { AuthProvider } from "@/lib/auth";
 import { getCurrentCustomer } from "@/lib/auth-actions";

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { ProductCard } from "@/app/(frontend)/[locale]/(shop)/_components/product-card";
 import { JsonLd } from "@/components/JsonLd";
 import { FadeInUp } from "@/components/motion";
-import { ProductCard } from "@/components/shop/product-card";
 import { formatPrice } from "@/lib/format";
 import { buildBreadcrumbList, buildProduct } from "@/lib/json-ld";
 import { getPayloadClient } from "@/lib/payload";

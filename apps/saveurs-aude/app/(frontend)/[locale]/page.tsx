@@ -5,7 +5,7 @@ import { FadeIn } from "@/components/motion";
 import { buildBreadcrumbList, buildLocalBusiness } from "@/lib/json-ld";
 import { getBaseUrl } from "@/lib/seo";
 import { cn } from "@/lib/utils";
-import Hero from "./hero";
+import Hero from "./_components/hero/hero";
 
 export async function generateMetadata({
   params,
@@ -21,16 +21,11 @@ export async function generateMetadata({
 }
 
 export default function HomePage() {
-  const baseUrl = getBaseUrl();
-
   return (
     <>
-      <JsonLd
-        data={[
-          buildLocalBusiness(),
-          buildBreadcrumbList([{ name: "Accueil", url: baseUrl }]),
-        ]}
-      />
+      {/* 🆘 */}
+      <SEO />
+      {/* 🦸‍♂️ */}
       <Hero />
       <FadeIn>
         <div
@@ -39,9 +34,31 @@ export default function HomePage() {
             "px-4 pb-20"
           )}
         >
-          <h1 className="sr-only">Saveurs d'Aude - Épicerie Fine</h1>
+          {/*♿*/}
+          <AccessibleTitle />
         </div>
       </FadeIn>
     </>
   );
+}
+
+// ===================================
+// 🆘
+function SEO() {
+  const baseUrl = getBaseUrl();
+
+  return (
+    <JsonLd
+      data={[
+        buildLocalBusiness(),
+        buildBreadcrumbList([{ name: "Accueil", url: baseUrl }]),
+      ]}
+    />
+  );
+}
+
+// ===================================
+// ♿
+function AccessibleTitle() {
+  return <h1 className="sr-only">Saveurs d'Aude - Épicerie Fine</h1>;
 }

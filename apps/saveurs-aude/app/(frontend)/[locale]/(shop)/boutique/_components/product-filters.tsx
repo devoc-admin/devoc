@@ -1,7 +1,6 @@
 "use client";
 
 import { Search, SlidersHorizontal, X } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   parseAsBoolean,
@@ -9,6 +8,7 @@ import {
   parseAsString,
   useQueryState,
 } from "nuqs";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/payload-types";
 

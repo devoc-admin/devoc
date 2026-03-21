@@ -5,24 +5,29 @@ import HeroImage from "./hero.avif";
 
 const Hero: FC = () => {
   return (
-    <div className="relative h-fit w-full">
+    <div
+      className={cn(
+        "relative",
+        "h-[calc(100vh-65px)] lg:h-[calc(100vh-105px)]",
+        "min-h-100",
+        "max-h-175",
+        "min-w-full",
+        "overflow-hidden"
+      )}
+    >
       <div
         className={cn(
           "absolute top-1/2 left-1/2 z-1 -translate-x-1/2 -translate-y-1/2",
           "flex flex-col gap-y-6",
-          "w-[70ch]",
+          "w-[90%]",
+          "max-w-[100ch]",
           "text-center"
         )}
       >
         <LExcellenceDuTerroir />
         <DecouvrezNotreSelection />
       </div>
-      <Image
-        alt="Hero"
-        className={cn("w-full", "object-none", "brightness-75")}
-        src={HeroImage}
-        width={1200}
-      />
+      <Landscape />
     </div>
   );
 };
@@ -34,14 +39,34 @@ function LExcellenceDuTerroir() {
     <h2
       className={cn(
         "text-white",
+        "text-balance",
         "text-center",
         "text-shadow-lg",
         "font-light",
-        "text-6xl"
+        "text-4xl xs:text-5xl sm:text-6xl lg:text-7xl"
       )}
     >
       L'excellence du terroir de l'Aude chez vous
     </h2>
+  );
+}
+
+// ================
+// 🖼️
+function Landscape() {
+  return (
+    <Image
+      alt=""
+      className={cn(
+        "min-w-full",
+        "max-w-none",
+        "h-full",
+        "object-cover",
+        "brightness-60"
+      )}
+      src={HeroImage}
+      width={2200}
+    />
   );
 }
 

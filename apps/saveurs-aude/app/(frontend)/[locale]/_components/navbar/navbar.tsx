@@ -1,4 +1,4 @@
-import { NavbarCategoryLink } from "@/components/header/navbar/category-link";
+import { NavbarCategoryLink } from "@/app/(frontend)/[locale]/_components/navbar/category-link";
 import { getTypedLocale } from "@/i18n/routing";
 import { getPayloadClient } from "@/lib/payload";
 import { cn } from "@/lib/utils";
@@ -12,7 +12,7 @@ export async function Navbar() {
     <div
       className={cn(
         "hidden",
-        "md:flex",
+        "lg:flex",
         "items-center justify-center gap-x-6",
         "py-2",
         "w-full",

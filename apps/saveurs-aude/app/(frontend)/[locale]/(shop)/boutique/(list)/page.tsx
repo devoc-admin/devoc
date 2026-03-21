@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import type { Where } from "payload";
+import { ProductCard } from "@/app/(frontend)/[locale]/(shop)/_components/product-card";
 import { JsonLd } from "@/components/JsonLd";
-import { ProductCard } from "@/components/shop/product-card";
 
 import { getTypedLocale } from "@/i18n/routing";
 import { buildBreadcrumbList } from "@/lib/json-ld";
