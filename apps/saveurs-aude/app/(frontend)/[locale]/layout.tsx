@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Lato, Playfair_Display } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  Fleur_De_Leah,
+  Lato,
+  Playfair_Display,
+} from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
@@ -25,6 +30,13 @@ const playfair = Playfair_Display({
   display: "swap",
   subsets: ["latin"],
   variable: "--font-playfair",
+});
+
+const fleurDeLeah = Fleur_De_Leah({
+  display: "swap",
+  subsets: ["latin"],
+  variable: "--font-fleur-de-leah",
+  weight: ["400"],
 });
 
 const lato = Lato({
@@ -104,7 +116,7 @@ export default async function LocaleLayout({
     <html lang={locale} suppressHydrationWarning>
       <meta content="Saveurs d'Aude" name="apple-mobile-web-app-title" />
       <body
-        className={`${playfair.variable} ${lato.variable} ${cormorant.variable}`}
+        className={`${playfair.variable} ${lato.variable} ${cormorant.variable} ${fleurDeLeah.variable}`}
       >
         <NuqsAdapter>
           <NextIntlClientProvider>

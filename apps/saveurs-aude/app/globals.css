@@ -9,6 +9,7 @@
   --font-heading: var(--font-playfair);
   --font-body: var(--font-lato);
   --font-accent: var(--font-cormorant);
+  --font-fleur-de-leah: var(--font-fleur-de-leah);
 
   /* Semantic color tokens */
   --color-background: var(--background);
