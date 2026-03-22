@@ -1,9 +1,12 @@
 "use client";
 
 import { motion } from "motion/react";
+import { useLocale } from "next-intl";
 import Image from "next/image";
-import { useState, ViewTransition } from "react";
-import { Link } from "@/i18n/navigation";
+import { useRouter as useNextRouter } from "next/navigation";
+import { useCallback, useState, ViewTransition } from "react";
+import { getPathname, Link } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
 import { formatPrice } from "@/lib/format";
 import {
   applyDiscount,
@@ -24,6 +27,17 @@ export function ProductCard({ product }: { product: Product }) {
   // ✨
   const [loaded, setLoaded] = useState(!imageUrl);
 
+  // 🚀
+  const router = useNextRouter();
+  const locale = useLocale() as Locale;
+  const handlePrefetch = useCallback(() => {
+    const path = getPathname({
+      href: { params: { slug: product.slug }, pathname: "/boutique/[slug]" },
+      locale,
+    });
+    router.prefetch(path);
+  }, [locale, product.slug, router]);
+
   // 🏷️
   const promotion = product.promotion;
   const promo = hasActivePromotion(promotion);
@@ -38,7 +52,7 @@ export function ProductCard({ product }: { product: Product }) {
   const discounted = promo ? applyDiscount(min, promotion) : min;
 
   return (
-    <div className="relative">
+    <div className="relative" onMouseEnter={handlePrefetch}>
       {/* 💀 Skeleton — visible while image loads */}
       {!loaded && (
         <div className="space-y-3">
