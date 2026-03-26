@@ -99,6 +99,7 @@ function VariantSelector({
               "px-4 py-2",
               "text-sm",
               "transition-colors",
+              "cursor-pointer",
               "border-border text-muted-foreground hover:border-primary",
               v.id === selectedVariantId &&
                 "border-primary bg-primary/10 font-medium text-primary",

@@ -12,7 +12,7 @@ import { getPayloadClient } from "@/lib/payload";
 import { getProductImage } from "@/lib/product";
 import { getBaseUrl } from "@/lib/seo";
 import { cn } from "@/lib/utils";
-import type { Product } from "@/payload-types";
+import type { Category, Product } from "@/payload-types";
 import Hero from "./_components/hero/hero";
 
 export async function generateMetadata({
@@ -36,10 +36,17 @@ export default function HomePage() {
       {/* 🦸‍♂️ */}
       <Hero />
       <div
-        className={cn("max-w-[900px]", "mx-auto", "px-6", "md:px-6", "py-24")}
+        className={cn(
+          "max-w-[900px]",
+          "mx-auto",
+          "px-6",
+          "md:px-6",
+          "py-24",
+          "space-y-24"
+        )}
       >
         <NotreSelection />
-        {/*<NosUniversGourmands />*/}
+        <NosUniversGourmands />
       </div>
       <FadeIn>
         <div
@@ -57,12 +64,33 @@ export default function HomePage() {
 }
 
 // ===================================
+// 🆎 Section title
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h3
+      className={cn(
+        "text-4xl",
+        "text-center",
+        "text-primary",
+        "font-medium",
+        "uppercase"
+      )}
+    >
+      {children}
+    </h3>
+  );
+}
+
+// ===================================
 // 🛒
 async function NotreSelection() {
-  // 📦
-  const payload = await getPayloadClient();
+  // 🌐
   const locale = await getTypedLocale();
   const t = await getTranslations({ locale, namespace: "home" });
+
+  // 📦
+  const payload = await getPayloadClient();
 
   const productsResult = await payload.find({
     collection: "products",
@@ -87,17 +115,7 @@ async function NotreSelection() {
 
   return (
     <div className={cn("flex flex-col items-center", "space-y-12")}>
-      <h3
-        className={cn(
-          "text-4xl",
-          "text-center",
-          "text-primary",
-          "font-medium",
-          "uppercase"
-        )}
-      >
-        {t("ourSelection")}
-      </h3>
+      <SectionTitle>{t("ourSelection")}</SectionTitle>
       <div
         className={cn(
           "w-full",
@@ -109,11 +127,7 @@ async function NotreSelection() {
         )}
       >
         {selectedProducts.map((product, index) => (
-          <ProductCardHomepage
-            key={index}
-            product={product}
-            seeProductLabel={t("seeProduct")}
-          />
+          <ProductCardHomepage key={index} product={product} />
         ))}
       </div>
     </div>
@@ -125,7 +139,6 @@ function ProductCardHomepage({
   seeProductLabel,
 }: {
   product: Partial<Product>;
-  seeProductLabel: string;
 }) {
   // 🖼️
   const image = getProductImage(product);
@@ -150,13 +163,13 @@ function ProductCardHomepage({
       </div>
       <div className="mt-auto space-y-6">
         <ProductPrice product={product} />
-        <SeeProduct label={seeProductLabel} product={product} />
+        <SeeProduct product={product} />
       </div>
     </Link>
   );
 }
 
-//🖼️
+// 🖼️
 function ProductImage({ product }: { product: Partial<Product> }) {
   // 🖼️
   const image = getProductImage(product);
@@ -198,7 +211,7 @@ function ProductTitle({ product }: { product: Partial<Product> }) {
   );
 }
 
-//🔢 Quantity
+// 🔢 Quantity
 function ProductQuantity({ product }: { product: Partial<Product> }) {
   const label = product?.variants?.[0]?.label;
   if (!label) return null;
@@ -225,14 +238,12 @@ function ProductPrice({ product }: { product: Partial<Product> }) {
   );
 }
 
-//🛒
-function SeeProduct({
-  label,
-  product,
-}: {
-  label: string;
-  product: Partial<Product>;
-}) {
+// 🛒
+async function SeeProduct({ product }: { product: Partial<Product> }) {
+  // 🌐
+  const locale = await getTypedLocale();
+  const t = await getTranslations({ locale, namespace: "home" });
+
   const { slug } = product;
   if (!slug) return null;
 
@@ -252,14 +263,96 @@ function SeeProduct({
       )}
       type="button"
     >
-      {label}
+      {t("seeProduct")}
     </button>
   );
 }
 // ===================================
 // 🥬
-function NosUniversGourmands() {
-  return <p>Test</p>;
+async function NosUniversGourmands() {
+  // 📦
+  const payload = await getPayloadClient();
+  const locale = await getTypedLocale();
+  const t = await getTranslations({ locale, namespace: "home" });
+
+  const categoryResults = await payload.find({
+    collection: "categories",
+    depth: 2,
+    limit: 10,
+    locale,
+    select: {
+      image: true,
+      slug: true,
+      title: true,
+    },
+  });
+
+  // 📦
+  const selectedCategories = shuffleAndPick<Partial<Product>>(
+    categoryResults.docs,
+    3
+  );
+
+  return (
+    <div className={cn("flex flex-col items-center", "space-y-12")}>
+      <SectionTitle>{t("ourGourmetWorlds")}</SectionTitle>
+      <div
+        className={cn(
+          "w-full",
+          "grid",
+          "grid-cols-1",
+          "sm:grid-cols-2",
+          "md:grid-cols-3",
+          "gap-10"
+        )}
+      >
+        {selectedCategories.map((category, index) => (
+          <CategoryCardHomepage
+            category={category}
+            key={index}
+            seeProductLabel={t("ourGourmetWorlds")}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CategoryCardHomepage({
+  category,
+  seeProductLabel,
+}: {
+  category: Partial<Category>;
+  seeProductLabel: string;
+}) {
+  return null;
+  // 🖼️
+  // const image = getProductImage(product);
+  // const imageUrl = image?.url;
+  // const imageAlt = image?.alt || product.title;
+  // const { slug } = product;
+  // if (!(imageUrl && imageAlt && slug)) return null;
+
+  // return (
+  //   <Link
+  //     className={cn("flex flex-col items-center gap-y-2")}
+  //     href={{
+  //       params: { slug },
+  //       pathname: "/boutique/[slug]",
+  //     }}
+  //     key={product.slug}
+  //   >
+  //     <ProductImage product={product} />
+  //     <div className="space-y-1">
+  //       <ProductTitle product={product} />
+  //       <ProductQuantity product={product} />
+  //     </div>
+  //     <div className="mt-auto space-y-6">
+  //       <ProductPrice product={product} />
+  //       <SeeProduct label={seeProductLabel} product={product} />
+  //     </div>
+  //   </Link>
+  // );
 }
 
 // ===================================

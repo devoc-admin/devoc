@@ -1,16 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import { getTypedLocale } from "@/i18n/routing";
 import { getPayloadClient } from "@/lib/payload";
 import { cn } from "@/lib/utils";
-import type { Homepage, Media } from "@/payload-types";
-import FallbackHeroImage from "./hero.webp";
+import type { Homepage } from "@/payload-types";
+import { HeroVideo } from "./hero-video";
 import { VineLeaf } from "./vine-leaf";
-
-type HeroProps = {
-  backgroundImage?: Partial<Media>;
-  title: string;
-};
 
 async function Hero() {
   const locale = await getTypedLocale();
@@ -26,13 +20,6 @@ async function Hero() {
 
   // ⏹️
   const cta = homepage.hero.cta;
-
-  // 🖼️
-  const backgroundImage =
-    typeof homepage.hero.backgroundImage === "object" &&
-    homepage.hero.backgroundImage !== null
-      ? homepage.hero.backgroundImage
-      : undefined;
 
   return (
     <div
@@ -60,7 +47,7 @@ async function Hero() {
         <LExcellenceDuTerroir title={title} />
         <DecouvrezNotreSelection cta={cta} />
       </div>
-      <Landscape backgroundImage={backgroundImage} />
+      <HeroVideo />
     </div>
   );
 }
@@ -82,30 +69,6 @@ function LExcellenceDuTerroir({ title }: { title: string }) {
     >
       {title}
     </h2>
-  );
-}
-
-// ================
-// 🖼️
-function Landscape({
-  backgroundImage,
-}: {
-  backgroundImage?: HeroProps["backgroundImage"];
-}) {
-  return (
-    <Image
-      alt={backgroundImage?.alt ?? ""}
-      className={cn(
-        "min-w-full",
-        "max-w-none",
-        "h-full",
-        "object-cover",
-        "brightness-60"
-      )}
-      height={2200}
-      src={backgroundImage?.url ?? FallbackHeroImage}
-      width={2200}
-    />
   );
 }
 
