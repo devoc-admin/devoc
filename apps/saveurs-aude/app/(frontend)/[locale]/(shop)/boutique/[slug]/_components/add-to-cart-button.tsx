@@ -159,6 +159,7 @@ function AddButton({
         "rounded-lg",
         "font-medium text-sm",
         "transition-all",
+        "cursor-pointer",
         outOfStock && "cursor-not-allowed bg-muted text-muted-foreground",
         !outOfStock && added && "bg-success text-success-foreground",
         !(outOfStock || added) &&

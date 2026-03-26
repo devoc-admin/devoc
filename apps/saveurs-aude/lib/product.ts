@@ -45,7 +45,9 @@ export function isInStock(product: Product): boolean {
   return product.variants?.some((v) => v.stock > 0) ?? false;
 }
 
-export function getProductImage(product: Product): Media | null {
+export function getProductImage(
+  product: Product | Partial<Product>
+): Media | null {
   const first = product.images?.[0];
   if (!first) return null;
   return typeof first.image === "number" ? null : first.image;

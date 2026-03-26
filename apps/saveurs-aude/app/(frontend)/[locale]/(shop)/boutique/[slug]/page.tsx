@@ -16,8 +16,8 @@ import {
 import { buildOgImage, getBaseUrl } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import type { Media, Product } from "@/payload-types";
-import { AddToCartButton } from "./_components/AddToCartButton";
-import { ProductGallery } from "./_components/ProductGallery";
+import { AddToCartButton } from "./_components/add-to-cart-button";
+import { ProductGallery } from "./_components/product-gallery";
 
 async function getProduct(slug: string): Promise<Product | null> {
   const payload = await getPayloadClient();

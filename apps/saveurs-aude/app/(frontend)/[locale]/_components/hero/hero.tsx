@@ -21,8 +21,13 @@ async function Hero() {
     slug: "homepage",
   });
 
+  // 🆎
   const title = homepage.hero.title;
+
+  // ⏹️
   const cta = homepage.hero.cta;
+
+  // 🖼️
   const backgroundImage =
     typeof homepage.hero.backgroundImage === "object" &&
     homepage.hero.backgroundImage !== null
@@ -72,7 +77,7 @@ function LExcellenceDuTerroir({ title }: { title: string }) {
         "text-center",
         "text-shadow-lg",
         "font-light",
-        "text-4xl xs:text-6xl sm:text-7xl lg:text-8xl"
+        "text-5xl xs:text-6xl sm:text-7xl lg:text-8xl"
       )}
     >
       {title}
