@@ -122,9 +122,9 @@ export default async function LocaleLayout({
           <NextIntlClientProvider>
             <AuthProvider initialCustomer={customer}>
               <CartProvider>
-                <SiteDemo />
                 <Header />
                 <Navbar />
+                <SiteDemo />
                 <main className="min-h-screen">{children}</main>
                 <Footer />
                 <CookieConsent config={cookieConsentData} />

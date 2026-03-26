@@ -33,9 +33,9 @@ async function Hero() {
     <div
       className={cn(
         "relative",
-        "h-[calc(100dvh-65px)]",
+        "h-[calc(100lvh-75px)]",
         // When navbar appears reduce hero height to fit the whole screen
-        "lg:h-[calc(100dvh-105px)]",
+        "lg:h-[calc(100lvh-105px)]",
         "min-h-100",
         "lg:max-h-175",
         "min-w-full",

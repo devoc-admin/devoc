@@ -4,10 +4,10 @@ export function SiteDemo() {
   return (
     <div
       className={cn(
-        "absolute", // Mobile
-        "top-[65px] w-full rotate-0",
-        "z-1",
+        // Mobile
+        "static",
         // Desktop
+        "md:fixed",
         "md:top-8 md:bottom-auto md:-left-13 md:w-auto md:-rotate-35",
         "md:z-50",
         "py-1",
@@ -19,9 +19,9 @@ export function SiteDemo() {
         className={cn(
           "px-16 py-0.5",
           "text-center",
-          // Mobile
+          // 📱 Mobile
           "w-full text-sm",
-          // Desktop
+          // 🖥️ Desktop
           "md:w-auto md:text-base",
           "border-secondary border-style border-t border-b border-dashed"
         )}
