@@ -5,6 +5,9 @@ import { slugField } from "../fields/slug";
 export const BlogPosts: CollectionConfig = {
   admin: {
     defaultColumns: ["title", "status", "publishedAt"],
+    description: "Rédigez et publiez des articles sur votre blog",
+    group: "Contenu",
+    listSearchableFields: ["title", "author"],
     useAsTitle: "title",
   },
   fields: [
@@ -49,10 +52,15 @@ export const BlogPosts: CollectionConfig = {
         },
       ],
       label: "Tags",
+      labels: { plural: "Tags", singular: "Tag" },
       name: "tags",
       type: "array",
     },
     {
+      admin: {
+        description:
+          "Date affichée sur l'article — les articles en brouillon ne sont pas visibles",
+      },
       label: "Date de publication",
       name: "publishedAt",
       required: true,

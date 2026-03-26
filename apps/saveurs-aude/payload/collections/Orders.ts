@@ -11,11 +11,22 @@ export const Orders: CollectionConfig = {
       "totalAmount",
       "createdAt",
     ],
+    description: "Suivez et gérez les commandes de vos clients",
+    group: "Boutique",
+    listSearchableFields: [
+      "orderNumber",
+      "customer.email",
+      "customer.firstName",
+      "customer.lastName",
+    ],
     useAsTitle: "orderNumber",
   },
   fields: [
     {
-      admin: { readOnly: true },
+      admin: {
+        description: "Généré automatiquement, ne peut pas être modifié",
+        readOnly: true,
+      },
       label: "Numéro de commande",
       name: "orderNumber",
       required: true,
@@ -65,6 +76,7 @@ export const Orders: CollectionConfig = {
         },
       ],
       label: "Articles",
+      labels: { plural: "Articles", singular: "Article" },
       name: "items",
       required: true,
       type: "array",
@@ -112,6 +124,10 @@ export const Orders: CollectionConfig = {
       type: "number",
     },
     {
+      admin: {
+        description:
+          "Le changement de statut envoie un e-mail automatique au client",
+      },
       defaultValue: "pending",
       label: "Statut",
       name: "status",

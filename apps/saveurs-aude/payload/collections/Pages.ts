@@ -5,6 +5,8 @@ import { slugField } from "../fields/slug";
 export const Pages: CollectionConfig = {
   admin: {
     defaultColumns: ["title", "slug"],
+    description: "Éditez les pages statiques du site (CGV, À propos...)",
+    group: "Contenu",
     useAsTitle: "title",
   },
   fields: [

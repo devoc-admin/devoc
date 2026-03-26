@@ -4,6 +4,8 @@ import { slugField } from "../fields/slug";
 export const Categories: CollectionConfig = {
   admin: {
     defaultColumns: ["title", "order"],
+    description: "Organisez vos produits par catégorie",
+    group: "Boutique",
     useAsTitle: "title",
   },
   fields: [
@@ -29,6 +31,8 @@ export const Categories: CollectionConfig = {
     },
     {
       admin: {
+        description:
+          "Plus le nombre est petit, plus la catégorie apparaît en premier",
         position: "sidebar",
       },
       defaultValue: 0,

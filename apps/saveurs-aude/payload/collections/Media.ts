@@ -5,6 +5,8 @@ export const Media: CollectionConfig = {
     read: () => true,
   },
   admin: {
+    description: "Bibliothèque d'images et fichiers du site",
+    group: "Contenu",
     useAsTitle: "alt",
   },
   fields: [

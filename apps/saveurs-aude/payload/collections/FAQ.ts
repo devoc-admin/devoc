@@ -3,6 +3,8 @@ import type { CollectionConfig } from "payload";
 export const FAQ: CollectionConfig = {
   admin: {
     defaultColumns: ["question", "category", "order"],
+    description: "Gérez les questions fréquemment posées",
+    group: "Contenu",
     useAsTitle: "question",
   },
   fields: [
@@ -21,6 +23,9 @@ export const FAQ: CollectionConfig = {
       type: "richText",
     },
     {
+      admin: {
+        description: "Permet de regrouper les questions par thème sur le site",
+      },
       label: "Catégorie",
       localized: true,
       name: "category",
@@ -28,6 +33,8 @@ export const FAQ: CollectionConfig = {
     },
     {
       admin: {
+        description:
+          "Plus le nombre est petit, plus la question apparaît en premier",
         position: "sidebar",
       },
       defaultValue: 0,

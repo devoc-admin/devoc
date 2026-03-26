@@ -5,6 +5,9 @@ import { slugField } from "../fields/slug";
 export const Products: CollectionConfig = {
   admin: {
     defaultColumns: ["title", "category", "status", "featured"],
+    description: "Gérez vos produits, variantes, prix et promotions",
+    group: "Boutique",
+    listSearchableFields: ["title", "shortDescription"],
     useAsTitle: "title",
   },
   fields: [
@@ -17,6 +20,9 @@ export const Products: CollectionConfig = {
     },
     slugField,
     {
+      admin: {
+        description: "Affiché sur les cartes produit (max ~150 caractères)",
+      },
       label: "Description courte",
       localized: true,
       name: "shortDescription",
@@ -46,6 +52,7 @@ export const Products: CollectionConfig = {
         },
       ],
       label: "Images",
+      labels: { plural: "Images", singular: "Image" },
       minRows: 1,
       name: "images",
       type: "array",
@@ -95,6 +102,7 @@ export const Products: CollectionConfig = {
         },
       ],
       label: "Variantes",
+      labels: { plural: "Variantes", singular: "Variante" },
       minRows: 1,
       name: "variants",
       type: "array",
@@ -111,6 +119,8 @@ export const Products: CollectionConfig = {
     },
     {
       admin: {
+        description:
+          "Brouillon = invisible sur le site, Publié = visible, Archivé = retiré",
         position: "sidebar",
       },
       defaultValue: "draft",
@@ -136,6 +146,10 @@ export const Products: CollectionConfig = {
           type: "select",
         },
         {
+          admin: {
+            description:
+              "Pourcentage (ex: 20 pour -20%) ou montant fixe en centimes",
+          },
           label: "Valeur",
           min: 0,
           name: "value",

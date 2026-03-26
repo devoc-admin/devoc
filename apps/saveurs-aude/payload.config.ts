@@ -52,16 +52,19 @@ export default buildConfig({
   },
 
   collections: [
-    Users,
-    Media,
-    Categories,
+    // Boutique
     Products,
+    Categories,
     Orders,
     Customers,
-    BlogPosts,
     Reviews,
-    FAQ,
+    // Contenu
     Pages,
+    BlogPosts,
+    FAQ,
+    Media,
+    // Paramètres
+    Users,
     NewsletterSubscribers,
   ],
 

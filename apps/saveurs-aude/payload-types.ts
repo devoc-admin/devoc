@@ -63,21 +63,21 @@ export type SupportedTimezones =
 
 export interface Config {
   auth: {
-    users: UserAuthOperations;
     customers: CustomerAuthOperations;
+    users: UserAuthOperations;
   };
   blocks: {};
   collections: {
-    users: User;
-    media: Media;
-    categories: Category;
     products: Product;
+    categories: Category;
     orders: Order;
     customers: Customer;
-    'blog-posts': BlogPost;
     reviews: Review;
-    faq: Faq;
     pages: Page;
+    'blog-posts': BlogPost;
+    faq: Faq;
+    media: Media;
+    users: User;
     'newsletter-subscribers': NewsletterSubscriber;
     'payload-kv': PayloadKv;
     'payload-folders': FolderInterface;
@@ -91,16 +91,16 @@ export interface Config {
     };
   };
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
-    categories: CategoriesSelect<false> | CategoriesSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
     orders: OrdersSelect<false> | OrdersSelect<true>;
     customers: CustomersSelect<false> | CustomersSelect<true>;
-    'blog-posts': BlogPostsSelect<false> | BlogPostsSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
-    faq: FaqSelect<false> | FaqSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    'blog-posts': BlogPostsSelect<false> | BlogPostsSelect<true>;
+    faq: FaqSelect<false> | FaqSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'newsletter-subscribers': NewsletterSubscribersSelect<false> | NewsletterSubscribersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
@@ -128,28 +128,10 @@ export interface Config {
   widgets: {
     collections: CollectionsWidget;
   };
-  user: User | Customer;
+  user: Customer | User;
   jobs: {
     tasks: unknown;
     workflows: unknown;
-  };
-}
-export interface UserAuthOperations {
-  forgotPassword: {
-    email: string;
-    password: string;
-  };
-  login: {
-    email: string;
-    password: string;
-  };
-  registerFirstUser: {
-    email: string;
-    password: string;
-  };
-  unlock: {
-    email: string;
-    password: string;
   };
 }
 export interface CustomerAuthOperations {
@@ -170,34 +152,137 @@ export interface CustomerAuthOperations {
     password: string;
   };
 }
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  name: string;
-  role: 'admin' | 'editor';
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
+export interface UserAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
 }
 /**
+ * Gérez vos produits, variantes, prix et promotions
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  title: string;
+  slug: string;
+  /**
+   * Affiché sur les cartes produit (max ~150 caractères)
+   */
+  shortDescription?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  category: number | Category;
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  variants?:
+    | {
+        label: string;
+        /**
+         * Prix en centimes (ex: 1250 = 12,50€)
+         */
+        price: number;
+        sku: string;
+        stock: number;
+        /**
+         * Poids en grammes (pour calcul livraison)
+         */
+        weight?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Mettre en avant sur la page d'accueil
+   */
+  featured?: boolean | null;
+  /**
+   * Brouillon = invisible sur le site, Publié = visible, Archivé = retiré
+   */
+  status: 'draft' | 'published' | 'archived';
+  promotion?: {
+    type?: ('percentage' | 'fixed') | null;
+    /**
+     * Pourcentage (ex: 20 pour -20%) ou montant fixe en centimes
+     */
+    value?: number | null;
+    startDate?: string | null;
+    endDate?: string | null;
+  };
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Organisez vos produits par catégorie
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  slug: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  image?: (number | null) | Media;
+  /**
+   * Plus le nombre est petit, plus la catégorie apparaît en premier
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Bibliothèque d'images et fichiers du site
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
@@ -255,105 +340,16 @@ export interface FolderInterface {
   createdAt: string;
 }
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  title: string;
-  slug: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  image?: (number | null) | Media;
-  order?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: number;
-  title: string;
-  slug: string;
-  shortDescription?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  category: number | Category;
-  images?:
-    | {
-        image: number | Media;
-        id?: string | null;
-      }[]
-    | null;
-  variants?:
-    | {
-        label: string;
-        /**
-         * Prix en centimes (ex: 1250 = 12,50€)
-         */
-        price: number;
-        sku: string;
-        stock: number;
-        /**
-         * Poids en grammes (pour calcul livraison)
-         */
-        weight?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Mettre en avant sur la page d'accueil
-   */
-  featured?: boolean | null;
-  status: 'draft' | 'published' | 'archived';
-  promotion?: {
-    type?: ('percentage' | 'fixed') | null;
-    value?: number | null;
-    startDate?: string | null;
-    endDate?: string | null;
-  };
-  seo?: {
-    title?: string | null;
-    description?: string | null;
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
+ * Suivez et gérez les commandes de vos clients
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "orders".
  */
 export interface Order {
   id: number;
+  /**
+   * Généré automatiquement, ne peut pas être modifié
+   */
   orderNumber: string;
   customer: {
     email: string;
@@ -386,6 +382,9 @@ export interface Order {
    * Montant total en centimes
    */
   totalAmount: number;
+  /**
+   * Le changement de statut envoie un e-mail automatique au client
+   */
   status: 'pending' | 'confirmed' | 'preparing' | 'shipped' | 'ready' | 'delivered' | 'collected' | 'cancelled';
   trackingNumber?: string | null;
   stripeSessionId?: string | null;
@@ -402,6 +401,8 @@ export interface Order {
   createdAt: string;
 }
 /**
+ * Consultez les comptes clients et leurs adresses
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "customers".
  */
@@ -442,48 +443,8 @@ export interface Customer {
   collection: 'customers';
 }
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "blog-posts".
- */
-export interface BlogPost {
-  id: number;
-  title: string;
-  slug: string;
-  excerpt?: string | null;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  coverImage?: (number | null) | Media;
-  author?: string | null;
-  tags?:
-    | {
-        tag: string;
-        id?: string | null;
-      }[]
-    | null;
-  publishedAt: string;
-  status: 'draft' | 'published';
-  seo?: {
-    title?: string | null;
-    description?: string | null;
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
+ * Modérez les avis clients sur vos produits
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "reviews".
  */
@@ -498,33 +459,8 @@ export interface Review {
   createdAt: string;
 }
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "faq".
- */
-export interface Faq {
-  id: number;
-  question: string;
-  answer: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  category?: string | null;
-  order?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
+ * Éditez les pages statiques du site (CGV, À propos...)
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
@@ -556,6 +492,119 @@ export interface Page {
   createdAt: string;
 }
 /**
+ * Rédigez et publiez des articles sur votre blog
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blog-posts".
+ */
+export interface BlogPost {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  coverImage?: (number | null) | Media;
+  author?: string | null;
+  tags?:
+    | {
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Date affichée sur l'article — les articles en brouillon ne sont pas visibles
+   */
+  publishedAt: string;
+  status: 'draft' | 'published';
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Gérez les questions fréquemment posées
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq".
+ */
+export interface Faq {
+  id: number;
+  question: string;
+  answer: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Permet de regrouper les questions par thème sur le site
+   */
+  category?: string | null;
+  /**
+   * Plus le nombre est petit, plus la question apparaît en premier
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Gérez les comptes administrateurs du CMS
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name: string;
+  role: 'admin' | 'editor';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
+}
+/**
+ * Consultez les inscrits à votre newsletter
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "newsletter-subscribers".
  */
@@ -591,20 +640,12 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
-      } | null)
-    | ({
-        relationTo: 'media';
-        value: number | Media;
+        relationTo: 'products';
+        value: number | Product;
       } | null)
     | ({
         relationTo: 'categories';
         value: number | Category;
-      } | null)
-    | ({
-        relationTo: 'products';
-        value: number | Product;
       } | null)
     | ({
         relationTo: 'orders';
@@ -615,20 +656,28 @@ export interface PayloadLockedDocument {
         value: number | Customer;
       } | null)
     | ({
-        relationTo: 'blog-posts';
-        value: number | BlogPost;
-      } | null)
-    | ({
         relationTo: 'reviews';
         value: number | Review;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'blog-posts';
+        value: number | BlogPost;
       } | null)
     | ({
         relationTo: 'faq';
         value: number | Faq;
       } | null)
     | ({
-        relationTo: 'pages';
-        value: number | Page;
+        relationTo: 'media';
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null)
     | ({
         relationTo: 'newsletter-subscribers';
@@ -641,12 +690,12 @@ export interface PayloadLockedDocument {
   globalSlug?: string | null;
   user:
     | {
-        relationTo: 'users';
-        value: number | User;
-      }
-    | {
         relationTo: 'customers';
         value: number | Customer;
+      }
+    | {
+        relationTo: 'users';
+        value: number | User;
       };
   updatedAt: string;
   createdAt: string;
@@ -659,12 +708,12 @@ export interface PayloadPreference {
   id: number;
   user:
     | {
-        relationTo: 'users';
-        value: number | User;
-      }
-    | {
         relationTo: 'customers';
         value: number | Customer;
+      }
+    | {
+        relationTo: 'users';
+        value: number | User;
       };
   key?: string | null;
   value?:
@@ -689,77 +738,6 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
- */
-export interface UsersSelect<T extends boolean = true> {
-  name?: T;
-  role?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
- */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
-  caption?: T;
-  folder?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
-  sizes?:
-    | T
-    | {
-        thumbnail?:
-          | T
-          | {
-              url?: T;
-              width?: T;
-              height?: T;
-              mimeType?: T;
-              filesize?: T;
-              filename?: T;
-            };
-      };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories_select".
- */
-export interface CategoriesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  description?: T;
-  image?: T;
-  order?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -804,6 +782,19 @@ export interface ProductsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  image?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -889,6 +880,37 @@ export interface CustomersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  customerName?: T;
+  rating?: T;
+  comment?: T;
+  product?: T;
+  approved?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  content?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "blog-posts_select".
  */
 export interface BlogPostsSelect<T extends boolean = true> {
@@ -918,19 +940,6 @@ export interface BlogPostsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "reviews_select".
- */
-export interface ReviewsSelect<T extends boolean = true> {
-  customerName?: T;
-  rating?: T;
-  comment?: T;
-  product?: T;
-  approved?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faq_select".
  */
 export interface FaqSelect<T extends boolean = true> {
@@ -943,21 +952,61 @@ export interface FaqSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages_select".
+ * via the `definition` "media_select".
  */
-export interface PagesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  content?: T;
-  seo?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  caption?: T;
+  folder?: T;
   updatedAt?: T;
   createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

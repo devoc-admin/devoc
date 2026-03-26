@@ -3,6 +3,8 @@ import type { CollectionConfig } from "payload";
 export const Reviews: CollectionConfig = {
   admin: {
     defaultColumns: ["customerName", "rating", "approved"],
+    description: "Modérez les avis clients sur vos produits",
+    group: "Boutique",
     useAsTitle: "customerName",
   },
   fields: [

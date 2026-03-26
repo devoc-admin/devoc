@@ -21,6 +21,9 @@ export const Customers: CollectionConfig = {
   },
   admin: {
     defaultColumns: ["email", "firstName", "lastName", "createdAt"],
+    description: "Consultez les comptes clients et leurs adresses",
+    group: "Boutique",
+    listSearchableFields: ["firstName", "lastName", "phone"],
     useAsTitle: "email",
   },
   auth: {
@@ -65,6 +68,7 @@ export const Customers: CollectionConfig = {
         },
       ],
       label: "Adresses",
+      labels: { plural: "Adresses", singular: "Adresse" },
       name: "addresses",
       type: "array",
     },

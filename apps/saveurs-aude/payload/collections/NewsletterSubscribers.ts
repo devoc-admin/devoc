@@ -9,6 +9,8 @@ export const NewsletterSubscribers: CollectionConfig = {
   },
   admin: {
     defaultColumns: ["email", "subscribedAt"],
+    description: "Consultez les inscrits à votre newsletter",
+    group: "Paramètres",
     useAsTitle: "email",
   },
   fields: [

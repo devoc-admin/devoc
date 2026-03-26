@@ -40,6 +40,7 @@ export const ShippingConfig: GlobalConfig = {
         },
       ],
       label: "Zones de livraison",
+      labels: { plural: "Zones", singular: "Zone" },
       name: "shippingZones",
       type: "array",
     },
