@@ -7,6 +7,7 @@ export const Users: CollectionConfig = {
   auth: true,
   fields: [
     {
+      label: "Nom",
       name: "name",
       required: true,
       type: "text",
@@ -16,6 +17,7 @@ export const Users: CollectionConfig = {
         position: "sidebar",
       },
       defaultValue: "editor",
+      label: "Rôle",
       name: "role",
       options: [
         { label: "Admin", value: "admin" },
@@ -25,5 +27,9 @@ export const Users: CollectionConfig = {
       type: "select",
     },
   ],
+  labels: {
+    plural: "🔑 Utilisateurs",
+    singular: "🔑 Utilisateur",
+  },
   slug: "users",
 };

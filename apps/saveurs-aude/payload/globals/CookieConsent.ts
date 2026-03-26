@@ -5,6 +5,7 @@ export const CookieConsent: GlobalConfig = {
     {
       defaultValue:
         "Ce site utilise des cookies pour améliorer votre expérience.",
+      label: "Message",
       localized: true,
       name: "message",
       required: true,
@@ -12,6 +13,7 @@ export const CookieConsent: GlobalConfig = {
     },
     {
       defaultValue: "Accepter",
+      label: "Libellé du bouton accepter",
       localized: true,
       name: "acceptLabel",
       required: true,
@@ -19,6 +21,7 @@ export const CookieConsent: GlobalConfig = {
     },
     {
       defaultValue: "Refuser",
+      label: "Libellé du bouton refuser",
       localized: true,
       name: "rejectLabel",
       required: true,
@@ -26,11 +29,12 @@ export const CookieConsent: GlobalConfig = {
     },
     {
       defaultValue: "/politique-confidentialite",
+      label: "Lien politique de confidentialité",
       name: "privacyPolicyLink",
       required: true,
       type: "text",
     },
   ],
-  label: "Bannière cookies",
+  label: "🍪 Bannière cookies",
   slug: "cookie-consent",
 };

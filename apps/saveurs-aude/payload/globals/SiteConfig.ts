@@ -4,40 +4,46 @@ export const SiteConfig: GlobalConfig = {
   fields: [
     {
       defaultValue: "Saveurs d'Aude",
+      label: "Nom du site",
       name: "siteName",
       required: true,
       type: "text",
     },
     {
+      label: "Logo",
       name: "logo",
       relationTo: "media",
       type: "upload",
     },
     {
+      label: "Favicon",
       name: "favicon",
       relationTo: "media",
       type: "upload",
     },
     {
       fields: [
-        { name: "instagram", type: "text" },
-        { name: "facebook", type: "text" },
+        { label: "Instagram", name: "instagram", type: "text" },
+        { label: "Facebook", name: "facebook", type: "text" },
       ],
+      label: "Réseaux sociaux",
       name: "socialLinks",
       type: "group",
     },
     {
       fields: [
-        { name: "email", required: true, type: "email" },
-        { name: "phone", required: true, type: "text" },
-        { name: "address", required: true, type: "text" },
+        { label: "E-mail", name: "email", required: true, type: "email" },
+        { label: "Téléphone", name: "phone", required: true, type: "text" },
+        { label: "Adresse", name: "address", required: true, type: "text" },
       ],
+      label: "Coordonnées",
       name: "contactInfo",
       type: "group",
     },
     {
       fields: [
         {
+          label: "Jour",
           name: "day",
           options: [
             { label: "Lundi", value: "lundi" },
@@ -51,28 +57,31 @@ export const SiteConfig: GlobalConfig = {
           required: true,
           type: "select",
         },
-        { name: "openMorning", type: "text" },
-        { name: "closeMorning", type: "text" },
-        { name: "openAfternoon", type: "text" },
-        { name: "closeAfternoon", type: "text" },
+        { label: "Ouverture matin", name: "openMorning", type: "text" },
+        { label: "Fermeture matin", name: "closeMorning", type: "text" },
+        { label: "Ouverture après-midi", name: "openAfternoon", type: "text" },
+        { label: "Fermeture après-midi", name: "closeAfternoon", type: "text" },
         {
           defaultValue: false,
+          label: "Fermé",
           name: "closed",
           type: "checkbox",
         },
       ],
+      label: "Horaires d'ouverture",
       name: "openingHours",
       type: "array",
     },
     {
       fields: [
-        { name: "date", required: true, type: "date" },
-        { localized: true, name: "reason", type: "text" },
+        { label: "Date", name: "date", required: true, type: "date" },
+        { label: "Motif", localized: true, name: "reason", type: "text" },
       ],
+      label: "Fermetures exceptionnelles",
       name: "exceptionalClosures",
       type: "array",
     },
   ],
-  label: "Configuration du site",
+  label: "⚙️ Configuration du site",
   slug: "site-config",
 };

@@ -9,6 +9,7 @@ export const BlogPosts: CollectionConfig = {
   },
   fields: [
     {
+      label: "Titre",
       localized: true,
       name: "title",
       required: true,
@@ -16,36 +17,43 @@ export const BlogPosts: CollectionConfig = {
     },
     slugField,
     {
+      label: "Extrait",
       localized: true,
       name: "excerpt",
       type: "text",
     },
     {
+      label: "Contenu",
       localized: true,
       name: "content",
       type: "richText",
     },
     {
+      label: "Image de couverture",
       name: "coverImage",
       relationTo: "media",
       type: "upload",
     },
     {
+      label: "Auteur",
       name: "author",
       type: "text",
     },
     {
       fields: [
         {
+          label: "Tag",
           name: "tag",
           required: true,
           type: "text",
         },
       ],
+      label: "Tags",
       name: "tags",
       type: "array",
     },
     {
+      label: "Date de publication",
       name: "publishedAt",
       required: true,
       type: "date",
@@ -55,6 +63,7 @@ export const BlogPosts: CollectionConfig = {
         position: "sidebar",
       },
       defaultValue: "draft",
+      label: "Statut",
       name: "status",
       options: [
         { label: "Brouillon", value: "draft" },
@@ -65,5 +74,9 @@ export const BlogPosts: CollectionConfig = {
     },
     seoFields,
   ],
+  labels: {
+    plural: "📝 Articles de blog",
+    singular: "📝 Article de blog",
+  },
   slug: "blog-posts",
 };

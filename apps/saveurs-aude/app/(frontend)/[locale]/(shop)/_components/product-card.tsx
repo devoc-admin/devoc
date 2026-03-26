@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useLocale } from "next-intl";
 import Image from "next/image";
 import { useRouter as useNextRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 import { useCallback, useState, ViewTransition } from "react";
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -52,6 +52,8 @@ export function ProductCard({ product }: { product: Product }) {
   const discounted = promo ? applyDiscount(min, promotion) : min;
 
   return (
+    // biome-ignore lint/a11y/noStaticElementInteractions: onMouseEnter is for prefetch only
+    // biome-ignore lint/a11y/noNoninteractiveElementInteractions: onMouseEnter is for prefetch only
     <div className="relative" onMouseEnter={handlePrefetch}>
       {/* 💀 Skeleton — visible while image loads */}
       {!loaded && (

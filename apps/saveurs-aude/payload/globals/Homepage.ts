@@ -5,53 +5,61 @@ export const Homepage: GlobalConfig = {
     {
       fields: [
         {
+          label: "Titre",
           localized: true,
           name: "title",
           required: true,
           type: "text",
         },
         {
+          label: "Sous-titre",
           localized: true,
           name: "subtitle",
           type: "text",
         },
         {
+          label: "Image de fond",
           name: "backgroundImage",
           relationTo: "media",
           type: "upload",
         },
         {
           fields: [
-            { localized: true, name: "label", type: "text" },
-            { name: "link", type: "text" },
+            { label: "Libellé", localized: true, name: "label", type: "text" },
+            { label: "Lien", name: "link", type: "text" },
           ],
+          label: "Bouton d'action",
           name: "cta",
           type: "group",
         },
       ],
+      label: "Bannière héro",
       name: "hero",
       type: "group",
     },
     {
       hasMany: true,
+      label: "Catégories mises en avant",
       name: "featuredCategories",
       relationTo: "categories",
       type: "relationship",
     },
     {
       fields: [
-        { localized: true, name: "text", type: "text" },
-        { name: "link", type: "text" },
+        { label: "Texte", localized: true, name: "text", type: "text" },
+        { label: "Lien", name: "link", type: "text" },
         {
           defaultValue: false,
+          label: "Active",
           name: "active",
           type: "checkbox",
         },
       ],
+      label: "Bandeau promotionnel",
       name: "promotionBanner",
       type: "group",
     },
   ],
-  label: "Page d'accueil",
+  label: "🏠 Page d'accueil",
   slug: "homepage",
 };

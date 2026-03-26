@@ -26,8 +26,26 @@ const dirname = path.dirname(new URL(import.meta.url).pathname);
 
 export default buildConfig({
   admin: {
+    components: {
+      afterNavLinks: ["/payload/components/VisitSiteLink"],
+      beforeLogin: ["/payload/components/VisitSiteLink"],
+      graphics: {
+        Icon: "/payload/components/Icon",
+        Logo: "/payload/components/Logo",
+      },
+    },
     importMap: {
       baseDir: path.resolve(dirname),
+    },
+    meta: {
+      icons: [
+        {
+          rel: "icon",
+          type: "image/svg+xml",
+          url: "/saveurs_aude_no_margin_no_title.svg",
+        },
+      ],
+      titleSuffix: " — Saveurs d'Aude",
     },
     theme: "light",
     user: "users",

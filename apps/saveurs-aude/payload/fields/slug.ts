@@ -19,6 +19,7 @@ export const slugField: Field = {
       },
     ],
   },
+  label: "Identifiant URL",
   name: "slug",
   required: true,
   type: "text",

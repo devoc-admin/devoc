@@ -9,6 +9,7 @@ export const Products: CollectionConfig = {
   },
   fields: [
     {
+      label: "Titre",
       localized: true,
       name: "title",
       required: true,
@@ -16,16 +17,19 @@ export const Products: CollectionConfig = {
     },
     slugField,
     {
+      label: "Description courte",
       localized: true,
       name: "shortDescription",
       type: "text",
     },
     {
+      label: "Description",
       localized: true,
       name: "description",
       type: "richText",
     },
     {
+      label: "Catégorie",
       name: "category",
       relationTo: "categories",
       required: true,
@@ -34,12 +38,14 @@ export const Products: CollectionConfig = {
     {
       fields: [
         {
+          label: "Image",
           name: "image",
           relationTo: "media",
           required: true,
           type: "upload",
         },
       ],
+      label: "Images",
       minRows: 1,
       name: "images",
       type: "array",
@@ -47,6 +53,7 @@ export const Products: CollectionConfig = {
     {
       fields: [
         {
+          label: "Libellé",
           localized: true,
           name: "label",
           required: true,
@@ -56,12 +63,14 @@ export const Products: CollectionConfig = {
           admin: {
             description: "Prix en centimes (ex: 1250 = 12,50€)",
           },
+          label: "Prix",
           min: 0,
           name: "price",
           required: true,
           type: "number",
         },
         {
+          label: "Référence (SKU)",
           name: "sku",
           required: true,
           type: "text",
@@ -69,6 +78,7 @@ export const Products: CollectionConfig = {
         },
         {
           defaultValue: 0,
+          label: "Stock",
           min: 0,
           name: "stock",
           required: true,
@@ -78,11 +88,13 @@ export const Products: CollectionConfig = {
           admin: {
             description: "Poids en grammes (pour calcul livraison)",
           },
+          label: "Poids",
           min: 0,
           name: "weight",
           type: "number",
         },
       ],
+      label: "Variantes",
       minRows: 1,
       name: "variants",
       type: "array",
@@ -93,6 +105,7 @@ export const Products: CollectionConfig = {
         position: "sidebar",
       },
       defaultValue: false,
+      label: "Mis en avant",
       name: "featured",
       type: "checkbox",
     },
@@ -101,6 +114,7 @@ export const Products: CollectionConfig = {
         position: "sidebar",
       },
       defaultValue: "draft",
+      label: "Statut",
       name: "status",
       options: [
         { label: "Brouillon", value: "draft" },
@@ -113,6 +127,7 @@ export const Products: CollectionConfig = {
     {
       fields: [
         {
+          label: "Type",
           name: "type",
           options: [
             { label: "Pourcentage", value: "percentage" },
@@ -121,23 +136,31 @@ export const Products: CollectionConfig = {
           type: "select",
         },
         {
+          label: "Valeur",
           min: 0,
           name: "value",
           type: "number",
         },
         {
+          label: "Date de début",
           name: "startDate",
           type: "date",
         },
         {
+          label: "Date de fin",
           name: "endDate",
           type: "date",
         },
       ],
+      label: "Promotion",
       name: "promotion",
       type: "group",
     },
     seoFields,
   ],
+  labels: {
+    plural: "🛍️ Produits",
+    singular: "🛍️ Produit",
+  },
   slug: "products",
 };

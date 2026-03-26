@@ -9,6 +9,7 @@ export const Pages: CollectionConfig = {
   },
   fields: [
     {
+      label: "Titre",
       localized: true,
       name: "title",
       required: true,
@@ -16,11 +17,16 @@ export const Pages: CollectionConfig = {
     },
     slugField,
     {
+      label: "Contenu",
       localized: true,
       name: "content",
       type: "richText",
     },
     seoFields,
   ],
+  labels: {
+    plural: "📄 Pages",
+    singular: "📄 Page",
+  },
   slug: "pages",
 };

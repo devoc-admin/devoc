@@ -28,44 +28,59 @@ export const Customers: CollectionConfig = {
   },
   fields: [
     {
+      label: "Prénom",
       name: "firstName",
       required: true,
       type: "text",
     },
     {
+      label: "Nom",
       name: "lastName",
       required: true,
       type: "text",
     },
     {
+      label: "Téléphone",
       name: "phone",
       type: "text",
     },
     {
       fields: [
-        { name: "label", required: true, type: "text" },
-        { name: "street", required: true, type: "text" },
-        { name: "city", required: true, type: "text" },
-        { name: "zipCode", required: true, type: "text" },
+        { label: "Libellé", name: "label", required: true, type: "text" },
+        { label: "Rue", name: "street", required: true, type: "text" },
+        { label: "Ville", name: "city", required: true, type: "text" },
+        { label: "Code postal", name: "zipCode", required: true, type: "text" },
         {
           defaultValue: "France",
+          label: "Pays",
           name: "country",
           required: true,
           type: "text",
         },
-        { defaultValue: false, name: "isDefault", type: "checkbox" },
+        {
+          defaultValue: false,
+          label: "Adresse par défaut",
+          name: "isDefault",
+          type: "checkbox",
+        },
       ],
+      label: "Adresses",
       name: "addresses",
       type: "array",
     },
     {
       defaultValue: false,
+      label: "Inscrit à la newsletter",
       name: "newsletter",
       type: "checkbox",
     },
   ],
   hooks: {
     afterChange: [sendWelcomeEmailHook],
+  },
+  labels: {
+    plural: "👥 Clients",
+    singular: "👥 Client",
   },
   slug: "customers",
 };

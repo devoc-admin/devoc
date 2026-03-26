@@ -1,1 +1,45 @@
-/* Add any custom Payload admin styles here */
+/* Saveurs d'Aude — Admin Panel Branding */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap');
+
+:root {
+  /* === Base color scale (warm cream/brown instead of neutral gray) === */
+  --color-base-0: #FAF3E8;
+  --color-base-50: #F5EDE0;
+  --color-base-100: #EDE0CC;
+  --color-base-150: #E4D5BC;
+  --color-base-200: #D9C9AD;
+  --color-base-250: #D1C4B2;
+  --color-base-300: #C4B49E;
+  --color-base-350: #B5A48D;
+  --color-base-400: #A6947D;
+  --color-base-450: #96846E;
+  --color-base-500: #877560;
+  --color-base-550: #786754;
+  --color-base-600: #6B5E54;
+  --color-base-650: #5C4E43;
+  --color-base-700: #4D4036;
+  --color-base-750: #3F332B;
+  --color-base-800: #2C1810;
+  --color-base-850: #241410;
+  --color-base-900: #1C100C;
+  --color-base-950: #140C08;
+  --color-base-1000: #0C0804;
+
+  /* === Semantic colors === */
+  --color-success-500: #7A8B6F;
+  --color-error-500: #A0522D;
+  --color-warning-500: #B87333;
+
+  /* === Direct theme overrides === */
+  --theme-bg: #FAF3E8;
+  --theme-text: #2C1810;
+  --theme-input-bg: #FFFFFF;
+  --theme-border-color: #D1C4B2;
+  --style-radius-s: 8px;
+  --style-radius-m: 10px;
+  --style-radius-l: 12px;
+}
+
+.btn {
+  font-weight: 700;
+}

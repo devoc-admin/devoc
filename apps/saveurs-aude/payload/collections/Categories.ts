@@ -8,6 +8,7 @@ export const Categories: CollectionConfig = {
   },
   fields: [
     {
+      label: "Titre",
       localized: true,
       name: "title",
       required: true,
@@ -15,11 +16,13 @@ export const Categories: CollectionConfig = {
     },
     slugField,
     {
+      label: "Description",
       localized: true,
       name: "description",
       type: "richText",
     },
     {
+      label: "Image",
       name: "image",
       relationTo: "media",
       type: "upload",
@@ -29,9 +32,14 @@ export const Categories: CollectionConfig = {
         position: "sidebar",
       },
       defaultValue: 0,
+      label: "Ordre d'affichage",
       name: "order",
       type: "number",
     },
   ],
+  labels: {
+    plural: "📂 Catégories",
+    singular: "📂 Catégorie",
+  },
   slug: "categories",
 };

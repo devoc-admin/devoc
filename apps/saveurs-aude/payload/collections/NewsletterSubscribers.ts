@@ -13,6 +13,7 @@ export const NewsletterSubscribers: CollectionConfig = {
   },
   fields: [
     {
+      label: "E-mail",
       name: "email",
       required: true,
       type: "email",
@@ -23,6 +24,7 @@ export const NewsletterSubscribers: CollectionConfig = {
         position: "sidebar",
         readOnly: true,
       },
+      label: "Date d'inscription",
       name: "subscribedAt",
       type: "date",
     },
@@ -36,6 +38,10 @@ export const NewsletterSubscribers: CollectionConfig = {
         return data;
       },
     ],
+  },
+  labels: {
+    plural: "📬 Abonnés newsletter",
+    singular: "📬 Abonné newsletter",
   },
   slug: "newsletter-subscribers",
 };

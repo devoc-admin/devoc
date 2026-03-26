@@ -7,11 +7,13 @@ export const Reviews: CollectionConfig = {
   },
   fields: [
     {
+      label: "Nom du client",
       name: "customerName",
       required: true,
       type: "text",
     },
     {
+      label: "Note",
       max: 5,
       min: 1,
       name: "rating",
@@ -19,11 +21,13 @@ export const Reviews: CollectionConfig = {
       type: "number",
     },
     {
+      label: "Commentaire",
       localized: true,
       name: "comment",
       type: "textarea",
     },
     {
+      label: "Produit",
       name: "product",
       relationTo: "products",
       type: "relationship",
@@ -33,9 +37,14 @@ export const Reviews: CollectionConfig = {
         position: "sidebar",
       },
       defaultValue: false,
+      label: "Approuvé",
       name: "approved",
       type: "checkbox",
     },
   ],
+  labels: {
+    plural: "⭐ Avis",
+    singular: "⭐ Avis",
+  },
   slug: "reviews",
 };

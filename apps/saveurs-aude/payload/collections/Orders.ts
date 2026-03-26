@@ -16,6 +16,7 @@ export const Orders: CollectionConfig = {
   fields: [
     {
       admin: { readOnly: true },
+      label: "Numéro de commande",
       name: "orderNumber",
       required: true,
       type: "text",
@@ -23,38 +24,54 @@ export const Orders: CollectionConfig = {
     },
     {
       fields: [
-        { name: "email", required: true, type: "email" },
-        { name: "firstName", required: true, type: "text" },
-        { name: "lastName", required: true, type: "text" },
-        { name: "phone", required: true, type: "text" },
+        { label: "E-mail", name: "email", required: true, type: "email" },
+        { label: "Prénom", name: "firstName", required: true, type: "text" },
+        { label: "Nom", name: "lastName", required: true, type: "text" },
+        { label: "Téléphone", name: "phone", required: true, type: "text" },
       ],
+      label: "Client",
       name: "customer",
       type: "group",
     },
     {
       fields: [
         {
+          label: "Produit",
           name: "product",
           relationTo: "products",
           required: true,
           type: "relationship",
         },
-        { name: "variantLabel", required: true, type: "text" },
-        { min: 1, name: "quantity", required: true, type: "number" },
+        {
+          label: "Variante",
+          name: "variantLabel",
+          required: true,
+          type: "text",
+        },
+        {
+          label: "Quantité",
+          min: 1,
+          name: "quantity",
+          required: true,
+          type: "number",
+        },
         {
           admin: { description: "Prix unitaire en centimes" },
+          label: "Prix unitaire",
           min: 0,
           name: "unitPrice",
           required: true,
           type: "number",
         },
       ],
+      label: "Articles",
       name: "items",
       required: true,
       type: "array",
     },
     {
       defaultValue: "shipping",
+      label: "Mode de livraison",
       name: "deliveryMethod",
       options: [
         { label: "Livraison", value: "shipping" },
@@ -68,17 +85,19 @@ export const Orders: CollectionConfig = {
         condition: (data) => data?.deliveryMethod === "shipping",
       },
       fields: [
-        { name: "street", type: "text" },
-        { name: "city", type: "text" },
-        { name: "zipCode", type: "text" },
-        { name: "country", type: "text" },
+        { label: "Rue", name: "street", type: "text" },
+        { label: "Ville", name: "city", type: "text" },
+        { label: "Code postal", name: "zipCode", type: "text" },
+        { label: "Pays", name: "country", type: "text" },
       ],
+      label: "Adresse de livraison",
       name: "shippingAddress",
       type: "group",
     },
     {
       admin: { description: "Frais de livraison en centimes" },
       defaultValue: 0,
+      label: "Frais de livraison",
       min: 0,
       name: "shippingCost",
       required: true,
@@ -86,6 +105,7 @@ export const Orders: CollectionConfig = {
     },
     {
       admin: { description: "Montant total en centimes" },
+      label: "Montant total",
       min: 0,
       name: "totalAmount",
       required: true,
@@ -93,6 +113,7 @@ export const Orders: CollectionConfig = {
     },
     {
       defaultValue: "pending",
+      label: "Statut",
       name: "status",
       options: [
         { label: "En attente", value: "pending" },
@@ -107,25 +128,29 @@ export const Orders: CollectionConfig = {
       required: true,
       type: "select",
     },
-    { name: "trackingNumber", type: "text" },
+    { label: "Numéro de suivi", name: "trackingNumber", type: "text" },
     {
       admin: { readOnly: true },
+      label: "ID session Stripe",
       name: "stripeSessionId",
       type: "text",
     },
     {
       admin: { readOnly: true },
+      label: "ID paiement Stripe",
       name: "stripePaymentIntentId",
       type: "text",
     },
     {
       admin: { description: "Compte client associé" },
+      label: "Compte client",
       name: "customerAccount",
       relationTo: "customers",
       type: "relationship",
     },
     {
       admin: { description: "Notes internes" },
+      label: "Notes",
       name: "notes",
       type: "textarea",
     },
@@ -158,6 +183,10 @@ export const Orders: CollectionConfig = {
         return data;
       },
     ],
+  },
+  labels: {
+    plural: "📦 Commandes",
+    singular: "📦 Commande",
   },
   slug: "orders",
 };
