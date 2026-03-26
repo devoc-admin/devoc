@@ -33,7 +33,9 @@
     "featuredCategories": "Our categories",
     "heroSubtitle": "Artisanal specialties from the South of France",
     "heroTitle": "Saveurs d'Aude",
-    "shopNow": "Discover our shop"
+    "ourSelection": "Our current selection",
+    "shopNow": "Discover our shop",
+    "seeProduct": "See product"
   },
   "shop": {
     "allCategories": "All categories",

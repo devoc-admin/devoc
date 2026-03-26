@@ -62,6 +62,7 @@ async function NotreSelection() {
   // 📦
   const payload = await getPayloadClient();
   const locale = await getTypedLocale();
+  const t = await getTranslations({ locale, namespace: "home" });
 
   const productsResult = await payload.find({
     collection: "products",
@@ -95,7 +96,7 @@ async function NotreSelection() {
           "uppercase"
         )}
       >
-        Notre sélection
+        {t("ourSelection")}
       </h3>
       <div
         className={cn(
@@ -108,14 +109,24 @@ async function NotreSelection() {
         )}
       >
         {selectedProducts.map((product, index) => (
-          <ProductCardHomepage key={index} product={product} />
+          <ProductCardHomepage
+            key={index}
+            product={product}
+            seeProductLabel={t("seeProduct")}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function ProductCardHomepage({ product }: { product: Partial<Product> }) {
+function ProductCardHomepage({
+  product,
+  seeProductLabel,
+}: {
+  product: Partial<Product>;
+  seeProductLabel: string;
+}) {
   // 🖼️
   const image = getProductImage(product);
   const imageUrl = image?.url;
@@ -137,8 +148,10 @@ function ProductCardHomepage({ product }: { product: Partial<Product> }) {
         <ProductTitle product={product} />
         <ProductQuantity product={product} />
       </div>
-      <ProductPrice product={product} />
-      <SeeProduct product={product} />
+      <div className="mt-auto space-y-6">
+        <ProductPrice product={product} />
+        <SeeProduct label={seeProductLabel} product={product} />
+      </div>
     </Link>
   );
 }
@@ -213,12 +226,18 @@ function ProductPrice({ product }: { product: Partial<Product> }) {
 }
 
 //🛒
-function SeeProduct({ product }: { product: Partial<Product> }) {
+function SeeProduct({
+  label,
+  product,
+}: {
+  label: string;
+  product: Partial<Product>;
+}) {
   const { slug } = product;
   if (!slug) return null;
 
   return (
-    <Link
+    <button
       className={cn(
         "px-5 py-2.5",
         "transition-colors",
@@ -231,13 +250,10 @@ function SeeProduct({ product }: { product: Partial<Product> }) {
         "text-sm",
         "cursor-pointer"
       )}
-      href={{
-        params: { slug },
-        pathname: "/boutique/[slug]",
-      }}
+      type="button"
     >
-      Voir le produit
-    </Link>
+      {label}
+    </button>
   );
 }
 // ===================================
