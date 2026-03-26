@@ -37,7 +37,7 @@ export default function HomePage() {
       <Hero />
       <div
         className={cn(
-          "max-w-[900px]",
+          "max-w-[1200px]",
           "mx-auto",
           "px-6",
           "md:px-6",
@@ -66,7 +66,13 @@ export default function HomePage() {
 // ===================================
 // 🆎 Section title
 
-function SectionTitle({ children }: { children: React.ReactNode }) {
+function SectionTitle({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className: string;
+}) {
   return (
     <h3
       className={cn(
@@ -74,7 +80,8 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
         "text-center",
         "text-primary",
         "font-medium",
-        "uppercase"
+        "uppercase",
+        className
       )}
     >
       {children}
@@ -114,8 +121,8 @@ async function NotreSelection() {
   );
 
   return (
-    <div className={cn("flex flex-col items-center", "space-y-12")}>
-      <SectionTitle>{t("ourSelection")}</SectionTitle>
+    <div className={cn("flex flex-col items-center", "space-y-12", "p-8")}>
+      <SectionTitle className="text-primary">{t("ourSelection")}</SectionTitle>
       <div
         className={cn(
           "w-full",
@@ -134,18 +141,9 @@ async function NotreSelection() {
   );
 }
 
-function ProductCardHomepage({
-  product,
-  seeProductLabel,
-}: {
-  product: Partial<Product>;
-}) {
-  // 🖼️
-  const image = getProductImage(product);
-  const imageUrl = image?.url;
-  const imageAlt = image?.alt || product.title;
+function ProductCardHomepage({ product }: { product: Partial<Product> }) {
   const { slug } = product;
-  if (!(imageUrl && imageAlt && slug)) return null;
+  if (!slug) return null;
 
   return (
     <Link
@@ -294,65 +292,156 @@ async function NosUniversGourmands() {
   );
 
   return (
-    <div className={cn("flex flex-col items-center", "space-y-12")}>
-      <SectionTitle>{t("ourGourmetWorlds")}</SectionTitle>
+    <div
+      className={cn(
+        "flex flex-col items-center",
+        "bg-primary",
+        "rounded-lg",
+        "space-y-12",
+        "p-8"
+      )}
+    >
+      <SectionTitle className="text-primary-foreground">
+        {t("ourGourmetWorlds")}
+      </SectionTitle>
       <div
         className={cn(
           "w-full",
           "grid",
           "grid-cols-1",
           "sm:grid-cols-2",
-          "md:grid-cols-3",
+          "lg:grid-cols-3",
           "gap-10"
         )}
       >
         {selectedCategories.map((category, index) => (
-          <CategoryCardHomepage
-            category={category}
-            key={index}
-            seeProductLabel={t("ourGourmetWorlds")}
-          />
+          <CategoryCardHomepage category={category} key={index} />
         ))}
       </div>
     </div>
   );
 }
 
-function CategoryCardHomepage({
-  category,
-  seeProductLabel,
-}: {
-  category: Partial<Category>;
-  seeProductLabel: string;
-}) {
-  return null;
-  // 🖼️
-  // const image = getProductImage(product);
-  // const imageUrl = image?.url;
-  // const imageAlt = image?.alt || product.title;
-  // const { slug } = product;
-  // if (!(imageUrl && imageAlt && slug)) return null;
+function CategoryCardHomepage({ category }: { category: Partial<Category> }) {
+  const { slug } = category;
+  if (!slug) return null;
 
-  // return (
-  //   <Link
-  //     className={cn("flex flex-col items-center gap-y-2")}
-  //     href={{
-  //       params: { slug },
-  //       pathname: "/boutique/[slug]",
-  //     }}
-  //     key={product.slug}
-  //   >
-  //     <ProductImage product={product} />
-  //     <div className="space-y-1">
-  //       <ProductTitle product={product} />
-  //       <ProductQuantity product={product} />
-  //     </div>
-  //     <div className="mt-auto space-y-6">
-  //       <ProductPrice product={product} />
-  //       <SeeProduct label={seeProductLabel} product={product} />
-  //     </div>
-  //   </Link>
-  // );
+  return (
+    <Link
+      className={cn(
+        "relative",
+        "flex flex-col items-center gap-y-2",
+        "rounded-md",
+        "overflow-hidden",
+        "aspect-square",
+        "min-w-58",
+        "w-full",
+        "max-w-90",
+        "p-6"
+      )}
+      href={{
+        params: { slug },
+        pathname: "/boutique/[slug]",
+      }}
+      key={slug}
+    >
+      <CategoryImage category={category} />
+      <BlackOverlay />
+      <div
+        className={cn(
+          "z-1",
+          "flex flex-col items-center justify-center gap-y-0.5",
+          "mt-auto"
+        )}
+      >
+        <CategoryTitle category={category} />
+        <ExploreCategory category={category} />
+      </div>
+    </Link>
+  );
+}
+
+// 🖼️
+function CategoryImage({ category }: { category: Partial<Category> }) {
+  //  🖼️
+  const image = category.image;
+  if (!image || typeof image === "number") return null;
+
+  const imageUrl = image?.url;
+  const imageAlt = image?.alt || category.title;
+  const { slug } = category;
+  if (!(imageUrl && imageAlt && slug)) return null;
+
+  return (
+    <ViewTransition name={`product-image-${slug}`}>
+      <Image
+        alt={imageAlt}
+        fill
+        src={imageUrl}
+        style={{ objectFit: "cover" }}
+      />
+    </ViewTransition>
+  );
+}
+
+//🥷
+function BlackOverlay() {
+  return (
+    <div
+      className={cn(
+        "w-full",
+        "inset-0",
+        "absolute",
+        "h-full",
+        "bg-linear-to-b from-transparent to-black",
+        "z-1"
+      )}
+    />
+  );
+}
+
+// 🆎 Title
+function CategoryTitle({ category }: { category: Partial<Category> }) {
+  return (
+    <div
+      className={cn(
+        "text-2xl",
+        "text-white",
+        "text-center font-bold leading-tight"
+      )}
+    >
+      {category.title}
+    </div>
+  );
+}
+
+//👁️
+async function ExploreCategory({ category }: { category: Partial<Category> }) {
+  // 🌐
+  const locale = await getTypedLocale();
+  const t = await getTranslations({ locale, namespace: "home" });
+
+  const { slug } = category;
+  if (!slug) return null;
+
+  return (
+    <button
+      className={cn(
+        "px-5 py-2.5",
+        "transition-colors",
+        "bg-primary-foreground",
+        "mt-2",
+        "text-primary",
+        "font-semibold",
+        "rounded-lg",
+        "text-sm",
+        "cursor-pointer"
+      )}
+      type="button"
+    >
+      {t("explore")}
+    </button>
+  );
 }
 
 // ===================================
