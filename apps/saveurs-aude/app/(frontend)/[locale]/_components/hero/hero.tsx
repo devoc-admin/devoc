@@ -29,7 +29,6 @@ async function Hero() {
         // When navbar appears reduce hero height to fit the whole screen
         "lg:h-[calc(100lvh-105px)]",
         "min-h-100",
-        "lg:max-h-175",
         "min-w-full",
         "overflow-hidden"
       )}

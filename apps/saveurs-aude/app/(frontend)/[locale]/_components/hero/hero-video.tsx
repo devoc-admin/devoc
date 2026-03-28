@@ -1,7 +1,6 @@
 "use client";
 
 import { useReducedMotion } from "motion/react";
-import Image from "next/image";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import heroPhoto from "./hero-photo.webp";
@@ -12,18 +11,6 @@ const HERO_LQIP =
 function HeroVideo() {
   const reduced = useReducedMotion();
   const [photoLoaded, setPhotoLoaded] = useState(false);
-
-  if (reduced) {
-    return (
-      <Image
-        alt=""
-        className={cn("object-cover", "brightness-60")}
-        fill
-        priority
-        src={heroPhoto}
-      />
-    );
-  }
 
   return (
     <>
@@ -52,27 +39,29 @@ function HeroVideo() {
         onLoad={() => setPhotoLoaded(true)}
         src={heroPhoto.src}
       />
-      {/* Layer 3: Video plays on top once ready */}
-      <video
-        autoPlay
-        className={cn(
-          "min-w-full",
-          "max-w-none",
-          "h-full",
-          "object-cover",
-          "brightness-60"
-        )}
-        loop
-        muted
-        playsInline
-      >
-        <source
-          src="/videos/video-hero-av1.mp4"
-          type='video/mp4; codecs="av01.0.05M.08"'
-        />
-        <source src="/videos/video-hero.webm" type="video/webm" />
-        <source src="/videos/video-hero.mp4" type="video/mp4" />
-      </video>
+      {/* Layer 3: Video plays on top once ready (hidden for reduced motion) */}
+      {!reduced && (
+        <video
+          autoPlay
+          className={cn(
+            "min-w-full",
+            "max-w-none",
+            "h-full",
+            "object-cover",
+            "brightness-60"
+          )}
+          loop
+          muted
+          playsInline
+        >
+          <source
+            src="/videos/video-hero-av1.mp4"
+            type='video/mp4; codecs="av01.0.05M.08"'
+          />
+          <source src="/videos/video-hero.webm" type="video/webm" />
+          <source src="/videos/video-hero.mp4" type="video/mp4" />
+        </video>
+      )}
     </>
   );
 }
