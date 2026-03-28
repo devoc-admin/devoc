@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { cn } from "@/lib/utils";
 
 export async function SkipLink() {
-  const t = await getTranslations("common");
+  const t = await getTranslations("header");
 
   return (
     <a

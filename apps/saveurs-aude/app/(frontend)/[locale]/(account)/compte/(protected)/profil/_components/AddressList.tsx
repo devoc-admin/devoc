@@ -4,6 +4,7 @@ import { useForm } from "@tanstack/react-form";
 import { MapPin, Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/tooltip";
 import { useAuth } from "@/lib/auth";
 import type { CustomerData } from "@/lib/auth-actions";
 import { addAddress, removeAddress } from "@/lib/auth-actions";
@@ -74,7 +75,6 @@ export function AddressList({
               isRemoving={isRemoving === idx}
               key={addr.id ?? idx}
               onRemove={() => handleRemove(idx)}
-              t={t}
             />
           ))}
         </div>
@@ -89,13 +89,12 @@ function AddressCard({
   address,
   isRemoving,
   onRemove,
-  t,
 }: {
   address: CustomerData["addresses"][number];
   isRemoving: boolean;
   onRemove: () => void;
-  t: ReturnType<typeof useTranslations>;
 }) {
+  const t = useTranslations("account.addresses");
   return (
     <div
       className={cn(
@@ -118,19 +117,25 @@ function AddressCard({
           </p>
         </div>
       </div>
-      <button
-        className={cn(
-          "p-1",
-          "text-muted-foreground",
-          "transition-colors hover:text-destructive",
-          "disabled:opacity-50"
-        )}
-        disabled={isRemoving}
-        onClick={onRemove}
-        type="button"
-      >
-        <Trash2 className="size-4" />
-      </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            aria-label={t("remove")}
+            className={cn(
+              "p-1",
+              "text-muted-foreground",
+              "transition-colors hover:text-destructive",
+              "disabled:opacity-50"
+            )}
+            disabled={isRemoving}
+            onClick={onRemove}
+            type="button"
+          >
+            <Trash2 aria-hidden="true" className="size-4" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>{t("remove")}</TooltipContent>
+      </Tooltip>
     </div>
   );
 }

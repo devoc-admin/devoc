@@ -1,6 +1,7 @@
 "use client";
 
 import { ShoppingBag } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/tooltip";
 import { Link } from "@/i18n/navigation";
 import { useCart } from "@/lib/cart";
 import { cn } from "@/lib/utils";
@@ -10,20 +11,25 @@ export function CartBadge({ label }: { label: string }) {
   const { totalItems } = useCart();
 
   return (
-    <Link
-      aria-label={label}
-      className={cn(
-        "relative",
-        "rounded-full",
-        "p-2",
-        "text-foreground/70",
-        "transition-colors hover:bg-secondary hover:text-primary"
-      )}
-      href="/panier"
-    >
-      <ShoppingBag className="size-5" />
-      {totalItems > 0 && <Badge count={totalItems} />}
-    </Link>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Link
+          aria-label={label}
+          className={cn(
+            "relative",
+            "rounded-full",
+            "p-2",
+            "text-foreground/70",
+            "transition-colors hover:bg-secondary hover:text-primary"
+          )}
+          href="/panier"
+        >
+          <ShoppingBag className="size-5" />
+          {totalItems > 0 && <Badge count={totalItems} />}
+        </Link>
+      </TooltipTrigger>
+      <TooltipContent>{label}</TooltipContent>
+    </Tooltip>
   );
 }
 

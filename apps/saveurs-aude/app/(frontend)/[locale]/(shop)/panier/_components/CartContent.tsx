@@ -4,6 +4,7 @@ import { Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { FadeInUp } from "@/components/motion";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/tooltip";
 import { Link } from "@/i18n/navigation";
 import { type CartItem as CartItemData, useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
@@ -159,6 +160,8 @@ function CartItem({
   onQuantityChange: (variantId: string, quantity: number) => void;
   onRemove: (variantId: string) => void;
 }) {
+  const t = useTranslations("cart");
+
   return (
     <div
       className={cn(
@@ -202,13 +205,19 @@ function CartItem({
         <span className="font-accent font-semibold text-sm">
           {formatPrice(item.price * item.quantity)}
         </span>
-        <button
-          className="text-muted-foreground/60 transition-colors hover:text-destructive"
-          onClick={() => onRemove(item.variantId)}
-          type="button"
-        >
-          <Trash2 className="size-4" />
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              aria-label={t("remove")}
+              className="text-muted-foreground/60 transition-colors hover:text-destructive"
+              onClick={() => onRemove(item.variantId)}
+              type="button"
+            >
+              <Trash2 aria-hidden="true" className="size-4" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>{t("remove")}</TooltipContent>
+        </Tooltip>
       </div>
     </div>
   );
@@ -252,31 +261,44 @@ function QuantityControls({
   onQuantityChange: (quantity: number) => void;
   quantity: number;
 }) {
+  const t = useTranslations("cart");
   return (
     <div className="flex items-center gap-1">
-      <button
-        className={cn(
-          "rounded p-2",
-          "text-muted-foreground",
-          "transition-colors hover:bg-secondary hover:text-foreground"
-        )}
-        onClick={() => onQuantityChange(quantity - 1)}
-        type="button"
-      >
-        <Minus className="size-4" />
-      </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            aria-label={t("decreaseQuantity")}
+            className={cn(
+              "rounded p-2",
+              "text-muted-foreground",
+              "transition-colors hover:bg-secondary hover:text-foreground"
+            )}
+            onClick={() => onQuantityChange(quantity - 1)}
+            type="button"
+          >
+            <Minus aria-hidden="true" className="size-4" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>{t("decreaseQuantity")}</TooltipContent>
+      </Tooltip>
       <span className="w-8 text-center font-medium text-sm">{quantity}</span>
-      <button
-        className={cn(
-          "rounded p-2",
-          "text-muted-foreground",
-          "transition-colors hover:bg-secondary hover:text-foreground"
-        )}
-        onClick={() => onQuantityChange(quantity + 1)}
-        type="button"
-      >
-        <Plus className="size-4" />
-      </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            aria-label={t("increaseQuantity")}
+            className={cn(
+              "rounded p-2",
+              "text-muted-foreground",
+              "transition-colors hover:bg-secondary hover:text-foreground"
+            )}
+            onClick={() => onQuantityChange(quantity + 1)}
+            type="button"
+          >
+            <Plus aria-hidden="true" className="size-4" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>{t("increaseQuantity")}</TooltipContent>
+      </Tooltip>
     </div>
   );
 }

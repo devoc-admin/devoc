@@ -86,6 +86,7 @@
         "@payloadcms/richtext-lexical": "^3.80.0",
         "@payloadcms/storage-vercel-blob": "^3.80.0",
         "@payloadcms/translations": "^3.80.0",
+        "@radix-ui/react-tooltip": "^1.2.8",
         "@react-email/components": "catalog:email",
         "@tanstack/react-form": "^1.28.5",
         "class-variance-authority": "catalog:ui",

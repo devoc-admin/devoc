@@ -3,6 +3,7 @@
 import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/tooltip";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
@@ -22,17 +23,23 @@ export function MobileMenu() {
 
   // 🌐
   const t = useTranslations("nav");
+  const tc = useTranslations("header");
 
   return (
     <div className="md:hidden">
       {/* ☰ */}
-      <MenuTrigger label={t("home")} onOpen={() => setOpen(false)} />
+      <MenuTrigger label={tc("menu")} onOpen={() => setOpen(false)} />
 
       {/* 🫥 */}
       {/*<Backdrop onClose={() => setOpen(false)} open={open} />*/}
 
       {/* 📋 */}
-      <Panel onClose={() => setOpen(false)} open={open} t={t} />
+      <Panel
+        closeLabel={tc("close")}
+        onClose={() => setOpen(false)}
+        open={open}
+        t={t}
+      />
     </div>
   );
 }
@@ -41,18 +48,23 @@ export function MobileMenu() {
 // ☰
 function MenuTrigger({ label, onOpen }: { label: string; onOpen: () => void }) {
   return (
-    <button
-      aria-label={label}
-      className={cn(
-        "p-2",
-        "text-foreground/70",
-        "transition-colors hover:text-primary"
-      )}
-      onClick={onOpen}
-      type="button"
-    >
-      <Menu className="size-5" />
-    </button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          aria-label={label}
+          className={cn(
+            "p-2",
+            "text-foreground/70",
+            "transition-colors hover:text-primary"
+          )}
+          onClick={onOpen}
+          type="button"
+        >
+          <Menu className="size-5" />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent>{label}</TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -80,10 +92,12 @@ function _Backdrop({ onClose, open }: { onClose: () => void; open: boolean }) {
 // ==============================================
 // 📋
 function Panel({
+  closeLabel,
   onClose,
   open,
   t,
 }: {
+  closeLabel: string;
   onClose: () => void;
   open: boolean;
   t: ReturnType<typeof useTranslations>;
@@ -114,18 +128,23 @@ function Panel({
         <span className="font-heading text-lg text-primary">
           Saveurs d&apos;Aude
         </span>
-        <button
-          aria-label={t("home")}
-          className={cn(
-            "p-1",
-            "text-foreground/70",
-            "transition-colors hover:text-primary"
-          )}
-          onClick={onClose}
-          type="button"
-        >
-          <X className="size-5" />
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              aria-label={closeLabel}
+              className={cn(
+                "p-1",
+                "text-foreground/70",
+                "transition-colors hover:text-primary"
+              )}
+              onClick={onClose}
+              type="button"
+            >
+              <X aria-hidden="true" className="size-5" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>{closeLabel}</TooltipContent>
+        </Tooltip>
       </div>
 
       {/* 🧭 */}

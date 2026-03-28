@@ -180,7 +180,10 @@ function ContactInfo({
       {/*📍📱📨*/}
       <div className="mt-4 flex flex-col gap-3 text-muted-foreground text-sm">
         <div className="flex items-start gap-2">
-          <MapPin className="mt-0.5 size-4 shrink-0 text-accent" />
+          <MapPin
+            aria-hidden="true"
+            className="mt-0.5 size-4 shrink-0 text-accent"
+          />
           <a
             className="transition-colors hover:text-primary"
             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
@@ -192,7 +195,7 @@ function ContactInfo({
         </div>
         {/* 📱 */}
         <div className="flex items-center gap-2">
-          <Phone className="size-4 shrink-0 text-accent" />
+          <Phone aria-hidden="true" className="size-4 shrink-0 text-accent" />
           <a
             className="transition-colors hover:text-primary"
             href={`tel:${phone}`}
@@ -202,7 +205,7 @@ function ContactInfo({
         </div>
         {/* 📨 */}
         <div className="flex items-center gap-2">
-          <Mail className="size-4 shrink-0 text-accent" />
+          <Mail aria-hidden="true" className="size-4 shrink-0 text-accent" />
           <a
             className="transition-colors hover:text-primary"
             href={`mailto:${email}`}
@@ -228,7 +231,10 @@ async function OpeningHoursSection({
   return (
     <div>
       <SectionTitle>
-        <Clock className={cn("inline", "size-4", "-mt-0.5 mr-1.5")} />
+        <Clock
+          aria-hidden="true"
+          className={cn("inline", "size-4", "-mt-0.5 mr-1.5")}
+        />
         {t("openingHours")}
       </SectionTitle>
       {/* 📅🕰️ */}

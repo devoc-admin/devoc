@@ -1,20 +1,8 @@
 {
-  "common": {
-    "addToCart": "Add to cart",
-    "backToHome": "Back to home",
-    "cart": "Cart",
+  "header": {
     "close": "Close",
-    "closedNow": "Closed",
-    "contact": "Contact",
-    "freeShipping": "Free shipping from €{threshold}",
     "language": "Language",
-    "loading": "Loading...",
     "menu": "Menu",
-    "openNow": "Open",
-    "outOfStock": "Out of stock",
-    "readMore": "Read more",
-    "search": "Search",
-    "seeAll": "See all",
     "skipToContent": "Skip to content"
   },
   "nav": {
@@ -66,9 +54,11 @@
   "cart": {
     "checkout": "Checkout",
     "continueShopping": "Continue shopping",
+    "decreaseQuantity": "Decrease quantity",
     "empty": "Your cart is empty",
     "freeShippingProgress": "Only €{remaining} left for free shipping!",
     "freeShippingReached": "Free shipping!",
+    "increaseQuantity": "Increase quantity",
     "quantity": "Quantity",
     "remove": "Remove",
     "shippingCost": "Shipping",

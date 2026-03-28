@@ -1,20 +1,8 @@
 {
-  "common": {
-    "addToCart": "Ajouter au panier",
-    "backToHome": "Retour à l'accueil",
-    "cart": "Panier",
+  "header": {
     "close": "Fermer",
-    "closedNow": "Fermé",
-    "contact": "Contact",
-    "freeShipping": "Livraison offerte dès {threshold}€",
     "language": "Langue",
-    "loading": "Chargement...",
     "menu": "Menu",
-    "openNow": "Ouvert",
-    "outOfStock": "Rupture de stock",
-    "readMore": "Lire la suite",
-    "search": "Rechercher",
-    "seeAll": "Voir tout",
     "skipToContent": "Aller au contenu"
   },
   "nav": {
@@ -66,9 +54,11 @@
   "cart": {
     "checkout": "Commander",
     "continueShopping": "Continuer mes achats",
+    "decreaseQuantity": "Diminuer la quantité",
     "empty": "Votre panier est vide",
     "freeShippingProgress": "Plus que {remaining}€ pour la livraison offerte !",
     "freeShippingReached": "Livraison offerte !",
+    "increaseQuantity": "Augmenter la quantité",
     "quantity": "Quantité",
     "remove": "Retirer",
     "shippingCost": "Frais de livraison",

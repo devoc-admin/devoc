@@ -1,5 +1,7 @@
 - Always use types instead of interfaces.
 - Always use bun as the package manager (not npm or yarn).
+- In client components, prefer calling `useTranslations()` directly in each subcomponent rather than prop-drilling the `t` function from a parent.
+- For i18n translations, never use a shared/common namespace. Each translation key must belong to a context-specific namespace (e.g. `header`, `cart`, `product`). Duplication across namespaces is preferred over a shared bucket.
 
 ## Motion Animation Components
 
