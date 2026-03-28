@@ -10,7 +10,7 @@
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
     "lefthook": "^2.1.4",
-    "turbo": "^2.8.19",
+    "turbo": "^2.8.21",
     "ultracite": "^7.3.2"
   },
   "packageManager": "bun@1.3.5",
