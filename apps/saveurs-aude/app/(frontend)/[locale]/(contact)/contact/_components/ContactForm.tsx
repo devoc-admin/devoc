@@ -2,7 +2,7 @@
 
 import { useForm } from "@tanstack/react-form";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { submitContactForm } from "@/lib/contact-actions";
 import { cn } from "@/lib/utils";
 
@@ -64,24 +64,27 @@ export function ContactForm() {
       {/* 👤 */}
       <div className="grid gap-5 sm:grid-cols-2">
         <form.Field
-          children={(field) => (
-            <FieldWrapper
-              error={
-                field.state.meta.isTouched
-                  ? field.state.meta.errors[0]
-                  : undefined
-              }
-              label={t("name")}
-            >
-              <input
-                className={inputClass}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-                type="text"
-                value={field.state.value}
-              />
-            </FieldWrapper>
-          )}
+          children={(field) => {
+            const fieldError = field.state.meta.isTouched
+              ? field.state.meta.errors[0]
+              : undefined;
+            return (
+              <FieldWrapper error={fieldError} label={t("name")} name="name">
+                {({ descriptionId, inputId }) => (
+                  <input
+                    aria-describedby={fieldError ? descriptionId : undefined}
+                    aria-invalid={!!fieldError}
+                    className={inputClass}
+                    id={inputId}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    type="text"
+                    value={field.state.value}
+                  />
+                )}
+              </FieldWrapper>
+            );
+          }}
           name="name"
           validators={{
             onBlur: ({ value }) =>
@@ -89,24 +92,27 @@ export function ContactForm() {
           }}
         />
         <form.Field
-          children={(field) => (
-            <FieldWrapper
-              error={
-                field.state.meta.isTouched
-                  ? field.state.meta.errors[0]
-                  : undefined
-              }
-              label={t("email")}
-            >
-              <input
-                className={inputClass}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-                type="email"
-                value={field.state.value}
-              />
-            </FieldWrapper>
-          )}
+          children={(field) => {
+            const fieldError = field.state.meta.isTouched
+              ? field.state.meta.errors[0]
+              : undefined;
+            return (
+              <FieldWrapper error={fieldError} label={t("email")} name="email">
+                {({ descriptionId, inputId }) => (
+                  <input
+                    aria-describedby={fieldError ? descriptionId : undefined}
+                    aria-invalid={!!fieldError}
+                    className={inputClass}
+                    id={inputId}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    type="email"
+                    value={field.state.value}
+                  />
+                )}
+              </FieldWrapper>
+            );
+          }}
           name="email"
           validators={{
             onBlur: ({ value }) => {
@@ -120,24 +126,31 @@ export function ContactForm() {
 
       {/* 📝 */}
       <form.Field
-        children={(field) => (
-          <FieldWrapper
-            error={
-              field.state.meta.isTouched
-                ? field.state.meta.errors[0]
-                : undefined
-            }
-            label={t("subject")}
-          >
-            <input
-              className={inputClass}
-              onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
-              type="text"
-              value={field.state.value}
-            />
-          </FieldWrapper>
-        )}
+        children={(field) => {
+          const fieldError = field.state.meta.isTouched
+            ? field.state.meta.errors[0]
+            : undefined;
+          return (
+            <FieldWrapper
+              error={fieldError}
+              label={t("subject")}
+              name="subject"
+            >
+              {({ descriptionId, inputId }) => (
+                <input
+                  aria-describedby={fieldError ? descriptionId : undefined}
+                  aria-invalid={!!fieldError}
+                  className={inputClass}
+                  id={inputId}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  type="text"
+                  value={field.state.value}
+                />
+              )}
+            </FieldWrapper>
+          );
+        }}
         name="subject"
         validators={{
           onBlur: ({ value }) =>
@@ -147,23 +160,30 @@ export function ContactForm() {
 
       {/* 💬 */}
       <form.Field
-        children={(field) => (
-          <FieldWrapper
-            error={
-              field.state.meta.isTouched
-                ? field.state.meta.errors[0]
-                : undefined
-            }
-            label={t("message")}
-          >
-            <textarea
-              className={cn(inputClass, "min-h-[150px] resize-y")}
-              onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
-              value={field.state.value}
-            />
-          </FieldWrapper>
-        )}
+        children={(field) => {
+          const fieldError = field.state.meta.isTouched
+            ? field.state.meta.errors[0]
+            : undefined;
+          return (
+            <FieldWrapper
+              error={fieldError}
+              label={t("message")}
+              name="message"
+            >
+              {({ descriptionId, inputId }) => (
+                <textarea
+                  aria-describedby={fieldError ? descriptionId : undefined}
+                  aria-invalid={!!fieldError}
+                  className={cn(inputClass, "min-h-[150px] resize-y")}
+                  id={inputId}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  value={field.state.value}
+                />
+              )}
+            </FieldWrapper>
+          );
+        }}
         name="message"
         validators={{
           onBlur: ({ value }) =>
@@ -207,6 +227,7 @@ function ErrorBanner({ message }: { message: string }) {
         "px-4 py-3",
         "text-destructive text-sm"
       )}
+      role="alert"
     >
       {message}
     </div>
@@ -253,20 +274,37 @@ const inputClass = cn(
   "transition-colors focus:border-primary focus:outline-none"
 );
 
+type FieldIds = {
+  descriptionId: string;
+  inputId: string;
+};
+
 function FieldWrapper({
   children,
   error,
   label,
+  name,
 }: {
-  children: React.ReactNode;
+  children: (ids: FieldIds) => React.ReactNode;
   error?: string;
   label: string;
+  name: string;
 }) {
+  const id = useId();
+  const inputId = `${name}-${id}`;
+  const descriptionId = `${name}-error-${id}`;
+
   return (
     <div className="flex flex-col gap-1.5">
-      <span className="font-medium text-foreground text-sm">{label}</span>
-      {children}
-      {error && <span className="text-destructive text-xs">{error}</span>}
+      <label className="font-medium text-foreground text-sm" htmlFor={inputId}>
+        {label}
+      </label>
+      {children({ descriptionId, inputId })}
+      {error && (
+        <span className="text-destructive text-xs" id={descriptionId}>
+          {error}
+        </span>
+      )}
     </div>
   );
 }
