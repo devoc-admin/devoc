@@ -23,6 +23,7 @@ import { getCurrentCustomer } from "@/lib/auth-actions";
 import { CartProvider } from "@/lib/cart";
 import { getPayloadClient } from "@/lib/payload";
 import { getBaseUrl } from "@/lib/seo";
+import { SkipLink } from "./_components/skip-link";
 import { SiteDemo } from "./_components/site-demo/site-demo";
 import "../../globals.css";
 
@@ -122,10 +123,11 @@ export default async function LocaleLayout({
           <NextIntlClientProvider>
             <AuthProvider initialCustomer={customer}>
               <CartProvider>
+                <SkipLink />
                 <Header />
                 <Navbar />
                 <SiteDemo />
-                <main className="min-h-screen">{children}</main>
+                <main className="min-h-screen" id="main-content">{children}</main>
                 <Footer />
                 <CookieConsent config={cookieConsentData} />
                 <AnalyticsWrapper />

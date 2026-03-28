@@ -357,8 +357,8 @@ function CategoryCardHomepage({ category }: { category: Partial<Category> }) {
         "p-6"
       )}
       href={{
-        params: { slug },
-        pathname: "/boutique/[slug]",
+        pathname: "/boutique",
+        query: { category: slug },
       }}
       key={slug}
     >

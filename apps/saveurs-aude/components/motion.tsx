@@ -11,7 +11,14 @@ type AnimationProps = {
 
 export function FadeIn({ children, className, delay = 0 }: AnimationProps) {
   const reduced = useReducedMotion();
-  if (reduced) return <div className={className}>{children}</div>;
+
+  if (reduced) {
+    return (
+      <div>
+        <div className={className}>{children}</div>
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -26,7 +33,14 @@ export function FadeIn({ children, className, delay = 0 }: AnimationProps) {
 
 export function FadeInUp({ children, className, delay = 0 }: AnimationProps) {
   const reduced = useReducedMotion();
-  if (reduced) return <div className={className}>{children}</div>;
+
+  if (reduced) {
+    return (
+      <div>
+        <div className={className}>{children}</div>
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -45,7 +59,14 @@ export function StaggerContainer({
   delay = 0,
 }: AnimationProps) {
   const reduced = useReducedMotion();
-  if (reduced) return <div className={className}>{children}</div>;
+
+  if (reduced) {
+    return (
+      <div>
+        <div className={className}>{children}</div>
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -72,7 +93,14 @@ export function FadeInUpOnScroll({
   delay = 0,
 }: AnimationProps) {
   const reduced = useReducedMotion();
-  if (reduced) return <div className={className}>{children}</div>;
+
+  if (reduced) {
+    return (
+      <div>
+        <div className={className}>{children}</div>
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -92,7 +120,14 @@ export function StaggerContainerOnScroll({
   delay = 0,
 }: AnimationProps) {
   const reduced = useReducedMotion();
-  if (reduced) return <div className={className}>{children}</div>;
+
+  if (reduced) {
+    return (
+      <div>
+        <div className={className}>{children}</div>
+      </div>
+    );
+  }
 
   return (
     <motion.div
@@ -116,6 +151,7 @@ export function StaggerContainerOnScroll({
 
 export function StaggerItem({ children, className }: AnimationProps) {
   const reduced = useReducedMotion();
+
   if (reduced) return <div className={className}>{children}</div>;
 
   return (
