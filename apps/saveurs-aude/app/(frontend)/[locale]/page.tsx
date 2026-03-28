@@ -307,7 +307,7 @@ async function NosUniversGourmands() {
       <div
         className={cn(
           "flex flex-col items-center",
-          "bg-primary",
+          "bg-gradient-to-br from-primary via-primary/90 to-accent/80",
           "rounded-lg",
           "space-y-12",
           "p-8"
