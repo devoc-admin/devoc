@@ -1,6 +1,12 @@
 import type { CollectionConfig } from "payload";
 
 export const FAQ: CollectionConfig = {
+  access: {
+    create: ({ req }) => !!req.user,
+    delete: ({ req }) => !!req.user,
+    read: () => true,
+    update: ({ req }) => !!req.user,
+  },
   admin: {
     defaultColumns: ["question", "category", "order"],
     description: "Gérez les questions fréquemment posées",

@@ -3,6 +3,12 @@ import type { CollectionConfig } from "payload";
 import { sendOrderStatusEmail } from "@/payload/hooks/sendOrderStatusEmail";
 
 export const Orders: CollectionConfig = {
+  access: {
+    create: ({ req }) => !!req.user,
+    delete: ({ req }) => !!req.user,
+    read: () => true,
+    update: ({ req }) => !!req.user,
+  },
   admin: {
     defaultColumns: [
       "orderNumber",

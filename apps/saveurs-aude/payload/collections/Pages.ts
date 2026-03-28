@@ -3,6 +3,12 @@ import { seoFields } from "../fields/seo";
 import { slugField } from "../fields/slug";
 
 export const Pages: CollectionConfig = {
+  access: {
+    create: ({ req }) => !!req.user,
+    delete: ({ req }) => !!req.user,
+    read: () => true,
+    update: ({ req }) => !!req.user,
+  },
   admin: {
     defaultColumns: ["title", "slug"],
     description: "Éditez les pages statiques du site (CGV, À propos...)",

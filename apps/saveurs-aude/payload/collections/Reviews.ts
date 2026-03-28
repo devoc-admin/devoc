@@ -1,6 +1,12 @@
 import type { CollectionConfig } from "payload";
 
 export const Reviews: CollectionConfig = {
+  access: {
+    create: ({ req }) => !!req.user,
+    delete: ({ req }) => !!req.user,
+    read: () => true,
+    update: ({ req }) => !!req.user,
+  },
   admin: {
     defaultColumns: ["customerName", "rating", "approved"],
     description: "Modérez les avis clients sur vos produits",

@@ -3,6 +3,12 @@ import { seoFields } from "../fields/seo";
 import { slugField } from "../fields/slug";
 
 export const Products: CollectionConfig = {
+  access: {
+    create: ({ req }) => !!req.user,
+    delete: ({ req }) => !!req.user,
+    read: () => true,
+    update: ({ req }) => !!req.user,
+  },
   admin: {
     defaultColumns: ["title", "category", "status", "featured"],
     description: "Gérez vos produits, variantes, prix et promotions",

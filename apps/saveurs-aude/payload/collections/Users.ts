@@ -1,6 +1,12 @@
 import type { CollectionConfig } from "payload";
 
 export const Users: CollectionConfig = {
+  access: {
+    create: ({ req }) => !!req.user,
+    delete: ({ req }) => !!req.user,
+    read: () => true,
+    update: ({ req }) => !!req.user,
+  },
   admin: {
     description: "Gérez les comptes administrateurs du CMS",
     group: "Paramètres",

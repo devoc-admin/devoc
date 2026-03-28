@@ -1,6 +1,10 @@
 import type { GlobalConfig } from "payload";
 
 export const CookieConsent: GlobalConfig = {
+  access: {
+    read: () => true,
+    update: ({ req }) => !!req.user,
+  },
   fields: [
     {
       defaultValue:

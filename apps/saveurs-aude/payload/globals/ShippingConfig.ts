@@ -1,6 +1,10 @@
 import type { GlobalConfig } from "payload";
 
 export const ShippingConfig: GlobalConfig = {
+  access: {
+    read: () => true,
+    update: ({ req }) => !!req.user,
+  },
   fields: [
     {
       admin: { description: "Montant en centimes (ex: 690 = 6,90€)" },

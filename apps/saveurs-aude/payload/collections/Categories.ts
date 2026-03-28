@@ -2,6 +2,12 @@ import type { CollectionConfig } from "payload";
 import { slugField } from "../fields/slug";
 
 export const Categories: CollectionConfig = {
+  access: {
+    create: ({ req }) => !!req.user,
+    delete: ({ req }) => !!req.user,
+    read: () => true,
+    update: ({ req }) => !!req.user,
+  },
   admin: {
     defaultColumns: ["title", "order"],
     description: "Organisez vos produits par catégorie",

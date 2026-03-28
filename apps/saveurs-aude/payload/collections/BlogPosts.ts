@@ -3,6 +3,12 @@ import { seoFields } from "../fields/seo";
 import { slugField } from "../fields/slug";
 
 export const BlogPosts: CollectionConfig = {
+  access: {
+    create: ({ req }) => !!req.user,
+    delete: ({ req }) => !!req.user,
+    read: () => true,
+    update: ({ req }) => !!req.user,
+  },
   admin: {
     defaultColumns: ["title", "status", "publishedAt"],
     description: "Rédigez et publiez des articles sur votre blog",
