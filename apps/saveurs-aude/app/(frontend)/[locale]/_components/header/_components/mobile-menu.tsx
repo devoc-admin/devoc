@@ -2,7 +2,7 @@
 
 import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/tooltip";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -18,26 +18,73 @@ const navLinks = [
   { href: "/compte" as const, tKey: "account" as const },
 ];
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   // 🌐
   const t = useTranslations("nav");
   const tc = useTranslations("header");
 
+  // ♿ Move focus into panel on open, back to trigger on close
+  useEffect(() => {
+    if (open) {
+      const firstFocusable =
+        panelRef.current?.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
+      firstFocusable?.focus();
+    } else {
+      triggerRef.current?.focus();
+    }
+  }, [open]);
+
+  // ♿ Focus trap + Escape
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setOpen(false);
+      return;
+    }
+
+    if (e.key !== "Tab") return;
+
+    const focusable =
+      panelRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+    if (!focusable?.length) return;
+
+    const first = focusable[0];
+    const last = focusable.at(-1);
+
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }, []);
+
   return (
     <div className="md:hidden">
       {/* ☰ */}
-      <MenuTrigger label={tc("menu")} onOpen={() => setOpen(false)} />
+      <MenuTrigger
+        label={tc("menu")}
+        onOpen={() => setOpen(true)}
+        ref={triggerRef}
+      />
 
       {/* 🫥 */}
-      {/*<Backdrop onClose={() => setOpen(false)} open={open} />*/}
+      <Backdrop onClose={() => setOpen(false)} open={open} />
 
       {/* 📋 */}
       <Panel
         closeLabel={tc("close")}
         onClose={() => setOpen(false)}
+        onKeyDown={handleKeyDown}
         open={open}
+        ref={panelRef}
         t={t}
       />
     </div>
@@ -46,7 +93,12 @@ export function MobileMenu() {
 
 // ==============================================
 // ☰
-function MenuTrigger({ label, onOpen }: { label: string; onOpen: () => void }) {
+import { forwardRef } from "react";
+
+const MenuTrigger = forwardRef<
+  HTMLButtonElement,
+  { label: string; onOpen: () => void }
+>(({ label, onOpen }, ref) => {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -58,6 +110,7 @@ function MenuTrigger({ label, onOpen }: { label: string; onOpen: () => void }) {
             "transition-colors hover:text-primary"
           )}
           onClick={onOpen}
+          ref={ref}
           type="button"
         >
           <Menu className="size-5" />
@@ -66,44 +119,42 @@ function MenuTrigger({ label, onOpen }: { label: string; onOpen: () => void }) {
       <TooltipContent>{label}</TooltipContent>
     </Tooltip>
   );
-}
+});
+MenuTrigger.displayName = "MenuTrigger";
 
 // ==============================================
 // 🫥
-function _Backdrop({ onClose, open }: { onClose: () => void; open: boolean }) {
+function Backdrop({ onClose, open }: { onClose: () => void; open: boolean }) {
+  if (!open) return null;
+
   return (
-    <button
-      aria-label="Close menu"
-      className={cn(
-        "fixed inset-0 z-50",
-        "bg-foreground/20 backdrop-blur-sm",
-        "transition-opacity duration-300",
-        "pointer-events-none opacity-0",
-        open && "pointer-events-auto opacity-100"
-      )}
+    // biome-ignore lint/a11y/noStaticElementInteractions: backdrop dismiss pattern
+    // biome-ignore lint/a11y/noNoninteractiveElementInteractions: backdrop dismiss pattern
+    // biome-ignore lint/a11y/useKeyWithClickEvents: Escape handled in Panel's onKeyDown
+    <div
+      className={cn("fixed inset-0 z-50", "bg-foreground/20 backdrop-blur-sm")}
       onClick={onClose}
-      onKeyDown={(e) => e.key === "Escape" && onClose()}
-      tabIndex={-1}
-      type="button"
     />
   );
 }
 
 // ==============================================
 // 📋
-function Panel({
-  closeLabel,
-  onClose,
-  open,
-  t,
-}: {
-  closeLabel: string;
-  onClose: () => void;
-  open: boolean;
-  t: ReturnType<typeof useTranslations>;
-}) {
+const Panel = forwardRef<
+  HTMLDivElement,
+  {
+    closeLabel: string;
+    onClose: () => void;
+    onKeyDown: (e: React.KeyboardEvent) => void;
+    open: boolean;
+    t: ReturnType<typeof useTranslations>;
+  }
+>(({ closeLabel, onClose, onKeyDown, open, t }, ref) => {
   return (
+    // biome-ignore lint/a11y/noNoninteractiveElementInteractions: dialog with focus trap needs onKeyDown
     <div
+      aria-label={t("home")}
+      aria-modal="true"
       className={cn(
         "fixed",
         "inset-y-0",
@@ -116,6 +167,9 @@ function Panel({
         "translate-x-full",
         open && "translate-x-0"
       )}
+      onKeyDown={onKeyDown}
+      ref={ref}
+      role="dialog"
     >
       {/* 🏠 */}
       <div
@@ -167,4 +221,5 @@ function Panel({
       </nav>
     </div>
   );
-}
+});
+Panel.displayName = "Panel";
