@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import heroPhoto from "./hero-photo.webp";
 
 function HeroVideo() {
   return (
@@ -14,6 +15,7 @@ function HeroVideo() {
       loop
       muted
       playsInline
+      poster={heroPhoto.src}
     >
       <source
         src="/videos/video-hero-av1.mp4"
