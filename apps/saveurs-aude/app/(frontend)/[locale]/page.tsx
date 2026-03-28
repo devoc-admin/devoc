@@ -3,7 +3,12 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { ViewTransition } from "react";
 import { JsonLd } from "@/components/JsonLd";
-import { FadeIn } from "@/components/motion";
+import {
+  FadeIn,
+  FadeInUpOnScroll,
+  StaggerContainerOnScroll,
+  StaggerItem,
+} from "@/components/motion";
 import { Link } from "@/i18n/navigation";
 import { getTypedLocale } from "@/i18n/routing";
 import { formatPrice } from "@/lib/format";
@@ -122,8 +127,12 @@ async function NotreSelection() {
 
   return (
     <div className={cn("flex flex-col items-center", "space-y-12", "p-8")}>
-      <SectionTitle className="text-primary">{t("ourSelection")}</SectionTitle>
-      <div
+      <FadeInUpOnScroll>
+        <SectionTitle className="text-primary">
+          {t("ourSelection")}
+        </SectionTitle>
+      </FadeInUpOnScroll>
+      <StaggerContainerOnScroll
         className={cn(
           "w-full",
           "grid",
@@ -134,9 +143,11 @@ async function NotreSelection() {
         )}
       >
         {selectedProducts.map((product, index) => (
-          <ProductCardHomepage key={index} product={product} />
+          <StaggerItem key={index}>
+            <ProductCardHomepage product={product} />
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerContainerOnScroll>
     </div>
   );
 }
@@ -292,33 +303,39 @@ async function NosUniversGourmands() {
   );
 
   return (
-    <div
-      className={cn(
-        "flex flex-col items-center",
-        "bg-primary",
-        "rounded-lg",
-        "space-y-12",
-        "p-8"
-      )}
-    >
-      <SectionTitle className="text-primary-foreground">
-        {t("ourGourmetWorlds")}
-      </SectionTitle>
+    <FadeInUpOnScroll>
       <div
         className={cn(
-          "w-full",
-          "grid",
-          "grid-cols-1",
-          "sm:grid-cols-2",
-          "lg:grid-cols-3",
-          "gap-10"
+          "flex flex-col items-center",
+          "bg-primary",
+          "rounded-lg",
+          "space-y-12",
+          "p-8"
         )}
       >
-        {selectedCategories.map((category, index) => (
-          <CategoryCardHomepage category={category} key={index} />
-        ))}
+        <FadeInUpOnScroll delay={0.15}>
+          <SectionTitle className="text-primary-foreground">
+            {t("ourGourmetWorlds")}
+          </SectionTitle>
+        </FadeInUpOnScroll>
+        <StaggerContainerOnScroll
+          className={cn(
+            "w-full",
+            "grid",
+            "grid-cols-1",
+            "sm:grid-cols-2",
+            "lg:grid-cols-3",
+            "gap-10"
+          )}
+        >
+          {selectedCategories.map((category, index) => (
+            <StaggerItem key={index}>
+              <CategoryCardHomepage category={category} />
+            </StaggerItem>
+          ))}
+        </StaggerContainerOnScroll>
       </div>
-    </div>
+    </FadeInUpOnScroll>
   );
 }
 
