@@ -6,7 +6,9 @@ export const Users: CollectionConfig = {
     group: "Paramètres",
     useAsTitle: "name",
   },
-  auth: true,
+  auth: {
+    useAPIKey: true,
+  },
   fields: [
     {
       label: "Nom",

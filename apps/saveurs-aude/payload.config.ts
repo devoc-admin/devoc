@@ -50,7 +50,6 @@ export default buildConfig({
     theme: "light",
     user: "users",
   },
-
   collections: [
     // Boutique
     Products,
