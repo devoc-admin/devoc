@@ -68,6 +68,8 @@ export default buildConfig({
     NewsletterSubscribers,
   ],
 
+  cors: ["https://claude.ai"],
+
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || "",
