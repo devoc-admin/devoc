@@ -13,6 +13,7 @@ import { Footer } from "@/app/(frontend)/[locale]/_components/footer/footer";
 import { Header } from "@/app/(frontend)/[locale]/_components/header/header";
 import { Navbar } from "@/app/(frontend)/[locale]/_components/navbar/navbar";
 import { AnalyticsWrapper } from "@/components/Analytics";
+import { CartAnnouncer } from "@/components/cart-announcer";
 import {
   CookieConsent,
   type CookieConsentConfig,
@@ -123,6 +124,7 @@ export default async function LocaleLayout({
           <NextIntlClientProvider>
             <AuthProvider initialCustomer={customer}>
               <CartProvider>
+                <CartAnnouncer />
                 <SkipLink />
                 <Header />
                 <Navbar />

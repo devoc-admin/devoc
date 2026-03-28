@@ -52,6 +52,7 @@
     "sku": "Réf."
   },
   "cart": {
+    "announcement": "{count, plural, =0 {Panier vide} one {# article dans le panier} other {# articles dans le panier}}",
     "checkout": "Commander",
     "continueShopping": "Continuer mes achats",
     "decreaseQuantity": "Diminuer la quantité",

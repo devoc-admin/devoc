@@ -52,6 +52,7 @@
     "sku": "Ref."
   },
   "cart": {
+    "announcement": "{count, plural, =0 {Cart is empty} one {# item in cart} other {# items in cart}}",
     "checkout": "Checkout",
     "continueShopping": "Continue shopping",
     "decreaseQuantity": "Decrease quantity",
