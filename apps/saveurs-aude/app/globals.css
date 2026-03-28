@@ -95,6 +95,12 @@
   h6 {
     @apply font-heading;
   }
+
+  input,
+  textarea,
+  select {
+    @apply bg-white;
+  }
 }
 
 @media (prefers-contrast: more) {

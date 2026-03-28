@@ -198,7 +198,6 @@ const inputClass = cn(
   "w-full",
   "rounded-lg",
   "border border-border/50",
-  "bg-background",
   "px-3 py-2.5",
   "text-sm",
   "transition-colors focus:border-primary focus:outline-none"
