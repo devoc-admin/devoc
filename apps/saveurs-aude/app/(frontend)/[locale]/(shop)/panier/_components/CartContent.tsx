@@ -201,15 +201,15 @@ function CartItem({
       />
 
       {/* 💰❌ */}
-      <div className="flex flex-col items-end gap-1">
-        <span className="font-accent font-semibold text-sm">
+      <div className="flex items-center gap-x-2">
+        <span className="font-accent font-bold text-primary text-xl">
           {formatPrice(item.price * item.quantity)}
         </span>
         <Tooltip>
           <TooltipTrigger asChild>
             <button
               aria-label={t("remove")}
-              className="text-muted-foreground/60 transition-colors hover:text-destructive"
+              className="cursor-pointer text-muted-foreground/60 transition-colors hover:text-destructive"
               onClick={() => onRemove(item.variantId)}
               type="button"
             >
@@ -269,7 +269,9 @@ function QuantityControls({
           <button
             aria-label={t("decreaseQuantity")}
             className={cn(
-              "rounded p-2",
+              "rounded",
+              "p-2",
+              "cursor-pointer",
               "text-muted-foreground",
               "transition-colors hover:bg-secondary hover:text-foreground"
             )}
@@ -287,7 +289,9 @@ function QuantityControls({
           <button
             aria-label={t("increaseQuantity")}
             className={cn(
-              "rounded p-2",
+              "rounded",
+              "p-2",
+              "cursor-pointer",
               "text-muted-foreground",
               "transition-colors hover:bg-secondary hover:text-foreground"
             )}
@@ -339,7 +343,7 @@ function CartSummary({
         <hr className="my-1 border-border/50" />
         <div className="flex justify-between">
           <span className="font-heading text-lg">{t("total")}</span>
-          <span className="font-heading text-lg text-primary">
+          <span className="font-heading text-2xl text-primary">
             {formatPrice(totalPrice + estimatedShipping)}
           </span>
         </div>
@@ -361,8 +365,9 @@ function CartActions({ t }: { t: ReturnType<typeof useTranslations> }) {
           "w-full sm:w-auto",
           "rounded-lg",
           "border border-border",
+          "bg-secondary",
           "px-6 py-3",
-          "text-center font-medium text-muted-foreground text-sm",
+          "text-center font-medium text-secondary-foreground text-sm",
           "transition-colors hover:border-primary hover:text-primary"
         )}
         href="/boutique"

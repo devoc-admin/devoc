@@ -74,7 +74,7 @@ export default async function PrivacyPolicyPage({
         ])}
       />
       <FadeInUp>
-        <h1 className="font-heading font-bold text-center text-3xl text-primary sm:text-4xl">
+        <h1 className="text-center font-bold font-heading text-3xl text-primary sm:text-4xl">
           {page.title}
         </h1>
       </FadeInUp>

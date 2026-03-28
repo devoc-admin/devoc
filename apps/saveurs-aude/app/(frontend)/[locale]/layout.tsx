@@ -13,19 +13,19 @@ import { Footer } from "@/app/(frontend)/[locale]/_components/footer/footer";
 import { Header } from "@/app/(frontend)/[locale]/_components/header/header";
 import { Navbar } from "@/app/(frontend)/[locale]/_components/navbar/navbar";
 import { AnalyticsWrapper } from "@/components/Analytics";
-import { CartAnnouncer } from "@/components/cart-announcer";
 import {
   CookieConsent,
   type CookieConsentConfig,
 } from "@/components/CookieConsent";
+import { CartAnnouncer } from "@/components/cart-announcer";
 import { type Locale, routing } from "@/i18n/routing";
 import { AuthProvider } from "@/lib/auth";
 import { getCurrentCustomer } from "@/lib/auth-actions";
 import { CartProvider } from "@/lib/cart";
 import { getPayloadClient } from "@/lib/payload";
 import { getBaseUrl } from "@/lib/seo";
-import { SkipLink } from "./_components/skip-link";
 import { SiteDemo } from "./_components/site-demo/site-demo";
+import { SkipLink } from "./_components/skip-link";
 import "../../globals.css";
 
 const playfair = Playfair_Display({
@@ -129,7 +129,9 @@ export default async function LocaleLayout({
                 <Header />
                 <Navbar />
                 <SiteDemo />
-                <main className="min-h-screen" id="main-content">{children}</main>
+                <main className="min-h-screen" id="main-content">
+                  {children}
+                </main>
                 <Footer />
                 <CookieConsent config={cookieConsentData} />
                 <AnalyticsWrapper />

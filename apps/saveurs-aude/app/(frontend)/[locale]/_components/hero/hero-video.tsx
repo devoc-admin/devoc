@@ -18,7 +18,7 @@ function HeroVideo() {
       <div
         className={cn(
           "absolute inset-0",
-          "bg-cover bg-center",
+          "bg-center bg-cover",
           "brightness-60",
           "transition-[filter] duration-1000 ease-out",
           photoLoaded ? "blur-0" : "blur-xl"
