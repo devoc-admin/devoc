@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
 type AnimationProps = {
@@ -10,6 +10,9 @@ type AnimationProps = {
 };
 
 export function FadeIn({ children, className, delay = 0 }: AnimationProps) {
+  const reduced = useReducedMotion();
+  if (reduced) return <div className={className}>{children}</div>;
+
   return (
     <motion.div
       animate={{ opacity: 1 }}
@@ -22,6 +25,9 @@ export function FadeIn({ children, className, delay = 0 }: AnimationProps) {
 }
 
 export function FadeInUp({ children, className, delay = 0 }: AnimationProps) {
+  const reduced = useReducedMotion();
+  if (reduced) return <div className={className}>{children}</div>;
+
   return (
     <motion.div
       animate={{ opacity: 1, y: 0 }}
@@ -38,6 +44,9 @@ export function StaggerContainer({
   className,
   delay = 0,
 }: AnimationProps) {
+  const reduced = useReducedMotion();
+  if (reduced) return <div className={className}>{children}</div>;
+
   return (
     <motion.div
       animate="visible"
@@ -62,6 +71,9 @@ export function FadeInUpOnScroll({
   className,
   delay = 0,
 }: AnimationProps) {
+  const reduced = useReducedMotion();
+  if (reduced) return <div className={className}>{children}</div>;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -79,6 +91,9 @@ export function StaggerContainerOnScroll({
   className,
   delay = 0,
 }: AnimationProps) {
+  const reduced = useReducedMotion();
+  if (reduced) return <div className={className}>{children}</div>;
+
   return (
     <motion.div
       initial="hidden"
@@ -100,6 +115,9 @@ export function StaggerContainerOnScroll({
 }
 
 export function StaggerItem({ children, className }: AnimationProps) {
+  const reduced = useReducedMotion();
+  if (reduced) return <div className={className}>{children}</div>;
+
   return (
     <motion.div
       className={className}

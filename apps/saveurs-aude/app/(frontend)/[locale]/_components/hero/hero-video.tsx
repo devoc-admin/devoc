@@ -1,7 +1,25 @@
+"use client";
+
+import { useReducedMotion } from "motion/react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import heroPhoto from "./hero-photo.webp";
 
 function HeroVideo() {
+  const reduced = useReducedMotion();
+
+  if (reduced) {
+    return (
+      <Image
+        alt=""
+        className={cn("object-cover", "brightness-60")}
+        fill
+        priority
+        src={heroPhoto}
+      />
+    );
+  }
+
   return (
     <video
       autoPlay

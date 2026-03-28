@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
 import { useRouter as useNextRouter } from "next/navigation";
 import { useLocale } from "next-intl";
@@ -51,12 +51,15 @@ export function ProductCard({ product }: { product: Product }) {
   const { min, hasRange } = getPriceRange(product);
   const discounted = promo ? applyDiscount(min, promotion) : min;
 
+  // ♿
+  const reduced = useReducedMotion();
+
   return (
     // biome-ignore lint/a11y/noStaticElementInteractions: onMouseEnter is for prefetch only
     // biome-ignore lint/a11y/noNoninteractiveElementInteractions: onMouseEnter is for prefetch only
     <div className="relative" onMouseEnter={handlePrefetch}>
       {/* 💀 Skeleton — visible while image loads */}
-      {!loaded && (
+      {!(reduced || loaded) && (
         <div className="space-y-3">
           <div className="aspect-square w-full animate-pulse rounded-lg bg-muted" />
           <div className="h-4 w-3/4 animate-pulse rounded bg-muted" />
@@ -66,10 +69,12 @@ export function ProductCard({ product }: { product: Product }) {
 
       {/* 🃏 Real card — fades in once image is ready */}
       <motion.div
-        animate={loaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        className={cn(!loaded && "absolute inset-0")}
-        initial={{ opacity: 0, y: 20 }}
-        transition={{ duration: 0.4 }}
+        animate={
+          reduced || loaded ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
+        }
+        className={cn(!(reduced || loaded) && "absolute inset-0")}
+        initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={reduced ? { duration: 0 } : { duration: 0.4 }}
       >
         <Link
           className={cn(
