@@ -60,7 +60,7 @@ export default async function AboutPage({
   const baseUrl = getBaseUrl();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-3xl px-6 py-16 sm:py-20">
       <JsonLd
         data={buildBreadcrumbList([
           { name: "Accueil", url: baseUrl },
@@ -68,13 +68,13 @@ export default async function AboutPage({
         ])}
       />
       <FadeInUp>
-        <h1 className="font-heading text-2xl text-primary sm:text-3xl">
+        <h1 className="font-heading font-bold text-center text-3xl text-primary sm:text-4xl">
           {page.title}
         </h1>
       </FadeInUp>
       {page.content && (
         <FadeInUpOnScroll delay={0.1}>
-          <div className="mt-8">
+          <div className="mt-10">
             <RichText data={page.content as unknown as SerializedEditorState} />
           </div>
         </FadeInUpOnScroll>

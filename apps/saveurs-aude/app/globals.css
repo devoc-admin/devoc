@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -93,6 +94,41 @@
   h5,
   h6 {
     @apply font-heading;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    /* Fond plus blanc, texte plus noir → contraste max */
+    --background: oklch(0.99 0.005 75);        /* Blanc cassé quasi pur */
+    --foreground: oklch(0.12 0.04 45);         /* Brun quasi noir */
+
+    --card: oklch(0.97 0.01 75);               /* Fond carte à peine teinté */
+    --card-foreground: oklch(0.12 0.04 45);
+
+    --popover: oklch(0.99 0.005 75);
+    --popover-foreground: oklch(0.12 0.04 45);
+
+    --primary: oklch(0.28 0.08 30);            /* Marron plus foncé */
+    --primary-foreground: oklch(0.99 0.005 75);
+
+    --secondary: oklch(0.88 0.03 70);          /* Beige plus marqué */
+    --secondary-foreground: oklch(0.12 0.04 45);
+
+    --muted: oklch(0.93 0.015 75);
+    --muted-foreground: oklch(0.32 0.03 50);   /* Gris-brun bien plus foncé */
+
+    --accent: oklch(0.48 0.14 55);             /* Cuivre assombri */
+    --accent-foreground: oklch(0.99 0.005 75);
+
+    --destructive: oklch(0.42 0.14 30);        /* Terracotta plus profond */
+
+    --success: oklch(0.42 0.08 140);           /* Vert sauge assombri */
+    --success-foreground: oklch(0.99 0.005 75);
+
+    --border: oklch(0.62 0.04 60);             /* Bordures bien visibles */
+    --input: oklch(0.62 0.04 60);
+    --ring: oklch(0.48 0.14 55);
   }
 }
 

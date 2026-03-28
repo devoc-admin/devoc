@@ -49,7 +49,7 @@ export default async function FAQPage() {
   const baseUrl = getBaseUrl();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-3xl px-6 py-16 sm:py-20">
       <JsonLd
         data={[
           buildFAQPage(entries),
@@ -62,13 +62,13 @@ export default async function FAQPage() {
 
       {/* 🆎 */}
       <FadeInUp>
-        <h1 className="font-heading text-2xl text-primary sm:text-3xl">
+        <h1 className="font-heading font-bold text-center text-3xl text-primary sm:text-4xl">
           {t("title")}
         </h1>
       </FadeInUp>
 
       {/* 🗂️ */}
-      <div className="mt-8 flex flex-col gap-8">
+      <div className="mt-10 flex flex-col gap-8">
         {[...grouped.entries()].map(([category, items], index) => (
           <FadeInUpOnScroll delay={index * 0.1} key={category}>
             <FAQCategory category={category} items={items} />

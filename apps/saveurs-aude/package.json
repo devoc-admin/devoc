@@ -21,6 +21,7 @@
     "@payloadcms/translations": "^3.80.0",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@react-email/components": "catalog:email",
+    "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-form": "^1.28.5",
     "class-variance-authority": "catalog:ui",
     "clsx": "catalog:ui",
