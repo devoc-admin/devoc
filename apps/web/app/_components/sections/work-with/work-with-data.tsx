@@ -9,7 +9,7 @@ import { CompanyLogo } from "./_components/company-logo";
 export const companies = [
   {
     link: "https://airbus.com",
-    logo: <CompanyLogo logo={AirbusLogo} name="Airbus" />,
+    logo: <CompanyLogo className="py-2" logo={AirbusLogo} name="Airbus" />,
     name: "Airbus",
   },
   {

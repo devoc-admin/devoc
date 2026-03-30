@@ -14,8 +14,10 @@ export function CompanyLogo({
     <Image
       alt={`Logo ${name}`}
       className={cn(
-        "h-12 max-h-full w-auto transition-all duration-500",
+        "w-auto",
+        "max-h-[80%]",
         "brightness-100 grayscale-100 invert-0",
+        "transition-all duration-500",
         "group-hover:brightness-0 group-hover:grayscale-0 group-hover:invert-100",
         className
       )}
