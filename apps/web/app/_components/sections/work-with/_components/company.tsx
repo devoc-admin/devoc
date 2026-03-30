@@ -16,52 +16,8 @@ type CompanyProps = WorkWithProps & {
 };
 
 export function Company({ link, logo, name }: CompanyProps) {
-  const [size, setSize] = useState({ diagonal: 0, rotationInDegrees: 0 });
-  const ref = useRef(null);
+  const { ref, size } = useResizeObserver();
 
-  useEffect(() => {
-    const handleResize = (entries: ResizeObserverEntry[]) => {
-      for (const entry of entries) {
-        const target = entry.target as HTMLElement;
-        const computedStyle = window.getComputedStyle(target);
-
-        // get paddings
-        const paddingLeft = Number.parseFloat(computedStyle.paddingLeft);
-        const paddingRight = Number.parseFloat(computedStyle.paddingRight);
-        const paddingTop = Number.parseFloat(computedStyle.paddingTop);
-        const paddingBottom = Number.parseFloat(computedStyle.paddingBottom);
-
-        const borderWidth = 2;
-
-        // contentRect excludes padding, so add them
-        const widthWithPadding =
-          entry.contentRect.width + paddingLeft + paddingRight + borderWidth;
-        const heightWithPadding =
-          entry.contentRect.height + paddingTop + paddingBottom + borderWidth;
-
-        const diagonal = Math.hypot(widthWithPadding, heightWithPadding);
-        const rotationInRadians = Math.asin(heightWithPadding / diagonal);
-
-        setSize({
-          diagonal,
-          rotationInDegrees: rotationInRadians * DEGREES_TO_RADIANS,
-        });
-      }
-    };
-
-    const resizeObserver = new ResizeObserver(handleResize);
-    if (ref.current) {
-      resizeObserver.observe(ref.current);
-    }
-
-    // Cleanup the observer on component unmount
-    return () => {
-      if (ref.current) {
-        resizeObserver.unobserve(ref.current);
-        resizeObserver.disconnect();
-      }
-    };
-  }, []);
   return (
     <a
       aria-label={`Visiter le site de ${name} (ouvre dans une nouvelle fenêtre)`}
@@ -111,4 +67,60 @@ export function Company({ link, logo, name }: CompanyProps) {
       {logo}
     </a>
   );
+}
+
+// ===========================
+// 🪝↔️
+function useResizeObserver() {
+  const [size, setSize] = useState({ diagonal: 0, rotationInDegrees: 0 });
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handleResize = (entries: ResizeObserverEntry[]) => {
+      for (const entry of entries) {
+        const target = entry.target as HTMLElement;
+        const computedStyle = window.getComputedStyle(target);
+
+        // get paddings
+        const paddingLeft = Number.parseFloat(computedStyle.paddingLeft);
+        const paddingRight = Number.parseFloat(computedStyle.paddingRight);
+        const paddingTop = Number.parseFloat(computedStyle.paddingTop);
+        const paddingBottom = Number.parseFloat(computedStyle.paddingBottom);
+
+        const borderWidth = 2;
+
+        // contentRect excludes padding, so add them
+        const widthWithPadding =
+          entry.contentRect.width + paddingLeft + paddingRight + borderWidth;
+        const heightWithPadding =
+          entry.contentRect.height + paddingTop + paddingBottom + borderWidth;
+
+        const diagonal = Math.hypot(widthWithPadding, heightWithPadding);
+        const rotationInRadians = Math.asin(heightWithPadding / diagonal);
+
+        setSize({
+          diagonal,
+          rotationInDegrees: rotationInRadians * DEGREES_TO_RADIANS,
+        });
+      }
+    };
+
+    const resizeObserver = new ResizeObserver(handleResize);
+    if (ref.current) {
+      resizeObserver.observe(ref.current);
+    }
+
+    // Cleanup the observer on component unmount
+    return () => {
+      if (ref.current) {
+        resizeObserver.unobserve(ref.current);
+        resizeObserver.disconnect();
+      }
+    };
+  }, []);
+
+  return {
+    ref,
+    size,
+  };
 }
