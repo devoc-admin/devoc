@@ -1,12 +1,14 @@
 "use client";
 import { SparklesText } from "@/components/magicui/sparkles-text";
+import DitheredImage from "@/components/motion-core/dithered-image/dithered-image";
 import GlowLine from "@/components/sera-ui/glow-line";
 import { cn } from "@/lib/utils";
 import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
+
 export default function SectionUs() {
   return (
-    <Section className="overflow-hidden" id="us" theme="dark">
+    <Section className="overflow-hidden pb-0!" id="us" theme="dark">
       <GlowLine color="orange" orientation="horizontal" position="0px" />
       <SectionTitle title="Qui sommes-nous ?" />
       <div
@@ -48,25 +50,35 @@ export default function SectionUs() {
         </div>
         <H3>L'Équipe</H3>
         <div className="grid grid-cols-1 justify-items-center gap-4 sm:grid-cols-2">
-          <div>
+          <div className="relative">
             <DeveloperName>Clément</DeveloperName>
             <P>
               Il s'occupe de la logique, des mécanismes d'interaction, il se
               charge également de l'automatisation.
-            </P>
+            </P>{" "}
+            <Portrait
+              className="top-0 left-0 -translate-x-[calc(100%+40px)] scale-x-[1]"
+              color="#F56E0F"
+              src="./clement-portrait.webp"
+            />
           </div>
-          <div>
+          <div className="relative">
             <DeveloperName>Thibaut</DeveloperName>
             <P>
               C'est le développeur orienté interface, c'est l'expert de
               l'esthétique et du rendu.
-            </P>
+            </P>{" "}
+            <Portrait
+              className="top-0 right-0 translate-x-full scale-x-[-1]"
+              color="#FFC731"
+              src="./thibaut-portrait.webp"
+            />
           </div>
         </div>
 
         <H3>Nos valeurs</H3>
 
-        <ul className="space-y-14">
+        <ul className="mb-36 space-y-14">
           <li>
             <H4>#1 La Proximité Géographique</H4>
             <P>
@@ -95,7 +107,17 @@ export default function SectionUs() {
           </li>
         </ul>
 
-        <H3>Pourquoi choisir Dev'Oc ?</H3>
+        <DitheredImage
+          backgroundColor="#09090b"
+          className={cn("left-1/2 h-50 w-screen -translate-x-1/2")}
+          color="#F56E0F"
+          ditherMap="voidAndCluster"
+          pixelSize={1}
+          src="./photo-groupe.webp"
+          threshold={0.05}
+        />
+
+        <H3 className="mt-36">Pourquoi choisir Dev'Oc ?</H3>
         <ul className="space-y-6">
           <li>
             <H4>Impact Territorial</H4>
@@ -143,14 +165,21 @@ function P({
   );
 }
 
-function H3({ children }: { children: React.ReactNode }) {
+function H3({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <h3
       className={cn(
         "w-fit",
         "bg-linear-to-br from-primary-strong via-primary to-primary-lighter bg-clip-text text-transparent",
         "my-6",
-        "font-kanit font-semibold text-5xl"
+        "font-kanit font-semibold text-5xl",
+        className
       )}
     >
       {children}
@@ -193,5 +222,29 @@ function DeveloperName({ children }: { children: React.ReactNode }) {
         {children}
       </SparklesText>
     </h4>
+  );
+}
+
+// ====================================
+// 🖼️ Portrait
+function Portrait({
+  className,
+  color,
+  src,
+}: {
+  className: string;
+  color: string;
+  src: string;
+}) {
+  return (
+    <DitheredImage
+      backgroundColor="#09090b"
+      className={cn("absolute size-100", "hidden", "lg:block", className)}
+      color={color}
+      ditherMap="bayer8x8"
+      pixelSize={1}
+      src={src}
+      threshold={0.05}
+    />
   );
 }

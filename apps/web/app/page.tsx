@@ -22,9 +22,9 @@ const WorkWith = dynamic(
 
 const Us = dynamic(() => import("./_components/sections/us/us.tsx"));
 
-// const ThreadsSeparator = dynamic(
-//   () => import("./_components/separators/threads-separator")
-// );
+const ThreadsSeparator = dynamic(
+  () => import("./_components/separators/threads-separator")
+);
 
 const Contact = dynamic(
   () => import("./_components/sections/contact/contact.tsx")
@@ -39,7 +39,7 @@ export default function Home() {
       <Hero />
       <WorkWith />
       <Us />
-      {/*<ThreadsSeparator />*/}
+      <ThreadsSeparator />
       <Services />
       <Realisations />
       <Method />

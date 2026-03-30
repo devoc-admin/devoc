@@ -40,7 +40,8 @@ export default function Services() {
         "sm:-scroll-m-50",
         // 🕳️ Gap
         "gap-y-16",
-        "sm:gap-y-32"
+        "sm:gap-y-32",
+        "pt-0!"
       )}
       id="services"
       theme="dark"
