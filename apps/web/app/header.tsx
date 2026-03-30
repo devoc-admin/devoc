@@ -228,6 +228,30 @@ function CollapseWhileScrolling({ children }: { children: React.ReactNode }) {
 // ---------------------------------
 //🧊 Custom glass
 function CustomGlass({ children }: { children: React.ReactNode }) {
+  const { scrollY } = useScroll();
+  const [isScrolling, setIsScrolling] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (current) => {
+    const isScrolling = current > 0;
+    setIsScrolling(isScrolling);
+  });
+
+  if (!isScrolling) {
+    return (
+      <div
+        className={cn(
+          "flex items-center justify-between",
+          "rounded-full",
+          "mx-auto",
+          "px-8 py-3",
+          "text-secondary hover:text-secondary"
+        )}
+      >
+        {children}
+      </div>
+    );
+  }
+
   return (
     <Glass
       borderRadius={1000}
@@ -237,7 +261,7 @@ function CustomGlass({ children }: { children: React.ReactNode }) {
         "mx-auto",
         "px-8 py-3",
         "text-secondary hover:text-secondary",
-        "bg-white/80!", // ☀️ Light
+        "bg-white/60!", // ☀️ Light
         "[html[data-nav-theme='dark']_&]:bg-zinc-900/70!" // 🌙 Dark
       )}
     >

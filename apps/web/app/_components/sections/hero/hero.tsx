@@ -1,18 +1,12 @@
 "use client";
-import { motion, useScroll, useTransform } from "motion/react";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
+import { motion } from "motion/react";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
 import useNavTheme from "@/app/_hooks/use-nav-theme.ts";
-import CubeShape from "@/assets/shapes/cube.webp";
-import DiamondShape from "@/assets/shapes/diamond.webp";
-import DonutShape from "@/assets/shapes/donut.webp";
-import SphereShape from "@/assets/shapes/sphere.webp";
 import { ContainerTextFlip } from "@/components/aceternity/container-text-flip.tsx";
 import { AvatarStack } from "@/components/kibo-ui/avatar-stack/index.tsx";
 import { AuroraText } from "@/components/magicui/aurora-text.tsx";
 import { ShimmerButton } from "@/components/magicui/shimmer-button.tsx";
+import SpecularBandsBackground from "@/components/motion-core/specular-band/specular-band-background.tsx";
 import {
   Avatar,
   AvatarFallback,
@@ -32,8 +26,8 @@ const heroEntryDuration = 0.5;
 export default function Hero() {
   return (
     <WithNavbar>
-      <Shapes />
-      <div className="flex flex-col items-center gap-y-6">
+      <Background />
+      <div className={cn("flex flex-col items-center gap-y-6")}>
         <DevOc />
         <Keywords />
         <Description />
@@ -48,6 +42,28 @@ export default function Hero() {
 }
 
 // ----------------------------------
+// 🖼️ Background
+function Background() {
+  return (
+    <motion.div
+      animate={{ opacity: 1 }}
+      className={cn(
+        "absolute -z-1 h-screen w-full opacity-40",
+        "mask-b-from-80% mask-b-to-100%"
+      )}
+      initial={{ opacity: 0 }}
+      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
+    >
+      <SpecularBandsBackground
+        backgroundColor="#ffffff"
+        className="h-screen w-full"
+      />
+    </motion.div>
+  );
+}
+
+// ----------------------------------
+// 🧭
 function WithNavbar({ children }: { children: React.ReactNode }) {
   const { ref: sectionRef } = useNavTheme({
     sectionName: "home",
@@ -57,8 +73,11 @@ function WithNavbar({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
+        "relative",
+        "flex grow items-center justify-center",
         "min-h-svh w-full",
-        "relative flex grow items-center justify-center overflow-hidden px-6 py-12"
+        "overflow-hidden",
+        "px-6 py-12"
       )}
       ref={sectionRef}
     >
@@ -68,215 +87,7 @@ function WithNavbar({ children }: { children: React.ReactNode }) {
 }
 
 // ----------------------------------
-// 🌿 Wreaths
-function OpenCarcaWinner() {
-  return (
-    <FadeScaleEntry>
-      <a
-        href="https://www.carcassonne-agglo.fr/actualite/carcassonne-agglo-apporte-son-concours-2/#:~:text=prix%20revient%20%C3%A0%20Cl%C3%A9ment%20Dubos%20et%20Thibaut%20Izard%20pour%20%C2%AB%20Dev%E2%80%99Oc%20%C2%BB,%20un%20collectif%20de%20d%C3%A9veloppeurs%20informatique%20qui%20souhaitent%20proposer%20des%20services%20de%20mise%20en%20conformit%C3%A9%20de%20sites%20Internet%20aux%20collectivit%C3%A9s%20territoriales"
-        rel="noopener"
-        target="_blank"
-        title="Lien vers la page d'annnonce des résultats du concours OpenCarca 2025"
-      >
-        <RatingBadge
-          className={cn(
-            "mx-auto text-amber-400",
-            "hidden",
-            "[@media(min-height:850px)]:flex" // Hide if viewport height is too small
-          )}
-        >
-          <div
-            className={cn(
-              "mt-4 flex flex-col gap-y-1.5",
-              "max-w-50",
-              "text-center font-bold text-base leading-none",
-              "bg-linear-to-br from-primary-strong via-primary-lighter to-primary bg-clip-text text-transparent"
-            )}
-          >
-            <span>Lauréats concours Open Carca 2025</span>
-            <span className="text-[0.6rem] uppercase">Catégorie émergence</span>
-          </div>
-        </RatingBadge>
-      </a>
-    </FadeScaleEntry>
-  );
-}
-
-// ----------------------------------
-// 🔲 Shapes
-function Shapes() {
-  return (
-    <div
-      className={cn(
-        "absolute -z-1",
-        "size-full",
-        "max-w-350",
-        //📱 Mobile
-        "opacity-50 blur-xs",
-        // 💻 Tablet/Desktop
-        "md:opacity-100 md:blur-none"
-      )}
-    >
-      <Shape
-        className={cn(
-          "-translate-x-1/2 -translate-y-1/2",
-          "top-[25%] left-[28%]",
-          "xs:top-[13%] xs:left-[28%]",
-          "sm:top-[13%] sm:left-[16%]",
-          "md:top-[17%] md:left-[15%]",
-          "lg:top-[19%] lg:left-[19%]",
-          "lg:left-[19%] xl:top-[25%]"
-        )}
-        parallaxCoeff={4}
-        src={CubeShape}
-      />
-      <Shape
-        className={cn(
-          "translate-x-1/2 -translate-y-1/2",
-          "top-[12%] right-[23%]",
-          "xs:top-[22%] xs:right-[18%]",
-          "sm:top-[28%] sm:right-[15%]",
-          "md:top-[28%] md:right-[16%]",
-          "lg:top-[33%] lg:right-[16%]",
-          "xl:top-[36%] xl:right-[19%]"
-        )}
-        parallaxCoeff={3}
-        src={DiamondShape}
-      />
-      <Shape
-        className={cn(
-          "-translate-x-1/2 translate-y-1/2",
-          "bottom-[20%] left-[22%]",
-          "xs:bottom-[17%] xs:left-[24%]",
-          "sm:bottom-[13%] sm:left-[20%]",
-          "md:bottom-[16%] md:left-[22%]",
-          "lg:bottom-[16%] lg:left-[22%]",
-          "xl:bottom-[24%] xl:left-[19%]"
-        )}
-        parallaxCoeff={2}
-        src={DonutShape}
-      />
-      <Shape
-        className={cn(
-          //📍Position
-          "translate-x-1/2 translate-y-1/2",
-          "right-[16%] bottom-[27%]",
-          "xs:right-[22%] xs:bottom-[20%]",
-          "sm:right-[24%] sm:bottom-[18%]",
-          "md:right-[24%] md:bottom-[22%]",
-          "lg:right-[14%] lg:bottom-[22%]",
-          "xl:right-[20%] xl:bottom-[18%]"
-        )}
-        parallaxCoeff={1}
-        src={SphereShape}
-      />
-    </div>
-  );
-}
-
-const keyFramesMobileX = [0];
-const keyFramesDesktopX = [0, 3, -2, 4, 0, -1, 0];
-
-const keyframesMobileY = [0];
-const keyframesDesktopY = [0, -8, -5, -10, -15, -8, 0];
-
-function Shape({
-  src,
-  className,
-  parallaxCoeff,
-}: {
-  src: StaticImageData;
-  parallaxCoeff: number;
-  className?: string;
-}) {
-  const { isMobile } = useMobile();
-  const { scrollY } = useScroll();
-  const parallaxValue = useTransform(
-    scrollY,
-    [0, 1000],
-    [0, -100 * parallaxCoeff]
-  );
-
-  const keyFramesX = isMobile ? keyFramesMobileX : keyFramesDesktopX;
-  const keyFramesY = isMobile ? keyframesMobileY : keyframesDesktopY;
-
-  const randomDurationOffset = Math.random();
-  const durationMovementMobile = 12 + randomDurationOffset * 6;
-  const durationMovementDesktop = 9 + randomDurationOffset * 3;
-
-  const durationMovement = isMobile
-    ? durationMovementMobile
-    : durationMovementDesktop;
-
-  return (
-    /* With parallax effect */
-    <motion.div
-      className={cn(
-        className,
-        "absolute",
-        "w-60",
-        "xs:w-68.75",
-        "sm:w-75",
-        "md:w-75",
-        "lg:w-75",
-        "xl:w-80",
-        "2xl:w-100"
-      )}
-      style={{ y: isMobile ? 0 : parallaxValue }}
-    >
-      {/* With floating effect */}
-      <motion.div
-        animate={{ opacity: 1, x: keyFramesX, y: keyFramesY }}
-        initial={{ opacity: 0, x: 0, y: 0 }}
-        transition={{
-          opacity: {
-            duration: 1,
-            ease: "easeInOut",
-          },
-          x: {
-            duration: durationMovement,
-            ease: "easeInOut",
-            repeat: Number.POSITIVE_INFINITY,
-          },
-          y: {
-            duration: durationMovement,
-            ease: "easeInOut",
-            repeat: Number.POSITIVE_INFINITY,
-          },
-        }}
-      >
-        <Image alt="" aria-hidden height={400} priority src={src} width={400} />
-      </motion.div>
-    </motion.div>
-  );
-}
-
-// ----------------------------------
-const keywords = [
-  "🔒 Sécurité",
-  "👁️ Accessibilité",
-  "⚡ Performance",
-  "🎨 Design",
-];
-
-function Keywords() {
-  return (
-    <motion.div
-      animate={{ opacity: 1 }}
-      initial={{ opacity: 0 }}
-      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
-    >
-      <div className={cn("flex flex-col gap-y-1", "-mt-8 xs:-mt-10")}>
-        <div className="text-center font-kanit font-normal text-base">
-          Votre expert de proximité en
-        </div>
-        <ContainerTextFlip words={keywords} />
-      </div>
-    </motion.div>
-  );
-}
-
-// ----------------------------------
+// 🏢
 function DevOc() {
   return (
     <FadeMoveDown>
@@ -316,6 +127,7 @@ function FadeMoveDown({ children }: { children: React.ReactNode }) {
 }
 
 // ----------------------------------
+// 🔠
 function Description() {
   return (
     <motion.div
@@ -339,6 +151,70 @@ function Description() {
         digital.
       </p>
     </motion.div>
+  );
+}
+
+// ----------------------------------
+const keywords = [
+  "🔒 Sécurité",
+  "👁️ Accessibilité",
+  "⚡ Performance",
+  "🎨 Design",
+];
+
+function Keywords() {
+  return (
+    <motion.div
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
+    >
+      <div className={cn("flex flex-col gap-y-1", "-mt-8 xs:-mt-10")}>
+        <div className="text-center font-kanit font-normal text-base">
+          Votre expert de proximité en
+        </div>
+        <ContainerTextFlip words={keywords} />
+      </div>
+    </motion.div>
+  );
+}
+
+// ----------------------------------
+// 🌿
+
+const OPEN_CARCA_WINNER_URL =
+  "https://www.carcassonne-agglo.fr/actualite/carcassonne-agglo-apporte-son-concours-2/#:~:text=prix%20revient%20%C3%A0%20Cl%C3%A9ment%20Dubos%20et%20Thibaut%20Izard%20pour%20%C2%AB%20Dev%E2%80%99Oc%20%C2%BB,%20un%20collectif%20de%20d%C3%A9veloppeurs%20informatique%20qui%20souhaitent%20proposer%20des%20services%20de%20mise%20en%20conformit%C3%A9%20de%20sites%20Internet%20aux%20collectivit%C3%A9s%20territoriales";
+
+function OpenCarcaWinner() {
+  return (
+    <FadeScaleEntry>
+      <a
+        href={OPEN_CARCA_WINNER_URL}
+        rel="noopener"
+        target="_blank"
+        title="Lien vers la page d'annnonce des résultats du concours OpenCarca 2025"
+      >
+        <RatingBadge
+          className={cn(
+            "mx-auto text-amber-400",
+            "hidden",
+            "[@media(min-height:850px)]:flex" // Hide if viewport height is too small
+          )}
+        >
+          <div
+            className={cn(
+              "mt-4 flex flex-col gap-y-1.5",
+              "max-w-50",
+              "text-center font-bold text-base leading-none",
+              "bg-linear-to-br from-primary-strong via-primary-lighter to-primary bg-clip-text text-transparent"
+            )}
+          >
+            <span>Lauréats concours Open Carca 2025</span>
+            <span className="text-[0.6rem] uppercase">Catégorie émergence</span>
+          </div>
+        </RatingBadge>
+      </a>
+    </FadeScaleEntry>
   );
 }
 
@@ -379,7 +255,7 @@ function FadeMoveUp({ children }: { children: React.ReactNode }) {
 }
 
 // ----------------------------------
-// 👑 Founders
+// 👑
 function Founders() {
   return (
     <div
@@ -454,6 +330,8 @@ function AvatarWithTooltip({
 
 // ------------------------------------------------------
 // 🤹 Animations
+
+// ==================================================================
 function FadeScaleEntry({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
@@ -469,6 +347,7 @@ function FadeScaleEntry({ children }: { children: React.ReactNode }) {
   );
 }
 
+// ==================================================================
 function PopEntry({
   children,
   extraDelay = 0,
@@ -488,46 +367,4 @@ function PopEntry({
       {children}
     </motion.div>
   );
-}
-
-// ------------------------------------------------------
-// 📱 Mobile
-function useMobile() {
-  const [isMobile, setIsMobile] = useState(false);
-  const checkMobile = useCallback(
-    () => setIsMobile(window.innerWidth < 768),
-    []
-  );
-  const throttledCheckMobile = useThrottle({
-    callback: checkMobile,
-    delayInMs: 150,
-  });
-
-  useEffect(() => {
-    checkMobile();
-    window.addEventListener("resize", throttledCheckMobile);
-    return () => {
-      window.removeEventListener("resize", throttledCheckMobile);
-    };
-  }, [throttledCheckMobile, checkMobile]);
-  return { isMobile };
-}
-
-function useThrottle({
-  callback,
-  delayInMs,
-}: {
-  // biome-ignore lint/suspicious/noExplicitAny: exception
-  callback: (...args: any[]) => void;
-  delayInMs: number;
-}) {
-  let lastCall = 0;
-  // biome-ignore lint/suspicious/noExplicitAny: exception
-  return (...args: any[]) => {
-    const now = Date.now();
-    if (now - lastCall >= delayInMs) {
-      lastCall = now;
-      callback(...args);
-    }
-  };
 }
