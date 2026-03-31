@@ -2,6 +2,7 @@
 import { SparklesText } from "@/components/magicui/sparkles-text";
 import DitheredImage from "@/components/motion-core/dithered-image/dithered-image";
 import GlowLine from "@/components/sera-ui/glow-line";
+import { OPEN_CARCA_WINNER_URL } from "@/constants";
 import { cn } from "@/lib/utils";
 import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
@@ -19,6 +20,7 @@ export default function SectionUs() {
           "xl:mt-12",
           "2xl:mt-16",
           // ↔️ Width
+          "w-full",
           "max-w-[60ch]",
           // ↕️ Spacing
           "space-y-12",
@@ -27,34 +29,57 @@ export default function SectionUs() {
         )}
       >
         <div className="space-y-4">
-          <P className="font-medium text-xl">
-            Le collectif Dev'Oc naît d'une volonté simple : remettre l'humain et
-            la proximité au centre des projets technologiques.
+          <P className="mb-12 text-center font-medium text-2xl">
+            Le collectif Dev'Oc est né d'une conviction simple : remettre
+            l'humain et la proximité au centre des projets technologiques.
           </P>
           <P className="font-medium text-xl">
             <a
               className="underline"
-              href="https://www.carcassonne-agglo.fr/actualite/carcassonne-agglo-apporte-son-concours-2/#:~:text=prix%20revient%20%C3%A0%20Cl%C3%A9ment%20Dubos%20et%20Thibaut%20Izard%20pour%20%C2%AB%20Dev%E2%80%99Oc%20%C2%BB,%20un%20collectif%20de%20d%C3%A9veloppeurs%20informatique%20qui%20souhaitent%20proposer%20des%20services%20de%20mise%20en%20conformit%C3%A9%20de%20sites%20Internet%20aux%20collectivit%C3%A9s%20territoriales"
+              href={OPEN_CARCA_WINNER_URL}
               rel="noopener"
               target="_blank"
             >
               Lauréat 2025 du concours entrepreneurial de Carcassonne Agglo
             </a>
-            , nous avons choisi de mettre notre expertise au service du tissu
-            économique local.
+            , Dev'Oc accompagne les entreprises, artisans et collectivités
+            d'Occitanie dans leur transformation numérique (création de sites
+            web, mise en conformité règlementaire, automatisation des processus,
+            sécurisation des infrastructures) avec la proximité et l'exigence
+            comme boussole.
           </P>
           <P className="font-medium text-xl">
-            Nous sommes persuadés que le meilleur moyen de développer un
-            territoire est d'améliorer son empreinte numérique.
+            À la transformation nous joignons toujours la transmission en
+            animant des formations à destination des entrepreneurs et des élus
+            pour démystifier ces sujets, révéler des pistes d'action et diffuser
+            le plus largement possible les bonnes pratiques, le tout dans un
+            langage clair et accessible.
+          </P>
+          <P className="font-medium text-xl">
+            En un mot, nous avons choisi de mettre toute notre expertise au
+            service du tissu économique local, persuadés que l'un des meilleurs
+            moyens de développer un territoire est d'améliorer son empreinte
+            numérique.
           </P>
         </div>
-        <H3>L'Équipe</H3>
-        <div className="grid grid-cols-1 justify-items-center gap-4 sm:grid-cols-2">
+        <H3>Les fondateurs</H3>
+        <div
+          className={cn(
+            "grid justify-items-center gap-4",
+            "grid-cols-1",
+            "sm:grid-cols-[50%_50%]"
+          )}
+        >
           <div className="relative">
-            <DeveloperName>Clément</DeveloperName>
+            <DeveloperName className="from-primary-strong to-primary">
+              Clément
+            </DeveloperName>
             <P>
-              Il s'occupe de la logique, des mécanismes d'interaction, il se
-              charge également de l'automatisation.
+              L'architecte de l'invisible. Bases de données, interconnexions
+              entre systèmes, automatisation des tâches répétitives,
+              infrastructure et déploiement : il conçoit les fondations sur
+              lesquelles repose vos outils numériques. Avec toujours comme
+              maîtres mots l'efficacité et la résilience.
             </P>{" "}
             <Portrait
               className="top-0 left-0 -translate-x-[calc(100%+40px)] scale-x-[1]"
@@ -63,10 +88,15 @@ export default function SectionUs() {
             />
           </div>
           <div className="relative">
-            <DeveloperName>Thibaut</DeveloperName>
-            <P>
-              C'est le développeur orienté interface, c'est l'expert de
-              l'esthétique et du rendu.
+            <DeveloperName className="ml-auto from-primary to-primary-lighter">
+              Thibaut
+            </DeveloperName>
+            <P className="text-right">
+              L'interface entre vous et vos utilisateurs. Il traduit vos besoins
+              en expériences numériques claires, accessibles et efficaces.
+              Expert en développement web, conformité RGPD, accessibilité, il
+              s'assure que vos interfaces restent modernes avec une identité
+              forte mais également conformes et durables.
             </P>{" "}
             <Portrait
               className="top-0 right-0 translate-x-full scale-x-[-1]"
@@ -75,38 +105,48 @@ export default function SectionUs() {
             />
           </div>
         </div>
-
+        <P className="text-center font-medium text-2xl">
+          Ensemble, ils forment un binôme complémentaire : là où l'un construit
+          la mécanique, l'autre soigne l'expérience. Deux regards, une même
+          exigence.
+        </P>{" "}
         <H3>Nos valeurs</H3>
-
         <ul className="mb-36 space-y-14">
           <li>
-            <H4>#1 La Proximité Géographique</H4>
+            <H4>#1 La proximité géographique et humaine</H4>
             <P>
-              Nous croyons que les meilleurs logiciels se conçoivent en
-              face-à-face. Nous nous déplaçons dans vos usines, vos domaines et
-              vos bureaux à travers toute l'Occitanie pour comprendre vos flux
-              de travail réels.
+              Les meilleurs projets se construisent en face-à-face. Nous nous
+              déplaçons volontiers dans vos locaux, vos mairies et vos bureaux à
+              travers toute l'Occitanie pour comprendre vos réalités concrètes
+              et vous former à vos outils, sans chercher à appliquer
+              mécaniquement la même recette de client en client.
             </P>
           </li>
           <li>
-            <H4>#2 La Souveraineté Numérique</H4>
+            <H4>
+              #2 L'autonomie des utilisateurs et la protection des données
+            </H4>
             <P>
               Vos données sont votre patrimoine. Nous privilégions les solutions{" "}
-              <i>open source</i> et un hébergement souverain pour assurer votre
-              indépendance.
+              <i>open source</i> et l'hébergement souverain pour garantir votre
+              indépendance tout en vous donnant les moyens de construire votre
+              autonomie par la formation continue et la fourniture de guides
+              d'utilisation de vos outils.
             </P>
           </li>
           <li>
-            <H4>#3 L'Ingénierie Rationnelle</H4>
+            <H4>#3 L'esprit ingénieur à votre service</H4>
             <P>
-              Notre objectif est de trouver les bonnes solutions, adaptées à vos
-              besoins et à vos coûts. Issus du monde professionnel et des grands
-              groupes, nous importons les méthodes et la rigueur des grandes
-              entreprises pour les mettre au service des TPE et PME locales.
+              Notre objectif est de trouver les meilleures solutions avec des
+              combinaisons technologiques adaptées à vos besoins et à un coût
+              compétitif. Issus du monde professionnel et des grands groupes,
+              nous en importons les méthodes et la rigueur pour les mettre au
+              service des TPE, PME et collectivités locales qui n'ont pas
+              toujours les ressources internes nécessaires pour faire face à
+              certains défis techniques.
             </P>
           </li>
         </ul>
-
         <DitheredImage
           backgroundColor="#09090b"
           className={cn("left-1/2 h-50 w-screen -translate-x-1/2")}
@@ -116,21 +156,46 @@ export default function SectionUs() {
           src="./photo-groupe.webp"
           threshold={0.05}
         />
-
         <H3 className="mt-36">Pourquoi choisir Dev'Oc ?</H3>
         <ul className="space-y-6">
           <li>
-            <H4>Impact Territorial</H4>
+            <H4>Un interlocuteur unique, pas une agence anonyme</H4>
             <P>
-              Travailler avec nous, c'est réinjecter de la valeur dans
-              l'économie de notre région.
+              Vous parlez directement aux personnes qui effectuent le travail
+              commandé et qui apprennent ainsi à vous connaître pour construire
+              une relation de confiance au fil du temps, pas à un commercial qui
+              transmet à une équipe <i>offshore</i> ou à un service d'assistance
+              en ligne.
             </P>
           </li>
           <li>
-            <H4>Connaissance du Tissu</H4>
+            <H4>Une expertise réglementaire intégrée</H4>
             <P>
-              Nous comprenons les enjeux spécifiques des PME et des institutions
-              d'Occitanie.
+              RGPD, RGAA, NIS2, facturation électronique : nous anticipons les
+              obligations qui s'imposent à vous dans le cadre français ou
+              européen en vous évitant de vous embarquer avec des outils
+              inadaptés qui finissent par vous coûter cher et dont il devient
+              ensuite difficile de se séparer. En nous confiant vos besoins, vos
+              produits numériques sont conformes dès leur conception et passent
+              tous les caps réglementaires afin de vous assurer une totale
+              sérénité et vous garantir contre tout risque juridique.
+            </P>
+          </li>
+          <li>
+            <H4>L'impact territorial</H4>
+            <P>
+              Travailler avec Dev'Oc, c'est choisir de réinjecter de la valeur
+              dans l'économie de votre territoire pour en faire rayonner les
+              acteurs et participer de la montée en puissance numérique de la
+              région.
+            </P>
+          </li>
+          <li>
+            <H4>Une reconnaissance indépendante</H4>
+            <P>
+              Lauréats 2025 du concours entrepreneurial de Carcassonne Agglo,
+              notre approche a été reconnue par les acteurs économiques du
+              territoire que nous servons.
             </P>
           </li>
         </ul>
@@ -201,7 +266,13 @@ function H4({ children }: { children: React.ReactNode }) {
   );
 }
 
-function DeveloperName({ children }: { children: React.ReactNode }) {
+function DeveloperName({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <h4
       className={cn(
@@ -209,7 +280,8 @@ function DeveloperName({ children }: { children: React.ReactNode }) {
         "relative",
         "font-bold font-fira-code",
         "bg-linear-to-tr from-primary to-primary-lighter bg-clip-text text-transparent uppercase",
-        "font-bold text-xl"
+        "font-bold text-2xl",
+        className
       )}
     >
       <SparklesText
