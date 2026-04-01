@@ -385,7 +385,7 @@ function Portrait({
   return (
     <DitheredImage
       backgroundColor="#09090b" // zinc-9500
-      className={cn("size-100 xl:absolute", className)}
+      className={cn("size-50 sm:size-75 md:size-100 xl:absolute", className)}
       color={color}
       ditherMap="bayer8x8"
       pixelSize={1}
