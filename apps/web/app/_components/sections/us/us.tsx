@@ -1,4 +1,6 @@
 "use client";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useRef } from "react";
 import { SparklesText } from "@/components/magicui/sparkles-text";
 import DitheredImage from "@/components/motion-core/dithered-image/dithered-image";
 import GlowLine from "@/components/sera-ui/glow-line";
@@ -197,16 +199,30 @@ function Values() {
 // ==============================
 // 🖼️
 function BannerImage() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    offset: ["start end", "end start"],
+    target: ref,
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["-50%", "0%"]);
+
   return (
-    <DitheredImage
-      backgroundColor="#09090b"
-      className={cn("left-1/2 h-50 w-screen -translate-x-1/2")}
-      color="#F56E0F"
-      ditherMap="voidAndCluster"
-      pixelSize={1}
-      src="./photo-groupe.webp"
-      threshold={0.05}
-    />
+    <div
+      className={cn("ml-[calc(-50vw+50%)] h-50 w-screen", "overflow-hidden")}
+      ref={ref}
+    >
+      <motion.div className="h-[250%] w-full" style={{ y }}>
+        <DitheredImage
+          backgroundColor="#09090b"
+          className="h-full w-full"
+          color="#F56E0F"
+          ditherMap="voidAndCluster"
+          pixelSize={1}
+          src="./photo-groupe.webp"
+          threshold={0.05}
+        />
+      </motion.div>
+    </div>
   );
 }
 
