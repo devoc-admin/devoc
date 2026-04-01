@@ -261,7 +261,7 @@ function FrontCard({
         // ↔️ Padding
         "py-4",
         "@xs:py-6",
-        "backface-hidden",
+        "backface-hidden translate-z-0",
         // 🤹 Animation
         "transition-opacity duration-700",
         isFlipped && isMobile && "opacity-0",
