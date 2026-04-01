@@ -211,7 +211,7 @@ function BannerImage() {
       className={cn("ml-[calc(-50vw+50%)] h-50 w-screen", "overflow-hidden")}
       ref={ref}
     >
-      <motion.div className="h-[250%] w-full" style={{ y }}>
+      <motion.div className="h-[150%] w-full lg:h-[250%]" style={{ y }}>
         <DitheredImage
           backgroundColor="#09090b"
           className="h-full w-full"
