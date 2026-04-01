@@ -310,7 +310,7 @@ function Portrait({
 }) {
   return (
     <DitheredImage
-      backgroundColor="#09090b"
+      backgroundColor="#09090b" // zinc-9500
       className={cn("absolute size-100", "hidden", "lg:block", className)}
       color={color}
       ditherMap="bayer8x8"
