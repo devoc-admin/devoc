@@ -139,7 +139,7 @@ function Description() {
       <p
         className={cn(
           "hidden",
-          "[@media(min-height:500px)]:block",
+          "[@media(min-height:550px)]:block",
           "mx-auto",
           "w-[45ch] max-w-[90vw]",
           "text-center font-kanit font-semibold text-secondary leading-tight!",
@@ -196,7 +196,7 @@ function OpenCarcaWinner() {
           className={cn(
             "mx-auto text-amber-400",
             "hidden",
-            "[@media(min-height:850px)]:flex" // Hide if viewport height is too small
+            "[@media(min-height:900px)]:flex" // Hide if viewport height is too small
           )}
         >
           <div
@@ -259,7 +259,7 @@ function Founders() {
     <div
       className={cn(
         "hidden",
-        "[@media(min-height:850px)]:flex",
+        "[@media(min-height:750px)]:flex",
         "flex-col items-center gap-2 rounded-lg px-6 py-4 font-fira-code"
       )}
     >
