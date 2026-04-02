@@ -12,7 +12,7 @@ function SectionTitle({
   return (
     <div
       className={cn(
-        "flex flex-col gap-y-4 px-6",
+        "flex flex-col gap-y-4",
         "mx-auto",
         "text-center text-white",
         className
