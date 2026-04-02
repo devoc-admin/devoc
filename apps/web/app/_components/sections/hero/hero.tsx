@@ -48,7 +48,7 @@ function Background() {
   return (
     <motion.div
       animate={{ opacity: 1 }}
-      className={cn("absolute -z-1 h-screen w-full opacity-40")}
+      className={cn("absolute -z-1 h-full w-full opacity-40")}
       initial={{ opacity: 0 }}
       transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
     >
@@ -62,7 +62,7 @@ function Background() {
       >
         <SpecularBandsBackground
           backgroundColor="#ffffff"
-          className="h-screen w-full"
+          className="h-full w-full"
         />
       </div>
     </motion.div>
@@ -176,7 +176,12 @@ function Keywords() {
       initial={{ opacity: 0 }}
       transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
     >
-      <div className={cn("flex flex-col gap-y-1", "-mt-8 xs:-mt-10")}>
+      <div
+        className={cn(
+          "flex flex-col items-center justify-center gap-y-1",
+          "-mt-8 xs:-mt-10"
+        )}
+      >
         <div className="text-center font-kanit font-normal text-base">
           Votre expert de proximité en
         </div>
