@@ -1,6 +1,4 @@
 "use client";
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
 import { SparklesText } from "@/components/magicui/sparkles-text";
 import DitheredImage from "@/components/motion-core/dithered-image/dithered-image";
 import GlowLine from "@/components/sera-ui/glow-line";
@@ -25,9 +23,10 @@ export default function SectionUs() {
           "w-full",
           "max-w-[60ch]",
           // ↕️ Spacing
-          "space-y-12",
-          "lg:space-y-14",
-          "2xl:space-y-20"
+          "flex flex-col",
+          "gap-y-12",
+          "lg:gap-y-18",
+          "2xl:gap-y-24"
         )}
       >
         <Intro />
@@ -84,7 +83,7 @@ function Intro() {
 // 2️⃣ Founders
 function Founders() {
   return (
-    <>
+    <div>
       <H3>Les fondateurs</H3>
       <div
         className={cn(
@@ -133,22 +132,22 @@ function Founders() {
           </P>{" "}
           <Portrait
             className={cn(
+              "scale-x-[-1]",
               // 📱
               "mx-auto my-10",
               // 🖥️
-              "xl:top-0 xl:right-0 xl:my-0 xl:translate-x-full",
-              "scale-x-[-1]"
+              "xl:top-0 xl:right-0 xl:my-0 xl:translate-x-full"
             )}
             color="#FFC731"
             src="./thibaut-portrait.webp"
           />
         </div>
       </div>
-      <P className="text-center font-medium text-2xl">
+      <P className="mt-14 text-pretty text-center font-medium text-2xl">
         Ensemble, ils forment un binôme complémentaire : là où l'un construit la
         mécanique, l'autre soigne l'expérience. Deux regards, une même exigence.
       </P>{" "}
-    </>
+    </div>
   );
 }
 
@@ -156,9 +155,9 @@ function Founders() {
 // 3️⃣ Values
 function Values() {
   return (
-    <>
+    <div>
       <H3>Nos valeurs</H3>
-      <ul className="mb-36 space-y-14">
+      <ul className="mb-0! space-y-6">
         <li>
           <H4>#1 La proximité géographique et humaine</H4>
           <P>
@@ -192,36 +191,30 @@ function Values() {
           </P>
         </li>
       </ul>
-    </>
+    </div>
   );
 }
 
 // ==============================
 // 🖼️
 function BannerImage() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    offset: ["start end", "end start"],
-    target: ref,
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ["-50%", "0%"]);
-
   return (
     <div
-      className={cn("ml-[calc(-50vw+50%)] h-50 w-screen", "overflow-hidden")}
-      ref={ref}
+      className={cn(
+        "ml-[calc(-50vw+50%)] w-screen",
+        "overflow-hidden",
+        "h-30 md:h-50"
+      )}
     >
-      <motion.div className="h-[150%] w-full lg:h-[250%]" style={{ y }}>
-        <DitheredImage
-          backgroundColor="#09090b"
-          className="h-full w-full"
-          color="#F56E0F"
-          ditherMap="voidAndCluster"
-          pixelSize={1}
-          src="./photo-groupe.webp"
-          threshold={0.05}
-        />
-      </motion.div>
+      <DitheredImage
+        backgroundColor="#09090b"
+        className="h-full w-full"
+        color="#F56E0F"
+        ditherMap="voidAndCluster"
+        pixelSize={1}
+        src="./photo-groupe.webp"
+        threshold={0.05}
+      />
     </div>
   );
 }
@@ -230,8 +223,8 @@ function BannerImage() {
 // 4️⃣ Why us
 function WhyUs() {
   return (
-    <>
-      <H3 className="mt-36">Pourquoi choisir Dev'Oc ?</H3>
+    <div>
+      <H3>Pourquoi choisir Dev'Oc ?</H3>
       <ul className="space-y-6">
         <li>
           <H4>Un interlocuteur unique, pas une agence anonyme</H4>
@@ -274,7 +267,7 @@ function WhyUs() {
           </P>
         </li>
       </ul>
-    </>
+    </div>
   );
 }
 
@@ -318,6 +311,7 @@ function H3({
         "bg-linear-to-br from-primary-strong via-primary to-primary-lighter bg-clip-text text-transparent",
         "my-6",
         "font-kanit font-semibold text-5xl",
+        "text-balance",
         className
       )}
     >
@@ -332,7 +326,8 @@ function H4({ children }: { children: React.ReactNode }) {
       className={cn(
         "w-fit",
         "bg-linear-to-tl from-primary to-primary-lighter bg-clip-text text-transparent",
-        "font-bold text-xl"
+        "font-bold text-xl",
+        "text-balance"
       )}
     >
       {children}
