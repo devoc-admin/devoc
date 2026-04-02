@@ -48,11 +48,13 @@ function Background() {
   return (
     <motion.div
       animate={{ opacity: 1 }}
-      className={cn(
-        "absolute -z-1 h-screen w-full opacity-40",
-        "mask-b-from-80% mask-b-to-100%"
-      )}
+      className={cn("absolute -z-1 h-screen w-full opacity-40")}
       initial={{ opacity: 0 }}
+      style={{
+        maskImage: "linear-gradient(to bottom, black 80%, transparent 100%)",
+        WebkitMaskImage:
+          "linear-gradient(to bottom, black 80%, transparent 100%)",
+      }}
       transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
     >
       <SpecularBandsBackground
