@@ -38,7 +38,7 @@ function WorkWith() {
 // 🆎 Header
 function NoxExpertsOntTravailléAvecEux() {
   return (
-    <div className="mb-6 px-6 text-center font-kanit font-regular text-3xl">
+    <div className="mb-6 px-8 text-center font-kanit font-regular text-3xl">
       Nos experts ont travaillé avec eux
     </div>
   );
