@@ -31,7 +31,6 @@ export default function Hero() {
       <div className={cn("flex flex-col items-center gap-y-6")}>
         <DevOc />
         <Keywords />
-        <Description />
         <OpenCarcaWinner />
       </div>
       <div className={cn("absolute", "bottom-10")}>
@@ -124,34 +123,6 @@ function FadeMoveDown({ children }: { children: React.ReactNode }) {
       transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
     >
       {children}
-    </motion.div>
-  );
-}
-
-// ----------------------------------
-// 🔠
-function Description() {
-  return (
-    <motion.div
-      animate={{ opacity: 1, y: 0 }}
-      initial={{ opacity: 0, y: 50 }}
-      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
-    >
-      <p
-        className={cn(
-          "hidden",
-          "[@media(min-height:550px)]:block",
-          "mx-auto",
-          "w-[45ch] max-w-[90vw]",
-          "text-center font-kanit font-semibold text-secondary leading-tight!",
-          "text-base",
-          "xs:text-lg"
-        )}
-      >
-        Nous créons des sites web, des applications sur mesure et des solutions
-        d’automatisation IA pour propulser votre organisation vers le succès
-        digital.
-      </p>
     </motion.div>
   );
 }

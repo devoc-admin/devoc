@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { VisuallyHidden } from "radix-ui";
 import { useCallback, useEffect, useState } from "react";
-import { ProspectTypeBadge } from "@/app/admin/(authenticated)/prospects/_components/buttons/prospect-type-button";
+import { ProspectTypeBadge } from "@/app/(admin)/admin/(authenticated)/prospects/_components/buttons/prospect-type-button";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

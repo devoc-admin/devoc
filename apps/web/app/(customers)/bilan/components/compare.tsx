@@ -11,7 +11,7 @@ import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import LasbordesNew from "../assets/lasbordes_new.webp";
 import LasbordesOld from "../assets/lasbordes_old.webp";
-import { SparklesCore } from "../../../components/aceternity/sparkles";
+import { SparklesCore } from "@/components/aceternity/sparkles";
 
 type CompareProps = {
   firstImage?: string;
