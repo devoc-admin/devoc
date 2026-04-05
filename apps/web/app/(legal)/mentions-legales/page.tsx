@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/app/footer";
-import Header from "@/app/header";
 import { cn } from "@/lib/utils";
+import { LegalHeader } from "../_components/legal-header";
 
 export const metadata: Metadata = {
   description: "Mentions légales du site Dev'Oc",
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function MentionsLegalesPage() {
   return (
     <>
-      <Header />
+      <LegalHeader />
       <div
         className={cn(
           "mx-auto max-w-200",

@@ -20,23 +20,28 @@ function useNavTheme({ theme = "light", sectionName = "" }: Props) {
     if (scrollY.get() < offsetTop) return; // top of page
     if (latest <= 0) {
       newTheme = theme === "dark" ? "light" : "dark";
-      document.documentElement.style.setProperty("--section-name", "");
-      document.documentElement.setAttribute("data-section-name", "");
+      setSectionName("");
     }
-    document.documentElement.style.setProperty("--nav-theme", newTheme);
-    document.documentElement.setAttribute("data-nav-theme", newTheme);
-    document.documentElement.style.setProperty("--section-name", sectionName);
-    document.documentElement.setAttribute("data-section-name", sectionName);
+    setTheme(newTheme);
+    setSectionName(sectionName);
   });
 
   useEffect(() => {
-    document.documentElement.style.setProperty("--nav-theme", "light");
-    document.documentElement.setAttribute("data-nav-theme", "light");
-    document.documentElement.style.setProperty("--section-name", "home");
-    document.documentElement.setAttribute("data-section-name", "home");
+    setTheme("light");
+    setSectionName("home");
   }, []);
 
-  return { ref };
+  return { ref, setTheme };
+}
+
+function setTheme(theme: "light" | "dark") {
+  document.documentElement.style.setProperty("--nav-theme", theme);
+  document.documentElement.setAttribute("data-nav-theme", theme);
+}
+
+function setSectionName(name: string) {
+  document.documentElement.style.setProperty("--section-name", name);
+  document.documentElement.setAttribute("data-section-name", name);
 }
 
 export default useNavTheme;

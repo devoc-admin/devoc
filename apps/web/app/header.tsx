@@ -333,7 +333,7 @@ function LogoButton({
 
 function DevOc() {
   const Text = (
-    <>
+    <Link href="/">
       <span
         className={cn(
           "font-bold tracking-tighter",
@@ -352,7 +352,7 @@ function DevOc() {
       >
         Oc
       </span>
-    </>
+    </Link>
   );
 
   return (
