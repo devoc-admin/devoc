@@ -379,22 +379,22 @@ function DevOc() {
 // Links 🔗
 const LINKS = [
   {
-    href: "#us",
+    href: "/#us",
     id: "us",
     label: "Le collectif",
   },
   {
-    href: "#method",
+    href: "/#method",
     id: "method",
     label: "Notre méthode",
   },
   {
-    href: "#services",
+    href: "/#services",
     id: "services",
     label: "Services",
   },
   {
-    href: "#realisations",
+    href: "/#realisations",
     id: "realisations",
     label: "Réalisations",
   },

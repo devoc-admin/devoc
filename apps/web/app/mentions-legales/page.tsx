@@ -108,7 +108,7 @@ export default function MentionsLegalesPage() {
           </p>
         </Section>
 
-        <div className="mt-12 border-border border-t pt-8">
+        <div className="mt-12 border-border border-t pt-8 text-lg">
           <Link
             className="text-primary underline transition-colors hover:text-primary/80"
             href="/politique-de-confidentialite"
@@ -132,8 +132,8 @@ function Section({
 }) {
   return (
     <section className="mb-10">
-      <h2 className="mb-4 font-kanit text-foreground text-xl">{title}</h2>
-      <div className="space-y-2">{children}</div>
+      <h2 className="mb-4 font-kanit text-2xl text-foreground">{title}</h2>
+      <div className="space-y-2 text-lg">{children}</div>
     </section>
   );
 }
