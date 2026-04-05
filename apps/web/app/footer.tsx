@@ -1,5 +1,6 @@
 import { ArrowRightIcon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import PurpleCircleImage from "@/assets/purple-circle.webp";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +12,7 @@ function Footer() {
     <div className="relative overflow-hidden bg-zinc-950">
       <div className="rounded-t-4xl border-t border-t-zinc-600/10 bg-linear-to-br from-primary/5 via-transparent to-primary/5 px-6 py-12">
         <div className="relative mx-auto max-w-325 space-y-8">
-          <PurpleCircle />
+          <OrangeDecorativeStone />
           {/* 1️⃣ Row */}
           <div
             className={cn(
@@ -45,7 +46,7 @@ function Footer() {
             )}
           >
             <Copyright />
-            {/*<LegalLinks/>*/}
+            <LegalLinks />
           </div>
         </div>
       </div>
@@ -57,13 +58,18 @@ function Footer() {
 export default Footer;
 
 // ------------------------------------------------------------------------------------------------
-function PurpleCircle() {
+// 🟠🪨
+function OrangeDecorativeStone() {
   return (
     <Image
       alt=""
       aria-hidden="true"
       className={cn(
-        "absolute right-0 bottom-0 z-0 translate-x-[80%] opacity-40 hue-rotate-125",
+        "absolute right-0 bottom-0",
+        "z-0",
+        "translate-x-[80%]",
+        "opacity-40",
+        "hue-rotate-125",
         "mask-radial-[135%_117%] mask-radial-at-bottom-right mask-radial-from-0% mask-radial-to-92%"
       )}
       height={300}
@@ -74,6 +80,7 @@ function PurpleCircle() {
 }
 
 // ------------------------------------------------------------------------------------------------
+// 🖼️
 function Logo() {
   return (
     <div className="flex items-center gap-2 text-2xl">
@@ -91,6 +98,7 @@ function Logo() {
 }
 
 // ------------------------------------------------------------------------------------------------
+// 📞📩📍
 type ContactLink = {
   href: string;
   icon: React.ReactNode;
@@ -268,56 +276,44 @@ function Copyright() {
 }
 
 // ------------------------------------------------------------------------------------------------
-// type LegalLinkProps = {
-//   href: string;
-//   name: string;
-// };
+type LegalLink = {
+  href: string;
+  name: string;
+};
 
-// const legalLinks: LegalLink[] = [
-//   {
-//     href: "/mentions-legales",
-//     name: "Mentions légales",
-//   },
-//   {
-//     href: "/politique-de-confidentialite",
-//     name: "Politique de confidentialité",
-//   },
-//   {
-//     href: "/cookies",
-//     name: "Cookies",
-//   },
-// ];
+const legalLinks: LegalLink[] = [
+  {
+    href: "/mentions-legales",
+    name: "Mentions légales",
+  },
+  {
+    href: "/politique-de-confidentialite",
+    name: "Politique de confidentialité",
+  },
+];
 
-// function LegalLinks() {
-//   return (
-//     <div
-//       className={cn(
-//         "flex items-center gap-4",
-//         "text-muted-foreground text-sm",
-//         "flex-col",
-//         "sm:flex-row"
-//       )}
-//     >
-//       {legalLinks.map((link) => (
-//         <LegalLink key={link.name} {...link} />
-//       ))}
-//     </div>
-//   );
-// }
-
-// function LegalLink({ href, name }: LegalLinkProps) {
-//   return (
-//     <div className="flex flex-col items-center gap-4 text-muted-foreground text-sm sm:flex-row">
-//       <a
-//         className="transition-colors hover:text-primary"
-//         href={href}
-//         key={name}
-//       >
-//         {name}
-//       </a>
-//     </div>
-//   );
-// }
+function LegalLinks() {
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-4",
+        "text-muted-foreground text-sm",
+        "flex-col",
+        "sm:flex-row"
+      )}
+    >
+      {legalLinks.map((link) => (
+        <Link
+          className="transition-colors hover:text-primary"
+          href={link.href}
+          key={link.name}
+        >
+          {link.name}
+        </Link>
+      ))}
+    </div>
+  );
+}
 
 // ------------------------------------------------------------------------------------------------
 // biome-ignore lint/correctness/noUnusedVariables: later

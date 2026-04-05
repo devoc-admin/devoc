@@ -226,6 +226,19 @@ function ContactForm() {
         </div>
       )}
 
+      {/* 📜 RGPD */}
+      <p className="col-span-2 text-xs text-zinc-500">
+        En soumettant ce formulaire, vous acceptez que vos données soient
+        traitées conformément à notre{" "}
+        <a
+          className="underline transition-colors hover:text-zinc-300"
+          href="/politique-de-confidentialite"
+        >
+          politique de confidentialité
+        </a>
+        .
+      </p>
+
       {/* 🔔 Envoi du message */}
       <Button
         className={cn(
