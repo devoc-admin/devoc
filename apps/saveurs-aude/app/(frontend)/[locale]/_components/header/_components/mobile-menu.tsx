@@ -50,12 +50,14 @@ export function MobileMenu() {
 
     if (e.key !== "Tab") return;
 
-    const focusable =
-      panelRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
-    if (!focusable?.length) return;
+    const focusable = Array.from(
+      panelRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR) ?? []
+    );
+    if (!focusable.length) return;
 
     const first = focusable[0];
-    const last = focusable[focusable.length - 1];
+    const last = focusable.at(-1);
+    if (!(first && last)) return;
 
     if (e.shiftKey && document.activeElement === first) {
       e.preventDefault();

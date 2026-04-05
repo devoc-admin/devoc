@@ -1,6 +1,7 @@
 "use client";
 
 import { useReducedMotion } from "motion/react";
+import Image from "next/image";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import heroPhoto from "./hero-photo.webp";
@@ -26,7 +27,7 @@ function HeroVideo() {
         style={{ backgroundImage: `url(${HERO_LQIP})` }}
       />
       {/* Layer 2: Full photo fades in over the blur */}
-      <img
+      <Image
         alt=""
         className={cn(
           "absolute inset-0",
@@ -36,8 +37,9 @@ function HeroVideo() {
           "transition-opacity duration-1000 ease-out",
           photoLoaded ? "opacity-100" : "opacity-0"
         )}
+        fill
         onLoad={() => setPhotoLoaded(true)}
-        src={heroPhoto.src}
+        src={heroPhoto}
       />
       {/* Layer 3: Video plays on top once ready (hidden for reduced motion) */}
       {!reduced && (
