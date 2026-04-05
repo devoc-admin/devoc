@@ -55,9 +55,9 @@ export function LoginForm() {
         <Image
           alt="DevOc Logo"
           className="size-12"
-          height={12}
+          height={48}
           src={DevOcIcon.src}
-          width={12}
+          width={48}
         />
         <CardTitle className="font-bold font-kanit text-4xl text-zinc-950 dark:text-white">
           Connexion

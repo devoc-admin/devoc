@@ -393,7 +393,7 @@ const LaserFlow: (props: Props) => any = ({
     mesh.frustumCulled = false;
     scene.add(mesh);
 
-    const clock = new Three.Clock();
+    const timer = new Three.Timer();
     let prevTime = 0;
     let fade = hasFadedRef.current ? 1 : 0;
 
@@ -502,7 +502,8 @@ const LaserFlow: (props: Props) => any = ({
       raf = requestAnimationFrame(animate);
       if (pausedRef.current || !inViewRef.current) return;
 
-      const t = clock.getElapsedTime();
+      timer.update();
+      const t = timer.getElapsed();
       const dt = Math.max(0, t - prevTime);
       prevTime = t;
 

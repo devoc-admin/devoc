@@ -58,17 +58,17 @@ function Intro() {
           Lauréat 2025 du concours entrepreneurial de Carcassonne Agglo
         </a>
         , Dev'Oc accompagne les entreprises, artisans et collectivités
-        d'Occitanie dans leur transformation numérique (création de sites web,
-        mise en conformité règlementaire, automatisation des processus,
+        d'Occitanie dans <b>leur transformation numérique</b> (création de sites
+        web, mise en conformité règlementaire, automatisation des processus,
         sécurisation des infrastructures) avec la proximité et l'exigence comme
         boussole.
       </P>
       <P className="font-medium text-xl">
-        À la transformation nous joignons toujours la transmission en animant
-        des formations à destination des entrepreneurs et des élus pour
-        démystifier ces sujets, révéler des pistes d'action et diffuser le plus
-        largement possible les bonnes pratiques, le tout dans un langage clair
-        et accessible.
+        À la transformation nous joignons la transmission en animant des
+        formations à destination des entrepreneurs et des élus pour démystifier
+        ces sujets, révéler des pistes d'action et diffuser le plus largement
+        possible les bonnes pratiques, le tout dans un langage clair et
+        accessible.
       </P>
       <P className="font-medium text-xl">
         En un mot, nous avons choisi de mettre toute notre expertise au service
@@ -101,7 +101,7 @@ function Founders() {
           <P>
             L'architecte de l'invisible. Bases de données, interconnexions entre
             systèmes, automatisation des tâches répétitives, infrastructure et
-            déploiement : il conçoit les fondations sur lesquelles repose vos
+            déploiement : il conçoit les fondations sur lesquelles reposent vos
             outils numériques. Avec toujours comme maîtres mots l'efficacité et
             la résilience.
           </P>{" "}

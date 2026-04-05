@@ -58,6 +58,7 @@ function Background() {
       <SpecularBandsBackground
         backgroundColor="#ffffff"
         className="h-full w-full"
+        speed={0.5}
       />
     </motion.div>
   );
