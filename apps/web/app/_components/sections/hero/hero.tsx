@@ -201,7 +201,7 @@ function OpenCarcaWinner() {
           className={cn(
             "mx-auto text-amber-400",
             "hidden",
-            "[@media(min-height:900px)]:flex" // Hide if viewport height is too small
+            "[@media(min-height:625px)]:flex" // Hide if viewport height is too small
           )}
         >
           <div
