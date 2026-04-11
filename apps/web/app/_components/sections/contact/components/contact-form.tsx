@@ -8,7 +8,7 @@ import {
   type ContactFormData,
   sendContactEmail,
 } from "@/app/_actions/send-email";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/custom-button/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -186,6 +186,7 @@ function ContactForm() {
         )}
         name="message"
       />
+
       {/* ❌ Erreur de validation */}
       <form.Subscribe
         children={(state) =>
@@ -240,20 +241,25 @@ function ContactForm() {
       </p>
 
       {/* 🔔 Envoi du message */}
-      <Button
-        className={cn(
-          "col-span-2 cursor-pointer gap-3 rounded-md bg-primary/90 py-6 font-semibold transition-colors hover:bg-primary",
-          "text-base",
-          "sm:text-lg",
-          isSubmitting && "cursor-not-allowed opacity-50"
-        )}
-        disabled={isSubmitting}
-        type="submit"
-      >
-        <SendIcon size={20} />
-        <span>{isSubmitting ? "Envoi en cours..." : "Envoyer le message"}</span>
-      </Button>
+      {!(submitStatus?.type && submitStatus.type === "success") && (
+        <SendMessage isSubmitting={isSubmitting} />
+      )}
     </form>
+  );
+}
+
+// 🔔
+// =============================
+function SendMessage({ isSubmitting }: { isSubmitting: boolean }) {
+  return (
+    <Button
+      className={cn("col-span-2 grow font-kanit", "@xs:text-xl text-lg")}
+      disabled={isSubmitting}
+      type="submit"
+    >
+      <SendIcon className={cn("size-4", "@xs:size-5", "shrink-0")} />
+      <span>{isSubmitting ? "Envoi en cours..." : "Envoyer le message"}</span>
+    </Button>
   );
 }
 

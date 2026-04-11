@@ -95,7 +95,6 @@ export default function Contact() {
             />
           </div>
           {/* 📝 Contact form */}
-
           <CardContent className={cn("z-10", "max-xs:p-3")}>
             <ContactForm />
           </CardContent>

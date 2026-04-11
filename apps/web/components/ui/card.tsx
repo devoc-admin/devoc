@@ -14,13 +14,13 @@ function Card({
         /* ⬇️ Layout */ "flex flex-col gap-6",
         /* ⭕ Radius */ "rounded-xl",
         /* 🖱️ Cursor */ "cursor-pointer",
-        /* 🔲 Border */ "border border-zinc-900 hover:border-primary/40 ",
+        /* 🔲 Border */ "border border-zinc-900",
         /* 🖼️ Background */ "bg-card",
         /* 🫷 Padding/Margin */ "py-6",
         /* 🔤 Text */ "text-primary-foreground",
-        /* 🥷 Shadow */ "shadow-primary/10 hover:shadow-lg",
+        /* 🥷 Shadow */ "shadow-primary/10",
         /* 🤹 Animation */ animation &&
-          "transition-all duration-300 hover:-translate-y-1.25 backdrop-blur-sm",
+          "transition-all duration-300 hover:-translate-y-1.25 backdrop-blur-sm hover:border-primary/40 hover:shadow-lg",
         className,
       )}
       data-slot="card"
