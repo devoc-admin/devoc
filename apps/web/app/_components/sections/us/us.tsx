@@ -152,8 +152,8 @@ function Founders() {
           />
         </div>
       </div>
-      <div className="mt-24 mb-16">
-        <div className="h-px w-full bg-linear-to-r from-primary to-primary-strong" />
+      <div className={cn("mt-24 mb-0", "md:mt-24 md:mb-16")}>
+        <div className="h-px w-full bg-linear-to-r from-primary-strong to-primary-lighter" />
         <P className="mt-8 text-pretty text-center font-medium text-2xl">
           Ensemble, ils forment un binôme complémentaire : là où l'un construit
           la mécanique, l'autre soigne l'expérience. Deux regards, une même
@@ -173,7 +173,14 @@ function Founders() {
 function CustomRubiksCube() {
   return (
     <RubiksCube
-      className="z-0 -my-20 h-96 w-full translate-y-[15%] opacity-30"
+      className={cn(
+        "hidden",
+        "md:block",
+        "-my-20",
+        "h-96 w-full",
+        "translate-y-[15%]",
+        "opacity-30"
+      )}
       fresnelConfig={{
         color: "#09090B",
         rimColor: "#FC6B08",
