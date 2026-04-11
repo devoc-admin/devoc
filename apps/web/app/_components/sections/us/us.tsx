@@ -50,7 +50,10 @@ function Intro() {
         Le collectif Dev'Oc est né d'une conviction simple : remettre l'humain
         et la proximité au centre des projets technologiques.
       </P>
-      <OrnamentLong className="w-full" color="var(--primary)" />
+      <OrnamentLong
+        className="w-full"
+        gradient={["var(--primary-lighter)", "var(--primary-strong)"]}
+      />
       <div className="space-y-4">
         <P className="font-medium text-xl">
           <a
@@ -158,7 +161,7 @@ function Founders() {
         </P>
         <Ornament
           className="mx-auto mt-14 rotate-180"
-          color="var(--color-primary)"
+          gradient={["var(--primary-lighter)", "var(--primary-strong)"]}
         />
         <CustomRubiksCube />
       </div>
