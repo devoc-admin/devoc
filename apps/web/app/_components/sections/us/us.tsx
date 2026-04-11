@@ -1,12 +1,14 @@
 "use client";
 import { SparklesText } from "@/components/magicui/sparkles-text";
 import DitheredImage from "@/components/motion-core/dithered-image/dithered-image";
+import RubiksCube from "@/components/motion-core/rubiks-cube/rubiks-cube";
 import GlowLine from "@/components/sera-ui/glow-line";
 import { OPEN_CARCA_WINNER_URL } from "@/constants";
 import { cn } from "@/lib/utils";
 import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
-
+import Ornament from "./assets/ornament";
+import OrnamentLong from "./assets/ornament-long";
 export default function SectionUs() {
   return (
     <Section className="overflow-hidden pb-0!" id="us" theme="dark">
@@ -43,38 +45,42 @@ export default function SectionUs() {
 // 1️⃣ Intro
 function Intro() {
   return (
-    <div className="space-y-4">
-      <P className="mb-12 text-center font-medium text-2xl">
+    <div className="relative space-y-12">
+      <P className="text-center font-medium text-2xl">
         Le collectif Dev'Oc est né d'une conviction simple : remettre l'humain
         et la proximité au centre des projets technologiques.
       </P>
-      <P className="font-medium text-xl">
-        <a
-          className="underline"
-          href={OPEN_CARCA_WINNER_URL}
-          rel="noopener"
-          target="_blank"
-        >
-          Lauréat 2025 du concours entrepreneurial de Carcassonne Agglo
-        </a>
-        , Dev'Oc accompagne les entreprises, artisans et collectivités
-        d'Occitanie dans <b>leur transformation numérique</b> (création de sites
-        web, mise en conformité règlementaire, automatisation des processus,
-        sécurisation des infrastructures) avec la proximité et l'exigence comme
-        boussole.
-      </P>
-      <P className="font-medium text-xl">
-        À la transformation nous joignons la transmission en animant des
-        formations à destination des entrepreneurs et des élus pour démystifier
-        ces sujets, révéler des pistes d'action et diffuser le plus largement
-        possible les bonnes pratiques, le tout dans un langage clair et
-        accessible.
-      </P>
-      <P className="font-medium text-xl">
-        En un mot, nous avons choisi de mettre toute notre expertise au service
-        du tissu économique local, persuadés que l'un des meilleurs moyens de
-        développer un territoire est d'améliorer son empreinte numérique.
-      </P>
+      <OrnamentLong className="w-full" color="var(--primary)" />
+      <div className="space-y-4">
+        <P className="font-medium text-xl">
+          <a
+            className="underline"
+            href={OPEN_CARCA_WINNER_URL}
+            rel="noopener"
+            target="_blank"
+          >
+            Lauréat 2025 du concours entrepreneurial de Carcassonne Agglo
+          </a>
+          , Dev'Oc accompagne les entreprises, artisans et collectivités
+          d'Occitanie dans <b>leur transformation numérique</b> (création de
+          sites web, mise en conformité règlementaire, automatisation des
+          processus, sécurisation des infrastructures) avec la proximité et
+          l'exigence comme boussole.
+        </P>
+        <P className="font-medium text-xl">
+          À la transformation nous joignons la transmission en animant des
+          formations à destination des entrepreneurs et des élus pour
+          démystifier ces sujets, révéler des pistes d'action et diffuser le
+          plus largement possible les bonnes pratiques, le tout dans un langage
+          clair et accessible.
+        </P>
+        <P className="font-medium text-xl">
+          En un mot, nous avons choisi de mettre toute notre expertise au
+          service du tissu économique local, persuadés que l'un des meilleurs
+          moyens de développer un territoire est d'améliorer son empreinte
+          numérique.
+        </P>
+      </div>
     </div>
   );
 }
@@ -83,7 +89,7 @@ function Intro() {
 // 2️⃣ Founders
 function Founders() {
   return (
-    <div>
+    <div className="relative">
       <H3>Les fondateurs</H3>
       <div
         className={cn(
@@ -91,7 +97,7 @@ function Founders() {
           // 📱
           "grid-cols-1",
           // 💻
-          "xl:grid-cols-[50%_50%]"
+          "xl:grid-cols-[1fr_1fr]"
         )}
       >
         <div className="relative">
@@ -143,11 +149,34 @@ function Founders() {
           />
         </div>
       </div>
-      <P className="mt-14 text-pretty text-center font-medium text-2xl">
-        Ensemble, ils forment un binôme complémentaire : là où l'un construit la
-        mécanique, l'autre soigne l'expérience. Deux regards, une même exigence.
-      </P>{" "}
+      <div className="mt-24 mb-16">
+        <div className="h-px w-full bg-linear-to-r from-primary to-primary-strong" />
+        <P className="mt-8 text-pretty text-center font-medium text-2xl">
+          Ensemble, ils forment un binôme complémentaire : là où l'un construit
+          la mécanique, l'autre soigne l'expérience. Deux regards, une même
+          exigence.
+        </P>
+        <Ornament
+          className="mx-auto mt-14 rotate-180"
+          color="var(--color-primary)"
+        />
+        <CustomRubiksCube />
+      </div>
     </div>
+  );
+}
+
+//🧊
+function CustomRubiksCube() {
+  return (
+    <RubiksCube
+      className="z-0 -my-20 h-96 w-full translate-y-[15%] opacity-30"
+      fresnelConfig={{
+        color: "#09090B",
+        rimColor: "#FC6B08",
+      }}
+      size={1.6}
+    />
   );
 }
 
