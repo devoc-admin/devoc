@@ -1,18 +1,13 @@
 /** biome-ignore-all lint/correctness/noChildrenProp: tanstack form requires this pattern */
 "use client";
 
-import { useForm } from "@tanstack/react-form";
 import { CheckCircleIcon, SendIcon, TriangleAlertIcon } from "lucide-react";
-import { useState } from "react";
-import {
-  type ContactFormData,
-  sendContactEmail,
-} from "@/app/_actions/send-email";
 import { Button } from "@/components/ui/custom-button/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { useContactForm } from "./use-contact-form";
 
 // 🎨 Classes CSS
 const labelClass = cn("text-base text-white", "xs:text-lg");
@@ -23,68 +18,8 @@ const inputClass = cn(
   "bg-zinc-950 text-primary-foreground sm:text-lg!"
 );
 
-type SubmitStatus = {
-  type: "success" | "error" | null;
-  message: string;
-} | null;
-
 function ContactForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>(null);
-
-  const form = useForm({
-    defaultValues: {
-      company: "",
-      email: "",
-      message: "",
-      name: "",
-    },
-    onSubmit: async ({ value }) => {
-      setIsSubmitting(true);
-      setSubmitStatus({ message: "", type: null });
-
-      try {
-        const result = await sendContactEmail(value as ContactFormData);
-
-        if (result.success) {
-          setSubmitStatus({
-            message: result.message || "Message envoyé avec succès",
-            type: "success",
-          });
-          form.reset();
-        } else {
-          setSubmitStatus({
-            message: result.error || "Une erreur est survenue",
-            type: "error",
-          });
-        }
-      } catch {
-        setSubmitStatus({
-          message: "Une erreur inattendue est survenue. Veuillez réessayer.",
-          type: "error",
-        });
-      } finally {
-        setIsSubmitting(false);
-      }
-    },
-    validators: {
-      onSubmit: ({ value }) => {
-        if (!value.name) {
-          return "Merci de renseigner un nom";
-        }
-
-        if (!(value.email.includes("@") && value.email.includes("."))) {
-          return "Merci de renseigner un email valide";
-        }
-
-        if (!value.message || value.message.length < 10) {
-          return "Expliquez nous brièvement votre projet ou vos besoins pour que nous puissions vous aider au mieux 🤝";
-        }
-
-        return false;
-      },
-    },
-  });
+  const { form, isSubmitting, hasSubmitted, submitStatus } = useContactForm();
   return (
     <form
       className="@container grid grid-cols-2 gap-x-4 gap-y-6"
@@ -212,13 +147,13 @@ function ContactForm() {
           aria-live="polite"
           className={cn(
             "col-span-2 flex items-center gap-2 rounded-md p-4",
-            submitStatus.type === "success"
+            hasSubmitted
               ? "border border-green-200 bg-green-50 text-green-800"
               : "border border-red-200 bg-red-50 text-red-800"
           )}
           role="alert"
         >
-          {submitStatus.type === "success" ? (
+          {hasSubmitted ? (
             <CheckCircleIcon aria-hidden="true" size={20} />
           ) : (
             <TriangleAlertIcon aria-hidden="true" size={20} />
@@ -241,9 +176,7 @@ function ContactForm() {
       </p>
 
       {/* 🔔 Envoi du message */}
-      {!(submitStatus?.type && submitStatus.type === "success") && (
-        <SendMessage isSubmitting={isSubmitting} />
-      )}
+      {!hasSubmitted && <SendMessage isSubmitting={isSubmitting} />}
     </form>
   );
 }

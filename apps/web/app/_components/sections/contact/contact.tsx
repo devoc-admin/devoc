@@ -10,8 +10,8 @@ import {
 import { cn } from "@/lib/utils";
 import Section from "../_components/section";
 import SectionTitle from "../_components/section-title";
-import ContactForm from "./components/contact-form";
 import { type ContactItem, contactItems } from "./contact-data";
+import ContactForm from "./contact-form";
 
 // Lazy load WebGL LaserFlow component to reduce initial bundle
 const LaserFlow = dynamic(() => import("@/components/react-bits/laser-flow"), {
