@@ -190,7 +190,7 @@ function SendMessage({ isSubmitting }: { isSubmitting: boolean }) {
       disabled={isSubmitting}
       type="submit"
     >
-      <SendIcon className={cn("size-4", "@xs:size-5", "shrink-0")} />
+      <SendIcon className={cn("size-4", "@xs:size-4.5", "shrink-0")} />
       <span>{isSubmitting ? "Envoi en cours..." : "Envoyer le message"}</span>
     </Button>
   );
