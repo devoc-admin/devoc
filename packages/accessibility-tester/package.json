@@ -21,7 +21,7 @@
     "@axe-core/puppeteer": "^4.11.1",
     "chrome-launcher": "^1.2.1",
     "lighthouse": "^13.1.0",
-    "puppeteer": "^24.40.0"
+    "puppeteer": "^24.41.0"
   },
   "exports": {
     ".": "./src/index.ts",
