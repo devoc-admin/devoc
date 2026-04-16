@@ -252,8 +252,9 @@ function CustomGlass({ children }: { children: React.ReactNode }) {
       borderRadius={1000}
       className={cn(
         sidebarClasses,
-        "bg-white/60!", // ☀️ Light
-        "[html[data-nav-theme='dark']_&]:bg-zinc-900/70!", // 🌙 Dark
+        "border",
+        "bg-white/60!  border-zinc-50", // ☀️ Light
+        "[html[data-nav-theme='dark']_&]:bg-zinc-900/70! [html[data-nav-theme='dark']_&]:border-zinc-800", // 🌙 Dark
       )}
     >
       {children}
