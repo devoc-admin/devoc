@@ -5,7 +5,6 @@ import useNavTheme from "@/app/_hooks/use-nav-theme.ts";
 import { ContainerTextFlip } from "@/components/aceternity/container-text-flip.tsx";
 import { AvatarStack } from "@/components/kibo-ui/avatar-stack/index.tsx";
 import { AuroraText } from "@/components/magicui/aurora-text.tsx";
-import { ShimmerButton } from "@/components/magicui/shimmer-button.tsx";
 import SpecularBandsBackground from "@/components/motion-core/specular-band/specular-band-background.tsx";
 import {
   Avatar,
@@ -31,10 +30,9 @@ export default function Hero() {
       <div className={cn("flex flex-col items-center gap-y-6")}>
         <DevOc />
         <Keywords />
-        <OpenCarcaWinner />
       </div>
       <div className={cn("absolute", "bottom-10")}>
-        <SeeOurProjects />
+        <OpenCarcaWinner />
         <Founders />
       </div>
     </WithNavbar>
@@ -49,7 +47,7 @@ function Background() {
       animate={{ opacity: 1 }}
       className={cn(
         "absolute -z-1 h-full w-full opacity-40",
-        "mask-b-from-80% mask-b-to-100%"
+        "mask-b-from-80% mask-b-to-100%",
       )}
       initial={{ opacity: 0 }}
       transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
@@ -78,7 +76,7 @@ function WithNavbar({ children }: { children: React.ReactNode }) {
         "flex grow items-center justify-center",
         "min-h-svh w-full",
         "overflow-hidden",
-        "px-6 py-12"
+        "px-6 py-12",
       )}
       ref={sectionRef}
     >
@@ -100,7 +98,7 @@ function DevOc() {
           "sm:text-[9rem]",
           "md:text-[10rem]",
           "lg:text-[11rem]",
-          "xl:text-[12rem]"
+          "xl:text-[12rem]",
         )}
       >
         <div className={cn("font-style-script", "pt-4")}>Dev'</div>
@@ -145,7 +143,7 @@ function Keywords() {
       <div
         className={cn(
           "flex flex-col items-center justify-center gap-y-1",
-          "-mt-8 xs:-mt-10"
+          "-mt-8 xs:-mt-10",
         )}
       >
         <div className="text-center font-kanit font-normal text-base">
@@ -171,49 +169,32 @@ function OpenCarcaWinner() {
       >
         <RatingBadge
           className={cn(
+            "mt-24",
             "mx-auto text-amber-400",
             "hidden",
-            "[@media(min-height:625px)]:flex" // Hide if viewport height is too small
+            "[@media(min-height:625px)]:flex", // Hide if viewport height is too small
           )}
         >
           <div
             className={cn(
-              "mt-4 flex flex-col gap-y-1.5",
+              "flex flex-col gap-y-1.5",
+              "mt-4",
               "max-w-50",
-              "text-center font-bold text-base leading-none",
-              "bg-linear-to-br from-primary-strong via-primary-lighter to-primary bg-clip-text text-transparent"
+              "text-center font-bold",
+              "bg-linear-to-br from-primary-strong via-primary-lighter to-primary bg-clip-text",
+              "text-transparent",
             )}
           >
-            <span>Lauréats concours Open Carca 2025</span>
-            <span className="text-[0.6rem] uppercase">Catégorie émergence</span>
+            <span className="text-base leading-none lg:text-lg lg:leading-tight">
+              Lauréats concours Open Carca 2025
+            </span>
+            <span className=" text-[0.65rem] lg:text-[0.7rem] uppercase">
+              Catégorie émergence
+            </span>
           </div>
         </RatingBadge>
       </a>
     </FadeScaleEntry>
-  );
-}
-
-// ----------------------------------
-// 📂 See our projects
-function SeeOurProjects() {
-  return (
-    <FadeMoveUp>
-      <Link href="#realisations">
-        <ShimmerButton
-          className={cn(
-            "hidden",
-            "[@media(min-height:500px)]:block",
-            "font-kanit",
-            "h-12 px-8 text-md",
-            "xs:h-13 xs:px-12 xs:text-lg",
-            "sm:h-13 sm:px-12 sm:text-xl"
-          )}
-          shimmerSize="2px"
-        >
-          Voir nos réalisations
-        </ShimmerButton>
-      </Link>
-    </FadeMoveUp>
   );
 }
 
@@ -237,7 +218,7 @@ function Founders() {
       className={cn(
         "hidden",
         "[@media(min-height:750px)]:flex",
-        "flex-col items-center gap-2 rounded-lg px-6 py-4 font-fira-code"
+        "flex-col items-center gap-2 rounded-lg px-6 py-4 font-fira-code",
       )}
     >
       <FadeScaleEntry>

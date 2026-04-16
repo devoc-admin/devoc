@@ -27,6 +27,10 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "typescript.tsdk": "node_modules/typescript/lib",
+  "code_actions_on_format": {
+     "source.fixAll.biome": true,
+     "source.organizeImports.biome": true
+   },
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "emmet.showExpandedAbbreviation": "never"

@@ -56,7 +56,7 @@
     "@vercel/analytics": "^2.0.1",
     "@vercel/blob": "^2.3.3",
     "@vercel/speed-insights": "^2.0.0",
-    "better-auth": "^1.6.4",
+    "better-auth": "^1.6.5",
     "class-variance-authority": "catalog:ui",
     "clsx": "catalog:ui",
     "drizzle-orm": "^0.45.2",

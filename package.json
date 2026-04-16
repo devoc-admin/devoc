@@ -9,7 +9,7 @@
     "@biomejs/biome": "^2.4.12",
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
-    "lefthook": "^2.1.5",
+    "lefthook": "^2.1.6",
     "turbo": "^2.9.6",
     "ultracite": "^7.5.9"
   },
@@ -29,7 +29,7 @@
         "@types/react-dom": "^19.2.3"
       },
       "next": {
-        "next": "^16.2.3",
+        "next": "^16.2.4",
         "@types/node": "^25.6.0"
       },
       "tailwind": {
