@@ -2,7 +2,7 @@
 "use client";
 
 import { CheckCircleIcon, SendIcon, TriangleAlertIcon } from "lucide-react";
-import { Button } from "@/components/ui/custom-button/button";
+import { CustomButton } from "@/components/ui/custom-button/custom-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,7 +15,7 @@ const labelClass = cn("text-base text-white", "xs:text-lg");
 const inputClass = cn(
   "text-base!",
   "border-zinc-800",
-  "bg-zinc-950 text-primary-foreground sm:text-lg!"
+  "bg-zinc-950 text-primary-foreground sm:text-lg!",
 );
 
 function ContactForm() {
@@ -149,7 +149,7 @@ function ContactForm() {
             "col-span-2 flex items-center gap-2 rounded-md p-4",
             hasSubmitted
               ? "border border-green-200 bg-green-50 text-green-800"
-              : "border border-red-200 bg-red-50 text-red-800"
+              : "border border-red-200 bg-red-50 text-red-800",
           )}
           role="alert"
         >
@@ -185,14 +185,14 @@ function ContactForm() {
 // =============================
 function SendMessage({ isSubmitting }: { isSubmitting: boolean }) {
   return (
-    <Button
+    <CustomButton
       className={cn("col-span-2 grow font-kanit", "@xs:text-xl text-lg")}
       disabled={isSubmitting}
       type="submit"
     >
       <SendIcon className={cn("size-4", "@xs:size-4.5", "shrink-0")} />
       <span>{isSubmitting ? "Envoi en cours..." : "Envoyer le message"}</span>
-    </Button>
+    </CustomButton>
   );
 }
 

@@ -28,7 +28,7 @@ export default function SectionUs() {
           "flex flex-col",
           "gap-y-12",
           "lg:gap-y-18",
-          "2xl:gap-y-24"
+          "2xl:gap-y-24",
         )}
       >
         <Intro />
@@ -46,7 +46,7 @@ export default function SectionUs() {
 function Intro() {
   return (
     <div className="relative space-y-12">
-      <P className="text-center font-medium text-2xl">
+      <P className={cn("text-center font-medium", "text-xl", "xs:text-2xl")}>
         Le collectif Dev'Oc est né d'une conviction simple : remettre l'humain
         et la proximité au centre des projets technologiques.
       </P>
@@ -100,7 +100,7 @@ function Founders() {
           // 📱
           "grid-cols-1",
           // 💻
-          "xl:grid-cols-[1fr_1fr]"
+          "xl:grid-cols-[1fr_1fr]",
         )}
       >
         <div className="relative">
@@ -120,7 +120,7 @@ function Founders() {
               "mx-auto my-10",
               // 🖥️
               "xl:top-0 xl:left-0 xl:my-0 xl:-translate-x-[calc(100%+40px)]",
-              "scale-x-[1]"
+              "scale-x-[1]",
             )}
             color="#F56E0F"
             src="./clement-portrait.webp"
@@ -145,7 +145,7 @@ function Founders() {
               // 📱
               "mx-auto my-10",
               // 🖥️
-              "xl:top-0 xl:right-0 xl:my-0 xl:translate-x-full"
+              "xl:top-0 xl:right-0 xl:my-0 xl:translate-x-full",
             )}
             color="#FFC731"
             src="./thibaut-portrait.webp"
@@ -179,7 +179,7 @@ function CustomRubiksCube() {
         "-my-20",
         "h-96 w-full",
         "translate-y-[15%]",
-        "opacity-30"
+        "opacity-70",
       )}
       fresnelConfig={{
         color: "#09090B",
@@ -242,7 +242,7 @@ function BannerImage() {
       className={cn(
         "ml-[calc(-50vw+50%)] w-screen",
         "overflow-hidden",
-        "h-30 md:h-50"
+        "h-30 md:h-50",
       )}
     >
       <DitheredImage
@@ -328,7 +328,7 @@ function P({
         "leading-snug",
         "font-medium",
         "empty:hidden",
-        className
+        className,
       )}
     >
       {children}
@@ -351,7 +351,7 @@ function H3({
         "my-6",
         "font-kanit font-semibold text-5xl",
         "text-balance",
-        className
+        className,
       )}
     >
       {children}
@@ -366,7 +366,7 @@ function H4({ children }: { children: React.ReactNode }) {
         "w-fit",
         "bg-linear-to-tl from-primary to-primary-lighter bg-clip-text text-transparent",
         "font-bold text-xl",
-        "text-balance"
+        "text-balance",
       )}
     >
       {children}
@@ -389,7 +389,7 @@ function DeveloperName({
         "font-bold font-fira-code",
         "bg-linear-to-tr from-primary to-primary-lighter bg-clip-text text-transparent uppercase",
         "font-bold text-2xl",
-        className
+        className,
       )}
     >
       <SparklesText

@@ -11,9 +11,9 @@ import Link from "next/link";
 import { type RefObject, useCallback, useRef, useState } from "react";
 import { useClickAnyWhere } from "usehooks-ts";
 import { Glass } from "@/components/sera-ui/liquid-glass";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
+import { CustomButton } from "@/components/ui/custom-button/custom-button";
 
 export default function Header() {
   return (
@@ -55,7 +55,7 @@ function MobileHeader() {
           // 🖼️ Background
           "transition-[background] duration-300",
           "bg-white/50 text-secondary hover:text-secondary", // ☀️ Light
-          "[html[data-nav-theme='dark']_&]:bg-zinc-900/20" // 🌙 Dark
+          "[html[data-nav-theme='dark']_&]:bg-zinc-900/20", // 🌙 Dark
         )}
       >
         {/* ♻️ Logo */}
@@ -142,7 +142,7 @@ function RevealOnScroll({ children }: { children: React.ReactNode }) {
         "fixed top-3 left-1/2 z-5000",
         "mx-auto mt-0",
         "-translate-x-1/2",
-        "will-change-transform"
+        "will-change-transform",
       )}
       initial="hidden"
       transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -227,6 +227,13 @@ function CollapseWhileScrolling({ children }: { children: React.ReactNode }) {
 
 // ---------------------------------
 //🧊 Custom glass
+
+const sidebarClasses = cn(
+  "flex items-center justify-between",
+  "mx-auto",
+  "px-8 py-3",
+  "text-secondary hover:text-secondary",
+);
 function CustomGlass({ children }: { children: React.ReactNode }) {
   const { scrollY } = useScroll();
   const [isScrolling, setIsScrolling] = useState(false);
@@ -237,32 +244,16 @@ function CustomGlass({ children }: { children: React.ReactNode }) {
   });
 
   if (!isScrolling) {
-    return (
-      <div
-        className={cn(
-          "flex items-center justify-between",
-          "rounded-full",
-          "mx-auto",
-          "px-8 py-3",
-          "text-secondary hover:text-secondary"
-        )}
-      >
-        {children}
-      </div>
-    );
+    return <div className={sidebarClasses}>{children}</div>;
   }
 
   return (
     <Glass
       borderRadius={1000}
       className={cn(
-        "flex items-center justify-between",
-        "rounded-full",
-        "mx-auto",
-        "px-8 py-3",
-        "text-secondary hover:text-secondary",
+        sidebarClasses,
         "bg-white/60!", // ☀️ Light
-        "[html[data-nav-theme='dark']_&]:bg-zinc-900/70!" // 🌙 Dark
+        "[html[data-nav-theme='dark']_&]:bg-zinc-900/70!", // 🌙 Dark
       )}
     >
       {children}
@@ -281,7 +272,7 @@ function LogoButton({
 }) {
   const backToTop = useCallback(
     () => window.scrollTo({ behavior: "smooth", top: 0 }),
-    []
+    [],
   );
   const enterBackToTop = useCallback(
     (e: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -290,7 +281,7 @@ function LogoButton({
         backToTop();
       }
     },
-    [backToTop]
+    [backToTop],
   );
   return (
     <button
@@ -300,7 +291,7 @@ function LogoButton({
         "flex items-center gap-2",
         "cursor-pointer",
         "text-2xl",
-        "outline-offset-4"
+        "outline-offset-4",
       )}
       onClick={backToTop}
       onKeyDown={(e) => enterBackToTop(e)}
@@ -339,7 +330,7 @@ function DevOc() {
           "font-bold tracking-tighter",
           "transition-colors duration-300",
           "text-secondary", // ☀️ Light
-          "[html[data-nav-theme='dark']_&]:text-white" // 🌙 Dark
+          "[html[data-nav-theme='dark']_&]:text-white", // 🌙 Dark
         )}
       >
         Dev'
@@ -347,7 +338,7 @@ function DevOc() {
       <span
         className={cn(
           "bg-linear-to-br from-[#FF5709] to-[#FFC731] bg-clip-text",
-          "font-black text-transparent tracking-tighter"
+          "font-black text-transparent tracking-tighter",
         )}
       >
         Oc
@@ -363,7 +354,7 @@ function DevOc() {
           className={cn(
             "absolute opacity-70",
             "blur-sm",
-            "[html[data-nav-theme='light']_&]:hidden" // ☀️ Light
+            "[html[data-nav-theme='light']_&]:hidden", // ☀️ Light
           )}
         >
           {Text}
@@ -416,7 +407,7 @@ function LinksMobile() {
         "backdrop-blur-sm",
         "transition-colors duration-300",
         "[html[data-nav-theme='dark']_&]:text-secondary", // ☀️ Light
-        "[html[data-nav-theme='dark']_&]:bg-zinc-900/20 [html[data-nav-theme='dark']_&]:text-white" // 🌙 Dark
+        "[html[data-nav-theme='dark']_&]:bg-zinc-900/20 [html[data-nav-theme='dark']_&]:text-white", // 🌙 Dark
       )}
     >
       {LINKS.map(({ href, label }) => (
@@ -424,7 +415,7 @@ function LinksMobile() {
           className={cn(
             "px-4 py-2",
             "text-left",
-            "font-kira font-semibold uppercase"
+            "font-kira font-semibold uppercase",
           )}
           href={href}
           key={href}
@@ -445,7 +436,7 @@ function LinksDesktop() {
         "flex items-center gap-x-12",
         "font-semibold",
         "text-secondary", // ☀️ Light
-        "[html[data-nav-theme='dark']_&]:text-white" // 🌙 Dark
+        "[html[data-nav-theme='dark']_&]:text-white", // 🌙 Dark
       )}
     >
       {LINKS.map(({ href, label, id }) => (
@@ -453,7 +444,7 @@ function LinksDesktop() {
           className={cn(
             "whitespace-nowrap",
             "text-center hover:text-primary",
-            "transition-colors duration-300"
+            "transition-colors duration-300",
           )}
           key={id}
         >
@@ -469,22 +460,26 @@ function LinksDesktop() {
 function ContactButton({ children = null }: React.PropsWithChildren) {
   return (
     <Link href="#contact">
-      <Button
+      <CustomButton
         aria-label="Nous contacter"
+        style={
+          {
+            "--accent": "var(--primary-lighter)",
+            "--accent-secondary": "var(--primary-strong)",
+          } as React.CSSProperties
+        }
         className={cn(
           "flex items-center gap-2",
           "cursor-pointer",
-          "rounded-full",
+          "rounded-full!",
           "font-bold text-primary-foreground",
           "transition-colors",
-          children && "px-5!",
-          "bg-linear-to-r bg-transparent! from-primary to-primary-lighter",
-          "hover:bg-linear-to-r hover:from-primary/90 hover:to-primary-lighter/90"
+          children && "pl-5! pr-6!",
         )}
       >
-        <SendIcon aria-hidden="true" size={20} />
+        <SendIcon aria-hidden="true" size={18} />
         {children && <span>{children}</span>}
-      </Button>
+      </CustomButton>
     </Link>
   );
 }

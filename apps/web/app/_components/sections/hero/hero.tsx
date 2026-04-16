@@ -31,7 +31,7 @@ export default function Hero() {
         <DevOc />
         <Keywords />
       </div>
-      <div className={cn("absolute", "bottom-10")}>
+      <div className={cn("absolute", "bottom-2 lg:bottom-10")}>
         <OpenCarcaWinner />
         <Founders />
       </div>
@@ -169,10 +169,10 @@ function OpenCarcaWinner() {
       >
         <RatingBadge
           className={cn(
+            "hidden [@media(height>=600px)]:flex",
             "mt-24",
-            "mx-auto text-amber-400",
-            "hidden",
-            "[@media(min-height:625px)]:flex", // Hide if viewport height is too small
+            "mx-auto",
+            "text-amber-400",
           )}
         >
           <div
@@ -216,9 +216,10 @@ function Founders() {
   return (
     <div
       className={cn(
-        "hidden",
-        "[@media(min-height:750px)]:flex",
-        "flex-col items-center gap-2 rounded-lg px-6 py-4 font-fira-code",
+        "flex flex-col items-center gap-2",
+        "rounded-lg",
+        "px-6 py-4",
+        "font-fira-code",
       )}
     >
       <FadeScaleEntry>
