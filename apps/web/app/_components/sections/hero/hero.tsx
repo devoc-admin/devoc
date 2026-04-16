@@ -223,14 +223,16 @@ function Founders() {
       )}
     >
       <FadeScaleEntry>
-        <div className={cn("text-sm", "xs:text-base")}>Fondateurs</div>
+        <div className={cn("text-sm", "xs:text-base", "select-none")}>
+          Fondateurs
+        </div>
       </FadeScaleEntry>
       <AvatarStack>
         <PopEntry>
           <AvatarWithTooltip
             fallback="CB"
             name="Clément Dubos"
-            url="https://github.com/cdubos-fr"
+            url="https://www.linkedin.com/in/clement-dubos-707747a5/"
             urlImage="https://avatars.githubusercontent.com/u/52322202"
           />
         </PopEntry>
@@ -238,7 +240,7 @@ function Founders() {
           <AvatarWithTooltip
             fallback="TI"
             name="Thibaut Izard"
-            url="https://github.com/thibautizard"
+            url="https://www.linkedin.com/in/thibaut-izard/"
             urlImage="https://avatars.githubusercontent.com/u/8688023"
           />
         </PopEntry>
@@ -263,11 +265,11 @@ function AvatarWithTooltip({
       <Tooltip>
         <TooltipTrigger asChild>
           <a
-            aria-label={`Profil GitHub de ${name} (ouvre dans une nouvelle fenêtre)`}
+            aria-label={`Profil LinkedIn de ${name} (ouvre dans une nouvelle fenêtre)`}
             href={url}
             rel="noopener noreferrer"
             target="_blank"
-            title={`Visiter le profil GitHub de ${name}`}
+            title={`Visiter le profil LinkedIn de ${name}`}
           >
             <AvatarImage
               alt={`Photo de profil de ${name}`}

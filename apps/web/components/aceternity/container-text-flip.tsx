@@ -66,6 +66,7 @@ export function ContainerTextFlip({
         "w-full",
         "select-none",
         "font-kanit tracking-tight text-zinc-900 font-semibold text-center",
+
         // Responsive size
         "text-2xl flex",
         "xs:text-3xl xs:flex",
