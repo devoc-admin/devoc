@@ -52,7 +52,7 @@ function Intro() {
       </P>
       <OrnamentLong
         className="w-full"
-        gradient={["var(--primary-lighter)", "var(--primary-strong)"]}
+        gradient={["var(--primary-strong)", "var(--primary-lighter)"]}
       />
       <div className="space-y-4">
         <P className="font-medium text-xl">
@@ -347,7 +347,7 @@ function H3({
     <h3
       className={cn(
         "w-fit",
-        "bg-linear-to-br from-primary-strong via-primary to-primary-lighter bg-clip-text text-transparent",
+        "bg-linear-to-r from-primary-strong via-primary to-primary-lighter bg-clip-text text-transparent",
         "my-6",
         "font-kanit font-semibold text-5xl",
         "text-balance",
