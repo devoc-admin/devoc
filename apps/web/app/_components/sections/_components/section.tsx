@@ -30,7 +30,7 @@ export default function Section({
         // Gap 🕳️
         "gap-y-14",
         // Padding ↔️
-        "px-4",
+        "px-3",
         "xs:px-6",
         // Padding ↕️
         "py-14",
@@ -41,7 +41,7 @@ export default function Section({
         //🎨 Colors
         theme === "light" ? "bg-white" : "bg-zinc-950",
         theme === "light" ? "text-zinc-950" : "text-white",
-        className
+        className,
       )}
       id={id}
       ref={ref}

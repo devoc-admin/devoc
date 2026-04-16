@@ -166,7 +166,7 @@ function DesktopHeader() {
               <DevOc />
             </div>
             {/* 🔗 */}
-            <LinksDesktop />
+            {/*<LinksDesktop />*/}
             {/* 📨 */}
             <div className="flex w-50 justify-end">
               <ContactButton>Contact</ContactButton>
@@ -429,31 +429,31 @@ function LinksMobile() {
 
 // -----------------------------------------------------------
 // Links 💻
-function LinksDesktop() {
-  return (
-    <ul
-      className={cn(
-        "flex items-center gap-x-12",
-        "font-semibold",
-        "text-secondary", // ☀️ Light
-        "[html[data-nav-theme='dark']_&]:text-white", // 🌙 Dark
-      )}
-    >
-      {LINKS.map(({ href, label, id }) => (
-        <li
-          className={cn(
-            "whitespace-nowrap",
-            "text-center hover:text-primary",
-            "transition-colors duration-300",
-          )}
-          key={id}
-        >
-          <Link href={href}>{label}</Link>
-        </li>
-      ))}
-    </ul>
-  );
-}
+// function LinksDesktop() {
+//   return (
+//     <ul
+//       className={cn(
+//         "flex items-center gap-x-12",
+//         "font-semibold",
+//         "text-secondary", // ☀️ Light
+//         "[html[data-nav-theme='dark']_&]:text-white", // 🌙 Dark
+//       )}
+//     >
+//       {LINKS.map(({ href, label, id }) => (
+//         <li
+//           className={cn(
+//             "whitespace-nowrap",
+//             "text-center hover:text-primary",
+//             "transition-colors duration-300",
+//           )}
+//           key={id}
+//         >
+//           <Link href={href}>{label}</Link>
+//         </li>
+//       ))}
+//     </ul>
+//   );
+// }
 
 // ----------------------------------
 // 📨 Contact button
