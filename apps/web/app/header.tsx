@@ -231,7 +231,7 @@ function CollapseWhileScrolling({ children }: { children: React.ReactNode }) {
 const sidebarClasses = cn(
   "flex items-center justify-between",
   "mx-auto",
-  "px-8 py-3",
+  "pl-6 pr-4 py-3",
   "text-secondary hover:text-secondary",
 );
 function CustomGlass({ children }: { children: React.ReactNode }) {
