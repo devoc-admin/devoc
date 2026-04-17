@@ -14,7 +14,6 @@ import { Glass } from "@/components/sera-ui/liquid-glass";
 import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
 import { CustomButton } from "@/components/ui/custom-button/custom-button";
-
 export default function Header() {
   return (
     <>
@@ -48,23 +47,21 @@ function MobileHeader() {
           "w-[95vw]",
           "px-4 py-2",
           "backdrop-blur-sm",
-          // ⭕ Rounded
           "rounded-full",
           isOpened &&
             "rounded-tl-lg rounded-tr-lg rounded-br-none! rounded-bl-none!",
-          // 🖼️ Background
           "transition-[background] duration-300",
           "bg-white/50 text-secondary hover:text-secondary", // ☀️ Light
           "[html[data-nav-theme='dark']_&]:bg-zinc-900/20", // 🌙 Dark
         )}
       >
-        {/* ♻️ Logo */}
+        {/* ♻️ */}
         <DevOc />
-        {/* 🆕📨 Buttons */}
+        {/* 🆕📨 */}
         <div className="flex">
-          {/* 🆕 Open/close */}
+          {/* 🆕 */}
           <OpenCloseButton iconRef={iconRef} isOpened={isOpened} />
-          {/* 📨 Contact */}
+          {/* 📨 */}
           <ContactButton />
         </div>
       </div>
@@ -270,7 +267,10 @@ function LogoButton({
 }: {
   children?: React.ReactNode;
   logoSize?: number;
-}) {
+  }) {
+
+  const [isHovered, setIsHovered] = useState(false)
+
   const backToTop = useCallback(
     () => window.scrollTo({ behavior: "smooth", top: 0 }),
     [],
@@ -294,34 +294,43 @@ function LogoButton({
         "text-2xl",
         "outline-offset-4",
       )}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       onClick={backToTop}
       onKeyDown={(e) => enterBackToTop(e)}
       title="Retour en haut"
       type="button"
     >
-      <motion.div
-        transition={{
-          damping: 10,
-          duration: 1,
-          mass: 1,
-          stiffness: 100,
-          type: "spring",
-        }}
-        whileHover={{ rotate: 360 }}
-      >
-        <Image
-          alt=""
-          aria-hidden="true"
-          height={logoSize}
-          priority
-          src={Icon}
-          width={logoSize}
-        />
-      </motion.div>
+      <DevOcFlower logoSize={logoSize} isHovered={isHovered}/>
       {children}
     </button>
   );
 }
+
+function DevOcFlower({ logoSize, isHovered }: { logoSize?: number; isHovered?: boolean }) {
+  return  <motion.div
+    transition={{
+      damping: 10,
+      duration: 100,
+      mass: 1,
+      stiffness: 100,
+      type: "spring",
+    }}
+    animate={isHovered ? { rotate: 360 } : undefined}
+  >
+    <Image
+      alt=""
+      aria-hidden="true"
+      height={logoSize}
+      priority
+      src={Icon}
+      width={logoSize}
+    />
+  </motion.div>
+}
+
+// --------------------------------
+// 🆎
 
 function DevOc() {
   const Text = (

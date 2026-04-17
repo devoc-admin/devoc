@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import Header from "@/app/header.tsx";
+import Header from "@/app/_components/header/header.tsx";
 import Hero from "./_components/sections/hero/hero.tsx";
 import Footer from "./footer.tsx";
 
