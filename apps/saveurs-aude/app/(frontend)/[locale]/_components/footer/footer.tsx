@@ -1,5 +1,6 @@
-import { Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
+import { siFacebook as FacebookIcon, siInstagram as InstagramIcon } from "simple-icons";
 import { Link } from "@/i18n/navigation";
 import { getPayloadClient } from "@/lib/payload";
 import { cn } from "@/lib/utils";
@@ -94,14 +95,24 @@ function SocialLinks({ social }: { social: SiteConfig["socialLinks"] }) {
 
   return (
     <div className="mt-4 flex gap-3">
-      {social.instagram && (
-        <SocialLink href={social.instagram} label="Instagram">
-          <Instagram className="size-5" />
-        </SocialLink>
-      )}
       {social.facebook && (
         <SocialLink href={social.facebook} label="Facebook">
-          <Facebook className="size-5" />
+          <svg
+            dangerouslySetInnerHTML={{ __html: FacebookIcon.svg }}
+            viewBox="0 0 24 24"
+            className="size-5"
+            fill="currentColor"
+          />
+        </SocialLink>
+      )}
+      {social.instagram && (
+        <SocialLink href={social.instagram} label="Instagram">
+          <svg
+            dangerouslySetInnerHTML={{ __html: InstagramIcon.svg }}
+            viewBox="0 0 24 24"
+            className="size-5"
+            fill="currentColor"
+          />
         </SocialLink>
       )}
     </div>

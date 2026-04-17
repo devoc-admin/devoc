@@ -203,6 +203,7 @@ function ProductImage({ product }: { product: Partial<Product> }) {
         <Image
           alt={imageAlt}
           fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 360px"
           src={imageUrl}
           style={{ objectFit: "cover" }}
         />
@@ -394,6 +395,7 @@ function CategoryImage({ category }: { category: Partial<Category> }) {
       <Image
         alt={imageAlt}
         fill
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 360px"
         src={imageUrl}
         style={{ objectFit: "cover" }}
       />
