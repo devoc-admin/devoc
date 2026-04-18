@@ -15,6 +15,28 @@ import { cn } from "@/lib/utils";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+type CheckoutFormValues = {
+  customer: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+  };
+  deliveryMethod: "shipping" | "clickAndCollect";
+  shippingAddress: {
+    city: string;
+    country: string;
+    street: string;
+    zipCode: string;
+  };
+};
+
+function useCheckoutForm(defaultValues: CheckoutFormValues) {
+  return useForm({ defaultValues });
+}
+
+type CheckoutForm = ReturnType<typeof useCheckoutForm>;
+
 export function CheckoutForm({
   shippingConfig,
 }: {
@@ -195,8 +217,7 @@ function CustomerInfoSection({
   form,
   t,
 }: {
-  // biome-ignore lint/suspicious/noExplicitAny: tanstack form generic too complex to inline
-  form: any;
+  form: CheckoutForm;
   t: ReturnType<typeof useTranslations>;
 }) {
   return (
@@ -206,22 +227,21 @@ function CustomerInfoSection({
       </h2>
       <div className="grid gap-4 sm:grid-cols-2">
         <form.Field
-          // biome-ignore lint/suspicious/noExplicitAny: tanstack form field
-          children={(field: any) => (
+          children={({ state: { meta, value }, handleBlur, handleChange }) => (
             <FieldWrapper
               error={
-                field.state.meta.isTouched
-                  ? field.state.meta.errors[0]
+                meta.isTouched
+                  ? meta.errors[0]
                   : undefined
               }
               label={t("firstName")}
             >
               <input
                 className={inputClass}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={handleBlur}
+                onChange={(e) => handleChange(e.target.value)}
                 type="text"
-                value={field.state.value}
+                value={value}
               />
             </FieldWrapper>
           )}
@@ -232,22 +252,21 @@ function CustomerInfoSection({
           }}
         />
         <form.Field
-          // biome-ignore lint/suspicious/noExplicitAny: tanstack form field
-          children={(field: any) => (
+          children={({ state: { meta, value }, handleBlur, handleChange }) => (
             <FieldWrapper
               error={
-                field.state.meta.isTouched
-                  ? field.state.meta.errors[0]
+                meta.isTouched
+                  ? meta.errors[0]
                   : undefined
               }
               label={t("lastName")}
             >
               <input
                 className={inputClass}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={handleBlur}
+                onChange={(e) => handleChange(e.target.value)}
                 type="text"
-                value={field.state.value}
+                value={value}
               />
             </FieldWrapper>
           )}
@@ -258,22 +277,21 @@ function CustomerInfoSection({
           }}
         />
         <form.Field
-          // biome-ignore lint/suspicious/noExplicitAny: tanstack form field
-          children={(field: any) => (
+          children={({ state: { meta, value }, handleBlur, handleChange }) => (
             <FieldWrapper
               error={
-                field.state.meta.isTouched
-                  ? field.state.meta.errors[0]
+                meta.isTouched
+                  ? meta.errors[0]
                   : undefined
               }
               label={t("email")}
             >
               <input
                 className={inputClass}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={handleBlur}
+                onChange={(e) => handleChange(e.target.value)}
                 type="email"
-                value={field.state.value}
+                value={value}
               />
             </FieldWrapper>
           )}
@@ -287,22 +305,21 @@ function CustomerInfoSection({
           }}
         />
         <form.Field
-          // biome-ignore lint/suspicious/noExplicitAny: tanstack form field
-          children={(field: any) => (
+          children={({ state: { meta, value }, handleBlur, handleChange }) => (
             <FieldWrapper
               error={
-                field.state.meta.isTouched
-                  ? field.state.meta.errors[0]
+                meta.isTouched
+                  ? meta.errors[0]
                   : undefined
               }
               label={t("phone")}
             >
               <input
                 className={inputClass}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={handleBlur}
+                onChange={(e) => handleChange(e.target.value)}
                 type="tel"
-                value={field.state.value}
+                value={value}
               />
             </FieldWrapper>
           )}
@@ -324,8 +341,7 @@ function DeliveryMethodSection({
   shippingConfig,
   t,
 }: {
-  // biome-ignore lint/suspicious/noExplicitAny: tanstack form generic too complex to inline
-  form: any;
+  form: CheckoutForm;
   shippingConfig: ShippingConfig;
   t: ReturnType<typeof useTranslations>;
 }) {
@@ -335,8 +351,7 @@ function DeliveryMethodSection({
         {t("deliveryMethod")}
       </h2>
       <form.Field
-        // biome-ignore lint/suspicious/noExplicitAny: tanstack form field
-        children={(field: any) => {
+        children={({ state: { value }, handleChange }) => {
           const methods = shippingConfig.clickAndCollectEnabled
             ? (["shipping", "clickAndCollect"] as const)
             : (["shipping"] as const);
@@ -350,16 +365,16 @@ function DeliveryMethodSection({
                     "p-4",
                     "transition-colors",
                     "border-border/50 hover:border-primary/50",
-                    field.state.value === method &&
+                    value === method &&
                       "border-primary bg-primary/5"
                   )}
                   key={method}
                 >
                   <input
-                    checked={field.state.value === method}
+                    checked={value === method}
                     className="accent-primary"
                     name="deliveryMethod"
-                    onChange={() => field.handleChange(method)}
+                    onChange={() => handleChange(method)}
                     type="radio"
                     value={method}
                   />
@@ -381,8 +396,7 @@ function ShippingAddressSection({
   form,
   t,
 }: {
-  // biome-ignore lint/suspicious/noExplicitAny: tanstack form generic too complex to inline
-  form: any;
+  form: CheckoutForm;
   t: ReturnType<typeof useTranslations>;
 }) {
   return (
@@ -392,22 +406,21 @@ function ShippingAddressSection({
       </h2>
       <div className="grid gap-4">
         <form.Field
-          // biome-ignore lint/suspicious/noExplicitAny: tanstack form field
-          children={(field: any) => (
+          children={({ state: { meta, value }, handleBlur, handleChange }) => (
             <FieldWrapper
               error={
-                field.state.meta.isTouched
-                  ? field.state.meta.errors[0]
+                meta.isTouched
+                  ? meta.errors[0]
                   : undefined
               }
               label={t("street")}
             >
               <input
                 className={inputClass}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={handleBlur}
+                onChange={(e) => handleChange(e.target.value)}
                 type="text"
-                value={field.state.value}
+                value={value}
               />
             </FieldWrapper>
           )}
@@ -419,22 +432,21 @@ function ShippingAddressSection({
         />
         <div className="grid gap-4 sm:grid-cols-2">
           <form.Field
-            // biome-ignore lint/suspicious/noExplicitAny: tanstack form field
-            children={(field: any) => (
+            children={({ state: { meta, value }, handleBlur, handleChange }) => (
               <FieldWrapper
                 error={
-                  field.state.meta.isTouched
-                    ? field.state.meta.errors[0]
+                  meta.isTouched
+                    ? meta.errors[0]
                     : undefined
                 }
                 label={t("zipCode")}
               >
                 <input
                   className={inputClass}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  onChange={(e) => handleChange(e.target.value)}
                   type="text"
-                  value={field.state.value}
+                  value={value}
                 />
               </FieldWrapper>
             )}
@@ -445,22 +457,21 @@ function ShippingAddressSection({
             }}
           />
           <form.Field
-            // biome-ignore lint/suspicious/noExplicitAny: tanstack form field
-            children={(field: any) => (
+            children={({ state: { meta, value }, handleBlur, handleChange }) => (
               <FieldWrapper
                 error={
-                  field.state.meta.isTouched
-                    ? field.state.meta.errors[0]
+                  meta.isTouched
+                    ? meta.errors[0]
                     : undefined
                 }
                 label={t("city")}
               >
                 <input
                   className={inputClass}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={handleBlur}
+                  onChange={(e) => handleChange(e.target.value)}
                   type="text"
-                  value={field.state.value}
+                  value={value}
                 />
               </FieldWrapper>
             )}
@@ -472,22 +483,21 @@ function ShippingAddressSection({
           />
         </div>
         <form.Field
-          // biome-ignore lint/suspicious/noExplicitAny: tanstack form field
-          children={(field: any) => (
+          children={({ state: { meta, value }, handleBlur, handleChange }) => (
             <FieldWrapper
               error={
-                field.state.meta.isTouched
-                  ? field.state.meta.errors[0]
+                meta.isTouched
+                  ? meta.errors[0]
                   : undefined
               }
               label={t("country")}
             >
               <input
                 className={inputClass}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onBlur={handleBlur}
+                onChange={(e) => handleChange(e.target.value)}
                 type="text"
-                value={field.state.value}
+                value={value}
               />
             </FieldWrapper>
           )}

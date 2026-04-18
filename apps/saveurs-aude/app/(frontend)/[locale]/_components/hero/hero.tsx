@@ -58,7 +58,7 @@ function LExcellenceDuTerroir({ title }: { title: string }) {
     <h2
       className={cn(
         "text-white",
-        "font-fleur-de-leah!",
+        "font-fleur-de-leah",
         "text-balance",
         "text-center",
         "text-shadow-lg",
