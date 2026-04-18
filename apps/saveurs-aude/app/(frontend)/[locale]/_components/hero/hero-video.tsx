@@ -37,6 +37,7 @@ function HeroVideo() {
           loop
           muted
           playsInline
+          poster="/videos/video-poster.webp"
         >
           <source
             src="/videos/video-hero-av1.mp4"
