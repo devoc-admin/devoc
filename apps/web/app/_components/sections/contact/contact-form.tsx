@@ -10,12 +10,13 @@ import { cn } from "@/lib/utils";
 import { useContactForm } from "./use-contact-form";
 
 // 🎨 Classes CSS
-const labelClass = cn("text-base text-white", "xs:text-lg");
+const labelClass = cn("text-base text-white", "pl-1 mb-1.5", "xs:text-lg");
 
 const inputClass = cn(
   "text-base!",
-  "border-zinc-800",
+  "border-zinc-800!",
   "bg-zinc-950 text-primary-foreground sm:text-lg!",
+  "ring-0!",
 );
 
 function ContactForm() {
@@ -36,18 +37,20 @@ function ContactForm() {
             <Label className={labelClass} htmlFor={field.name}>
               Nom *
             </Label>
-            <Input
-              aria-required="true"
-              autoComplete="name"
-              className={cn("col-span-1", inputClass)}
-              id={field.name}
-              name={field.name}
-              onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="Nom"
-              required
-              type="text"
-              value={field.state.value ?? ""}
-            />
+            <InputContainer>
+              <Input
+                aria-required="true"
+                autoComplete="name"
+                className={cn("col-span-1", inputClass)}
+                id={field.name}
+                name={field.name}
+                onChange={(e) => field.handleChange(e.target.value)}
+                placeholder="Nom"
+                required
+                type="text"
+                value={field.state.value ?? ""}
+              />
+            </InputContainer>
           </div>
         )}
         name="name"
@@ -60,18 +63,20 @@ function ContactForm() {
             <Label className={labelClass} htmlFor={field.name}>
               Email *
             </Label>
-            <Input
-              aria-required="true"
-              autoComplete="email"
-              className={cn("col-span-1", inputClass)}
-              id={field.name}
-              name={field.name}
-              onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="Email"
-              required
-              type="email"
-              value={field.state.value ?? ""}
-            />
+            <InputContainer>
+              <Input
+                aria-required="true"
+                autoComplete="email"
+                className={cn("col-span-1", inputClass)}
+                id={field.name}
+                name={field.name}
+                onChange={(e) => field.handleChange(e.target.value)}
+                placeholder="Email"
+                required
+                type="email"
+                value={field.state.value ?? ""}
+              />
+            </InputContainer>
           </div>
         )}
         name="email"
@@ -84,16 +89,18 @@ function ContactForm() {
             <Label className={labelClass} htmlFor={field.name}>
               Organisation
             </Label>
-            <Input
-              autoComplete="off"
-              className={cn("col-span-2", inputClass)}
-              id={field.name}
-              name={field.name}
-              onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="Nom de votre organisation"
-              type="text"
-              value={field.state.value ?? ""}
-            />
+            <InputContainer>
+              <Input
+                autoComplete="off"
+                className={cn("col-span-2", inputClass)}
+                id={field.name}
+                name={field.name}
+                onChange={(e) => field.handleChange(e.target.value)}
+                placeholder="Nom de votre organisation"
+                type="text"
+                value={field.state.value ?? ""}
+              />
+            </InputContainer>
           </div>
         )}
         name="company"
@@ -106,17 +113,19 @@ function ContactForm() {
             <Label className={labelClass} htmlFor={field.name}>
               Message *
             </Label>
-            <Textarea
-              aria-required="true"
-              autoComplete="off"
-              className={cn("h-36", inputClass)}
-              id={field.name}
-              name={field.name}
-              onChange={(e) => field.handleChange(e.target.value)}
-              placeholder="Décrivez votre projet, vos besoins, vos objectifs etc."
-              required
-              value={field.state.value ?? ""}
-            />
+            <InputContainer>
+              <Textarea
+                aria-required="true"
+                autoComplete="off"
+                className={cn("h-36", inputClass)}
+                id={field.name}
+                name={field.name}
+                onChange={(e) => field.handleChange(e.target.value)}
+                placeholder="Décrivez votre projet, vos besoins, vos objectifs etc."
+                required
+                value={field.state.value ?? ""}
+              />
+            </InputContainer>
           </div>
         )}
         name="message"
@@ -178,6 +187,29 @@ function ContactForm() {
       {/* 🔔 Envoi du message */}
       {!hasSubmitted && <SendMessage isSubmitting={isSubmitting} />}
     </form>
+  );
+}
+
+// 📦
+// ============================
+function InputContainer({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "p-1",
+        "rounded-[12px]",
+        "focus-within:laser-shadow",
+        className,
+      )}
+    >
+      {children}
+    </div>
   );
 }
 

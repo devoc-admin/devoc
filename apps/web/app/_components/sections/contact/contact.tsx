@@ -34,7 +34,7 @@ export default function Contact() {
         "lg:gap-y-36",
         // Padding ↕️
         "lg:pb-48",
-        "2xl:pb-60"
+        "2xl:pb-60",
       )}
       id="contact"
       theme="dark"
@@ -51,7 +51,7 @@ export default function Contact() {
           "z-1",
           "w-full max-w-350",
           "flex flex-col justify-center gap-6",
-          "md:flex-row md:items-start"
+          "md:flex-row md:items-start",
         )}
       >
         {/* 🃏🃏🃏 Cards */}
@@ -73,7 +73,7 @@ export default function Contact() {
             "order-1",
             "md:order-2",
             "overflow-visible",
-            "bg-linear-to-br from-zinc-950 to-zinc-900"
+            "bg-dotted-zinc",
           )}
         >
           {/* ⚡ Laser */}
@@ -85,7 +85,7 @@ export default function Contact() {
               "w-full",
               "h-160",
               "hidden",
-              "lg:block"
+              "lg:block",
             )}
           >
             <LaserFlow
@@ -134,14 +134,24 @@ function ResponseGuaranteed() {
 // 📱 Contact card
 function InfoContact({ icon, content, title, href }: ContactItem) {
   return (
-    <Card className="hidden bg-linear-to-br from-zinc-950 to-zinc-900 p-0 pr-14 md:block">
-      <a className="flex items-start gap-6 p-6" href={href}>
+    <Card
+      className={cn(
+        "hidden p-0 pr-14",
+        "md:block",
+        "bg-dotted-zinc",
+        "hover:laser-shadow",
+        "focus-within:laser-shadow",
+        "transition!",
+      )}
+    >
+      <a className="flex items-start gap-6 p-6 outline-none" href={href}>
         <div
           className={cn(
             "mt-1",
             "grid w-fit items-center rounded-lg p-2.5 text-primary",
-            "bg-primary/15",
-            "group-hover:bg-primary/20"
+            "bg-[#392413]",
+            "group-hover:brightness-120",
+            "transition",
           )}
         >
           {icon}

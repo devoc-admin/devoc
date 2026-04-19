@@ -18,7 +18,6 @@ function Card({
         /* 🖼️ Background */ "bg-card",
         /* 🫷 Padding/Margin */ "py-6",
         /* 🔤 Text */ "text-primary-foreground",
-        /* 🥷 Shadow */ "shadow-primary/10",
         /* 🤹 Animation */ animation &&
           "transition-all duration-300 hover:-translate-y-1.25 backdrop-blur-sm hover:border-primary/40 hover:shadow-lg",
         className,
