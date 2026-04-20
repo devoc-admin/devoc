@@ -10,6 +10,7 @@ function Card({
   return (
     <div
       className={cn(
+        "@container",
         "group",
         /* ⬇️ Layout */ "flex flex-col gap-6",
         /* ⭕ Radius */ "rounded-xl",

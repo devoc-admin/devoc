@@ -45,22 +45,32 @@ export default function Contact() {
         description="Prêt à démarrer votre projet ? Contactez notre équipe pour discuter de vos besoins et obtenir un devis personnalisé."
         title="Contact"
       />
-      {/* 📱🟢 Contact and guaranteed response */}
+      {/* 📱🟢📝 Contact and guaranteed response */}
       <div
         className={cn(
           "z-1",
           "w-full max-w-350",
-          "flex flex-col justify-center gap-6",
-          "md:flex-row md:items-start",
+          "flex justify-center gap-6",
+          "flex-col",
+          "lg:flex-row lg:items-start",
         )}
       >
-        {/* 🃏🃏🃏 Cards */}
-        <div className={cn("flex flex-col gap-6", "order-2", "md:order-1")}>
-          {/* 🃏 Card */}
-          {contactItems.map((item) => (
-            <InfoContact key={item.id} {...item} />
-          ))}
-          {/* 🟢 Response guaranteed */}
+        {/* 📱🟢 */}
+        <div
+          className={cn(
+            "flex",
+            "flex-row order-2",
+            "lg:flex-col lg:order-1 lg:grow-[0.5]  lg:max-w-100",
+            "gap-6",
+          )}
+        >
+          {/* 📱 */}
+          <div className={cn("hidden", "sm:block", "space-y-6 grow")}>
+            {contactItems.map((item) => (
+              <InfoContact key={item.id} {...item} />
+            ))}
+          </div>
+          {/* 🟢 */}
           <ResponseGuaranteed />
         </div>
 
@@ -71,19 +81,23 @@ export default function Contact() {
             "relative",
             "grow",
             "order-1",
-            "md:order-2",
+            "lg:order-2",
             "overflow-visible",
             "bg-dotted-zinc",
+            "py-4",
+            "md:py-5",
+            "lg:py-6",
           )}
         >
           {/* ⚡ Laser */}
           <div
             className={cn(
-              "absolute top-0 left-0 -translate-y-[50%]",
+              "absolute top-0 right-0 -translate-y-[50%]",
               "mask-t-from-50% mask-t-to-90%",
               "cursor-auto",
-              "w-full",
+              "w-[80%] max-w-[800]",
               "h-160",
+
               "hidden",
               "lg:block",
             )}
@@ -95,7 +109,15 @@ export default function Contact() {
             />
           </div>
           {/* 📝 Contact form */}
-          <CardContent className={cn("z-10", "max-xs:p-3")}>
+          <CardContent
+            className={cn(
+              "z-10",
+              "pl-2 pr-2.5",
+              "@sm:pl-3 @sm:pr-3.5",
+              "@md:pl-4 @md:pr-4.5",
+              "@lg:pl-5 @lg:pr-5.5",
+            )}
+          >
             <ContactForm />
           </CardContent>
         </Card>
@@ -110,7 +132,7 @@ function ResponseGuaranteed() {
   return (
     <Card
       animation={false}
-      className="gap-y-2 border-primary/30 bg-primary/5 md:max-w-100"
+      className="gap-y-2 grow border-primary/30 bg-primary/5"
     >
       <CardHeader>
         <CardTitle className="text-wrap font-kanit font-semibold text-2xl">
@@ -121,7 +143,7 @@ function ResponseGuaranteed() {
         Nous nous engageons à répondre à tous les messages dans les 24 heures
         ouvrées.
       </CardContent>
-      <CardFooter className="font-bold text-primary text-sm">
+      <CardFooter className="font-bold mt-auto text-primary text-sm">
         {/* 🟢 Équipe disponible */}
         <div className="mr-2 size-2 rounded-full bg-green-500" />
         <span>Équipe disponible</span>
@@ -136,8 +158,7 @@ function InfoContact({ icon, content, title, href }: ContactItem) {
   return (
     <Card
       className={cn(
-        "hidden p-0 pr-14",
-        "md:block",
+        "p-0 pr-14",
         "bg-dotted-zinc",
         "hover:laser-shadow",
         "focus-within:laser-shadow",
