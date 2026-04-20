@@ -45,7 +45,8 @@ function MobileHeader() {
         className={cn(
           "flex items-center justify-between",
           "w-[95vw]",
-          "px-4 py-2",
+          "py-1 sm:py-2",
+          "pl-4 pr-2 sm:pr-2.5",
           "backdrop-blur-sm",
           "rounded-full",
           isOpened &&
@@ -56,11 +57,11 @@ function MobileHeader() {
         )}
       >
         {/* ♻️ */}
-        <DevOc />
+        <DevOc logoSize={20} />
         {/* 🆕📨 */}
         <div className="flex">
           {/* 🆕 */}
-          <OpenCloseButton iconRef={iconRef} isOpened={isOpened} />
+          {/*<OpenCloseButton iconRef={iconRef} isOpened={isOpened} />*/}
           {/* 📨 */}
           <ContactButton />
         </div>
@@ -71,35 +72,35 @@ function MobileHeader() {
 }
 
 // --------------------------------
-function OpenCloseButton({
-  isOpened,
-  iconRef,
-}: {
-  isOpened: boolean;
-  iconRef: RefObject<HTMLButtonElement | null>;
-}) {
-  return (
-    <button
-      aria-expanded={isOpened}
-      aria-label={
-        isOpened
-          ? "Fermer le menu de navigation"
-          : "Ouvrir le menu de navigation"
-      }
-      className="cursor-pointer px-4 py-1"
-      ref={iconRef}
-      type="button"
-    >
-      {isOpened ? <CloseIcon /> : <OpenIcon />}
-    </button>
-  );
-}
-function CloseIcon() {
-  return <XIcon aria-hidden="true" color="var(--primary)" strokeWidth={2.5} />;
-}
-function OpenIcon() {
-  return <MenuIcon aria-hidden="true" color="var(--primary)" strokeWidth={3} />;
-}
+// function OpenCloseButton({
+//   isOpened,
+//   iconRef,
+// }: {
+//   isOpened: boolean;
+//   iconRef: RefObject<HTMLButtonElement | null>;
+// }) {
+//   return (
+//     <button
+//       aria-expanded={isOpened}
+//       aria-label={
+//         isOpened
+//           ? "Fermer le menu de navigation"
+//           : "Ouvrir le menu de navigation"
+//       }
+//       className="cursor-pointer px-4 py-1"
+//       ref={iconRef}
+//       type="button"
+//     >
+//       {isOpened ? <CloseIcon /> : <OpenIcon />}
+//     </button>
+//   );
+// }
+// function CloseIcon() {
+//   return <XIcon aria-hidden="true" color="var(--primary)" strokeWidth={2.5} />;
+// }
+// function OpenIcon() {
+//   return <MenuIcon aria-hidden="true" color="var(--primary)" strokeWidth={3} />;
+// }
 
 // --------------------------------
 function useToogleNavbarLink() {
@@ -160,7 +161,7 @@ function DesktopHeader() {
           <CustomGlass>
             {/* ♻️ */}
             <div className="flex w-50 justify-start">
-              <DevOc />
+              <DevOc logoSize={24} />
             </div>
             {/* 🔗 */}
             {/*<LinksDesktop />*/}
@@ -227,7 +228,8 @@ function CollapseWhileScrolling({ children }: { children: React.ReactNode }) {
 const sidebarClasses = cn(
   "flex items-center justify-between",
   "mx-auto",
-  "pl-6 pr-4 py-3",
+  "py-3",
+  "pl-6 pr-2",
   "text-secondary hover:text-secondary",
 );
 function CustomGlass({ children }: { children: React.ReactNode }) {
@@ -249,6 +251,7 @@ function CustomGlass({ children }: { children: React.ReactNode }) {
       className={cn(
         sidebarClasses,
         "border",
+        "py-1.5",
         "bg-white/60!  border-zinc-50", // ☀️ Light
         "[html[data-nav-theme='dark']_&]:bg-zinc-900/70! [html[data-nav-theme='dark']_&]:border-zinc-800", // 🌙 Dark
       )}
@@ -266,9 +269,8 @@ function LogoButton({
 }: {
   children?: React.ReactNode;
   logoSize?: number;
-  }) {
-
-  const [isHovered, setIsHovered] = useState(false)
+}) {
+  const [isHovered, setIsHovered] = useState(false);
 
   const backToTop = useCallback(
     () => window.scrollTo({ behavior: "smooth", top: 0 }),
@@ -290,7 +292,8 @@ function LogoButton({
         "group",
         "flex items-center gap-2",
         "cursor-pointer",
-        "text-2xl",
+        "text-xl",
+        "lg:text-2xl",
         "outline-offset-4",
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -300,38 +303,46 @@ function LogoButton({
       title="Retour en haut"
       type="button"
     >
-      <DevOcFlower logoSize={logoSize} isHovered={isHovered}/>
+      <DevOcFlower logoSize={logoSize} isHovered={isHovered} />
       {children}
     </button>
   );
 }
 
-function DevOcFlower({ logoSize, isHovered }: { logoSize?: number; isHovered?: boolean }) {
-  return  <motion.div
-    transition={{
-      damping: 10,
-      duration: 100,
-      mass: 1,
-      stiffness: 100,
-      type: "spring",
-    }}
-    animate={isHovered ? { rotate: 360 } : undefined}
-  >
-    <Image
-      alt=""
-      aria-hidden="true"
-      height={logoSize}
-      priority
-      src={Icon}
-      width={logoSize}
-    />
-  </motion.div>
+function DevOcFlower({
+  logoSize,
+  isHovered,
+}: {
+  logoSize?: number;
+  isHovered?: boolean;
+}) {
+  return (
+    <motion.div
+      transition={{
+        damping: 10,
+        duration: 100,
+        mass: 1,
+        stiffness: 100,
+        type: "spring",
+      }}
+      animate={isHovered ? { rotate: 360 } : undefined}
+    >
+      <Image
+        alt=""
+        aria-hidden="true"
+        height={logoSize}
+        priority
+        src={Icon}
+        width={logoSize}
+      />
+    </motion.div>
+  );
 }
 
 // --------------------------------
 // 🆎
 
-function DevOc() {
+function DevOc({ logoSize }: { logoSize?: number }) {
   const Text = (
     <Link href="/">
       <span
@@ -356,7 +367,7 @@ function DevOc() {
   );
 
   return (
-    <LogoButton>
+    <LogoButton logoSize={logoSize}>
       <div className="relative">
         {/* 🌫️ Blurry copy */}
         <div
