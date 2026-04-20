@@ -121,7 +121,7 @@ function ContactForm() {
                 id={field.name}
                 name={field.name}
                 onChange={(e) => field.handleChange(e.target.value)}
-                placeholder="Décrivez votre projet, vos besoins, vos objectifs etc."
+                placeholder="Décrivez en quelques mots votre projet, vos besoins ou vos objectifs"
                 required
                 value={field.state.value ?? ""}
               />
