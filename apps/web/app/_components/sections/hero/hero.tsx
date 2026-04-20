@@ -27,7 +27,9 @@ export default function Hero() {
   return (
     <WithNavbar>
       <Background />
-      <div className={cn("flex flex-col items-center gap-y-6")}>
+      <div
+        className={cn("flex flex-col items-center gap-y-6", "-mt-36 xl:mt-0")}
+      >
         <DevOc />
         <Keywords />
       </div>
@@ -185,16 +187,28 @@ function OpenCarcaWinner() {
               "text-transparent",
             )}
           >
-            <span className="text-base leading-none lg:text-lg lg:leading-tight">
-              Lauréats concours Open Carca 2025
-            </span>
-            <span className=" text-[0.65rem] lg:text-[0.7rem] uppercase">
-              Catégorie émergence
-            </span>
+            <LaureatsConcours />
+            <CategorieEmergence />
           </div>
         </RatingBadge>
       </a>
     </FadeScaleEntry>
+  );
+}
+
+function LaureatsConcours() {
+  return (
+    <span className="text-base leading-none lg:text-lg lg:leading-tight">
+      Lauréats concours Open Carca 2025
+    </span>
+  );
+}
+
+function CategorieEmergence() {
+  return (
+    <span className=" text-[0.65rem] lg:text-[0.7rem] uppercase">
+      Catégorie émergence
+    </span>
   );
 }
 

@@ -12,9 +12,9 @@ export const RatingBadge = ({
     {...props}
     className={cn("flex items-center -space-x-0.5 lg:-space-x-5", className)}
   >
-    <Wreath className="shrink-0 lg:size-22" />
+    <Wreath className="shrink-0 h-18 lg:size-22" />
     {children}
-    <Wreath className="shrink-0 lg:size-22 -scale-x-100" />
+    <Wreath className="shrink-0 h-18 lg:size-22 -scale-x-100" />
   </div>
 );
 
