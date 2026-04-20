@@ -31,7 +31,8 @@ export default function Section({
         "gap-y-14",
         // Padding ↔️
         "px-3",
-        "xs:px-6",
+        "xs:px-4",
+        "sm:px-6",
         // Padding ↕️
         "py-14",
         "xs:py-24",
