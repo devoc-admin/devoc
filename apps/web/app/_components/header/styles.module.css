@@ -1,0 +1,16 @@
+.navbarDesktop {
+  animation: on-scroll linear both;
+  animation-timeline: scroll(root);
+  animation-range: 0px 150px;
+}
+
+@keyframes on-scroll {
+  from {
+    transform: translateY(10px);
+    width: min(1600px, 95vw);
+  }
+  to {
+    transform: translateY(25px);
+    width: min(1200px, 80vw);
+  }
+}

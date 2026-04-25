@@ -1,19 +1,16 @@
 "use client";
-import { MenuIcon, SendIcon, XIcon } from "lucide-react";
-import {
-  motion,
-  useMotionValueEvent,
-  useScroll,
-  useTransform,
-} from "motion/react";
+import { SendIcon } from "lucide-react";
+import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { type RefObject, useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useClickAnyWhere } from "usehooks-ts";
 import { Glass } from "@/components/sera-ui/liquid-glass";
+import { CustomButton } from "@/components/ui/custom-button/custom-button";
 import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
-import { CustomButton } from "@/components/ui/custom-button/custom-button";
+import s from "./styles.module.css";
+
 export default function Header() {
   return (
     <>
@@ -37,7 +34,7 @@ const mobileHeaderVariants = {
 const scrollThreshold = 100;
 
 function MobileHeader() {
-  const { iconRef, isOpened } = useToogleNavbarLink();
+  const { isOpened } = useToogleNavbarLink();
 
   return (
     <RevealOnScroll>
@@ -46,14 +43,14 @@ function MobileHeader() {
           "flex items-center justify-between",
           "w-[95vw]",
           "py-1 sm:py-2",
-          "pl-4 pr-2 sm:pr-2.5",
+          "pr-2 pl-4 sm:pr-2.5",
           "backdrop-blur-sm",
           "rounded-full",
           isOpened &&
             "rounded-tl-lg rounded-tr-lg rounded-br-none! rounded-bl-none!",
           "transition-[background] duration-300",
           "bg-white/50 text-secondary hover:text-secondary", // ☀️ Light
-          "[html[data-nav-theme='dark']_&]:bg-zinc-900/20", // 🌙 Dark
+          "[html[data-nav-theme='dark']_&]:bg-zinc-900/20" // 🌙 Dark
         )}
       >
         {/* ♻️ */}
@@ -140,7 +137,7 @@ function RevealOnScroll({ children }: { children: React.ReactNode }) {
         "fixed top-3 left-1/2 z-5000",
         "mx-auto mt-0",
         "-translate-x-1/2",
-        "will-change-transform",
+        "will-change-transform"
       )}
       initial="hidden"
       transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -195,32 +192,9 @@ function SlideFadeAnimation({ children }: { children: React.ReactNode }) {
 }
 
 // ---------------------------------
-const collapsedOffset = 25;
-const expandedOffset = 10;
-
-const collapsedWidth = 1200;
-const expandedWidth = 1600;
-
-const maxCollapsedWidth = "80vw";
-const maxExpandedWidth = "95vw";
 
 function CollapseWhileScrolling({ children }: { children: React.ReactNode }) {
-  const { scrollY } = useScroll();
-
-  const { y, maxWidth, width } = useTransform(scrollY, [0, 150], {
-    maxWidth: [maxExpandedWidth, maxCollapsedWidth],
-    width: [expandedWidth, collapsedWidth],
-    y: [expandedOffset, collapsedOffset],
-  });
-
-  return (
-    <motion.div
-      className="will-change-transform"
-      style={{ maxWidth, width, y }}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className={s.navbarDesktop}>{children}</div>;
 }
 
 // ---------------------------------
@@ -229,8 +203,8 @@ const sidebarClasses = cn(
   "flex items-center justify-between",
   "mx-auto",
   "py-3",
-  "pl-6 pr-2",
-  "text-secondary hover:text-secondary",
+  "pr-2 pl-6",
+  "text-secondary hover:text-secondary"
 );
 function CustomGlass({ children }: { children: React.ReactNode }) {
   const { scrollY } = useScroll();
@@ -252,8 +226,8 @@ function CustomGlass({ children }: { children: React.ReactNode }) {
         sidebarClasses,
         "border",
         "py-1.5",
-        "bg-white/60!  border-zinc-50", // ☀️ Light
-        "[html[data-nav-theme='dark']_&]:bg-zinc-900/70! [html[data-nav-theme='dark']_&]:border-zinc-800", // 🌙 Dark
+        "border-zinc-50 bg-white/60!", // ☀️ Light
+        "[html[data-nav-theme='dark']_&]:border-zinc-800 [html[data-nav-theme='dark']_&]:bg-zinc-900/70!" // 🌙 Dark
       )}
     >
       {children}
@@ -274,7 +248,7 @@ function LogoButton({
 
   const backToTop = useCallback(
     () => window.scrollTo({ behavior: "smooth", top: 0 }),
-    [],
+    []
   );
   const enterBackToTop = useCallback(
     (e: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -283,7 +257,7 @@ function LogoButton({
         backToTop();
       }
     },
-    [backToTop],
+    [backToTop]
   );
   return (
     <button
@@ -294,16 +268,16 @@ function LogoButton({
         "cursor-pointer",
         "text-xl",
         "lg:text-2xl",
-        "outline-offset-4",
+        "outline-offset-4"
       )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onClick={backToTop}
       onKeyDown={(e) => enterBackToTop(e)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       title="Retour en haut"
       type="button"
     >
-      <DevOcFlower logoSize={logoSize} isHovered={isHovered} />
+      <DevOcFlower isHovered={isHovered} logoSize={logoSize} />
       {children}
     </button>
   );
@@ -318,6 +292,7 @@ function DevOcFlower({
 }) {
   return (
     <motion.div
+      animate={isHovered ? { rotate: 360 } : undefined}
       transition={{
         damping: 10,
         duration: 100,
@@ -325,7 +300,6 @@ function DevOcFlower({
         stiffness: 100,
         type: "spring",
       }}
-      animate={isHovered ? { rotate: 360 } : undefined}
     >
       <Image
         alt=""
@@ -350,7 +324,7 @@ function DevOc({ logoSize }: { logoSize?: number }) {
           "font-bold tracking-tighter",
           "transition-colors duration-300",
           "text-secondary", // ☀️ Light
-          "[html[data-nav-theme='dark']_&]:text-white", // 🌙 Dark
+          "[html[data-nav-theme='dark']_&]:text-white" // 🌙 Dark
         )}
       >
         Dev'
@@ -358,7 +332,7 @@ function DevOc({ logoSize }: { logoSize?: number }) {
       <span
         className={cn(
           "bg-linear-to-br from-[#FF5709] to-[#FFC731] bg-clip-text",
-          "font-black text-transparent tracking-tighter",
+          "font-black text-transparent tracking-tighter"
         )}
       >
         Oc
@@ -374,7 +348,7 @@ function DevOc({ logoSize }: { logoSize?: number }) {
           className={cn(
             "absolute opacity-70",
             "blur-sm",
-            "[html[data-nav-theme='light']_&]:hidden", // ☀️ Light
+            "[html[data-nav-theme='light']_&]:hidden" // ☀️ Light
           )}
         >
           {Text}
@@ -427,7 +401,7 @@ function LinksMobile() {
         "backdrop-blur-sm",
         "transition-colors duration-300",
         "[html[data-nav-theme='dark']_&]:text-secondary", // ☀️ Light
-        "[html[data-nav-theme='dark']_&]:bg-zinc-900/20 [html[data-nav-theme='dark']_&]:text-white", // 🌙 Dark
+        "[html[data-nav-theme='dark']_&]:bg-zinc-900/20 [html[data-nav-theme='dark']_&]:text-white" // 🌙 Dark
       )}
     >
       {LINKS.map(({ href, label }) => (
@@ -435,7 +409,7 @@ function LinksMobile() {
           className={cn(
             "px-4 py-2",
             "text-left",
-            "font-kira font-semibold uppercase",
+            "font-kira font-semibold uppercase"
           )}
           href={href}
           key={href}
@@ -482,20 +456,20 @@ function ContactButton({ children = null }: React.PropsWithChildren) {
     <Link href="#contact">
       <CustomButton
         aria-label="Nous contacter"
-        style={
-          {
-            "--accent": "var(--primary-lighter)",
-            "--accent-secondary": "var(--primary-strong)",
-          } as React.CSSProperties
-        }
         className={cn(
           "flex items-center gap-2",
           "cursor-pointer",
           "rounded-full!",
           "font-bold text-primary-foreground",
           "transition-colors",
-          children && "pl-5! pr-6!",
+          children && "pr-6! pl-5!"
         )}
+        style={
+          {
+            "--accent": "var(--primary-lighter)",
+            "--accent-secondary": "var(--primary-strong)",
+          } as React.CSSProperties
+        }
       >
         <SendIcon aria-hidden="true" size={18} />
         {children && <span>{children}</span>}
