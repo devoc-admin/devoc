@@ -14,6 +14,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   description: "Site de la commune fictive de Cagnolhess",
+  robots: {
+    follow: false,
+    index: false,
+  },
   title: "Commune de Cagnolhes",
 };
 
