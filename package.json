@@ -6,8 +6,8 @@
     "update": "bun update --recursive --latest --interactive"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.12",
-    "@commitlint/cli": "^20.5.0",
+    "@biomejs/biome": "^2.4.13",
+    "@commitlint/cli": "^20.5.2",
     "@commitlint/config-conventional": "^20.5.0",
     "lefthook": "^2.1.6",
     "turbo": "^2.9.6",
@@ -41,7 +41,7 @@
         "clsx": "^2.1.1",
         "tailwind-merge": "^3.5.0",
         "motion": "^12.38.0",
-        "lucide-react": "^1.8.0"
+        "lucide-react": "^1.11.0"
       },
       "tooling": {
         "typescript": "^6.0.3"
