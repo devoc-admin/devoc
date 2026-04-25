@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Birthstone_Bounce, Montserrat } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  variable: "--font-montserrat",
 });
 
-const geistMono = Geist_Mono({
+const birthstoneBounce = Birthstone_Bounce({
   subsets: ["latin"],
-  variable: "--font-geist-mono",
+  variable: "--font-birthstone-bounce",
+  weight: "500",
 });
 
 export const metadata: Metadata = {
@@ -28,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${montserrat.variable} ${birthstoneBounce.variable} h-full antialiased`}
       lang="en"
     >
       <body className="flex min-h-full flex-col">{children}</body>
