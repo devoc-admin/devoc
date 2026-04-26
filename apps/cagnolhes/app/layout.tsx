@@ -30,9 +30,9 @@ export default function RootLayout({
   return (
     <html
       className={`${montserrat.variable} ${birthstoneBounce.variable} h-full antialiased`}
-      lang="en"
+      lang="fr"
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col bg-green-50">{children}</body>
     </html>
   );
 }
