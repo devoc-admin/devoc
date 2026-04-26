@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 export default function Hero() {
   return (
-    <div className="min-h-svh">
+    <div>
       <div className="relative">
         <div
           className={cn(
@@ -115,10 +115,10 @@ function BalImage() {
 
 // 🧭
 const navlinks: Navlink[] = [
-  { href: "/actualites", text: "Actualités" },
-  { href: "/demarches", text: "Démarches" },
-  { href: "/associations", text: "Associations" },
-  { href: "/patrimoine", text: "Patrimoine" },
+  { href: "/actualites", id: "actualistes", text: "Actualités" },
+  { href: "/demarches", id: "demarches", text: "Démarches" },
+  { href: "/associations", id: "associations", text: "Associations" },
+  { href: "/patrimoine", id: "patrimoine", text: "Patrimoine" },
 ];
 
 function Navbar() {
@@ -127,32 +127,49 @@ function Navbar() {
       className={cn(
         "relative",
         "mt-auto",
-        "flex",
-        "h-18 w-full",
+        "flex flex-col gap-y-2",
+        "h-22 w-full",
         "bg-gradient-to-r from-[#52c234] to-[#061700]",
         "py-1.5",
         "text-lg",
         "opacity-90"
       )}
     >
-      <div className="flex grow items-center justify-between border-amber-300 border-y px-12 font-bold text-white">
+      <Separator size="md" />
+      <Separator size="sm" />
+      <div className="flex grow items-center justify-between px-12 font-bold text-white">
         <NavLinksSection navlinks={navlinks.slice(0, 2)} />
         <NavLinksSection navlinks={navlinks.slice(2, 4)} />
       </div>
+      <Separator size="sm" />
+      <Separator size="md" />
     </div>
+  );
+}
+
+function Separator({ size = "sm" }: { size: "sm" | "md" }) {
+  return (
+    <div
+      className={cn(
+        size === "sm" && "h-[0.5px]",
+        size === "md" && "h-[3px]",
+        "w-full bg-amber-300"
+      )}
+    />
   );
 }
 
 interface Navlink {
   href: string;
+  id: string;
   text: string;
 }
 
 function NavLinksSection({ navlinks }: { navlinks: Navlink[] }) {
   return (
     <div className="flex uppercase">
-      {navlinks.map(({ text, href }) => (
-        <Link className="px-8 py-6" href={href}>
+      {navlinks.map(({ text, href, id }) => (
+        <Link className="px-8 py-1" href={href} key={id}>
           {text}
         </Link>
       ))}
