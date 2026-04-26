@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
-import { Birthstone_Bounce, Montserrat } from "next/font/google";
+import { Birthstone_Bounce, Geist, Montserrat } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -29,7 +32,14 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={`${montserrat.variable} ${birthstoneBounce.variable} h-full antialiased`}
+      className={cn(
+        "h-full",
+        "antialiased",
+        montserrat.variable,
+        birthstoneBounce.variable,
+        "font-sans",
+        geist.variable
+      )}
       lang="fr"
     >
       <body className="flex min-h-full flex-col bg-green-50">{children}</body>

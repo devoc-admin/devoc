@@ -5,7 +5,7 @@ import Cagnolhes from "@/app/_assets/cagnolhes.jpg";
 import Vineyard from "@/app/_assets/vineyard.jpg";
 import { cn } from "@/lib/utils";
 
-export default function Hero() {
+export function Hero() {
   return (
     <div>
       <div className="relative">
@@ -44,11 +44,15 @@ function Badge() {
         "-translate-x-1/2 -translate-y-1/4",
         "rounded-full",
         "bg-white",
-        "font-birthstone-bounce text-2xl",
         "shadow-2xl"
       )}
     >
-      <h1 className="text-8xl">Cagnolhes</h1>
+      <div className="text-center">
+        <h1 className="font-birthstone-bounce text-8xl">Cagnolhes</h1>
+        <div className="inline-block translate-x-15 bg-white font-montserrat text-2xl">
+          Liberté et audace
+        </div>
+      </div>
     </div>
   );
 }
