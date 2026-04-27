@@ -1,7 +1,9 @@
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
-
+import { cn } from "@/lib/utils";
 export function Section({ children }: { children: React.ReactNode }) {
-  return <div>{children}</div>;
+  return (
+    <div className={cn("mx-auto", "w-[min(1400px,90vw)]")}>{children}</div>
+  );
 }
 
 export function SectionTitle({
@@ -12,7 +14,7 @@ export function SectionTitle({
   Icon: IconSvgElement;
 }) {
   return (
-    <div className="relative w-fit text-7xl text-emerald-800">
+    <div className={cn("relative w-fit text-7xl text-emerald-800")}>
       <h3 className="font-bold font-montserrat">{children}</h3>
       <HugeiconsIcon
         className="absolute top-0 right-0 size-[1em] translate-x-[calc(100%+10px)] -translate-y-1/3"
