@@ -12,16 +12,16 @@
     "test": "bun test"
   },
   "devDependencies": {
-    "@types/bun": "1.3.13"
+    "@types/bun": "catalog:tooling"
   },
   "peerDependencies": {
-    "typescript": "^6.0.3"
+    "typescript": "catalog:tooling"
   },
   "dependencies": {
     "@dev-oc/utils": "workspace:*",
-    "@vercel/blob": "^2.3.3",
+    "@vercel/blob": "catalog:crawler",
     "playwright": "catalog:testing",
-    "sharp": "^0.34.2",
-    "wapalyzer": "^6.10.65"
+    "sharp": "catalog:crawler",
+    "wapalyzer": "catalog:crawler"
   }
 }

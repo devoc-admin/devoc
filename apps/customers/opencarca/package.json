@@ -20,7 +20,7 @@
     "react-dom": "catalog:react",
     "swiper": "^12.1.4",
     "tailwind-merge": "catalog:ui",
-    "usehooks-ts": "^3.1.1"
+    "usehooks-ts": "catalog:ui"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "catalog:tailwind",

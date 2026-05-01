@@ -41,10 +41,13 @@
         "clsx": "^2.1.1",
         "tailwind-merge": "^3.5.0",
         "motion": "^12.38.0",
-        "lucide-react": "^1.14.0"
+        "lucide-react": "^1.14.0",
+        "@radix-ui/react-tooltip": "^1.2.8",
+        "usehooks-ts": "^3.1.1"
       },
       "tooling": {
-        "typescript": "^6.0.3"
+        "typescript": "^6.0.3",
+        "@types/bun": "1.3.13"
       },
       "testing": {
         "playwright": "^1.59.1"
@@ -52,6 +55,19 @@
       "email": {
         "resend": "^6.12.2",
         "@react-email/components": "^1.0.12"
+      },
+      "forms": {
+        "@tanstack/react-form": "^1.29.1",
+        "zod": "^4.4.1",
+        "nuqs": "^2.8.9"
+      },
+      "crawler": {
+        "@vercel/blob": "^2.3.3",
+        "wapalyzer": "^6.10.65",
+        "sharp": "^0.34.3"
+      },
+      "vercel": {
+        "@vercel/analytics": "^2.0.1"
       }
     }
   },
