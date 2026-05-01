@@ -211,6 +211,19 @@ function CategorieEmergence() {
   );
 }
 
+// biome-ignore lint/correctness/noUnusedVariables: kept for future use
+function FadeMoveUp({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 50 }}
+      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 // ----------------------------------
 // 👑
 function Founders() {

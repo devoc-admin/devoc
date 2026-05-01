@@ -190,6 +190,105 @@ function ContactLink({
 }
 
 // ------------------------------------------------------------------------------------------------
+type GroupInternalLink = {
+  id: string;
+  title: string;
+  links: {
+    name: string;
+    href: string;
+  }[];
+};
+
+// biome-ignore lint/correctness/noUnusedVariables: referenced by commented-out code below
+const groupLinks: GroupInternalLink[] = [
+  {
+    id: "navigation",
+    links: [
+      {
+        href: "/#services",
+        name: "Services",
+      },
+      {
+        href: "/#realisations",
+        name: "Réalisations",
+      },
+      {
+        href: "/#method",
+        name: "Notre méthode",
+      },
+      {
+        href: "/#us",
+        name: "Le collectif",
+      },
+      {
+        href: "/#contact",
+        name: "Contact",
+      },
+    ],
+    title: "Navigation",
+  },
+];
+
+// function GroupsInternalLinks() {
+//   return (
+//     <div>
+//       {groupLinks.map((groupLink) => (
+//         <InternalLinks key={groupLink.id} {...groupLink} />
+//       ))}
+//     </div>
+//   );
+// }
+
+// function InternalLinks({
+//   title,
+//   links,
+// }: {
+//   id: string;
+//   title: string;
+//   links: { name: string; href: string }[];
+// }) {
+//   return (
+//     <div>
+//       <div
+//         className={cn(
+//           "mb-5",
+//           "font-kanit font-semibold text-lg text-primary-foreground",
+//         )}
+//       >
+//         {title}
+//       </div>
+//       <div className={cn("flex flex-col gap-y-3", "text-muted-foreground")}>
+//         {links.map((link) => (
+//           <a
+//             className={cn(
+//               "group",
+//               "flex items-center gap-2 ",
+//               "cursor-pointer",
+//               "text-sm",
+//               "transition-colors",
+//               "hover:text-primary-foreground",
+//             )}
+//             href={link.href}
+//             key={link.name}
+//           >
+//             <ArrowRightIcon
+//               className={cn(
+//                 "not-pointer-fine:hidden",
+//                 "opacity-0",
+//                 "shrink-0",
+//                 "transition-opacity",
+//                 "group-hover:opacity-100",
+//               )}
+//               size={16}
+//             />
+//             <span>{link.name}</span>
+//           </a>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// }
+// ------------------------------------------------------------------------------------------------
 function Copyright() {
   return (
     <div className="text-muted-foreground text-sm">
