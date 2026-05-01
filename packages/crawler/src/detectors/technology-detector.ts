@@ -163,7 +163,7 @@ function findInWappalyzerByName(
       }
     }
   }
-  return undefined;
+  return;
 }
 
 function findInSources(
@@ -178,7 +178,7 @@ function findInSources(
       return pattern.name;
     }
   }
-  return undefined;
+  return;
 }
 
 function detectConsentManager(
@@ -211,7 +211,7 @@ function detectAccessibilityTool(
       return at.name;
     }
   }
-  return undefined;
+  return;
 }
 
 function detectHostingProvider(
@@ -237,7 +237,7 @@ function detectHostingProvider(
       return hp.name;
     }
   }
-  return undefined;
+  return;
 }
 
 /**

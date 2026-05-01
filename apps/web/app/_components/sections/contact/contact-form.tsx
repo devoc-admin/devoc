@@ -10,13 +10,13 @@ import { cn } from "@/lib/utils";
 import { useContactForm } from "./use-contact-form";
 
 // 🎨 Classes CSS
-const labelClass = cn("text-base text-white", "pl-1 mb-1.5", "xs:text-lg");
+const labelClass = cn("text-base text-white", "mb-1.5 pl-1", "xs:text-lg");
 
 const inputClass = cn(
   "text-base!",
   "border-zinc-800!",
   "bg-zinc-950 text-primary-foreground sm:text-lg!",
-  "ring-0!",
+  "ring-0!"
 );
 
 function ContactForm() {
@@ -158,7 +158,7 @@ function ContactForm() {
             "col-span-2 flex items-center gap-2 rounded-md p-4",
             hasSubmitted
               ? "border border-green-200 bg-green-50 text-green-800"
-              : "border border-red-200 bg-red-50 text-red-800",
+              : "border border-red-200 bg-red-50 text-red-800"
           )}
           role="alert"
         >
@@ -205,7 +205,7 @@ function InputContainer({
         "p-1",
         "rounded-[12px]",
         "focus-within:laser-shadow",
-        className,
+        className
       )}
     >
       {children}

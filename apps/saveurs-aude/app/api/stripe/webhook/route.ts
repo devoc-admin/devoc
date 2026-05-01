@@ -19,7 +19,7 @@ function parseShippingAddress(
   metadata: Record<string, string>,
   deliveryMethod: string
 ) {
-  if (deliveryMethod !== "shipping") return undefined;
+  if (deliveryMethod !== "shipping") return;
   return {
     city: metadata.shippingCity || "",
     country: metadata.shippingCountry || "",

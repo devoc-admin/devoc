@@ -88,7 +88,7 @@ export function NewsletterForm() {
           onBlur: ({ value }) => {
             if (!value.trim()) return t("newsletterRequired");
             if (!EMAIL_REGEX.test(value)) return t("newsletterInvalidEmail");
-            return undefined;
+            return;
           },
         }}
       />

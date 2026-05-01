@@ -229,11 +229,7 @@ function CustomerInfoSection({
         <form.Field
           children={({ state: { meta, value }, handleBlur, handleChange }) => (
             <FieldWrapper
-              error={
-                meta.isTouched
-                  ? meta.errors[0]
-                  : undefined
-              }
+              error={meta.isTouched ? meta.errors[0] : undefined}
               label={t("firstName")}
             >
               <input
@@ -254,11 +250,7 @@ function CustomerInfoSection({
         <form.Field
           children={({ state: { meta, value }, handleBlur, handleChange }) => (
             <FieldWrapper
-              error={
-                meta.isTouched
-                  ? meta.errors[0]
-                  : undefined
-              }
+              error={meta.isTouched ? meta.errors[0] : undefined}
               label={t("lastName")}
             >
               <input
@@ -279,11 +271,7 @@ function CustomerInfoSection({
         <form.Field
           children={({ state: { meta, value }, handleBlur, handleChange }) => (
             <FieldWrapper
-              error={
-                meta.isTouched
-                  ? meta.errors[0]
-                  : undefined
-              }
+              error={meta.isTouched ? meta.errors[0] : undefined}
               label={t("email")}
             >
               <input
@@ -300,18 +288,14 @@ function CustomerInfoSection({
             onBlur: ({ value }: { value: string }) => {
               if (!value.trim()) return t("fieldRequired");
               if (!EMAIL_REGEX.test(value)) return t("invalidEmail");
-              return undefined;
+              return;
             },
           }}
         />
         <form.Field
           children={({ state: { meta, value }, handleBlur, handleChange }) => (
             <FieldWrapper
-              error={
-                meta.isTouched
-                  ? meta.errors[0]
-                  : undefined
-              }
+              error={meta.isTouched ? meta.errors[0] : undefined}
               label={t("phone")}
             >
               <input
@@ -365,8 +349,7 @@ function DeliveryMethodSection({
                     "p-4",
                     "transition-colors",
                     "border-border/50 hover:border-primary/50",
-                    value === method &&
-                      "border-primary bg-primary/5"
+                    value === method && "border-primary bg-primary/5"
                   )}
                   key={method}
                 >
@@ -408,11 +391,7 @@ function ShippingAddressSection({
         <form.Field
           children={({ state: { meta, value }, handleBlur, handleChange }) => (
             <FieldWrapper
-              error={
-                meta.isTouched
-                  ? meta.errors[0]
-                  : undefined
-              }
+              error={meta.isTouched ? meta.errors[0] : undefined}
               label={t("street")}
             >
               <input
@@ -432,13 +411,13 @@ function ShippingAddressSection({
         />
         <div className="grid gap-4 sm:grid-cols-2">
           <form.Field
-            children={({ state: { meta, value }, handleBlur, handleChange }) => (
+            children={({
+              state: { meta, value },
+              handleBlur,
+              handleChange,
+            }) => (
               <FieldWrapper
-                error={
-                  meta.isTouched
-                    ? meta.errors[0]
-                    : undefined
-                }
+                error={meta.isTouched ? meta.errors[0] : undefined}
                 label={t("zipCode")}
               >
                 <input
@@ -457,13 +436,13 @@ function ShippingAddressSection({
             }}
           />
           <form.Field
-            children={({ state: { meta, value }, handleBlur, handleChange }) => (
+            children={({
+              state: { meta, value },
+              handleBlur,
+              handleChange,
+            }) => (
               <FieldWrapper
-                error={
-                  meta.isTouched
-                    ? meta.errors[0]
-                    : undefined
-                }
+                error={meta.isTouched ? meta.errors[0] : undefined}
                 label={t("city")}
               >
                 <input
@@ -485,11 +464,7 @@ function ShippingAddressSection({
         <form.Field
           children={({ state: { meta, value }, handleBlur, handleChange }) => (
             <FieldWrapper
-              error={
-                meta.isTouched
-                  ? meta.errors[0]
-                  : undefined
-              }
+              error={meta.isTouched ? meta.errors[0] : undefined}
               label={t("country")}
             >
               <input

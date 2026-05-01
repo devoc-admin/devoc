@@ -79,8 +79,8 @@ export async function generateMetadata({
       type: "website",
     },
     robots: {
-      index: false,
       follow: false,
+      index: false,
     },
     title: {
       default: "Saveurs d'Aude — Spécialités artisanales de Carcassonne",

@@ -39,6 +39,7 @@
       "!**/components/sera-ui",
       "!**/components/magicui",
       "!**/components/tailgrids",
+      "!**/components/motion-core",
       "!**/bilan",
       "!**/payload-types.ts",
       "!**/migrations"

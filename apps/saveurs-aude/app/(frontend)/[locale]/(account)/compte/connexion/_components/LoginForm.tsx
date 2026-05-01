@@ -87,7 +87,7 @@ export function LoginForm() {
             onBlur: ({ value }) => {
               if (!value.trim()) return tc("fieldRequired");
               if (!EMAIL_REGEX.test(value)) return tc("invalidEmail");
-              return undefined;
+              return;
             },
           }}
         />

@@ -100,28 +100,26 @@ import { forwardRef } from "react";
 const MenuTrigger = forwardRef<
   HTMLButtonElement,
   { label: string; onOpen: () => void }
->(({ label, onOpen }, ref) => {
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <button
-          aria-label={label}
-          className={cn(
-            "p-2",
-            "text-foreground/70",
-            "transition-colors hover:text-primary"
-          )}
-          onClick={onOpen}
-          ref={ref}
-          type="button"
-        >
-          <Menu className="size-5" />
-        </button>
-      </TooltipTrigger>
-      <TooltipContent>{label}</TooltipContent>
-    </Tooltip>
-  );
-});
+>(({ label, onOpen }, ref) => (
+  <Tooltip>
+    <TooltipTrigger asChild>
+      <button
+        aria-label={label}
+        className={cn(
+          "p-2",
+          "text-foreground/70",
+          "transition-colors hover:text-primary"
+        )}
+        onClick={onOpen}
+        ref={ref}
+        type="button"
+      >
+        <Menu className="size-5" />
+      </button>
+    </TooltipTrigger>
+    <TooltipContent>{label}</TooltipContent>
+  </Tooltip>
+));
 MenuTrigger.displayName = "MenuTrigger";
 
 // ==============================================

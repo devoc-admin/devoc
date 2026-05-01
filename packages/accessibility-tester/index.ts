@@ -40,7 +40,7 @@ export async function runAudit(
   let rgpdResult: RgpdResult;
   try {
     rgpdResult = await runRgpdAudit(url);
-  } catch (_e) {
+  } catch {
     console.error("RGPD Audit skipped due to error.");
     rgpdResult = {
       consentBannerDetected: false,

@@ -34,7 +34,7 @@ export default function Contact() {
         "lg:gap-y-36",
         // Padding ↕️
         "lg:pb-48",
-        "2xl:pb-60",
+        "2xl:pb-60"
       )}
       id="contact"
       theme="dark"
@@ -52,20 +52,20 @@ export default function Contact() {
           "w-full max-w-350",
           "flex justify-center gap-6",
           "flex-col",
-          "lg:flex-row lg:items-start",
+          "lg:flex-row lg:items-start"
         )}
       >
         {/* 📱🟢 */}
         <div
           className={cn(
             "flex",
-            "flex-row order-2",
-            "lg:flex-col lg:order-1 lg:grow-[0.5]  lg:max-w-100",
-            "gap-6",
+            "order-2 flex-row",
+            "lg:order-1 lg:max-w-100 lg:grow-[0.5] lg:flex-col",
+            "gap-6"
           )}
         >
           {/* 📱 */}
-          <div className={cn("hidden", "sm:block", "space-y-6 grow")}>
+          <div className={cn("hidden", "sm:block", "grow space-y-6")}>
             {contactItems.map((item) => (
               <InfoContact key={item.id} {...item} />
             ))}
@@ -86,7 +86,7 @@ export default function Contact() {
             "bg-dotted-zinc",
             "py-4",
             "md:py-5",
-            "lg:py-6",
+            "lg:py-6"
           )}
         >
           {/* ⚡ Laser */}
@@ -99,7 +99,7 @@ export default function Contact() {
               "h-160",
 
               "hidden",
-              "lg:block",
+              "lg:block"
             )}
           >
             <LaserFlow
@@ -112,10 +112,10 @@ export default function Contact() {
           <CardContent
             className={cn(
               "z-10",
-              "pl-2 pr-2.5",
-              "@sm:pl-3 @sm:pr-3.5",
-              "@md:pl-4 @md:pr-4.5",
-              "@lg:pl-5 @lg:pr-5.5",
+              "pr-2.5 pl-2",
+              "@sm:pr-3.5 @sm:pl-3",
+              "@md:pr-4.5 @md:pl-4",
+              "@lg:pr-5.5 @lg:pl-5"
             )}
           >
             <ContactForm />
@@ -132,7 +132,7 @@ function ResponseGuaranteed() {
   return (
     <Card
       animation={false}
-      className="gap-y-2 grow border-primary/30 bg-primary/5"
+      className="grow gap-y-2 border-primary/30 bg-primary/5"
     >
       <CardHeader>
         <CardTitle className="text-wrap font-kanit font-semibold text-2xl">
@@ -143,7 +143,7 @@ function ResponseGuaranteed() {
         Nous nous engageons à répondre à tous les messages dans les 24 heures
         ouvrées.
       </CardContent>
-      <CardFooter className="font-bold mt-auto text-primary text-sm">
+      <CardFooter className="mt-auto font-bold text-primary text-sm">
         {/* 🟢 Équipe disponible */}
         <div className="mr-2 size-2 rounded-full bg-green-500" />
         <span>Équipe disponible</span>
@@ -162,7 +162,7 @@ function InfoContact({ icon, content, title, href }: ContactItem) {
         "bg-dotted-zinc",
         "hover:laser-shadow",
         "focus-within:laser-shadow",
-        "transition!",
+        "transition!"
       )}
     >
       <a className="flex items-start gap-6 p-6 outline-none" href={href}>
@@ -172,7 +172,7 @@ function InfoContact({ icon, content, title, href }: ContactItem) {
             "grid w-fit items-center rounded-lg p-2.5 text-primary",
             "bg-[#392413]",
             "group-hover:brightness-120",
-            "transition",
+            "transition"
           )}
         >
           {icon}

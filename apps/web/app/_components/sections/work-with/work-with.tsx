@@ -19,7 +19,7 @@ function WorkWith() {
               "grid",
               "grid-cols-1 grid-rows-auto",
               "xs:grid-cols-2 xs:grid-rows-auto",
-              "sm:grid-cols-3 sm:grid-rows-2",
+              "sm:grid-cols-3 sm:grid-rows-2"
             )}
           >
             {companies.map((props) => (
@@ -42,7 +42,7 @@ function NoxExpertsOntTravailléAvecEux() {
       className={cn(
         "mb-6 px-8 text-center font-kanit font-regular",
         "text-2xl",
-        "xs:text-3xl",
+        "xs:text-3xl"
       )}
     >
       Nos experts ont travaillé avec eux
@@ -72,7 +72,7 @@ function BorderY({ className }: { className: string }) {
         "h-30",
         "w-full",
         "border-border border-x",
-        className,
+        className
       )}
     />
   );
@@ -84,7 +84,7 @@ function BorderT() {
       className={cn(
         "top-0",
         "-translate-y-full",
-        "mask-t-from-20% mask-t-to-90%",
+        "mask-t-from-20% mask-t-to-90%"
       )}
     />
   );
@@ -96,7 +96,7 @@ function BorderB() {
       className={cn(
         "bottom-0",
         "translate-y-full",
-        "mask-b-from-20% mask-b-to-90%",
+        "mask-b-from-20% mask-b-to-90%"
       )}
     />
   );

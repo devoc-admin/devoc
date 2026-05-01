@@ -1,6 +1,9 @@
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
-import { siFacebook as FacebookIcon, siInstagram as InstagramIcon } from "simple-icons";
+import {
+  siFacebook as FacebookIcon,
+  siInstagram as InstagramIcon,
+} from "simple-icons";
 import { Link } from "@/i18n/navigation";
 import { getPayloadClient } from "@/lib/payload";
 import { cn } from "@/lib/utils";
@@ -98,20 +101,22 @@ function SocialLinks({ social }: { social: SiteConfig["socialLinks"] }) {
       {social.facebook && (
         <SocialLink href={social.facebook} label="Facebook">
           <svg
-            dangerouslySetInnerHTML={{ __html: FacebookIcon.svg }}
-            viewBox="0 0 24 24"
             className="size-5"
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: trusted static SVG markup from simple-icons
+            dangerouslySetInnerHTML={{ __html: FacebookIcon.svg }}
             fill="currentColor"
+            viewBox="0 0 24 24"
           />
         </SocialLink>
       )}
       {social.instagram && (
         <SocialLink href={social.instagram} label="Instagram">
           <svg
-            dangerouslySetInnerHTML={{ __html: InstagramIcon.svg }}
-            viewBox="0 0 24 24"
             className="size-5"
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: trusted static SVG markup from simple-icons
+            dangerouslySetInnerHTML={{ __html: InstagramIcon.svg }}
             fill="currentColor"
+            viewBox="0 0 24 24"
           />
         </SocialLink>
       )}

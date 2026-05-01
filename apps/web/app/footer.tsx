@@ -1,4 +1,4 @@
-import { ArrowRightIcon, MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
+import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import PurpleCircleImage from "@/assets/purple-circle.webp";
@@ -17,7 +17,7 @@ function Footer() {
           "bg-linear-to-br from-primary/5 via-transparent to-primary/5",
           "px-4",
           "xs:px-6",
-          "py-12",
+          "py-12"
         )}
       >
         <div className="relative mx-auto max-w-325 space-y-8">
@@ -26,7 +26,7 @@ function Footer() {
           <div
             className={cn(
               "relative space-y-8",
-              "lg:mx-auto lg:grid lg:grid-cols-5",
+              "lg:mx-auto lg:grid lg:grid-cols-5"
             )}
           >
             {/* 🐲 Logo and contact */}
@@ -52,7 +52,7 @@ function Footer() {
             className={cn(
               "relative",
               "flex flex-col items-center gap-y-4",
-              "sm:flex-row sm:justify-between sm:gap-y-0",
+              "sm:flex-row sm:justify-between sm:gap-y-0"
             )}
           >
             <Copyright />
@@ -80,7 +80,7 @@ function OrangeDecorativeStone() {
         "translate-x-[80%]",
         "opacity-40",
         "hue-rotate-125",
-        "mask-radial-[135%_117%] mask-radial-at-bottom-right mask-radial-from-0% mask-radial-to-92%",
+        "mask-radial-[135%_117%] mask-radial-at-bottom-right mask-radial-from-0% mask-radial-to-92%"
       )}
       height={300}
       src={PurpleCircleImage}
@@ -190,104 +190,6 @@ function ContactLink({
 }
 
 // ------------------------------------------------------------------------------------------------
-type GroupInternalLink = {
-  id: string;
-  title: string;
-  links: {
-    name: string;
-    href: string;
-  }[];
-};
-
-const groupLinks: GroupInternalLink[] = [
-  {
-    id: "navigation",
-    links: [
-      {
-        href: "/#services",
-        name: "Services",
-      },
-      {
-        href: "/#realisations",
-        name: "Réalisations",
-      },
-      {
-        href: "/#method",
-        name: "Notre méthode",
-      },
-      {
-        href: "/#us",
-        name: "Le collectif",
-      },
-      {
-        href: "/#contact",
-        name: "Contact",
-      },
-    ],
-    title: "Navigation",
-  },
-];
-
-// function GroupsInternalLinks() {
-//   return (
-//     <div>
-//       {groupLinks.map((groupLink) => (
-//         <InternalLinks key={groupLink.id} {...groupLink} />
-//       ))}
-//     </div>
-//   );
-// }
-
-// function InternalLinks({
-//   title,
-//   links,
-// }: {
-//   id: string;
-//   title: string;
-//   links: { name: string; href: string }[];
-// }) {
-//   return (
-//     <div>
-//       <div
-//         className={cn(
-//           "mb-5",
-//           "font-kanit font-semibold text-lg text-primary-foreground",
-//         )}
-//       >
-//         {title}
-//       </div>
-//       <div className={cn("flex flex-col gap-y-3", "text-muted-foreground")}>
-//         {links.map((link) => (
-//           <a
-//             className={cn(
-//               "group",
-//               "flex items-center gap-2 ",
-//               "cursor-pointer",
-//               "text-sm",
-//               "transition-colors",
-//               "hover:text-primary-foreground",
-//             )}
-//             href={link.href}
-//             key={link.name}
-//           >
-//             <ArrowRightIcon
-//               className={cn(
-//                 "not-pointer-fine:hidden",
-//                 "opacity-0",
-//                 "shrink-0",
-//                 "transition-opacity",
-//                 "group-hover:opacity-100",
-//               )}
-//               size={16}
-//             />
-//             <span>{link.name}</span>
-//           </a>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
-// ------------------------------------------------------------------------------------------------
 function Copyright() {
   return (
     <div className="text-muted-foreground text-sm">
@@ -320,7 +222,7 @@ function LegalLinks() {
         "flex items-center gap-4",
         "text-muted-foreground text-sm",
         "flex-col",
-        "sm:flex-row",
+        "sm:flex-row"
       )}
     >
       {legalLinks.map((link) => (
@@ -345,7 +247,7 @@ function Newsletter() {
         "relative justify-between gap-x-8 gap-y-4",
         "border-t border-t-zinc-600/20 border-b border-b-zinc-600/20 py-6",
         "flex flex-col",
-        "md:flex-row md:items-center",
+        "md:flex-row md:items-center"
       )}
     >
       {/* 🔤 Restez informés*/}
@@ -362,13 +264,13 @@ function Newsletter() {
         className={cn(
           "flex w-full grow flex-col gap-4",
           "sm:w-auto sm:flex-row sm:items-center sm:justify-end",
-          "md:max-w-125",
+          "md:max-w-125"
         )}
       >
         <Input
           className={cn(
             "h-10 bg-zinc-950 text-primary-foreground text-sm",
-            "sm:text-[1rem]",
+            "sm:text-[1rem]"
           )}
           placeholder="Email"
           type="email"
@@ -378,7 +280,7 @@ function Newsletter() {
           className={cn(
             "cursor-pointer bg-primary/90 text-primary-foreground text-sm transition-colors hover:bg-primary",
             "xs:text-[1rem]",
-            "sm:px-10",
+            "sm:px-10"
           )}
         >
           S'abonner

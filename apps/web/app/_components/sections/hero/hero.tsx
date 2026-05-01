@@ -1,6 +1,5 @@
 "use client";
 import { motion } from "motion/react";
-import Link from "next/link";
 import useNavTheme from "@/app/_hooks/use-nav-theme.ts";
 import { ContainerTextFlip } from "@/components/aceternity/container-text-flip.tsx";
 import { AvatarStack } from "@/components/kibo-ui/avatar-stack/index.tsx";
@@ -49,7 +48,7 @@ function Background() {
       animate={{ opacity: 1 }}
       className={cn(
         "absolute -z-1 h-full w-full opacity-40",
-        "mask-b-from-80% mask-b-to-100%",
+        "mask-b-from-80% mask-b-to-100%"
       )}
       initial={{ opacity: 0 }}
       transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
@@ -78,7 +77,7 @@ function WithNavbar({ children }: { children: React.ReactNode }) {
         "flex grow items-center justify-center",
         "min-h-svh w-full",
         "overflow-hidden",
-        "px-6 py-12",
+        "px-6 py-12"
       )}
       ref={sectionRef}
     >
@@ -100,7 +99,7 @@ function DevOc() {
           "sm:text-[9rem]",
           "md:text-[10rem]",
           "lg:text-[11rem]",
-          "xl:text-[12rem]",
+          "xl:text-[12rem]"
         )}
       >
         <div className={cn("font-style-script", "pt-4")}>Dev'</div>
@@ -145,7 +144,7 @@ function Keywords() {
       <div
         className={cn(
           "flex flex-col items-center justify-center gap-y-1",
-          "-mt-8 xs:-mt-10",
+          "-mt-8 xs:-mt-10"
         )}
       >
         <div className="text-center font-kanit font-normal text-base">
@@ -174,7 +173,7 @@ function OpenCarcaWinner() {
             "hidden [@media(height>=600px)]:flex",
             "mt-24",
             "mx-auto",
-            "text-amber-400",
+            "text-amber-400"
           )}
         >
           <div
@@ -184,7 +183,7 @@ function OpenCarcaWinner() {
               "max-w-50",
               "text-center font-bold",
               "bg-linear-to-br from-primary-strong via-primary-lighter to-primary bg-clip-text",
-              "text-transparent",
+              "text-transparent"
             )}
           >
             <LaureatsConcours />
@@ -206,21 +205,9 @@ function LaureatsConcours() {
 
 function CategorieEmergence() {
   return (
-    <span className=" text-[0.65rem] lg:text-[0.7rem] uppercase">
+    <span className="text-[0.65rem] uppercase lg:text-[0.7rem]">
       Catégorie émergence
     </span>
-  );
-}
-
-function FadeMoveUp({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div
-      animate={{ opacity: 1, y: 0 }}
-      initial={{ opacity: 0, y: 50 }}
-      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
-    >
-      {children}
-    </motion.div>
   );
 }
 
@@ -233,7 +220,7 @@ function Founders() {
         "flex flex-col items-center gap-2",
         "rounded-lg",
         "px-6 py-4",
-        "font-fira-code",
+        "font-fira-code"
       )}
     >
       <FadeScaleEntry>

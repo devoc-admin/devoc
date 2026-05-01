@@ -118,7 +118,7 @@ export function ContactForm() {
             onBlur: ({ value }) => {
               if (!value.trim()) return "Ce champ est requis";
               if (!EMAIL_REGEX.test(value)) return "Email invalide";
-              return undefined;
+              return;
             },
           }}
         />

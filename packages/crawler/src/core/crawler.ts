@@ -613,7 +613,7 @@ export class WebCrawler {
     } catch (error) {
       // Screenshot capture itself failed
       console.error(`Screenshot failed for ${normalizedUrl}:`, error);
-      return undefined;
+      return;
     }
   }
 
@@ -640,7 +640,7 @@ export class WebCrawler {
       return `/api/screenshots/${this.crawlId}/${filename}`;
     } catch (error) {
       console.error("Failed to save screenshot locally:", error);
-      return undefined;
+      return;
     }
   }
 

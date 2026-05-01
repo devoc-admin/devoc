@@ -42,7 +42,7 @@ export default function Section({
         //🎨 Colors
         theme === "light" ? "bg-white" : "bg-zinc-950",
         theme === "light" ? "text-zinc-950" : "text-white",
-        className,
+        className
       )}
       id={id}
       ref={ref}
