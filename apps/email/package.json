@@ -17,11 +17,11 @@
   },
   "devDependencies": {
     "@react-email/preview-server": "^5.2.10",
-    "@react-email/ui": "6.0.0",
+    "@react-email/ui": "6.0.5",
     "@types/node": "catalog:next",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "next": "catalog:next",
-    "react-email": "^6.0.0"
+    "react-email": "^6.0.5"
   }
 }

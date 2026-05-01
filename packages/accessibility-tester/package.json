@@ -18,7 +18,7 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
-    "@axe-core/puppeteer": "^4.11.2",
+    "@axe-core/puppeteer": "^4.11.3",
     "chrome-launcher": "^1.2.1",
     "lighthouse": "^13.1.0",
     "puppeteer": "^24.42.0"
