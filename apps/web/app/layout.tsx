@@ -25,48 +25,56 @@ const geistSans = Geist({
 });
 
 const lobster = Lobster({
+  preload: false,
   subsets: ["latin"],
   variable: "--font-lobster",
   weight: ["400"],
 });
 
 const kanit = Kanit({
+  preload: false,
   subsets: ["latin"],
   variable: "--font-kanit",
   weight: ["400", "500", "600", "700"],
 });
 
 const sarina = Sarina({
+  preload: false,
   subsets: ["latin"],
   variable: "--font-sarina",
   weight: ["400"],
 });
 
 const firaCode = Fira_Code({
+  preload: false,
   subsets: ["latin"],
   variable: "--font-fira-code",
   weight: ["400", "700"],
 });
 
 const styleScript = Style_Script({
+  preload: false,
   subsets: ["latin"],
   variable: "--font-style-script",
   weight: ["400"],
 });
 
 const dancingScript = Dancing_Script({
+  preload: false,
   subsets: ["latin"],
   variable: "--font-dancing-script",
   weight: ["400", "500", "600", "700"],
 });
 
 const montserrat = Montserrat({
+  preload: false,
   subsets: ["latin"],
   variable: "--font-montserrat",
   weight: ["400", "500", "600", "700"],
 });
 
 const faustina = Faustina({
+  preload: false,
   subsets: ["latin"],
   variable: "--font-faustina",
   weight: ["400", "300"],
