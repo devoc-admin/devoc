@@ -135,7 +135,7 @@ function ResponseGuaranteed() {
       className="grow gap-y-2 border-primary/30 bg-primary/5"
     >
       <CardHeader>
-        <CardTitle className="text-wrap font-kanit font-semibold text-2xl">
+        <CardTitle className="text-wrap font-italic font-kanit font-semibold text-2xl">
           Réponse rapide garantie
         </CardTitle>
       </CardHeader>
