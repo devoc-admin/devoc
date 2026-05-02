@@ -84,8 +84,8 @@ function OrangeDecorativeStone() {
       className={cn(
         "absolute right-0 bottom-0",
         "z-0",
-        "translate-x-[80%]",
-        "opacity-40",
+        "translate-x-[60%]",
+        "opacity-100",
         "hue-rotate-125",
         "mask-radial-[135%_117%] mask-radial-at-bottom-right mask-radial-from-0% mask-radial-to-92%"
       )}
