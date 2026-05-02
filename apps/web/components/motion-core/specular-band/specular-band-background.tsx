@@ -9,8 +9,8 @@ export default function SpecularBandsBackground({
   backgroundColor = "#000000",
   speed = 1.0,
   distortion = 0.2,
-  hueShift = 30.0,
-  intensity = 1.0,
+  hueShift = 1.0,
+  intensity = 4.0,
   ...rest
 }) {
   const dpr = typeof window === "undefined" ? 1 : window.devicePixelRatio;

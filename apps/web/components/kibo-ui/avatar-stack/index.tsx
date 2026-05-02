@@ -17,7 +17,7 @@ export const AvatarStack = ({
 }: AvatarStackProps) => (
   <div
     className={cn(
-      "-space-x-1 flex items-center",
+      "-space-x-3 flex items-center",
       animate && "hover:space-x-0 *:transition-all",
       className
     )}
