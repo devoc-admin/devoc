@@ -9,6 +9,7 @@
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --font-sans: var(--font-geist-sans);
+    --font-geist-mono: var(--font-geist-mono);
     --font-lobster: var(--font-lobster);
     --font-kanit: var(--font-kanit);
     --font-fira-code: var(--font-fira-code);
@@ -16,6 +17,7 @@
     --font-dancing-script: var(--font-dancing-script);
     --font-montserrat: var(--font-montserrat);
     --font-faustina: var(--font-faustina);
+    --font-fraunces: var(--font-fraunces);
     --font-sarina: var(--font-sarina);
 
     --color-sidebar-ring: var(--sidebar-ring);
