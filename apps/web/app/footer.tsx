@@ -1,3 +1,7 @@
+"use client";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
 import { MailIcon, MapPinIcon, PhoneIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,8 +12,9 @@ import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
 
 function Footer() {
+  useFooterAnimation();
   return (
-    <div
+    <footer
       className={cn(
         "sticky",
         "-z-1",
@@ -23,12 +28,16 @@ function Footer() {
           "rounded-t-4xl",
           "border-t border-t-zinc-600/10",
           "bg-linear-to-br from-primary/5 via-transparent to-primary/5",
-          "px-4",
-          "xs:px-6",
-          "py-12"
+          "px-4 xs:px-6 sm:px-8 md:px-10",
+          "py-12 xl:py-24"
         )}
       >
-        <div className="relative mx-auto max-w-325 space-y-8">
+        <div
+          className={cn(
+            "footer-content",
+            "relative mx-auto max-w-300 space-y-8"
+          )}
+        >
           <OrangeDecorativeStone />
           {/* 1️⃣ Row */}
           <div
@@ -68,11 +77,33 @@ function Footer() {
         </div>
       </div>
       <GradientLine />
-    </div>
+    </footer>
   );
 }
 
 export default Footer;
+
+// ------------------------
+// ✨ Scroll animation
+gsap.registerPlugin(ScrollTrigger);
+function useFooterAnimation() {
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        end: () => ScrollTrigger.maxScroll(window),
+        invalidateOnRefresh: true,
+        scrub: 1.5,
+        start: () => ScrollTrigger.maxScroll(window) - 500,
+        trigger: document.body,
+      },
+    });
+
+    tl.from(".footer-content", {
+      ease: "power4.in",
+      opacity: 0,
+    });
+  });
+}
 
 // ------------------------------------------------------------------------------------------------
 // 🟠🪨
