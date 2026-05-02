@@ -80,7 +80,7 @@ function WithNavbar({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "relative",
+        "relative z-10",
         "bg-white",
         "flex grow items-center justify-center",
         "min-h-svh w-full",

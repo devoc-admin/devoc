@@ -22,7 +22,7 @@ export default function Section({
   return (
     <div
       className={cn(
-        "relative",
+        "relative z-10",
         "flex flex-col items-center justify-center",
         "mx-auto",
         "min-h-screen",

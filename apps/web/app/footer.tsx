@@ -17,7 +17,7 @@ function Footer() {
     <footer
       className={cn(
         "sticky",
-        "-z-1",
+        "z-0",
         "bottom-0",
         "overflow-hidden",
         "bg-zinc-950"
