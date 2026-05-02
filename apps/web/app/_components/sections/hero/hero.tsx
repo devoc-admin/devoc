@@ -27,7 +27,11 @@ export default function Hero() {
     <WithNavbar>
       <Background />
       <div
-        className={cn("flex flex-col items-center gap-y-6", "-mt-36 xl:mt-0")}
+        className={cn(
+          "flex flex-col items-center gap-y-6",
+          "z-1",
+          "-mt-36 xl:mt-0"
+        )}
       >
         <DevOc />
         <Keywords />
@@ -47,7 +51,10 @@ function Background() {
     <motion.div
       animate={{ opacity: 1 }}
       className={cn(
-        "absolute -z-1 h-full w-full opacity-40",
+        "absolute z-0",
+        "size-full",
+        "bg-white",
+        "opacity-40",
         "mask-b-from-80% mask-b-to-100%"
       )}
       initial={{ opacity: 0 }}
@@ -55,7 +62,7 @@ function Background() {
     >
       <SpecularBandsBackground
         backgroundColor="#ffffff"
-        className="h-full w-full"
+        className="size-full"
         speed={0.5}
       />
     </motion.div>
@@ -74,6 +81,7 @@ function WithNavbar({ children }: { children: React.ReactNode }) {
     <div
       className={cn(
         "relative",
+        "bg-white",
         "flex grow items-center justify-center",
         "min-h-svh w-full",
         "overflow-hidden",
@@ -208,19 +216,6 @@ function CategorieEmergence() {
     <span className="text-[0.65rem] uppercase lg:text-[0.7rem]">
       Catégorie émergence
     </span>
-  );
-}
-
-// biome-ignore lint/correctness/noUnusedVariables: kept for future use
-function FadeMoveUp({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div
-      animate={{ opacity: 1, y: 0 }}
-      initial={{ opacity: 0, y: 50 }}
-      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
-    >
-      {children}
-    </motion.div>
   );
 }
 

@@ -5,7 +5,7 @@ import { companies } from "./work-with-data";
 
 function WorkWith() {
   return (
-    <div className={cn("hidden", "xs:block", "my-32")}>
+    <div className={cn("hidden", "bg-white", "xs:block", "py-32")}>
       <NoxExpertsOntTravailléAvecEux />
       <div className="flex w-full text-2xl">
         <BorderL />

@@ -9,7 +9,15 @@ import Icon from "@/public/icon.svg";
 
 function Footer() {
   return (
-    <div className="relative overflow-hidden bg-zinc-950">
+    <div
+      className={cn(
+        "sticky",
+        "-z-1",
+        "bottom-0",
+        "overflow-hidden",
+        "bg-zinc-950"
+      )}
+    >
       <div
         className={cn(
           "rounded-t-4xl",
