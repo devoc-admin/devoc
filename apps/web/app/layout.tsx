@@ -5,7 +5,9 @@ import {
   Dancing_Script,
   Faustina,
   Fira_Code,
+  Fraunces,
   Geist,
+  Geist_Mono,
   Kanit,
   Lobster,
   Montserrat,
@@ -21,6 +23,12 @@ import "./globals.css";
 const geistSans = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
   weight: ["400", "500", "600", "700", "800", "900"],
 });
 
@@ -46,14 +54,12 @@ const sarina = Sarina({
 });
 
 const firaCode = Fira_Code({
-  preload: false,
   subsets: ["latin"],
   variable: "--font-fira-code",
   weight: ["400", "700"],
 });
 
 const styleScript = Style_Script({
-  preload: false,
   subsets: ["latin"],
   variable: "--font-style-script",
   weight: ["400"],
@@ -80,6 +86,12 @@ const faustina = Faustina({
   weight: ["400", "300"],
 });
 
+const fraunces = Fraunces({
+  axes: ["opsz", "SOFT"],
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -89,7 +101,7 @@ export default function RootLayout({
     <html lang="fr" suppressHydrationWarning>
       <ReactScan />
       <body
-        className={`${geistSans.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} flex min-h-screen flex-col font-sans`}
+        className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} ${fraunces.variable} flex min-h-screen flex-col font-sans`}
       >
         <SkipLink />
         <NuqsAdapter>

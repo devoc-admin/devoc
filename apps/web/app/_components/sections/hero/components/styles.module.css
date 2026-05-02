@@ -1,0 +1,40 @@
+.heroEntry {
+  --position: 0;
+  --delay-delta: 100ms;
+
+  animation-name: hero-reveal;
+  animation-duration: 850ms;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  animation-delay: calc((var(--position) * var(--delay-delta)) + 500ms);
+  animation-fill-mode: both;
+}
+
+.backgroundEntry {
+  animation-name: background-reveal;
+  animation-duration: 3s;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  animation-delay: 0;
+  animation-fill-mode: both;
+}
+
+@keyframes hero-reveal {
+  from {
+    transform: translate(0px, -16px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(0px, 0px);
+    opacity: 1;
+  }
+}
+
+@keyframes background-reveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

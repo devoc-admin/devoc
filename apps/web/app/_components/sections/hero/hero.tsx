@@ -1,71 +1,111 @@
 "use client";
-import { motion } from "motion/react";
 import useNavTheme from "@/app/_hooks/use-nav-theme.ts";
-import { ContainerTextFlip } from "@/components/aceternity/container-text-flip.tsx";
-import { AvatarStack } from "@/components/kibo-ui/avatar-stack/index.tsx";
-import { AuroraText } from "@/components/magicui/aurora-text.tsx";
-import SpecularBandsBackground from "@/components/motion-core/specular-band/specular-band-background.tsx";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar.tsx";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip.tsx";
-import { RatingBadge } from "@/components/untitledui/rating-badge.tsx";
-import { OPEN_CARCA_WINNER_URL } from "@/constants";
 import { cn } from "@/lib/utils.ts";
+import { DevOcHeroTitle } from "./components/dev-oc-hero-title";
+import { HeroBackground } from "./components/hero-background";
+import {
+  DecouvrirLeCollectifButton,
+  DemarrerUnProjetButton,
+} from "./components/hero-buttons";
+import { HeroFounders } from "./components/hero-founders";
+import { HeroKeywords } from "./components/hero-keywords";
+import { HeroSubtitle } from "./components/hero-subtitle";
+import { OpenCarcaWinner } from "./components/open-carca-winner";
+import s from "./components/styles.module.css";
+import { useFontsReady } from "./hooks/use-font-ready";
 
-const heroEntryDelay = 0.5;
-const heroEntryDuration = 0.5;
+const HERO_FONT_VARIABLES = [
+  "--font-geist-sans",
+  "--font-geist-mono",
+  "--font-fraunces",
+  "--font-style-script",
+] as const;
 
 export default function Hero() {
+  const fontsReady = useFontsReady(HERO_FONT_VARIABLES);
+
   return (
     <WithNavbar>
-      <Background />
-      <div
-        className={cn(
-          "flex flex-col items-center gap-y-6",
-          "z-1",
-          "-mt-36 xl:mt-0"
-        )}
-      >
-        <DevOc />
-        <Keywords />
-      </div>
-      <div className={cn("absolute", "bottom-2 lg:bottom-10")}>
-        <OpenCarcaWinner />
-        <Founders />
-      </div>
-    </WithNavbar>
-  );
-}
+      {fontsReady && (
+        <>
+          {/* 🖼️*/}
+          <HeroBackground />
+          {/* 🆎🔠 */}
+          <div
+            className={cn("absolute bottom-0 left-0", "w-full", "px-30 py-24")}
+          >
+            {/* 🆎 */}
+            <div
+              className={cn(s.heroEntry, "mb-10")}
+              style={
+                {
+                  "--position": 1,
+                } as React.CSSProperties
+              }
+            >
+              <DevOcHeroTitle />
+            </div>
 
-// ----------------------------------
-// 🖼️ Background
-function Background() {
-  return (
-    <motion.div
-      animate={{ opacity: 1 }}
-      className={cn(
-        "absolute z-0",
-        "size-full",
-        "bg-white",
-        "opacity-40",
-        "mask-b-from-80% mask-b-to-100%"
+            {/* 🔠 */}
+            <div
+              className={cn(s.heroEntry, "max-w-250")}
+              style={
+                {
+                  "--position": 2,
+                } as React.CSSProperties
+              }
+            >
+              <HeroSubtitle />
+            </div>
+
+            {/* 🔤 */}
+            <div
+              className={cn(s.heroEntry, "mt-2")}
+              style={
+                {
+                  "--position": 3,
+                } as React.CSSProperties
+              }
+            >
+              <HeroKeywords />
+            </div>
+
+            {/* 🌿 */}
+            <div
+              className={cn(s.heroEntry, "mt-8")}
+              style={
+                {
+                  "--position": 4,
+                } as React.CSSProperties
+              }
+            >
+              <OpenCarcaWinner />
+            </div>
+
+            {/* 🆕🆕 | 🐵🐵*/}
+            <div
+              className={cn(
+                s.heroEntry,
+                "mt-12 flex items-center justify-between"
+              )}
+              style={
+                {
+                  "--position": 5,
+                } as React.CSSProperties
+              }
+            >
+              {/* 🆕🆕 */}
+              <div className={cn("flex gap-x-3")}>
+                <DemarrerUnProjetButton />
+                <DecouvrirLeCollectifButton />
+              </div>
+              {/* 🐵🐵 */}
+              <HeroFounders />
+            </div>
+          </div>
+        </>
       )}
-      initial={{ opacity: 0 }}
-      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
-    >
-      <SpecularBandsBackground
-        backgroundColor="#ffffff"
-        className="size-full"
-        speed={0.5}
-      />
-    </motion.div>
+    </WithNavbar>
   );
 }
 
@@ -82,7 +122,8 @@ function WithNavbar({ children }: { children: React.ReactNode }) {
       className={cn(
         "relative z-10",
         "bg-white",
-        "flex grow items-center justify-center",
+        "flex grow",
+        "items-center justify-center",
         "min-h-svh w-full",
         "overflow-hidden",
         "px-6 py-12"
@@ -91,248 +132,5 @@ function WithNavbar({ children }: { children: React.ReactNode }) {
     >
       {children}
     </div>
-  );
-}
-
-// ----------------------------------
-// 🏢
-function DevOc() {
-  return (
-    <FadeMoveDown>
-      <h1
-        className={cn(
-          "relative flex select-none items-center px-6",
-          "text-8xl",
-          "xs:text-9xl",
-          "sm:text-[9rem]",
-          "md:text-[10rem]",
-          "lg:text-[11rem]",
-          "xl:text-[12rem]"
-        )}
-      >
-        <div className={cn("font-style-script", "pt-4")}>Dev'</div>
-        <AuroraText
-          className="font-extrabold font-geist text-transparent tracking-tighter"
-          colors={["#FFC731", "#FF5709", "#FFC731", "#FF5709"]}
-        >
-          Oc
-        </AuroraText>
-      </h1>
-    </FadeMoveDown>
-  );
-}
-
-function FadeMoveDown({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div
-      animate={{ opacity: 1, y: 0 }}
-      initial={{ opacity: 0, y: -50 }}
-      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-// ----------------------------------
-const keywords = [
-  "🔒 Sécurité",
-  "👁️ Accessibilité",
-  "⚡ Performance",
-  "🎨 Design",
-];
-
-function Keywords() {
-  return (
-    <motion.div
-      animate={{ opacity: 1 }}
-      initial={{ opacity: 0 }}
-      transition={{ delay: heroEntryDelay, duration: heroEntryDuration }}
-    >
-      <div
-        className={cn(
-          "flex flex-col items-center justify-center gap-y-1",
-          "-mt-8 xs:-mt-10"
-        )}
-      >
-        <div className="text-center font-kanit font-normal text-base">
-          Votre expert de proximité en
-        </div>
-        <ContainerTextFlip words={keywords} />
-      </div>
-    </motion.div>
-  );
-}
-
-// ----------------------------------
-// 🌿
-
-function OpenCarcaWinner() {
-  return (
-    <FadeScaleEntry>
-      <a
-        href={OPEN_CARCA_WINNER_URL}
-        rel="noopener"
-        target="_blank"
-        title="Lien vers la page d'annnonce des résultats du concours OpenCarca 2025"
-      >
-        <RatingBadge
-          className={cn(
-            "hidden [@media(height>=600px)]:flex",
-            "mt-24",
-            "mx-auto",
-            "text-amber-400"
-          )}
-        >
-          <div
-            className={cn(
-              "flex flex-col gap-y-1.5",
-              "mt-4",
-              "max-w-50",
-              "text-center font-bold",
-              "bg-linear-to-br from-primary-strong via-primary-lighter to-primary bg-clip-text",
-              "text-transparent"
-            )}
-          >
-            <LaureatsConcours />
-            <CategorieEmergence />
-          </div>
-        </RatingBadge>
-      </a>
-    </FadeScaleEntry>
-  );
-}
-
-function LaureatsConcours() {
-  return (
-    <span className="text-base leading-none lg:text-lg lg:leading-tight">
-      Lauréats concours Open Carca 2025
-    </span>
-  );
-}
-
-function CategorieEmergence() {
-  return (
-    <span className="text-[0.65rem] uppercase lg:text-[0.7rem]">
-      Catégorie émergence
-    </span>
-  );
-}
-
-// ----------------------------------
-// 👑
-function Founders() {
-  return (
-    <div
-      className={cn(
-        "flex flex-col items-center gap-2",
-        "rounded-lg",
-        "px-6 py-4",
-        "font-fira-code"
-      )}
-    >
-      <FadeScaleEntry>
-        <div className={cn("text-sm", "xs:text-base", "select-none")}>
-          Fondateurs
-        </div>
-      </FadeScaleEntry>
-      <AvatarStack>
-        <PopEntry>
-          <AvatarWithTooltip
-            fallback="CB"
-            name="Clément Dubos"
-            url="https://www.linkedin.com/in/clement-dubos-707747a5/"
-            urlImage="https://avatars.githubusercontent.com/u/52322202"
-          />
-        </PopEntry>
-        <PopEntry extraDelay={0.25}>
-          <AvatarWithTooltip
-            fallback="TI"
-            name="Thibaut Izard"
-            url="https://www.linkedin.com/in/thibaut-izard/"
-            urlImage="https://avatars.githubusercontent.com/u/8688023"
-          />
-        </PopEntry>
-      </AvatarStack>
-    </div>
-  );
-}
-
-function AvatarWithTooltip({
-  name,
-  fallback,
-  url,
-  urlImage,
-}: {
-  name: string;
-  fallback: string;
-  url: string;
-  urlImage: string;
-}) {
-  return (
-    <Avatar>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <a
-            aria-label={`Profil LinkedIn de ${name} (ouvre dans une nouvelle fenêtre)`}
-            href={url}
-            rel="noopener noreferrer"
-            target="_blank"
-            title={`Visiter le profil LinkedIn de ${name}`}
-          >
-            <AvatarImage
-              alt={`Photo de profil de ${name}`}
-              role="img"
-              src={urlImage}
-            />
-            <AvatarFallback aria-label={`Initiales de ${name}`}>
-              {fallback}
-            </AvatarFallback>
-          </a>
-        </TooltipTrigger>
-        <TooltipContent>{name}</TooltipContent>
-      </Tooltip>
-    </Avatar>
-  );
-}
-
-// ------------------------------------------------------
-// 🤹 Animations
-
-// ==================================================================
-function FadeScaleEntry({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div
-      animate={{ opacity: 1, scale: 1 }}
-      initial={{ opacity: 0, scale: 0 }}
-      transition={{
-        delay: heroEntryDelay * 3,
-        duration: heroEntryDuration / 2,
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-// ==================================================================
-function PopEntry({
-  children,
-  extraDelay = 0,
-}: {
-  children: React.ReactNode;
-  extraDelay?: number;
-}) {
-  return (
-    <motion.div
-      animate={{ opacity: 1, scale: 1 }}
-      initial={{ opacity: 0, scale: 0 }}
-      transition={{
-        delay: heroEntryDelay * 4 + extraDelay,
-        duration: heroEntryDuration / 2,
-      }}
-    >
-      {children}
-    </motion.div>
   );
 }
