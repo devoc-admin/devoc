@@ -6,7 +6,7 @@
     "update": "bun update --recursive --latest --interactive"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.13",
+    "@biomejs/biome": "^2.4.14",
     "@commitlint/cli": "^20.5.3",
     "@commitlint/config-conventional": "^20.5.3",
     "lefthook": "^2.1.6",
@@ -58,7 +58,7 @@
       },
       "forms": {
         "@tanstack/react-form": "^1.29.1",
-        "zod": "^4.4.1",
+        "zod": "^4.4.2",
         "nuqs": "^2.8.9"
       },
       "crawler": {
