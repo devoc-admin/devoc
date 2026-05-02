@@ -41,9 +41,8 @@ function Footer() {
             <div className="col-span-2 flex flex-col gap-5">
               <Logo />
               <div className="max-w-175 text-muted-foreground text-sm">
-                Collectif de développeurs implanté en Occitanie. Nous créons des
-                solutions digitales sur-mesure pour propulser votre
-                organisation.
+                Entreprises, artisans, collectivités : nous accompagnons votre
+                transformation numérique en Occitanie.
               </div>
               <ContactLinks />
             </div>
