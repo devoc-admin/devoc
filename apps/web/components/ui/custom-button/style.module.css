@@ -1,13 +1,15 @@
 .button {
     --accent: #ff6900;
     --accent-secondary: #a94000;
+    --degree: 180deg;
+
     position: relative;
     padding: 10px 12px;
     color: white;
     cursor: pointer;
     background:
         radial-gradient(ellipse at -20px top, #ffffff38, #fff0),
-        linear-gradient(180deg, var(--accent), var(--accent-secondary));
+        linear-gradient(var(--degree), var(--accent), var(--accent-secondary));
     border-radius: 10px;
     transition:
         filter 0.15s ease-out,
@@ -29,7 +31,7 @@
     inset: 0;
     pointer-events: none;
     content: "";
-    background: linear-gradient(180deg, #ffffffb8, #0000003d 41% 75%, #ffffff47)
+    background: linear-gradient(var(--degree), #ffffffb8, #0000003d 41% 75%, #ffffff47)
         border-box;
     border: 1.5px solid transparent;
     border-radius: inherit;
