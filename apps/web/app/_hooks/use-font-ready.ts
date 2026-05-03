@@ -1,14 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export function useFontsReady(cssVariables: readonly string[]) {
+const HERO_FONT_VARIABLES = [
+  "--font-geist-sans",
+  "--font-geist-mono",
+  "--font-fraunces",
+  "--font-style-script",
+] as const;
+
+export function useFontsReady() {
   const [ready, setReady] = useState(false);
   useEffect(() => {
     let cancelled = false;
     const root = getComputedStyle(document.documentElement);
-    const families = cssVariables
-      .map((variable) => root.getPropertyValue(variable).trim())
-      .filter(Boolean);
+    const families = HERO_FONT_VARIABLES.map((variable) =>
+      root.getPropertyValue(variable).trim()
+    ).filter(Boolean);
     Promise.allSettled(
       families.map((family) => document.fonts.load(`1em ${family}`))
     ).then(() => {
@@ -19,6 +26,6 @@ export function useFontsReady(cssVariables: readonly string[]) {
     return () => {
       cancelled = true;
     };
-  }, [cssVariables]);
+  }, []);
   return ready;
 }

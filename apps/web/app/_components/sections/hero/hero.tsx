@@ -1,6 +1,7 @@
 "use client";
 import useNavTheme from "@/app/_hooks/use-nav-theme.ts";
 import { cn } from "@/lib/utils.ts";
+import { useFontsReady } from "../../../_hooks/use-font-ready";
 import { DevOcHeroTitle } from "./components/dev-oc-hero-title";
 import { HeroBackground } from "./components/hero-background";
 import {
@@ -12,17 +13,9 @@ import { HeroKeywords } from "./components/hero-keywords";
 import { HeroSubtitle } from "./components/hero-subtitle";
 import { OpenCarcaWinner } from "./components/open-carca-winner";
 import s from "./components/styles.module.css";
-import { useFontsReady } from "./hooks/use-font-ready";
-
-const HERO_FONT_VARIABLES = [
-  "--font-geist-sans",
-  "--font-geist-mono",
-  "--font-fraunces",
-  "--font-style-script",
-] as const;
 
 export default function Hero() {
-  const fontsReady = useFontsReady(HERO_FONT_VARIABLES);
+  const fontsReady = useFontsReady();
 
   return (
     <WithNavbar>
