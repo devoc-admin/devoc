@@ -1,479 +1,56 @@
 "use client";
-import { SendIcon } from "lucide-react";
-import { motion, useMotionValueEvent, useScroll } from "motion/react";
-import Image from "next/image";
-import Link from "next/link";
-import { useCallback, useRef, useState } from "react";
-import { useClickAnyWhere } from "usehooks-ts";
 import { Glass } from "@/components/sera-ui/liquid-glass";
-import { CustomButton } from "@/components/ui/custom-button/custom-button";
 import { cn } from "@/lib/utils";
-import Icon from "@/public/icon.svg";
+import { ContactButtonNavbar } from "./components/contact-button-navbar";
+import { DevOcNavbar } from "./components/dev-oc-navbar";
 import s from "./styles.module.css";
-
 export default function Header() {
-  return (
-    <>
-      <div className="lg:hidden">
-        <MobileHeader />
-      </div>
-      <div className="hidden lg:block">
-        <DesktopHeader />
-      </div>
-    </>
-  );
-}
-
-// --------------------------------
-// 📱
-const mobileHeaderVariants = {
-  hidden: { opacity: 0, y: -100 },
-  visible: { opacity: 1, y: 0 },
-};
-
-const scrollThreshold = 100;
-
-function MobileHeader() {
-  const { isOpened } = useToogleNavbarLink();
-
-  return (
-    <RevealOnScroll>
-      <div
-        className={cn(
-          "flex items-center justify-between",
-          "w-[95vw]",
-          "py-1 sm:py-2",
-          "pr-2 pl-4 sm:pr-2.5",
-          "backdrop-blur-sm",
-          "rounded-full",
-          isOpened &&
-            "rounded-tl-lg rounded-tr-lg rounded-br-none! rounded-bl-none!",
-          "transition-[background] duration-300",
-          "bg-white/50 text-secondary hover:text-secondary", // ☀️ Light
-          "[html[data-nav-theme='dark']_&]:bg-zinc-900/20" // 🌙 Dark
-        )}
-      >
-        {/* ♻️ */}
-        <DevOc logoSize={20} />
-        {/* 🆕📨 */}
-        <div className="flex">
-          {/* 🆕 */}
-          {/*<OpenCloseButton iconRef={iconRef} isOpened={isOpened} />*/}
-          {/* 📨 */}
-          <ContactButton />
-        </div>
-      </div>
-      {isOpened && <LinksMobile />}
-    </RevealOnScroll>
-  );
-}
-
-// --------------------------------
-// function OpenCloseButton({
-//   isOpened,
-//   iconRef,
-// }: {
-//   isOpened: boolean;
-//   iconRef: RefObject<HTMLButtonElement | null>;
-// }) {
-//   return (
-//     <button
-//       aria-expanded={isOpened}
-//       aria-label={
-//         isOpened
-//           ? "Fermer le menu de navigation"
-//           : "Ouvrir le menu de navigation"
-//       }
-//       className="cursor-pointer px-4 py-1"
-//       ref={iconRef}
-//       type="button"
-//     >
-//       {isOpened ? <CloseIcon /> : <OpenIcon />}
-//     </button>
-//   );
-// }
-// function CloseIcon() {
-//   return <XIcon aria-hidden="true" color="var(--primary)" strokeWidth={2.5} />;
-// }
-// function OpenIcon() {
-//   return <MenuIcon aria-hidden="true" color="var(--primary)" strokeWidth={3} />;
-// }
-
-// --------------------------------
-function useToogleNavbarLink() {
-  const [isOpened, setIsOpened] = useState(false);
-  const iconRef = useRef<HTMLButtonElement>(null);
-  useClickAnyWhere((e) => {
-    const hasClickedOnNavbarIcon =
-      iconRef.current?.contains(e.target as Node) ?? false;
-    if (hasClickedOnNavbarIcon) setIsOpened((v) => !v);
-    if (!hasClickedOnNavbarIcon) setIsOpened(false);
-  });
-
-  return {
-    iconRef,
-    isOpened,
-  };
-}
-
-// --------------------------------
-function RevealOnScroll({ children }: { children: React.ReactNode }) {
-  const { scrollY } = useScroll();
-  const [isVisible, setIsVisible] = useState(false);
-
-  // 👆⚙️ Determine whether the header should be visible or not depending on scroll direction and threshold
-  useMotionValueEvent(scrollY, "change", (currentScrollY) => {
-    const isScrollingUp =
-      typeof scrollY.getPrevious() === "number" &&
-      currentScrollY < (scrollY.getPrevious() ?? 0);
-    const isBelowThreshold = currentScrollY > scrollThreshold;
-    setIsVisible(isScrollingUp && isBelowThreshold);
-  });
-
-  return (
-    <motion.div
-      animate={isVisible ? "visible" : "hidden"}
-      className={cn(
-        "fixed top-3 left-1/2 z-5000",
-        "mx-auto mt-0",
-        "-translate-x-1/2",
-        "will-change-transform"
-      )}
-      initial="hidden"
-      transition={{ duration: 0.3, ease: "easeInOut" }}
-      variants={mobileHeaderVariants}
-    >
-      {children}
-    </motion.div>
-  );
+  return <DesktopHeader />;
 }
 
 // --------------------------------
 // 💻
 function DesktopHeader() {
   return (
-    <div className={cn("fixed z-5000", "top-0 left-1/2 -translate-x-1/2")}>
-      <SlideFadeAnimation>
-        <CollapseWhileScrolling>
-          <CustomGlass>
-            {/* ♻️ */}
-            <div className="flex w-50 justify-start">
-              <DevOc logoSize={24} />
-            </div>
-            {/* 🔗 */}
-            {/*<LinksDesktop />*/}
-            {/* 📨 */}
-            <div className="flex w-50 justify-end">
-              <ContactButton>Contact</ContactButton>
-            </div>
-          </CustomGlass>
-        </CollapseWhileScrolling>
-      </SlideFadeAnimation>
-    </div>
+    /* ♻️📨 */
+    <ToogleNavbarOnScroll>
+      {/* ♻️ */}
+      <div className="justify-start">
+        <DevOcNavbar logoSize={24} />
+      </div>
+      {/* 📨 */}
+      <div className="justify-end">
+        <ContactButtonNavbar />
+      </div>
+    </ToogleNavbarOnScroll>
   );
 }
 
-// --------------------------------
-const baseDelay = 1;
-const baseDuration = 0.5;
-
-function SlideFadeAnimation({ children }: { children: React.ReactNode }) {
-  return (
-    <motion.div
-      animate={{ opacity: 1, y: 0 }}
-      className="will-change-transform"
-      exit={{ opacity: 0, y: -20 }}
-      initial={{ opacity: 0, y: -20 }}
-      transition={{ delay: baseDelay, duration: baseDuration }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-// ---------------------------------
-
-function CollapseWhileScrolling({ children }: { children: React.ReactNode }) {
-  return <div className={s.navbarDesktop}>{children}</div>;
-}
-
-// ---------------------------------
-//🧊 Custom glass
-const sidebarClasses = cn(
+const navbarClasses = cn(
   "flex items-center justify-between",
   "mx-auto",
   "py-3",
   "pr-2 pl-6",
   "text-secondary hover:text-secondary"
 );
-function CustomGlass({ children }: { children: React.ReactNode }) {
-  const { scrollY } = useScroll();
-  const [isScrolling, setIsScrolling] = useState(false);
 
-  useMotionValueEvent(scrollY, "change", (current) => {
-    const isScrolling = current > 0;
-    setIsScrolling(isScrolling);
-  });
-
-  if (!isScrolling) {
-    return <div className={sidebarClasses}>{children}</div>;
-  }
-
+function ToogleNavbarOnScroll({ children }: { children: React.ReactNode }) {
   return (
-    <Glass
-      borderRadius={1000}
-      className={cn(
-        sidebarClasses,
-        "border",
-        "py-1.5",
-        "border-zinc-50 bg-white/60!", // ☀️ Light
-        "[html[data-nav-theme='dark']_&]:border-zinc-800 [html[data-nav-theme='dark']_&]:bg-zinc-900/70!" // 🌙 Dark
-      )}
-    >
-      {children}
-    </Glass>
-  );
-}
-
-// ---------------------------------
-// 🆕 Logo button
-function LogoButton({
-  children,
-  logoSize = 22,
-}: {
-  children?: React.ReactNode;
-  logoSize?: number;
-}) {
-  const [isHovered, setIsHovered] = useState(false);
-
-  const backToTop = useCallback(
-    () => window.scrollTo({ behavior: "smooth", top: 0 }),
-    []
-  );
-  const enterBackToTop = useCallback(
-    (e: React.KeyboardEvent<HTMLButtonElement>) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        backToTop();
-      }
-    },
-    [backToTop]
-  );
-  return (
-    <button
-      aria-label="Retour en haut de la page"
-      className={cn(
-        "group",
-        "flex items-center gap-2",
-        "cursor-pointer",
-        "text-xl",
-        "lg:text-2xl",
-        "outline-offset-4"
-      )}
-      onClick={backToTop}
-      onKeyDown={(e) => enterBackToTop(e)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      title="Retour en haut"
-      type="button"
-    >
-      <DevOcFlower isHovered={isHovered} logoSize={logoSize} />
-      {children}
-    </button>
-  );
-}
-
-function DevOcFlower({
-  logoSize,
-  isHovered,
-}: {
-  logoSize?: number;
-  isHovered?: boolean;
-}) {
-  return (
-    <motion.div
-      animate={isHovered ? { rotate: 360 } : undefined}
-      transition={{
-        damping: 10,
-        duration: 100,
-        mass: 1,
-        stiffness: 100,
-        type: "spring",
-      }}
-    >
-      <Image
-        alt=""
-        aria-hidden="true"
-        height={logoSize}
-        priority
-        src={Icon}
-        width={logoSize}
-      />
-    </motion.div>
-  );
-}
-
-// --------------------------------
-// 🆎
-
-function DevOc({ logoSize }: { logoSize?: number }) {
-  const Text = (
-    <Link href="/">
-      <span
+    <div className={cn("fixed z-5000", "top-0 left-1/2 -translate-x-1/2")}>
+      {/* ⬆️ */}
+      <div className={cn(navbarClasses, s.navbarExpanded)}>{children}</div>
+      {/* 🫗 */}
+      <Glass
+        borderRadius={1000}
         className={cn(
-          "font-bold tracking-tighter",
-          "transition-colors duration-300",
-          "text-secondary", // ☀️ Light
-          "[html[data-nav-theme='dark']_&]:text-white" // 🌙 Dark
+          navbarClasses,
+          s.navbarCollapsed,
+          "border-zinc-50 bg-white/60!", // ☀️ Light
+          "[html[data-nav-theme='dark']_&]:border-zinc-800 [html[data-nav-theme='dark']_&]:bg-zinc-900/70!" // 🌙 Dark
         )}
       >
-        Dev'
-      </span>
-      <span
-        className={cn(
-          "bg-linear-to-br from-[#FF5709] to-[#FFC731] bg-clip-text",
-          "font-black text-transparent tracking-tighter"
-        )}
-      >
-        Oc
-      </span>
-    </Link>
-  );
-
-  return (
-    <LogoButton logoSize={logoSize}>
-      <div className="relative">
-        {/* 🌫️ Blurry copy */}
-        <div
-          className={cn(
-            "absolute opacity-70",
-            "blur-sm",
-            "[html[data-nav-theme='light']_&]:hidden" // ☀️ Light
-          )}
-        >
-          {Text}
-        </div>
-        {/* 🔠 Real text */}
-        <div>{Text}</div>
-      </div>
-    </LogoButton>
-  );
-}
-
-// --------------------------------
-// Links 🔗
-const LINKS = [
-  {
-    href: "/#us",
-    id: "us",
-    label: "Le collectif",
-  },
-  {
-    href: "/#method",
-    id: "method",
-    label: "Notre méthode",
-  },
-  {
-    href: "/#services",
-    id: "services",
-    label: "Services",
-  },
-  {
-    href: "/#realisations",
-    id: "realisations",
-    label: "Réalisations",
-  },
-];
-
-// -----------------------------------------------------------
-// Links 📱
-function LinksMobile() {
-  return (
-    <div
-      className={cn(
-        "absolute top-full left-1/2 -translate-x-1/2",
-        "flex flex-col gap-y-2",
-        "w-full",
-        "border-t-2 border-t-primary",
-        "rounded-br-lg rounded-bl-lg",
-        "bg-white/70",
-        "py-2 pt-4",
-        "backdrop-blur-sm",
-        "transition-colors duration-300",
-        "[html[data-nav-theme='dark']_&]:text-secondary", // ☀️ Light
-        "[html[data-nav-theme='dark']_&]:bg-zinc-900/20 [html[data-nav-theme='dark']_&]:text-white" // 🌙 Dark
-      )}
-    >
-      {LINKS.map(({ href, label }) => (
-        <Link
-          className={cn(
-            "px-4 py-2",
-            "text-left",
-            "font-kira font-semibold uppercase"
-          )}
-          href={href}
-          key={href}
-        >
-          {label}
-        </Link>
-      ))}
+        {children}
+      </Glass>
     </div>
-  );
-}
-
-// -----------------------------------------------------------
-// Links 💻
-// function LinksDesktop() {
-//   return (
-//     <ul
-//       className={cn(
-//         "flex items-center gap-x-12",
-//         "font-semibold",
-//         "text-secondary", // ☀️ Light
-//         "[html[data-nav-theme='dark']_&]:text-white", // 🌙 Dark
-//       )}
-//     >
-//       {LINKS.map(({ href, label, id }) => (
-//         <li
-//           className={cn(
-//             "whitespace-nowrap",
-//             "text-center hover:text-primary",
-//             "transition-colors duration-300",
-//           )}
-//           key={id}
-//         >
-//           <Link href={href}>{label}</Link>
-//         </li>
-//       ))}
-//     </ul>
-//   );
-// }
-
-// ----------------------------------
-// 📨 Contact button
-function ContactButton({ children = null }: React.PropsWithChildren) {
-  return (
-    <Link href="#contact">
-      <CustomButton
-        aria-label="Nous contacter"
-        className={cn(
-          "flex items-center gap-2",
-          "cursor-pointer",
-          "rounded-full!",
-          "font-bold text-primary-foreground",
-          "transition-colors",
-          children && "pr-6! pl-5!"
-        )}
-        style={
-          {
-            "--accent": "var(--primary-lighter)",
-            "--accent-secondary": "var(--primary-strong)",
-          } as React.CSSProperties
-        }
-      >
-        <SendIcon aria-hidden="true" size={18} />
-        {children && <span>{children}</span>}
-      </CustomButton>
-    </Link>
   );
 }
