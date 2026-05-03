@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import { cn } from "@/lib/utils";
 
@@ -13,10 +12,6 @@ export default function Section({
   children?: React.ReactNode;
   className?: string;
 }) {
-  const [hasMounted, setHasMounted] = useState(false);
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
   const { ref } = useNavTheme({ sectionName: id, theme });
 
   return (
@@ -47,7 +42,7 @@ export default function Section({
       id={id}
       ref={ref}
     >
-      {hasMounted && children}
+      {children}
     </div>
   );
 }

@@ -10,6 +10,7 @@ const offsetTop = 50;
 
 function useNavTheme({ theme = "light", sectionName = "" }: Props) {
   const ref = useRef(null);
+
   const { scrollYProgress, scrollY } = useScroll({
     offset: [`start ${offsetTop}px`, "end start"],
     target: ref,

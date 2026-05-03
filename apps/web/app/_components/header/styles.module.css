@@ -1,14 +1,55 @@
-.navbarDesktop {
-  animation: on-scroll linear both;
-  animation-timeline: scroll(root);
-  animation-range: 0px 150px;
+/* 🌙 */
+html[data-nav-theme="dark"] {
+  border: 2px solid red;
 }
 
-@keyframes on-scroll {
+/* ↔️ */
+.navbarExpanded {
+  animation: on-scroll-expanded linear both;
+  animation-timeline: scroll(root);
+  animation-range: 0px 1px;
+  width: 95vw;
+}
+
+@keyframes on-scroll-expanded {
+  from {
+    display: flex;
+  }
+
+  to {
+    display: none;
+  }
+}
+
+/* ➡️⬅️ */
+.navbarCollapsed {
+  background-color: oklab(0.999994 0.0000455677 0.0000200868 / 0.6) !important;
+  padding: 6px 8px 6px 24px;
+  animation:
+    on-scroll-collapsed linear both,
+    on-scroll-collapsed-appear linear both;
+  animation-timeline: scroll(root), scroll(root);
+  animation-range:
+    0px 150px,
+    0px 1px;
+}
+
+@keyframes on-scroll-collapsed-appear {
+  from {
+    display: none;
+  }
+
+  to {
+    display: flex;
+  }
+}
+
+@keyframes on-scroll-collapsed {
   from {
     transform: translateY(10px);
-    width: min(1600px, 95vw);
+    width: 95vw;
   }
+
   to {
     transform: translateY(25px);
     width: min(1200px, 80vw);
