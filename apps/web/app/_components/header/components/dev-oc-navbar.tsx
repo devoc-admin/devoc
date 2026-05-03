@@ -7,7 +7,29 @@ import { cn } from "@/lib/utils";
 import Icon from "@/public/icon.svg";
 
 export function DevOcNavbar({ logoSize }: { logoSize?: number }) {
-  const Text = (
+  return (
+    <LogoButtonNavbar logoSize={logoSize}>
+      <div className="relative">
+        {/* 🌫️ Blurry copy */}
+        <div
+          className={cn(
+            "absolute opacity-70",
+            "blur-sm",
+            "hidden",
+            "[html[data-nav-theme='dark']_&]:block" // ☀️ Light
+          )}
+        >
+          <DevOc />
+        </div>
+        {/* 🔠 Real text */}
+        <DevOc />
+      </div>
+    </LogoButtonNavbar>
+  );
+}
+
+function DevOc() {
+  return (
     <Link href="/">
       <span
         className={cn(
@@ -28,25 +50,6 @@ export function DevOcNavbar({ logoSize }: { logoSize?: number }) {
         Oc
       </span>
     </Link>
-  );
-
-  return (
-    <LogoButtonNavbar logoSize={logoSize}>
-      <div className="relative">
-        {/* 🌫️ Blurry copy */}
-        <div
-          className={cn(
-            "absolute opacity-70",
-            "blur-sm",
-            "[html[data-nav-theme='light']_&]:hidden" // ☀️ Light
-          )}
-        >
-          {Text}
-        </div>
-        {/* 🔠 Real text */}
-        <div>{Text}</div>
-      </div>
-    </LogoButtonNavbar>
   );
 }
 

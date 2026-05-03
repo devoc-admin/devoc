@@ -1,9 +1,11 @@
 "use client";
 import { Glass } from "@/components/sera-ui/liquid-glass";
 import { cn } from "@/lib/utils";
+import { useFontsReady } from "../../_hooks/use-font-ready";
 import { ContactButtonNavbar } from "./components/contact-button-navbar";
 import { DevOcNavbar } from "./components/dev-oc-navbar";
 import s from "./styles.module.css";
+
 export default function Header() {
   return <DesktopHeader />;
 }
@@ -11,6 +13,9 @@ export default function Header() {
 // --------------------------------
 // 💻
 function DesktopHeader() {
+  const fontsReady = useFontsReady();
+
+  if (!fontsReady) return null;
   return (
     /* ♻️📨 */
     <ToogleNavbarOnScroll>
@@ -36,7 +41,13 @@ const navbarClasses = cn(
 
 function ToogleNavbarOnScroll({ children }: { children: React.ReactNode }) {
   return (
-    <div className={cn("fixed z-5000", "top-0 left-1/2 -translate-x-1/2")}>
+    <div
+      className={cn(
+        "fixed z-5000",
+        "top-0 left-1/2 -translate-x-1/2",
+        s.navbarEntry
+      )}
+    >
       {/* ⬆️ */}
       <div className={cn(navbarClasses, s.navbarExpanded)}>{children}</div>
       {/* 🫗 */}
