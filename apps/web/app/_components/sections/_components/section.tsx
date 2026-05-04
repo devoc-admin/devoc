@@ -35,7 +35,7 @@ export default function Section({
         "lg:py-34",
         "2xl:py-48",
         //🎨 Colors
-        theme === "light" ? "bg-white" : "bg-zinc-950",
+        theme === "light" ? "bg-white" : "bg-background-dark",
         theme === "light" ? "text-zinc-950" : "text-white",
         className
       )}
