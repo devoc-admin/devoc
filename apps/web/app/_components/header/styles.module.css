@@ -1,6 +1,21 @@
-/* 🌙 */
-html[data-nav-theme="dark"] {
-  border: 2px solid red;
+.navbarEntry {
+  animation-name: navbar-reveal;
+  animation-duration: 850ms;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  animation-delay: 500ms;
+  animation-fill-mode: both;
+}
+
+@keyframes navbar-reveal {
+  from {
+    transform: translate(0px, -16px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(0px, 0px);
+    opacity: 1;
+  }
 }
 
 /* ↔️ */

@@ -1,6 +1,7 @@
 import SpecularBandsBackground from "@/components/motion-core/specular-band/specular-band-background.tsx";
 import { cn } from "@/lib/utils.ts";
 import s from "./styles.module.css";
+
 export function HeroBackground() {
   return (
     <div
