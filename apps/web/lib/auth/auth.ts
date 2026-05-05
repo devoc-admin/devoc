@@ -19,6 +19,11 @@ export const auth = betterAuth({
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // 1 day
   },
+  trustedOrigins: [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://192.168.1.*:3000",
+  ],
 });
 
 export type Session = typeof auth.$Infer.Session;
