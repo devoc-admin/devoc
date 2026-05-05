@@ -10,7 +10,7 @@
     "Edge >= 93"
   ],
   "scripts": {
-    "dev": "echo \"Network: http://$(ipconfig getifaddr en0):3000\" && bun --bun next dev --turbopack -H 0.0.0.0",
+    "dev": "bun --bun next dev --turbopack -H 0.0.0.0",
     "inngest": "npx inngest-cli@latest dev",
     "build": "bun --bun next build --turbopack",
     "start": "bun --bun next start",

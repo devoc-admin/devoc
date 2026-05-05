@@ -4,7 +4,7 @@ dev:
     bun run dev
 
 build:
-    echo "(apps/email) Pas de build dédié; utilisez dev pour prévisualiser."
+    bun run build
 
 clean:
     rm -rf node_modules

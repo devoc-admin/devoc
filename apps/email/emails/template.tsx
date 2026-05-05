@@ -13,22 +13,29 @@ import {
   Section,
   Text,
 } from "@react-email/components";
+import type React from "react";
 
-interface DefaultEmailProps {
+type TemplateEmailProps = {
   closingData: string;
   gdprData?: string;
   headingData: string;
   paragraphs?: React.ReactNode[];
   previewData: string;
-}
+  cta?: {
+    text: string;
+    href: string;
+    icon?: string;
+  };
+};
 
-export const DefaultEmail = ({
+export const TemplateEmail = ({
   previewData,
   headingData,
   closingData,
   paragraphs,
-  gdprData,
-}: DefaultEmailProps) => (
+  gdprData = "Conformément au RGPD, vous pouvez demander la suppression de vos données à tout moment sur simple réponse à ce mail.",
+  cta,
+}: TemplateEmailProps) => (
   <Html dir="ltr" lang="fr">
     <Head />
     <Preview>{previewData}</Preview>
@@ -55,7 +62,23 @@ export const DefaultEmail = ({
             <strong>{closingData}</strong>
           </Text>
 
-          <Section style={{ textAlign: "center", width: "auto" }}>
+          {cta && (
+            <Section style={buttonContainer}>
+              <Button href={cta.href} style={button}>
+                <span
+                  style={{
+                    display: "inline-block",
+                    marginRight: 10,
+                  }}
+                >
+                  {cta.icon || "📥"}
+                </span>
+                <span>{cta.text}</span>
+              </Button>
+            </Section>
+          )}
+
+          <Section style={signatureSection}>
             <Row>
               <Column align="center">
                 <Img
@@ -84,40 +107,67 @@ export const DefaultEmail = ({
               </Column>
             </Row>
             <Row>
-              <Column>
+              <Column align="left">
                 <Link href="mailto:contact@dev-oc.fr" style={contactLink}>
-                  <Text style={contactIcon}>✉️</Text>
+                  <span style={contactIcon}>✉️</span>
                   <span style={contactText}>contact@dev-oc.fr</span>
                 </Link>
               </Column>
               <Column style={{ padding: "0 10px" }} />
-              <Column>
+              <Column align="center">
                 <Link href="https://www.dev-oc.fr/" style={contactLink}>
-                  <Text style={contactIcon}>🌐</Text>
+                  <span style={contactIcon}>🌐</span>
                   <span style={contactText}>www.dev-oc.fr</span>
                 </Link>
               </Column>
               <Column style={{ padding: "0 10px" }} />
-              <Column>
+              <Column align="right">
                 <Link
                   href="https://www.linkedin.com/company/110846046"
                   style={contactLink}
                 >
-                  <Img
-                    alt="LinkedIn"
-                    height="11"
-                    src="https://resend-attachments.s3.amazonaws.com/f2117033-d44e-4b2d-8592-2c46b023526f"
-                    style={contactIcon}
-                    width="11"
-                  />
+                  <span style={contactIcon}>🔗</span>
                   <span style={contactText}>LinkedIn</span>
                 </Link>
               </Column>
-              <Column style={{ padding: "0 10px" }} />
-              <Column>
+            </Row>
+            <Row>
+              <Column align="center">
                 <Link href="https://cal.com/dev-oc/30min" style={contactLink}>
-                  <Text style={contactIcon}>🗓️</Text>
-                  <span style={contactText}>Cal'</span>
+                  <span style={contactIcon}>🗓️</span>
+                  <span style={contactText}>Prendre un rendez-vous</span>
+                </Link>
+              </Column>
+            </Row>
+
+            <Row style={{ marginTop: "25px" }}>
+              <Column style={partnerColumn}>
+                <Text style={partnerName}>Clément</Text>
+                <Img
+                  alt="Clément"
+                  src="/static/clement.png"
+                  style={partnerPhoto}
+                />
+                <Text style={partnerDescription}>
+                  L'architecte de l'invisible
+                </Text>
+                <Link href="tel:+33658889701" style={contactLink}>
+                  <span style={contactIcon}>📱</span>
+                  <span style={contactText}>+33 6 58 88 97 01</span>
+                </Link>
+              </Column>
+              <Column style={{ width: "15px" }} />
+              <Column style={partnerColumn}>
+                <Text style={partnerName}>Thibaut</Text>
+                <Img
+                  alt="Thibaut"
+                  src="/static/thibaut.png"
+                  style={partnerPhoto}
+                />
+                <Text style={partnerDescription}>L'architecte du visuel</Text>
+                <Link href="tel:+33620239838" style={contactLink}>
+                  <span style={contactIcon}>📱</span>
+                  <span style={contactText}>+33 6 20 23 98 38</span>
                 </Link>
               </Column>
             </Row>
@@ -125,43 +175,18 @@ export const DefaultEmail = ({
         </Section>
 
         <Section style={reviewSection}>
-          <Link href="https://share.google/J2qlkZIWaWiHflcet">
-            <Text style={reviewText}>Laissez-nous votre avis !</Text>
-            <Img
-              alt="Star"
-              height="32"
-              src="https://resend-attachments.s3.amazonaws.com/fa0b118a-90a7-4845-a41e-f8cbd1021b64"
-              style={starIcon}
-              width="32"
-            />
-            <Img
-              alt="Star"
-              height="32"
-              src="https://resend-attachments.s3.amazonaws.com/fa0b118a-90a7-4845-a41e-f8cbd1021b64"
-              style={starIcon}
-              width="32"
-            />
-            <Img
-              alt="Star"
-              height="32"
-              src="https://resend-attachments.s3.amazonaws.com/fa0b118a-90a7-4845-a41e-f8cbd1021b64"
-              style={starIcon}
-              width="32"
-            />
-            <Img
-              alt="Star"
-              height="32"
-              src="https://resend-attachments.s3.amazonaws.com/fa0b118a-90a7-4845-a41e-f8cbd1021b64"
-              style={starIcon}
-              width="32"
-            />
-            <Img
-              alt="Star"
-              height="32"
-              src="https://resend-attachments.s3.amazonaws.com/fa0b118a-90a7-4845-a41e-f8cbd1021b64"
-              style={starIcon}
-              width="32"
-            />
+          <Link
+            href="https://share.google/J2qlkZIWaWiHflcet"
+            style={{ textDecoration: "none" }}
+          >
+            <span
+              style={{ ...reviewText, display: "block", marginBottom: "8px" }}
+            >
+              Laissez-nous votre avis !
+            </span>
+            <span aria-label="Note de 5 sur 5" role="img" style={starIcon}>
+              ⭐⭐⭐⭐⭐
+            </span>
           </Link>
         </Section>
         <Section style={footerSection}>
@@ -173,10 +198,7 @@ export const DefaultEmail = ({
             </Link>
           </Text>
 
-          <Text style={gdprText}>
-            {gdprData ||
-              "Conformément au RGPD, vous pouvez demander la suppression de vos données à tout moment sur simple réponse à ce mail."}
-          </Text>
+          <Text style={gdprText}>{gdprData}</Text>
         </Section>
       </Container>
     </Body>
@@ -228,9 +250,9 @@ const paragraph = {
   textAlign: "center" as const,
 };
 
-const linkInline = {
-  color: "#e5e7eb",
-  textDecoration: "underline" as const,
+const buttonContainer = {
+  padding: "16px 0",
+  textAlign: "center" as const,
 };
 
 const button = {
@@ -248,6 +270,13 @@ const closingText = {
   lineHeight: "120%",
   margin: "30px 0",
   padding: "0 20px",
+  textAlign: "center" as const,
+};
+
+const signatureSection = {
+  padding: "16px 0",
+  textAlign: "center" as const,
+  width: "auto",
 };
 
 const expertText = {
@@ -255,10 +284,11 @@ const expertText = {
   lineHeight: "125%",
   margin: "0",
   padding: "8px 0",
+  textAlign: "center" as const,
 };
 
 const contactLink = {
-  color: "#067df7",
+  color: "white",
   fontSize: "14px",
   textDecoration: "underline" as const,
 };
@@ -288,6 +318,7 @@ const reviewText = {
 
 const starIcon = {
   display: "inline-block" as const,
+  fontSize: "32px",
   margin: "0 2px",
   verticalAlign: "middle" as const,
 };
@@ -315,9 +346,40 @@ const gdprText = {
   padding: "8px 0",
 };
 
-DefaultEmail.PreviewProps = {
+const partnerColumn = {
+  width: "48%",
+};
+
+const partnerPhoto = {
+  borderRadius: "50%",
+  display: "inline-block",
+  filter: "grayscale(100%)", // Optionnel : pour un look très "collectif de dev" sobre
+  width: "150px",
+};
+
+const partnerName = {
+  color: "#888",
+  fontSize: "12px",
+  letterSpacing: "1px",
+  margin: "4px 0 0 0",
+  textTransform: "uppercase" as const,
+};
+const partnerDescription = {
+  color: "#888",
+  display: "block",
+  fontSize: "12px",
+  lineHeight: "1.4",
+  margin: "4px 0 0px 0",
+};
+
+TemplateEmail.PreviewProps = {
   closingData:
     "En vous souhaitant le meilleur dans vos projets entrepreneuriaux !",
+  cta: {
+    href: "https://drive.google.com/file/d/1tFSGJ-wunNxSBuv1UsKHhVRVWcJtVcmh/view?usp=sharing",
+    icon: "🎤",
+    text: "Lien de la présentation",
+  },
   gdprData:
     "Vous recevez ce message car vous avez participé à une présentation « Réussir sa transformation numérique en 2026 » du 30 mars 2026 à Alpha'R. Conformément au RGPD, vous pouvez demander la suppression de vos données à tout moment sur simple réponse à ce mail.",
   headingData: "Bonjour,",
@@ -326,7 +388,10 @@ DefaultEmail.PreviewProps = {
       Vous avez assisté lundi dernier à une masterclass intitulée «{" "}
       <u>Réussir sa transformation numérique en 2026</u> » et animée par{" "}
       <u>
-        <Link href="https://www.dev-oc.fr/" style={linkInline}>
+        <Link
+          href="https://www.dev-oc.fr/"
+          style={{ color: "#e5e7eb", textDecoration: "underline" }}
+        >
           notre collectif Dev'Oc
         </Link>
       </u>
@@ -346,22 +411,8 @@ DefaultEmail.PreviewProps = {
       Vous pouvez dès à présent retrouver le support de cette présentation au
       format pdf en cliquant sur le lien ci-dessous 👇
     </strong>,
-    <Button
-      href="https://drive.google.com/file/d/1tFSGJ-wunNxSBuv1UsKHhVRVWcJtVcmh/view?usp=sharing"
-      style={button}
-    >
-      <span
-        style={{
-          display: "inline-block",
-          marginRight: 10,
-        }}
-      >
-        🎤
-      </span>
-      <span>Lien présentation</span>
-    </Button>,
   ],
   previewData: "Merci pour votre participation à notre masterclass !",
-} as DefaultEmailProps;
+} as TemplateEmailProps;
 
-export default DefaultEmail;
+export default TemplateEmail;
