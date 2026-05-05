@@ -45,6 +45,7 @@
     --color-foreground: var(--foreground);
 
     --color-background-dark: var(--background-dark);
+    --color-surface-dark: var(--surface-dark);
     --color-foreground-dark: var(--foreground-dark);
 
     /* 🟠 Primary */
@@ -187,6 +188,7 @@
     --foreground: oklch(0.145 0 0);
 
     --background-dark: oklch(16.07% 0.005353089191364578 67.43199692148829);
+    --surface-dark: lab(5.25845% .798501 1.4431);
     --foreground-dark: lab(98.2748% .282407 1.88136);
 
     --card: oklch(1 0 0);
