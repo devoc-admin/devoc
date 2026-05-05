@@ -1,24 +1,46 @@
 "use client";
+import {
+  ArrowRightIcon,
+  WandIcon as AuditIcon,
+  BotIcon as AutomatisationIcon,
+  Scale as ExpertiseIcon,
+  GraduationCapIcon as FormationIcon,
+  Earth as ImpactIcon,
+  ServerIcon as InfrastructureIcon,
+  UserCheck as InterlocuteurIcon,
+  MapPin as LocalisationIcon,
+  type LucideIcon,
+  Mail as MailIcon,
+  Smartphone as PhoneIcon,
+  Award as ReconnaissanceIcon,
+  MonitorIcon as SitesWebIcon,
+} from "lucide-react";
 import { motion } from "motion/react";
-// import { SparklesText } from "@/components/magicui/sparkles-text";
-import DitheredImage from "@/components/motion-core/dithered-image/dithered-image";
-// import RubiksCube from "@/components/motion-core/rubiks-cube/rubiks-cube";
+import Image from "next/image";
 import GlowLine from "@/components/sera-ui/glow-line";
 import { cn } from "@/lib/utils";
-// import Ornament from "./assets/ornament";
+import PhotoGroupe from "./assets/photo-groupe.webp";
+import { ListItem } from "./components/list-item";
 import { PContent } from "./components/p-content";
 import { PIntro } from "./components/p-intro";
+import { Portrait } from "./components/portrait";
+import { ReasonCard } from "./components/reason-card";
 import { SectionCatchline } from "./components/section-catchline";
 import { SectionSeparator } from "./components/section-separator";
+import { ServiceCard } from "./components/service-card";
 import { SupSection } from "./components/sup-section";
 export default function SectionUs() {
   return (
     <div className={cn("relative bg-background-dark text-white", "min-h-400")}>
-      <div className={cn("max-w-430", "mx-auto", "p-46", "space-y-36")}>
+      <div className={cn("max-w-430", "mx-auto", "p-46", "space-y-78")}>
         <TopLine />
         <SectionCollectif />
-        <SectionSeparator />
         <Portraits />
+        <PortraitGroupe />
+        <SectionServices />
+        <SectionValues />
+        <SectionReasons />
+        <ContactCard />
       </div>
     </div>
   );
@@ -28,162 +50,521 @@ function TopLine() {
   return <GlowLine color="orange" orientation="horizontal" position="0px" />;
 }
 
-// 1️⃣
+// 1️⃣🔤
 function SectionCollectif() {
   return (
-    <section className="mx-auto flex gap-x-42">
-      <div className="space-y-10">
-        <FadeUp>
-          <SupSection number={1}>Le collectif</SupSection>
-        </FadeUp>
-        <FadeUp delay={0.1}>
-          <SectionCatchline>
-            Remettre la transmission et l'autonomie au centre de la{" "}
-            <span className="font-extralight text-foreground-dark/60 italic">
-              tech
-            </span>
-            .
-          </SectionCatchline>
-        </FadeUp>
+    <section className="mx-auto space-y-36">
+      <div className="flex gap-x-42">
+        <div className="space-y-10">
+          <FadeUp>
+            <SupSection number={1}>Le collectif</SupSection>
+          </FadeUp>
+          <FadeUp delay={0.1}>
+            <SectionCatchline>
+              Remettre la transmission et l'autonomie au centre de la{" "}
+              <span className="font-extralight text-foreground-dark/60 italic">
+                tech
+              </span>
+              .
+            </SectionCatchline>
+          </FadeUp>
+        </div>
+
+        <div className="grow space-y-10">
+          <FadeUp delay={0.1}>
+            <PIntro>
+              Dev'Oc est né d'une conviction simple : la proximité, la clarté et
+              l'exigence d'ingénieurs sont compatibles avec les budgets des TPE,
+              PME et collectivités locales.
+            </PIntro>
+          </FadeUp>
+
+          <FadeUp delay={0.2}>
+            <PContent>
+              Nous accompagnons les acteurs d'Occitanie dans leur transformation
+              numérique — création de sites web, mise en conformité
+              réglementaire, automatisation de processus, sécurisation des
+              infrastructures — avec la proximité et l'exigence comme boussole.
+            </PContent>
+          </FadeUp>
+
+          <FadeUp delay={0.3}>
+            <PContent>
+              À la transformation, nous joignons la transmission. Nous animons
+              des formations à destination des entrepreneurs et des élus pour
+              démystifier ces sujets, révéler des pistes d'action et diffuser
+              largement les bonnes pratiques, dans un langage clair et
+              accessible.
+            </PContent>
+          </FadeUp>
+
+          <FadeUp delay={0.4}>
+            <PContent>
+              Notre conviction : améliorer l'empreinte numérique d'un
+              territoire, c'est l'une des meilleures façons de le faire grandir.
+            </PContent>
+          </FadeUp>
+        </div>
       </div>
-
-      <div className="grow space-y-10">
-        <FadeUp delay={0.1}>
-          <PIntro>
-            Dev'Oc est né d'une conviction simple : la proximité, la clarté et
-            l'exigence d'ingénieurs sont compatibles avec les budgets des TPE,
-            PME et collectivités locales.
-          </PIntro>
-        </FadeUp>
-
-        <FadeUp delay={0.2}>
-          <PContent>
-            Nous accompagnons les acteurs d'Occitanie dans leur transformation
-            numérique — création de sites web, mise en conformité réglementaire,
-            automatisation de processus, sécurisation des infrastructures — avec
-            la proximité et l'exigence comme boussole.
-          </PContent>
-        </FadeUp>
-
-        <FadeUp delay={0.3}>
-          <PContent>
-            À la transformation, nous joignons la transmission. Nous animons des
-            formations à destination des entrepreneurs et des élus pour
-            démystifier ces sujets, révéler des pistes d'action et diffuser
-            largement les bonnes pratiques, dans un langage clair et accessible.
-          </PContent>
-        </FadeUp>
-
-        <FadeUp delay={0.4}>
-          <PContent>
-            Notre conviction : améliorer l'empreinte numérique d'un territoire,
-            c'est l'une des meilleures façons de le faire grandir.
-          </PContent>
-        </FadeUp>
-      </div>
+      <SectionSeparator />
     </section>
   );
 }
 
-// 2️⃣
+// 2️⃣📸📸
+const founders = [
+  {
+    color: "#F56E0F",
+    description:
+      "L'architecte de l'invisible. Bases de données, interconnexions de systèmes, automatisation des tâches répétitives, infrastructure et déploiement: il conçoit les fondations sur lesquelles reposent vos outils numériques.Avec toujours comme maîtres mots l'efficacité et la résilience.",
+    key: "clement",
+    name: "Clément",
+    src: "./clement-portrait.webp",
+  },
+  {
+    color: "#FFC731",
+    description:
+      "L'interface entre vous et vos utilisateurs. Il traduit vos besoins en expériences numériques claires, accessibles et efficaces. Expert en développement web, conformité RGPD et accessibilité, il s'assure que vos interfaces restent modernes, conformes et durables.",
+    key: "thibaut",
+    name: "Thibaut",
+    src: "./thibaut-portrait.webp",
+  },
+];
 function Portraits() {
   return (
     <FadeUp>
-      <div className="-mt-16 flex gap-x-18">
-        <Portrait
-          color="#F56E0F"
-          description="L'architecte de l'invisible. Bases de données, interconnexions de systèmes, automatisation des tâches répétitives, infrastructure et déploiement : il conçoit les fondations sur lesquelles reposent vos outils numériques. Avec toujours comme maîtres mots l'efficacité et la résilience."
-          name="Clément"
-          src="./clement-portrait.webp"
-        />
-        <Portrait
-          color="#FFC731"
-          description="L'interface entre vous et vos utilisateurs. Il traduit vos besoins en expériences numériques claires, accessibles et efficaces. Expert en développement web, conformité RGPD et accessibilité, il s'assure que vos interfaces restent modernes, conformes et durables."
-          name="Thibaut"
-          src="./thibaut-portrait.webp"
-        />
+      <div className="-mt-52 flex gap-x-18">
+        {founders.map(({ key, ...props }) => (
+          <Portrait key={key} {...props} />
+        ))}
       </div>
     </FadeUp>
   );
 }
 
-function Portrait({
-  color,
-  name,
-  description,
-  src,
-}: {
-  color: string;
-  name: string;
-  description: string;
-  src: string;
-}) {
+// 3️⃣📸
+function PortraitGroupe() {
   return (
-    <div
-      className={cn(
-        "group",
-        "grow",
-        "relative",
-        "rounded-4xl",
-        "flex flex-col gap-y-6",
-        "p-9",
-        "min-h-240",
-        "border",
-        "border-foreground-dark/10",
-        "hover:border-foreground-dark/15",
-        "transition-colors"
-      )}
-    >
-      <PortraitImage color={color} name={name} src={src} />
-      <p className="text-base text-foreground-dark/50">{description}</p>
+    <div className="space-y-8">
+      <FadeUp>
+        <div
+          className={cn(
+            "relative",
+            "aspect-16/7 w-full",
+            "rounded-3xl",
+            "overflow-hidden",
+            "after:absolute after:inset-0 after:size-full after:bg-linear-to-b after:from-transparent after:via-transparent after:to-black/50 after:content-['']"
+          )}
+        >
+          <Image
+            alt="Photo de groupe du collectif Dev'Oc travaillant devant un ordinateur"
+            className="h-full w-full object-cover"
+            height="788"
+            src={PhotoGroupe.src}
+            width="1206"
+          />
+        </div>
+      </FadeUp>
+      <FadeUp>
+        <p className="max-w-[34ch] font-fraunces font-light text-4xl leading-snug">
+          Un binôme complémentaire : là où l'un construit la mécanique, l'autre
+          soigne l'expérience. Deux regards, une même exigence.
+        </p>
+      </FadeUp>
     </div>
   );
 }
 
-function PortraitImage({
-  color,
-  name,
-  src,
-}: {
-  color: string;
-  name: string;
-  src: string;
-}) {
+// 4️⃣💁‍♀️🔤
+function SectionServices() {
   return (
-    <div className="relative flex h-full flex-col">
-      <div className="grow overflow-hidden rounded-3xl bg-black">
-        <DitheredImage
-          backgroundColor="#000" // background-dark
-          className={cn(
-            "group-hover:scale-105",
-            "ease-out",
-            "mask-b-from-70% mask-b-to-100%",
-            "duration-500",
-            "transition-transform"
-          )}
-          color={color}
-          ditherMap="bayer4x4"
-          pixelSize={1}
-          src={src}
-          threshold={0.05}
-        />
+    <section className="mx-auto space-y-16">
+      {/* 🔠 */}
+      <div className="flex w-full justify-between">
+        <div className="space-y-10">
+          <FadeUp>
+            <SupSection number={2}>Services</SupSection>
+          </FadeUp>
+          <FadeUp delay={0.1}>
+            <SectionCatchline>
+              Une chaîne de valeur{" "}
+              <span className="font-extralight text-foreground-dark/60 italic">
+                complète
+              </span>
+              , de la conception à l'hébergement.
+            </SectionCatchline>
+          </FadeUp>
+        </div>
+
+        <div className="space-y-10 self-end">
+          <FadeUp delay={0.2}>
+            <PContent className="w-fit max-w-[50ch]">
+              Cinq pôles d'expertise complémentaires que nous mobilisons à la
+              carte selon vos besoins, vos délais et votre budget. Pas de
+              prestation standard, jamais.
+            </PContent>
+          </FadeUp>
+        </div>
       </div>
-      <span className="absolute bottom-4 left-6 flex flex-col gap-y-1.5">
-        <span className="font-geist-mono text-[0.7rem] text-foreground-dark/50 uppercase">
-          Co-fondateur • Backend & infrastructure
-        </span>
-        <span
-          className="bg-clip-text! font-fraunces text-4xl text-transparent"
-          style={{
-            background: `linear-gradient(to right, ${color}, ${color}20`,
-          }}
-        >
-          {name}
-        </span>
-      </span>
-    </div>
+      {/* 🃏🃏🃏 */}
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-7">
+          <FadeUp className="size-full">
+            <ServiceCard {...services[0]} index={1} />
+          </FadeUp>
+        </div>
+
+        <div className="col-span-5">
+          <FadeUp className="size-full" delay={0.1}>
+            <ServiceCard {...services[1]} index={2} />
+          </FadeUp>
+        </div>
+
+        <div className="col-span-4">
+          <FadeUp className="size-full" delay={0.2}>
+            <ServiceCard {...services[2]} index={3} />
+          </FadeUp>
+        </div>
+
+        <div className="col-span-8">
+          <FadeUp className="size-full" delay={0.3}>
+            <ServiceCard {...services[3]} index={4} />
+          </FadeUp>
+        </div>
+
+        <div className="col-span-12">
+          <FadeUp className="size-full" delay={0.4}>
+            <ServiceCard {...services[4]} index={5} />
+          </FadeUp>
+        </div>
+      </div>
+    </section>
   );
 }
+
+const services = [
+  {
+    features: [
+      "Versions mobile & tablette",
+      "Référencement optimisé",
+      "Logo et charte graphique",
+    ],
+    href: "#",
+    Icon: SitesWebIcon,
+    subtitle:
+      "Identités numériques modernes, ultra rapides, accessibles, pensées pour convertir.",
+    title: "Sites web sur-mesure",
+  },
+  {
+    features: [
+      "Hébergement souverain",
+      "Déploiement & monitoring",
+      "Sauvegardes",
+    ],
+    href: "#",
+    Icon: InfrastructureIcon,
+    subtitle:
+      "Des fondations numériques solides et locales pour reprendre le contrôle de vos données.",
+    title: "Infrastructure",
+  },
+  {
+    features: ["Intégration de l'IA", "Productivité accrue", "Coûts réduits"],
+    href: "#",
+    Icon: AutomatisationIcon,
+    subtitle:
+      "Automatisez les tâches répétitives et libérez du temps pour ce qui compte.",
+    title: "Automatisation & IA",
+  },
+  {
+    features: [
+      "Audit SEO & performance",
+      "Conformité RGAA 4.1",
+      "Conformité RGPD & RGS",
+    ],
+    href: "#",
+    Icon: AuditIcon,
+    subtitle:
+      "Audits complets et optimisations ciblées pour la performance, la sécurité et l'accessibilité.",
+    title: "Audit & conformité",
+  },
+  {
+    features: [
+      "Formation en présentiel",
+      "Support réactif",
+      "Maintenance continue",
+    ],
+    href: "#",
+    Icon: FormationIcon,
+    subtitle:
+      "Formations et accompagnement pour rendre vos équipes autonomes et sereines dans la durée.",
+    title: "Formation & support",
+  },
+];
+
+// 5️⃣⭐🔤
+function SectionValues() {
+  return (
+    <section className="mx-auto space-y-28">
+      {/* 🔠 */}
+      <div className="space-y-10">
+        <FadeUp>
+          <SupSection number={3}>Nos valeurs</SupSection>
+        </FadeUp>
+        <FadeUp delay={0.1}>
+          <SectionCatchline>
+            Trois{" "}
+            <span className="font-extralight text-foreground-dark/60 italic">
+              principes
+            </span>{" "}
+            qui guident chaque décision
+          </SectionCatchline>
+        </FadeUp>
+      </div>
+      {/* 🪗🪗🪗 */}
+      <div>
+        {values.map(({ id, ...props }, index) => (
+          <FadeUp className="group w-full" delay={0.1}>
+            <ListItem {...props} index={index + 1} key={id} />
+          </FadeUp>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+const values = [
+  {
+    description:
+      "Les meilleurs projets se construisent en face-à-face. Nous nous déplaçons volontiers dans vos locaux, vos mairies et vos bureaux à travers toute l'Occitanie pour comprendre vos réalités concrètes et vous former à vos outils — sans appliquer mécaniquement la même recette de client en client.",
+    id: "proximite",
+    title: "Proximité géographique et humaine",
+  },
+  {
+    description:
+      "Vos données sont votre patrimoine. Nous privilégions les solutions open sourceet l'hébergement souverain pour garantir votre indépendance, en vous donnant les moyens de construire votre autonomie par la formation continue et la fourniture de guides d'utilisation de vos outils.",
+    id: "autonomie",
+    title: "Autonomie et protection des donnée",
+  },
+  {
+    description:
+      "Notre objectif : trouver les meilleures combinaisons technologiques adaptées à vos besoins, à un coût compétitif. Issus du monde professionnel et des grands groupes, nous en importons les méthodes et la rigueur, mises au service des TPE, PME et collectivités locales qui n'ont pas toujours les ressources internes pour faire face aux défis techniques.",
+    id: "esprit-ingenieur",
+    title: "L'esprit ingénieur à votre service",
+  },
+];
+
+// 6️⃣🤙
+function SectionReasons() {
+  return (
+    <section className="mx-auto space-y-28">
+      {/* 🔠 */}
+      <div className="space-y-10">
+        <FadeUp>
+          <SupSection number={4}>Pourquoi Dev'Oc</SupSection>
+        </FadeUp>
+        <FadeUp delay={0.1}>
+          <SectionCatchline>
+            Quatre{" "}
+            <span className="font-extralight text-foreground-dark/60 italic">
+              raisons
+            </span>{" "}
+            de nous confier votre projet
+          </SectionCatchline>
+        </FadeUp>
+      </div>
+      {/* 👆👆👆👆 */}
+      <div className="grid grid-cols-2 gap-6">
+        {reasons.map(({ id, ...props }, index) => (
+          <FadeUp className="w-fit" delay={0.1 * index} key={id}>
+            <ReasonCard {...props} />
+          </FadeUp>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+const reasons = [
+  {
+    description:
+      "Vous parlez directement aux personnes qui réalisent le travail. Pas à un commercial qui transmet à une équipe offshoreou à un service d'assistance en ligne anonyme.",
+    Icon: InterlocuteurIcon,
+    id: "interlocuteur-unique",
+    title: "Un interlocuteur unique, pas une agence anonyme",
+  },
+  {
+    description:
+      "RGPD, RGAA, NIS2, facturation électronique : nous anticipons les obligations qui s'imposent à vous. Vos produits numériques sont conformes dès la conception, avec une totale sérénité juridique.",
+    Icon: ExpertiseIcon,
+    id: "expertise-reglementaire",
+    title: "Une expertise réglementaire intégrée",
+  },
+  {
+    description:
+      "Travailler avec Dev'Oc, c'est réinjecter de la valeur dans l'économie de votre territoire — faire rayonner ses acteurs et participer à la montée en puissance numérique de la région.",
+    Icon: ImpactIcon,
+    id: "impact-territorial",
+    title: "L'impact territorial",
+  },
+  {
+    description:
+      "Lauréats 2025 du concours entrepreneurial de Carcassonne Agglo, notre approche a été reconnue par les acteurs économiques du territoire que nous servons.",
+    Icon: ReconnaissanceIcon,
+    id: "reconnaissance",
+    title: "Une reconnaissance indépendante",
+  },
+];
+
+// 7️⃣📞
+function ContactCard() {
+  return (
+    <FadeUp>
+      <div
+        className={cn(
+          "flex justify-between gap-x-24",
+          "relative",
+          "rounded-3xl",
+          "border border-foreground-dark/10",
+          "px-22 py-32",
+          "bg-surface-dark",
+          "overflow-hidden"
+        )}
+      >
+        {/* 🔙 */}
+        <div className="absolute inset-0 size-full opacity-30">
+          {/* 🟡 */}
+          <div
+            className={cn(
+              "absolute bottom-0 left-0",
+              "aspect-square h-[80%]",
+              "rounded-full",
+              "-translate-x-1/2 translate-y-1/2",
+              "bg-radial from-primary-lighter to-80% to-transparent",
+              "blur-2xl"
+            )}
+          />
+          {/* 🟠 */}
+          <div
+            className={cn(
+              "absolute top-0 right-0",
+              "aspect-square h-full",
+              "translate-x-1/4 -translate-y-1/4",
+              "rounded-full",
+              "bg-radial from-primary-strong to-80% to-transparent",
+              "blur-2xl"
+            )}
+          />
+        </div>
+        {/* 1️⃣ */}
+        <div className="relative max-w-[55ch]">
+          <div className="space-y-10">
+            <SupSection number={5}>Contact</SupSection>
+            <SectionCatchline className="font-normal text-7xl">
+              Parlons de votre{" "}
+              <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text text-transparent">
+                projet
+              </span>
+              .
+            </SectionCatchline>
+            <p className="text-foreground-dark/60 text-lg">
+              Décrivez-nous votre besoin en quelques lignes. Nous vous répondons
+              sous 24h ouvrées avec une première grille de lecture — sans
+              engagement, sans jargon.
+            </p>
+          </div>
+        </div>
+        {/* 2️⃣ */}
+        <div className="relative min-w-110">
+          {itemContacts.map(({ id, ...props }) => (
+            <ListItemContact {...props} key={id} />
+          ))}
+        </div>
+      </div>
+    </FadeUp>
+  );
+}
+
+function ListItemContact({
+  Icon,
+  label,
+  value,
+  href,
+}: {
+  Icon: LucideIcon;
+  label: string;
+  value: string;
+  href: string;
+}) {
+  return (
+    <a
+      className={cn(
+        "group",
+        "flex items-center gap-x-4",
+        "py-4",
+        "border-t last-of-type:border-b"
+      )}
+      href={href}
+      style={{
+        borderImage:
+          "linear-gradient(to right, transparent, oklch(from var(--color-foreground-dark) calc(l - 0.40) c h) 20%, oklch(from var(--color-foreground-dark) calc(l - 0.60) c h) 80%, transparent) 1",
+      }}
+    >
+      {/* 1️⃣ */}
+      <div
+        className={cn(
+          "grid place-items-center",
+          "size-10",
+          "rounded-full",
+          "border border-foreground-dark/10 bg-foreground-dark/3"
+        )}
+      >
+        <Icon color="#AEABA4" size={16} />
+      </div>
+      {/* 2️⃣ */}
+      <div>
+        <div className="font-geist-mono text-[0.6rem] text-foreground-dark/50 uppercase tracking-[0.15rem]">
+          {label}
+        </div>
+        <div className="font-light text-sm">{value}</div>
+      </div>
+      {/* 3️⃣ */}
+      <div className="ml-auto transition-transform group-hover:translate-x-1">
+        <ArrowRightIcon size={14} />
+      </div>
+    </a>
+  );
+}
+
+const itemContacts = [
+  {
+    href: "",
+    Icon: MailIcon,
+    id: "email",
+    label: "Email",
+    value: "contact@dev-oc.fr",
+  },
+  {
+    href: "",
+    Icon: PhoneIcon,
+    id: "tel-1",
+    label: "Téléphone — Thibaut",
+    value: "+33 6 20 23 98 38",
+  },
+  {
+    href: "",
+    Icon: PhoneIcon,
+    id: "tel-2",
+    label: "Téléphone — Clément",
+    value: "+33 6 58 88 97 01",
+  },
+  {
+    href: "",
+    Icon: LocalisationIcon,
+    id: "localisation",
+    label: "Localisation",
+    value: "Carcassonne, France",
+  },
+];
 
 // 🎬
 function FadeUp({
@@ -197,7 +578,7 @@ function FadeUp({
 }) {
   return (
     <motion.div
-      className={className}
+      className={cn("w-fit", className)}
       initial={{ opacity: 0, y: 28 }}
       transition={{
         delay,
@@ -282,13 +663,15 @@ function FadeUp({
 //           Ensemble, ils forment un binôme complémentaire : là où l'un construit
 //           la mécanique, l'autre soigne l'expérience. Deux regards, une même
 //           exigence.
-//         </P>
-//         <Ornament
+//
+//          </P>
 //           className="mx-auto mt-14 rotate-180"
 //           gradient={["var(--primary-lighter)", "var(--primary-strong)"]}
 //         />
 //         <CustomRubiksCube />
 //       </div>
+// import { Portrait} from "./components/
+// portrait"
 //     </div>
 //   );
 // }
