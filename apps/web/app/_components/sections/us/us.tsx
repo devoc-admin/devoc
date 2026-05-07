@@ -61,9 +61,9 @@ function SectionCollectif() {
           </FadeUp>
           <FadeUp delay={0.1}>
             <SectionCatchline>
-              Remettre la transmission et l'autonomie au centre de la{" "}
+              Remettre la transmission et l'autonomie au{" "}
               <span className="font-extralight text-foreground-dark/60 italic">
-                tech
+                centre
               </span>
               .
             </SectionCatchline>
@@ -74,7 +74,7 @@ function SectionCollectif() {
           <FadeUp delay={0.1}>
             <PIntro>
               Dev'Oc est né d'une conviction simple : la proximité, la clarté et
-              l'exigence d'ingénieurs sont compatibles avec les budgets des TPE,
+              l'exigence technique sont compatibles avec les budgets des TPE,
               PME et collectivités locales.
             </PIntro>
           </FadeUp>
@@ -101,7 +101,7 @@ function SectionCollectif() {
           <FadeUp delay={0.4}>
             <PContent>
               Notre conviction : améliorer l'empreinte numérique d'un
-              territoire, c'est l'une des meilleures façons de le faire grandir.
+              territoire, c'est l'aider à grandir.
             </PContent>
           </FadeUp>
         </div>
@@ -201,7 +201,8 @@ function SectionServices() {
             <PContent className="w-fit max-w-[50ch]">
               Cinq pôles d'expertise complémentaires que nous mobilisons à la
               carte selon vos besoins, vos délais et votre budget. Pas de
-              prestation standard, jamais.
+              surcoût caché, pas de dépendance inutile à une plateforme externe
+              et des produits dimensionnés à votre usage.
             </PContent>
           </FadeUp>
         </div>
@@ -341,13 +342,13 @@ const values = [
   },
   {
     description:
-      "Vos données sont votre patrimoine. Nous privilégions les solutions open sourceet l'hébergement souverain pour garantir votre indépendance, en vous donnant les moyens de construire votre autonomie par la formation continue et la fourniture de guides d'utilisation de vos outils.",
+      "Vos données sont votre patrimoine. Nous privilégions les solutions open source et l'hébergement souverain pour garantir votre indépendance, en vous donnant les moyens de construire votre autonomie par la formation continue et la fourniture de guides d'utilisation de vos outils.",
     id: "autonomie",
     title: "Autonomie et protection des donnée",
   },
   {
     description:
-      "Notre objectif : trouver les meilleures combinaisons technologiques adaptées à vos besoins, à un coût compétitif. Issus du monde professionnel et des grands groupes, nous en importons les méthodes et la rigueur, mises au service des TPE, PME et collectivités locales qui n'ont pas toujours les ressources internes pour faire face aux défis techniques.",
+      "Notre objectif : trouver les meilleures combinaisons technologiques adaptées à vos besoins, à un coût compétitif. Issus du monde professionnel et des grands groupes, nous en importons les méthodes et la rigueur, mises au service des TPE, PME et collectivités locales qui n'ont pas toujours les ressources internes pour faire face à leurs défis techniques.",
     id: "esprit-ingenieur",
     title: "L'esprit ingénieur à votre service",
   },
@@ -376,7 +377,7 @@ function SectionReasons() {
       <div className="grid grid-cols-2 gap-6">
         {reasons.map(({ id, ...props }, index) => (
           <FadeUp className="w-fit" delay={0.1 * index} key={id}>
-            <ReasonCard {...props} />
+            <ReasonCard {...props} index={index} />
           </FadeUp>
         ))}
       </div>
@@ -387,7 +388,7 @@ function SectionReasons() {
 const reasons = [
   {
     description:
-      "Vous parlez directement aux personnes qui réalisent le travail. Pas à un commercial qui transmet à une équipe offshoreou à un service d'assistance en ligne anonyme.",
+      "Vous parlez directement aux personnes qui réalisent le travail. Pas à un commercial qui transmet à une équipe offshore ou à un service d'assistance en ligne anonyme.",
     Icon: InterlocuteurIcon,
     id: "interlocuteur-unique",
     title: "Un interlocuteur unique, pas une agence anonyme",
