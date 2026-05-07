@@ -17,7 +17,7 @@ format:
     pnpm run format || pnpm exec biome format --write
 
 types:
-    pnpm run check-types || pnpm exec tsc --noEmit
+    pnpm run types || pnpm exec tsc --noEmit
 
 help:
     echo "Commandes disponibles :"

@@ -9,7 +9,7 @@
     "start": "bun --bun next start",
     "lint": "bun x ultracite fix",
     "format": "biome format --write",
-    "check-types": "tsc --noEmit"
+    "types": "tsc --noEmit"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",

@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "bun x ultracite fix",
     "format": "biome format --write",
-    "check-types": "tsc --noEmit"
+    "types": "tsc --noEmit"
   },
   "dependencies": {
     "class-variance-authority": "catalog:ui",

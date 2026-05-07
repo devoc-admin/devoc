@@ -16,7 +16,7 @@ format:
     bun run format
 
 types:
-    bun run check-types
+    bun run types
 
 help:
     echo "Commandes disponibles :"

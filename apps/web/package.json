@@ -18,7 +18,7 @@
     "format": "biome format --write",
     "create-admin": "bun run scripts/create-admin.ts",
     "seed-prospects": "bun --env-file=.env.local run scripts/seed-prospects.ts",
-    "check-types": "tsc --noEmit",
+    "types": "tsc --noEmit",
     "db:generate": "bun --env-file=.env.local drizzle-kit generate",
     "db:migrate": "bun --env-file=.env.local drizzle-kit migrate",
     "db:push": "bun --env-file=.env.local drizzle-kit push",

@@ -2,7 +2,7 @@
   "permissions": {
     "allow": [
       "Bash(turbo lint *)",
-      "Bash(bun run check-types)",
+      "Bash(bun run types)",
       "mcp__context7__query-docs",
       "mcp__context7__resolve-library-id"
     ]
