@@ -15,13 +15,12 @@ export function Portrait({
   return (
     <div
       className={cn(
-        "group",
         "grow",
         "relative",
         "rounded-4xl",
         "flex flex-col gap-y-6",
         "p-9",
-        "min-h-240",
+        "min-h-260",
         "border",
         "bg-surface-dark",
         "border-foreground-dark/10",
@@ -30,7 +29,7 @@ export function Portrait({
       )}
     >
       <PortraitImage color={color} name={name} src={src} />
-      <p className="text-base text-foreground-dark/50">{description}</p>
+      <p className="text-foreground-dark/60 text-lg">{description}</p>
     </div>
   );
 }
@@ -50,7 +49,6 @@ function PortraitImage({
         <DitheredImage
           backgroundColor="#000" // background-dark
           className={cn(
-            "group-hover:scale-101",
             "ease-out",
             "mask-b-from-70% mask-b-to-100%",
             "duration-500",
