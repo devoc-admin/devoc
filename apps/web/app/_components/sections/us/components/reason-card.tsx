@@ -3,10 +3,12 @@ import { cn } from "@/lib/utils";
 export function ReasonCard({
   title,
   description,
+  index,
   Icon,
 }: {
   title: string;
   description: string;
+  index: number;
   Icon: LucideIcon;
 }) {
   return (
@@ -26,7 +28,10 @@ export function ReasonCard({
       </div>
       {/* 2️⃣ */}
       <div className="mt-8 space-y-3">
-        <div className="font-fraunces text-2xl">{title}</div>
+        <div className="flex gap-x-3 font-fraunces text-2xl">
+          <span>#{index + 1}</span>
+          <span>{title}</span>
+        </div>
         <p className="text-foreground-dark/50 text-lg">{description}</p>
       </div>
     </article>
