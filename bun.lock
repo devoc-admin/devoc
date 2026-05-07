@@ -102,6 +102,7 @@
         "@types/react-dom": "catalog:react",
         "next": "catalog:next",
         "react-email": "^6.1.4",
+        "typescript": "catalog:tooling",
       },
     },
     "apps/saveurs-aude": {

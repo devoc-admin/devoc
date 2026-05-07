@@ -10,13 +10,13 @@ clean:
     rm -rf node_modules
 
 lint:
-    echo "(apps/email) lint non défini"
+    bun run lint
 
 format:
-    bun x biome format --write || true
+    bun run format
 
 types:
-    echo "(apps/email) typecheck non défini"
+    bun run check-types
 
 help:
     echo "Commandes disponibles :"
