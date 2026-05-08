@@ -18,7 +18,7 @@ export function DevOcHeroTitle() {
         "xs:-ml-4",
         "sm:-ml-6",
         "md:-ml-6",
-        "lg:-ml-6",
+        "lg:-ml-12",
         "xl:-ml-16",
         "2xl:-ml-22",
         // ↔️

@@ -243,6 +243,12 @@
     body {
         @apply bg-background text-foreground;
     }
+    html {
+        overflow: hidden;
+    }
+    html[data-fonts-ready="true"] {
+        overflow: auto;
+    }
 }
 
 @utility animation-pause {
