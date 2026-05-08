@@ -85,7 +85,7 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "catalog:ui",
     "three": "^0.184.0",
-    "usehooks-ts": "catalog:ui",
+    "usehooks-ts": "^3.1.1",
     "wapalyzer": "catalog:crawler",
     "zod": "catalog:forms"
   },

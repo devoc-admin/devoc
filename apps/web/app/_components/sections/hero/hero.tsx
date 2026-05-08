@@ -28,9 +28,9 @@ export function Hero() {
               "absolute bottom-0 left-0",
               "w-full",
               // ↔️
-              "px-6 py-2",
-              "xs:px-6 xs:py-4",
-              "sm:px-10 sm:py-4",
+              "px-6 py-6",
+              "xs:px-6 xs:py-6",
+              "sm:px-10 sm:py-6",
               "md:px-10 md:py-6",
               "lg:px-16 lg:py-10",
               "xl:px-22 xl:py-10",
@@ -219,7 +219,7 @@ function WithNavbar({ children }: { children: React.ReactNode }) {
         "bg-white",
         "flex grow",
         "items-center justify-center",
-        "min-h-svh w-full",
+        "min-h-lvh w-full",
         "overflow-hidden",
         "px-6 py-12"
       )}
