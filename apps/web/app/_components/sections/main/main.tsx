@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
+import { useMediaQuery } from "usehooks-ts";
 import GlowLine from "@/components/sera-ui/glow-line";
 import { cn } from "@/lib/utils";
 import PhotoGroupe from "./assets/photo-groupe.webp";
@@ -29,7 +30,6 @@ import { SectionCatchline } from "./components/section-catchline";
 import { SectionSeparator } from "./components/section-separator";
 import { ServiceCard } from "./components/service-card";
 import { SupSection } from "./components/sup-section";
-
 export function Main() {
   return (
     <div
@@ -40,10 +40,24 @@ export function Main() {
         "min-h-400"
       )}
     >
-      <div className={cn("max-w-430", "mx-auto", "p-46", "space-y-78")}>
+      <div
+        className={cn(
+          "max-w-430",
+          "mx-auto",
+          // ↔️
+          "px-5 pt-34",
+          "xs:px-5 xs:pt-34",
+          "sm:px-5 sm:pt-38",
+          "md:px-8 md:pt-40",
+          "lg:px-10 lg:pt-48",
+          "xl:px-14 xl:pt-54",
+          "2xl:px-14 2xl:pt-62"
+          // "2xl:space-y-78 2xl:pt-18"
+        )}
+      >
         <TopLine />
         <SectionCollectif />
-        <Portraits />
+        {/*<Portraits />*/}
         {/* <PortraitGroupe />
         <SectionServices />
         <SectionValues />
@@ -69,12 +83,28 @@ function TopLine() {
 function SectionCollectif() {
   return (
     <section className="mx-auto space-y-36">
-      <div className="flex gap-x-42">
-        <div className="space-y-10">
-          <FadeUp>
+      <div
+        className={cn(
+          "flex",
+          // ↔️
+          "flex-col gap-y-12",
+          "xs:flex-col xs:gap-y-12",
+          "sm:flex-col sm:gap-y-12",
+          "md:flex-row md:gap-x-12",
+          "2xl:flew-row 2xl:gap-x-42"
+        )}
+      >
+        <div
+          className={cn(
+            // ↔️
+            "space-y-6",
+            "2xl:space-y-10"
+          )}
+        >
+          <FadeUp disableOnMobile>
             <SupSection number={1}>Le collectif</SupSection>
           </FadeUp>
-          <FadeUp delay={0.1}>
+          <FadeUp delay={0.1} disableOnMobile>
             <SectionCatchline>
               Remettre la transmission et l'autonomie au{" "}
               <span className="font-extralight text-foreground-dark/60 italic">
@@ -85,8 +115,14 @@ function SectionCollectif() {
           </FadeUp>
         </div>
 
-        <div className="grow space-y-10">
-          <FadeUp delay={0.1}>
+        <div
+          className={cn(
+            // ↔️
+            "space-y-8",
+            "2xl:grow 2xl:space-y-10"
+          )}
+        >
+          <FadeUp delay={0.1} disableOnMobile>
             <PIntro>
               Dev'Oc est né d'une conviction simple : la proximité, la clarté et
               l'exigence technique sont compatibles avec les budgets des TPE,
@@ -94,7 +130,7 @@ function SectionCollectif() {
             </PIntro>
           </FadeUp>
 
-          <FadeUp delay={0.2}>
+          <FadeUp delay={0.2} disableOnMobile>
             <PContent>
               Nous accompagnons les acteurs d'Occitanie dans leur transformation
               numérique — création de sites web, mise en conformité
@@ -103,7 +139,7 @@ function SectionCollectif() {
             </PContent>
           </FadeUp>
 
-          <FadeUp delay={0.3}>
+          <FadeUp delay={0.3} disableOnMobile>
             <PContent>
               À la transformation, nous joignons la transmission. Nous animons
               des formations à destination des entrepreneurs et des élus pour
@@ -113,7 +149,7 @@ function SectionCollectif() {
             </PContent>
           </FadeUp>
 
-          <FadeUp delay={0.4}>
+          <FadeUp delay={0.4} disableOnMobile>
             <PContent>
               Notre conviction : améliorer l'empreinte numérique d'un
               territoire, c'est l'aider à grandir.
@@ -146,7 +182,7 @@ const founders = [
   },
 ];
 
-function Portraits() {
+function _Portraits() {
   return (
     <FadeUp>
       <div className="-mt-52 flex gap-x-18">
@@ -593,14 +629,23 @@ function FadeUp({
   children,
   delay = 0,
   className,
+  disableOnMobile = false,
 }: {
   children: React.ReactNode;
+  disableOnMobile?: boolean;
   delay?: number;
   className?: string;
 }) {
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  if (isMobile && disableOnMobile) return children;
+
   return (
     <motion.div
-      className={cn("w-fit", className)}
+      className={cn(
+        "w-fit",
+        // ↔️
+        className
+      )}
       initial={{ opacity: 0, y: 28 }}
       transition={{
         delay,
