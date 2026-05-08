@@ -7,7 +7,7 @@ export function SupSection({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mb-10 flex items-center gap-x-2">
+    <div className="flex items-center gap-x-2">
       <SupNumber className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text font-semibold text-transparent">
         {number}
       </SupNumber>
