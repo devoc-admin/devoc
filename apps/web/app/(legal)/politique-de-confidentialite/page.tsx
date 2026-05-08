@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Footer from "@/app/footer";
+import Footer from "@/app/_components/footer/footer";
 import { cn } from "@/lib/utils";
 import { LegalHeader } from "../_components/legal-header";
 

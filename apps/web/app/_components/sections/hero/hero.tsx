@@ -14,7 +14,7 @@ import { HeroSubtitle } from "./components/hero-subtitle";
 import { OpenCarcaWinner } from "./components/open-carca-winner";
 import s from "./components/styles.module.css";
 
-export default function Hero() {
+export function Hero() {
   const fontsReady = useFontsReady();
 
   return (
