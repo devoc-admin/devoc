@@ -32,7 +32,7 @@ export function Hero() {
               "xs:px-6 xs:py-4",
               "sm:px-10 sm:py-4",
               "md:px-10 md:py-6",
-              "lg:px-12 lg:py-10",
+              "lg:px-16 lg:py-10",
               "xl:px-22 xl:py-10",
               "2xl:px-34 2xl:py-24"
             )}

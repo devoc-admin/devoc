@@ -6,7 +6,14 @@ import { companies } from "./work-with-data";
 export function WorkWith() {
   return (
     <div
-      className={cn("hidden", "relative z-10", "bg-white", "xs:block", "py-32")}
+      className={cn(
+        "relative z-10",
+        "bg-white",
+        "py-32",
+        // ↔️
+        "hidden",
+        "xs:block"
+      )}
     >
       <NoxExpertsOntTravailléAvecEux />
       <div className="flex w-full text-2xl">
@@ -17,9 +24,8 @@ export function WorkWith() {
             className={cn(
               "max-w-200",
               "border-b border-l",
-              // 📱 Responsive
               "grid",
-              "grid-cols-1 grid-rows-auto",
+              // 📱 Responsive
               "xs:grid-cols-2 xs:grid-rows-auto",
               "sm:grid-cols-3 sm:grid-rows-2"
             )}
@@ -42,9 +48,13 @@ function NoxExpertsOntTravailléAvecEux() {
   return (
     <div
       className={cn(
-        "mb-6 px-8 text-center font-kanit font-regular",
-        "text-2xl",
-        "xs:text-3xl"
+        "px-8",
+        "text-center font-regular",
+        // ↔️
+        "xs:mb-6 xs:text-2xl",
+        "sm:mb-6 sm:text-2xl",
+        "md:mb-10 md:text-2xl",
+        "lg:mb-16 lg:text-3xl"
       )}
     >
       Nos experts ont travaillé avec eux

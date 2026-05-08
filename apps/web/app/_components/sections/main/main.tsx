@@ -43,12 +43,12 @@ export function Main() {
       <div className={cn("max-w-430", "mx-auto", "p-46", "space-y-78")}>
         <TopLine />
         <SectionCollectif />
-        <Portraits />
+        {/*<Portraits />
         <PortraitGroupe />
         <SectionServices />
         <SectionValues />
         <SectionReasons />
-        <ContactCard />
+        <ContactCard />*/}
       </div>
     </div>
   );
@@ -138,6 +138,7 @@ const founders = [
     src: "./thibaut-portrait.webp",
   },
 ];
+// biome-ignore lint/correctness/noUnusedVariables: temporarily disabled while iterating on main section
 function Portraits() {
   return (
     <FadeUp>
@@ -151,6 +152,7 @@ function Portraits() {
 }
 
 // 3️⃣📸
+// biome-ignore lint/correctness/noUnusedVariables: temporarily disabled while iterating on main section
 function PortraitGroupe() {
   return (
     <div className="space-y-8">
@@ -184,6 +186,7 @@ function PortraitGroupe() {
 }
 
 // 4️⃣💁‍♀️🔤
+// biome-ignore lint/correctness/noUnusedVariables: temporarily disabled while iterating on main section
 function SectionServices() {
   return (
     <section className="mx-auto space-y-16">
@@ -311,6 +314,7 @@ const services = [
 ];
 
 // 5️⃣⭐🔤
+// biome-ignore lint/correctness/noUnusedVariables: temporarily disabled while iterating on main section
 function SectionValues() {
   return (
     <section className="mx-auto space-y-28">
@@ -363,6 +367,7 @@ const values = [
 ];
 
 // 6️⃣🤙
+// biome-ignore lint/correctness/noUnusedVariables: temporarily disabled while iterating on main section
 function SectionReasons() {
   return (
     <section className="mx-auto space-y-28">
@@ -425,6 +430,7 @@ const reasons = [
 ];
 
 // 7️⃣📞
+// biome-ignore lint/correctness/noUnusedVariables: temporarily disabled while iterating on main section
 function ContactCard() {
   return (
     <FadeUp>
