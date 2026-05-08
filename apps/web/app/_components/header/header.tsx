@@ -4,7 +4,7 @@
 import { useFontsReady } from "../../_hooks/use-font-ready";
 // import s from "./styles.module.css";
 
-export default function Header() {
+export function Header() {
   return <DesktopHeader />;
 }
 

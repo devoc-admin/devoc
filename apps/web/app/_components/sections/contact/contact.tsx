@@ -8,8 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import Section from "../_components/section";
-import SectionTitle from "../_components/section-title";
 import { type ContactItem, contactItems } from "./contact-data";
 import ContactForm from "./contact-form";
 
@@ -20,109 +18,78 @@ const LaserFlow = dynamic(() => import("@/components/react-bits/laser-flow"), {
 
 export default function Contact() {
   return (
-    <Section
+    <div
       className={cn(
-        // Margin top for separator
-        "-mt-8",
-        "sm:-mt-16",
-        "md:-mt-22",
-        "lg:-mt-38",
-        "xl:-mt-48",
-        // Gap 🕳️
-        "gap-y-8",
-        "xs:gap-y-14",
-        "lg:gap-y-36",
-        // Padding ↕️
-        "lg:pb-48",
-        "2xl:pb-60"
+        "z-1",
+        "w-full max-w-350",
+        "flex justify-center gap-6",
+        "flex-col",
+        "lg:flex-row lg:items-start"
       )}
-      id="contact"
-      theme="dark"
     >
-      {/* 🆎 Title */}
-      <SectionTitle
-        className="z-10"
-        description="Prêt à démarrer votre projet ? Contactez notre équipe pour discuter de vos besoins et obtenir un devis personnalisé."
-        title="Contact"
-      />
-      {/* 📱🟢📝 Contact and guaranteed response */}
+      {/* 📱🟢 */}
       <div
         className={cn(
-          "z-1",
-          "w-full max-w-350",
-          "flex justify-center gap-6",
-          "flex-col",
-          "lg:flex-row lg:items-start"
+          "flex",
+          "order-2 flex-row",
+          "lg:order-1 lg:max-w-100 lg:grow-[0.5] lg:flex-col",
+          "gap-6"
         )}
       >
-        {/* 📱🟢 */}
+        {/* 📱 */}
+        <div className={cn("hidden", "sm:block", "grow space-y-6")}>
+          {contactItems.map((item) => (
+            <InfoContact key={item.id} {...item} />
+          ))}
+        </div>
+        {/* 🟢 */}
+        <ResponseGuaranteed />
+      </div>
+
+      {/* 📝 Contact form */}
+      <Card
+        animation={false}
+        className={cn(
+          "relative",
+          "grow",
+          "order-1",
+          "lg:order-2",
+          "overflow-visible",
+          "bg-dotted-zinc",
+          "py-4",
+          "md:py-5",
+          "lg:py-6"
+        )}
+      >
+        {/* ⚡ Laser */}
         <div
           className={cn(
-            "flex",
-            "order-2 flex-row",
-            "lg:order-1 lg:max-w-100 lg:grow-[0.5] lg:flex-col",
-            "gap-6"
+            "absolute top-0 right-0 -translate-y-[50%]",
+            "mask-t-from-50% mask-t-to-90%",
+            "cursor-auto",
+            "w-[80%] max-w-[800]",
+            "h-160",
+
+            "hidden",
+            "lg:block"
           )}
         >
-          {/* 📱 */}
-          <div className={cn("hidden", "sm:block", "grow space-y-6")}>
-            {contactItems.map((item) => (
-              <InfoContact key={item.id} {...item} />
-            ))}
-          </div>
-          {/* 🟢 */}
-          <ResponseGuaranteed />
+          <LaserFlow color="#f59e0b" fogIntensity={0.1} horizontalSizing={2} />
         </div>
-
         {/* 📝 Contact form */}
-        <Card
-          animation={false}
+        <CardContent
           className={cn(
-            "relative",
-            "grow",
-            "order-1",
-            "lg:order-2",
-            "overflow-visible",
-            "bg-dotted-zinc",
-            "py-4",
-            "md:py-5",
-            "lg:py-6"
+            "z-10",
+            "pr-2.5 pl-2",
+            "@sm:pr-3.5 @sm:pl-3",
+            "@md:pr-4.5 @md:pl-4",
+            "@lg:pr-5.5 @lg:pl-5"
           )}
         >
-          {/* ⚡ Laser */}
-          <div
-            className={cn(
-              "absolute top-0 right-0 -translate-y-[50%]",
-              "mask-t-from-50% mask-t-to-90%",
-              "cursor-auto",
-              "w-[80%] max-w-[800]",
-              "h-160",
-
-              "hidden",
-              "lg:block"
-            )}
-          >
-            <LaserFlow
-              color="#f59e0b"
-              fogIntensity={0.1}
-              horizontalSizing={2}
-            />
-          </div>
-          {/* 📝 Contact form */}
-          <CardContent
-            className={cn(
-              "z-10",
-              "pr-2.5 pl-2",
-              "@sm:pr-3.5 @sm:pl-3",
-              "@md:pr-4.5 @md:pl-4",
-              "@lg:pr-5.5 @lg:pl-5"
-            )}
-          >
-            <ContactForm />
-          </CardContent>
-        </Card>
-      </div>
-    </Section>
+          <ContactForm />
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 

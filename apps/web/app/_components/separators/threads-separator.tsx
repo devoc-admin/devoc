@@ -2,7 +2,7 @@
 import useNavTheme from "@/app/_hooks/use-nav-theme";
 import Threads from "@/components/react-bits/threads";
 
-export default function ThreadsSeparator() {
+export function ThreadsSeparator() {
   const { ref: separatorRef } = useNavTheme({
     sectionName: "contact",
     theme: "dark",

@@ -29,9 +29,17 @@ import { SectionCatchline } from "./components/section-catchline";
 import { SectionSeparator } from "./components/section-separator";
 import { ServiceCard } from "./components/service-card";
 import { SupSection } from "./components/sup-section";
-export default function SectionUs() {
+
+export function Main() {
   return (
-    <div className={cn("relative bg-background-dark text-white", "min-h-400")}>
+    <div
+      className={cn(
+        "relative",
+        "z-1",
+        "bg-background-dark text-white",
+        "min-h-400"
+      )}
+    >
       <div className={cn("max-w-430", "mx-auto", "p-46", "space-y-78")}>
         <TopLine />
         <SectionCollectif />
@@ -324,8 +332,8 @@ function SectionValues() {
       {/* 🪗🪗🪗 */}
       <div>
         {values.map(({ id, ...props }, index) => (
-          <FadeUp className="group w-full" delay={0.1}>
-            <ListItem {...props} index={index + 1} key={id} />
+          <FadeUp className="group w-full" delay={0.1} key={id}>
+            <ListItem {...props} index={index + 1} />
           </FadeUp>
         ))}
       </div>
