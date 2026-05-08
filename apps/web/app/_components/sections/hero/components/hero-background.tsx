@@ -10,17 +10,19 @@ export function HeroBackground() {
         "absolute z-0",
         "size-full",
         "bg-white",
-        "mask-linear-225 mask-linear-from-50% mask-linear-to-60%",
-        "mask-b-from-50% mask-b-to-90%"
+        maskLeft
       )}
     >
-      <div className={cn("size-full", "mask-b-from-50% mask-b-to-9-100%")}>
+      <div className={cn("size-full", maskBottom)}>
         <SpecularBandsBackground
           backgroundColor="#ffffff"
-          className="size-full"
+          className={cn("size-full", "")}
           speed={0.5}
         />
       </div>
     </div>
   );
 }
+
+const maskLeft = "mask-linear-225 mask-linear-from-50% mask-linear-to-60%";
+const maskBottom = "mask-b-from-50% mask-b-to-9-100%";

@@ -17,6 +17,9 @@ import s from "./components/styles.module.css";
 export function Hero() {
   const fontsReady = useFontsReady();
 
+  return <WithNavbar>{fontsReady && <HeroBackground />}</WithNavbar>;
+
+  // biome-ignore lint/correctness/noUnreachable: kept for quick toggle while iterating on hero background
   return (
     <WithNavbar>
       {fontsReady && (
@@ -90,6 +93,7 @@ function CSSEntryAnimation({
     </div>
   );
 }
+
 // ----------------------------------
 // 🧭
 function WithNavbar({ children }: { children: React.ReactNode }) {
