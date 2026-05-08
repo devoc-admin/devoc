@@ -1,6 +1,5 @@
 "use client";
 
-import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 export const RatingBadge = ({
@@ -10,11 +9,36 @@ export const RatingBadge = ({
 }: RatingBadgeProps) => (
   <div
     {...props}
-    className={cn("flex items-center -space-x-0.5 lg:-space-x-5", className)}
+    className={cn(
+      "flex items-center",
+      // ↔️
+      "-space-x-0.5",
+      "xs:space-x-0",
+      "lg:-space-x-5",
+      className
+    )}
   >
-    <Wreath className="h-18 shrink-0 lg:size-22" />
+    <Wreath
+      className={cn(
+        "shrink-0",
+        // ↔️
+        "h-16",
+        "xs:h-17",
+        "sm:h-18",
+        "lg:size-22"
+      )}
+    />
     {children}
-    <Wreath className="h-18 shrink-0 -scale-x-100 lg:size-22" />
+    <Wreath
+      className={cn(
+        "shrink-0 -scale-x-100",
+        //↔️
+        "h-16",
+        "xs:h-17",
+        "sm:h-18",
+        "lg:size-22"
+      )}
+    />
   </div>
 );
 
