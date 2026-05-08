@@ -1,27 +1,28 @@
-# React Email Starter
+# email
 
-A live preview right in your browser so you don't need to keep sending real emails during development.
+Templates d'emails transactionnels pour Dev-OC, basés sur **React Email**.
 
-## Getting Started
+## Description
 
-First, install the dependencies:
+Atelier de templates écrit avec `@react-email/components`. Le devserver `react-email` fournit une preview live dans le navigateur ; les templates compilés sont consommés par les apps qui envoient via Resend (par ex. `apps/web`, `apps/saveurs-aude`).
 
-```sh
-npm install
-# or
-yarn
+Les templates sont dans `emails/`. Le script `build.sh` génère leur version exportée (HTML/JSX) consommable par les apps.
+
+## Démarrage
+
+```bash
+direnv allow      # première fois
+bun dev           # preview React Email — http://localhost:3000
+bun run export    # exporte les templates
+bun run build     # via build.sh (export + post-traitement)
 ```
 
-Then, run the development server:
+## Scripts
 
-```sh
-npm run dev
-# or
-yarn dev
-```
-
-Open [localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## License
-
-MIT License
+| Script | Description |
+|--------|-------------|
+| `bun dev` | Devserver React Email |
+| `bun run export` | Export des templates (HTML) |
+| `bun run build` | Pipeline de build (`build.sh`) |
+| `bun lint` | Lint via ultracite |
+| `bun run format` | Format Biome |
