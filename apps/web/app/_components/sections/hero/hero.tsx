@@ -28,64 +28,29 @@ export function Hero() {
             className={cn("absolute bottom-0 left-0", "w-full", "px-30 py-24")}
           >
             {/* 🆎 */}
-            <div
-              className={cn(s.heroEntry, "mb-10")}
-              style={
-                {
-                  "--position": 1,
-                } as React.CSSProperties
-              }
-            >
+            <CSSEntryAnimation className="mb-10" position={1}>
               <DevOcHeroTitle />
-            </div>
+            </CSSEntryAnimation>
 
             {/* 🔠 */}
-            <div
-              className={cn(s.heroEntry, "max-w-250")}
-              style={
-                {
-                  "--position": 2,
-                } as React.CSSProperties
-              }
-            >
+            <CSSEntryAnimation className="max-w-250" position={2}>
               <HeroSubtitle />
-            </div>
+            </CSSEntryAnimation>
 
             {/* 🔤 */}
-            <div
-              className={cn(s.heroEntry, "mt-2")}
-              style={
-                {
-                  "--position": 3,
-                } as React.CSSProperties
-              }
-            >
+            <CSSEntryAnimation className="mt-2" position={3}>
               <HeroKeywords />
-            </div>
+            </CSSEntryAnimation>
 
             {/* 🌿 */}
-            <div
-              className={cn(s.heroEntry, "mt-8")}
-              style={
-                {
-                  "--position": 4,
-                } as React.CSSProperties
-              }
-            >
+            <CSSEntryAnimation className="mt-8" position={4}>
               <OpenCarcaWinner />
-            </div>
+            </CSSEntryAnimation>
 
             {/* 🆕🆕 | 🐵🐵*/}
-            <div
-              className={cn(
-                s.heroEntry,
-                "mt-12 flex items-center justify-between"
-              )}
-              style={
-                {
-                  "--position": 5,
-                } as React.CSSProperties
-              }
+            <CSSEntryAnimation
+              className="mt-12 flex items-center justify-between"
+              position={5}
             >
               {/* 🆕🆕 */}
               <div className={cn("flex gap-x-3")}>
@@ -94,7 +59,7 @@ export function Hero() {
               </div>
               {/* 🐵🐵 */}
               <HeroFounders />
-            </div>
+            </CSSEntryAnimation>
           </div>
         </>
       )}
@@ -102,6 +67,29 @@ export function Hero() {
   );
 }
 
+// ✨
+function CSSEntryAnimation({
+  children,
+  className,
+  position,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  position: number;
+}) {
+  return (
+    <div
+      className={cn(s.heroEntry, className)}
+      style={
+        {
+          "--position": position,
+        } as React.CSSProperties
+      }
+    >
+      {children}
+    </div>
+  );
+}
 // ----------------------------------
 // 🧭
 function WithNavbar({ children }: { children: React.ReactNode }) {
