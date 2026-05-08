@@ -43,8 +43,8 @@ export function Main() {
       <div className={cn("max-w-430", "mx-auto", "p-46", "space-y-78")}>
         <TopLine />
         <SectionCollectif />
-        {/*<Portraits />
-        <PortraitGroupe />
+        <Portraits />
+        {/* <PortraitGroupe />
         <SectionServices />
         <SectionValues />
         <SectionReasons />
@@ -55,7 +55,14 @@ export function Main() {
 }
 
 function TopLine() {
-  return <GlowLine color="orange" orientation="horizontal" position="0px" />;
+  return (
+    <GlowLine
+      className="left-0"
+      color="orange"
+      orientation="horizontal"
+      position="0px"
+    />
+  );
 }
 
 // 1️⃣🔤
@@ -138,7 +145,7 @@ const founders = [
     src: "./thibaut-portrait.webp",
   },
 ];
-// biome-ignore lint/correctness/noUnusedVariables: temporarily disabled while iterating on main section
+
 function Portraits() {
   return (
     <FadeUp>
