@@ -17,7 +17,7 @@ import {
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ReactScan } from "@/components/react-scan";
 import SkipLink from "@/components/ui/skip-link";
-
+import { TailwindLandmark } from "./_components/tailwind-landmark/tailwind-landmark";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -111,6 +111,7 @@ export default function RootLayout({
         </NuqsAdapter>
         <Analytics />
         <SpeedInsights />
+        <TailwindLandmark />
       </body>
     </html>
   );
