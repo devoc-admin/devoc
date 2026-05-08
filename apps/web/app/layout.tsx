@@ -15,7 +15,6 @@ import {
   Style_Script,
 } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { ReactScan } from "@/components/react-scan";
 import SkipLink from "@/components/ui/skip-link";
 import { TailwindLandmark } from "./_components/tailwind-landmark/tailwind-landmark";
 import "./globals.css";
@@ -99,7 +98,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <ReactScan />
+      {/*<ReactScan />*/}
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} ${fraunces.variable} flex min-h-screen flex-col font-sans`}
       >
