@@ -47,10 +47,10 @@ export function ServiceCard({
           <div className="h-px w-full bg-linear-to-r from-transparent via-foreground-dark/30 to-transparent" />
           <div className="flex flex-wrap gap-x-2 text-nowrap font-geist-mono font-light text-[0.7rem] text-foreground-dark/50 uppercase tracking-[0.12rem]">
             {features.map((feature) => (
-              <>
+              <div key={feature}>
                 <span>{feature}</span>
                 <span className="text-foreground-dark/30">•</span>
-              </>
+              </div>
             ))}
           </div>
         </div>

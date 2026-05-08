@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { Company } from "./_components/company";
 import { companies } from "./work-with-data";
 
-function WorkWith() {
+export function WorkWith() {
   return (
     <div
       className={cn("hidden", "relative z-10", "bg-white", "xs:block", "py-32")}
@@ -103,5 +103,3 @@ function BorderB() {
     />
   );
 }
-
-export default WorkWith;
