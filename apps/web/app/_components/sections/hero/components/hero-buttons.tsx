@@ -2,10 +2,27 @@ import { ArrowUpRight } from "lucide-react";
 import { CustomButton } from "@/components/ui/custom-button/custom-button";
 import { cn } from "@/lib/utils.ts";
 
+const sharedClasses = cn(
+  "group",
+  "rounded-full!",
+  "font-semibold",
+  "justify-between!"
+);
+
+const responsiveClasses = cn(
+  // ↔️
+  "w-fit gap-x-4! px-1! py-1! text-base",
+  "xs:w-auto! xs:gap-x-4! xs:px-1! xs:py-1! xs:text-base",
+  "sm:w-auto! sm:gap-x-4! sm:px-1! sm:py-1! sm:text-base",
+  "md:w-auto! md:gap-x-4! md:px-1! md:py-1! md:text-base",
+  "lg:w-auto! lg:gap-x-4! lg:px-1! lg:py-1! lg:text-base",
+  "xl:w-auto! xl:gap-x-6! xl:px-3! xl:py-2! xl:text-lg"
+);
+
 export function DemarrerUnProjetButton() {
   return (
     <CustomButton
-      className={cn("group", "rounded-full!", "font-semibold", "gap-x-5!")}
+      className={cn(sharedClasses, responsiveClasses)}
       style={
         {
           "--accent": "var(--primary-lighter)",
@@ -14,7 +31,7 @@ export function DemarrerUnProjetButton() {
         } as React.CSSProperties
       }
     >
-      <span className="ml-4">Démarrer un projet</span>
+      <span className="ml-5">Démarrer un projet</span>
       <ArrowRightUpAnimated className="text-primary" />
     </CustomButton>
   );
@@ -22,20 +39,25 @@ export function DemarrerUnProjetButton() {
 
 export function DecouvrirLeCollectifButton() {
   return (
-    <div
+    <CustomButton
       className={cn(
-        "group",
-        "flex items-center gap-x-5",
-        "cursor-pointer",
-        "rounded-full",
-        "border border-zinc-100 bg-zinc-50",
-        "p-2",
-        "font-medium text-base text-zinc-900 leading-none"
+        "text-zinc-900!",
+        "font-medium!",
+        "hover:brightness-102!",
+        sharedClasses,
+        responsiveClasses
       )}
+      style={
+        {
+          "--accent": "var(--color-zinc-50)",
+          "--accent-secondary": "var(--color-zinc-200)",
+          "--degree": "190deg",
+        } as React.CSSProperties
+      }
     >
       <span className="ml-4">Découvrir le collectif</span>
       <ArrowRightUpAnimated className="text-zinc-900" />
-    </div>
+    </CustomButton>
   );
 }
 

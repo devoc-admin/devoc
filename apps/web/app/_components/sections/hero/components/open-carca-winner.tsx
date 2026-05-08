@@ -10,22 +10,18 @@ export function OpenCarcaWinner() {
       target="_blank"
       title="Lien vers la page d'annnonce des résultats du concours OpenCarca 2025"
     >
-      <RatingBadge
-        className={cn(
-          "hidden [@media(height>=600px)]:flex",
-          // "mt-24",
-          "mx-auto",
-          "text-amber-400"
-        )}
-      >
+      <RatingBadge className={cn("flex", "text-amber-400")}>
         <div
           className={cn(
-            "flex flex-col gap-y-1.5",
+            "flex flex-col",
             "mt-4",
             "max-w-50",
             "text-center font-bold",
             "bg-linear-to-br from-primary-strong via-primary-lighter to-primary bg-clip-text",
-            "text-transparent"
+            "text-transparent",
+            // ↔️
+            "gap-y-1",
+            "xs:gap-y-1.5"
           )}
         >
           <LaureatsConcours />
@@ -38,7 +34,15 @@ export function OpenCarcaWinner() {
 
 function LaureatsConcours() {
   return (
-    <span className="text-base leading-none lg:text-lg lg:leading-tight">
+    <span
+      className={cn(
+        // ↔️
+        "text-sm leading-[110%]",
+        "xs:text-base xs:leading-[110%]",
+        "sm:text-base",
+        "lg:text-lg lg:leading-tight"
+      )}
+    >
       Lauréats concours Open Carca 2025
     </span>
   );
@@ -46,7 +50,15 @@ function LaureatsConcours() {
 
 function CategorieEmergence() {
   return (
-    <span className="text-[0.65rem] uppercase lg:text-[0.7rem]">
+    <span
+      className={cn(
+        "uppercase",
+        // ↔️
+        "text-[0.65rem]",
+        "xs:text-[0.7rem]",
+        "lg:text-[0.7rem]"
+      )}
+    >
       Catégorie émergence
     </span>
   );
