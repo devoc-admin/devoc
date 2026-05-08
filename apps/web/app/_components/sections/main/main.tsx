@@ -45,22 +45,21 @@ export function Main() {
           "max-w-430",
           "mx-auto",
           // ↔️
-          "px-5 pt-34",
-          "xs:px-5 xs:pt-34",
-          "sm:px-5 sm:pt-38",
-          "md:px-8 md:pt-40",
-          "lg:px-10 lg:pt-48",
-          "xl:px-14 xl:pt-54",
-          "2xl:px-14 2xl:pt-62"
-          // "2xl:space-y-78 2xl:pt-18"
+          "space-y-14 px-5 pt-34",
+          "xs:space-y-14 xs:px-5 xs:pt-34",
+          "sm:space-y-20 sm:px-5 sm:pt-38",
+          "md:space-y-24 md:px-8 md:pt-40",
+          "lg:space-y-28 lg:px-10 lg:pt-48",
+          "xl:space-y-44 xl:px-14 xl:pt-54",
+          "2xl:space-y-52 2xl:px-14 2xl:pt-62"
         )}
       >
         <TopLine />
         <SectionCollectif />
-        {/*<Portraits />*/}
-        {/* <PortraitGroupe />
+        <Portraits />
+        <PortraitGroupe />
         <SectionServices />
-        <SectionValues />
+        {/*   <SectionValues />
         <SectionReasons />
         <ContactCard />*/}
       </div>
@@ -82,7 +81,19 @@ function TopLine() {
 // 1️⃣🔤
 function SectionCollectif() {
   return (
-    <section className="mx-auto space-y-36">
+    <section
+      className={cn(
+        "mx-auto",
+        // ↔️
+        "space-y-14",
+        "xs:space-y-14",
+        "sm:space-y-20",
+        "md:space-y-24",
+        "lg:space-y-28",
+        "xl:space-y-44",
+        "2xl:space-y-52"
+      )}
+    >
       <div
         className={cn(
           "flex",
@@ -171,6 +182,7 @@ const founders = [
     key: "clement",
     name: "Clément",
     src: "./clement-portrait.webp",
+    title: "Co-fondateur • Backend & infrastructure",
   },
   {
     color: "#FFC731",
@@ -179,47 +191,77 @@ const founders = [
     key: "thibaut",
     name: "Thibaut",
     src: "./thibaut-portrait.webp",
+    title: "Co-fondateur • Design & accessibilité",
   },
 ];
 
-function _Portraits() {
+function Portraits() {
   return (
-    <FadeUp>
-      <div className="-mt-52 flex gap-x-18">
-        {founders.map(({ key, ...props }) => (
-          <Portrait key={key} {...props} />
-        ))}
-      </div>
-    </FadeUp>
+    <div
+      className={cn(
+        "flex",
+        // ↔️
+        "flex-col gap-y-6",
+        "xs:flex-col xs:gap-y-6",
+        "sm:flex-col sm:gap-y-6",
+        "md:flex-row md:gap-x-3",
+        "lg:flex-row lg:gap-x-4",
+        "xl:flex-row xl:gap-x-6",
+        "2xl:flex-row 2xl:gap-x-8"
+      )}
+    >
+      {founders.map(({ key, ...props }) => (
+        <FadeUp key={key}>
+          <Portrait {...props} />
+        </FadeUp>
+      ))}
+    </div>
   );
 }
 
 // 3️⃣📸
-// biome-ignore lint/correctness/noUnusedVariables: temporarily disabled while iterating on main section
 function PortraitGroupe() {
   return (
     <div className="space-y-8">
-      <FadeUp>
+      <FadeUp className="w-full" disableOnMobile>
         <div
           className={cn(
             "relative",
             "aspect-16/7 w-full",
             "rounded-3xl",
             "overflow-hidden",
-            "after:absolute after:inset-0 after:size-full after:bg-linear-to-b after:from-transparent after:via-transparent after:to-black/50 after:content-['']"
+            "after:absolute after:inset-0 after:size-full after:bg-linear-to-b after:from-transparent after:via-transparent after:to-black/50 after:content-['']",
+            // ↔️
+            "hidden",
+            "xs:hidden",
+            "sm:block",
+            "md:block"
           )}
         >
           <Image
             alt="Photo de groupe du collectif Dev'Oc travaillant devant un ordinateur"
-            className="h-full w-full object-cover"
+            className="size-full object-cover"
             height="788"
             src={PhotoGroupe.src}
             width="1206"
           />
         </div>
       </FadeUp>
-      <FadeUp>
-        <p className="max-w-[34ch] font-fraunces font-light text-4xl leading-snug">
+      <FadeUp disableOnMobile>
+        <p
+          className={cn(
+            "max-w-[34ch]",
+            "font-fraunces font-light leading-snug",
+            // ↔️
+            "text-3xl",
+            "xs:text-3xl",
+            "sm:text-3xl",
+            "md:text-3xl",
+            "lg:text-3xl",
+            "xl:text-3xl",
+            "2xl:text-4xl"
+          )}
+        >
           Un binôme complémentaire : là où l'un construit la mécanique, l'autre
           soigne l'expérience. Deux regards, une même exigence.
         </p>
