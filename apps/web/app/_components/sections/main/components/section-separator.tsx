@@ -9,7 +9,7 @@ export function SectionSeparator() {
         duration: 3,
         ease: [0.32, 0.72, 0, 1],
       }}
-      viewport={{ margin: "-200px", once: true }}
+      viewport={{ margin: "-100px", once: true }}
       whileInView={{ opacity: 1, width: "100%" }}
     />
   );
