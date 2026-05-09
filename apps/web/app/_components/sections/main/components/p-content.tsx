@@ -15,6 +15,10 @@ export function PContent({
         "text-base",
         "xs:text-base",
         "sm:text-lg",
+        "md:text-lg",
+        "lg:text-lg",
+        "xl:text-lg",
+        "2xl:text-xl",
         className
       )}
     >
