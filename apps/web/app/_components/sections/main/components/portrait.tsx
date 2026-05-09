@@ -45,7 +45,7 @@ export function Portrait({
           "md:mb-1.5 md:px-2.5 md:text-base",
           "lg:mb-1.5 lg:px-2.5 lg:text-base",
           "xl:mb-1.5 xl:px-2.5 xl:text-lg",
-          "2xl:mb-1 2xl:px-2.5 2xl:text-lg"
+          "2xl:mb-2 2xl:px-2.5 2xl:text-xl"
         )}
       >
         {description}
@@ -111,11 +111,33 @@ function PortraitImage({
       </div>
       {/* 🔤 */}
       <span className="absolute bottom-4 left-6 flex flex-col gap-y-1.5">
-        <span className="font-geist-mono text-[0.7rem] text-foreground-dark/50 uppercase">
+        <span
+          className={cn(
+            "font-geist-mono text-foreground-dark/50 uppercase",
+            // ↔️
+            "text-[0.7rem]",
+            "xs:text-[0.7rem]",
+            "sm:text-[0.7rem]",
+            "md:text-[0.7rem]",
+            "lg:text-[0.7rem]",
+            "xl:text-[0.7rem]",
+            "2xl:text-xs"
+          )}
+        >
           {title}
         </span>
         <span
-          className="bg-clip-text! font-fraunces text-4xl text-transparent"
+          className={cn(
+            "bg-clip-text! font-fraunces text-transparent",
+            // ↔️
+            "text-4xl",
+            "xs:text-4xl",
+            "sm:text-4xl",
+            "md:text-4xl",
+            "lg:text-4xl",
+            "xl:text-4xl",
+            "2xl:text-5xl"
+          )}
           style={{
             background: `linear-gradient(to right, ${color}, ${color}20`,
           }}
