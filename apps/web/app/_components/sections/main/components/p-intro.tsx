@@ -13,7 +13,7 @@ export function PIntro({ children }: { children: React.ReactNode }) {
         "md:text-xl",
         "lg:text-xl",
         "xl:text-2xl",
-        "2xl:text-2xl"
+        "2xl:text-3xl"
       )}
     >
       {children}
