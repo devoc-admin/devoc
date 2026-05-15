@@ -3,6 +3,22 @@
   "ui": "tui",
   "globalDependencies": ["biome.jsonc", "tooling/typescript-config/*.json"],
   "globalEnv": ["NODE_ENV"],
+  "globalPassThroughEnv": [
+    "DATABASE_URL_UNPOOLED",
+    "EDGE_CONFIG",
+    "NEON_PROJECT_ID",
+    "PGDATABASE",
+    "PGHOST",
+    "PGHOST_UNPOOLED",
+    "PGPASSWORD",
+    "PGUSER",
+    "POSTGRES_DATABASE",
+    "POSTGRES_HOST",
+    "POSTGRES_PASSWORD",
+    "POSTGRES_URL_NON_POOLING",
+    "POSTGRES_URL_NO_SSL",
+    "POSTGRES_USER"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["gen:map", "^build"],
@@ -26,22 +42,6 @@
         "STRIPE_WEBHOOK_SECRET",
         "NEXT_PUBLIC_SITE_URL",
         "NEXT_PUBLIC_URL"
-      ],
-      "passThroughEnv": [
-        "EDGE_CONFIG",
-        "POSTGRES_URL_NON_POOLING",
-        "POSTGRES_URL_NO_SSL",
-        "DATABASE_URL_UNPOOLED",
-        "PGHOST",
-        "PGHOST_UNPOOLED",
-        "PGUSER",
-        "PGPASSWORD",
-        "PGDATABASE",
-        "POSTGRES_USER",
-        "POSTGRES_PASSWORD",
-        "POSTGRES_DATABASE",
-        "POSTGRES_HOST",
-        "NEON_PROJECT_ID"
       ]
     },
     "lint": {
@@ -79,19 +79,7 @@
         "PAYLOAD_SECRET",
         "DATABASE_URL",
         "POSTGRES_URL",
-        "POSTGRES_PRISMA_URL",
-        "DATABASE_URL_UNPOOLED",
-        "POSTGRES_URL_NON_POOLING",
-        "PGHOST",
-        "POSTGRES_USER",
-        "POSTGRES_PASSWORD",
-        "POSTGRES_DATABASE",
-        "PGPASSWORD",
-        "PGDATABASE",
-        "PGHOST_UNPOOLED",
-        "PGUSER",
-        "POSTGRES_URL_NO_SSL",
-        "POSTGRES_HOST"
+        "POSTGRES_PRISMA_URL"
       ]
     },
     "gen:map": {
