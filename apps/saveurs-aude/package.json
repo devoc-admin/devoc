@@ -12,7 +12,7 @@
     "types": "tsc --noEmit",
     "payload": "payload",
     "seed": "bun --bun run payload/seed.ts",
-    "db:migration:check": "payload migrate:create --skip-empty",
+    "db:migration:check": "bun run scripts/check-migrations.ts",
     "db:deploy": "payload migrate --force",
     "db:push": "payload db:push",
     "gen:map": "payload generate:importmap",
