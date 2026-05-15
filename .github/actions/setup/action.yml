@@ -12,10 +12,10 @@ runs:
     - uses: actions/cache@v4
       with:
         path: .turbo/cache
-        key: turbo-${{ runner.os }}-${{ github.sha }}
+        key: turbo-${{ runner.os }}-${{ github.job }}-${{ github.sha }}
         restore-keys: |
-          turbo-${{ runner.os }}-${{ hashFiles('bun.lock') }}
-          turbo-${{ runner.os }}-
+          turbo-${{ runner.os }}-${{ github.job }}-${{ hashFiles('bun.lock') }}
+          turbo-${{ runner.os }}-${{ github.job }}-
     - uses: oven-sh/setup-bun@v2
       with:
         bun-version-file: package.json
