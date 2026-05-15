@@ -42,8 +42,7 @@
       ]
     },
     "lint": {
-      "dependsOn": ["^lint"],
-      "env": ["NODE_ENV", "RESEND_API_KEY", "CONTACT_EMAIL"]
+      "dependsOn": ["^lint"]
     },
     "types": {
       "dependsOn": ["^types"]
