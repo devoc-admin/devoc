@@ -1,0 +1,34 @@
+set shell := ["zsh", "-c"]
+
+# Local commands for apps/web
+dev:
+    bun run dev
+
+build:
+    bun run build
+
+clean:
+    rm -rf .next
+
+lint:
+    bun run lint
+
+format:
+    bun run format || bun x biome format --write
+
+types:
+    bun run types || bun x tsc --noEmit
+
+help:
+    echo "Commandes disponibles :"
+    just --list
+
+# Versions: delegate parent + local info
+versions:
+    just -f "{{justfile_directory()}}/../../Justfile" versions
+    echo "(apps/web) next: $(bun x next --version 2>/dev/null || true)"
+
+# Install: delegate parent + local install
+install:
+    just -f "{{justfile_directory()}}/../../Justfile" install
+    bun install

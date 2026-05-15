@@ -5,13 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "rm -rf ./.next && rm -rf ./.turbo && next dev --turbopack -H 0.0.0.0",
-    "build": "payload generate:importmap && next build > /dev/null",
+    "build": "next build",
     "start": "next start",
     "lint": "bun x ultracite fix",
     "format": "biome format --write",
     "types": "tsc --noEmit",
     "payload": "payload",
-    "seed": "bun --bun run payload/seed.ts"
+    "seed": "bun --bun run payload/seed.ts",
+    "db:migration:check": "payload migrate:create --skip-empty",
+    "db:deploy": "payload migrate --force",
+    "db:push": "payload db:push",
+    "gen:map": "payload generate:importmap",
+    "gen:types": "payload generate:types"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.84.1",

@@ -3,7 +3,7 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["db:deploy", "gen:types", "gen:map", "^build"],
       "outputs": [
         ".next/**",
         ".react-email/.next/**",
@@ -53,6 +53,41 @@
       "persistent": true,
       "cache": false,
       "env": ["NODE_ENV", "RESEND_API_KEY", "CONTACT_EMAIL"]
+    },
+    "db:migration:check": {
+      "cache": false,
+      "env": ["PAYLOAD_SECRET"]
+    },
+    "db:deploy": {
+      "cache": false,
+      "env": [
+        "PAYLOAD_SECRET",
+        "DATABASE_URL",
+        "POSTGRES_URL",
+        "POSTGRES_PRISMA_URL",
+        "DATABASE_URL_UNPOOLED",
+        "POSTGRES_URL_NON_POOLING",
+        "PGHOST",
+        "POSTGRES_USER",
+        "POSTGRES_PASSWORD",
+        "POSTGRES_DATABASE",
+        "PGPASSWORD",
+        "PGDATABASE",
+        "PGHOST_UNPOOLED",
+        "PGUSER",
+        "POSTGRES_URL_NO_SSL",
+        "POSTGRES_HOST"
+      ]
+    },
+    "gen:map": {
+      "dependsOn": ["db:deploy", "gen:types"],
+      "cache": false,
+      "env": ["PAYLOAD_SECRET"]
+    },
+    "gen:types": {
+      "dependsOn": ["db:deploy"],
+      "cache": false,
+      "env": ["PAYLOAD_SECRET"]
     }
   }
 }
