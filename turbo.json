@@ -48,7 +48,14 @@
       "dependsOn": ["^lint"]
     },
     "types": {
-      "dependsOn": ["^types"]
+      "dependsOn": ["^types"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!README.md",
+        "!.envrc",
+        "!Justfile",
+        "!.gitignore"
+      ]
     },
     "format": {
       "dependsOn": ["^format"]
@@ -85,12 +92,14 @@
     },
     "gen:map": {
       "dependsOn": ["gen:types"],
-      "cache": false,
-      "env": ["PAYLOAD_SECRET"]
+      "inputs": ["payload.config.ts", "payload/**"],
+      "outputs": ["app/(payload)/admin/importMap.js"],
+      "env": ["PAYLOAD_SECRET", "DATABASE_URL"]
     },
     "gen:types": {
-      "cache": false,
-      "env": ["PAYLOAD_SECRET"]
+      "inputs": ["payload.config.ts", "payload/**"],
+      "outputs": ["payload-types.ts"],
+      "env": ["PAYLOAD_SECRET", "DATABASE_URL"]
     }
   }
 }
