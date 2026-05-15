@@ -91,4 +91,8 @@ jobs:
           echo "NEXT_PUBLIC_URL=\"${{ secrets.SAVEURS_AUDE_NEXT_PUBLIC_URL }}\"" >> apps/saveurs-aude/.env
           echo "Env variables for app Saveurs Aude setup completed."
           echo "No env variables needed for others apps, skipping..."
-      - run: bun x turbo build
+      - name: Build
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.SAVEURS_AUDE_NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_URL: ${{ secrets.SAVEURS_AUDE_NEXT_PUBLIC_URL }}
+        run: bun x turbo build
