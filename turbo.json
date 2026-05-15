@@ -2,6 +2,7 @@
   "$schema": "./node_modules/turbo/schema.json",
   "ui": "tui",
   "globalDependencies": ["biome.jsonc", "tooling/typescript-config/*.json"],
+  "globalEnv": ["NODE_ENV"],
   "tasks": {
     "build": {
       "dependsOn": ["db:deploy", "gen:types", "gen:map", "^build"],
@@ -12,7 +13,6 @@
         "dist/**"
       ],
       "env": [
-        "NODE_ENV",
         "RESEND_API_KEY",
         "CONTACT_EMAIL",
         "DATABASE_URL",
@@ -54,7 +54,7 @@
     "dev": {
       "persistent": true,
       "cache": false,
-      "env": ["NODE_ENV", "RESEND_API_KEY", "CONTACT_EMAIL"]
+      "env": ["RESEND_API_KEY", "CONTACT_EMAIL"]
     },
     "db:migration:check": {
       "cache": false,
