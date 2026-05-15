@@ -1,6 +1,7 @@
 {
   "$schema": "./node_modules/turbo/schema.json",
   "ui": "tui",
+  "globalDependencies": ["biome.jsonc", "tooling/typescript-config/*.json"],
   "tasks": {
     "build": {
       "dependsOn": ["db:deploy", "gen:types", "gen:map", "^build"],
