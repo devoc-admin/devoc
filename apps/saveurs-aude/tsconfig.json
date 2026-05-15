@@ -10,6 +10,6 @@
   "exclude": [
     "node_modules",
     "migrations",
-    "app/%28payload%29/admin/importMap.tsx"
+    "app/%28payload%29/admin/importMap.js"
   ]
 }
