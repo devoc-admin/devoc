@@ -5,7 +5,7 @@
   "globalEnv": ["NODE_ENV"],
   "tasks": {
     "build": {
-      "dependsOn": ["db:deploy", "gen:types", "gen:map", "^build"],
+      "dependsOn": ["gen:map", "^build"],
       "outputs": [
         ".next/**",
         ".react-email/.next/**",
@@ -84,12 +84,11 @@
       ]
     },
     "gen:map": {
-      "dependsOn": ["db:deploy", "gen:types"],
+      "dependsOn": ["gen:types"],
       "cache": false,
       "env": ["PAYLOAD_SECRET"]
     },
     "gen:types": {
-      "dependsOn": ["db:deploy"],
       "cache": false,
       "env": ["PAYLOAD_SECRET"]
     }
