@@ -19,6 +19,8 @@ pre-commit:
       run: turbo db:migration:check --affected
 pre-push:
   jobs:
+    - name: "Check bun lockfile is in sync"
+      run: bun install --frozen-lockfile
     - name: "Build apps and packages"
       run: turbo build --dry-run text --affected
 commit-msg:
