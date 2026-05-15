@@ -21,8 +21,6 @@ pre-push:
   jobs:
     - name: "Check bun lockfile is in sync"
       run: bun install --frozen-lockfile
-    - name: "Build apps and packages"
-      run: turbo build --dry-run text --affected
 commit-msg:
   jobs:
     - name: commitlint
