@@ -14,9 +14,9 @@ pre-commit:
         - "*.css"
       stage_fixed: true
     - name: Check types on changed files
-      run: turbo types --affected
+      run: bun x turbo types --affected
     - name: Check database migrations
-      run: turbo db:migration:check --affected
+      run: bun x turbo db:migration:check --affected
 pre-push:
   jobs:
     - name: "Check bun lockfile is in sync"
