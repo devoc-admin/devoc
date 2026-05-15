@@ -24,6 +24,6 @@ pre-push:
     - name: "Build apps and packages"
       run: turbo build --dry-run text --affected
 commit-msg:
-  commands:
-    commitlint:
+  jobs:
+    - name: commitlint
       run: bun x commitlint --edit {1}
