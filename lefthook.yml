@@ -1,4 +1,5 @@
 pre-commit:
+  paralelle: true
   # 🧽 Linter with safe fixs applied
   jobs:
     - name: Lint changed files
@@ -12,10 +13,12 @@ pre-commit:
         - "*.jsonc"
         - "*.css"
       stage_fixed: true
+    - name: Check types on changed files
+      run: turbo types --affected
 pre-push:
   jobs:
     - name: "Build apps and packages"
-      run: turbo build --affected
+      run: turbo build --dry-run text --affected
 commit-msg:
   commands:
     commitlint:

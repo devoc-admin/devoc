@@ -23,7 +23,7 @@ bun dev           # http://localhost:3000
 |--------|-------------|
 | `bun dev` | Serveur Next.js (Turbopack, exposé sur le réseau local) |
 | `bun build` / `bun start` | Build et exécution production |
-| `bun run check-types` | Vérification TypeScript |
+| `bun run types` | Vérification TypeScript |
 | `bun lint` | Lint via ultracite |
 | `bun run inngest` | Démarre le devserver Inngest |
 | `bun run db:generate` / `db:migrate` / `db:push` / `db:pull` / `db:studio` | Drizzle Kit (lit `.env.local`) |

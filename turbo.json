@@ -43,6 +43,12 @@
       "dependsOn": ["^lint"],
       "env": ["NODE_ENV", "RESEND_API_KEY", "CONTACT_EMAIL"]
     },
+    "types": {
+      "dependsOn": ["^types"]
+    },
+    "format": {
+      "dependsOn": ["^format"]
+    },
     "dev": {
       "persistent": true,
       "cache": false,

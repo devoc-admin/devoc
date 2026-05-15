@@ -24,4 +24,4 @@ bun dev           # http://localhost:3000
 | `bun start` | Démarrage production |
 | `bun lint` | Lint via ultracite |
 | `bun run format` | Format Biome |
-| `bun run check-types` | Vérification TypeScript |
+| `bun run types` | Vérification TypeScript |
