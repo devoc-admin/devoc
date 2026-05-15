@@ -1,23 +1,75 @@
-name: CI
+name: CI check for types, linting, formatting, and build
 
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
 
 jobs:
-  ci:
+  types:
+    name: "Check types on changed files"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
-      - run: bun run lint
-        working-directory: apps/saveurs-aude
-      - run: bun run check-types
-        working-directory: apps/saveurs-aude
-      - run: bunx turbo build --filter=saveurs-aude
+      - run: bun x turbo types
+
+  db-migration-check:
+    name: "Check database migrations"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - name: Setup Envs variables per app
+        run: |
+          echo "Setting up env variables for apps..."
+          echo "Starting to setup env variables for app Saveurs Aude..."
+          echo "PAYLOAD_SECRET=\"${{ secrets.SAVEURS_AUDE_PAYLOAD_SECRET }}\"" >> apps/saveurs-aude/.env
+          echo "Env variables for app Saveurs Aude setup completed."
+          echo "No env variables needed for others apps, skipping..."
+      - run: bun x turbo db:migration:check
+
+  lint-and-format:
+    name: "Lint and format check"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun x turbo lint format
+
+  build:
+    name: "Build apps and packages"
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
         env:
-          DATABASE_URL: "postgresql://fake:fake@localhost:5432/fake"
-          PAYLOAD_SECRET: "ci-secret-at-least-32-characters-long-for-payload"
-          NEXT_PUBLIC_SITE_URL: "https://saveurs-aude.fr"
-          NEXT_PUBLIC_URL: "https://saveurs-aude.fr"
+          POSTGRES_USER: payload
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: saveurs_aude
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - name: Setup Envs variables per app
+        run: |
+          echo "Setting up env variables for apps..."
+          echo "Starting to setup env variables for app Saveurs Aude..."
+          echo "DATABASE_URL=\"postgresql://payload:password@localhost:5432/saveurs_aude\"" >> apps/saveurs-aude/.env
+          echo "PAYLOAD_SECRET=\"${{ secrets.SAVEURS_AUDE_PAYLOAD_SECRET }}\"" >> apps/saveurs-aude/.env
+          echo "NEXT_PUBLIC_SITE_URL=\"${{ secrets.SAVEURS_AUDE_NEXT_PUBLIC_SITE_URL }}\"" >> apps/saveurs-aude/.env
+          echo "NEXT_PUBLIC_URL=\"${{ secrets.SAVEURS_AUDE_NEXT_PUBLIC_URL }}\"" >> apps/saveurs-aude/.env
+          echo "Env variables for app Saveurs Aude setup completed."
+          echo "No env variables needed for others apps, skipping..."
+      - run: bun x turbo build

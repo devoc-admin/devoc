@@ -8,7 +8,8 @@
     "dev": "email dev",
     "export": "email export",
     "lint": "bun x ultracite fix",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "types": "tsc --noEmit"
   },
   "dependencies": {
     "@react-email/components": "catalog:email",
@@ -22,6 +23,7 @@
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "next": "catalog:next",
-    "react-email": "^6.1.4"
+    "react-email": "^6.1.4",
+    "typescript": "catalog:tooling"
   }
 }

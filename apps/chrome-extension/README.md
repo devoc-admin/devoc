@@ -29,4 +29,4 @@ Pour charger l'extension dans Chrome :
 | `bun run build` | Build production (sortie `dist/`) |
 | `bun lint` | Lint via ultracite |
 | `bun run format` | Format Biome |
-| `bun run check-types` | Vérification TypeScript |
+| `bun run types` | Vérification TypeScript |

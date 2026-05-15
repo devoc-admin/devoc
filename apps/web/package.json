@@ -10,7 +10,7 @@
     "Edge >= 93"
   ],
   "scripts": {
-    "dev": "echo \"Network: http://$(ipconfig getifaddr en0):3000\" && bun --bun next dev --turbopack -H 0.0.0.0",
+    "dev": "bun --bun next dev --turbopack -H 0.0.0.0",
     "inngest": "npx inngest-cli@latest dev",
     "build": "bun --bun next build --turbopack",
     "start": "bun --bun next start",
@@ -18,7 +18,7 @@
     "format": "biome format --write",
     "create-admin": "bun run scripts/create-admin.ts",
     "seed-prospects": "bun --env-file=.env.local run scripts/seed-prospects.ts",
-    "check-types": "tsc --noEmit",
+    "types": "tsc --noEmit",
     "db:generate": "bun --env-file=.env.local drizzle-kit generate",
     "db:migrate": "bun --env-file=.env.local drizzle-kit migrate",
     "db:push": "bun --env-file=.env.local drizzle-kit push",

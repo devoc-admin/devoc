@@ -4,19 +4,19 @@ dev:
     bun run dev
 
 build:
-    echo "(apps/email) Pas de build dédié; utilisez dev pour prévisualiser."
+    bun run build
 
 clean:
     rm -rf node_modules
 
 lint:
-    echo "(apps/email) lint non défini"
+    bun run lint
 
 format:
-    bun x biome format --write || true
+    bun run format
 
 types:
-    echo "(apps/email) typecheck non défini"
+    bun run types
 
 help:
     echo "Commandes disponibles :"
