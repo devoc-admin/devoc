@@ -21,6 +21,8 @@ pre-push:
   jobs:
     - name: "Check bun lockfile is in sync"
       run: bun install --frozen-lockfile
+    - name: "Check generated artifacts are up to date"
+      run: bun x turbo gen:check --affected
 commit-msg:
   jobs:
     - name: commitlint

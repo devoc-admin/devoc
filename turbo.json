@@ -69,6 +69,10 @@
       "cache": false,
       "env": ["PAYLOAD_SECRET"]
     },
+    "gen:check": {
+      "cache": false,
+      "env": ["PAYLOAD_SECRET", "DATABASE_URL"]
+    },
     "db:deploy": {
       "cache": false,
       "env": [

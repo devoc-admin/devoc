@@ -13,6 +13,7 @@
     "payload": "payload",
     "seed": "bun --bun run payload/seed.ts",
     "db:migration:check": "bun run scripts/check-migrations.ts",
+    "gen:check": "bun run scripts/check-generated.ts",
     "db:deploy": "payload migrate --force",
     "db:push": "payload db:push",
     "gen:map": "payload generate:importmap",
