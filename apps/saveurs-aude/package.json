@@ -31,6 +31,7 @@
     "@react-email/components": "catalog:email",
     "@tailwindcss/typography": "^0.5.19",
     "@tanstack/react-form": "catalog:forms",
+    "@vercel/analytics": "catalog:vercel",
     "class-variance-authority": "catalog:ui",
     "clsx": "catalog:ui",
     "lexical": "^0.44.0",

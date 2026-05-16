@@ -17,6 +17,8 @@ pre-commit:
       run: doppler run -- bun x turbo types --affected
     - name: Check database migrations
       run: doppler run -- bun x turbo db:migration:check --affected
+    - name: Check workspace boundaries
+      run: bun x turbo boundaries
 pre-push:
   jobs:
     - name: "Check bun lockfile is in sync"
