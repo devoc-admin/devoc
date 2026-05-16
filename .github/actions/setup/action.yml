@@ -3,7 +3,7 @@ description: Restore bun + turbo caches, set up bun, install Doppler CLI, instal
 runs:
   using: composite
   steps:
-    - uses: actions/cache@v4
+    - uses: actions/cache@v5
       with:
         path: ~/.bun/install/cache
         key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
@@ -13,6 +13,6 @@ runs:
       with:
         bun-version-file: package.json
     - name: Install Doppler CLI
-      uses: dopplerhq/cli-action@v3
+      uses: dopplerhq/cli-action@v4
     - run: bun install --frozen-lockfile
       shell: bash
