@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "rm -rf ./.next && rm -rf ./.turbo && next dev --turbopack -H 0.0.0.0",
+    "dev": "rm -rf ./.next && rm -rf ./.turbo && doppler run -- next dev --turbopack -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "bun x ultracite check",
@@ -12,14 +12,14 @@
     "format": "biome format",
     "format:fix": "biome format --write",
     "types": "tsc --noEmit",
-    "payload": "payload",
-    "seed": "bun --bun run payload/seed.ts",
-    "db:migration:check": "bun run scripts/check-migrations.ts",
-    "gen:check": "bun run scripts/check-generated.ts",
-    "db:deploy": "payload migrate --force",
-    "db:push": "payload db:push",
-    "gen:map": "payload generate:importmap",
-    "gen:types": "payload generate:types"
+    "payload": "doppler run -- payload",
+    "seed": "doppler run -- bun --bun run payload/seed.ts",
+    "db:migration:check": "doppler run -- bun run scripts/check-migrations.ts",
+    "gen:check": "doppler run -- bun run scripts/check-generated.ts",
+    "db:deploy": "doppler run -- payload migrate --force",
+    "db:push": "doppler run -- payload db:push",
+    "gen:map": "doppler run -- payload generate:importmap",
+    "gen:types": "doppler run -- payload generate:types"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.84.1",
