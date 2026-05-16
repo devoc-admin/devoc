@@ -117,6 +117,10 @@ jobs:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
           DATABASE_URL: postgresql://payload:password@localhost:5432/saveurs_aude
         run: bun x turbo db:deploy --affected
+      - name: Generate Payload artifacts
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
+        run: bun x turbo gen:map --filter=saveurs-aude
       - name: Build
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
