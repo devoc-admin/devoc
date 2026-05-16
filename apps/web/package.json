@@ -10,22 +10,22 @@
     "Edge >= 93"
   ],
   "scripts": {
-    "dev": "bun --bun next dev --turbopack -H 0.0.0.0",
-    "inngest": "npx inngest-cli@latest dev",
+    "dev": "doppler run -- bun --bun next dev --turbopack -H 0.0.0.0",
+    "inngest": "doppler run -- npx inngest-cli@latest dev",
     "build": "bun --bun next build --turbopack",
     "start": "bun --bun next start",
     "lint": "bun x ultracite check",
     "lint:fix": "bun x ultracite fix",
     "format": "biome format",
     "format:fix": "biome format --write",
-    "create-admin": "bun run scripts/create-admin.ts",
-    "seed-prospects": "bun --env-file=.env.local run scripts/seed-prospects.ts",
+    "create-admin": "doppler run -- bun run scripts/create-admin.ts",
+    "seed-prospects": "doppler run -- bun run scripts/seed-prospects.ts",
     "types": "tsc --noEmit",
-    "db:generate": "bun --env-file=.env.local drizzle-kit generate",
-    "db:migrate": "bun --env-file=.env.local drizzle-kit migrate",
-    "db:push": "bun --env-file=.env.local drizzle-kit push",
-    "db:pull": "bun --env-file=.env.local drizzle-kit pull",
-    "db:studio": "bun --env-file=.env.local drizzle-kit studio"
+    "db:generate": "doppler run -- bun x drizzle-kit generate",
+    "db:migrate": "doppler run -- bun x drizzle-kit migrate",
+    "db:push": "doppler run -- bun x drizzle-kit push",
+    "db:pull": "doppler run -- bun x drizzle-kit pull",
+    "db:studio": "doppler run -- bun x drizzle-kit studio"
   },
   "dependencies": {
     "@dev-oc/crawler": "workspace:*",

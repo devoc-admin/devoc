@@ -1,0 +1,3 @@
+setup:
+  project: saveurs-aude
+  config: dev
