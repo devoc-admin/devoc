@@ -10,7 +10,12 @@ export function SupNumber({
   className?: string;
 }) {
   return (
-    <span className={cn("font-geist-mono text-[0.7rem] text-xs", className)}>
+    <span
+      className={cn(
+        "whitespace-nowrap font-geist-mono text-[0.7rem] text-xs",
+        className
+      )}
+    >
       {prefix}
       <span className="tracking-[.15rem]">
         {children.toString().padStart(2, "0")}

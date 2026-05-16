@@ -30,6 +30,7 @@ import { SectionCatchline } from "./components/section-catchline";
 import { SectionSeparator } from "./components/section-separator";
 import { ServiceCard } from "./components/service-card";
 import { SupSection } from "./components/sup-section";
+
 export function Main() {
   return (
     <div
@@ -59,8 +60,8 @@ export function Main() {
         <Portraits />
         <PortraitGroupe />
         <SectionServices />
-        {/*   <SectionValues />
-        <SectionReasons />
+        <SectionValues />
+        {/*    <SectionReasons />
         <ContactCard />*/}
       </div>
     </div>
@@ -271,13 +272,28 @@ function PortraitGroupe() {
 }
 
 // 4️⃣💁‍♀️🔤
-// biome-ignore lint/correctness/noUnusedVariables: temporarily disabled while iterating on main section
 function SectionServices() {
   return (
-    <section className="mx-auto space-y-16">
+    <section className="mx-auto space-y-24">
       {/* 🔠 */}
-      <div className="flex w-full justify-between">
-        <div className="space-y-10">
+      <div
+        className={cn(
+          "flex w-full",
+          // ↔️
+          "flex-col gap-y-12",
+          "xs:flex-col xs:gap-y-12",
+          "sm:flex-col sm:gap-y-12",
+          "md:flex-row md:gap-x-12",
+          "2xl:flew-row 2xl:gap-x-42"
+        )}
+      >
+        <div
+          className={cn(
+            // ↔️
+            "space-y-6",
+            "2xl:space-y-10"
+          )}
+        >
           <FadeUp>
             <SupSection number={2}>Services</SupSection>
           </FadeUp>
@@ -292,44 +308,94 @@ function SectionServices() {
           </FadeUp>
         </div>
 
-        <div className="space-y-10 self-end">
+        <div className={cn("space-y-10", "md:self-end")}>
           <FadeUp delay={0.2}>
             <PContent className="w-fit max-w-[50ch]">
               Cinq pôles d'expertise complémentaires que nous mobilisons à la
               carte selon vos besoins, vos délais et votre budget. Pas de
               surcoût caché, pas de dépendance inutile à une plateforme externe
-              et des produits dimensionnés à votre usage.
+              et des produits toujours dimensionnés à votre usage.
             </PContent>
           </FadeUp>
         </div>
       </div>
       {/* 🃏🃏🃏 */}
       <div className="grid grid-cols-12 gap-6">
-        <div className="col-span-7">
+        <div
+          className={cn(
+            "col-span-12",
+            "xs:col-span-12",
+            "sm:col-span-6",
+            "md:col-span-6",
+            "lg:col-span-5",
+            "xl:col-span-7",
+            "2xl:col-span-7"
+          )}
+        >
           <FadeUp className="size-full">
             <ServiceCard {...services[0]} index={1} />
           </FadeUp>
         </div>
 
-        <div className="col-span-5">
+        <div
+          className={cn(
+            "col-span-12",
+            "xs:col-span-12",
+            "sm:col-span-6",
+            "md:col-span-6",
+            "lg:col-span-7",
+            "xl:col-span-5",
+            "2xl:col-span-5"
+          )}
+        >
           <FadeUp className="size-full" delay={0.1}>
             <ServiceCard {...services[1]} index={2} />
           </FadeUp>
         </div>
 
-        <div className="col-span-4">
+        <div
+          className={cn(
+            "col-span-12",
+            "xs:col-span-12",
+            "sm:col-span-12",
+            "md:col-span-12",
+            "lg:col-span-12",
+            "xl:col-span-4",
+            "2xl:col-span-4"
+          )}
+        >
           <FadeUp className="size-full" delay={0.2}>
             <ServiceCard {...services[2]} index={3} />
           </FadeUp>
         </div>
 
-        <div className="col-span-8">
+        <div
+          className={cn(
+            "col-span-12",
+            "xs:col-span-12",
+            "sm:col-span-6",
+            "md:col-span-6",
+            "lg:col-span-7",
+            "xl:col-span-8",
+            "2xl:col-span-8"
+          )}
+        >
           <FadeUp className="size-full" delay={0.3}>
             <ServiceCard {...services[3]} index={4} />
           </FadeUp>
         </div>
 
-        <div className="col-span-12">
+        <div
+          className={cn(
+            "col-span-12",
+            "xs:col-span-12",
+            "sm:col-span-6",
+            "md:col-span-6",
+            "lg:col-span-5",
+            "xl:col-span-12",
+            "2xl:col-span-12"
+          )}
+        >
           <FadeUp className="size-full" delay={0.4}>
             <ServiceCard {...services[4]} index={5} />
           </FadeUp>
@@ -365,14 +431,6 @@ const services = [
     title: "Infrastructure",
   },
   {
-    features: ["Intégration de l'IA", "Productivité accrue", "Coûts réduits"],
-    href: "#",
-    Icon: AutomatisationIcon,
-    subtitle:
-      "Automatisez les tâches répétitives et libérez du temps pour ce qui compte.",
-    title: "Automatisation & IA",
-  },
-  {
     features: [
       "Audit SEO & performance",
       "Conformité RGAA 4.1",
@@ -383,6 +441,14 @@ const services = [
     subtitle:
       "Audits complets et optimisations ciblées pour la performance, la sécurité et l'accessibilité.",
     title: "Audit & conformité",
+  },
+  {
+    features: ["Intégration de l'IA", "Productivité accrue", "Coûts réduits"],
+    href: "#",
+    Icon: AutomatisationIcon,
+    subtitle:
+      "Automatisez les tâches répétitives et libérez du temps pour ce qui compte.",
+    title: "Automatisation & IA",
   },
   {
     features: [
@@ -399,10 +465,16 @@ const services = [
 ];
 
 // 5️⃣⭐🔤
-// biome-ignore lint/correctness/noUnusedVariables: temporarily disabled while iterating on main section
 function SectionValues() {
   return (
-    <section className="mx-auto space-y-28">
+    <section
+      className={cn(
+        "mx-auto",
+        // ↔️
+        "space-y-12",
+        "lg:space-y-28"
+      )}
+    >
       {/* 🔠 */}
       <div className="space-y-10">
         <FadeUp>
