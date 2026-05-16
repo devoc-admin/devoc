@@ -9,6 +9,7 @@
   ],
   "globalEnv": ["NODE_ENV"],
   "globalPassThroughEnv": [
+    "DOPPLER_TOKEN",
     "DATABASE_URL_UNPOOLED",
     "EDGE_CONFIG",
     "NEON_PROJECT_ID",

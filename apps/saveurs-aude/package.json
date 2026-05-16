@@ -18,8 +18,8 @@
     "gen:check": "doppler run -- bun run scripts/check-generated.ts",
     "db:deploy": "doppler run --preserve-env=DATABASE_URL -- payload migrate --force",
     "db:push": "doppler run -- payload db:push",
-    "gen:map": "doppler run -- payload generate:importmap",
-    "gen:types": "doppler run -- payload generate:types"
+    "gen:map": "doppler run --preserve-env=DATABASE_URL -- payload generate:importmap",
+    "gen:types": "doppler run --preserve-env=DATABASE_URL -- payload generate:types"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.84.1",
