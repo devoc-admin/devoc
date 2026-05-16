@@ -20,12 +20,12 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Fetch shared Vercel credentials from Doppler
-        uses: dopplerhq/secrets-fetch-action@v1.3.0
+        uses: dopplerhq/secrets-fetch-action@v2.0.0
         with:
           doppler-token: ${{ secrets.DOPPLER_TOKEN_SHARED }}
           inject-env-vars: true
       - name: Fetch saveurs-aude Vercel project id from Doppler
-        uses: dopplerhq/secrets-fetch-action@v1.3.0
+        uses: dopplerhq/secrets-fetch-action@v2.0.0
         with:
           doppler-token: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
           inject-env-vars: true
@@ -55,12 +55,12 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Fetch shared Vercel credentials from Doppler
-        uses: dopplerhq/secrets-fetch-action@v1.3.0
+        uses: dopplerhq/secrets-fetch-action@v2.0.0
         with:
           doppler-token: ${{ secrets.DOPPLER_TOKEN_SHARED }}
           inject-env-vars: true
       - name: Fetch web Vercel project id from Doppler
-        uses: dopplerhq/secrets-fetch-action@v1.3.0
+        uses: dopplerhq/secrets-fetch-action@v2.0.0
         with:
           doppler-token: ${{ secrets.DOPPLER_TOKEN_WEB_PRD }}
           inject-env-vars: true
@@ -86,12 +86,12 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Fetch shared Vercel credentials from Doppler
-        uses: dopplerhq/secrets-fetch-action@v1.3.0
+        uses: dopplerhq/secrets-fetch-action@v2.0.0
         with:
           doppler-token: ${{ secrets.DOPPLER_TOKEN_SHARED }}
           inject-env-vars: true
       - name: Fetch cagnolhes Vercel project id from Doppler
-        uses: dopplerhq/secrets-fetch-action@v1.3.0
+        uses: dopplerhq/secrets-fetch-action@v2.0.0
         with:
           doppler-token: ${{ secrets.DOPPLER_TOKEN_CAGNOLHES_PRD }}
           inject-env-vars: true
