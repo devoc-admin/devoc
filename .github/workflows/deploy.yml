@@ -1,0 +1,44 @@
+name: "Deploy"
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  saveurs-aude:
+    name: "Deploy saveurs-aude to Vercel"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/saveurs-aude
+    steps:
+      - uses: actions/checkout@v6
+      - name: Fetch shared Vercel credentials from Doppler
+        uses: dopplerhq/secrets-fetch-action@v1.3.0
+        with:
+          doppler-token: ${{ secrets.DOPPLER_TOKEN_SHARED }}
+          inject-env-vars: true
+      - name: Fetch saveurs-aude Vercel project id from Doppler
+        uses: dopplerhq/secrets-fetch-action@v1.3.0
+        with:
+          doppler-token: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
+          inject-env-vars: true
+      - uses: ./.github/actions/setup
+      - name: Install Vercel CLI
+        run: bun add -g vercel@latest
+        working-directory: .
+      - name: Pull Vercel project config & env
+        run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+      - name: Build
+        run: vercel build --prod --token=$VERCEL_TOKEN
+      - name: Deploy prebuilt
+        run: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
