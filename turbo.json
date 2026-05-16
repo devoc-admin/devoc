@@ -1,7 +1,12 @@
 {
   "$schema": "./node_modules/turbo/schema.json",
   "ui": "tui",
-  "globalDependencies": ["biome.jsonc", "tooling/typescript-config/*.json"],
+  "globalDependencies": [
+    "biome.jsonc",
+    "tooling/typescript-config/*.json",
+    "package.json",
+    "lefthook.yml"
+  ],
   "globalEnv": ["NODE_ENV"],
   "globalPassThroughEnv": [
     "DATABASE_URL_UNPOOLED",
