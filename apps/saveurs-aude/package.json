@@ -14,9 +14,9 @@
     "types": "tsc --noEmit",
     "payload": "doppler run -- payload",
     "seed": "doppler run -- bun --bun run payload/seed.ts",
-    "db:migration:check": "doppler run -- bun run scripts/check-migrations.ts",
+    "db:migration:check": "doppler run --preserve-env=PAYLOAD_SECRET -- bun run scripts/check-migrations.ts",
     "gen:check": "doppler run -- bun run scripts/check-generated.ts",
-    "db:deploy": "doppler run -- payload migrate --force",
+    "db:deploy": "doppler run --preserve-env=DATABASE_URL -- payload migrate --force",
     "db:push": "doppler run -- payload db:push",
     "gen:map": "doppler run -- payload generate:importmap",
     "gen:types": "doppler run -- payload generate:types"

@@ -46,6 +46,7 @@ jobs:
       - uses: ./.github/actions/setup
       - name: Check migrations
         env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SHARED }}
           PAYLOAD_SECRET: "ci-dummy-secret-for-config-validation-only-not-used-at-runtime"
         run: bun x turbo db:migration:check --affected
 
@@ -100,6 +101,7 @@ jobs:
       - uses: ./.github/actions/setup
       - name: Apply migrations
         env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
           DATABASE_URL: postgresql://payload:password@localhost:5432/saveurs_aude
         run: bun x turbo db:deploy --affected
       - name: Build
