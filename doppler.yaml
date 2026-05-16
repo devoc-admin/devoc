@@ -1,0 +1,3 @@
+setup:
+  project: devoc-shared
+  config: dev
