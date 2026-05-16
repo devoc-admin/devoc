@@ -40,5 +40,9 @@ jobs:
         run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
       - name: Build
         run: vercel build --prod --token=$VERCEL_TOKEN
+      - name: Apply prod migrations
+        env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
+        run: bun run db:deploy
       - name: Deploy prebuilt
         run: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
