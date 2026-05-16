@@ -52,6 +52,17 @@ jobs:
           PAYLOAD_SECRET: "ci-dummy-secret-for-config-validation-only-not-used-at-runtime"
         run: bun x turbo db:migration:check --affected
 
+  boundaries:
+    name: "Check workspace boundaries"
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+      - run: bun x turbo boundaries
+
   lint-and-format:
     name: "Lint and format check"
     runs-on: ubuntu-latest
