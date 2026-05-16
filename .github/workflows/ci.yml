@@ -21,7 +21,7 @@ jobs:
   types:
     name: "Check types on changed files"
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
         with:
@@ -32,7 +32,7 @@ jobs:
   db-migration-check:
     name: "Check database migrations"
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
         with:
@@ -46,7 +46,7 @@ jobs:
   lint-and-format:
     name: "Lint and format check"
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
         with:
@@ -57,7 +57,7 @@ jobs:
   build:
     name: "Build apps and packages"
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     services:
       postgres:
         image: postgres:17-alpine
