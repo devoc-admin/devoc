@@ -108,5 +108,6 @@ jobs:
         run: bun x turbo db:deploy --affected
       - name: Build
         env:
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
           DATABASE_URL: postgresql://payload:password@localhost:5432/saveurs_aude
         run: bun x turbo build --affected
