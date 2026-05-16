@@ -7,8 +7,10 @@
     "build": "bash build.sh",
     "dev": "email dev",
     "export": "email export",
-    "lint": "bun x ultracite fix",
-    "format": "biome format --write",
+    "lint": "bun x ultracite check",
+    "lint:fix": "bun x ultracite fix",
+    "format": "biome format",
+    "format:fix": "biome format --write",
     "types": "tsc --noEmit"
   },
   "dependencies": {
