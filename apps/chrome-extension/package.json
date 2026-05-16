@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "bun x ultracite fix",
-    "format": "biome format --write",
+    "lint": "bun x ultracite check",
+    "lint:fix": "bun x ultracite fix",
+    "format": "biome format",
+    "format:fix": "biome format --write",
     "types": "tsc --noEmit"
   },
   "dependencies": {
