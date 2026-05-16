@@ -11,6 +11,10 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  TURBO_SCM_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+  TURBO_SCM_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+
 jobs:
   types:
     name: "Check types on changed files"
@@ -18,8 +22,10 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - uses: ./.github/actions/setup
-      - run: bun x turbo types
+      - run: bun x turbo types --affected
 
   db-migration-check:
     name: "Check database migrations"
@@ -27,11 +33,13 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - uses: ./.github/actions/setup
       - name: Check migrations
         env:
           PAYLOAD_SECRET: ${{ secrets.SAVEURS_AUDE_PAYLOAD_SECRET }}
-        run: bun x turbo db:migration:check
+        run: bun x turbo db:migration:check --affected
 
   lint-and-format:
     name: "Lint and format check"
@@ -39,8 +47,10 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - uses: ./.github/actions/setup
-      - run: bun x turbo lint format
+      - run: bun x turbo lint format --affected
 
   build:
     name: "Build apps and packages"
@@ -62,16 +72,18 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - uses: ./.github/actions/setup
       - name: Apply migrations
         env:
           DATABASE_URL: postgresql://payload:password@localhost:5432/saveurs_aude
           PAYLOAD_SECRET: ${{ secrets.SAVEURS_AUDE_PAYLOAD_SECRET }}
-        run: bun x turbo db:deploy
+        run: bun x turbo db:deploy --affected
       - name: Build
         env:
           DATABASE_URL: postgresql://payload:password@localhost:5432/saveurs_aude
           PAYLOAD_SECRET: ${{ secrets.SAVEURS_AUDE_PAYLOAD_SECRET }}
           NEXT_PUBLIC_SITE_URL: ${{ vars.SAVEURS_AUDE_NEXT_PUBLIC_SITE_URL }}
           NEXT_PUBLIC_URL: ${{ vars.SAVEURS_AUDE_NEXT_PUBLIC_URL }}
-        run: bun x turbo build
+        run: bun x turbo build --affected
