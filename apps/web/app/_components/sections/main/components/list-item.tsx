@@ -18,7 +18,7 @@ export function ListItem({
         "bg-linear-to-r from-transparent to-transparent",
         "hover:via-foreground-dark/5",
         "transition-colors",
-        "items-start justify-between",
+        "items-start",
         // ↔️
         "flex-col gap-5 px-2 py-6",
         "md:flex-row md:gap-8 md:px-6 md:py-12"
@@ -36,7 +36,8 @@ export function ListItem({
       </SupNumber>
       <div
         className={cn(
-          "max-w-[18ch] font-fraunces text-foreground-dark leading-[1.15]!",
+          "font-fraunces text-foreground-dark leading-[1.15]!",
+          "grow",
           // ↔️
           "text-2xl",
           "sm:text-3xl",
