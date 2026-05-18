@@ -61,8 +61,8 @@ export function Main() {
         <PortraitGroupe />
         <SectionServices />
         <SectionValues />
-        {/*    <SectionReasons />
-        <ContactCard />*/}
+        <SectionReasons />
+        {/*    <ContactCard />*/}
       </div>
     </div>
   );
@@ -524,10 +524,16 @@ const values = [
 ];
 
 // 6️⃣🤙
-// biome-ignore lint/correctness/noUnusedVariables: temporarily disabled while iterating on main section
 function SectionReasons() {
   return (
-    <section className="mx-auto space-y-28">
+    <section
+      className={cn(
+        "mx-auto",
+        // ↔️
+        "space-y-12",
+        "lg:space-y-28"
+      )}
+    >
       {/* 🔠 */}
       <div className="space-y-10">
         <FadeUp>
@@ -544,7 +550,7 @@ function SectionReasons() {
         </FadeUp>
       </div>
       {/* 👆👆👆👆 */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className={cn("grid gap-6", "grid-cols-1", "sm:grid-cols-2")}>
         {reasons.map(({ id, ...props }, index) => (
           <FadeUp className="w-fit" delay={0.1 * index} key={id}>
             <ReasonCard {...props} index={index} />
