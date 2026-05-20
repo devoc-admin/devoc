@@ -85,6 +85,7 @@ function SectionCollectif() {
     <section
       className={cn(
         "mx-auto",
+        "scroll-m-12",
         // ↔️
         "space-y-14",
         "xs:space-y-14",
@@ -600,6 +601,7 @@ function ContactCard() {
       <div
         className={cn(
           "flex justify-between gap-x-24",
+          "scroll-m-12",
           "relative",
           "rounded-3xl",
           "border border-foreground-dark/10",
