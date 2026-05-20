@@ -46,13 +46,13 @@ export function Main() {
           "max-w-430",
           "mx-auto",
           // ↔️
-          "space-y-14 px-5 pt-34",
-          "xs:space-y-14 xs:px-5 xs:pt-34",
-          "sm:space-y-20 sm:px-5 sm:pt-38",
-          "md:space-y-24 md:px-8 md:pt-40",
-          "lg:space-y-28 lg:px-10 lg:pt-48",
-          "xl:space-y-44 xl:px-14 xl:pt-54",
-          "2xl:space-y-52 2xl:px-14 2xl:pt-62"
+          "space-y-14 px-5 py-34",
+          "xs:space-y-14 xs:px-5 xs:py-34",
+          "sm:space-y-20 sm:px-5 sm:py-38",
+          "md:space-y-24 md:px-8 md:py-40",
+          "lg:space-y-28 lg:px-10 lg:py-48",
+          "xl:space-y-44 xl:px-14 xl:py-54",
+          "2xl:space-y-52 2xl:px-14 2xl:py-62"
         )}
       >
         <TopLine />
@@ -62,7 +62,7 @@ export function Main() {
         <SectionServices />
         <SectionValues />
         <SectionReasons />
-        {/*    <ContactCard />*/}
+        <ContactCard />
       </div>
     </div>
   );
@@ -94,6 +94,7 @@ function SectionCollectif() {
         "xl:space-y-44",
         "2xl:space-y-52"
       )}
+      id="collectif"
     >
       <div
         className={cn(
@@ -593,20 +594,23 @@ const reasons = [
 ];
 
 // 7️⃣📞
-// biome-ignore lint/correctness/noUnusedVariables: temporarily disabled while iterating on main section
 function ContactCard() {
   return (
-    <FadeUp>
+    <FadeUp className="w-full">
       <div
         className={cn(
           "flex justify-between gap-x-24",
           "relative",
           "rounded-3xl",
           "border border-foreground-dark/10",
-          "px-22 py-32",
           "bg-surface-dark",
-          "overflow-hidden"
+          "overflow-hidden",
+          // ↔️
+          "flex-col gap-y-12 px-6 py-10",
+          "md:flex-row md:px-8",
+          "2xl:flex-row 2xl:px-22 2xl:py-32"
         )}
+        id="contact"
       >
         {/* 🔙 */}
         <div className="absolute inset-0 size-full opacity-30">
@@ -635,16 +639,29 @@ function ContactCard() {
         </div>
         {/* 1️⃣ */}
         <div className="relative max-w-[55ch]">
-          <div className="space-y-10">
+          <div
+            className={cn(
+              // ↔️
+              "space-y-5",
+              "2xl:space-y-10"
+            )}
+          >
             <SupSection number={5}>Contact</SupSection>
-            <SectionCatchline className="font-normal text-7xl">
+            <SectionCatchline className="font-normal!">
               Parlons de votre{" "}
               <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text text-transparent">
                 projet
               </span>
               .
             </SectionCatchline>
-            <p className="text-foreground-dark/60 text-lg">
+            <p
+              className={cn(
+                "text-foreground-dark/60",
+                // ↔️
+                "text-md",
+                "2xl:text-lg"
+              )}
+            >
               Décrivez-nous votre besoin en quelques lignes. Nous vous répondons
               sous 24h ouvrées avec une première grille de lecture — sans
               engagement, sans jargon.
@@ -652,7 +669,7 @@ function ContactCard() {
           </div>
         </div>
         {/* 2️⃣ */}
-        <div className="relative min-w-110">
+        <div className={cn("relative", "w-full", "md:w-275", "")}>
           {itemContacts.map(({ id, ...props }) => (
             <ListItemContact {...props} key={id} />
           ))}
@@ -678,8 +695,8 @@ function ListItemContact({
       className={cn(
         "group",
         "flex items-center gap-x-4",
-        "py-4",
-        "border-t last-of-type:border-b"
+        "border-t last-of-type:border-b",
+        "py-4"
       )}
       href={href}
       style={{
@@ -700,13 +717,20 @@ function ListItemContact({
       </div>
       {/* 2️⃣ */}
       <div>
-        <div className="font-geist-mono text-[0.6rem] text-foreground-dark/50 uppercase tracking-[0.15rem]">
+        <div
+          className={cn(
+            "font-geist-mono text-foreground-dark/50 uppercase",
+            // ↔️
+            "text-[0.55rem] tracking-[0.15rem]",
+            "2xl:text-[0.6rem] 2xl:tracking-[0.15rem]"
+          )}
+        >
           {label}
         </div>
         <div className="font-light text-sm">{value}</div>
       </div>
       {/* 3️⃣ */}
-      <div className="ml-auto transition-transform group-hover:translate-x-1">
+      <div className="ml-auto transition-transform group-hover:-translate-x-0.5">
         <ArrowRightIcon size={14} />
       </div>
     </a>
@@ -779,227 +803,3 @@ function FadeUp({
     </motion.div>
   );
 }
-
-// ==============================
-// 2️⃣ Founders
-// function Founders() {
-//   return (
-//     <div className="relative">
-//       <H3>Les fondateurs</H3>
-//       <div
-//         className={cn(
-//           "grid justify-items-center gap-4",
-//           // 📱
-//           "grid-cols-1",
-//           // 💻
-//           "xl:grid-cols-[1fr_1fr]"
-//         )}
-//       >
-//         <div className="relative">
-//           <DeveloperName className="from-primary-strong to-primary">
-//             Clément
-//           </DeveloperName>
-//           <P>
-//             L'architecte de l'invisible. Bases de données, interconnexions entre
-//             systèmes, automatisation des tâches répétitives, infrastructure et
-//             déploiement : il conçoit les fondations sur lesquelles reposent vos
-//             outils numériques. Avec toujours comme maîtres mots l'efficacité et
-//             la résilience.
-//           </P>{" "}
-//           {/*<Portrait
-//             className={cn(
-//               // 📱
-//               "mx-auto my-10",
-//               // 🖥️
-//               "xl:top-0 xl:left-0 xl:my-0 xl:-translate-x-[calc(100%+40px)]",
-//               "scale-x-[1]"
-//             )}
-//             color="#F56E0F"
-//             src="./clement-portrait.webp"
-//           />*/}
-//         </div>
-//         <div className="relative">
-//           <DeveloperName
-//             className={cn("from-primary to-primary-lighter", "xl:ml-auto")}
-//           >
-//             Thibaut
-//           </DeveloperName>
-//           <P className="xl:text-right">
-//             L'interface entre vous et vos utilisateurs. Il traduit vos besoins
-//             en expériences numériques claires, accessibles et efficaces. Expert
-//             en développement web, conformité RGPD, accessibilité, il s'assure
-//             que vos interfaces restent modernes avec une identité forte mais
-//             également conformes et durables.
-//           </P>{" "}
-//           {/*<Portrait
-//             className={cn(
-//               "scale-x-[-1]",
-//               // 📱
-//               "mx-auto my-10",
-//               // 🖥️
-//               "xl:top-0 xl:right-0 xl:my-0 xl:translate-x-full"
-//             )}
-//             color="#FFC731"
-//             src="./thibaut-portrait.webp"
-//           />*/}
-//         </div>
-//       </div>
-//       <div className={cn("mt-24 mb-0", "md:mt-24 md:mb-16")}>
-//         <div className="h-px w-full bg-linear-to-r from-primary-strong to-primary-lighter" />
-//         <P className="mt-8 text-pretty text-center font-medium text-2xl">
-//           Ensemble, ils forment un binôme complémentaire : là où l'un construit
-//           la mécanique, l'autre soigne l'expérience. Deux regards, une même
-//           exigence.
-//
-//          </P>
-//           className="mx-auto mt-14 rotate-180"
-//           gradient={["var(--primary-lighter)", "var(--primary-strong)"]}
-//         />
-//         <CustomRubiksCube />
-//       </div>
-// import { Portrait} from "./components/
-// portrait"
-//     </div>
-//   );
-// }
-
-//🧊
-// function CustomRubiksCube() {
-//   return (
-//     <RubiksCube
-//       className={cn(
-//         "hidden",
-//         "md:block",
-//         "-my-20",
-//         "h-96 w-full",
-//         "translate-y-[15%]",
-//         "opacity-70"
-//       )}
-//       fresnelConfig={{
-//         color: "#09090B",
-//         rimColor: "#FC6B08",
-//       }}
-//       size={1.6}
-//     />
-//   );
-// }
-
-// ==============================
-// 3️⃣ Values
-// function Values() {
-//   return (
-//     <div>
-//       <H3>Nos valeurs</H3>
-//       <ul className="mb-0! space-y-6">
-//         <li>
-//           <H4>#1 La proximité géographique et humaine</H4>
-//           <P>
-//             Les meilleurs projets se construisent en face-à-face. Nous nous
-//             déplaçons volontiers dans vos locaux, vos mairies et vos bureaux à
-//             travers toute l'Occitanie pour comprendre vos réalités concrètes et
-//             vous former à vos outils, sans chercher à appliquer mécaniquement la
-//             même recette de client en client.
-//           </P>
-//         </li>
-//         <li>
-//           <H4>#2 L'autonomie des utilisateurs et la protection des données</H4>
-//           <P>
-//             Vos données sont votre patrimoine. Nous privilégions les solutions{" "}
-//             <i>open source</i> et l'hébergement souverain pour garantir votre
-//             indépendance tout en vous donnant les moyens de construire votre
-//             autonomie par la formation continue et la fourniture de guides
-//             d'utilisation de vos outils.
-//           </P>
-//         </li>
-//         <li>
-//           <H4>#3 L'esprit ingénieur à votre service</H4>
-//           <P>
-//             Notre objectif est de trouver les meilleures solutions avec des
-//             combinaisons technologiques adaptées à vos besoins et à un coût
-//             compétitif. Issus du monde professionnel et des grands groupes, nous
-//             en importons les méthodes et la rigueur pour les mettre au service
-//             des TPE, PME et collectivités locales qui n'ont pas toujours les
-//             ressources internes nécessaires pour faire face à certains défis
-//             techniques.
-//           </P>
-//         </li>
-//       </ul>
-//     </div>
-//   );
-// }
-
-// ==============================
-// 🖼️
-// function BannerImage() {
-//   return (
-//     <div
-//       className={cn(
-//         "ml-[calc(-50vw+50%)] w-screen",
-//         "overflow-hidden",
-//         "h-30 md:h-50"
-//       )}
-//     >
-//       <DitheredImage
-//         backgroundColor="#09090b"
-//         className="h-full w-full"
-//         color="#F56E0F"
-//         ditherMap="voidAndCluster"
-//         pixelSize={1}
-//         src="./photo-groupe.webp"
-//         threshold={0.05}
-//       />
-//     </div>
-//   );
-// }
-
-// ==============================
-// 4️⃣ Why us
-// function WhyUs() {
-//   return (
-//     <div>
-//       <H3>Pourquoi choisir Dev'Oc ?</H3>
-//       <ul className="space-y-6">
-//         <li>
-//           <H4>Un interlocuteur unique, pas une agence anonyme</H4>
-//           <P>
-//             Vous parlez directement aux personnes qui effectuent le travail
-//             commandé et qui apprennent ainsi à vous connaître pour construire
-//             une relation de confiance au fil du temps, pas à un commercial qui
-//             transmet à une équipe <i>offshore</i> ou à un service d'assistance
-//             en ligne.
-//           </P>
-//         </li>
-//         <li>
-//           <H4>Une expertise réglementaire intégrée</H4>
-//           <P>
-//             RGPD, RGAA, NIS2, facturation électronique : nous anticipons les
-//             obligations qui s'imposent à vous dans le cadre français ou européen
-//             en vous évitant de vous embarquer avec des outils inadaptés qui
-//             finissent par vous coûter cher et dont il devient ensuite difficile
-//             de se séparer. En nous confiant vos besoins, vos produits numériques
-//             sont conformes dès leur conception et passent tous les caps
-//             réglementaires afin de vous assurer une totale sérénité et vous
-//             garantir contre tout risque juridique.
-//           </P>
-//         </li>
-//         <li>
-//           <H4>L'impact territorial</H4>
-//           <P>
-//             Travailler avec Dev'Oc, c'est choisir de réinjecter de la valeur
-//             dans l'économie de votre territoire pour en faire rayonner les
-//             acteurs et participer de la montée en puissance numérique de la
-//             région.
-//           </P>
-//         </li>
-//         <li>
-//           <H4>Une reconnaissance indépendante</H4>
-//           <P>
-//             Lauréats 2025 du concours entrepreneurial de Carcassonne Agglo,
-//             notre approche a été reconnue par les acteurs économiques du
-//             territoire que nous servons.
-//           </P>
-//         </li>
-//       </ul>
-//     </div>
-//   );
-// }

@@ -23,6 +23,7 @@ export function DemarrerUnProjetButton() {
   return (
     <CustomButton
       className={cn(sharedClasses, responsiveClasses)}
+      href="#contact"
       style={
         {
           "--accent": "var(--primary-lighter)",
@@ -47,6 +48,7 @@ export function DecouvrirLeCollectifButton() {
         sharedClasses,
         responsiveClasses
       )}
+      href="#collectif"
       style={
         {
           "--accent": "var(--color-zinc-50)",
