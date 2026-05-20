@@ -20,7 +20,7 @@ export function Footer() {
         "z-0",
         "bottom-0",
         "overflow-hidden",
-        "bg-surface-dark"
+        "bg-background-dark"
       )}
     >
       <div
