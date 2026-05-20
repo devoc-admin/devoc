@@ -219,7 +219,7 @@ function WithNavbar({ children }: { children: React.ReactNode }) {
         "bg-white",
         "flex grow",
         "items-center justify-center",
-        "min-h-lvh w-full",
+        "min-h-svh w-full",
         "overflow-hidden",
         "px-6 py-12"
       )}
