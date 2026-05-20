@@ -1,5 +1,4 @@
 import { ArrowUpRightIcon, type LucideIcon } from "lucide-react";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { SupNumber } from "./sup-number";
 
@@ -7,14 +6,12 @@ export function ServiceCard({
   title,
   subtitle,
   features,
-  href,
   index,
   Icon,
 }: {
   title: string;
   subtitle: string;
   features: string[];
-  href: string;
   index: number;
   Icon: LucideIcon;
 }) {
@@ -123,13 +120,13 @@ export function ServiceCard({
             </div>
           </div>
           {/* 4️⃣ */}
-          <Link
+          <a
             className="mt-5 flex items-center gap-x-1.5 text-foreground-dark/80 text-sm"
-            href={href}
+            href="#contact"
           >
             <span>Échanger sur ce service</span>
             <ArrowUpRightIcon color="#AEABA4" size={16} />
-          </Link>
+          </a>
         </div>
       </div>
     </article>
