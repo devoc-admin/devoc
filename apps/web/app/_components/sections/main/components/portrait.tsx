@@ -25,8 +25,8 @@ export function Portrait({
         "transition-colors",
         "flex flex-col",
         // ↔️
-        "gap-y-4 rounded-2xl p-1",
-        "xs:gap-y-4 xs:rounded-2xl xs:p-1",
+        "gap-y-3 rounded-2xl p-1",
+        "xs:gap-y-3 xs:rounded-2xl xs:p-1",
         "sm:gap-y-4 sm:rounded-2xl sm:p-1",
         "md:gap-y-4 md:rounded-2xl md:p-1.5",
         "lg:gap-y-4 lg:rounded-2xl lg:p-2",
@@ -39,13 +39,13 @@ export function Portrait({
           "text-foreground-dark/60",
           "text-base",
           // ↔️
-          "mb-1.5 px-2.5 text-base",
-          "xs:mb-1.5 xs:px-2.5 text-base",
-          "sm:mb-1.5 sm:px-2.5 sm:text-base",
-          "md:mb-1.5 md:px-2.5 md:text-base",
-          "lg:mb-1.5 lg:px-2.5 lg:text-base",
-          "xl:mb-1.5 xl:px-2.5 xl:text-lg",
-          "2xl:mb-2 2xl:px-2.5 2xl:text-xl"
+          "mb-1.5 px-3 text-base",
+          "xs:mb-1.5 xs:px-3 text-base",
+          "sm:mb-1.5 sm:px-3 sm:text-base",
+          "md:mb-1.5 md:px-3 md:text-base",
+          "lg:mb-1.5 lg:px-3 lg:text-base",
+          "xl:mb-1.5 xl:px-3 xl:text-lg",
+          "2xl:mb-2 2xl:px-3 2xl:text-xl"
         )}
       >
         {description}

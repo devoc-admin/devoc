@@ -180,7 +180,7 @@ const founders = [
   {
     color: "#F56E0F",
     description:
-      "L'architecte de l'invisible. Bases de données, interconnexions de systèmes, automatisation des tâches répétitives, infrastructure et déploiement: il conçoit les fondations sur lesquelles reposent vos outils numériques.Avec toujours comme maîtres mots l'efficacité et la résilience.",
+      "L'architecte de l'invisible. Bases de données, interconnexions de systèmes, automatisation des tâches répétitives, infrastructure et déploiement: il conçoit les fondations sur lesquelles reposent vos outils numériques. Avec toujours comme maîtres mots l'efficacité et la résilience.",
     key: "clement",
     name: "Clément",
     src: "./clement-portrait.webp",
