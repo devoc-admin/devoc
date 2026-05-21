@@ -122,7 +122,7 @@ const fragmentShader = `
 `;
 
 const DEFAULT_FRESNEL: Required<FresnelConfig> = {
-  color: "#111113",
+  color: "#0F0D0B",
   rimColor: "#FF6900",
   rimIntensity: 1.5,
   rimPower: 6,
@@ -244,9 +244,9 @@ export function RubiksCubeScene({
     const layerGroup = layerGroupRef.current;
 
     if (mainGroup) {
-      mainGroup.rotation.x += delta * 0.3;
-      mainGroup.rotation.y += delta * 0.5;
-      mainGroup.rotation.z += delta * 0.2;
+      mainGroup.rotation.x += delta * 0.15;
+      mainGroup.rotation.y += delta * 0.25;
+      mainGroup.rotation.z += delta * 0.1;
     }
 
     if (s.isAnimating && s.currentMove && layerGroup) {
