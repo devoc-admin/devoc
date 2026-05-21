@@ -45,7 +45,7 @@
     "react-dom": "catalog:react",
     "resend": "catalog:email",
     "sharp": "catalog:crawler",
-    "simple-icons": "^16.19.0",
+    "simple-icons": "^16.20.0",
     "stripe": "^22.1.1",
     "tailwind-merge": "catalog:ui",
     "zod": "catalog:forms"
