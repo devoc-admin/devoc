@@ -7,7 +7,6 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { ContactLink } from "./components/contact-link";
 import { Copyright } from "./components/copyright";
-import { GradientLine } from "./components/gradient-line";
 import { Logo } from "./components/logo";
 import { OrangeDecorativeStone } from "./components/orange-decorative-stone";
 
@@ -78,7 +77,6 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <GradientLine />
     </footer>
   );
 }
