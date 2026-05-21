@@ -18,6 +18,7 @@ import {
 import { motion } from "motion/react";
 import Image from "next/image";
 import { useMediaQuery } from "usehooks-ts";
+import RubiksCube from "@/components/motion-core/rubiks-cube/rubiks-cube";
 import GlowLine from "@/components/sera-ui/glow-line";
 import { cn } from "@/lib/utils";
 import PhotoGroupe from "./assets/photo-groupe.webp";
@@ -30,7 +31,6 @@ import { SectionCatchline } from "./components/section-catchline";
 import { SectionSeparator } from "./components/section-separator";
 import { ServiceCard } from "./components/service-card";
 import { SupSection } from "./components/sup-section";
-
 export function Main() {
   return (
     <div
@@ -107,25 +107,28 @@ function SectionCollectif() {
           "2xl:flew-row 2xl:gap-x-42"
         )}
       >
-        <div
-          className={cn(
-            // ↔️
-            "space-y-6",
-            "2xl:space-y-10"
-          )}
-        >
-          <FadeUp disableOnMobile>
-            <SupSection number={1}>Le collectif</SupSection>
-          </FadeUp>
-          <FadeUp delay={0.1} disableOnMobile>
-            <SectionCatchline>
-              Remettre la transmission et l'autonomie au{" "}
-              <span className="font-extralight text-foreground-dark/60 italic">
-                centre
-              </span>
-              .
-            </SectionCatchline>
-          </FadeUp>
+        <div>
+          <div
+            className={cn(
+              // ↔️
+              "space-y-6",
+              "2xl:space-y-10"
+            )}
+          >
+            <FadeUp disableOnMobile>
+              <SupSection number={1}>Le collectif</SupSection>
+            </FadeUp>
+            <FadeUp delay={0.1} disableOnMobile>
+              <SectionCatchline>
+                Remettre la transmission et l'autonomie au{" "}
+                <span className="font-extralight text-foreground-dark/60 italic">
+                  centre
+                </span>
+                .
+              </SectionCatchline>
+            </FadeUp>
+          </div>
+          <CustomCube />
         </div>
 
         <div
@@ -137,41 +140,78 @@ function SectionCollectif() {
         >
           <FadeUp delay={0.1} disableOnMobile>
             <PIntro>
-              Dev'Oc est né d'une conviction simple : la proximité, la clarté et
-              l'exigence technique sont compatibles avec les budgets des TPE,
-              PME et collectivités locales.
+              Dev'Oc est né d'un constat : trop d'artisans, de commerçants et de
+              communes d'Occitanie naviguent seuls dans leur transformation
+              numérique, faute d'un interlocuteur de confiance à leur échelle.
             </PIntro>
           </FadeUp>
-
           <FadeUp delay={0.2} disableOnMobile>
-            <PContent>
-              Nous accompagnons les acteurs d'Occitanie dans leur transformation
-              numérique — création de sites web, mise en conformité
-              réglementaire, automatisation de processus, sécurisation des
-              infrastructures — avec la proximité et l'exigence comme boussole.
-            </PContent>
+            <PIntro>
+              Or nous sommes convaincus que l'exigence technique et la proximité
+              humaine ne sont pas des luxes réservés aux grandes structures mais
+              qu'elles peuvent, et doivent, être accessibles à tous les budgets.
+            </PIntro>
           </FadeUp>
 
           <FadeUp delay={0.3} disableOnMobile>
             <PContent>
-              À la transformation, nous joignons la transmission. Nous animons
-              des formations à destination des entrepreneurs et des élus pour
-              démystifier ces sujets, révéler des pistes d'action et diffuser
-              largement les bonnes pratiques, dans un langage clair et
-              accessible.
+              Nous accompagnons ainsi les TPE, PME et collectivités d'Occitanie
+              sur l'ensemble de leur transformation numérique : création de
+              sites web, mise en conformité RGPD, cybersécurité, automatisation
+              des processus ou déploiement de solutions souveraines.
             </PContent>
           </FadeUp>
 
           <FadeUp delay={0.4} disableOnMobile>
             <PContent>
-              Notre conviction : améliorer l'empreinte numérique d'un
-              territoire, c'est l'aider à grandir.
+              À la transformation, nous ajoutons la transmission. Parce qu'un
+              outil numérique mal compris est un outil vite abandonné, nous
+              proposons des formations concrètes à destination des dirigeants,
+              des équipes et des élus. L'objectif n'est pas de tout savoir, mais
+              de reprendre la main : comprendre les enjeux, poser les bonnes
+              questions, et faire des choix éclairés.
+            </PContent>
+          </FadeUp>
+
+          <FadeUp delay={0.5} disableOnMobile>
+            <PContent>
+              Un territoire qui maîtrise son numérique attire, fidélise et
+              rayonne. Ce n'est pas une question de technologie mais de
+              souveraineté locale. C'est ce que nous construisons, commune après
+              commune, entreprise après entreprise, en Occitanie.
             </PContent>
           </FadeUp>
         </div>
       </div>
       <SectionSeparator />
     </section>
+  );
+}
+
+// 🧊
+function CustomCube() {
+  return (
+    <motion.div
+      className={cn(
+        "mx-auto",
+        "max-md:hidden",
+        "md:mt-42 md:size-60",
+        "lg:mt-28 lg:size-70",
+        "xl:mt-28 xl:size-80",
+        "2xl:mt-14 2xl:size-100"
+      )}
+      initial={{
+        opacity: 0,
+      }}
+      transition={{
+        delay: 1,
+        duration: 25,
+      }}
+      viewport={{ margin: "-100px", once: true }}
+      whileInView={{ opacity: 0.7 }}
+    >
+      <RubiksCube />
+    </motion.div>
   );
 }
 
@@ -790,7 +830,7 @@ function FadeUp({
         // ↔️
         className
       )}
-      initial={{ opacity: 0, y: 28 }}
+      initial={{ opacity: 0, y: 35 }}
       transition={{
         delay,
         duration: 0.9,
