@@ -42,7 +42,7 @@ type RubiksCubeProps = {
 export default function RubiksCube({
   className = "",
   size = 1,
-  duration = 1.5,
+  duration = 3,
   gap = 0.015,
   radius = 0.125,
   fresnelConfig,
@@ -57,7 +57,7 @@ export default function RubiksCube({
     >
       <div className="absolute inset-0 z-0">
         <Canvas
-          camera={{ position: [0, 0, 10] }}
+          camera={{ position: [0, 0, 5] }}
           dpr={dpr}
           gl={{ toneMapping: NoToneMapping }}
         >
