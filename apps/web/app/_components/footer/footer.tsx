@@ -25,7 +25,7 @@ export function Footer() {
       <div
         className={cn(
           "rounded-t-4xl",
-          "border-t border-t-zinc-600/10",
+          "border-t border-t-foreground-dark/5",
           "bg-linear-to-br from-primary/5 via-transparent to-primary/5",
           "px-4 xs:px-6 sm:px-8 md:px-10",
           "py-12 xl:py-24"

@@ -1,225 +1,344 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import Footer from "@/app/_components/footer/footer";
 import { cn } from "@/lib/utils";
-import { LegalHeader } from "../_components/legal-header";
-
-export const metadata: Metadata = {
-  description: "Politique de confidentialité du site Dev'Oc",
-  title: "Politique de confidentialité | Dev'Oc",
-};
-
+import { HeaderWrapper } from "../_components/header-wrapper";
+import { InformationBar } from "../_components/information-bar";
+import { LI } from "../_components/li";
+import { ListItems } from "../_components/list-items";
+import { PIntro } from "../_components/p-intro";
+import { PageSubtitle } from "../_components/page-subtitle";
+import { PageTitle } from "../_components/page-title";
 export default function PolitiqueDeConfidentialitePage() {
   return (
     <>
-      <LegalHeader />
-      <div
-        className={cn(
-          "mx-auto max-w-200",
-          "px-6 py-24",
-          "text-muted-foreground text-sm leading-relaxed",
-          "md:py-32"
-        )}
-      >
-        <h1 className="mb-12 font-kanit text-4xl text-foreground">
-          Politique de confidentialité
-        </h1>
-
-        <Section title="Responsable du traitement">
-          <p>Raison sociale : Dev'Oc (association de fait)</p>
-          <p>
-            Email :{" "}
-            <a
-              className="text-primary underline"
-              href="mailto:contact@dev-oc.fr"
-            >
-              contact@dev-oc.fr
-            </a>
-          </p>
-          <p>Téléphone : +33 6 20 23 98 38</p>
-        </Section>
-
-        <Section title="Données personnelles collectées">
-          <p>
-            Dans le cadre de l'utilisation de notre site, nous sommes
-            susceptibles de collecter les données personnelles suivantes :
-          </p>
-          <ul className="ml-6 list-disc space-y-1">
-            <li>Nom et prénom</li>
-            <li>Adresse email</li>
-            <li>Numéro de téléphone</li>
-            <li>Données de navigation (cookies, adresse IP)</li>
-          </ul>
-        </Section>
-
-        <Section title="Finalités du traitement">
-          <p>Les données collectées sont utilisées pour :</p>
-          <ul className="ml-6 list-disc space-y-1">
-            <li>Répondre à vos demandes de contact</li>
-            <li>Vous fournir les services demandés</li>
-            <li>Améliorer notre site et nos services</li>
-            <li>Respecter nos obligations légales</li>
-          </ul>
-        </Section>
-
-        <Section title="Base légale du traitement">
-          <p>Le traitement de vos données repose sur :</p>
-          <ul className="ml-6 list-disc space-y-1">
-            <li>Votre consentement (article 6.1.a du RGPD) pour les cookies</li>
-            <li>
-              L'exécution d'un contrat (article 6.1.b du RGPD) pour la
-              fourniture de nos services
-            </li>
-            <li>
-              L'intérêt légitime (article 6.1.f du RGPD) pour l'amélioration de
-              nos services
-            </li>
-          </ul>
-        </Section>
-
-        <Section title="Durée de conservation">
-          <p>
-            Vos données personnelles sont conservées pendant une durée de 3 ans
-            à compter de votre dernière interaction avec nous, sauf obligation
-            légale de conservation plus longue.
-          </p>
-        </Section>
-
-        <Section title="Destinataires des données">
-          <p>
-            Vos données peuvent être transmises aux destinataires suivants :
-          </p>
-          <ul className="ml-6 list-disc space-y-1">
-            <li>Les membres de l'équipe Dev'Oc</li>
-            <li>Nos sous-traitants techniques (hébergement, analytics)</li>
-          </ul>
-          <p className="mt-2">
-            Certaines données peuvent être transférées aux États-Unis
-            (hébergement Vercel, analytics). Ces transferts sont encadrés par
-            les clauses contractuelles types de la Commission européenne.
-          </p>
-        </Section>
-
-        <Section title="Vos droits">
-          <p>
-            Conformément au RGPD et à la loi Informatique et Libertés, vous
-            disposez des droits suivants :
-          </p>
-          <ul className="ml-6 list-disc space-y-1">
-            <li>
-              <strong className="text-foreground">Droit d'accès</strong> :
-              obtenir la confirmation que vos données sont traitées et en
-              demander une copie
-            </li>
-            <li>
-              <strong className="text-foreground">
-                Droit de rectification
-              </strong>{" "}
-              : corriger vos données inexactes ou incomplètes
-            </li>
-            <li>
-              <strong className="text-foreground">Droit à l'effacement</strong>{" "}
-              : demander la suppression de vos données
-            </li>
-            <li>
-              <strong className="text-foreground">
-                Droit à la limitation du traitement
-              </strong>{" "}
-              : restreindre le traitement de vos données
-            </li>
-            <li>
-              <strong className="text-foreground">
-                Droit à la portabilité
-              </strong>{" "}
-              : recevoir vos données dans un format structuré
-            </li>
-            <li>
-              <strong className="text-foreground">Droit d'opposition</strong> :
-              vous opposer au traitement de vos données
-            </li>
-          </ul>
-          <p className="mt-2">
-            Pour exercer ces droits, contactez-nous à{" "}
-            <a
-              className="text-primary underline"
-              href="mailto:contact@dev-oc.fr"
-            >
-              contact@dev-oc.fr
-            </a>
-            .
-          </p>
-          <p className="mt-2">
-            Vous pouvez également introduire une réclamation auprès de la CNIL
-            (Commission Nationale de l'Informatique et des Libertés) :{" "}
-            <a
-              className="text-primary underline"
-              href="https://www.cnil.fr"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              www.cnil.fr
-            </a>
-            .
-          </p>
-        </Section>
-
-        <Section title="Cookies">
-          <p>
-            Ce site utilise des cookies pour améliorer votre expérience de
-            navigation et réaliser des statistiques de visites.
-          </p>
-          <p className="mt-2">Types de cookies utilisés :</p>
-          <ul className="ml-6 list-disc space-y-1">
-            <li>
-              <strong className="text-foreground">Cookies essentiels</strong> :
-              nécessaires au fonctionnement du site
-            </li>
-            <li>
-              <strong className="text-foreground">Cookies analytiques</strong> :
-              mesure d'audience (Vercel Analytics)
-            </li>
-          </ul>
-          <p className="mt-2">
-            Vous pouvez gérer vos préférences de cookies à tout moment via les
-            paramètres de votre navigateur.
-          </p>
-        </Section>
-
-        <Section title="Modification de la politique">
-          <p>
-            Nous nous réservons le droit de modifier la présente politique de
-            confidentialité à tout moment. La version en vigueur est celle
-            accessible sur cette page.
-          </p>
-          <p className="mt-2">Dernière mise à jour : 5 avril 2026</p>
-        </Section>
-
-        <div className="mt-12 border-border border-t pt-8">
-          <Link
-            className="text-lg text-primary underline transition-colors hover:text-primary/80"
-            href="/mentions-legales"
+      {/* 1️⃣ / 🔠 ... 🆎*/}
+      <HeaderWrapper>
+        {/*🔠*/}
+        <PageSubtitle>RGPD & vie privée</PageSubtitle>
+        {/*🆎*/}
+        <PageTitle>
+          Politique de{" "}
+          <span
+            className={cn(
+              "bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text text-transparent"
+            )}
           >
-            Voir nos mentions légales
-          </Link>
-        </div>
-      </div>
-      <Footer />
+            confidentialité
+          </span>
+          .
+        </PageTitle>
+      </HeaderWrapper>
+      {/* 2️⃣ / 🔤 */}
+      <InformationBar informationBarItems={informationBarItems} />
+      {/* 3️⃣ */}
+      <PIntro>
+        Le respect de votre vie privée et de vos données personnelles fait
+        partie intégrante de notre démarche d'ingénieur. Cette page décrit, en
+        langage clair, ce que nous collectons, pourquoi, et comment vous gardez
+        la main.
+      </PIntro>
+      {/* 4️⃣ */}
+      <ListItems items={items} />
     </>
   );
 }
 
-// ------------------------------------------------------------------------------------------------
-function Section({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="mb-10">
-      <h2 className="mb-4 font-kanit text-2xl text-foreground">{title}</h2>
-      <div className="space-y-2 text-lg">{children}</div>
-    </section>
-  );
-}
+const informationBarItems = [
+  {
+    id: "maj",
+    type: "Mise à jour",
+    value: "Mai 2026",
+  },
+  {
+    id: "lecture",
+    type: "Lecture",
+    value: "6 min",
+  },
+  {
+    id: " statut",
+    type: "Statut",
+    value: "En vigueur",
+  },
+];
+
+const items = [
+  {
+    content: (
+      <>
+        <p>
+          Le responsable du traitement des données personnelles collectées sur
+          dev-oc.fr est le collectif{" "}
+          <span className="text-foreground-dark/85">Dev'Oc</span>, basé à
+          Carcassonne (Aude, France). Le site{" "}
+          <a className="text-foreground-dark/85 underline" href="www.dev-oc.fr">
+            dev-oc.fr
+          </a>{" "}
+          est édité par le collectif Dev'Oc, association de fait composée de
+          Clément Dubos et Thibaut Izard.
+        </p>
+        <p>
+          Pour toute question relative au traitement de vos données :{" "}
+          <a
+            className="text-foreground-dark/85 underline"
+            href="mailto:contact@dev-oc.fr"
+          >
+            contact@dev-oc.fr
+          </a>
+        </p>
+      </>
+    ),
+    id: "responsable-traitement",
+    title: "Responsable du traitement",
+  },
+  {
+    content: (
+      <>
+        <p>
+          Nous appliquons le principe de{" "}
+          <span className="text-foreground-dark/85">minimisation</span> : seules
+          les données strictement nécessaires à la finalité poursuivie sont
+          collectées.
+        </p>
+        <ul className="space-y-4">
+          <LI label="Formulaire de contact">
+            nom, prénom, adresse email, message — uniquement pour répondre à
+            votre demande.
+          </LI>
+          <LI label="Mesure d'audience">
+            données techniques anonymisées (type d'appareil, pays, pages
+            visitées) via Vercel Analytics — sans cookie ni identifiant
+            persistant.
+          </LI>
+          <LI label="Logs techniques">
+            conservés temporairement par notre hébergeur pour la sécurité du
+            service.
+          </LI>
+        </ul>
+      </>
+    ),
+    id: "donnees-collectees",
+    title: "Données que nous collectons",
+  },
+  {
+    content: (
+      <ul className="space-y-4">
+        <LI>Répondre aux demandes de contact et établir des devis</LI>
+        <LI>Gérer la relation contractuelle avec nos clients</LI>
+        <LI>
+          Analyser de manière agrégée la fréquentation du site pour l'améliorer
+        </LI>
+        <LI>Garantir la sécurité et la disponibilité du service</LI>
+      </ul>
+    ),
+    id: "traitement",
+    title: "Finalités du traitement",
+  },
+  {
+    content: (
+      <>
+        <p>
+          Conformément à l'article 6 du RGPD, les traitements reposent sur :
+        </p>
+        <ul className="space-y-4">
+          <LI>
+            <span className="text-foreground-dark/85">Votre consentement</span>{" "}
+            pour les demandes spontanées via formulaire
+          </LI>
+          <LI>
+            <span className="text-foreground-dark/85">
+              L'exécution d'un contrat
+            </span>{" "}
+            ou de mesures précontractuelles pour la relation client
+          </LI>
+          <LI>
+            <span className="text-foreground-dark/85">
+              Notre intérêt légitime
+            </span>{" "}
+            à mesurer l'audience de manière respectueuse et à sécuriser nos
+            services
+          </LI>
+        </ul>
+      </>
+    ),
+    id: " bases-legales",
+    title: "Bases légales",
+  },
+  {
+    content: (
+      <ul className="space-y-4">
+        <LI label="Demandes de contact">
+          3 ans à compter du dernier échange, puis suppression automatique
+        </LI>
+        <LI label="Données contractuelles">
+          10 ans (obligations comptables et fiscales)
+        </LI>
+        <LI label="Données d'audience">
+          agrégées dès la collecte, conservées 13 mois maximum
+        </LI>
+        <LI label="Logs techniques">12 mois maximum</LI>
+      </ul>
+    ),
+    id: "duree-conservation",
+    title: "Durée de conservation",
+  },
+  {
+    content: (
+      <>
+        <p>
+          Vos données ne sont jamais vendues. Elles sont accessibles uniquement
+          aux co-fondateurs de Dev'Oc et, le cas échéant, aux sous-traitants
+          techniques strictement nécessaires :
+        </p>
+        <ul className="space-y-4">
+          <LI>
+            <span className="text-foreground-dark/85">Vercel</span>{" "}
+            (hébergement, États-Unis — cadre des clauses contractuelles types)
+          </LI>
+          <LI>
+            <span className="text-foreground-dark/85">Resend</span> (envoi
+            d'emails transactionnels, Union européenne)
+          </LI>
+        </ul>
+      </>
+    ),
+    id: "destinaires",
+    title: "Destinataires",
+  },
+  {
+    content: (
+      <>
+        <p>
+          Conformément aux articles 15 à 22 du RGPD, vous disposez à tout moment
+          des droits suivants :
+        </p>
+        <ul className="space-y-4">
+          <LI>
+            <span className="text-foreground-dark/85">Accès</span> à vos données
+            personnelles
+          </LI>
+          <LI>
+            <span className="text-foreground-dark/85">Rectification</span> des
+            données inexactes
+          </LI>
+          <LI>
+            <span className="text-foreground-dark/85">Effacement</span> (droit à
+            l'oubli)
+          </LI>
+          <LI>
+            <span className="text-foreground-dark/85">Limitation</span> du
+            traitement
+          </LI>
+          <LI>
+            <span className="text-foreground-dark/85">Portabilité</span> de vos
+            données dans un format ouvert
+          </LI>
+          <LI>
+            <span className="text-foreground-dark/85">Opposition</span> au
+            traitement
+          </LI>
+          <LI>
+            <span className="text-foreground-dark/85">
+              Retrait du consentement
+            </span>{" "}
+            à tout moment
+          </LI>
+        </ul>
+        <p>
+          Pour exercer ces droits, écrivez-nous à{" "}
+          <a
+            className="text-foreground-dark/85 underline"
+            href="mailto:contact@dev-oc.fr"
+          >
+            contact@dev-oc.fr
+          </a>
+          . Nous vous répondons sous 30 jours maximum.
+        </p>
+      </>
+    ),
+    id: "vos-droits",
+    title: "Vos droits",
+  },
+  {
+    content: (
+      <>
+        <p className="text-foreground-dark/60">
+          Le site dev-oc.fr utilise un nombre minimal de cookies, classés par
+          finalité :
+        </p>
+        <ul className="space-y-4">
+          <LI label="Strictement nécessaire">
+            sécurité, préférences d'affichage. Aucun consentement requis.
+          </LI>
+          <LI label="Mesure d'audience anonyme">
+            via Vercel Analytics, sans dépôt de cookie ni d'identifiant
+            persistant.
+          </LI>
+        </ul>
+        <p className="text-foreground-dark/60">
+          Aucun cookie publicitaire, aucun traceur tiers à des fins commerciales
+          n'est déposé.
+        </p>
+      </>
+    ),
+    id: "cookies-traceurs",
+    title: "Cookies & traceurs",
+  },
+  {
+    content: (
+      <p className="text-foreground-dark/60">
+        Les présentes mentions légales sont régies par le droit français. En cas
+        de litige, les juridictions françaises seront seules compétentes,
+        conformément aux règles de compétence territoriale en vigueur.
+      </p>
+    ),
+    id: "droit",
+    title: "Droit applicable & juridiction",
+  },
+  {
+    content: (
+      <p>
+        Nous mettons en œuvre les mesures techniques et organisationnelles
+        appropriées pour protéger vos données : chiffrement TLS de bout en bout,
+        sauvegardes régulières, accès restreint aux données, hébergement
+        européen quand techniquement possible, et audits de sécurité
+        périodiques.
+      </p>
+    ),
+    id: "securite",
+    title: "Sécurité",
+  },
+  {
+    content: (
+      <>
+        <p>
+          Si vous estimez, après nous avoir contactés, que vos droits ne sont
+          pas respectés, vous pouvez introduire une réclamation auprès de la{" "}
+          <span className="text-foreground-dark/85">CNIL</span> :
+        </p>
+        <ul className="space-y-4">
+          <LI>3 place de Fontenoy — TSA 80715 — 75334 Paris Cedex 07</LI>
+          <LI>
+            <a
+              className="text-foreground-dark underline"
+              href="https://www.cnil.fr"
+            >
+              www.cnil.fr
+            </a>
+          </LI>
+        </ul>
+      </>
+    ),
+    id: "reclamation",
+    title: "Réclamation",
+  },
+  {
+    content: (
+      <p>
+        Cette politique peut être amenée à évoluer pour suivre les évolutions
+        réglementaires et techniques. Toute modification substantielle vous sera
+        signalée par tout moyen approprié, et la date de dernière mise à jour
+        est mentionnée en tête de page.
+      </p>
+    ),
+    id: "politique",
+    title: "Évolution de cette politique",
+  },
+];

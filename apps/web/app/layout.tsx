@@ -16,6 +16,7 @@ import {
 } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import SkipLink from "@/components/ui/skip-link";
+import { FontsReadyGate } from "./_components/fonts-ready-gate";
 import { TailwindLandmark } from "./_components/tailwind-landmark/tailwind-landmark";
 import "./globals.css";
 
@@ -103,6 +104,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} ${fraunces.variable} mx-auto flex min-h-screen flex-col font-sans`}
       >
         <SkipLink />
+        <FontsReadyGate />
         <NuqsAdapter>
           <main className="grow" id="main-content">
             {children}
