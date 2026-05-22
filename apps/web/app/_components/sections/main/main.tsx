@@ -253,8 +253,8 @@ function Portraits() {
         "2xl:flex-row 2xl:gap-x-8"
       )}
     >
-      {founders.map(({ key, ...props }) => (
-        <FadeUp key={key}>
+      {founders.map(({ key, ...props }, index) => (
+        <FadeUp delay={0.25 * index} key={key}>
           <Portrait {...props} />
         </FadeUp>
       ))}
