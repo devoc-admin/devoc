@@ -205,8 +205,7 @@ function CustomCube() {
         opacity: 0,
       }}
       transition={{
-        delay: 1,
-        duration: 25,
+        duration: 20,
       }}
       viewport={{ margin: "-100px", once: true }}
       whileInView={{ opacity: 0.7 }}
