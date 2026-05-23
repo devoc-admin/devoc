@@ -15,13 +15,13 @@ export default function LegalLayout({
           "overflow-hidden",
           "mx-auto bg-background-dark",
           // ↔️
-          "py-16",
-          "xs:py-16",
-          "sm:py-20",
-          "md:py-24",
-          "lg:py-26",
-          "xl:py-26",
-          "2xl:py-26"
+          "pt-16 pb-18",
+          "xs:pt-16 xs:pb-18",
+          "sm:pt-20 sm:pb-22",
+          "md:pt-24 md:pb-32",
+          "lg:pt-26 lg:pb-32",
+          "xl:pt-26 xl:pb-32",
+          "2xl:pt-26 2xl:pb-32"
         )}
       >
         <OrangeDot className="top-0 right-0 size-[50vw] translate-x-1/2 -translate-y-1/2 opacity-30" />
@@ -55,7 +55,7 @@ export default function LegalLayout({
           </div>
         </div>
       </div>
-      <Footer />
+      <Footer animate={false} />
     </div>
   );
 }

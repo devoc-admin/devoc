@@ -37,9 +37,7 @@ export function ListItems({
             key={id}
           >
             <h3 className="font-fraunces text-3xl">{title}</h3>
-            <div
-              className={cn("space-y-4 text-[0.93rem] text-foreground-dark/60")}
-            >
+            <div className={cn("space-y-4 text-base text-foreground-dark/60")}>
               {content}
             </div>
           </div>
