@@ -25,7 +25,7 @@ export function ReasonCard({
         "2xl:p-8"
       )}
     >
-      {/* 1️⃣ */}
+      {/* 1️⃣ 🖼️ */}
       <div
         className={cn(
           "grid place-items-center rounded-full border border-foreground-dark/10 bg-foreground-dark/3",
@@ -37,7 +37,7 @@ export function ReasonCard({
       >
         <Icon color="#AEABA4" size={18} />
       </div>
-      {/* 2️⃣ */}
+      {/* 2️⃣ 🔢🔤 */}
       <div className="mt-8 flex flex-col gap-y-3">
         <div
           className={cn(

@@ -85,15 +85,15 @@ function SectionCollectif() {
     <section
       className={cn(
         "mx-auto",
-        "scroll-m-12",
+        "scroll-mt-12",
         // ↔️
         "space-y-14",
         "xs:space-y-14",
         "sm:space-y-20",
         "md:space-y-24",
         "lg:space-y-28",
-        "xl:space-y-44",
-        "2xl:space-y-52"
+        "xl:space-y-34",
+        "2xl:space-y-34"
       )}
       id="collectif"
     >
@@ -243,9 +243,9 @@ function Portraits() {
       className={cn(
         "flex",
         // ↔️
-        "flex-col gap-y-6",
-        "xs:flex-col xs:gap-y-6",
-        "sm:flex-col sm:gap-y-6",
+        "flex-col gap-y-12",
+        "xs:flex-col xs:gap-y-12",
+        "sm:flex-col sm:gap-y-12",
         "md:flex-row md:gap-x-3",
         "lg:flex-row lg:gap-x-4",
         "xl:flex-row xl:gap-x-6",
@@ -253,7 +253,7 @@ function Portraits() {
       )}
     >
       {founders.map(({ key, ...props }, index) => (
-        <FadeUp delay={0.25 * index} key={key}>
+        <FadeUp delay={0.25 * index} disableOnMobile key={key}>
           <Portrait {...props} />
         </FadeUp>
       ))}
@@ -315,7 +315,15 @@ function PortraitGroupe() {
 // 4️⃣💁‍♀️🔤
 function SectionServices() {
   return (
-    <section className="mx-auto space-y-24">
+    <section
+      className={cn(
+        "mx-auto",
+        // ↔️
+        "space-y-14",
+        "md:space-y-20",
+        "lg:space-y-24"
+      )}
+    >
       {/* 🔠 */}
       <div
         className={cn(
@@ -335,10 +343,10 @@ function SectionServices() {
             "2xl:space-y-10"
           )}
         >
-          <FadeUp>
+          <FadeUp disableOnMobile>
             <SupSection number={2}>Services</SupSection>
           </FadeUp>
-          <FadeUp delay={0.1}>
+          <FadeUp delay={0.1} disableOnMobile>
             <SectionCatchline>
               Une chaîne de valeur{" "}
               <span className="font-extralight text-foreground-dark/60 italic">
@@ -350,7 +358,7 @@ function SectionServices() {
         </div>
 
         <div className={cn("space-y-10", "md:self-end")}>
-          <FadeUp delay={0.2}>
+          <FadeUp delay={0.2} disableOnMobile>
             <PContent className="w-fit max-w-[50ch]">
               Cinq pôles d'expertise complémentaires que nous mobilisons à la
               carte selon vos besoins, vos délais et votre budget. Pas de
@@ -373,7 +381,7 @@ function SectionServices() {
             "2xl:col-span-7"
           )}
         >
-          <FadeUp className="size-full">
+          <FadeUp className="size-full" disableOnMobile>
             <ServiceCard {...services[0]} index={1} />
           </FadeUp>
         </div>
@@ -389,7 +397,7 @@ function SectionServices() {
             "2xl:col-span-5"
           )}
         >
-          <FadeUp className="size-full" delay={0.1}>
+          <FadeUp className="size-full" delay={0.1} disableOnMobile>
             <ServiceCard {...services[1]} index={2} />
           </FadeUp>
         </div>
@@ -437,7 +445,7 @@ function SectionServices() {
             "2xl:col-span-12"
           )}
         >
-          <FadeUp className="size-full" delay={0.4}>
+          <FadeUp className="size-full" delay={0.4} disableOnMobile>
             <ServiceCard {...services[4]} index={5} />
           </FadeUp>
         </div>
@@ -518,10 +526,10 @@ function SectionValues() {
     >
       {/* 🔠 */}
       <div className="space-y-10">
-        <FadeUp>
+        <FadeUp disableOnMobile>
           <SupSection number={3}>Nos valeurs</SupSection>
         </FadeUp>
-        <FadeUp delay={0.1}>
+        <FadeUp delay={0.1} disableOnMobile>
           <SectionCatchline>
             Trois{" "}
             <span className="font-extralight text-foreground-dark/60 italic">
@@ -534,7 +542,7 @@ function SectionValues() {
       {/* 🪗🪗🪗 */}
       <div>
         {values.map(({ id, ...props }, index) => (
-          <FadeUp className="group w-full" delay={0.1} key={id}>
+          <FadeUp className="group w-full" delay={0.1} disableOnMobile key={id}>
             <ListItem {...props} index={index + 1} />
           </FadeUp>
         ))}
@@ -577,10 +585,10 @@ function SectionReasons() {
     >
       {/* 🔠 */}
       <div className="space-y-10">
-        <FadeUp>
+        <FadeUp disableOnMobile>
           <SupSection number={4}>Pourquoi Dev'Oc</SupSection>
         </FadeUp>
-        <FadeUp delay={0.1}>
+        <FadeUp delay={0.1} disableOnMobile>
           <SectionCatchline>
             Quatre{" "}
             <span className="font-extralight text-foreground-dark/60 italic">
@@ -593,7 +601,12 @@ function SectionReasons() {
       {/* 👆👆👆👆 */}
       <div className={cn("grid gap-6", "grid-cols-1", "sm:grid-cols-2")}>
         {reasons.map(({ id, ...props }, index) => (
-          <FadeUp className="w-fit" delay={0.1 * index} key={id}>
+          <FadeUp
+            className="w-fit"
+            delay={0.1 * index}
+            disableOnMobile
+            key={id}
+          >
             <ReasonCard {...props} index={index} />
           </FadeUp>
         ))}
@@ -636,11 +649,11 @@ const reasons = [
 // 7️⃣📞
 function ContactCard() {
   return (
-    <FadeUp className="w-full">
+    <FadeUp className="w-full" disableOnMobile>
       <div
         className={cn(
           "flex justify-between gap-x-24",
-          "scroll-m-12",
+          "scroll-mt-12",
           "relative",
           "rounded-3xl",
           "border border-foreground-dark/10",
@@ -688,7 +701,19 @@ function ContactCard() {
             )}
           >
             <SupSection number={5}>Contact</SupSection>
-            <SectionCatchline className="font-normal!">
+            <SectionCatchline
+              className={cn(
+                // ↔️
+                "leading-[0.9]!",
+                "font-medium text-4xl",
+                "xs:font-medium xs:text-4xl",
+                "sm:font-light sm:text-5xl",
+                "md:font-light md:text-5xl",
+                "lg:font-light lg:text-5xl",
+                "xl:font-light xl:text-6xl",
+                "2xl:font-normal 2xl:text-8xl"
+              )}
+            >
               Parlons de votre{" "}
               <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text text-transparent">
                 projet
@@ -700,7 +725,7 @@ function ContactCard() {
                 "text-foreground-dark/60",
                 // ↔️
                 "text-md",
-                "2xl:text-lg"
+                "xl:text-lg"
               )}
             >
               Décrivez-nous votre besoin en quelques lignes. Nous vous répondons
@@ -710,7 +735,7 @@ function ContactCard() {
           </div>
         </div>
         {/* 2️⃣ */}
-        <div className={cn("relative", "w-full", "md:w-275", "")}>
+        <div className={cn("relative", "w-full", "md:max-w-130")}>
           {itemContacts.map(({ id, ...props }) => (
             <ListItemContact {...props} key={id} />
           ))}
@@ -745,18 +770,24 @@ function ListItemContact({
           "linear-gradient(to right, transparent, oklch(from var(--color-foreground-dark) calc(l - 0.40) c h) 20%, oklch(from var(--color-foreground-dark) calc(l - 0.60) c h) 80%, transparent) 1",
       }}
     >
-      {/* 1️⃣ */}
+      {/* 1️⃣ 🖼️ */}
       <div
         className={cn(
           "grid place-items-center",
           "size-10",
           "rounded-full",
-          "border border-foreground-dark/10 bg-foreground-dark/3"
+          "border",
+          "transition-colors",
+          "border-foreground-dark/10 bg-foreground-dark/3",
+          "group-hover:border-primary/50 group-hover:bg-primary/10"
         )}
       >
-        <Icon color="#AEABA4" size={16} />
+        <Icon
+          className="text-[#AEABA4] transition-colors group-hover:text-primary/80"
+          size={16}
+        />
       </div>
-      {/* 2️⃣ */}
+      {/* 2️⃣ 🔤 */}
       <div>
         <div
           className={cn(
@@ -768,9 +799,11 @@ function ListItemContact({
         >
           {label}
         </div>
-        <div className="font-light text-sm">{value}</div>
+        <div className="font-light text-sm transition-colors group-hover:text-primary">
+          {value}
+        </div>
       </div>
-      {/* 3️⃣ */}
+      {/* 3️⃣ ➡️ */}
       <div className="ml-auto transition-transform group-hover:-translate-x-0.5">
         <ArrowRightIcon size={14} />
       </div>
@@ -780,21 +813,21 @@ function ListItemContact({
 
 const itemContacts = [
   {
-    href: "",
+    href: "mailto:contact@dev-oc.fr",
     Icon: MailIcon,
     id: "email",
     label: "Email",
     value: "contact@dev-oc.fr",
   },
   {
-    href: "",
+    href: "tel:+33620239838",
     Icon: PhoneIcon,
     id: "tel-1",
     label: "Téléphone — Thibaut",
     value: "+33 6 20 23 98 38",
   },
   {
-    href: "",
+    href: "tel:+6258889701",
     Icon: PhoneIcon,
     id: "tel-2",
     label: "Téléphone — Clément",

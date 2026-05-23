@@ -10,18 +10,10 @@ import { Copyright } from "./components/copyright";
 import { Logo } from "./components/logo";
 import { OrangeDecorativeStone } from "./components/orange-decorative-stone";
 
-export function Footer() {
-  useFooterAnimation();
+export function Footer({ animate = true }: { animate?: boolean }) {
+  useFooterAnimation({ animate });
   return (
-    <footer
-      className={cn(
-        "sticky",
-        "z-0",
-        "bottom-0",
-        "overflow-hidden",
-        "bg-background-dark"
-      )}
-    >
+    <footer className={cn("bottom-0", "overflow-hidden", "bg-background-dark")}>
       <div
         className={cn(
           "rounded-t-4xl",
@@ -86,8 +78,9 @@ export default Footer;
 // ------------------------
 // ✨ Scroll animation
 gsap.registerPlugin(ScrollTrigger);
-function useFooterAnimation() {
+function useFooterAnimation({ animate = true }: { animate: boolean }) {
   useGSAP(() => {
+    if (!animate) return;
     const tl = gsap.timeline({
       scrollTrigger: {
         end: () => ScrollTrigger.maxScroll(window),
