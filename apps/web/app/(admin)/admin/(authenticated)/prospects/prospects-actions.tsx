@@ -26,6 +26,7 @@ const prospectsQuery = db
     longitude: prospect.longitude,
     name: prospect.name,
     siteEditor: prospect.siteEditor,
+    siteEditorUrl: prospect.siteEditorUrl,
     siteLaunchedAt: prospect.siteLaunchedAt,
     type: prospect.type,
     updatedAt: prospect.updatedAt,
@@ -63,6 +64,7 @@ export async function addProspect({
   inhabitants,
   siteLaunchedAt,
   siteEditor,
+  siteEditorUrl,
   hasAccessibilitySettings,
 }: {
   name: string;
@@ -76,6 +78,7 @@ export async function addProspect({
   inhabitants?: number | null;
   siteLaunchedAt?: string | null;
   siteEditor?: string | null;
+  siteEditorUrl?: string | null;
   hasAccessibilitySettings?: boolean | null;
 }) {
   try {
@@ -91,6 +94,7 @@ export async function addProspect({
         longitude,
         name,
         siteEditor,
+        siteEditorUrl,
         siteLaunchedAt,
         type,
         website,
@@ -118,6 +122,7 @@ export async function editProspect({
   inhabitants,
   siteLaunchedAt,
   siteEditor,
+  siteEditorUrl,
   hasAccessibilitySettings,
 }: {
   id: number;
@@ -131,6 +136,7 @@ export async function editProspect({
   inhabitants?: number | null;
   siteLaunchedAt?: string | null;
   siteEditor?: string | null;
+  siteEditorUrl?: string | null;
   hasAccessibilitySettings?: boolean | null;
 }) {
   try {
@@ -145,6 +151,7 @@ export async function editProspect({
         longitude,
         name,
         siteEditor,
+        siteEditorUrl,
         siteLaunchedAt,
         type,
         website,

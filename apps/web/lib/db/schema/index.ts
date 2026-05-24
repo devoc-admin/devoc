@@ -363,6 +363,7 @@ export const prospect = pgTable(
     inhabitants: integer(),
     siteLaunchedAt: date({ mode: "string" }),
     siteEditor: text(),
+    siteEditorUrl: text(),
     hasAccessibilitySettings: boolean(),
     crawlId: text(),
     createdAt: timestamp({ mode: "string", withTimezone: true })

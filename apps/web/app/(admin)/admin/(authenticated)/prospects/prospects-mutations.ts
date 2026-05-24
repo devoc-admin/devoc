@@ -29,6 +29,7 @@ export function useAddProspectMutation() {
       inhabitants,
       siteLaunchedAt,
       siteEditor,
+      siteEditorUrl,
       hasAccessibilitySettings,
     }: {
       name: string;
@@ -42,6 +43,7 @@ export function useAddProspectMutation() {
       inhabitants?: number | null;
       siteLaunchedAt?: string | null;
       siteEditor?: string | null;
+      siteEditorUrl?: string | null;
       hasAccessibilitySettings?: boolean | null;
     }) => {
       const result = await addProspect({
@@ -54,6 +56,7 @@ export function useAddProspectMutation() {
         longitude,
         name,
         siteEditor,
+        siteEditorUrl,
         siteLaunchedAt,
         type,
         website,
@@ -93,6 +96,7 @@ export function useEditProspectMutation() {
       inhabitants,
       siteLaunchedAt,
       siteEditor,
+      siteEditorUrl,
       hasAccessibilitySettings,
     }: {
       id: number;
@@ -105,6 +109,7 @@ export function useEditProspectMutation() {
       inhabitants?: number | null;
       siteLaunchedAt?: string | null;
       siteEditor?: string | null;
+      siteEditorUrl?: string | null;
       hasAccessibilitySettings?: boolean | null;
     }) => {
       const result = await editProspect({
@@ -116,6 +121,7 @@ export function useEditProspectMutation() {
         longitude,
         name,
         siteEditor,
+        siteEditorUrl,
         siteLaunchedAt,
         type,
         website,

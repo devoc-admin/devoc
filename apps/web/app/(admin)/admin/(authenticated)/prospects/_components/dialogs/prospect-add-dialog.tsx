@@ -25,6 +25,7 @@ import {
 import type { Prospect } from "@/lib/db/schema";
 import { useProspectsContext } from "../../prospects-context";
 import { PROSPECT_TYPES } from "../buttons/prospect-type-button";
+import { EditorCombobox } from "../editor-combobox";
 import {
   type PlaceResult,
   PlacesAutocomplete,
@@ -272,17 +273,13 @@ export function ProspectAddDialog() {
                   </div>
                 )}
               </form.Field>
-              {/* 🛠️ Éditeur du site */}
+              {/* 🛠️ Éditeur du site (combobox liste + saisie libre) */}
               <form.Field name="siteEditor">
                 {(field) => (
                   <div>
                     <Label>Éditeur du site (optionnel)</Label>
-                    <CustomInput
-                      name={field.name}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        field.handleChange(e.target.value)
-                      }
-                      placeholder="ex : Agence Acme"
+                    <EditorCombobox
+                      onCommit={(next) => field.handleChange(next)}
                       value={field.state.value}
                     />
                   </div>

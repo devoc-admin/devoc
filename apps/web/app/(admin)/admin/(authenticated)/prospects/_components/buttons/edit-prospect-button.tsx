@@ -30,6 +30,7 @@ import {
 import type { Prospect } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import { useProspectsContext } from "../../prospects-context";
+import { EditorCombobox } from "../editor-combobox";
 import { PROSPECT_TYPES, ProspectTypeBadge } from "./prospect-type-button";
 
 export function EditProspectButton({ prospect }: { prospect: Prospect }) {
@@ -228,20 +229,46 @@ export function EditProspectButton({ prospect }: { prospect: Prospect }) {
                 </div>
               )}
             </form.Field>
-            {/* 🛠️ Éditeur du site */}
+            {/* 🛠️ Éditeur du site (combobox liste + saisie libre) */}
             <form.Field name="siteEditor">
               {(field) => (
                 <div>
                   <Label>Éditeur du site (optionnel)</Label>
+                  <EditorCombobox
+                    onCommit={(next) => field.handleChange(next)}
+                    value={field.state.value}
+                  />
+                </div>
+              )}
+            </form.Field>
+            {/* 🔗 URL de l'éditeur */}
+            <form.Field
+              name="siteEditorUrl"
+              validators={{
+                onSubmit: ({ value }) => {
+                  if (value.trim() && !isValidUrlFormat(value))
+                    return "L'URL n'est pas valide";
+                },
+              }}
+            >
+              {(field) => (
+                <div>
+                  <Label>URL de l'éditeur (optionnel)</Label>
                   <Input
                     className="h-10"
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       field.handleChange(e.target.value)
                     }
-                    placeholder="ex : Agence Acme"
+                    placeholder="https://…"
+                    type="url"
                     value={field.state.value}
                   />
+                  {!field.state.meta.isValid && (
+                    <ErrorMessage>
+                      {field.state.meta.errors.join(", ")}
+                    </ErrorMessage>
+                  )}
                 </div>
               )}
             </form.Field>
@@ -416,6 +443,7 @@ function useEditProspectForm(prospect: Prospect) {
       longitude: prospect.longitude ?? "",
       name: prospect.name ?? "",
       siteEditor: prospect.siteEditor ?? "",
+      siteEditorUrl: prospect.siteEditorUrl ?? "",
       siteLaunchedAt: prospect.siteLaunchedAt ?? "",
       type: prospect.type as Prospect["type"],
       website: prospect.website ?? "",
@@ -428,6 +456,7 @@ function useEditProspectForm(prospect: Prospect) {
       }
       const siteLaunchedAt = value.siteLaunchedAt.trim() || null;
       const siteEditor = value.siteEditor.trim() || null;
+      const siteEditorUrl = value.siteEditorUrl.trim() || null;
       let hasAccessibilitySettings: boolean | null = null;
       if (value.hasAccessibilitySettings === "yes") {
         hasAccessibilitySettings = true;
@@ -443,6 +472,7 @@ function useEditProspectForm(prospect: Prospect) {
         longitude: value.longitude || undefined,
         name: value.name,
         siteEditor,
+        siteEditorUrl,
         siteLaunchedAt,
         type: value.type,
         website: value.website,

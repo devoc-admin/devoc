@@ -137,10 +137,14 @@ function useProspectsTable() {
         return a < b ? -1 : 1;
       },
     }),
-    // 🛠️ Éditeur du site (inline editable)
+    // 🛠️ Éditeur du site (inline editable, combobox)
     columnHelper.accessor("siteEditor", {
       cell: ({ getValue, row }) => (
-        <SiteEditorCell prospectId={row.original.id} value={getValue()} />
+        <SiteEditorCell
+          prospectId={row.original.id}
+          url={row.original.siteEditorUrl}
+          value={getValue()}
+        />
       ),
       header: ({ column }) => (
         <SortableHeader column={column} label="Éditeur" />

@@ -271,6 +271,7 @@ type ProspectAddData = {
   inhabitants?: number | null;
   siteLaunchedAt?: string | null;
   siteEditor?: string | null;
+  siteEditorUrl?: string | null;
   hasAccessibilitySettings?: boolean | null;
 };
 
@@ -381,4 +382,18 @@ export const useProspectsContext = () => {
     );
   }
   return context;
+};
+
+// Distinct list of editor names already used across prospects (unfiltered).
+// Used by the EditorCombobox to suggest values that are already saved.
+export const useExistingEditors = () => {
+  const { data: allProspects } = useListProspectsQuery();
+  return useMemo(() => {
+    const set = new Set<string>();
+    for (const p of allProspects ?? []) {
+      const trimmed = p.siteEditor?.trim();
+      if (trimmed) set.add(trimmed);
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b, "fr"));
+  }, [allProspects]);
 };
