@@ -228,6 +228,48 @@ export function EditProspectButton({ prospect }: { prospect: Prospect }) {
                 </div>
               )}
             </form.Field>
+            {/* 🛠️ Éditeur du site */}
+            <form.Field name="siteEditor">
+              {(field) => (
+                <div>
+                  <Label>Éditeur du site (optionnel)</Label>
+                  <Input
+                    className="h-10"
+                    name={field.name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      field.handleChange(e.target.value)
+                    }
+                    placeholder="ex : Agence Acme"
+                    value={field.state.value}
+                  />
+                </div>
+              )}
+            </form.Field>
+            {/* ♿ Paramètres d'accessibilité */}
+            <form.Field name="hasAccessibilitySettings">
+              {(field) => (
+                <div>
+                  <Label>Paramètres d'accessibilité</Label>
+                  <Select
+                    onValueChange={(newValue) =>
+                      field.handleChange(newValue as "unknown" | "yes" | "no")
+                    }
+                    value={field.state.value}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Non renseigné" />
+                    </SelectTrigger>
+                    <SelectContent align="start">
+                      <SelectGroup>
+                        <SelectItem value="unknown">Non renseigné</SelectItem>
+                        <SelectItem value="yes">Oui</SelectItem>
+                        <SelectItem value="no">Non</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </form.Field>
             {/* 👥 Nombre d'habitants (uniquement pour les communes) */}
             <form.Subscribe selector={(state) => state.values.type}>
               {(currentType) =>
@@ -236,12 +278,13 @@ export function EditProspectButton({ prospect }: { prospect: Prospect }) {
                     name="inhabitants"
                     validators={{
                       onSubmit: ({ value }) => {
-                        if (!value.trim()) return;
-                        const num = Number.parseInt(value, 10);
+                        const normalized = value.replace(/\s+/g, "");
+                        if (!normalized) return;
+                        const num = Number.parseInt(normalized, 10);
                         if (
                           !Number.isInteger(num) ||
                           num < 0 ||
-                          String(num) !== value.trim()
+                          String(num) !== normalized
                         )
                           return "Nombre d'habitants invalide";
                       },
@@ -364,29 +407,42 @@ function useEditProspectForm(prospect: Prospect) {
   const { editProspectMutate } = useProspectsContext();
   const form = useForm({
     defaultValues: {
+      hasAccessibilitySettings: hasAccessibilityToFormValue(
+        prospect.hasAccessibilitySettings
+      ),
       inhabitants: prospect.inhabitants?.toString() ?? "",
       latitude: prospect.latitude ?? "",
       location: prospect.location ?? "",
       longitude: prospect.longitude ?? "",
       name: prospect.name ?? "",
+      siteEditor: prospect.siteEditor ?? "",
       siteLaunchedAt: prospect.siteLaunchedAt ?? "",
       type: prospect.type as Prospect["type"],
       website: prospect.website ?? "",
     },
     onSubmit: ({ value }) => {
-      const inhabitantsRaw = value.inhabitants.trim();
+      const inhabitantsRaw = value.inhabitants.replace(/\s+/g, "");
       let inhabitants: number | null = null;
       if (value.type === "city" && inhabitantsRaw) {
         inhabitants = Number.parseInt(inhabitantsRaw, 10);
       }
       const siteLaunchedAt = value.siteLaunchedAt.trim() || null;
+      const siteEditor = value.siteEditor.trim() || null;
+      let hasAccessibilitySettings: boolean | null = null;
+      if (value.hasAccessibilitySettings === "yes") {
+        hasAccessibilitySettings = true;
+      } else if (value.hasAccessibilitySettings === "no") {
+        hasAccessibilitySettings = false;
+      }
       editProspectMutate({
+        hasAccessibilitySettings,
         id: prospect.id,
         inhabitants,
         latitude: value.latitude || undefined,
         location: value.location,
         longitude: value.longitude || undefined,
         name: value.name,
+        siteEditor,
         siteLaunchedAt,
         type: value.type,
         website: value.website,
@@ -395,6 +451,14 @@ function useEditProspectForm(prospect: Prospect) {
   });
 
   return form;
+}
+
+function hasAccessibilityToFormValue(
+  value: boolean | null
+): "unknown" | "yes" | "no" {
+  if (value === true) return "yes";
+  if (value === false) return "no";
+  return "unknown";
 }
 
 function ErrorMessage({ children }: { children: string }) {

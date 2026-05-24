@@ -362,6 +362,8 @@ export const prospect = pgTable(
     hasSite: boolean().default(true).notNull(),
     inhabitants: integer(),
     siteLaunchedAt: date({ mode: "string" }),
+    siteEditor: text(),
+    hasAccessibilitySettings: boolean(),
     crawlId: text(),
     createdAt: timestamp({ mode: "string", withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)

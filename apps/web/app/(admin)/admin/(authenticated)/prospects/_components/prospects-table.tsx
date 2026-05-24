@@ -25,6 +25,8 @@ import { GoCrawlDetailsPageButton } from "./buttons/go-crawl-details-page";
 import { LaunchCrawlButton } from "./buttons/launch-crawl-button";
 import { ProspectTypeBadge } from "./buttons/prospect-type-button";
 import { CrawlStatusCell } from "./cells/crawl-status-cell";
+import { HasAccessibilitySettingsCell } from "./cells/has-accessibility-settings-cell";
+import { SiteEditorCell } from "./cells/site-editor-cell";
 import { SiteLaunchedAtCell } from "./cells/site-launched-at-cell";
 import { EstimatedOpportunitySelect } from "./selects/estimated-opportunity-select";
 
@@ -133,6 +135,47 @@ function useProspectsTable() {
         if (!a) return 1;
         if (!b) return -1;
         return a < b ? -1 : 1;
+      },
+    }),
+    // 🛠️ Éditeur du site (inline editable)
+    columnHelper.accessor("siteEditor", {
+      cell: ({ getValue, row }) => (
+        <SiteEditorCell prospectId={row.original.id} value={getValue()} />
+      ),
+      header: ({ column }) => (
+        <SortableHeader column={column} label="Éditeur" />
+      ),
+      sortingFn: (rowA, rowB) => {
+        const a = rowA.original.siteEditor ?? "";
+        const b = rowB.original.siteEditor ?? "";
+        if (a === b) return 0;
+        if (!a) return 1;
+        if (!b) return -1;
+        return a.localeCompare(b, "fr");
+      },
+    }),
+    // ♿ Paramètres d'accessibilité (inline editable)
+    columnHelper.accessor("hasAccessibilitySettings", {
+      cell: ({ getValue, row }) => (
+        <HasAccessibilitySettingsCell
+          prospectId={row.original.id}
+          value={getValue()}
+        />
+      ),
+      header: ({ column }) => (
+        <SortableHeader column={column} label="Accessibilité" />
+      ),
+      sortingFn: (rowA, rowB) => {
+        const order = { false: 1, null: 2, true: 0 };
+        const a = String(rowA.original.hasAccessibilitySettings) as
+          | "true"
+          | "false"
+          | "null";
+        const b = String(rowB.original.hasAccessibilitySettings) as
+          | "true"
+          | "false"
+          | "null";
+        return order[a] - order[b];
       },
     }),
     // 🎯 Estimated opportunity (Urgence)

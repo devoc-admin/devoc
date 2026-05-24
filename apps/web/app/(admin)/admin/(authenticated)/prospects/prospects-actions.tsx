@@ -17,6 +17,7 @@ const prospectsQuery = db
     crawlStatus: crawl.status,
     createdAt: prospect.createdAt,
     estimatedOpportunity: prospect.estimatedOpportunity,
+    hasAccessibilitySettings: prospect.hasAccessibilitySettings,
     hasSite: prospect.hasSite,
     id: prospect.id,
     inhabitants: prospect.inhabitants,
@@ -24,6 +25,7 @@ const prospectsQuery = db
     location: prospect.location,
     longitude: prospect.longitude,
     name: prospect.name,
+    siteEditor: prospect.siteEditor,
     siteLaunchedAt: prospect.siteLaunchedAt,
     type: prospect.type,
     updatedAt: prospect.updatedAt,
@@ -60,6 +62,8 @@ export async function addProspect({
   estimatedOpportunity,
   inhabitants,
   siteLaunchedAt,
+  siteEditor,
+  hasAccessibilitySettings,
 }: {
   name: string;
   type: Prospect["type"];
@@ -71,18 +75,22 @@ export async function addProspect({
   estimatedOpportunity?: Prospect["estimatedOpportunity"];
   inhabitants?: number | null;
   siteLaunchedAt?: string | null;
+  siteEditor?: string | null;
+  hasAccessibilitySettings?: boolean | null;
 }) {
   try {
     const prospectResult = await db
       .insert(prospect)
       .values({
         estimatedOpportunity,
+        hasAccessibilitySettings,
         hasSite,
         inhabitants,
         latitude,
         location,
         longitude,
         name,
+        siteEditor,
         siteLaunchedAt,
         type,
         website,
@@ -109,6 +117,8 @@ export async function editProspect({
   estimatedOpportunity,
   inhabitants,
   siteLaunchedAt,
+  siteEditor,
+  hasAccessibilitySettings,
 }: {
   id: number;
   name: string;
@@ -120,17 +130,21 @@ export async function editProspect({
   estimatedOpportunity?: Prospect["estimatedOpportunity"];
   inhabitants?: number | null;
   siteLaunchedAt?: string | null;
+  siteEditor?: string | null;
+  hasAccessibilitySettings?: boolean | null;
 }) {
   try {
     const prospectResult = await db
       .update(prospect)
       .set({
         estimatedOpportunity,
+        hasAccessibilitySettings,
         inhabitants,
         latitude,
         location,
         longitude,
         name,
+        siteEditor,
         siteLaunchedAt,
         type,
         website,
@@ -194,6 +208,52 @@ export async function updateEstimatedOpportunity({
     await db
       .update(prospect)
       .set({ estimatedOpportunity })
+      .where(eq(prospect.id, prospectId))
+      .execute();
+    return { success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
+// 🛠️ Update site editor
+
+export async function updateSiteEditor({
+  prospectId,
+  siteEditor,
+}: {
+  prospectId: number;
+  siteEditor: string | null;
+}) {
+  try {
+    await db
+      .update(prospect)
+      .set({ siteEditor })
+      .where(eq(prospect.id, prospectId))
+      .execute();
+    return { success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
+// ♿ Update accessibility settings flag
+
+export async function updateHasAccessibilitySettings({
+  prospectId,
+  hasAccessibilitySettings,
+}: {
+  prospectId: number;
+  hasAccessibilitySettings: boolean | null;
+}) {
+  try {
+    await db
+      .update(prospect)
+      .set({ hasAccessibilitySettings })
       .where(eq(prospect.id, prospectId))
       .execute();
     return { success: true };

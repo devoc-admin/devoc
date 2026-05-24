@@ -272,6 +272,47 @@ export function ProspectAddDialog() {
                   </div>
                 )}
               </form.Field>
+              {/* 🛠️ Éditeur du site */}
+              <form.Field name="siteEditor">
+                {(field) => (
+                  <div>
+                    <Label>Éditeur du site (optionnel)</Label>
+                    <CustomInput
+                      name={field.name}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        field.handleChange(e.target.value)
+                      }
+                      placeholder="ex : Agence Acme"
+                      value={field.state.value}
+                    />
+                  </div>
+                )}
+              </form.Field>
+              {/* ♿ Paramètres d'accessibilité */}
+              <form.Field name="hasAccessibilitySettings">
+                {(field) => (
+                  <div>
+                    <Label>Paramètres d'accessibilité</Label>
+                    <Select
+                      onValueChange={(newValue) =>
+                        field.handleChange(newValue as "unknown" | "yes" | "no")
+                      }
+                      value={field.state.value}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Non renseigné" />
+                      </SelectTrigger>
+                      <SelectContent align="start">
+                        <SelectGroup>
+                          <SelectItem value="unknown">Non renseigné</SelectItem>
+                          <SelectItem value="yes">Oui</SelectItem>
+                          <SelectItem value="no">Non</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+              </form.Field>
               {/* 👥 Nombre d'habitants (uniquement pour les communes) */}
               <form.Subscribe selector={(state) => state.values.type}>
                 {(currentType) =>
@@ -280,12 +321,13 @@ export function ProspectAddDialog() {
                       name="inhabitants"
                       validators={{
                         onSubmit: ({ value }) => {
-                          if (!value.trim()) return;
-                          const num = Number.parseInt(value, 10);
+                          const normalized = value.replace(/\s+/g, "");
+                          if (!normalized) return;
+                          const num = Number.parseInt(normalized, 10);
                           if (
                             !Number.isInteger(num) ||
                             num < 0 ||
-                            String(num) !== value.trim()
+                            String(num) !== normalized
                           )
                             return "Nombre d'habitants invalide";
                         },
@@ -345,14 +387,18 @@ type ProspectFormData = {
   longitude: string;
   inhabitants: string;
   siteLaunchedAt: string;
+  siteEditor: string;
+  hasAccessibilitySettings: "unknown" | "yes" | "no";
 };
 
 const defaultProspect: ProspectFormData = {
+  hasAccessibilitySettings: "unknown",
   inhabitants: "",
   latitude: "",
   location: "",
   longitude: "",
   name: "",
+  siteEditor: "",
   siteLaunchedAt: "",
   type: "city",
   website: "",
@@ -364,17 +410,26 @@ function useProspectForm() {
     defaultValues: defaultProspect,
     onSubmit: ({ value }) => {
       const hasWebsite = value.website.trim() !== "";
-      const inhabitantsRaw = value.inhabitants.trim();
+      const inhabitantsRaw = value.inhabitants.replace(/\s+/g, "");
       const inhabitants =
         value.type === "city" && inhabitantsRaw
           ? Number.parseInt(inhabitantsRaw, 10)
           : undefined;
       const siteLaunchedAt = value.siteLaunchedAt.trim() || null;
+      const siteEditor = value.siteEditor.trim() || null;
+      let hasAccessibilitySettings: boolean | null = null;
+      if (value.hasAccessibilitySettings === "yes") {
+        hasAccessibilitySettings = true;
+      } else if (value.hasAccessibilitySettings === "no") {
+        hasAccessibilitySettings = false;
+      }
       addProspectMutate({
         ...value,
+        hasAccessibilitySettings,
         inhabitants,
         latitude: value.latitude || undefined,
         longitude: value.longitude || undefined,
+        siteEditor,
         siteLaunchedAt,
         // Si pas de site web, hasSite = false et estimatedOpportunity = "strong"
         ...(hasWebsite

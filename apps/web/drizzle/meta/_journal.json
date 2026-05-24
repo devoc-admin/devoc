@@ -29,6 +29,13 @@
       "when": 1779635832835,
       "tag": "0003_spotty_network",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1779636308365,
+      "tag": "0004_massive_marauders",
+      "breakpoints": true
     }
   ]
 }

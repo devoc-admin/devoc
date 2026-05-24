@@ -8,6 +8,8 @@ import {
   editProspect,
   toggleHasSite,
   updateEstimatedOpportunity,
+  updateHasAccessibilitySettings,
+  updateSiteEditor,
   updateSiteLaunchedAt,
 } from "./prospects-actions";
 
@@ -26,6 +28,8 @@ export function useAddProspectMutation() {
       estimatedOpportunity,
       inhabitants,
       siteLaunchedAt,
+      siteEditor,
+      hasAccessibilitySettings,
     }: {
       name: string;
       website: string;
@@ -37,15 +41,19 @@ export function useAddProspectMutation() {
       estimatedOpportunity?: Prospect["estimatedOpportunity"];
       inhabitants?: number | null;
       siteLaunchedAt?: string | null;
+      siteEditor?: string | null;
+      hasAccessibilitySettings?: boolean | null;
     }) => {
       const result = await addProspect({
         estimatedOpportunity,
+        hasAccessibilitySettings,
         hasSite,
         inhabitants,
         latitude,
         location,
         longitude,
         name,
+        siteEditor,
         siteLaunchedAt,
         type,
         website,
@@ -84,6 +92,8 @@ export function useEditProspectMutation() {
       longitude,
       inhabitants,
       siteLaunchedAt,
+      siteEditor,
+      hasAccessibilitySettings,
     }: {
       id: number;
       name: string;
@@ -94,14 +104,18 @@ export function useEditProspectMutation() {
       longitude?: string;
       inhabitants?: number | null;
       siteLaunchedAt?: string | null;
+      siteEditor?: string | null;
+      hasAccessibilitySettings?: boolean | null;
     }) => {
       const result = await editProspect({
+        hasAccessibilitySettings,
         id,
         inhabitants,
         latitude,
         location,
         longitude,
         name,
+        siteEditor,
         siteLaunchedAt,
         type,
         website,
@@ -176,6 +190,67 @@ export function useUpdateEstimatedOpportunityMutation() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prospects"] });
       toast.success("Urgence mise à jour avec succès !");
+    },
+  });
+}
+
+// --------------------------------------
+// 🛠️ Update site editor
+
+export function useUpdateSiteEditorMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      prospectId,
+      siteEditor,
+    }: {
+      prospectId: number;
+      siteEditor: string | null;
+    }) => {
+      const result = await updateSiteEditor({ prospectId, siteEditor });
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return true;
+    },
+    onError: () => {
+      toast.error("Erreur lors de la mise à jour de l'éditeur.");
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["prospects"] });
+    },
+  });
+}
+
+// --------------------------------------
+// ♿ Update accessibility settings flag
+
+export function useUpdateHasAccessibilitySettingsMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      prospectId,
+      hasAccessibilitySettings,
+    }: {
+      prospectId: number;
+      hasAccessibilitySettings: boolean | null;
+    }) => {
+      const result = await updateHasAccessibilitySettings({
+        hasAccessibilitySettings,
+        prospectId,
+      });
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return true;
+    },
+    onError: () => {
+      toast.error("Erreur lors de la mise à jour de l'accessibilité.");
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["prospects"] });
     },
   });
 }

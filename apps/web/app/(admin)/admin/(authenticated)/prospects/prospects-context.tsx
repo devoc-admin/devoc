@@ -18,6 +18,8 @@ import {
   useEditProspectMutation,
   useLaunchCrawlMutation,
   useUpdateEstimatedOpportunityMutation,
+  useUpdateHasAccessibilitySettingsMutation,
+  useUpdateSiteEditorMutation,
   useUpdateSiteLaunchedAtMutation,
 } from "./prospects-mutations";
 import { useListProspectsQuery } from "./prospects-queries";
@@ -62,6 +64,16 @@ const ProspectsContext = createContext<ProspectsContext>({
   isUpdatingSiteLaunchedAt: false,
   updateSiteLaunchedAtMutate: () => {},
   updatingSiteLaunchedAtProspectId: undefined,
+
+  // 🛠️ Site editor
+  isUpdatingSiteEditor: false,
+  updateSiteEditorMutate: () => {},
+  updatingSiteEditorProspectId: undefined,
+
+  // ♿ Accessibility settings
+  isUpdatingHasAccessibilitySettings: false,
+  updateHasAccessibilitySettingsMutate: () => {},
+  updatingHasAccessibilitySettingsProspectId: undefined,
 
   // 🗺️ View mode
   viewMode: "table",
@@ -159,6 +171,25 @@ export function ProspectsContextProvider({
   const updatingSiteLaunchedAtProspectId =
     updatingSiteLaunchedAtVariables?.prospectId;
 
+  // 🛠️ Update site editor
+  const {
+    mutate: updateSiteEditorMutate,
+    isPending: isUpdatingSiteEditor,
+    variables: updatingSiteEditorVariables,
+  } = useUpdateSiteEditorMutation();
+
+  const updatingSiteEditorProspectId = updatingSiteEditorVariables?.prospectId;
+
+  // ♿ Update accessibility settings flag
+  const {
+    mutate: updateHasAccessibilitySettingsMutate,
+    isPending: isUpdatingHasAccessibilitySettings,
+    variables: updatingHasAccessibilitySettingsVariables,
+  } = useUpdateHasAccessibilitySettingsMutation();
+
+  const updatingHasAccessibilitySettingsProspectId =
+    updatingHasAccessibilitySettingsVariables?.prospectId;
+
   // 🕷️ Launch crawl
   const {
     mutate: launchCrawlMutate,
@@ -211,6 +242,16 @@ export function ProspectsContextProvider({
         updateSiteLaunchedAtMutate,
         updatingSiteLaunchedAtProspectId,
 
+        // 🛠️ Update site editor
+        isUpdatingSiteEditor,
+        updateSiteEditorMutate,
+        updatingSiteEditorProspectId,
+
+        // ♿ Update accessibility settings flag
+        isUpdatingHasAccessibilitySettings,
+        updateHasAccessibilitySettingsMutate,
+        updatingHasAccessibilitySettingsProspectId,
+
         // 🗺️ View mode
         viewMode,
       }}
@@ -229,6 +270,8 @@ type ProspectAddData = {
   longitude?: string;
   inhabitants?: number | null;
   siteLaunchedAt?: string | null;
+  siteEditor?: string | null;
+  hasAccessibilitySettings?: boolean | null;
 };
 
 type ProspectEditData = ProspectAddData & { id: number };
@@ -290,6 +333,26 @@ type ProspectsContext = {
   >;
   updatingSiteLaunchedAtProspectId: number | undefined;
   isUpdatingSiteLaunchedAt: boolean;
+
+  // 🛠️ Site editor
+  updateSiteEditorMutate: UseMutateFunction<
+    boolean,
+    Error,
+    { prospectId: number; siteEditor: string | null },
+    unknown
+  >;
+  updatingSiteEditorProspectId: number | undefined;
+  isUpdatingSiteEditor: boolean;
+
+  // ♿ Accessibility settings flag
+  updateHasAccessibilitySettingsMutate: UseMutateFunction<
+    boolean,
+    Error,
+    { prospectId: number; hasAccessibilitySettings: boolean | null },
+    unknown
+  >;
+  updatingHasAccessibilitySettingsProspectId: number | undefined;
+  isUpdatingHasAccessibilitySettings: boolean;
 
   // 🕷️ Launch crawl
   launchCrawlMutate: UseMutateFunction<
