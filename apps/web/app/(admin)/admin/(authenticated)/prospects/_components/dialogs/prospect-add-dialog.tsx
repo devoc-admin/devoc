@@ -256,6 +256,64 @@ export function ProspectAddDialog() {
                   </div>
                 )}
               </form.Field>
+              {/* 📅 Date de mise en ligne du site (tous types) */}
+              <form.Field name="siteLaunchedAt">
+                {(field) => (
+                  <div className="col-span-2">
+                    <Label>Date de mise en ligne du site (optionnel)</Label>
+                    <CustomInput
+                      name={field.name}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        field.handleChange(e.target.value)
+                      }
+                      type="date"
+                      value={field.state.value}
+                    />
+                  </div>
+                )}
+              </form.Field>
+              {/* 👥 Nombre d'habitants (uniquement pour les communes) */}
+              <form.Subscribe selector={(state) => state.values.type}>
+                {(currentType) =>
+                  currentType === "city" ? (
+                    <form.Field
+                      name="inhabitants"
+                      validators={{
+                        onSubmit: ({ value }) => {
+                          if (!value.trim()) return;
+                          const num = Number.parseInt(value, 10);
+                          if (
+                            !Number.isInteger(num) ||
+                            num < 0 ||
+                            String(num) !== value.trim()
+                          )
+                            return "Nombre d'habitants invalide";
+                        },
+                      }}
+                    >
+                      {(field) => (
+                        <div className="col-span-2">
+                          <Label>Nombre d'habitants (optionnel)</Label>
+                          <CustomInput
+                            inputMode="numeric"
+                            name={field.name}
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => field.handleChange(e.target.value)}
+                            placeholder="ex : 12450"
+                            value={field.state.value}
+                          />
+                          {!field.state.meta.isValid && (
+                            <ErrorMessage>
+                              {field.state.meta.errors.join(", ")}
+                            </ErrorMessage>
+                          )}
+                        </div>
+                      )}
+                    </form.Field>
+                  ) : null
+                }
+              </form.Subscribe>
             </div>
             <form.Subscribe selector={(state) => state.isSubmitting}>
               {(isSubmitting) => (
@@ -285,13 +343,17 @@ type ProspectFormData = {
   website: string;
   latitude: string;
   longitude: string;
+  inhabitants: string;
+  siteLaunchedAt: string;
 };
 
 const defaultProspect: ProspectFormData = {
+  inhabitants: "",
   latitude: "",
   location: "",
   longitude: "",
   name: "",
+  siteLaunchedAt: "",
   type: "city",
   website: "",
 };
@@ -302,10 +364,18 @@ function useProspectForm() {
     defaultValues: defaultProspect,
     onSubmit: ({ value }) => {
       const hasWebsite = value.website.trim() !== "";
+      const inhabitantsRaw = value.inhabitants.trim();
+      const inhabitants =
+        value.type === "city" && inhabitantsRaw
+          ? Number.parseInt(inhabitantsRaw, 10)
+          : undefined;
+      const siteLaunchedAt = value.siteLaunchedAt.trim() || null;
       addProspectMutate({
         ...value,
+        inhabitants,
         latitude: value.latitude || undefined,
         longitude: value.longitude || undefined,
+        siteLaunchedAt,
         // Si pas de site web, hasSite = false et estimatedOpportunity = "strong"
         ...(hasWebsite
           ? {}

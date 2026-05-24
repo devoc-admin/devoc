@@ -211,6 +211,66 @@ export function EditProspectButton({ prospect }: { prospect: Prospect }) {
                 </div>
               )}
             </form.Field>
+            {/* 📅 Date de mise en ligne du site (tous types) */}
+            <form.Field name="siteLaunchedAt">
+              {(field) => (
+                <div className="col-span-2">
+                  <Label>Date de mise en ligne du site (optionnel)</Label>
+                  <Input
+                    className="h-10"
+                    name={field.name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      field.handleChange(e.target.value)
+                    }
+                    type="date"
+                    value={field.state.value}
+                  />
+                </div>
+              )}
+            </form.Field>
+            {/* 👥 Nombre d'habitants (uniquement pour les communes) */}
+            <form.Subscribe selector={(state) => state.values.type}>
+              {(currentType) =>
+                currentType === "city" ? (
+                  <form.Field
+                    name="inhabitants"
+                    validators={{
+                      onSubmit: ({ value }) => {
+                        if (!value.trim()) return;
+                        const num = Number.parseInt(value, 10);
+                        if (
+                          !Number.isInteger(num) ||
+                          num < 0 ||
+                          String(num) !== value.trim()
+                        )
+                          return "Nombre d'habitants invalide";
+                      },
+                    }}
+                  >
+                    {(field) => (
+                      <div className="col-span-2">
+                        <Label>Nombre d'habitants (optionnel)</Label>
+                        <Input
+                          className="h-10"
+                          inputMode="numeric"
+                          name={field.name}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            field.handleChange(e.target.value)
+                          }
+                          placeholder="ex : 12450"
+                          value={field.state.value}
+                        />
+                        {!field.state.meta.isValid && (
+                          <ErrorMessage>
+                            {field.state.meta.errors.join(", ")}
+                          </ErrorMessage>
+                        )}
+                      </div>
+                    )}
+                  </form.Field>
+                ) : null
+              }
+            </form.Subscribe>
             {/* 🗺️ Coordinates (optional) */}
             <div className="col-span-2">
               <Label className="text-muted-foreground text-sm">
@@ -304,20 +364,30 @@ function useEditProspectForm(prospect: Prospect) {
   const { editProspectMutate } = useProspectsContext();
   const form = useForm({
     defaultValues: {
+      inhabitants: prospect.inhabitants?.toString() ?? "",
       latitude: prospect.latitude ?? "",
       location: prospect.location ?? "",
       longitude: prospect.longitude ?? "",
       name: prospect.name ?? "",
+      siteLaunchedAt: prospect.siteLaunchedAt ?? "",
       type: prospect.type as Prospect["type"],
       website: prospect.website ?? "",
     },
     onSubmit: ({ value }) => {
+      const inhabitantsRaw = value.inhabitants.trim();
+      let inhabitants: number | null = null;
+      if (value.type === "city" && inhabitantsRaw) {
+        inhabitants = Number.parseInt(inhabitantsRaw, 10);
+      }
+      const siteLaunchedAt = value.siteLaunchedAt.trim() || null;
       editProspectMutate({
         id: prospect.id,
+        inhabitants,
         latitude: value.latitude || undefined,
         location: value.location,
         longitude: value.longitude || undefined,
         name: value.name,
+        siteLaunchedAt,
         type: value.type,
         website: value.website,
       });

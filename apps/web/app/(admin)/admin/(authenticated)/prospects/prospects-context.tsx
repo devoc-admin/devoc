@@ -18,6 +18,7 @@ import {
   useEditProspectMutation,
   useLaunchCrawlMutation,
   useUpdateEstimatedOpportunityMutation,
+  useUpdateSiteLaunchedAtMutation,
 } from "./prospects-mutations";
 import { useListProspectsQuery } from "./prospects-queries";
 
@@ -56,6 +57,11 @@ const ProspectsContext = createContext<ProspectsContext>({
   // 🔴 Estimated opportunity
   updateEstimatedOpportunityMutate: () => {},
   updatingEstimatedOpportunityProspectId: undefined,
+
+  // 📅 Site launched date
+  isUpdatingSiteLaunchedAt: false,
+  updateSiteLaunchedAtMutate: () => {},
+  updatingSiteLaunchedAtProspectId: undefined,
 
   // 🗺️ View mode
   viewMode: "table",
@@ -143,6 +149,16 @@ export function ProspectsContextProvider({
   const updatingEstimatedOpportunityProspectId =
     updatingEstimatedOpportunityVariables?.prospectId;
 
+  // 📅 Update site launched date
+  const {
+    mutate: updateSiteLaunchedAtMutate,
+    isPending: isUpdatingSiteLaunchedAt,
+    variables: updatingSiteLaunchedAtVariables,
+  } = useUpdateSiteLaunchedAtMutation();
+
+  const updatingSiteLaunchedAtProspectId =
+    updatingSiteLaunchedAtVariables?.prospectId;
+
   // 🕷️ Launch crawl
   const {
     mutate: launchCrawlMutate,
@@ -190,6 +206,11 @@ export function ProspectsContextProvider({
         updateEstimatedOpportunityMutate,
         updatingEstimatedOpportunityProspectId,
 
+        // 📅 Update site launched date
+        isUpdatingSiteLaunchedAt,
+        updateSiteLaunchedAtMutate,
+        updatingSiteLaunchedAtProspectId,
+
         // 🗺️ View mode
         viewMode,
       }}
@@ -206,6 +227,8 @@ type ProspectAddData = {
   type: Prospect["type"];
   latitude?: string;
   longitude?: string;
+  inhabitants?: number | null;
+  siteLaunchedAt?: string | null;
 };
 
 type ProspectEditData = ProspectAddData & { id: number };
@@ -257,6 +280,16 @@ type ProspectsContext = {
   >;
   updatingEstimatedOpportunityProspectId: number | undefined;
   isUpdatingEstimatedOpportunity: boolean;
+
+  // 📅 Site launched date
+  updateSiteLaunchedAtMutate: UseMutateFunction<
+    boolean,
+    Error,
+    { prospectId: number; siteLaunchedAt: string | null },
+    unknown
+  >;
+  updatingSiteLaunchedAtProspectId: number | undefined;
+  isUpdatingSiteLaunchedAt: boolean;
 
   // 🕷️ Launch crawl
   launchCrawlMutate: UseMutateFunction<

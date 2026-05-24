@@ -25,6 +25,7 @@ import { GoCrawlDetailsPageButton } from "./buttons/go-crawl-details-page";
 import { LaunchCrawlButton } from "./buttons/launch-crawl-button";
 import { ProspectTypeBadge } from "./buttons/prospect-type-button";
 import { CrawlStatusCell } from "./cells/crawl-status-cell";
+import { SiteLaunchedAtCell } from "./cells/site-launched-at-cell";
 import { EstimatedOpportunitySelect } from "./selects/estimated-opportunity-select";
 
 export function ProspectsTable() {
@@ -97,6 +98,42 @@ function useProspectsTable() {
     columnHelper.accessor("type", {
       cell: ({ getValue }) => <ProspectTypeBadge type={getValue()} />,
       header: ({ column }) => <SortableHeader column={column} label="Type" />,
+    }),
+    // 👥 Nombre d'habitants (uniquement pour les communes)
+    columnHelper.accessor("inhabitants", {
+      cell: ({ getValue, row }) => {
+        if (row.original.type !== "city") return null;
+        const value = getValue();
+        if (value === null || value === undefined) {
+          return <span className="text-muted-foreground">—</span>;
+        }
+        return <span>{value.toLocaleString("fr-FR")}</span>;
+      },
+      header: ({ column }) => (
+        <SortableHeader column={column} label="Habitants" />
+      ),
+      sortingFn: (rowA, rowB) => {
+        const a = rowA.original.inhabitants ?? -1;
+        const b = rowB.original.inhabitants ?? -1;
+        return a - b;
+      },
+    }),
+    // 📅 Date de mise en ligne du site (tous types, inline editable)
+    columnHelper.accessor("siteLaunchedAt", {
+      cell: ({ getValue, row }) => (
+        <SiteLaunchedAtCell prospectId={row.original.id} value={getValue()} />
+      ),
+      header: ({ column }) => (
+        <SortableHeader column={column} label="Mise en ligne" />
+      ),
+      sortingFn: (rowA, rowB) => {
+        const a = rowA.original.siteLaunchedAt ?? "";
+        const b = rowB.original.siteLaunchedAt ?? "";
+        if (a === b) return 0;
+        if (!a) return 1;
+        if (!b) return -1;
+        return a < b ? -1 : 1;
+      },
     }),
     // 🎯 Estimated opportunity (Urgence)
     columnHelper.accessor("estimatedOpportunity", {

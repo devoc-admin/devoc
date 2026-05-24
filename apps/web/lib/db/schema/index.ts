@@ -3,6 +3,7 @@
 import { sql } from "drizzle-orm";
 import {
   boolean,
+  date,
   foreignKey,
   index,
   integer,
@@ -359,6 +360,8 @@ export const prospect = pgTable(
     type: prospectTypeEnum().default("other").notNull(),
     estimatedOpportunity: estimatedOpportunityEnum().default("medium"),
     hasSite: boolean().default(true).notNull(),
+    inhabitants: integer(),
+    siteLaunchedAt: date({ mode: "string" }),
     crawlId: text(),
     createdAt: timestamp({ mode: "string", withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)

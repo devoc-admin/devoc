@@ -15,6 +15,20 @@
       "when": 1769783540744,
       "tag": "0001_parched_spectrum",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779635315301,
+      "tag": "0002_sticky_ultimates",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1779635832835,
+      "tag": "0003_spotty_network",
+      "breakpoints": true
     }
   ]
 }

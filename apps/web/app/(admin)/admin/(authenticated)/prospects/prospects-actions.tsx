@@ -19,10 +19,12 @@ const prospectsQuery = db
     estimatedOpportunity: prospect.estimatedOpportunity,
     hasSite: prospect.hasSite,
     id: prospect.id,
+    inhabitants: prospect.inhabitants,
     latitude: prospect.latitude,
     location: prospect.location,
     longitude: prospect.longitude,
     name: prospect.name,
+    siteLaunchedAt: prospect.siteLaunchedAt,
     type: prospect.type,
     updatedAt: prospect.updatedAt,
     website: prospect.website,
@@ -56,6 +58,8 @@ export async function addProspect({
   longitude,
   hasSite,
   estimatedOpportunity,
+  inhabitants,
+  siteLaunchedAt,
 }: {
   name: string;
   type: Prospect["type"];
@@ -65,6 +69,8 @@ export async function addProspect({
   longitude?: string;
   hasSite?: boolean;
   estimatedOpportunity?: Prospect["estimatedOpportunity"];
+  inhabitants?: number | null;
+  siteLaunchedAt?: string | null;
 }) {
   try {
     const prospectResult = await db
@@ -72,10 +78,12 @@ export async function addProspect({
       .values({
         estimatedOpportunity,
         hasSite,
+        inhabitants,
         latitude,
         location,
         longitude,
         name,
+        siteLaunchedAt,
         type,
         website,
       })
@@ -99,6 +107,8 @@ export async function editProspect({
   latitude,
   longitude,
   estimatedOpportunity,
+  inhabitants,
+  siteLaunchedAt,
 }: {
   id: number;
   name: string;
@@ -108,16 +118,20 @@ export async function editProspect({
   latitude?: string;
   longitude?: string;
   estimatedOpportunity?: Prospect["estimatedOpportunity"];
+  inhabitants?: number | null;
+  siteLaunchedAt?: string | null;
 }) {
   try {
     const prospectResult = await db
       .update(prospect)
       .set({
         estimatedOpportunity,
+        inhabitants,
         latitude,
         location,
         longitude,
         name,
+        siteLaunchedAt,
         type,
         website,
       })
@@ -180,6 +194,29 @@ export async function updateEstimatedOpportunity({
     await db
       .update(prospect)
       .set({ estimatedOpportunity })
+      .where(eq(prospect.id, prospectId))
+      .execute();
+    return { success: true };
+  } catch (error) {
+    const message = getErrorMessage(error);
+    return { error: message, success: false };
+  }
+}
+
+// --------------------------------------
+// 📅 Update site launched date
+
+export async function updateSiteLaunchedAt({
+  prospectId,
+  siteLaunchedAt,
+}: {
+  prospectId: number;
+  siteLaunchedAt: string | null;
+}) {
+  try {
+    await db
+      .update(prospect)
+      .set({ siteLaunchedAt })
       .where(eq(prospect.id, prospectId))
       .execute();
     return { success: true };
