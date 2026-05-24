@@ -269,6 +269,7 @@ type ProspectAddData = {
   latitude?: string;
   longitude?: string;
   inhabitants?: number | null;
+  distanceFrom?: number | null;
   siteLaunchedAt?: string | null;
   siteEditor?: string | null;
   siteEditorUrl?: string | null;

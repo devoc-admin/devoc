@@ -353,6 +353,43 @@ export function ProspectAddDialog() {
                   ) : null
                 }
               </form.Subscribe>
+              {/* 📏 Distance depuis mon adresse */}
+              <form.Field
+                name="distanceFrom"
+                validators={{
+                  onSubmit: ({ value }) => {
+                    const normalized = value.replace(/\s+/g, "");
+                    if (!normalized) return;
+                    const num = Number.parseInt(normalized, 10);
+                    if (
+                      !Number.isInteger(num) ||
+                      num < 0 ||
+                      String(num) !== normalized
+                    )
+                      return "Distance invalide";
+                  },
+                }}
+              >
+                {(field) => (
+                  <div className="col-span-2">
+                    <Label>Distance depuis mon adresse (km, optionnel)</Label>
+                    <CustomInput
+                      inputMode="numeric"
+                      name={field.name}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        field.handleChange(e.target.value)
+                      }
+                      placeholder="ex : 42"
+                      value={field.state.value}
+                    />
+                    {!field.state.meta.isValid && (
+                      <ErrorMessage>
+                        {field.state.meta.errors.join(", ")}
+                      </ErrorMessage>
+                    )}
+                  </div>
+                )}
+              </form.Field>
             </div>
             <form.Subscribe selector={(state) => state.isSubmitting}>
               {(isSubmitting) => (
@@ -383,12 +420,14 @@ type ProspectFormData = {
   latitude: string;
   longitude: string;
   inhabitants: string;
+  distanceFrom: string;
   siteLaunchedAt: string;
   siteEditor: string;
   hasAccessibilitySettings: "unknown" | "yes" | "no";
 };
 
 const defaultProspect: ProspectFormData = {
+  distanceFrom: "",
   hasAccessibilitySettings: "unknown",
   inhabitants: "",
   latitude: "",
@@ -414,6 +453,10 @@ function useProspectForm() {
           : undefined;
       const siteLaunchedAt = value.siteLaunchedAt.trim() || null;
       const siteEditor = value.siteEditor.trim() || null;
+      const distanceFromRaw = value.distanceFrom.replace(/\s+/g, "");
+      const distanceFrom = distanceFromRaw
+        ? Number.parseInt(distanceFromRaw, 10)
+        : undefined;
       let hasAccessibilitySettings: boolean | null = null;
       if (value.hasAccessibilitySettings === "yes") {
         hasAccessibilitySettings = true;
@@ -422,6 +465,7 @@ function useProspectForm() {
       }
       addProspectMutate({
         ...value,
+        distanceFrom,
         hasAccessibilitySettings,
         inhabitants,
         latitude: value.latitude || undefined,

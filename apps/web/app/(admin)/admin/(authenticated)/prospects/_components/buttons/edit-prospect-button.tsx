@@ -341,6 +341,44 @@ export function EditProspectButton({ prospect }: { prospect: Prospect }) {
                 ) : null
               }
             </form.Subscribe>
+            {/* 📏 Distance depuis mon adresse */}
+            <form.Field
+              name="distanceFrom"
+              validators={{
+                onSubmit: ({ value }) => {
+                  const normalized = value.replace(/\s+/g, "");
+                  if (!normalized) return;
+                  const num = Number.parseInt(normalized, 10);
+                  if (
+                    !Number.isInteger(num) ||
+                    num < 0 ||
+                    String(num) !== normalized
+                  )
+                    return "Distance invalide";
+                },
+              }}
+            >
+              {(field) => (
+                <div className="col-span-2">
+                  <Label>Distance depuis mon adresse (km, optionnel)</Label>
+                  <Input
+                    className="h-10"
+                    inputMode="numeric"
+                    name={field.name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      field.handleChange(e.target.value)
+                    }
+                    placeholder="ex : 42"
+                    value={field.state.value}
+                  />
+                  {!field.state.meta.isValid && (
+                    <ErrorMessage>
+                      {field.state.meta.errors.join(", ")}
+                    </ErrorMessage>
+                  )}
+                </div>
+              )}
+            </form.Field>
             {/* 🗺️ Coordinates (optional) */}
             <div className="col-span-2">
               <Label className="text-muted-foreground text-sm">
@@ -434,6 +472,7 @@ function useEditProspectForm(prospect: Prospect) {
   const { editProspectMutate } = useProspectsContext();
   const form = useForm({
     defaultValues: {
+      distanceFrom: prospect.distanceFrom?.toString() ?? "",
       hasAccessibilitySettings: hasAccessibilityToFormValue(
         prospect.hasAccessibilitySettings
       ),
@@ -457,6 +496,10 @@ function useEditProspectForm(prospect: Prospect) {
       const siteLaunchedAt = value.siteLaunchedAt.trim() || null;
       const siteEditor = value.siteEditor.trim() || null;
       const siteEditorUrl = value.siteEditorUrl.trim() || null;
+      const distanceFromRaw = value.distanceFrom.replace(/\s+/g, "");
+      const distanceFrom = distanceFromRaw
+        ? Number.parseInt(distanceFromRaw, 10)
+        : null;
       let hasAccessibilitySettings: boolean | null = null;
       if (value.hasAccessibilitySettings === "yes") {
         hasAccessibilitySettings = true;
@@ -464,6 +507,7 @@ function useEditProspectForm(prospect: Prospect) {
         hasAccessibilitySettings = false;
       }
       editProspectMutate({
+        distanceFrom,
         hasAccessibilitySettings,
         id: prospect.id,
         inhabitants,

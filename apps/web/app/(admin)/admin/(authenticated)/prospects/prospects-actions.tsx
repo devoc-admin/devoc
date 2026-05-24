@@ -16,6 +16,7 @@ const prospectsQuery = db
     crawlId: prospect.crawlId,
     crawlStatus: crawl.status,
     createdAt: prospect.createdAt,
+    distanceFrom: prospect.distanceFrom,
     estimatedOpportunity: prospect.estimatedOpportunity,
     hasAccessibilitySettings: prospect.hasAccessibilitySettings,
     hasSite: prospect.hasSite,
@@ -62,6 +63,7 @@ export async function addProspect({
   hasSite,
   estimatedOpportunity,
   inhabitants,
+  distanceFrom,
   siteLaunchedAt,
   siteEditor,
   siteEditorUrl,
@@ -76,6 +78,7 @@ export async function addProspect({
   hasSite?: boolean;
   estimatedOpportunity?: Prospect["estimatedOpportunity"];
   inhabitants?: number | null;
+  distanceFrom?: number | null;
   siteLaunchedAt?: string | null;
   siteEditor?: string | null;
   siteEditorUrl?: string | null;
@@ -85,6 +88,7 @@ export async function addProspect({
     const prospectResult = await db
       .insert(prospect)
       .values({
+        distanceFrom,
         estimatedOpportunity,
         hasAccessibilitySettings,
         hasSite,
@@ -120,6 +124,7 @@ export async function editProspect({
   longitude,
   estimatedOpportunity,
   inhabitants,
+  distanceFrom,
   siteLaunchedAt,
   siteEditor,
   siteEditorUrl,
@@ -134,6 +139,7 @@ export async function editProspect({
   longitude?: string;
   estimatedOpportunity?: Prospect["estimatedOpportunity"];
   inhabitants?: number | null;
+  distanceFrom?: number | null;
   siteLaunchedAt?: string | null;
   siteEditor?: string | null;
   siteEditorUrl?: string | null;
@@ -143,6 +149,7 @@ export async function editProspect({
     const prospectResult = await db
       .update(prospect)
       .set({
+        distanceFrom,
         estimatedOpportunity,
         hasAccessibilitySettings,
         inhabitants,

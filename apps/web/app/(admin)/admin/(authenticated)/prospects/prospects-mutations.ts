@@ -27,6 +27,7 @@ export function useAddProspectMutation() {
       hasSite,
       estimatedOpportunity,
       inhabitants,
+      distanceFrom,
       siteLaunchedAt,
       siteEditor,
       siteEditorUrl,
@@ -41,12 +42,14 @@ export function useAddProspectMutation() {
       hasSite?: boolean;
       estimatedOpportunity?: Prospect["estimatedOpportunity"];
       inhabitants?: number | null;
+      distanceFrom?: number | null;
       siteLaunchedAt?: string | null;
       siteEditor?: string | null;
       siteEditorUrl?: string | null;
       hasAccessibilitySettings?: boolean | null;
     }) => {
       const result = await addProspect({
+        distanceFrom,
         estimatedOpportunity,
         hasAccessibilitySettings,
         hasSite,
@@ -94,6 +97,7 @@ export function useEditProspectMutation() {
       latitude,
       longitude,
       inhabitants,
+      distanceFrom,
       siteLaunchedAt,
       siteEditor,
       siteEditorUrl,
@@ -107,12 +111,14 @@ export function useEditProspectMutation() {
       latitude?: string;
       longitude?: string;
       inhabitants?: number | null;
+      distanceFrom?: number | null;
       siteLaunchedAt?: string | null;
       siteEditor?: string | null;
       siteEditorUrl?: string | null;
       hasAccessibilitySettings?: boolean | null;
     }) => {
       const result = await editProspect({
+        distanceFrom,
         hasAccessibilitySettings,
         id,
         inhabitants,

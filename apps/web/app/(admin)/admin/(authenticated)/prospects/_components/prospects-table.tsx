@@ -120,6 +120,24 @@ function useProspectsTable() {
         return a - b;
       },
     }),
+    // 📏 Distance depuis mon adresse (km)
+    columnHelper.accessor("distanceFrom", {
+      cell: ({ getValue }) => {
+        const value = getValue();
+        if (value === null || value === undefined) {
+          return <span className="text-muted-foreground">—</span>;
+        }
+        return <span>{value.toLocaleString("fr-FR")} km</span>;
+      },
+      header: ({ column }) => (
+        <SortableHeader column={column} label="Distance" />
+      ),
+      sortingFn: (rowA, rowB) => {
+        const a = rowA.original.distanceFrom ?? Number.POSITIVE_INFINITY;
+        const b = rowB.original.distanceFrom ?? Number.POSITIVE_INFINITY;
+        return a - b;
+      },
+    }),
     // 📅 Date de mise en ligne du site (tous types, inline editable)
     columnHelper.accessor("siteLaunchedAt", {
       cell: ({ getValue, row }) => (

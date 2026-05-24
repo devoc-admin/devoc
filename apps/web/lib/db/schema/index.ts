@@ -361,6 +361,7 @@ export const prospect = pgTable(
     estimatedOpportunity: estimatedOpportunityEnum().default("medium"),
     hasSite: boolean().default(true).notNull(),
     inhabitants: integer(),
+    distanceFrom: integer(),
     siteLaunchedAt: date({ mode: "string" }),
     siteEditor: text(),
     siteEditorUrl: text(),
