@@ -1,9 +1,10 @@
 import { ArrowUpRight } from "lucide-react";
 import { CustomButton } from "@/components/ui/custom-button/custom-button";
-import { cn } from "@/lib/utils.ts";
+import { cn } from "@/lib/utils";
 
 const sharedClasses = cn(
   "group",
+  "self-start",
   "rounded-full!",
   "font-semibold",
   "justify-between!"
@@ -16,14 +17,14 @@ const responsiveClasses = cn(
   "sm:w-auto! sm:gap-x-4! sm:px-1! sm:py-1! sm:text-base",
   "md:w-auto! md:gap-x-4! md:px-1! md:py-1! md:text-base",
   "lg:w-auto! lg:gap-x-4! lg:px-1! lg:py-1! lg:text-base",
-  "xl:w-auto! xl:gap-x-6! xl:px-3! xl:py-2! xl:text-lg"
+  "xl:w-auto! xl:gap-x-6! xl:px-3! xl:py-2! xl:text-base"
 );
 
-export function DemarrerUnProjetButton() {
+export function VoirLesPacks() {
   return (
     <CustomButton
       className={cn(sharedClasses, responsiveClasses)}
-      href="#contact"
+      href="#packs"
       style={
         {
           "--accent": "var(--primary-lighter)",
@@ -32,13 +33,13 @@ export function DemarrerUnProjetButton() {
         } as React.CSSProperties
       }
     >
-      <span className="ml-4">Démarrer un projet</span>
+      <span className="ml-4">Voir les packs</span>
       <ArrowRightUpAnimated className="text-primary" />
     </CustomButton>
   );
 }
 
-export function DecouvrirLeCollectifButton() {
+export function Reserver1hGratuit() {
   return (
     <CustomButton
       className={cn(
@@ -48,7 +49,7 @@ export function DecouvrirLeCollectifButton() {
         sharedClasses,
         responsiveClasses
       )}
-      href="#collectif"
+      href="#contact"
       style={
         {
           "--accent": "var(--color-zinc-50)",
@@ -57,8 +58,8 @@ export function DecouvrirLeCollectifButton() {
         } as React.CSSProperties
       }
     >
-      <span className="ml-4">Découvrir le collectif</span>
-      <ArrowRightUpAnimated className="text-zinc-900" />
+      <span className="ml-4 text-foreground">Réserver 1h gratuit</span>
+      <ArrowRightUpAnimated className="text-foreground" />
     </CustomButton>
   );
 }

@@ -13,7 +13,7 @@ export default function LegalLayout({
         className={cn(
           "relative z-1",
           "overflow-hidden",
-          "mx-auto bg-background-dark",
+          "mx-auto bg-background text-foreground",
           // ↔️
           "pt-16 pb-18",
           "xs:pt-16 xs:pb-18",
@@ -65,21 +65,25 @@ function RetourAccueil() {
   return (
     <Link
       className={cn(
+        "group",
         "inline-flex items-center",
         "gap-x-3",
         "cursor-pointer",
         "rounded-full",
-        "border border-foreground-dark/10",
-        "bg-linear-to-r from-foreground-dark/5 to-foreground-dark/15",
+        "border border-foreground/5",
+        "bg-linear-to-r from-foreground/1 to-foreground/7",
         "py-2 pr-5 pl-4",
-        "font-geist-mono text-foreground-dark/70 text-xs uppercase tracking-widest",
-        "transition-transform",
-        "brightness-90! hover:brightness-100!"
+        "font-geist-mono text-foreground/90 text-xs uppercase tracking-widest",
+        "transition",
+        "opacity-80 hover:opacity-100"
       )}
       href="/"
     >
-      <ArrowLeftIcon size={16} />
-      <span>Retour à l'accueil</span>
+      <ArrowLeftIcon
+        className="transition-transform group-hover:-translate-x-px"
+        size={16}
+      />
+      <span className="font-bold">Retour à l'accueil</span>
     </Link>
   );
 }
