@@ -1,0 +1,1 @@
+ALTER TABLE "prospect" DROP COLUMN "siteLaunchedAt";

@@ -7,7 +7,13 @@ import {
   type SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowDownIcon, ArrowUpIcon, ExternalLinkIcon } from "lucide-react";
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  CheckIcon,
+  ExternalLinkIcon,
+  XIcon,
+} from "lucide-react";
 import { useState } from "react";
 import {
   Table,
@@ -27,7 +33,6 @@ import { ProspectTypeBadge } from "./buttons/prospect-type-button";
 import { CrawlStatusCell } from "./cells/crawl-status-cell";
 import { HasAccessibilitySettingsCell } from "./cells/has-accessibility-settings-cell";
 import { SiteEditorCell } from "./cells/site-editor-cell";
-import { SiteLaunchedAtCell } from "./cells/site-launched-at-cell";
 import { EstimatedOpportunitySelect } from "./selects/estimated-opportunity-select";
 
 export function ProspectsTable() {
@@ -138,21 +143,22 @@ function useProspectsTable() {
         return a - b;
       },
     }),
-    // 📅 Date de mise en ligne du site (tous types, inline editable)
-    columnHelper.accessor("siteLaunchedAt", {
-      cell: ({ getValue, row }) => (
-        <SiteLaunchedAtCell prospectId={row.original.id} value={getValue()} />
-      ),
+    // 📅 Année de mise en ligne du site (read-only)
+    columnHelper.accessor("siteLaunchYear", {
+      cell: ({ getValue }) => {
+        const value = getValue();
+        if (value === null || value === undefined) {
+          return <span className="text-muted-foreground">—</span>;
+        }
+        return <span>{value}</span>;
+      },
       header: ({ column }) => (
         <SortableHeader column={column} label="Mise en ligne" />
       ),
       sortingFn: (rowA, rowB) => {
-        const a = rowA.original.siteLaunchedAt ?? "";
-        const b = rowB.original.siteLaunchedAt ?? "";
-        if (a === b) return 0;
-        if (!a) return 1;
-        if (!b) return -1;
-        return a < b ? -1 : 1;
+        const a = rowA.original.siteLaunchYear ?? Number.POSITIVE_INFINITY;
+        const b = rowB.original.siteLaunchYear ?? Number.POSITIVE_INFINITY;
+        return a - b;
       },
     }),
     // 🛠️ Éditeur du site (inline editable, combobox)
@@ -197,6 +203,59 @@ function useProspectsTable() {
           | "true"
           | "false"
           | "null";
+        return order[a] - order[b];
+      },
+    }),
+    // 📱 PanneauPocket (uniquement pour les communes, lecture seule)
+    columnHelper.accessor("usesPanneauPocket", {
+      cell: ({ getValue, row }) => {
+        if (row.original.type !== "city") return null;
+        const value = getValue();
+        if (value === true) {
+          return <CheckIcon className="text-green-500" size={18} />;
+        }
+        if (value === false) {
+          return <XIcon className="text-red-500" size={18} />;
+        }
+        return <span className="text-muted-foreground">—</span>;
+      },
+      header: ({ column }) => (
+        <SortableHeader column={column} label="PanneauPocket" />
+      ),
+      sortingFn: (rowA, rowB) => {
+        const order = { false: 1, null: 2, true: 0 };
+        const a = String(rowA.original.usesPanneauPocket) as
+          | "true"
+          | "false"
+          | "null";
+        const b = String(rowB.original.usesPanneauPocket) as
+          | "true"
+          | "false"
+          | "null";
+        return order[a] - order[b];
+      },
+    }),
+    // 🛡️ DPO (lecture seule, édition via le dialog)
+    columnHelper.accessor("hasDpo", {
+      cell: ({ getValue }) => {
+        const v = getValue();
+        if (v === true) {
+          return <CheckIcon className="text-green-500" size={18} />;
+        }
+        if (v === false) {
+          return <XIcon className="text-red-500" size={18} />;
+        }
+        return (
+          <span className="rounded-full bg-zinc-500/10 px-2 py-0.5 text-xs text-zinc-400">
+            Non renseigné
+          </span>
+        );
+      },
+      header: ({ column }) => <SortableHeader column={column} label="DPO" />,
+      sortingFn: (rowA, rowB) => {
+        const order = { false: 1, null: 2, true: 0 };
+        const a = String(rowA.original.hasDpo) as "true" | "false" | "null";
+        const b = String(rowB.original.hasDpo) as "true" | "false" | "null";
         return order[a] - order[b];
       },
     }),

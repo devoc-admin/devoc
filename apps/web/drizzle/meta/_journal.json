@@ -50,6 +50,34 @@
       "when": 1779637804600,
       "tag": "0006_safe_sasquatch",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1779638827465,
+      "tag": "0007_remarkable_young_avengers",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1779638842932,
+      "tag": "0008_premium_squirrel_girl",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1779640142603,
+      "tag": "0009_glossy_thunderbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1779642153784,
+      "tag": "0010_dry_lockheed",
+      "breakpoints": true
     }
   ]
 }

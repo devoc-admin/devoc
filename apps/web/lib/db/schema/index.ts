@@ -3,7 +3,6 @@
 import { sql } from "drizzle-orm";
 import {
   boolean,
-  date,
   foreignKey,
   index,
   integer,
@@ -348,6 +347,21 @@ export const estimatedOpportunityEnum = pgEnum("estimated_opportunity", [
   "weak",
 ]);
 
+export const dpo = pgTable("dpo", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: text().notNull(),
+  url: text(),
+  createdAt: timestamp({ mode: "string", withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp({ mode: "string", withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+});
+
+export type Dpo = typeof dpo.$inferSelect;
+export type NewDpo = typeof dpo.$inferInsert;
+
 export const prospect = pgTable(
   "prospect",
   {
@@ -362,10 +376,13 @@ export const prospect = pgTable(
     hasSite: boolean().default(true).notNull(),
     inhabitants: integer(),
     distanceFrom: integer(),
-    siteLaunchedAt: date({ mode: "string" }),
+    siteLaunchYear: integer(),
     siteEditor: text(),
     siteEditorUrl: text(),
     hasAccessibilitySettings: boolean(),
+    usesPanneauPocket: boolean(),
+    hasDpo: boolean(),
+    dpoId: integer(),
     crawlId: text(),
     createdAt: timestamp({ mode: "string", withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
@@ -384,6 +401,12 @@ export const prospect = pgTable(
       "btree",
       table.crawlId.asc().nullsLast()
     ),
+    foreignKey({
+      columns: [table.dpoId],
+      foreignColumns: [dpo.id],
+      name: "prospect_dpoId_fkey",
+    }).onDelete("set null"),
+    index("prospect_dpoId_idx").using("btree", table.dpoId.asc().nullsLast()),
   ]
 );
 

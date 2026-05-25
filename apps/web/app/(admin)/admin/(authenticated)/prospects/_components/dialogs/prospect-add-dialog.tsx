@@ -25,6 +25,7 @@ import {
 import type { Prospect } from "@/lib/db/schema";
 import { useProspectsContext } from "../../prospects-context";
 import { PROSPECT_TYPES } from "../buttons/prospect-type-button";
+import { DpoCombobox } from "../dpo-combobox";
 import { EditorCombobox } from "../editor-combobox";
 import {
   type PlaceResult,
@@ -241,7 +242,7 @@ export function ProspectAddDialog() {
               >
                 {(field) => (
                   <div className="col-span-2">
-                    <Label>Site web (optionnel)</Label>
+                    <Label>Site web</Label>
                     <CustomInput
                       name={field.name}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -257,19 +258,44 @@ export function ProspectAddDialog() {
                   </div>
                 )}
               </form.Field>
-              {/* 📅 Date de mise en ligne du site (tous types) */}
-              <form.Field name="siteLaunchedAt">
+              {/* 📅 Année de mise en ligne du site (tous types) */}
+              <form.Field
+                name="siteLaunchYear"
+                validators={{
+                  onSubmit: ({ value }) => {
+                    const normalized = value.replace(/\s+/g, "");
+                    if (!normalized) return;
+                    const num = Number.parseInt(normalized, 10);
+                    if (
+                      !Number.isInteger(num) ||
+                      num < 1900 ||
+                      num > 2100 ||
+                      String(num) !== normalized
+                    )
+                      return "Année invalide";
+                  },
+                }}
+              >
                 {(field) => (
                   <div className="col-span-2">
-                    <Label>Date de mise en ligne du site (optionnel)</Label>
+                    <Label>Année de mise en ligne du site</Label>
                     <CustomInput
+                      inputMode="numeric"
+                      max={2100}
+                      min={1900}
                       name={field.name}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         field.handleChange(e.target.value)
                       }
-                      type="date"
+                      placeholder="ex : 2018"
+                      type="number"
                       value={field.state.value}
                     />
+                    {!field.state.meta.isValid && (
+                      <ErrorMessage>
+                        {field.state.meta.errors.join(", ")}
+                      </ErrorMessage>
+                    )}
                   </div>
                 )}
               </form.Field>
@@ -277,7 +303,7 @@ export function ProspectAddDialog() {
               <form.Field name="siteEditor">
                 {(field) => (
                   <div>
-                    <Label>Éditeur du site (optionnel)</Label>
+                    <Label>Éditeur du site</Label>
                     <EditorCombobox
                       onCommit={(next) => field.handleChange(next)}
                       value={field.state.value}
@@ -331,8 +357,8 @@ export function ProspectAddDialog() {
                       }}
                     >
                       {(field) => (
-                        <div className="col-span-2">
-                          <Label>Nombre d'habitants (optionnel)</Label>
+                        <div>
+                          <Label>Nombre d'habitants</Label>
                           <CustomInput
                             inputMode="numeric"
                             name={field.name}
@@ -371,8 +397,8 @@ export function ProspectAddDialog() {
                 }}
               >
                 {(field) => (
-                  <div className="col-span-2">
-                    <Label>Distance depuis mon adresse (km, optionnel)</Label>
+                  <div>
+                    <Label>Distance depuis mon adresse</Label>
                     <CustomInput
                       inputMode="numeric"
                       name={field.name}
@@ -390,6 +416,114 @@ export function ProspectAddDialog() {
                   </div>
                 )}
               </form.Field>
+              {/* 📱 PanneauPocket (uniquement pour les communes) */}
+              <form.Subscribe selector={(state) => state.values.type}>
+                {(currentType) =>
+                  currentType === "city" ? (
+                    <form.Field name="usesPanneauPocket">
+                      {(field) => (
+                        <div>
+                          <Label>PanneauPocket</Label>
+                          <Select
+                            onValueChange={(newValue) =>
+                              field.handleChange(
+                                newValue as "unknown" | "yes" | "no"
+                              )
+                            }
+                            value={field.state.value}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Non renseigné" />
+                            </SelectTrigger>
+                            <SelectContent align="start">
+                              <SelectGroup>
+                                <SelectItem value="unknown">
+                                  Non renseigné
+                                </SelectItem>
+                                <SelectItem value="yes">Oui</SelectItem>
+                                <SelectItem value="no">Non</SelectItem>
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+                    </form.Field>
+                  ) : null
+                }
+              </form.Subscribe>
+              {/* 🛡️ DPO (tristate + combobox + URL si Oui) */}
+              <form.Field name="hasDpo">
+                {(field) => (
+                  <div className="col-span-2">
+                    <Label>DPO</Label>
+                    <Select
+                      onValueChange={(newValue) =>
+                        field.handleChange(newValue as "unknown" | "yes" | "no")
+                      }
+                      value={field.state.value}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Non renseigné" />
+                      </SelectTrigger>
+                      <SelectContent align="start">
+                        <SelectGroup>
+                          <SelectItem value="unknown">Non renseigné</SelectItem>
+                          <SelectItem value="yes">Oui</SelectItem>
+                          <SelectItem value="no">Non</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+              </form.Field>
+              <form.Subscribe selector={(state) => state.values.hasDpo}>
+                {(currentHasDpo) =>
+                  currentHasDpo === "yes" ? (
+                    <>
+                      <form.Field name="dpoName">
+                        {(field) => (
+                          <div>
+                            <Label>Nom du DPO</Label>
+                            <DpoCombobox
+                              onCommit={(next) => field.handleChange(next)}
+                              value={field.state.value}
+                            />
+                          </div>
+                        )}
+                      </form.Field>
+                      <form.Field
+                        name="dpoUrl"
+                        validators={{
+                          onSubmit: ({ value }) => {
+                            if (value.trim() && !isValidUrlFormat(value))
+                              return "L'URL n'est pas valide";
+                          },
+                        }}
+                      >
+                        {(field) => (
+                          <div>
+                            <Label>URL du DPO</Label>
+                            <CustomInput
+                              name={field.name}
+                              onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                              ) => field.handleChange(e.target.value)}
+                              placeholder="https://…"
+                              type="url"
+                              value={field.state.value}
+                            />
+                            {!field.state.meta.isValid && (
+                              <ErrorMessage>
+                                {field.state.meta.errors.join(", ")}
+                              </ErrorMessage>
+                            )}
+                          </div>
+                        )}
+                      </form.Field>
+                    </>
+                  ) : null
+                }
+              </form.Subscribe>
             </div>
             <form.Subscribe selector={(state) => state.isSubmitting}>
               {(isSubmitting) => (
@@ -421,22 +555,30 @@ type ProspectFormData = {
   longitude: string;
   inhabitants: string;
   distanceFrom: string;
-  siteLaunchedAt: string;
+  siteLaunchYear: string;
   siteEditor: string;
   hasAccessibilitySettings: "unknown" | "yes" | "no";
+  usesPanneauPocket: "unknown" | "yes" | "no";
+  hasDpo: "unknown" | "yes" | "no";
+  dpoName: string;
+  dpoUrl: string;
 };
 
 const defaultProspect: ProspectFormData = {
   distanceFrom: "",
+  dpoName: "",
+  dpoUrl: "",
   hasAccessibilitySettings: "unknown",
+  hasDpo: "unknown",
   inhabitants: "",
   latitude: "",
   location: "",
   longitude: "",
   name: "",
   siteEditor: "",
-  siteLaunchedAt: "",
+  siteLaunchYear: "",
   type: "city",
+  usesPanneauPocket: "unknown",
   website: "",
 };
 
@@ -451,27 +593,38 @@ function useProspectForm() {
         value.type === "city" && inhabitantsRaw
           ? Number.parseInt(inhabitantsRaw, 10)
           : undefined;
-      const siteLaunchedAt = value.siteLaunchedAt.trim() || null;
+      const siteLaunchYearRaw = value.siteLaunchYear.replace(/\s+/g, "");
+      const siteLaunchYear = siteLaunchYearRaw
+        ? Number.parseInt(siteLaunchYearRaw, 10)
+        : null;
       const siteEditor = value.siteEditor.trim() || null;
       const distanceFromRaw = value.distanceFrom.replace(/\s+/g, "");
       const distanceFrom = distanceFromRaw
         ? Number.parseInt(distanceFromRaw, 10)
         : undefined;
-      let hasAccessibilitySettings: boolean | null = null;
-      if (value.hasAccessibilitySettings === "yes") {
-        hasAccessibilitySettings = true;
-      } else if (value.hasAccessibilitySettings === "no") {
-        hasAccessibilitySettings = false;
-      }
+      const hasAccessibilitySettings = formTristateToBoolean(
+        value.hasAccessibilitySettings
+      );
+      const usesPanneauPocket =
+        value.type === "city"
+          ? formTristateToBoolean(value.usesPanneauPocket)
+          : null;
+      const hasDpo = formTristateToBoolean(value.hasDpo);
+      const dpoName = hasDpo === true ? value.dpoName.trim() || null : null;
+      const dpoUrl = hasDpo === true ? value.dpoUrl.trim() || null : null;
       addProspectMutate({
         ...value,
         distanceFrom,
+        dpoName,
+        dpoUrl,
         hasAccessibilitySettings,
+        hasDpo,
         inhabitants,
         latitude: value.latitude || undefined,
         longitude: value.longitude || undefined,
         siteEditor,
-        siteLaunchedAt,
+        siteLaunchYear,
+        usesPanneauPocket,
         // Si pas de site web, hasSite = false et estimatedOpportunity = "strong"
         ...(hasWebsite
           ? {}
@@ -485,6 +638,14 @@ function useProspectForm() {
 
 function CustomInput({ ...props }) {
   return <Input className="h-10" {...props} />;
+}
+
+function formTristateToBoolean(
+  value: "unknown" | "yes" | "no"
+): boolean | null {
+  if (value === "yes") return true;
+  if (value === "no") return false;
+  return null;
 }
 
 function ErrorMessage({ children }: { children: string }) {

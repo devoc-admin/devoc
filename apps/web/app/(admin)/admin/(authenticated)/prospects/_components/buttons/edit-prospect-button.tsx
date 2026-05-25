@@ -29,11 +29,13 @@ import {
 } from "@/components/ui/tooltip";
 import type { Prospect } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
+import type { ProspectResult } from "../../prospects-actions";
 import { useProspectsContext } from "../../prospects-context";
+import { DpoCombobox } from "../dpo-combobox";
 import { EditorCombobox } from "../editor-combobox";
 import { PROSPECT_TYPES, ProspectTypeBadge } from "./prospect-type-button";
 
-export function EditProspectButton({ prospect }: { prospect: Prospect }) {
+export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
   const [isOpen, setIsOpen] = useState(false);
   const { isEditedProspect, editingProspectId, isEditingProspect } =
     useProspectsContext();
@@ -142,16 +144,16 @@ export function EditProspectButton({ prospect }: { prospect: Prospect }) {
                 </div>
               )}
             </form.Field>
-            {/* 🌐 Website */}
+            {/* 🌐 Website (optionnel) */}
             <form.Field
               name="website"
               validators={{
                 onSubmit: ({ value }) => {
-                  if (!value.trim()) return "Le site web est requis";
-                  if (!isValidUrlFormat(value)) return "L'URL n'est pas valide";
+                  if (value.trim() && !isValidUrlFormat(value))
+                    return "L'URL n'est pas valide";
                 },
                 onSubmitAsync: async ({ value }) => {
-                  if (!value) return;
+                  if (!value.trim()) return;
                   const result = await isValidWebsite(value);
                   if (!result) return "Ce site web n'existe pas";
                 },
@@ -212,20 +214,45 @@ export function EditProspectButton({ prospect }: { prospect: Prospect }) {
                 </div>
               )}
             </form.Field>
-            {/* 📅 Date de mise en ligne du site (tous types) */}
-            <form.Field name="siteLaunchedAt">
+            {/* 📅 Année de mise en ligne du site (tous types) */}
+            <form.Field
+              name="siteLaunchYear"
+              validators={{
+                onSubmit: ({ value }) => {
+                  const normalized = value.replace(/\s+/g, "");
+                  if (!normalized) return;
+                  const num = Number.parseInt(normalized, 10);
+                  if (
+                    !Number.isInteger(num) ||
+                    num < 1900 ||
+                    num > 2100 ||
+                    String(num) !== normalized
+                  )
+                    return "Année invalide";
+                },
+              }}
+            >
               {(field) => (
                 <div className="col-span-2">
-                  <Label>Date de mise en ligne du site (optionnel)</Label>
+                  <Label>Année de mise en ligne du site</Label>
                   <Input
                     className="h-10"
+                    inputMode="numeric"
+                    max={2100}
+                    min={1900}
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       field.handleChange(e.target.value)
                     }
-                    type="date"
+                    placeholder="ex : 2018"
+                    type="number"
                     value={field.state.value}
                   />
+                  {!field.state.meta.isValid && (
+                    <ErrorMessage>
+                      {field.state.meta.errors.join(", ")}
+                    </ErrorMessage>
+                  )}
                 </div>
               )}
             </form.Field>
@@ -233,7 +260,7 @@ export function EditProspectButton({ prospect }: { prospect: Prospect }) {
             <form.Field name="siteEditor">
               {(field) => (
                 <div>
-                  <Label>Éditeur du site (optionnel)</Label>
+                  <Label>Éditeur du site</Label>
                   <EditorCombobox
                     onCommit={(next) => field.handleChange(next)}
                     value={field.state.value}
@@ -253,7 +280,7 @@ export function EditProspectButton({ prospect }: { prospect: Prospect }) {
             >
               {(field) => (
                 <div>
-                  <Label>URL de l'éditeur (optionnel)</Label>
+                  <Label>URL de l'éditeur</Label>
                   <Input
                     className="h-10"
                     name={field.name}
@@ -318,8 +345,8 @@ export function EditProspectButton({ prospect }: { prospect: Prospect }) {
                     }}
                   >
                     {(field) => (
-                      <div className="col-span-2">
-                        <Label>Nombre d'habitants (optionnel)</Label>
+                      <div>
+                        <Label>Nombre d'habitants</Label>
                         <Input
                           className="h-10"
                           inputMode="numeric"
@@ -359,8 +386,8 @@ export function EditProspectButton({ prospect }: { prospect: Prospect }) {
               }}
             >
               {(field) => (
-                <div className="col-span-2">
-                  <Label>Distance depuis mon adresse (km, optionnel)</Label>
+                <div>
+                  <Label>Distance depuis mon adresse</Label>
                   <Input
                     className="h-10"
                     inputMode="numeric"
@@ -379,10 +406,119 @@ export function EditProspectButton({ prospect }: { prospect: Prospect }) {
                 </div>
               )}
             </form.Field>
+            {/* 📱 PanneauPocket (uniquement pour les communes) */}
+            <form.Subscribe selector={(state) => state.values.type}>
+              {(currentType) =>
+                currentType === "city" ? (
+                  <form.Field name="usesPanneauPocket">
+                    {(field) => (
+                      <div>
+                        <Label>PanneauPocket</Label>
+                        <Select
+                          onValueChange={(newValue) =>
+                            field.handleChange(
+                              newValue as "unknown" | "yes" | "no"
+                            )
+                          }
+                          value={field.state.value}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Non renseigné" />
+                          </SelectTrigger>
+                          <SelectContent align="start">
+                            <SelectGroup>
+                              <SelectItem value="unknown">
+                                Non renseigné
+                              </SelectItem>
+                              <SelectItem value="yes">Oui</SelectItem>
+                              <SelectItem value="no">Non</SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                  </form.Field>
+                ) : null
+              }
+            </form.Subscribe>
+            {/* 🛡️ DPO (tristate + combobox + URL si Oui) */}
+            <form.Field name="hasDpo">
+              {(field) => (
+                <div className="col-span-2">
+                  <Label>DPO</Label>
+                  <Select
+                    onValueChange={(newValue) =>
+                      field.handleChange(newValue as "unknown" | "yes" | "no")
+                    }
+                    value={field.state.value}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Non renseigné" />
+                    </SelectTrigger>
+                    <SelectContent align="start">
+                      <SelectGroup>
+                        <SelectItem value="unknown">Non renseigné</SelectItem>
+                        <SelectItem value="yes">Oui</SelectItem>
+                        <SelectItem value="no">Non</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </form.Field>
+            <form.Subscribe selector={(state) => state.values.hasDpo}>
+              {(currentHasDpo) =>
+                currentHasDpo === "yes" ? (
+                  <>
+                    <form.Field name="dpoName">
+                      {(field) => (
+                        <div>
+                          <Label>Nom du DPO</Label>
+                          <DpoCombobox
+                            onCommit={(next) => field.handleChange(next)}
+                            value={field.state.value}
+                          />
+                        </div>
+                      )}
+                    </form.Field>
+                    <form.Field
+                      name="dpoUrl"
+                      validators={{
+                        onSubmit: ({ value }) => {
+                          if (value.trim() && !isValidUrlFormat(value))
+                            return "L'URL n'est pas valide";
+                        },
+                      }}
+                    >
+                      {(field) => (
+                        <div>
+                          <Label>URL du DPO</Label>
+                          <Input
+                            className="h-10"
+                            name={field.name}
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => field.handleChange(e.target.value)}
+                            placeholder="https://…"
+                            type="url"
+                            value={field.state.value}
+                          />
+                          {!field.state.meta.isValid && (
+                            <ErrorMessage>
+                              {field.state.meta.errors.join(", ")}
+                            </ErrorMessage>
+                          )}
+                        </div>
+                      )}
+                    </form.Field>
+                  </>
+                ) : null
+              }
+            </form.Subscribe>
             {/* 🗺️ Coordinates (optional) */}
             <div className="col-span-2">
               <Label className="text-muted-foreground text-sm">
-                Coordonnées (optionnel - pour la vue carte)
+                Coordonnées
               </Label>
               <div className="mt-1 grid grid-cols-2 gap-x-4">
                 <form.Field
@@ -468,14 +604,17 @@ export function EditProspectButton({ prospect }: { prospect: Prospect }) {
   );
 }
 
-function useEditProspectForm(prospect: Prospect) {
+function useEditProspectForm(prospect: ProspectResult) {
   const { editProspectMutate } = useProspectsContext();
   const form = useForm({
     defaultValues: {
       distanceFrom: prospect.distanceFrom?.toString() ?? "",
+      dpoName: prospect.dpoName ?? "",
+      dpoUrl: prospect.dpoUrl ?? "",
       hasAccessibilitySettings: hasAccessibilityToFormValue(
         prospect.hasAccessibilitySettings
       ),
+      hasDpo: panneauPocketToFormValue(prospect.hasDpo),
       inhabitants: prospect.inhabitants?.toString() ?? "",
       latitude: prospect.latitude ?? "",
       location: prospect.location ?? "",
@@ -483,8 +622,9 @@ function useEditProspectForm(prospect: Prospect) {
       name: prospect.name ?? "",
       siteEditor: prospect.siteEditor ?? "",
       siteEditorUrl: prospect.siteEditorUrl ?? "",
-      siteLaunchedAt: prospect.siteLaunchedAt ?? "",
+      siteLaunchYear: prospect.siteLaunchYear?.toString() ?? "",
       type: prospect.type as Prospect["type"],
+      usesPanneauPocket: panneauPocketToFormValue(prospect.usesPanneauPocket),
       website: prospect.website ?? "",
     },
     onSubmit: ({ value }) => {
@@ -493,22 +633,32 @@ function useEditProspectForm(prospect: Prospect) {
       if (value.type === "city" && inhabitantsRaw) {
         inhabitants = Number.parseInt(inhabitantsRaw, 10);
       }
-      const siteLaunchedAt = value.siteLaunchedAt.trim() || null;
+      const siteLaunchYearRaw = value.siteLaunchYear.replace(/\s+/g, "");
+      const siteLaunchYear = siteLaunchYearRaw
+        ? Number.parseInt(siteLaunchYearRaw, 10)
+        : null;
       const siteEditor = value.siteEditor.trim() || null;
       const siteEditorUrl = value.siteEditorUrl.trim() || null;
       const distanceFromRaw = value.distanceFrom.replace(/\s+/g, "");
       const distanceFrom = distanceFromRaw
         ? Number.parseInt(distanceFromRaw, 10)
         : null;
-      let hasAccessibilitySettings: boolean | null = null;
-      if (value.hasAccessibilitySettings === "yes") {
-        hasAccessibilitySettings = true;
-      } else if (value.hasAccessibilitySettings === "no") {
-        hasAccessibilitySettings = false;
-      }
+      const hasAccessibilitySettings = formTristateToBoolean(
+        value.hasAccessibilitySettings
+      );
+      const usesPanneauPocket =
+        value.type === "city"
+          ? formTristateToBoolean(value.usesPanneauPocket)
+          : null;
+      const hasDpo = formTristateToBoolean(value.hasDpo);
+      const dpoName = hasDpo === true ? value.dpoName.trim() || null : null;
+      const dpoUrl = hasDpo === true ? value.dpoUrl.trim() || null : null;
       editProspectMutate({
         distanceFrom,
+        dpoName,
+        dpoUrl,
         hasAccessibilitySettings,
+        hasDpo,
         id: prospect.id,
         inhabitants,
         latitude: value.latitude || undefined,
@@ -517,8 +667,9 @@ function useEditProspectForm(prospect: Prospect) {
         name: value.name,
         siteEditor,
         siteEditorUrl,
-        siteLaunchedAt,
+        siteLaunchYear,
         type: value.type,
+        usesPanneauPocket,
         website: value.website,
       });
     },
@@ -533,6 +684,22 @@ function hasAccessibilityToFormValue(
   if (value === true) return "yes";
   if (value === false) return "no";
   return "unknown";
+}
+
+function panneauPocketToFormValue(
+  value: boolean | null
+): "unknown" | "yes" | "no" {
+  if (value === true) return "yes";
+  if (value === false) return "no";
+  return "unknown";
+}
+
+function formTristateToBoolean(
+  value: "unknown" | "yes" | "no"
+): boolean | null {
+  if (value === "yes") return true;
+  if (value === "no") return false;
+  return null;
 }
 
 function ErrorMessage({ children }: { children: string }) {

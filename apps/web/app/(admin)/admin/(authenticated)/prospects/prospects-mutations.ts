@@ -10,7 +10,6 @@ import {
   updateEstimatedOpportunity,
   updateHasAccessibilitySettings,
   updateSiteEditor,
-  updateSiteLaunchedAt,
 } from "./prospects-actions";
 
 export function useAddProspectMutation() {
@@ -28,10 +27,14 @@ export function useAddProspectMutation() {
       estimatedOpportunity,
       inhabitants,
       distanceFrom,
-      siteLaunchedAt,
+      siteLaunchYear,
       siteEditor,
       siteEditorUrl,
       hasAccessibilitySettings,
+      usesPanneauPocket,
+      hasDpo,
+      dpoName,
+      dpoUrl,
     }: {
       name: string;
       website: string;
@@ -43,15 +46,22 @@ export function useAddProspectMutation() {
       estimatedOpportunity?: Prospect["estimatedOpportunity"];
       inhabitants?: number | null;
       distanceFrom?: number | null;
-      siteLaunchedAt?: string | null;
+      siteLaunchYear?: number | null;
       siteEditor?: string | null;
       siteEditorUrl?: string | null;
       hasAccessibilitySettings?: boolean | null;
+      usesPanneauPocket?: boolean | null;
+      hasDpo?: boolean | null;
+      dpoName?: string | null;
+      dpoUrl?: string | null;
     }) => {
       const result = await addProspect({
         distanceFrom,
+        dpoName,
+        dpoUrl,
         estimatedOpportunity,
         hasAccessibilitySettings,
+        hasDpo,
         hasSite,
         inhabitants,
         latitude,
@@ -60,8 +70,9 @@ export function useAddProspectMutation() {
         name,
         siteEditor,
         siteEditorUrl,
-        siteLaunchedAt,
+        siteLaunchYear,
         type,
+        usesPanneauPocket,
         website,
       });
 
@@ -73,6 +84,7 @@ export function useAddProspectMutation() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prospects"] });
+      queryClient.invalidateQueries({ queryKey: ["dpos"] });
       toast("Prospect ajouté avec succès !", {
         icon: "✅",
         position: "bottom-right",
@@ -98,10 +110,14 @@ export function useEditProspectMutation() {
       longitude,
       inhabitants,
       distanceFrom,
-      siteLaunchedAt,
+      siteLaunchYear,
       siteEditor,
       siteEditorUrl,
       hasAccessibilitySettings,
+      usesPanneauPocket,
+      hasDpo,
+      dpoName,
+      dpoUrl,
     }: {
       id: number;
       name: string;
@@ -112,14 +128,21 @@ export function useEditProspectMutation() {
       longitude?: string;
       inhabitants?: number | null;
       distanceFrom?: number | null;
-      siteLaunchedAt?: string | null;
+      siteLaunchYear?: number | null;
       siteEditor?: string | null;
       siteEditorUrl?: string | null;
       hasAccessibilitySettings?: boolean | null;
+      usesPanneauPocket?: boolean | null;
+      hasDpo?: boolean | null;
+      dpoName?: string | null;
+      dpoUrl?: string | null;
     }) => {
       const result = await editProspect({
         distanceFrom,
+        dpoName,
+        dpoUrl,
         hasAccessibilitySettings,
+        hasDpo,
         id,
         inhabitants,
         latitude,
@@ -128,8 +151,9 @@ export function useEditProspectMutation() {
         name,
         siteEditor,
         siteEditorUrl,
-        siteLaunchedAt,
+        siteLaunchYear,
         type,
+        usesPanneauPocket,
         website,
       });
 
@@ -144,6 +168,7 @@ export function useEditProspectMutation() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prospects"] });
+      queryClient.invalidateQueries({ queryKey: ["dpos"] });
       toast.success("Prospect modifié avec succès !");
     },
   });
@@ -260,38 +285,6 @@ export function useUpdateHasAccessibilitySettingsMutation() {
     },
     onError: () => {
       toast.error("Erreur lors de la mise à jour de l'accessibilité.");
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["prospects"] });
-    },
-  });
-}
-
-// --------------------------------------
-// 📅 Update site launched date
-
-export function useUpdateSiteLaunchedAtMutation() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async ({
-      prospectId,
-      siteLaunchedAt,
-    }: {
-      prospectId: number;
-      siteLaunchedAt: string | null;
-    }) => {
-      const result = await updateSiteLaunchedAt({
-        prospectId,
-        siteLaunchedAt,
-      });
-      if (!result.success) {
-        throw new Error(result.error);
-      }
-      return true;
-    },
-    onError: () => {
-      toast.error("Erreur lors de la mise à jour de la date.");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prospects"] });

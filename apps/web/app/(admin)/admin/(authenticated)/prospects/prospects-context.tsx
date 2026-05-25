@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 import type { Prospect } from "@/lib/db/schema";
+import { useListDposQuery } from "./dpos-queries";
 import type { ProspectResult } from "./prospects-actions";
 import {
   useAddProspectMutation,
@@ -20,7 +21,6 @@ import {
   useUpdateEstimatedOpportunityMutation,
   useUpdateHasAccessibilitySettingsMutation,
   useUpdateSiteEditorMutation,
-  useUpdateSiteLaunchedAtMutation,
 } from "./prospects-mutations";
 import { useListProspectsQuery } from "./prospects-queries";
 
@@ -59,11 +59,6 @@ const ProspectsContext = createContext<ProspectsContext>({
   // 🔴 Estimated opportunity
   updateEstimatedOpportunityMutate: () => {},
   updatingEstimatedOpportunityProspectId: undefined,
-
-  // 📅 Site launched date
-  isUpdatingSiteLaunchedAt: false,
-  updateSiteLaunchedAtMutate: () => {},
-  updatingSiteLaunchedAtProspectId: undefined,
 
   // 🛠️ Site editor
   isUpdatingSiteEditor: false,
@@ -161,16 +156,6 @@ export function ProspectsContextProvider({
   const updatingEstimatedOpportunityProspectId =
     updatingEstimatedOpportunityVariables?.prospectId;
 
-  // 📅 Update site launched date
-  const {
-    mutate: updateSiteLaunchedAtMutate,
-    isPending: isUpdatingSiteLaunchedAt,
-    variables: updatingSiteLaunchedAtVariables,
-  } = useUpdateSiteLaunchedAtMutation();
-
-  const updatingSiteLaunchedAtProspectId =
-    updatingSiteLaunchedAtVariables?.prospectId;
-
   // 🛠️ Update site editor
   const {
     mutate: updateSiteEditorMutate,
@@ -237,11 +222,6 @@ export function ProspectsContextProvider({
         updateEstimatedOpportunityMutate,
         updatingEstimatedOpportunityProspectId,
 
-        // 📅 Update site launched date
-        isUpdatingSiteLaunchedAt,
-        updateSiteLaunchedAtMutate,
-        updatingSiteLaunchedAtProspectId,
-
         // 🛠️ Update site editor
         isUpdatingSiteEditor,
         updateSiteEditorMutate,
@@ -270,10 +250,14 @@ type ProspectAddData = {
   longitude?: string;
   inhabitants?: number | null;
   distanceFrom?: number | null;
-  siteLaunchedAt?: string | null;
+  siteLaunchYear?: number | null;
   siteEditor?: string | null;
   siteEditorUrl?: string | null;
   hasAccessibilitySettings?: boolean | null;
+  usesPanneauPocket?: boolean | null;
+  hasDpo?: boolean | null;
+  dpoName?: string | null;
+  dpoUrl?: string | null;
 };
 
 type ProspectEditData = ProspectAddData & { id: number };
@@ -325,16 +309,6 @@ type ProspectsContext = {
   >;
   updatingEstimatedOpportunityProspectId: number | undefined;
   isUpdatingEstimatedOpportunity: boolean;
-
-  // 📅 Site launched date
-  updateSiteLaunchedAtMutate: UseMutateFunction<
-    boolean,
-    Error,
-    { prospectId: number; siteLaunchedAt: string | null },
-    unknown
-  >;
-  updatingSiteLaunchedAtProspectId: number | undefined;
-  isUpdatingSiteLaunchedAt: boolean;
 
   // 🛠️ Site editor
   updateSiteEditorMutate: UseMutateFunction<
@@ -397,4 +371,18 @@ export const useExistingEditors = () => {
     }
     return Array.from(set).sort((a, b) => a.localeCompare(b, "fr"));
   }, [allProspects]);
+};
+
+// Distinct list of DPO names from the dpo table (all rows, even orphans).
+// Used by the DpoCombobox to suggest values that are already saved.
+export const useExistingDpos = () => {
+  const { data: dpos } = useListDposQuery();
+  return useMemo(() => {
+    const set = new Set<string>();
+    for (const d of dpos ?? []) {
+      const trimmed = d.name.trim();
+      if (trimmed) set.add(trimmed);
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b, "fr"));
+  }, [dpos]);
 };
