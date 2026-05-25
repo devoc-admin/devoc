@@ -1,7 +1,7 @@
 import { ArrowUpRightIcon, type LucideIcon } from "lucide-react";
+import { SupNumber } from "@/components/dev-oc/sup-number";
 import { BorderGlow } from "@/components/react-bits/border-glow";
 import { cn } from "@/lib/utils";
-import { SupNumber } from "./sup-number";
 export function ServiceCard({
   title,
   subtitle,

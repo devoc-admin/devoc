@@ -1,0 +1,35 @@
+import { cn } from "@/lib/utils";
+import { SupNumber } from "./sup-number";
+export function SupSection({
+  number,
+  children,
+  variant = "dark",
+}: {
+  number: number;
+  children: React.ReactNode;
+  variant?: "light" | "dark";
+}) {
+  return (
+    <div className="flex items-center gap-x-2">
+      <SupNumber className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text font-semibold text-transparent">
+        {number}
+      </SupNumber>
+      <div
+        className={cn(
+          "h-px w-8",
+          variant === "dark" && "bg-foreground-dark/30",
+          variant === "light" && "bg-foreground/30"
+        )}
+      />
+      <span
+        className={cn(
+          "font-geist-mono text-[0.7rem] uppercase tracking-[0.15rem]",
+          variant === "dark" && "font-normal text-foreground-dark/60",
+          variant === "light" && "font-semibold text-foreground/60"
+        )}
+      >
+        {children}
+      </span>
+    </div>
+  );
+}
