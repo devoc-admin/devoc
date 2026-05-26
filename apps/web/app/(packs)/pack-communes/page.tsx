@@ -1,9 +1,17 @@
 "use client";
 import {
+  BanknoteIcon,
+  BugIcon,
   CrownIcon,
+  EyeOffIcon,
+  FileExclamationPointIcon,
+  FishingRod,
+  FrownIcon,
+  HammerIcon,
   type LucideIcon,
   MapPinIcon,
   ShieldCheckIcon,
+  UserCheckIcon,
 } from "lucide-react";
 import { motion } from "motion/react";
 import { FadeUp } from "@/components/dev-oc/animations/fade-up";
@@ -24,7 +32,10 @@ export default function PackCommunesPage() {
       )}
     >
       <Header />
-      <SectionIntro />
+      <div className="flex flex-col gap-y-80">
+        <SectionIntro />
+        <SectionRisques />
+      </div>
     </div>
   );
 }
@@ -65,6 +76,7 @@ function Header() {
   );
 }
 
+// 0️⃣
 function SectionIntro() {
   return (
     <section
@@ -145,6 +157,250 @@ function SectionIntro() {
         </FadeUp>
       </div>
     </section>
+  );
+}
+
+// 1️⃣
+function SectionRisques() {
+  return (
+    <section className="space-y-24">
+      <div
+        className={cn(
+          "flex",
+          // ↔️
+          "flex-col gap-y-12",
+          "xs:flex-col xs:gap-y-12",
+          "sm:flex-col sm:gap-y-12",
+          "md:flex-row md:gap-x-12",
+          "2xl:flew-row 2xl:gap-x-18"
+        )}
+      >
+        <div
+          className={cn(
+            // ↔️
+            "space-y-6",
+            "2xl:space-y-10"
+          )}
+        >
+          <FadeUp disableOnMobile>
+            <SupSection number={2} variant="light">
+              Le coût de l'inaction
+            </SupSection>
+          </FadeUp>
+          <FadeUp delay={0.1} disableOnMobile>
+            <SectionCatchline className="font-normal!">
+              Les risques que vous prenez{" "}
+              <span className="font-medium text-foreground/60 italic">
+                aujourd'hui
+              </span>
+            </SectionCatchline>
+          </FadeUp>
+        </div>
+
+        <FadeUp disableOnMobile>
+          <PContent>
+            Trois familles de risques s'accumulent quand la dette technologique
+            des communes n'est pas traitée : sanctions financières, attaques
+            cyber, défiance des administrés. Sans traitement immédiat, la
+            fenêtre d'action se referme plus vite qu'on ne le pense.
+          </PContent>
+        </FadeUp>
+      </div>
+      <div
+        className="grid grid-cols-[1fr_auto] gap-y-12"
+        style={{ columnGap: "64px" }}
+      >
+        <Separator className="col-span-2" />
+        <RiskReglementaire />
+        <Separator className="col-span-2" />
+        <RiskEconomic />
+        <Separator className="col-span-2" />
+        <RiskCybersecurity />
+      </div>
+    </section>
+  );
+}
+
+function RiskReglementaire() {
+  return (
+    <div
+      className="col-span-2 grid grid-cols-subgrid"
+      style={{ gridTemplateColumns: "subgrid" }}
+    >
+      <FadeUp>
+        <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
+          Réglementaire
+        </h3>
+      </FadeUp>
+      <div
+        className="col-span-1 grid gap-x-4"
+        style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
+      >
+        <FadeUp delay={0.1}>
+          <RiskCardRGPD />
+        </FadeUp>
+        <FadeUp delay={0.2}>
+          <RiskCardRGAA />
+        </FadeUp>
+        <FadeUp delay={0.3}>
+          <RiskCardDPO />
+        </FadeUp>
+      </div>
+    </div>
+  );
+}
+function RiskEconomic() {
+  return (
+    <div
+      className="col-span-2 grid grid-cols-subgrid"
+      style={{ gridTemplateColumns: "subgrid" }}
+    >
+      <FadeUp>
+        <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
+          Économique
+        </h3>
+      </FadeUp>
+      <div
+        className="col-span-1 grid gap-x-4"
+        style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
+      >
+        <FadeUp delay={0.1}>
+          <RiskCardOverbilling />
+        </FadeUp>
+        <FadeUp delay={0.2}>
+          <RiskCardUnsuitableTools />
+        </FadeUp>
+        <FadeUp delay={0.3}>
+          <RiskCardUnhappyCitizen />
+        </FadeUp>
+      </div>
+    </div>
+  );
+}
+function RiskCybersecurity() {
+  return (
+    <div
+      className="col-span-2 grid grid-cols-subgrid"
+      style={{ gridTemplateColumns: "subgrid" }}
+    >
+      <FadeUp>
+        <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
+          Cybersécurité
+        </h3>
+      </FadeUp>
+      <div
+        className="col-span-1 grid gap-x-4"
+        style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
+      >
+        <FadeUp delay={0.1}>
+          <RiskCardMalware />
+        </FadeUp>
+        <FadeUp delay={0.2}>
+          <RiskCardPhishing />
+        </FadeUp>
+      </div>
+    </div>
+  );
+}
+
+function RiskCardRGPD() {
+  return (
+    <RiskCard
+      description="Mise en demeure publique de la CNIL et amendes financières"
+      Icon={FileExclamationPointIcon}
+      title="Non-conformité RGPD"
+    />
+  );
+}
+function RiskCardRGAA() {
+  return (
+    <RiskCard
+      description="Signalements au Défenseur des droits, jusqu'à 25 000 € d'amende."
+      Icon={EyeOffIcon}
+      title="Non-conformité RGAA"
+    />
+  );
+}
+function RiskCardDPO() {
+  return (
+    <RiskCard
+      description="Infraction constatée dès le premier contrôle CNIL."
+      Icon={UserCheckIcon}
+      title="Absence de DPO"
+    />
+  );
+}
+function RiskCardOverbilling() {
+  return (
+    <RiskCard
+      description="Services chers et datés imposés par des prestataires qui profitent de votre méconnaissance technique."
+      Icon={BanknoteIcon}
+      title="Surfacturation"
+    />
+  );
+}
+function RiskCardUnsuitableTools() {
+  return (
+    <RiskCard
+      description="Logiciels complexes et pénibles qui découragent vos agents et vous ralentissent au lieu d'aider."
+      Icon={HammerIcon}
+      title="Outils inadaptés"
+    />
+  );
+}
+function RiskCardUnhappyCitizen() {
+  return (
+    <RiskCard
+      description="Difficulté d'accès à l'information sur la vie locale, pas de services en ligne pour les démarches."
+      Icon={FrownIcon}
+      title="Désintérêt citoyen"
+    />
+  );
+}
+function RiskCardPhishing() {
+  return (
+    <RiskCard
+      description="Vols d'identifiants confidentiels en hausse, fuites de données sensibles."
+      Icon={FishingRod}
+      title="Phishing"
+    />
+  );
+}
+function RiskCardMalware() {
+  return (
+    <RiskCard
+      description="Virus paralysant vos services pendant des semaines en exigeant une rançon."
+      Icon={BugIcon}
+      title="Rançongiciels"
+    />
+  );
+}
+
+function RiskCard({
+  title,
+  description,
+  Icon,
+}: {
+  title: string;
+  description: string;
+  Icon: LucideIcon;
+}) {
+  return (
+    <div className="group space-y-5 rounded-2xl border-[1.5px] border-foreground/20 p-4 hover:border-primary/60">
+      <div
+        className={cn(
+          "w-fit rounded-full border bg-foreground/5 p-2 text-foreground/60",
+          "transition",
+          "group-hover:border-primary/60 group-hover:bg-primary/10"
+        )}
+      >
+        <Icon className="transition group-hover:text-primary" size={18} />
+      </div>
+      <div className="flex flex-col">
+        <h4 className="font-medium text-foreground text-lg">{title}</h4>
+        <p className="text-foreground/60 text-sm">{description}</p>
+      </div>
+    </div>
   );
 }
 
@@ -249,13 +505,16 @@ function PackDescription() {
   );
 }
 
-function Separator() {
+function Separator({ className }: { className?: string }) {
   return (
     <motion.div
       animate={{
         width: "100%",
       }}
-      className="mx-auto h-px bg-linear-to-r from-transparent via-foreground/10 to-transparent"
+      className={cn(
+        "mx-auto h-px bg-linear-to-r from-transparent via-foreground/10 to-transparent",
+        className
+      )}
       initial={{
         width: 0,
       }}
