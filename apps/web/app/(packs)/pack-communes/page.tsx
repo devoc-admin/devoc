@@ -1,28 +1,21 @@
 "use client";
-import {
-  BanknoteIcon,
-  BugIcon,
-  CrownIcon,
-  EyeOffIcon,
-  FileExclamationPointIcon,
-  FishingRod,
-  FrownIcon,
-  HammerIcon,
-  type LucideIcon,
-  MapPinIcon,
-  ShieldCheckIcon,
-  UserCheckIcon,
-} from "lucide-react";
-import { motion } from "motion/react";
+
 import { FadeUp } from "@/components/dev-oc/animations/fade-up";
+import { ListItem } from "@/components/dev-oc/list-item";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
 import { SupSection } from "@/components/dev-oc/sup-section";
-import { CustomGradientText } from "@/components/ui/custom-gradient-text/custom-gradient-text";
 import { cn } from "@/lib/utils";
+import { Brick1Website } from "../_components/brick";
+import { Header } from "../_components/header";
 import { PContent } from "../_components/p-content";
 import { PIntro } from "../_components/p-intro";
-import { Reserver1hGratuit, VoirLesPacks } from "../_components/pack-button";
 import { Quote } from "../_components/quote";
+import {
+  RiskCybersecurity,
+  RiskEconomic,
+  RiskReglementaire,
+} from "../_components/risk-card";
+import { Separator } from "../_components/separator";
 export default function PackCommunesPage() {
   return (
     <div
@@ -32,50 +25,17 @@ export default function PackCommunesPage() {
       )}
     >
       <Header />
-      <div className="flex flex-col gap-y-80">
+      <div className="flex flex-col gap-y-50">
         <SectionIntro />
         <SectionRisques />
+        <SectionReasons />
+        <SectionBricks />
       </div>
     </div>
   );
 }
 
 // ============================================
-
-function Header() {
-  return (
-    <div
-      className={cn(
-        "min-h-screen",
-        // ↔️
-        "space-y-12 py-24"
-      )}
-    >
-      <FadeUp dir="down">
-        <PackTitle />
-      </FadeUp>
-      <FadeUp delay={0.1} dir="down">
-        <div className="flex items-end justify-between gap-x-6">
-          <PackDescription />
-          <PackButtons />
-        </div>
-      </FadeUp>
-      <Separator />
-      <div className="flex items-center justify-between">
-        <FadeUp delay={0.2} dir="down">
-          <BadgeSouverain />
-        </FadeUp>
-        <FadeUp delay={0.2} dir="down">
-          <BadgeReferentiels />
-        </FadeUp>
-        <FadeUp delay={0.2} dir="down">
-          <BadgeCarcassonne />
-        </FadeUp>
-      </div>
-    </div>
-  );
-}
-
 // 0️⃣
 function SectionIntro() {
   return (
@@ -221,307 +181,145 @@ function SectionRisques() {
   );
 }
 
-function RiskReglementaire() {
+// 2️⃣
+function SectionReasons() {
   return (
-    <div
-      className="col-span-2 grid grid-cols-subgrid"
-      style={{ gridTemplateColumns: "subgrid" }}
-    >
-      <FadeUp>
-        <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
-          Réglementaire
-        </h3>
-      </FadeUp>
-      <div
-        className="col-span-1 grid gap-x-4"
-        style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
-      >
-        <FadeUp delay={0.1}>
-          <RiskCardRGPD />
-        </FadeUp>
-        <FadeUp delay={0.2}>
-          <RiskCardRGAA />
-        </FadeUp>
-        <FadeUp delay={0.3}>
-          <RiskCardDPO />
-        </FadeUp>
-      </div>
-    </div>
-  );
-}
-function RiskEconomic() {
-  return (
-    <div
-      className="col-span-2 grid grid-cols-subgrid"
-      style={{ gridTemplateColumns: "subgrid" }}
-    >
-      <FadeUp>
-        <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
-          Économique
-        </h3>
-      </FadeUp>
-      <div
-        className="col-span-1 grid gap-x-4"
-        style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
-      >
-        <FadeUp delay={0.1}>
-          <RiskCardOverbilling />
-        </FadeUp>
-        <FadeUp delay={0.2}>
-          <RiskCardUnsuitableTools />
-        </FadeUp>
-        <FadeUp delay={0.3}>
-          <RiskCardUnhappyCitizen />
-        </FadeUp>
-      </div>
-    </div>
-  );
-}
-function RiskCybersecurity() {
-  return (
-    <div
-      className="col-span-2 grid grid-cols-subgrid"
-      style={{ gridTemplateColumns: "subgrid" }}
-    >
-      <FadeUp>
-        <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
-          Cybersécurité
-        </h3>
-      </FadeUp>
-      <div
-        className="col-span-1 grid gap-x-4"
-        style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
-      >
-        <FadeUp delay={0.1}>
-          <RiskCardMalware />
-        </FadeUp>
-        <FadeUp delay={0.2}>
-          <RiskCardPhishing />
-        </FadeUp>
-      </div>
-    </div>
-  );
-}
-
-function RiskCardRGPD() {
-  return (
-    <RiskCard
-      description="Mise en demeure publique de la CNIL et amendes financières"
-      Icon={FileExclamationPointIcon}
-      title="Non-conformité RGPD"
-    />
-  );
-}
-function RiskCardRGAA() {
-  return (
-    <RiskCard
-      description="Signalements au Défenseur des droits, jusqu'à 25 000 € d'amende."
-      Icon={EyeOffIcon}
-      title="Non-conformité RGAA"
-    />
-  );
-}
-function RiskCardDPO() {
-  return (
-    <RiskCard
-      description="Infraction constatée dès le premier contrôle CNIL."
-      Icon={UserCheckIcon}
-      title="Absence de DPO"
-    />
-  );
-}
-function RiskCardOverbilling() {
-  return (
-    <RiskCard
-      description="Services chers et datés imposés par des prestataires qui profitent de votre méconnaissance technique."
-      Icon={BanknoteIcon}
-      title="Surfacturation"
-    />
-  );
-}
-function RiskCardUnsuitableTools() {
-  return (
-    <RiskCard
-      description="Logiciels complexes et pénibles qui découragent vos agents et vous ralentissent au lieu d'aider."
-      Icon={HammerIcon}
-      title="Outils inadaptés"
-    />
-  );
-}
-function RiskCardUnhappyCitizen() {
-  return (
-    <RiskCard
-      description="Difficulté d'accès à l'information sur la vie locale, pas de services en ligne pour les démarches."
-      Icon={FrownIcon}
-      title="Désintérêt citoyen"
-    />
-  );
-}
-function RiskCardPhishing() {
-  return (
-    <RiskCard
-      description="Vols d'identifiants confidentiels en hausse, fuites de données sensibles."
-      Icon={FishingRod}
-      title="Phishing"
-    />
-  );
-}
-function RiskCardMalware() {
-  return (
-    <RiskCard
-      description="Virus paralysant vos services pendant des semaines en exigeant une rançon."
-      Icon={BugIcon}
-      title="Rançongiciels"
-    />
-  );
-}
-
-function RiskCard({
-  title,
-  description,
-  Icon,
-}: {
-  title: string;
-  description: string;
-  Icon: LucideIcon;
-}) {
-  return (
-    <div className="group space-y-5 rounded-2xl border-[1.5px] border-foreground/20 p-4 hover:border-primary/60">
+    <section className="space-y-24">
       <div
         className={cn(
-          "w-fit rounded-full border bg-foreground/5 p-2 text-foreground/60",
-          "transition",
-          "group-hover:border-primary/60 group-hover:bg-primary/10"
+          "flex",
+          // ↔️
+          "flex-col gap-y-12",
+          "xs:flex-col xs:gap-y-12",
+          "sm:flex-col sm:gap-y-12",
+          "md:flex-row md:gap-x-12",
+          "2xl:flew-row 2xl:gap-x-18"
         )}
       >
-        <Icon className="transition group-hover:text-primary" size={18} />
+        <div
+          className={cn(
+            // ↔️
+            "w-1/2 space-y-6",
+            "2xl:space-y-10"
+          )}
+        >
+          <FadeUp disableOnMobile>
+            <SupSection number={3} variant="light">
+              Pourquoi maintenant
+            </SupSection>
+          </FadeUp>
+          <FadeUp delay={0.1} disableOnMobile>
+            <SectionCatchline className="font-normal!">
+              Cinq raisons d'engager cette transformation{" "}
+              <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text font-medium text-transparent italic">
+                dès ce mandat
+              </span>
+            </SectionCatchline>
+          </FadeUp>
+        </div>
       </div>
-      <div className="flex flex-col">
-        <h4 className="font-medium text-foreground text-lg">{title}</h4>
-        <p className="text-foreground/60 text-sm">{description}</p>
+      <div>
+        {values.map(({ id, ...props }, index) => (
+          <FadeUp
+            className="group w-full"
+            delay={0.1 * index}
+            disableOnMobile
+            key={id}
+          >
+            <ListItem {...props} index={index + 1} variant="light" />
+          </FadeUp>
+        ))}
       </div>
-    </div>
+    </section>
   );
 }
 
-function BadgeSouverain() {
-  return (
-    <Badge
-      Icon={CrownIcon}
-      subtitle="Technologies françaises ou européennes"
-      title="Souveraineté numérique"
-    />
-  );
-}
+const values = [
+  {
+    description:
+      "RGPD (protection des données), RGAA (accessibilité numérique), directive NIS2 (cybersécurité), RGESN (éco-conception). Ces textes ne sont pas optionnels — ils s'appliquent à toutes les collectivités, quelle que soit leur taille.",
+    id: "reglementations",
+    title: "Faire face à la convergence d'obligations réglementaires",
+  },
+  {
+    description:
+      "La France renouvelle son parc logiciel pour réduire sa dépendance aux entreprises américaines, en promouvant des alternatives libres ou des suites éditées par l'État. Nous vous aidons à anticiper et à vous aligner sur ces nouveaux standards.",
+    id: "souverainete-numerique",
+    title: "Regagner sa souveraineté numérique",
+  },
+  {
+    description:
+      "Les cyberattaques contre les mairies ont explosé : rançongiciels, phishing, usurpation. Une collectivité sur cinq a subi une attaque en 2023. Coût moyen : 25 000 € par incident — sans compter la paralysie des services et l'atteinte à la confiance.",
+    id: "contre-cyberattaques",
+    title: "Contrer la prochaine vague de cyberattaques",
+  },
+  {
+    description:
+      "Nous dimensionnons vos outils à vos usages réels pour éviter les sur-facturations courantes du secteur. L'automatisation soulage vos agents des corvées administratives et leur permet de se consacrer à des tâches à haute valeur ajoutée.",
+    id: "economies",
+    title: "Économiser du temps... et de l'argent !",
+  },
+  {
+    description:
+      "Résidant entre Carcassonne et Castelnaudary, nous avons à cœur de développer l'attractivité de notre région. Toutes nos offres sont complétées par de la formation en présentiel et un suivi pour assurer la montée en compétences de vos agents.",
+    id: "accompagnement-local",
+    title: "Bénéficier d'un accompagnement local",
+  },
+];
 
-function BadgeReferentiels() {
+// 3️⃣
+function SectionBricks() {
   return (
-    <Badge
-      Icon={ShieldCheckIcon}
-      subtitle="Conformité réglementaire totale"
-      title="RGPD • RGAA • RGESN • NIS2"
-    />
-  );
-}
+    <section className="space-y-24">
+      <div
+        className={cn(
+          "flex",
+          // ↔️
+          "flex-col gap-y-12",
+          "xs:flex-col xs:gap-y-12",
+          "sm:flex-col sm:gap-y-12",
+          "md:flex-row md:gap-x-12",
+          "2xl:flew-row 2xl:gap-x-18"
+        )}
+      >
+        <div
+          className={cn(
+            // ↔️
+            "space-y-6",
+            "2xl:space-y-10"
+          )}
+        >
+          <FadeUp disableOnMobile>
+            <SupSection number={4} variant="light">
+              Couvrir votre chaîne numérique
+            </SupSection>
+          </FadeUp>
+          <FadeUp delay={0.1} disableOnMobile>
+            <SectionCatchline className="font-normal!">
+              Six briques{" "}
+              <span className="font-medium text-foreground/60 italic">
+                complémentaires
+              </span>{" "}
+              à composer selon vos besoins
+            </SectionCatchline>
+          </FadeUp>
+        </div>
 
-function BadgeCarcassonne() {
-  return (
-    <Badge
-      Icon={MapPinIcon}
-      subtitle="Déplacement sur tout le département"
-      title="Basés à Carcassonne"
-    />
-  );
-}
-
-function Badge({
-  title,
-  subtitle,
-  Icon,
-}: {
-  title: string;
-  subtitle: string;
-  Icon: LucideIcon | React.FC;
-}) {
-  return (
-    <div className="flex items-center gap-x-4">
-      {/* ⚪ */}
-      <div className="rounded-full border border-foreground/5 bg-foreground/5 p-2.5 text-foreground/60">
-        <Icon size={20} />
+        <FadeUp disableOnMobile>
+          <PContent>
+            Chaque brique est conçue pour vous rendre{" "}
+            <span className="text-foreground">autonome</span>,{" "}
+            <span className="text-foreground">conforme</span> et{" "}
+            <span className="text-foreground">efficace</span> — sans enfermement
+            technologique, sans dépendance, sans surcoût caché.
+          </PContent>
+        </FadeUp>
       </div>
-      {/* 🔤 */}
-      <div className="flex flex-col">
-        <span className="font-geist-mono font-medium text-[0.8rem] text-foreground/40 uppercase tracking-wider">
-          {title}
-        </span>
-        <span className="font-geist text-foreground">{subtitle}</span>
+      <div>
+        <Brick1Website />
+        <Brick1Website />
+        <Brick1Website />
       </div>
-    </div>
-  );
-}
-
-function PackTitle() {
-  return (
-    <h1
-      className={cn(
-        "font-fraunces font-medium! text-foreground",
-        "leading-[0.9]!",
-        // ↔️
-        "text-[6.5rem]"
-      )}
-    >
-      La transformation{" "}
-      <span className="text-foreground/60 italic">numérique</span> de votre
-      commune, <CustomGradientText>clé en main</CustomGradientText>
-    </h1>
-  );
-}
-
-function PackButtons() {
-  return (
-    <div className="mb-2 flex gap-x-4">
-      <Reserver1hGratuit />
-      <VoirLesPacks />
-    </div>
-  );
-}
-
-function PackDescription() {
-  return (
-    <p
-      className={cn(
-        "max-w-[40ch] font-fraunces font-medium",
-        "leading-snug!",
-        // ↔️
-        "text-2xl"
-      )}
-    >
-      Six briques modulaires, trois packs à tarifs encadrés — tous{" "}
-      <CustomGradientText>sous le seuil MAPA</CustomGradientText> pour vous
-      éviter la lourdeur d'un appel d'offres. Conçu pour les communes de l'Aude,
-      avec le soutien du Réseau des Maisons de l'Innovation, du Numérique et de
-      l'Entrepreunariat de Carcassonne Agglo.
-    </p>
-  );
-}
-
-function Separator({ className }: { className?: string }) {
-  return (
-    <motion.div
-      animate={{
-        width: "100%",
-      }}
-      className={cn(
-        "mx-auto h-px bg-linear-to-r from-transparent via-foreground/10 to-transparent",
-        className
-      )}
-      initial={{
-        width: 0,
-      }}
-      transition={{
-        delay: 0.3,
-        duration: 2,
-      }}
-    />
+    </section>
   );
 }

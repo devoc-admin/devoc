@@ -544,7 +544,7 @@ function SectionValues() {
       <div>
         {values.map(({ id, ...props }, index) => (
           <FadeUp className="group w-full" delay={0.1} disableOnMobile key={id}>
-            <ListItem {...props} index={index + 1} />
+            <ListItem variant="dark" {...props} index={index + 1} />
           </FadeUp>
         ))}
       </div>
