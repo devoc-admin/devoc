@@ -8,7 +8,10 @@ export function Separator({ className }: { className?: string }) {
         width: "100%",
       }}
       className={cn(
-        "mx-auto h-px bg-linear-to-r from-transparent via-foreground/10 to-transparent",
+        "mx-auto h-px bg-linear-to-r",
+        "from-transparent",
+        "via-foreground/10",
+        "to-transparent",
         className
       )}
       initial={{

@@ -2,13 +2,13 @@
 import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { CustomGradientText } from "@/components/ui/custom-gradient-text/custom-gradient-text";
 import { cn } from "@/lib/utils";
+import { Reserver1hGratuit, VoirLesPacks } from "../../pack-button";
+import { Separator } from "../../separator";
 import {
   BadgeCarcassonne,
   BadgeReferentiels,
   BadgeSouverain,
-} from "../_components/badge-header";
-import { Reserver1hGratuit, VoirLesPacks } from "../_components/pack-button";
-import { Separator } from "./separator";
+} from "./badge-header";
 
 export function Header() {
   return (

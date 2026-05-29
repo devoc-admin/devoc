@@ -13,11 +13,11 @@ const sharedClasses = cn(
 const responsiveClasses = cn(
   // ↔️
   "w-fit gap-x-4! px-1! py-1! text-base",
-  "xs:w-auto! xs:gap-x-4! xs:px-1! xs:py-1! xs:text-base",
-  "sm:w-auto! sm:gap-x-4! sm:px-1! sm:py-1! sm:text-base",
-  "md:w-auto! md:gap-x-4! md:px-1! md:py-1! md:text-base",
-  "lg:w-auto! lg:gap-x-4! lg:px-1! lg:py-1! lg:text-base",
-  "xl:w-auto! xl:gap-x-6! xl:px-3! xl:py-2! xl:text-base"
+  "xs:gap-x-4! xs:px-1! xs:py-1! xs:text-base",
+  "sm:gap-x-4! sm:px-1! sm:py-1! sm:text-base",
+  "md:gap-x-4! md:px-1! md:py-1! md:text-base",
+  "lg:gap-x-4! lg:px-1! lg:py-1! lg:text-base",
+  "xl:gap-x-6! xl:px-3! xl:py-2! xl:text-base"
 );
 
 export function VoirLesPacks() {
@@ -39,7 +39,7 @@ export function VoirLesPacks() {
   );
 }
 
-export function Reserver1hGratuit() {
+export function Reserver1hGratuit({ className }: { className?: string }) {
   return (
     <CustomButton
       className={cn(
@@ -47,7 +47,8 @@ export function Reserver1hGratuit() {
         "font-medium!",
         "hover:brightness-102!",
         sharedClasses,
-        responsiveClasses
+        responsiveClasses,
+        className
       )}
       href="#contact"
       style={
@@ -59,6 +60,77 @@ export function Reserver1hGratuit() {
       }
     >
       <span className="ml-4 text-foreground">Réserver 1h gratuit</span>
+      <ArrowRightUpAnimated className="text-foreground" />
+    </CustomButton>
+  );
+}
+
+export function ChoisirAvance({ className }: { className?: string }) {
+  return (
+    <CustomButton
+      className={cn(sharedClasses, responsiveClasses, className)}
+      href="#packs"
+      style={
+        {
+          "--accent": "var(--primary-lighter)",
+          "--accent-secondary": "var(--primary-strong)",
+          "--degree": "200deg",
+        } as React.CSSProperties
+      }
+    >
+      <span className="ml-4">Choisir Avancé</span>
+      <ArrowRightUpAnimated className="text-primary" />
+    </CustomButton>
+  );
+}
+
+export function ChoisirEssentiel({ className }: { className?: string }) {
+  return (
+    <CustomButton
+      className={cn(
+        "text-zinc-900!",
+        "font-medium!",
+        "hover:brightness-102!",
+        sharedClasses,
+        responsiveClasses,
+        className
+      )}
+      href="#contact"
+      style={
+        {
+          "--accent": "var(--color-zinc-50)",
+          "--accent-secondary": "var(--color-zinc-200)",
+          "--degree": "190deg",
+        } as React.CSSProperties
+      }
+    >
+      <span className="ml-4 text-foreground">Choisir Essentiel</span>
+      <ArrowRightUpAnimated className="text-foreground" />
+    </CustomButton>
+  );
+}
+
+export function ChoisirPremium({ className }: { className?: string }) {
+  return (
+    <CustomButton
+      className={cn(
+        "text-zinc-900!",
+        "font-medium!",
+        "hover:brightness-102!",
+        sharedClasses,
+        responsiveClasses,
+        className
+      )}
+      href="#contact"
+      style={
+        {
+          "--accent": "var(--color-zinc-50)",
+          "--accent-secondary": "var(--color-zinc-200)",
+          "--degree": "190deg",
+        } as React.CSSProperties
+      }
+    >
+      <span className="ml-4 text-foreground">Choisir Premium</span>
       <ArrowRightUpAnimated className="text-foreground" />
     </CustomButton>
   );

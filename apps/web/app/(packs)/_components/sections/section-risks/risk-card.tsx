@@ -176,15 +176,18 @@ export function RiskCard({
   Icon: LucideIcon;
 }) {
   return (
-    <div className="group space-y-5 rounded-2xl border-[1.5px] border-foreground/20 p-4 hover:border-primary/60">
+    <div className="group space-y-5 rounded-2xl border-[1.5px] border-foreground/20 p-4 hover:border-primary-strong/60">
       <div
         className={cn(
           "w-fit rounded-full border bg-foreground/5 p-2 text-foreground/60",
           "transition",
-          "group-hover:border-primary/60 group-hover:bg-primary/10"
+          "group-hover:border-primary-strong/60 group-hover:bg-primary-strong/10"
         )}
       >
-        <Icon className="transition group-hover:text-primary" size={18} />
+        <Icon
+          className="transition group-hover:text-primary-strong"
+          size={18}
+        />
       </div>
       <div className="flex flex-col">
         <h4 className="font-medium text-foreground text-lg">{title}</h4>
