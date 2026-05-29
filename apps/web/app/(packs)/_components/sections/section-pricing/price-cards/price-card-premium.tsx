@@ -1,4 +1,4 @@
-import { ChoisirPremium } from "../../../pack-button";
+import { ChoisirPremium } from "../buttons";
 import {
   PriceCard,
   PriceCardDescription,

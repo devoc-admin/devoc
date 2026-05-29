@@ -1,6 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
 import { CustomButton } from "@/components/ui/custom-button/custom-button";
-import { CAL_COMMUNES_LINK } from "@/constants";
 import { cn } from "@/lib/utils";
 
 const sharedClasses = cn(
@@ -21,26 +20,31 @@ const responsiveClasses = cn(
   "xl:gap-x-6! xl:px-3! xl:py-2! xl:text-base"
 );
 
-export function VoirLesPacks() {
+export function ChoisirAvance({ className }: { className?: string }) {
   return (
     <CustomButton
-      className={cn(sharedClasses, responsiveClasses)}
+      className={cn(
+        sharedClasses,
+        responsiveClasses,
+        "brightness-106",
+        className
+      )}
       href="#packs"
       style={
         {
-          "--accent": "var(--primary-lighter)",
+          "--accent": "#ff611a",
           "--accent-secondary": "var(--primary-strong)",
           "--degree": "200deg",
         } as React.CSSProperties
       }
     >
-      <span className="ml-4">Voir les packs</span>
-      <ArrowRightUpAnimated className="text-primary" />
+      <span className="ml-4">Choisir Avancé</span>
+      <ArrowRightUpAnimated className="text-[#ff611a]" />
     </CustomButton>
   );
 }
 
-export function Reserver1hGratuit({ className }: { className?: string }) {
+export function ChoisirEssentiel({ className }: { className?: string }) {
   return (
     <CustomButton
       className={cn(
@@ -51,7 +55,7 @@ export function Reserver1hGratuit({ className }: { className?: string }) {
         responsiveClasses,
         className
       )}
-      href={CAL_COMMUNES_LINK}
+      href="#contact"
       style={
         {
           "--accent": "var(--color-zinc-50)",
@@ -60,7 +64,33 @@ export function Reserver1hGratuit({ className }: { className?: string }) {
         } as React.CSSProperties
       }
     >
-      <span className="ml-4 text-foreground">Réserver 1h gratuit</span>
+      <span className="ml-4 text-foreground">Choisir Essentiel</span>
+      <ArrowRightUpAnimated className="text-foreground" />
+    </CustomButton>
+  );
+}
+
+export function ChoisirPremium({ className }: { className?: string }) {
+  return (
+    <CustomButton
+      className={cn(
+        "text-zinc-900!",
+        "font-medium!",
+        "hover:brightness-102!",
+        sharedClasses,
+        responsiveClasses,
+        className
+      )}
+      href="#contact"
+      style={
+        {
+          "--accent": "var(--color-zinc-50)",
+          "--accent-secondary": "var(--color-zinc-200)",
+          "--degree": "190deg",
+        } as React.CSSProperties
+      }
+    >
+      <span className="ml-4 text-foreground">Choisir Premium</span>
       <ArrowRightUpAnimated className="text-foreground" />
     </CustomButton>
   );

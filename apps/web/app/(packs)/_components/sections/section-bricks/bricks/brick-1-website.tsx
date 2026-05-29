@@ -32,7 +32,7 @@ export function Brick1Website() {
           <GuaranteesTitle />
           <ul className="space-y-3">
             <GuaranteeItem>
-              Conformité RGAA (accessibilité niveau AA), RGPD et RGESN intégrée
+              Conformité RGAA (accessibilité niveau AAA), RGPD et RGESN intégrée
               dès la conception.
             </GuaranteeItem>
             <GuaranteeItem>

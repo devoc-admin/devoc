@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { ContactCard } from "../_components/sections/contact-card/contact-card";
 import { Header } from "../_components/sections/header/header";
 import { SectionBricks } from "../_components/sections/section-bricks/section-bricks";
 import { SectionIntro } from "../_components/sections/section-intro/section-intro";
@@ -24,6 +25,7 @@ export default function PackCommunesPage() {
         <SectionBricks />
         <SectionPricing />
         <SectionSteps />
+        <ContactCard />
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ export default function LegalLayout({
           "md:pt-24 md:pb-32",
           "lg:pt-26 lg:pb-32",
           "xl:pt-26 xl:pb-32",
-          "2xl:pt-26 2xl:pb-32"
+          "2xl:pt-26 2xl:pb-64"
         )}
       >
         <OrangeDot className="top-0 right-0 size-[50vw] translate-x-1/2 -translate-y-1/2 opacity-30" />
@@ -94,7 +94,7 @@ function OrangeDot({ className }: { className?: string }) {
     <div
       className={cn(
         "absolute",
-        "rounded-full bg-radial from-primary to-60% to-transparent",
+        "rounded-full bg-radial from-primary-strong to-60% to-transparent",
         "blur-[100px]",
         className
       )}

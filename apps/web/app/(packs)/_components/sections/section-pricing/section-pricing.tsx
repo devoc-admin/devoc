@@ -11,7 +11,7 @@ import { PriceCardPremium } from "./price-cards/price-card-premium";
 
 export function SectionPricing() {
   return (
-    <section className="space-y-24">
+    <section className="scroll-mt-12 space-y-24" id="packs">
       <div
         className={cn(
           "flex",

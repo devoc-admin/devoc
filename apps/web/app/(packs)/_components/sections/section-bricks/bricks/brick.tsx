@@ -37,14 +37,14 @@ export function Brick({
 
 export function BrickNumber({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid size-12 place-items-center rounded-full border-2 border-primary-strong bg-primary-strong/10 font-fraunces font-semibold text-2xl text-primary-strong">
+    <div className="grid size-12 place-items-center rounded-full border-2 border-primary-strong bg-primary-strong/5 font-fraunces font-semibold text-2xl text-primary-strong">
       {children}
     </div>
   );
 }
 export function BrickDescription({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-geist text-base text-foreground/50 leading-tight">
+    <p className="font-geist text-foreground/50 text-lg leading-snug">
       {children}
     </p>
   );
@@ -52,7 +52,7 @@ export function BrickDescription({ children }: { children: React.ReactNode }) {
 
 export function BrickTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="font-fraunces font-semibold text-4xl text-foreground leading-none!">
+    <h3 className="font-fraunces font-semibold text-5xl text-foreground leading-none!">
       {children}
     </h3>
   );
@@ -60,7 +60,7 @@ export function BrickTitle({ children }: { children: React.ReactNode }) {
 
 export function GuaranteesTitle() {
   return (
-    <h4 className="font-geist-mono font-semibold text-[0.65rem] text-foreground/40 text-xs uppercase tracking-[0.15rem]">
+    <h4 className="font-geist-mono font-semibold text-foreground/40 text-xs uppercase tracking-[0.15rem]">
       Vos garanties
     </h4>
   );
@@ -71,10 +71,10 @@ export function GuaranteeItem({ children }: { children: React.ReactNode }) {
     <li className="flex items-start gap-x-4">
       {/* ✅ */}
       <div className="mt-[3px] grid place-items-center rounded-full bg-primary-strong p-1">
-        <CheckIcon className="text-white" size={11} strokeWidth={3} />
+        <CheckIcon className="text-white" size={12} strokeWidth={3} />
       </div>
       {/* 🔤 */}
-      <span className="text-[0.9rem]">{children}</span>
+      <span className="text-base">{children}</span>
     </li>
   );
 }
@@ -91,14 +91,12 @@ export function SmallCard({
   return (
     <div className="space-y-2 rounded-lg border border-foreground/10 p-3">
       <div className="flex items-center gap-x-1.5">
-        <div className="grid aspect-square size-5 place-items-center rounded-full bg-foreground/4">
-          <Icon className="text-foreground/40" size={12} />
-        </div>
-        <span className="font-geist-mono text-[0.6rem] text-foreground/60 uppercase tracking-widest">
+        <Icon className="text-foreground/40" size={14} />
+        <span className="font-geist-mono text-[0.63rem] text-foreground/60 uppercase tracking-widest">
           {title}
         </span>
       </div>
-      <div className="text-[0.8rem] tracking-tight">{children}</div>
+      <p className="text-[0.82rem] tracking-tight">{children}</p>
     </div>
   );
 }
@@ -124,8 +122,13 @@ export function PlusDevOc({ children }: { children: React.ReactNode }) {
     >
       {/* 🔠 */}
       <div className="space-y-1">
-        <h4 className="font-geist-mono font-medium text-primary-strong text-xs uppercase tracking-widest">
-          Le + Dev'Oc
+        <h4
+          className={cn(
+            "font-geist-mono font-medium",
+            "text-primary-strong text-xs uppercase tracking-widest"
+          )}
+        >
+          <span>Le + Dev'Oc</span>
         </h4>
         <p className="font-foreground text-[0.9rem] text-base">{children}</p>
       </div>

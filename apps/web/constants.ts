@@ -1,4 +1,11 @@
 export const OPEN_CARCA_WINNER_URL =
   "https://www.carcassonne-agglo.fr/actualite/carcassonne-agglo-apporte-son-concours-2/#:~:text=prix%20revient%20%C3%A0%20Cl%C3%A9ment%20Dubos%20et%20Thibaut%20Izard%20pour%20%C2%AB%20Dev%E2%80%99Oc%20%C2%BB,%20un%20collectif%20de%20d%C3%A9veloppeurs%20informatique%20qui%20souhaitent%20proposer%20des%20services%20de%20mise%20en%20conformit%C3%A9%20de%20sites%20Internet%20aux%20collectivit%C3%A9s%20territoriales";
+
+export const CAL_COMMUNES_LINK = "https://cal.com/dev-oc/bilan-communes";
+
+export const MAIL_DEVOC = "contact@dev-oc.fr";
+export const TEL_THIBAUT = "+33620239838";
+export const TEL_THIBAUT_FORMATTED = "06 20 23 98 38";
+export const TEL_CLEMENT = "+33658889701";
 // export const OPEN_CARCA_WINNER_URL =
 //   "https://www.carcassonne-agglo.fr/actualite/avec-clement-dubos-et-thibaut-izard-linformatique-sur-mesure/";
