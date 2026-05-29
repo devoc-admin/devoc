@@ -15,6 +15,69 @@
       "when": 1769783540744,
       "tag": "0001_parched_spectrum",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779635315301,
+      "tag": "0002_sticky_ultimates",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1779635832835,
+      "tag": "0003_spotty_network",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1779636308365,
+      "tag": "0004_massive_marauders",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1779637034668,
+      "tag": "0005_sharp_synch",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1779637804600,
+      "tag": "0006_safe_sasquatch",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1779638827465,
+      "tag": "0007_remarkable_young_avengers",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1779638842932,
+      "tag": "0008_premium_squirrel_girl",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1779640142603,
+      "tag": "0009_glossy_thunderbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1779642153784,
+      "tag": "0010_dry_lockheed",
+      "breakpoints": true
     }
   ]
 }

@@ -8,6 +8,8 @@ import {
   editProspect,
   toggleHasSite,
   updateEstimatedOpportunity,
+  updateHasAccessibilitySettings,
+  updateSiteEditor,
 } from "./prospects-actions";
 
 export function useAddProspectMutation() {
@@ -23,6 +25,16 @@ export function useAddProspectMutation() {
       longitude,
       hasSite,
       estimatedOpportunity,
+      inhabitants,
+      distanceFrom,
+      siteLaunchYear,
+      siteEditor,
+      siteEditorUrl,
+      hasAccessibilitySettings,
+      usesPanneauPocket,
+      hasDpo,
+      dpoName,
+      dpoUrl,
     }: {
       name: string;
       website: string;
@@ -32,15 +44,35 @@ export function useAddProspectMutation() {
       longitude?: string;
       hasSite?: boolean;
       estimatedOpportunity?: Prospect["estimatedOpportunity"];
+      inhabitants?: number | null;
+      distanceFrom?: number | null;
+      siteLaunchYear?: number | null;
+      siteEditor?: string | null;
+      siteEditorUrl?: string | null;
+      hasAccessibilitySettings?: boolean | null;
+      usesPanneauPocket?: boolean | null;
+      hasDpo?: boolean | null;
+      dpoName?: string | null;
+      dpoUrl?: string | null;
     }) => {
       const result = await addProspect({
+        distanceFrom,
+        dpoName,
+        dpoUrl,
         estimatedOpportunity,
+        hasAccessibilitySettings,
+        hasDpo,
         hasSite,
+        inhabitants,
         latitude,
         location,
         longitude,
         name,
+        siteEditor,
+        siteEditorUrl,
+        siteLaunchYear,
         type,
+        usesPanneauPocket,
         website,
       });
 
@@ -52,6 +84,7 @@ export function useAddProspectMutation() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prospects"] });
+      queryClient.invalidateQueries({ queryKey: ["dpos"] });
       toast("Prospect ajouté avec succès !", {
         icon: "✅",
         position: "bottom-right",
@@ -75,6 +108,16 @@ export function useEditProspectMutation() {
       type,
       latitude,
       longitude,
+      inhabitants,
+      distanceFrom,
+      siteLaunchYear,
+      siteEditor,
+      siteEditorUrl,
+      hasAccessibilitySettings,
+      usesPanneauPocket,
+      hasDpo,
+      dpoName,
+      dpoUrl,
     }: {
       id: number;
       name: string;
@@ -83,14 +126,34 @@ export function useEditProspectMutation() {
       type: Prospect["type"];
       latitude?: string;
       longitude?: string;
+      inhabitants?: number | null;
+      distanceFrom?: number | null;
+      siteLaunchYear?: number | null;
+      siteEditor?: string | null;
+      siteEditorUrl?: string | null;
+      hasAccessibilitySettings?: boolean | null;
+      usesPanneauPocket?: boolean | null;
+      hasDpo?: boolean | null;
+      dpoName?: string | null;
+      dpoUrl?: string | null;
     }) => {
       const result = await editProspect({
+        distanceFrom,
+        dpoName,
+        dpoUrl,
+        hasAccessibilitySettings,
+        hasDpo,
         id,
+        inhabitants,
         latitude,
         location,
         longitude,
         name,
+        siteEditor,
+        siteEditorUrl,
+        siteLaunchYear,
         type,
+        usesPanneauPocket,
         website,
       });
 
@@ -105,6 +168,7 @@ export function useEditProspectMutation() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prospects"] });
+      queryClient.invalidateQueries({ queryKey: ["dpos"] });
       toast.success("Prospect modifié avec succès !");
     },
   });
@@ -163,6 +227,67 @@ export function useUpdateEstimatedOpportunityMutation() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["prospects"] });
       toast.success("Urgence mise à jour avec succès !");
+    },
+  });
+}
+
+// --------------------------------------
+// 🛠️ Update site editor
+
+export function useUpdateSiteEditorMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      prospectId,
+      siteEditor,
+    }: {
+      prospectId: number;
+      siteEditor: string | null;
+    }) => {
+      const result = await updateSiteEditor({ prospectId, siteEditor });
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return true;
+    },
+    onError: () => {
+      toast.error("Erreur lors de la mise à jour de l'éditeur.");
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["prospects"] });
+    },
+  });
+}
+
+// --------------------------------------
+// ♿ Update accessibility settings flag
+
+export function useUpdateHasAccessibilitySettingsMutation() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      prospectId,
+      hasAccessibilitySettings,
+    }: {
+      prospectId: number;
+      hasAccessibilitySettings: boolean | null;
+    }) => {
+      const result = await updateHasAccessibilitySettings({
+        hasAccessibilitySettings,
+        prospectId,
+      });
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+      return true;
+    },
+    onError: () => {
+      toast.error("Erreur lors de la mise à jour de l'accessibilité.");
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["prospects"] });
     },
   });
 }

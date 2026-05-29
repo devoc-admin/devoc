@@ -347,6 +347,21 @@ export const estimatedOpportunityEnum = pgEnum("estimated_opportunity", [
   "weak",
 ]);
 
+export const dpo = pgTable("dpo", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: text().notNull(),
+  url: text(),
+  createdAt: timestamp({ mode: "string", withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp({ mode: "string", withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+});
+
+export type Dpo = typeof dpo.$inferSelect;
+export type NewDpo = typeof dpo.$inferInsert;
+
 export const prospect = pgTable(
   "prospect",
   {
@@ -359,6 +374,15 @@ export const prospect = pgTable(
     type: prospectTypeEnum().default("other").notNull(),
     estimatedOpportunity: estimatedOpportunityEnum().default("medium"),
     hasSite: boolean().default(true).notNull(),
+    inhabitants: integer(),
+    distanceFrom: integer(),
+    siteLaunchYear: integer(),
+    siteEditor: text(),
+    siteEditorUrl: text(),
+    hasAccessibilitySettings: boolean(),
+    usesPanneauPocket: boolean(),
+    hasDpo: boolean(),
+    dpoId: integer(),
     crawlId: text(),
     createdAt: timestamp({ mode: "string", withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
@@ -377,6 +401,12 @@ export const prospect = pgTable(
       "btree",
       table.crawlId.asc().nullsLast()
     ),
+    foreignKey({
+      columns: [table.dpoId],
+      foreignColumns: [dpo.id],
+      name: "prospect_dpoId_fkey",
+    }).onDelete("set null"),
+    index("prospect_dpoId_idx").using("btree", table.dpoId.asc().nullsLast()),
   ]
 );
 

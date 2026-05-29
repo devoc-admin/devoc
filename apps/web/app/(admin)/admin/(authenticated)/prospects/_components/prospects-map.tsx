@@ -93,10 +93,11 @@ export function ProspectsMap() {
             lng: Number.parseFloat(prospect.longitude ?? "0"),
           };
           const color = markerColors[prospect.type];
+          const hasWarning = prospect.estimatedOpportunity === "strong";
 
           return (
             <MarkerF
-              icon={createMarkerIcon(color)}
+              icon={createMarkerIcon(color, hasWarning)}
               key={prospect.id}
               onClick={() => handleMarkerClick(prospect)}
               position={position}
@@ -200,17 +201,26 @@ const markerColors: Record<Prospect["type"], string> = {
 };
 
 // 📍 Marker
-function createMarkerIcon(color: string): google.maps.Icon {
+function createMarkerIcon(
+  color: string,
+  hasWarning: boolean
+): google.maps.Icon {
+  const viewBoxWidth = hasWarning ? 36 : 24;
+  const width = hasWarning ? 48 : 32;
+  const warning = hasWarning
+    ? '<text x="22" y="13" font-size="13">⚠️</text>'
+    : "";
   const svg = `
-    <svg viewBox="0 0 24 24" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 ${viewBoxWidth} 24" width="${width}" height="32" xmlns="http://www.w3.org/2000/svg">
       <path fill="${color}" stroke="#ffffff" stroke-width="1" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+      ${warning}
     </svg>
   `;
   return {
     // biome-ignore lint/correctness/noUndeclaredVariables: google is a global provided by Google Maps API
     anchor: new google.maps.Point(16, 32),
     // biome-ignore lint/correctness/noUndeclaredVariables: google is a global provided by Google Maps API
-    scaledSize: new google.maps.Size(32, 32),
+    scaledSize: new google.maps.Size(width, 32),
     url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`,
   };
 }

@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 import type { Prospect } from "@/lib/db/schema";
+import { useListDposQuery } from "./dpos-queries";
 import type { ProspectResult } from "./prospects-actions";
 import {
   useAddProspectMutation,
@@ -18,6 +19,8 @@ import {
   useEditProspectMutation,
   useLaunchCrawlMutation,
   useUpdateEstimatedOpportunityMutation,
+  useUpdateHasAccessibilitySettingsMutation,
+  useUpdateSiteEditorMutation,
 } from "./prospects-mutations";
 import { useListProspectsQuery } from "./prospects-queries";
 
@@ -56,6 +59,16 @@ const ProspectsContext = createContext<ProspectsContext>({
   // 🔴 Estimated opportunity
   updateEstimatedOpportunityMutate: () => {},
   updatingEstimatedOpportunityProspectId: undefined,
+
+  // 🛠️ Site editor
+  isUpdatingSiteEditor: false,
+  updateSiteEditorMutate: () => {},
+  updatingSiteEditorProspectId: undefined,
+
+  // ♿ Accessibility settings
+  isUpdatingHasAccessibilitySettings: false,
+  updateHasAccessibilitySettingsMutate: () => {},
+  updatingHasAccessibilitySettingsProspectId: undefined,
 
   // 🗺️ View mode
   viewMode: "table",
@@ -143,6 +156,25 @@ export function ProspectsContextProvider({
   const updatingEstimatedOpportunityProspectId =
     updatingEstimatedOpportunityVariables?.prospectId;
 
+  // 🛠️ Update site editor
+  const {
+    mutate: updateSiteEditorMutate,
+    isPending: isUpdatingSiteEditor,
+    variables: updatingSiteEditorVariables,
+  } = useUpdateSiteEditorMutation();
+
+  const updatingSiteEditorProspectId = updatingSiteEditorVariables?.prospectId;
+
+  // ♿ Update accessibility settings flag
+  const {
+    mutate: updateHasAccessibilitySettingsMutate,
+    isPending: isUpdatingHasAccessibilitySettings,
+    variables: updatingHasAccessibilitySettingsVariables,
+  } = useUpdateHasAccessibilitySettingsMutation();
+
+  const updatingHasAccessibilitySettingsProspectId =
+    updatingHasAccessibilitySettingsVariables?.prospectId;
+
   // 🕷️ Launch crawl
   const {
     mutate: launchCrawlMutate,
@@ -190,6 +222,16 @@ export function ProspectsContextProvider({
         updateEstimatedOpportunityMutate,
         updatingEstimatedOpportunityProspectId,
 
+        // 🛠️ Update site editor
+        isUpdatingSiteEditor,
+        updateSiteEditorMutate,
+        updatingSiteEditorProspectId,
+
+        // ♿ Update accessibility settings flag
+        isUpdatingHasAccessibilitySettings,
+        updateHasAccessibilitySettingsMutate,
+        updatingHasAccessibilitySettingsProspectId,
+
         // 🗺️ View mode
         viewMode,
       }}
@@ -206,6 +248,16 @@ type ProspectAddData = {
   type: Prospect["type"];
   latitude?: string;
   longitude?: string;
+  inhabitants?: number | null;
+  distanceFrom?: number | null;
+  siteLaunchYear?: number | null;
+  siteEditor?: string | null;
+  siteEditorUrl?: string | null;
+  hasAccessibilitySettings?: boolean | null;
+  usesPanneauPocket?: boolean | null;
+  hasDpo?: boolean | null;
+  dpoName?: string | null;
+  dpoUrl?: string | null;
 };
 
 type ProspectEditData = ProspectAddData & { id: number };
@@ -258,6 +310,26 @@ type ProspectsContext = {
   updatingEstimatedOpportunityProspectId: number | undefined;
   isUpdatingEstimatedOpportunity: boolean;
 
+  // 🛠️ Site editor
+  updateSiteEditorMutate: UseMutateFunction<
+    boolean,
+    Error,
+    { prospectId: number; siteEditor: string | null },
+    unknown
+  >;
+  updatingSiteEditorProspectId: number | undefined;
+  isUpdatingSiteEditor: boolean;
+
+  // ♿ Accessibility settings flag
+  updateHasAccessibilitySettingsMutate: UseMutateFunction<
+    boolean,
+    Error,
+    { prospectId: number; hasAccessibilitySettings: boolean | null },
+    unknown
+  >;
+  updatingHasAccessibilitySettingsProspectId: number | undefined;
+  isUpdatingHasAccessibilitySettings: boolean;
+
   // 🕷️ Launch crawl
   launchCrawlMutate: UseMutateFunction<
     { crawlId: string },
@@ -285,4 +357,32 @@ export const useProspectsContext = () => {
     );
   }
   return context;
+};
+
+// Distinct list of editor names already used across prospects (unfiltered).
+// Used by the EditorCombobox to suggest values that are already saved.
+export const useExistingEditors = () => {
+  const { data: allProspects } = useListProspectsQuery();
+  return useMemo(() => {
+    const set = new Set<string>();
+    for (const p of allProspects ?? []) {
+      const trimmed = p.siteEditor?.trim();
+      if (trimmed) set.add(trimmed);
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b, "fr"));
+  }, [allProspects]);
+};
+
+// Distinct list of DPO names from the dpo table (all rows, even orphans).
+// Used by the DpoCombobox to suggest values that are already saved.
+export const useExistingDpos = () => {
+  const { data: dpos } = useListDposQuery();
+  return useMemo(() => {
+    const set = new Set<string>();
+    for (const d of dpos ?? []) {
+      const trimmed = d.name.trim();
+      if (trimmed) set.add(trimmed);
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b, "fr"));
+  }, [dpos]);
 };
