@@ -124,13 +124,13 @@ export function PlusDevOc({ children }: { children: React.ReactNode }) {
       <div className="space-y-1">
         <h4
           className={cn(
-            "font-geist-mono font-medium",
-            "text-primary-strong text-xs uppercase tracking-widest"
+            "font-geist-mono font-semibold",
+            "text-[0.8rem] text-primary-strong uppercase tracking-widest"
           )}
         >
           <span>Le + Dev'Oc</span>
         </h4>
-        <p className="font-foreground text-[0.9rem] text-base">{children}</p>
+        <p className="font-foreground text-[0.93rem]">{children}</p>
       </div>
       {/* 🖼️ */}
       <div className="text-primary-strong">

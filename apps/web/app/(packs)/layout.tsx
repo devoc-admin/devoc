@@ -2,6 +2,7 @@ import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Footer from "../_components/footer/footer";
+
 export default function LegalLayout({
   children,
 }: {
@@ -12,7 +13,6 @@ export default function LegalLayout({
       <div
         className={cn(
           "relative z-1",
-          "overflow-hidden",
           "mx-auto bg-background text-foreground",
           // ↔️
           "pt-16 pb-18",
@@ -24,8 +24,10 @@ export default function LegalLayout({
           "2xl:pt-26 2xl:pb-64"
         )}
       >
-        <OrangeDot className="top-0 right-0 size-[50vw] translate-x-1/2 -translate-y-1/2 opacity-30" />
-        <OrangeDot className="top-0 left-1/2 size-[100vw] translate-x-[-60%] -translate-y-1/6 opacity-8" />
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <OrangeDot className="top-0 right-0 size-[50vw] translate-x-1/2 -translate-y-1/2 opacity-30" />
+          <OrangeDot className="top-0 left-1/2 size-[100vw] translate-x-[-60%] -translate-y-1/6 opacity-8" />
+        </div>
         <div
           className={cn(
             "relative mx-auto w-300 max-w-full space-y-12",

@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
-
+import s from "./style.module.css";
 export function ContactCardBackground() {
   return (
-    <div className="absolute inset-0 size-full opacity-30">
+    <div className={s.cardBackground}>
       {/* 🟡 */}
       <div
         className={cn(
