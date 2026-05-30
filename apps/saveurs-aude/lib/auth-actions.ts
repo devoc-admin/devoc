@@ -181,7 +181,7 @@ export async function getCurrentCustomer(): Promise<CustomerData | null> {
       headers: new Headers({ Authorization: `JWT ${token}` }),
     });
 
-    if (!user || user.collection !== "customers") return null;
+    if (user?.collection !== "customers") return null;
 
     return serializeCustomer(user as unknown as Record<string, unknown>);
   } catch {

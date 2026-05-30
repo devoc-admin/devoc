@@ -22,7 +22,7 @@
     "axe-core": "^4.11.1",
     "chrome-launcher": "^1.2.1",
     "lighthouse": "^13.3.0",
-    "puppeteer": "^25.0.4"
+    "puppeteer": "^25.1.0"
   },
   "exports": {
     ".": "./src/index.ts",
