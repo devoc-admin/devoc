@@ -8,11 +8,13 @@ export function Quote({
   children: React.ReactNode;
 }) {
   return (
-    <blockquote className="border-primary-lighter border-l-2 pl-3">
-      <span className="font-bold font-geist italic">« {children} »</span>
-      <footer className="font-geist-mono font-semibold text-[0.7rem] text-foreground/40 uppercase tracking-widest">
+    <figure className="space-y-1 border-primary-lighter border-l-2 pl-3">
+      <blockquote className="w-[90%] font-bold font-geist italic">
+        <p>« {children} »</p>
+      </blockquote>
+      <figcaption className="font-geist-mono font-semibold text-[0.75rem] text-foreground/40 uppercase tracking-wide">
         {author} — {source}
-      </footer>
-    </blockquote>
+      </figcaption>
+    </figure>
   );
 }
