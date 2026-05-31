@@ -1,9 +1,7 @@
-import { ArrowLeftIcon } from "lucide-react";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import Footer from "../_components/footer/footer";
-
-export default function LegalLayout({
+import { RetourAccueil } from "./_components/buttons/back-home";
+export default function PackLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -59,34 +57,6 @@ export default function LegalLayout({
       </div>
       <Footer animate={false} />
     </div>
-  );
-}
-
-// ⬅️
-function RetourAccueil() {
-  return (
-    <Link
-      className={cn(
-        "group",
-        "inline-flex items-center",
-        "gap-x-3",
-        "cursor-pointer",
-        "rounded-full",
-        "border border-foreground/5",
-        "bg-linear-to-r from-foreground/1 to-foreground/7",
-        "py-2 pr-5 pl-4",
-        "font-geist-mono text-foreground/90 text-xs uppercase tracking-widest",
-        "transition",
-        "opacity-80 hover:opacity-100"
-      )}
-      href="/"
-    >
-      <ArrowLeftIcon
-        className="transition-transform group-hover:-translate-x-px"
-        size={16}
-      />
-      <span className="font-bold">Retour à l'accueil</span>
-    </Link>
   );
 }
 

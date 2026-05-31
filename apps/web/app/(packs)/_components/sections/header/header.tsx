@@ -8,7 +8,7 @@ import {
   BadgeCarcassonne,
   BadgeReferentiels,
   BadgeSouverain,
-} from "./badge-header";
+} from "./badge/badge-header";
 
 export function Header() {
   return (
@@ -55,7 +55,7 @@ function PackTitle() {
     >
       La transformation{" "}
       <span className="text-foreground/60 italic">numérique</span> de votre
-      commune, <CustomGradientText>clé en main</CustomGradientText>
+      commune, <CustomGradientText>tout compris</CustomGradientText>
     </h1>
   );
 }
@@ -71,6 +71,23 @@ function PackButtons() {
 
 function PackDescription() {
   return (
+    <div className="space-y-2">
+      <P>
+        Conçu pour{" "}
+        <CustomGradientText>les communes de l'Aude</CustomGradientText>, avec le
+        soutien du{" "}
+        <a href="https://www.rmine.fr/" rel="noopener" target="_blank">
+          Réseau des Maisons de l'Innovation, du Numérique et de
+          l'Entrepreunariat de Carcassonne Agglo
+        </a>
+        .
+      </P>
+    </div>
+  );
+}
+
+function P({ children }: { children: React.ReactNode }) {
+  return (
     <p
       className={cn(
         "max-w-[40ch] font-fraunces font-medium",
@@ -79,11 +96,7 @@ function PackDescription() {
         "text-2xl"
       )}
     >
-      Six briques modulaires, trois packs à tarifs encadrés — tous{" "}
-      <CustomGradientText>sous le seuil MAPA</CustomGradientText> pour vous
-      éviter la lourdeur d'un appel d'offres. Conçu pour les communes de l'Aude,
-      avec le soutien du Réseau des Maisons de l'Innovation, du Numérique et de
-      l'Entrepreunariat de Carcassonne Agglo.
+      {children}
     </p>
   );
 }
