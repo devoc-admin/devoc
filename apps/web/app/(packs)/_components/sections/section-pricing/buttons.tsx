@@ -12,8 +12,8 @@ const sharedClasses = cn(
 
 const responsiveClasses = cn(
   // ↔️
-  "w-fit gap-x-4! px-1! py-1! text-base",
-  "xs:gap-x-4! xs:px-1! xs:py-1! xs:text-base",
+  "w-fit gap-x-4! px-1! py-1! pl-2! text-sm",
+  "xs:gap-x-4! xs:px-1! xs:py-1! pl-2! xs:text-sm",
   "sm:gap-x-4! sm:px-1! sm:py-1! sm:text-base",
   "md:gap-x-4! md:px-1! md:py-1! md:text-base",
   "lg:gap-x-4! lg:px-1! lg:py-1! lg:text-base",
@@ -102,6 +102,11 @@ function ArrowRightUpAnimated({ className }: { className?: string }) {
       className={cn(
         "relative size-11 rounded-full bg-white",
         "overflow-hidden",
+        /* ↔️ */
+        "size-10",
+        "xs:size-10",
+        "xl:size-11",
+        "2xl:size-11",
         className
       )}
     >
@@ -112,9 +117,10 @@ function ArrowRightUpAnimated({ className }: { className?: string }) {
           "absolute",
           "transition-all",
           "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-100",
-          "group-hover:top-0 group-hover:left-full group-hover:-translate-x-1/2 group-hover:-translate-y-full group-hover:opacity-0"
+          "group-hover:top-0 group-hover:left-full group-hover:-translate-x-1/2 group-hover:-translate-y-full group-hover:opacity-0",
+          /*↔️ */
+          "w-5"
         )}
-        size={21}
         strokeWidth={2}
       />
       {/* Back arrow */}

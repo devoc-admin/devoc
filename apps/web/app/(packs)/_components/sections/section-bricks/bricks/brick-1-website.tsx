@@ -2,7 +2,9 @@ import { ClockIcon, RepeatIcon, TagIcon } from "lucide-react";
 import {
   Brick,
   BrickDescription,
+  BrickLeft,
   BrickNumber,
+  BrickRight,
   BrickTitle,
   CardsContainer,
   GuaranteeItem,
@@ -10,12 +12,11 @@ import {
   PlusDevOc,
   SmallCard,
 } from "./brick";
-
 export function Brick1Website() {
   return (
     <Brick variant="light">
       {/* 🔤 */}
-      <div className="col-span-5 space-y-12">
+      <BrickLeft>
         <BrickNumber>1</BrickNumber>
         <div className="space-y-4">
           <BrickTitle>Site internet conforme et accessible</BrickTitle>
@@ -24,9 +25,9 @@ export function Brick1Website() {
             RGAA, avec une interface d'administration adaptée à vos agents.
           </BrickDescription>
         </div>
-      </div>
+      </BrickLeft>
       {/* 📝 */}
-      <div className="col-span-7 space-y-8">
+      <BrickRight>
         {/* 🟠 */}
         <div className="space-y-5">
           <GuaranteesTitle />
@@ -61,7 +62,7 @@ export function Brick1Website() {
           référentiels réglementaires, hébergé en cloud souverain, et accompagné
           d'un vrai transfert de compétences à vos agents.
         </PlusDevOc>
-      </div>
+      </BrickRight>
     </Brick>
   );
 }

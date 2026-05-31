@@ -2,7 +2,9 @@ import { ClockIcon, RepeatIcon, TagIcon } from "lucide-react";
 import {
   Brick,
   BrickDescription,
+  BrickLeft,
   BrickNumber,
+  BrickRight,
   BrickTitle,
   CardsContainer,
   GuaranteeItem,
@@ -15,7 +17,7 @@ export function Brick5OnlineServices() {
   return (
     <Brick variant="light">
       {/* 🔤 */}
-      <div className="col-span-5 space-y-12">
+      <BrickLeft>
         <BrickNumber>5</BrickNumber>
         <div className="space-y-4">
           <BrickTitle>Démarches en ligne</BrickTitle>
@@ -24,9 +26,9 @@ export function Brick5OnlineServices() {
             administratives pour en faciliter le traitement et le suivi.
           </BrickDescription>
         </div>
-      </div>
+      </BrickLeft>
       {/* 📝 */}
-      <div className="col-span-7 space-y-8">
+      <BrickRight>
         {/* 🟠 */}
         <div className="space-y-5">
           <GuaranteesTitle />
@@ -62,7 +64,7 @@ export function Brick5OnlineServices() {
           collectivités, conforme au RGPD, et nous vous accompagnons jusqu'à sa
           prise en main effective.
         </PlusDevOc>
-      </div>
+      </BrickRight>
     </Brick>
   );
 }

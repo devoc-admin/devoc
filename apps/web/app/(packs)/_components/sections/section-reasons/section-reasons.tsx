@@ -8,7 +8,15 @@ import { cn } from "@/lib/utils";
 
 export function SectionReasons() {
   return (
-    <section className="space-y-24">
+    <section
+      className={cn(
+        //↔️
+        "space-y-8",
+        "xs:space-y-8",
+        "xl:space-y-24",
+        "2xl:space-y-24"
+      )}
+    >
       <div
         className={cn(
           "flex",
@@ -23,8 +31,10 @@ export function SectionReasons() {
         <div
           className={cn(
             // ↔️
-            "w-1/2 space-y-6",
-            "2xl:space-y-10"
+            "w-full space-y-6",
+            "xs:w-full xs:space-y-6",
+            "xl:w-1/2 xl:space-y-10",
+            "2xl:w-1/2 2xl:space-y-10"
           )}
         >
           <FadeUp disableOnMobile>

@@ -8,7 +8,7 @@ export function Quote({
   children: React.ReactNode;
 }) {
   return (
-    <figure className="space-y-1 border-primary-lighter border-l-2 pl-3">
+    <figure className="space-y-1 border-primary-strong border-l-3 pl-3">
       <blockquote className="w-[90%] font-bold font-geist italic">
         <p>« {children} »</p>
       </blockquote>

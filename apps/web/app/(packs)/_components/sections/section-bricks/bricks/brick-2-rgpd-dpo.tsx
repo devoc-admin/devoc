@@ -2,7 +2,9 @@ import { ClockIcon, RepeatIcon, TagIcon } from "lucide-react";
 import {
   Brick,
   BrickDescription,
+  BrickLeft,
   BrickNumber,
+  BrickRight,
   BrickTitle,
   CardsContainer,
   GuaranteeItem,
@@ -15,7 +17,7 @@ export function Brick2BilanRGPDetDPO() {
   return (
     <Brick variant="light">
       {/* 🔤 */}
-      <div className="col-span-5 space-y-12">
+      <BrickLeft>
         <BrickNumber>2</BrickNumber>
         <div className="space-y-4">
           <BrickTitle>Bilan RGPD et DPO externalisé</BrickTitle>
@@ -24,9 +26,9 @@ export function Brick2BilanRGPDetDPO() {
             la RGPD et le service DPO obligatoire pour les communes.
           </BrickDescription>
         </div>
-      </div>
+      </BrickLeft>
       {/* 📝 */}
-      <div className="col-span-7 space-y-8">
+      <BrickRight>
         {/* 🟠 */}
         <div className="space-y-5">
           <GuaranteesTitle />
@@ -57,7 +59,7 @@ export function Brick2BilanRGPDetDPO() {
           mission est mutualisable entre plusieurs communes d'un même territoire
           afin d’optimiser les coûts.
         </PlusDevOc>
-      </div>
+      </BrickRight>
     </Brick>
   );
 }

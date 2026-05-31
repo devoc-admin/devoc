@@ -2,7 +2,9 @@ import { ClockIcon, TagIcon } from "lucide-react";
 import {
   Brick,
   BrickDescription,
+  BrickLeft,
   BrickNumber,
+  BrickRight,
   BrickTitle,
   CardsContainer,
   GuaranteeItem,
@@ -15,7 +17,7 @@ export function Brick6Communication() {
   return (
     <Brick variant="light">
       {/* 🔤 */}
-      <div className="col-span-5 space-y-12">
+      <BrickLeft>
         <BrickNumber>6</BrickNumber>
         <div className="space-y-4">
           <BrickTitle>Communication et réseaux sociaux</BrickTitle>
@@ -24,9 +26,9 @@ export function Brick6Communication() {
             tous les publics en respectant l’identité visuelle de la commune.
           </BrickDescription>
         </div>
-      </div>
+      </BrickLeft>
       {/* 📝 */}
-      <div className="col-span-7 space-y-8">
+      <BrickRight>
         {/* 🟠 */}
         <div className="space-y-5">
           <GuaranteesTitle />
@@ -60,7 +62,7 @@ export function Brick6Communication() {
           publiée atteigne réellement vos administrés, sur les canaux qu'ils
           utilisent au quotidien.
         </PlusDevOc>
-      </div>
+      </BrickRight>
     </Brick>
   );
 }

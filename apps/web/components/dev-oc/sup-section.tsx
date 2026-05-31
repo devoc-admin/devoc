@@ -23,7 +23,16 @@ export function SupSection({
       />
       <span
         className={cn(
-          "font-geist-mono text-[0.7rem] uppercase tracking-[0.15rem]",
+          "font-geist-mono uppercase tracking-[0.15rem]",
+          // ↔️
+          "text-[0.6rem]",
+          "xs:text-[0.6rem]",
+          "sm:text-[0.7rem]",
+          "md:text-[0.7rem]",
+          "lg:text-[0.7rem]",
+          "xl:text-[0.7rem]",
+          "2xl:text-[0.7rem]",
+          //🌙☀️
           variant === "dark" && "font-normal text-foreground-dark/60",
           variant === "light" && "font-semibold text-foreground/60"
         )}

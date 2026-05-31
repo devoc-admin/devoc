@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { ChoisirAvance } from "../buttons";
 import {
   PriceCard,
@@ -19,7 +20,16 @@ const services = [
 
 export function PriceCardAdvanced() {
   return (
-    <PriceCard className="-translate-y-5 border border-primary-strong bg-primary-strong/2">
+    <PriceCard
+      className={cn(
+        "border border-primary-strong bg-primary-strong/2",
+        //↔️
+        "translate-y-0",
+        "xs:translate-y-0",
+        "xl:-translate-y-5",
+        "2xl:-translate-y-5"
+      )}
+    >
       {/* 1️⃣ */}
       <PriceGridUpper>
         <div>

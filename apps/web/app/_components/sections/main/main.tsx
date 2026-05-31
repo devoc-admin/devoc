@@ -203,10 +203,10 @@ function CustomCube() {
         "2xl:mt-14 2xl:size-100"
       )}
       initial={{
-        opacity: 0,
+        opacity: 0.3,
       }}
       transition={{
-        duration: 20,
+        duration: 10,
       }}
       viewport={{ margin: "-100px", once: true }}
       whileInView={{ opacity: 0.7 }}

@@ -2,7 +2,9 @@ import { ClockIcon, RepeatIcon, TagIcon } from "lucide-react";
 import {
   Brick,
   BrickDescription,
+  BrickLeft,
   BrickNumber,
+  BrickRight,
   BrickTitle,
   CardsContainer,
   GuaranteeItem,
@@ -15,7 +17,7 @@ export function Brick3Cybersecurity() {
   return (
     <Brick variant="light">
       {/* 🔤 */}
-      <div className="col-span-5 space-y-12">
+      <BrickLeft>
         <BrickNumber>3</BrickNumber>
         <div className="space-y-4">
           <BrickTitle>Couverture cybersécurité</BrickTitle>
@@ -25,9 +27,9 @@ export function Brick3Cybersecurity() {
             numériques.
           </BrickDescription>
         </div>
-      </div>
+      </BrickLeft>
       {/* 📝 */}
-      <div className="col-span-7 space-y-8">
+      <BrickRight>
         {/* 🟠 */}
         <div className="space-y-5">
           <GuaranteesTitle />
@@ -68,7 +70,7 @@ export function Brick3Cybersecurity() {
           européenne NIS2, avec des livrables concrets que vos agents peuvent
           appliquer au quotidien.
         </PlusDevOc>
-      </div>
+      </BrickRight>
     </Brick>
   );
 }

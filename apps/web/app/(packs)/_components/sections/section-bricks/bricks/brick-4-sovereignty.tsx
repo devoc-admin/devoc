@@ -2,7 +2,9 @@ import { ClockIcon, RepeatIcon, TagIcon } from "lucide-react";
 import {
   Brick,
   BrickDescription,
+  BrickLeft,
   BrickNumber,
+  BrickRight,
   BrickTitle,
   CardsContainer,
   GuaranteeItem,
@@ -15,7 +17,7 @@ export function Brick4Sovereignty() {
   return (
     <Brick variant="light">
       {/* 🔤 */}
-      <div className="col-span-5 space-y-12">
+      <BrickLeft>
         <BrickNumber>4</BrickNumber>
         <div className="space-y-4">
           <BrickTitle>Outils et souveraineté numérique</BrickTitle>
@@ -25,9 +27,9 @@ export function Brick4Sovereignty() {
             collectivités comme alternative souveraine aux GAFAM.
           </BrickDescription>
         </div>
-      </div>
+      </BrickLeft>
       {/* 📝 */}
-      <div className="col-span-7 space-y-8">
+      <BrickRight>
         {/* 🟠 */}
         <div className="space-y-5">
           <GuaranteesTitle />
@@ -59,7 +61,7 @@ export function Brick4Sovereignty() {
           collectivités, conforme au RGPD, et nous vous accompagnons jusqu'à sa
           prise en main effective.
         </PlusDevOc>
-      </div>
+      </BrickRight>
     </Brick>
   );
 }

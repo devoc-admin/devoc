@@ -14,13 +14,21 @@ import { Brick6Communication } from "./bricks/brick-6-communication";
 
 export function SectionBricks() {
   return (
-    <section className="space-y-24">
+    <section
+      className={cn(
+        //↔️
+        "space-y-8",
+        "xs:space-y-8",
+        "xl:space-y-24",
+        "2xl:space-y-24"
+      )}
+    >
       <div
         className={cn(
           "flex",
           // ↔️
-          "flex-col gap-y-12",
-          "xs:flex-col xs:gap-y-12",
+          "flex-col gap-y-10",
+          "xs:flex-col xs:gap-y-10",
           "sm:flex-col sm:gap-y-12",
           "md:flex-row md:gap-x-12",
           "2xl:flew-row 2xl:gap-x-18"
@@ -42,9 +50,13 @@ export function SectionBricks() {
             <SectionCatchline className="font-normal!">
               Six briques{" "}
               <span className="font-medium text-foreground/60 italic">
-                complémentaires
+                indispensables
               </span>{" "}
-              à composer selon vos besoins
+              pour votre{" "}
+              <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text font-medium text-transparent italic">
+                proposition numérique{" "}
+              </span>{" "}
+              et à composer selon vos besoins
             </SectionCatchline>
           </FadeUp>
         </div>
@@ -60,22 +72,22 @@ export function SectionBricks() {
         </FadeUp>
       </div>
       <div>
-        <FadeUp>
+        <FadeUp disableOnMobile>
           <Brick1Website />
         </FadeUp>
-        <FadeUp>
+        <FadeUp disableOnMobile>
           <Brick2BilanRGPDetDPO />
         </FadeUp>
-        <FadeUp>
+        <FadeUp disableOnMobile>
           <Brick3Cybersecurity />
         </FadeUp>
-        <FadeUp>
+        <FadeUp disableOnMobile>
           <Brick4Sovereignty />
         </FadeUp>
-        <FadeUp>
+        <FadeUp disableOnMobile>
           <Brick5OnlineServices />
         </FadeUp>
-        <FadeUp>
+        <FadeUp disableOnMobile>
           <Brick6Communication />
         </FadeUp>
       </div>

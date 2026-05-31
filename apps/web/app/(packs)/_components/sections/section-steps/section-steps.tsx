@@ -9,13 +9,21 @@ import { StepCardOffer } from "./step-cards/step-card-offer";
 import { StepCardProduction } from "./step-cards/step-card-production";
 export function SectionSteps() {
   return (
-    <section className="space-y-24">
+    <section
+      className={cn(
+        //↔️
+        "space-y-8",
+        "xs:space-y-8",
+        "xl:space-y-24",
+        "2xl:space-y-24"
+      )}
+    >
       <div
         className={cn(
           "flex",
           // ↔️
-          "flex-col gap-y-12",
-          "xs:flex-col xs:gap-y-12",
+          "flex-col gap-y-10",
+          "xs:flex-col xs:gap-y-10",
           "sm:flex-col sm:gap-y-12",
           "md:flex-row md:gap-x-12",
           "2xl:flew-row 2xl:gap-x-18"
@@ -52,7 +60,16 @@ export function SectionSteps() {
           </PContent>
         </FadeUp>
       </div>
-      <div className="grid grid-cols-4 items-stretch gap-x-4">
+      <div
+        className={cn(
+          "grid items-stretch gap-4",
+          //↔️
+          "grid-cols-1",
+          "xs:grid-cols-1",
+          "xl:grid-cols-4",
+          "2xl:grid-cols-4"
+        )}
+      >
         <FadeUp disableOnMobile>
           <StepCardMeet />
         </FadeUp>
