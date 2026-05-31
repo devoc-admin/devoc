@@ -28,14 +28,12 @@ export default function PackLayout({
         </div>
         <div
           className={cn(
-            "relative mx-auto w-300 max-w-full space-y-12",
+            "relative mx-auto w-300 max-w-full",
             // ↔️
-            "gap-y-12 px-6",
-            "sm:px-8",
-            "md:px-10",
-            "lg:px-12",
-            "xl:px-0",
-            "2xl:px-0"
+            "space-y-8 px-6",
+            "xs:space-y-8 xs:px-6",
+            "xl:space-y-12 xl:px-0",
+            "2xl:space-y-12 2xl:px-0"
           )}
         >
           <RetourAccueil />

@@ -47,7 +47,16 @@ export function Badge({
   Icon: LucideIcon | React.FC;
 }) {
   return (
-    <div className="group flex items-center gap-x-4">
+    <div
+      className={cn(
+        "group flex items-center",
+        /* ↔️ */
+        "gap-x-3",
+        "xs:gap-x-3",
+        "xl:gap-x-4",
+        "2xl:gap-x-4"
+      )}
+    >
       {/* ⚪ */}
       <div
         className={cn(
@@ -56,23 +65,51 @@ export function Badge({
           "text-foreground/60 group-hover:text-primary-strong",
           "bg-foreground/5 group-hover:bg-primary-strong/5",
           "transition",
-          "p-2.5"
+          /* ↔️ */
+          "p-2",
+          "xs:p-2",
+          "xl:p-2.5",
+          "2xl:p-2.5"
         )}
       >
-        <Icon size={20} />
+        <Icon
+          className={cn(
+            /* ↔️ */
+            "size-3.5",
+            "xs:size-3.5",
+            "xl:size-4.5",
+            "2xl:size-4.5"
+          )}
+        />
       </div>
       {/* 🔤 */}
       <div className="flex flex-col">
         <span
           className={cn(
-            "font-geist-mono font-medium text-[0.8rem] text-foreground/40 uppercase tracking-wider",
+            "font-geist-mono font-medium text-foreground/40 uppercase tracking-wider",
             "group-hover:text-primary-strong",
-            "transition"
+            "transition",
+            /* ↔️ */
+            "text-[0.7rem]",
+            "xs:text-[0.7rem]",
+            "xl:text-[0.8rem]",
+            "2xl:text-[0.8rem]"
           )}
         >
           {title}
         </span>
-        <span className="font-geist text-foreground">{subtitle}</span>
+        <span
+          className={cn(
+            "font-geist text-foreground leading-tight",
+            /* ↔️ */
+            "text-sm",
+            "xs:text-sm",
+            "xl:text-base",
+            "2xl:text-base"
+          )}
+        >
+          {subtitle}
+        </span>
       </div>
     </div>
   );

@@ -14,8 +14,8 @@ export function SectionIntro() {
       className={cn(
         "flex",
         // ↔️
-        "flex-col gap-y-12",
-        "xs:flex-col xs:gap-y-12",
+        "flex-col gap-y-10",
+        "xs:flex-col xs:gap-y-10",
         "sm:flex-col sm:gap-y-12",
         "md:flex-row md:gap-x-12",
         "2xl:flew-row 2xl:gap-x-18"
@@ -25,6 +25,8 @@ export function SectionIntro() {
         className={cn(
           // ↔️
           "space-y-6",
+          "xs:space-y-6",
+          "xl:space-y-10",
           "2xl:space-y-10"
         )}
       >
@@ -46,7 +48,9 @@ export function SectionIntro() {
       <div
         className={cn(
           // ↔️
-          "space-y-8",
+          "space-y-6",
+          "xs:space-y-6",
+          "xl:grow xl:space-y-10",
           "2xl:grow 2xl:space-y-10"
         )}
       >
@@ -70,6 +74,7 @@ export function SectionIntro() {
 
         <FadeUp delay={0.3} disableOnMobile>
           <a
+            className="inline-block"
             href="https://www.numerique.gouv.fr/sinformer/espace-presse/souverainete-numerique-reduction-dependances-extra-europeennes/"
             rel="noopener"
             target="_blank"

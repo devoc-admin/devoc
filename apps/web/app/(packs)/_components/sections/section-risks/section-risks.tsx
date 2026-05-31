@@ -12,13 +12,21 @@ import {
 
 export function SectionRisks() {
   return (
-    <section className="space-y-24">
+    <section
+      className={cn(
+        //↔️
+        "space-y-8",
+        "xs:space-y-8",
+        "xl:space-y-24",
+        "2xl:space-y-24"
+      )}
+    >
       <div
         className={cn(
           "flex",
           // ↔️
-          "flex-col gap-y-12",
-          "xs:flex-col xs:gap-y-12",
+          "flex-col gap-y-10",
+          "xs:flex-col xs:gap-y-10",
           "sm:flex-col sm:gap-y-12",
           "md:flex-row md:gap-x-12",
           "2xl:flew-row 2xl:gap-x-18"
@@ -28,6 +36,8 @@ export function SectionRisks() {
           className={cn(
             // ↔️
             "space-y-6",
+            "xs:space-y-6",
+            "xl:space-y-10",
             "2xl:space-y-10"
           )}
         >
@@ -55,7 +65,13 @@ export function SectionRisks() {
         </FadeUp>
       </div>
       <div
-        className="grid grid-cols-[1fr_auto] gap-y-12"
+        className={cn(
+          //↔️
+          "flex flex-col gap-y-8",
+          "xs:flex xs:flex-col gap-y-8",
+          "xl:grid xl:grid-cols-[1fr_auto] xl:gap-y-12",
+          "2xl:grid 2xl:grid-cols-[1fr_auto] 2xl:gap-y-12"
+        )}
         style={{ columnGap: "64px" }}
       >
         <Separator className="col-span-2" />

@@ -12,28 +12,44 @@ import {
 } from "lucide-react";
 import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { cn } from "@/lib/utils";
+
+const sharedRiskContainerClasses = cn(
+  //↔️
+  "space-y-8",
+  "xs:space-y-8",
+  "xl:col-span-2 xl:grid xl:grid-cols-subgrid",
+  "xl:grid 2xl:col-span-2 2xl:grid-cols-subgrid"
+);
+
+const sharedRiskCardsContainerClasses = cn(
+  //↔️
+  "space-y-4",
+  "xl:col-span-1 xl:grid xl:gap-x-4",
+  "2xl:col-span-1 2xl:grid 2xl:gap-x-4"
+);
+
 export function RiskReglementaire() {
   return (
     <div
-      className="col-span-2 grid grid-cols-subgrid"
+      className={sharedRiskContainerClasses}
       style={{ gridTemplateColumns: "subgrid" }}
     >
-      <FadeUp>
+      <FadeUp disableOnMobile>
         <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
           Réglementaire
         </h3>
       </FadeUp>
       <div
-        className="col-span-1 grid gap-x-4"
+        className={sharedRiskCardsContainerClasses}
         style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
       >
-        <FadeUp delay={0.1}>
+        <FadeUp delay={0.1} disableOnMobile>
           <RiskCardRGPD />
         </FadeUp>
-        <FadeUp delay={0.2}>
+        <FadeUp delay={0.2} disableOnMobile>
           <RiskCardRGAA />
         </FadeUp>
-        <FadeUp delay={0.3}>
+        <FadeUp delay={0.3} disableOnMobile>
           <RiskCardDPO />
         </FadeUp>
       </div>
@@ -43,25 +59,25 @@ export function RiskReglementaire() {
 export function RiskEconomic() {
   return (
     <div
-      className="col-span-2 grid grid-cols-subgrid"
+      className={sharedRiskContainerClasses}
       style={{ gridTemplateColumns: "subgrid" }}
     >
-      <FadeUp>
+      <FadeUp disableOnMobile>
         <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
           Économique
         </h3>
       </FadeUp>
       <div
-        className="col-span-1 grid gap-x-4"
+        className={sharedRiskCardsContainerClasses}
         style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
       >
-        <FadeUp delay={0.1}>
+        <FadeUp delay={0.1} disableOnMobile>
           <RiskCardOverbilling />
         </FadeUp>
-        <FadeUp delay={0.2}>
+        <FadeUp delay={0.2} disableOnMobile>
           <RiskCardUnsuitableTools />
         </FadeUp>
-        <FadeUp delay={0.3}>
+        <FadeUp delay={0.3} disableOnMobile>
           <RiskCardUnhappyCitizen />
         </FadeUp>
       </div>
@@ -71,22 +87,22 @@ export function RiskEconomic() {
 export function RiskCybersecurity() {
   return (
     <div
-      className="col-span-2 grid grid-cols-subgrid"
+      className={sharedRiskContainerClasses}
       style={{ gridTemplateColumns: "subgrid" }}
     >
-      <FadeUp>
+      <FadeUp disableOnMobile>
         <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
           Cybersécurité
         </h3>
       </FadeUp>
       <div
-        className="col-span-1 grid gap-x-4"
+        className={sharedRiskCardsContainerClasses}
         style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
       >
-        <FadeUp delay={0.1}>
+        <FadeUp delay={0.1} disableOnMobile>
           <RiskCardMalware />
         </FadeUp>
-        <FadeUp delay={0.2}>
+        <FadeUp delay={0.2} disableOnMobile>
           <RiskCardPhishing />
         </FadeUp>
       </div>
@@ -176,7 +192,17 @@ export function RiskCard({
   Icon: LucideIcon;
 }) {
   return (
-    <div className="group space-y-5 rounded-2xl border-[1.5px] border-foreground/20 p-4 hover:border-primary-strong/60">
+    <div
+      className={cn(
+        "group rounded-2xl border-[1.5px] border-foreground/20 p-4 hover:border-primary-strong/60",
+        // ↔️
+        "space-y-3",
+        "xs:space-y-3",
+        "xl:space-y-5",
+        "2xl:space-y-5"
+      )}
+    >
+      {/* 🖼️ */}
       <div
         className={cn(
           "w-fit rounded-full border bg-foreground/5 p-2 text-foreground/60",
@@ -189,8 +215,20 @@ export function RiskCard({
           size={18}
         />
       </div>
-      <div className="flex flex-col">
-        <h4 className="font-medium text-foreground text-lg">{title}</h4>
+      {/* 🔠 */}
+      <div className="flex flex-col gap-y-1">
+        <h4
+          className={cn(
+            "font-medium text-foreground",
+            //↔️
+            "text-base",
+            "xs:text-base",
+            "xl:text-lg",
+            "2xl:text-lg"
+          )}
+        >
+          {title}
+        </h4>
         <p className="text-foreground/60 text-sm">{description}</p>
       </div>
     </div>
