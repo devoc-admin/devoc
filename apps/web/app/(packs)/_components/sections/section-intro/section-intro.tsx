@@ -72,6 +72,25 @@ export function SectionIntro() {
           </PContent>
         </FadeUp>
 
+        <FadeUp delay={0.4} disableOnMobile>
+          <PContent>
+            Avec le{" "}
+            <a
+              className="italic"
+              href="https://www.rmine.fr/"
+              rel="noopener"
+              target="_blank"
+            >
+              Réseau des Maisons de l'Innovation, du Numérique et de
+              l'Entrepreneuriat de Carcassonne Agglo
+            </a>
+            , nous avons élaboré une offre globale et clé en main pour aider les
+            communes de l'Aude et du reste de l'Occitanie à réaliser cette
+            transformation numérique attendue par les cadres réglementaires
+            français et européens.
+          </PContent>
+        </FadeUp>
+
         <FadeUp delay={0.3} disableOnMobile>
           <a
             className="inline-block"
@@ -88,25 +107,6 @@ export function SectionIntro() {
               numérique n'est plus une option.
             </Quote>
           </a>
-        </FadeUp>
-
-        <FadeUp delay={0.4} disableOnMobile>
-          <PContent>
-            Avec le{" "}
-            <a
-              className="italic"
-              href="https://www.rmine.fr/"
-              rel="noopener"
-              target="_blank"
-            >
-              Réseau des Maisons de l'Innovation, du Numérique et de
-              l'Entrepreneuriat de Carcassonne Agglo
-            </a>
-            , nous avons élaboré une offre globale et clé en main pour aider les
-            communes de l'Aude et du reste de l'Occitanie à réaliser cette
-            transformation numérique exigée par les cadres réglementaires
-            français et européens.
-          </PContent>
         </FadeUp>
       </div>
     </section>

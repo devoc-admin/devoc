@@ -2,7 +2,6 @@ import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
 import { SupSection } from "@/components/dev-oc/sup-section";
 import { cn } from "@/lib/utils";
-import { PContent } from "../../p-content";
 import { Separator } from "../../separator";
 import {
   RiskCybersecurity,
@@ -35,10 +34,10 @@ export function SectionRisks() {
         <div
           className={cn(
             // ↔️
-            "space-y-6",
-            "xs:space-y-6",
-            "xl:space-y-10",
-            "2xl:space-y-10"
+            "w-full space-y-6",
+            "xs:w-full xs:space-y-6",
+            "xl:w-1/2 xl:space-y-10",
+            "2xl:w-1/2 2xl:space-y-10"
           )}
         >
           <FadeUp disableOnMobile>
@@ -49,20 +48,12 @@ export function SectionRisks() {
           <FadeUp delay={0.1} disableOnMobile>
             <SectionCatchline className="font-normal!">
               Les risques que vous prenez{" "}
-              <span className="font-medium text-foreground/60 italic">
+              <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text font-medium text-transparent italic">
                 aujourd'hui
               </span>
             </SectionCatchline>
           </FadeUp>
         </div>
-
-        <FadeUp disableOnMobile>
-          <PContent>
-            Trois familles de risques s'accumulent quand la dette technologique
-            des communes n'est pas traitée : sanctions financières, attaques
-            cyber, défiance des administrés.
-          </PContent>
-        </FadeUp>
       </div>
       <div
         className={cn(

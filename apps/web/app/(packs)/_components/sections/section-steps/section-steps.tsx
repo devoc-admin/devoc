@@ -2,7 +2,7 @@ import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
 import { SupSection } from "@/components/dev-oc/sup-section";
 import { cn } from "@/lib/utils";
-import { PContent } from "../../p-content";
+import { HighlightedText } from "../../highlighted-text";
 import { StepCardDelivery } from "./step-cards/step-card-delivery";
 import { StepCardMeet } from "./step-cards/step-card-meet";
 import { StepCardOffer } from "./step-cards/step-card-offer";
@@ -32,8 +32,10 @@ export function SectionSteps() {
         <div
           className={cn(
             // ↔️
-            "space-y-6",
-            "2xl:space-y-10"
+            "w-full space-y-6",
+            "xs:w-full xs:space-y-6",
+            "xl:w-1/2 xl:space-y-10",
+            "2xl:w-1/2 2xl:space-y-10"
           )}
         >
           <FadeUp disableOnMobile>
@@ -43,22 +45,12 @@ export function SectionSteps() {
           </FadeUp>
           <FadeUp delay={0.1} disableOnMobile>
             <SectionCatchline className="font-normal!">
-              Quatre étapes,{" "}
-              <span className="overflow-visible bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text font-medium text-transparent italic">
-                de la rencontre
-              </span>{" "}
-              à la livraison
+              Un processus simplifié, de la
+              <HighlightedText>rencontre</HighlightedText>à la
+              <HighlightedText>livraison</HighlightedText>
             </SectionCatchline>
           </FadeUp>
         </div>
-
-        <FadeUp disableOnMobile>
-          <PContent>
-            Une démarche claire, sans surprise et sans engagement. Vous gardez
-            la main à chaque étape avec accès en temps réel à l'état
-            d'avancement de votre projet.
-          </PContent>
-        </FadeUp>
       </div>
       <div
         className={cn(

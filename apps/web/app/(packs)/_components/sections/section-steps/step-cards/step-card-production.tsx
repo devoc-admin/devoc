@@ -20,8 +20,9 @@ export function StepCardProduction() {
       <StepCardContent>
         <StepCardTitle>Production</StepCardTitle>
         <StepCardDescription>
-          Mise en route du projet selon le calendrier défini. Accès direct à
-          notre équipe pour suivre l'avancement.
+          Mise en route du projet selon le calendrier défini. oous conservez un
+          accès direct à notre équipe et à un tableau de bord pour suivre
+          l'avancement.
         </StepCardDescription>
       </StepCardContent>
     </StepCard>

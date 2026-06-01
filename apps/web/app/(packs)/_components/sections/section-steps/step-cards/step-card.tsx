@@ -6,9 +6,8 @@ export function StepCard({ children }: { children: React.ReactNode }) {
       className={cn(
         "group",
         "h-full",
-        "space-y-6",
         "p-6",
-        "transition",
+        "transition-colors",
         "rounded-3xl",
         "border border-foreground/10 hover:border-primary-strong/60"
       )}
@@ -20,6 +19,14 @@ export function StepCard({ children }: { children: React.ReactNode }) {
 
 export function StepCardContent({ children }: { children: React.ReactNode }) {
   return <div className="space-y-2">{children}</div>;
+}
+
+export function StepCardNumber({ value }: { value: number }) {
+  return (
+    <span className="font-geist-mono text-[0.7rem] text-foreground/60 uppercase tracking-widest">
+      Étape {value}
+    </span>
+  );
 }
 
 export function StepCardTitle({ children }: { children: React.ReactNode }) {
@@ -38,23 +45,15 @@ export function StepCardDescription({
   return <p className="text-foreground/80 text-sm">{children}</p>;
 }
 
-export function StepCardNumber({ value }: { value: number }) {
-  return (
-    <span className="font-geist-mono text-[0.7rem] text-foreground/60 uppercase tracking-widest">
-      Étape {value}
-    </span>
-  );
-}
-
 export function StepCardIcon({ Icon }: { Icon: LucideIcon }) {
   return (
     <div
       className={cn(
-        "place grid place-items-center",
+        "grid place-items-center",
         "rounded-full",
-        "transition",
+        "transition-colors",
         "border border-foreground/20 group-hover:border-primary-strong/60",
-        "bg-foreground/2 group-hover:bg-primary-strong/10",
+        "bg-foreground/2 group-hover:bg-primary-strong/5",
         "p-2"
       )}
     >

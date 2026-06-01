@@ -20,8 +20,8 @@ export function StepCardOffer() {
       <StepCardContent>
         <StepCardTitle>Offre</StepCardTitle>
         <StepCardDescription>
-          Présentation et accord autour d'un devis pour franchir un nouveau cap
-          dans votre transformation numérique.
+          Présentation et accord autour d'un devis pour aider votre commmune à
+          franchir un nouveau cap dans sa transformation numérique.
         </StepCardDescription>
       </StepCardContent>
     </StepCard>

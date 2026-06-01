@@ -10,7 +10,16 @@ import s from "./style.module.css";
 
 export function ContactCard() {
   return (
-    <div className={s.scrollContainer}>
+    <div
+      className={cn(
+        //↔️
+        "hidden",
+        "xs:hidden",
+        "xl:block",
+        "2xl:block",
+        s.scrollContainer
+      )}
+    >
       <div className={s.stickyContainer}>
         <div
           className={cn(

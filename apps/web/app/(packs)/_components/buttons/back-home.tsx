@@ -17,7 +17,6 @@ export function RetourAccueil() {
           "bg-linear-to-r from-foreground/1 to-foreground/7",
           "font-geist-mono text-foreground/90 uppercase tracking-widest",
           "transition",
-          "hover:scale-102",
           "opacity-80 hover:opacity-100",
           //↔️
           "gap-x-3 py-0.5 pr-3 pl-3 text-[0.65rem]",

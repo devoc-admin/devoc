@@ -71,31 +71,31 @@ export function SectionReasons() {
 const reasons = [
   {
     description:
-      "RGPD (protection des données), RGAA (accessibilité numérique), directive NIS2 (cybersécurité), RGESN (éco-conception). Ces textes ne sont pas optionnels — ils s'appliquent à toutes les collectivités, quelle que soit leur taille.",
+      "Plusieurs textes régissent les services numériques de l'État et des collectivités : RGPD (protection des données), RGAA (accessibilité numérique), directive NIS2 (cybersécurité), RGESN (éco-conception). Ces textes ne sont pas optionnels et s'appliquent à toutes les collectivités, quelle que soit leur taille.",
     id: "reglementations",
     title: "Faire face à la convergence d'obligations réglementaires",
   },
   {
     description:
-      "La France renouvelle son parc logiciel pour réduire sa dépendance aux entreprises américaines, en promouvant des alternatives libres ou des suites éditées par l'État. Nous vous aidons à anticiper et à vous aligner sur ces nouveaux standards.",
+      "Depuis quelques années, la France renouvelle son parc logiciel pour réduire sa dépendance aux entreprises américaines en promouvant des alternatives libres ou éditées par l'État. Nous vous aidons à anticiper et à vous aligner sur ces nouveaux standards.",
     id: "souverainete-numerique",
     title: "Regagner sa souveraineté numérique",
   },
   {
     description:
-      "Les cyberattaques contre les mairies ont explosé : rançongiciels, phishing, usurpation. Une collectivité sur cinq a subi une attaque en 2023. Coût moyen : 25 000 € par incident — sans compter la paralysie des services et l'atteinte à la confiance.",
+      "Les cyberattaques contre les mairies ont explosé : rançongiciels, phishing, usurpation. Une collectivité sur cinq a subi une attaque en 2023 dont le coût moyen est estimé par 25 000 € par incident. Au préjudice économique s'ajoutent la paralysie des services et l'atteinte à la confiance.",
     id: "contre-cyberattaques",
     title: "Contrer la prochaine vague de cyberattaques",
   },
   {
     description:
-      "Nous dimensionnons vos outils à vos usages réels pour éviter les sur-facturations courantes du secteur. L'automatisation soulage vos agents des corvées administratives et leur permet de se consacrer à des tâches à haute valeur ajoutée.",
+      "Nous dimensionnons vos outils à vos usages réels pour éviter les surfacturations courantes dans le secteur. Des automatisations intelligentes peuvent soulager vos agents des corvées administratives et leur permettre de se consacrer à des tâches à haute valeur ajoutée.",
     id: "economies",
     title: "Économiser du temps... et de l'argent !",
   },
   {
     description:
-      "Résidant entre Carcassonne et Castelnaudary, nous avons à cœur de développer l'attractivité de notre région. Toutes nos offres sont complétées par de la formation en présentiel et un suivi pour assurer la montée en compétences de vos agents.",
+      "Résidant entre Carcassonne et Castelnaudary, nous avons à cœur de développer l'attractivité de notre région. Toutes nos offres sont complétées par de la formation en présentiel et un suivi afin d'assurer la montée en compétences de vos agents.",
     id: "accompagnement-local",
     title: "Bénéficier d'un accompagnement local",
   },

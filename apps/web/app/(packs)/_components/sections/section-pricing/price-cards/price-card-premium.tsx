@@ -14,7 +14,7 @@ const services = [
   "Site internet conforme et accessible",
   "Bilan RGPD et DPO externalisé",
   "Couverture cybersécurité",
-  "Outils et souveraineté numérique",
+  "Outils numériques souverains",
   "Démarches en ligne",
   "Communication et réseaux sociaux",
 ];

@@ -20,8 +20,9 @@ export function StepCardMeet() {
       <StepCardContent>
         <StepCardTitle>Rencontre</StepCardTitle>
         <StepCardDescription>
-          Une rencontre d'1h sur site ou en visio pour échanger sur votre
-          situation, vos besoins et vos attentes - gratuit et sans engagement.
+          Une rencontre d'1h sur site ou en visio pour échanger sur la situation
+          de votre commune, vos besoins et vos attentes - gratuit et sans
+          engagement.
         </StepCardDescription>
       </StepCardContent>
     </StepCard>

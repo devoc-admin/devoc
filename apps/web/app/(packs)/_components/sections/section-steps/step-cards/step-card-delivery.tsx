@@ -20,8 +20,9 @@ export function StepCardDelivery() {
       <StepCardContent>
         <StepCardTitle>Livraison & suivi</StepCardTitle>
         <StepCardDescription>
-          Livraison avec temps de formation, suivi pluri-hebdomadaire pour la
-          correction de bugs et la prise en main.
+          Livraison avec un temps de formation ainsi qu'un suivi
+          pluri-hebdomadaire pour la correction de bugs et la prise en main par
+          vos agents.
         </StepCardDescription>
       </StepCardContent>
     </StepCard>

@@ -20,7 +20,7 @@ export function Brick4Sovereignty() {
       <BrickLeft>
         <BrickNumber>4</BrickNumber>
         <div className="space-y-4">
-          <BrickTitle>Outils et souveraineté numérique</BrickTitle>
+          <BrickTitle>Outils numériques souverains</BrickTitle>
           <BrickDescription>
             Nous vous équipons avec La Suite territoriale, un ensemble d’outils
             collaboratifs développés par l’État pour ses administrations et ses

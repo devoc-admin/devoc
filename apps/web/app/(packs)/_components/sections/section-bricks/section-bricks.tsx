@@ -4,7 +4,6 @@ import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
 import { SupSection } from "@/components/dev-oc/sup-section";
 import { cn } from "@/lib/utils";
-import { PContent } from "../../p-content";
 import { Brick1Website } from "./bricks/brick-1-website";
 import { Brick2BilanRGPDetDPO } from "./bricks/brick-2-rgpd-dpo";
 import { Brick3Cybersecurity } from "./bricks/brick-3-cybersecurity";
@@ -37,8 +36,10 @@ export function SectionBricks() {
         <div
           className={cn(
             // ↔️
-            "space-y-6",
-            "2xl:space-y-10"
+            "w-full space-y-6",
+            "xs:w-full xs:space-y-6",
+            "xl:w-1/2 xl:space-y-10",
+            "2xl:w-1/2 2xl:space-y-10"
           )}
         >
           <FadeUp disableOnMobile>
@@ -49,27 +50,13 @@ export function SectionBricks() {
           <FadeUp delay={0.1} disableOnMobile>
             <SectionCatchline className="font-normal!">
               Six briques{" "}
-              <span className="font-medium text-foreground/60 italic">
+              <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text font-medium text-transparent italic">
                 indispensables
               </span>{" "}
-              pour votre{" "}
-              <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text font-medium text-transparent italic">
-                proposition numérique{" "}
-              </span>{" "}
-              et à composer selon vos besoins
+              à composer selon vos besoins
             </SectionCatchline>
           </FadeUp>
         </div>
-
-        <FadeUp disableOnMobile>
-          <PContent>
-            Chaque brique est conçue pour vous rendre{" "}
-            <span className="text-foreground">autonome</span>,{" "}
-            <span className="text-foreground">conforme</span> et{" "}
-            <span className="text-foreground">efficace</span> — sans enfermement
-            technologique, sans dépendance, sans surcoût caché.
-          </PContent>
-        </FadeUp>
       </div>
       <div>
         <FadeUp disableOnMobile>

@@ -38,7 +38,7 @@ export function Brick5OnlineServices() {
               pour les démarches dématérialisables (état civil, inscriptions
               scolaires et périscolaires, signalement voirie, demandes
               d'urbanisme, réservation de salles) avec suivi de l'avancement
-              côté agent avec accusé de réception côté administré.
+              côté agent et accusé de réception côté administré.
             </GuaranteeItem>
             <GuaranteeItem>
               Intégration avec France Connect pour l'authentification des
@@ -59,10 +59,19 @@ export function Brick5OnlineServices() {
         {/* ➕ */}
         <PlusDevOc>
           Fini les outils inadaptés, les licences coûteuses ou les solutions
-          américaines qui posent question en matière de souveraineté des
-          données. <i>La Suite territoriale</i> est gratuite pour les
-          collectivités, conforme au RGPD, et nous vous accompagnons jusqu'à sa
-          prise en main effective.
+          américaines qui posent de plus en plus question en matière de
+          souveraineté des données.{" "}
+          <a
+            className="offset-de italic underline decoration-2 decoration-primary-strong/70 underline-offset-2"
+            href="https://suiteterritoriale.anct.gouv.fr/services#socle"
+            rel="noopener"
+            target="_blank"
+          >
+            La Suite territoriale
+          </a>{" "}
+          est gratuite pour les collectivités, conforme au RGPD, et nous vous
+          accompagnons jusqu'à sa prise en main effective avec l'appui de votre
+          opérateur public de services numériques (OPSN).
         </PlusDevOc>
       </BrickRight>
     </Brick>
@@ -72,7 +81,16 @@ export function Brick5OnlineServices() {
 function CardDuration() {
   return (
     <SmallCard Icon={ClockIcon} title="Durée de réalisation">
-      ≈ 2-3 mois (comprenant les délais d’habilitation de FranceConnect)
+      ≈ 2-3 mois (comprenant les délais d’habilitation de{" "}
+      <a
+        className="offset-de italic underline decoration-2 decoration-primary-strong/70 underline-offset-2"
+        href="https://www.franceconnect.gouv.fr/"
+        rel="noopener"
+        target="_blank"
+      >
+        FranceConnect
+      </a>
+      )
     </SmallCard>
   );
 }
