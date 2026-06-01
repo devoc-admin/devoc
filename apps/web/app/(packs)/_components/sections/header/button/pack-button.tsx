@@ -1,9 +1,11 @@
 import { ArrowUpRight } from "lucide-react";
 import { CustomButton } from "@/components/ui/custom-button/custom-button";
-import { cn } from "@/lib/utils.ts";
+import { CAL_COMMUNES_LINK } from "@/constants";
+import { cn } from "@/lib/utils";
 
 const sharedClasses = cn(
   "group",
+  "self-start",
   "rounded-full!",
   "font-semibold",
   "justify-between!"
@@ -11,19 +13,19 @@ const sharedClasses = cn(
 
 const responsiveClasses = cn(
   // ↔️
-  "w-fit gap-x-4! px-1! py-1! text-base",
-  "xs:w-auto! xs:gap-x-4! xs:px-1! xs:py-1! xs:text-base",
-  "sm:w-auto! sm:gap-x-4! sm:px-1! sm:py-1! sm:text-base",
-  "md:w-auto! md:gap-x-4! md:px-1! md:py-1! md:text-base",
-  "lg:w-auto! lg:gap-x-4! lg:px-1! lg:py-1! lg:text-base",
-  "xl:w-auto! xl:gap-x-6! xl:px-3! xl:py-2! xl:text-lg"
+  "w-fit gap-x-4! px-1! py-1! pl-2! text-sm",
+  "xs:gap-x-4! xs:px-1! xs:py-1! pl-2! xs:text-sm",
+  "sm:gap-x-4! sm:px-1! sm:py-1! sm:text-base",
+  "md:gap-x-4! md:px-1! md:py-1! md:text-base",
+  "lg:gap-x-4! lg:px-1! lg:py-1! lg:text-base",
+  "xl:gap-x-6! xl:px-3! xl:py-2! xl:text-base"
 );
 
-export function DemarrerUnProjetButton() {
+export function VoirLesPacks() {
   return (
     <CustomButton
       className={cn(sharedClasses, responsiveClasses)}
-      href="#contact"
+      href="#packs"
       style={
         {
           "--accent": "var(--primary-lighter)",
@@ -32,13 +34,13 @@ export function DemarrerUnProjetButton() {
         } as React.CSSProperties
       }
     >
-      <span className="ml-4">Démarrer un projet</span>
+      <span className="ml-4">Voir les packs</span>
       <ArrowRightUpAnimated className="text-primary" />
     </CustomButton>
   );
 }
 
-export function DecouvrirLeCollectifButton() {
+export function Reserver1hGratuit({ className }: { className?: string }) {
   return (
     <CustomButton
       className={cn(
@@ -46,9 +48,10 @@ export function DecouvrirLeCollectifButton() {
         "font-medium!",
         "hover:brightness-102!",
         sharedClasses,
-        responsiveClasses
+        responsiveClasses,
+        className
       )}
-      href="#collectif"
+      href={CAL_COMMUNES_LINK}
       style={
         {
           "--accent": "var(--color-zinc-50)",
@@ -57,8 +60,8 @@ export function DecouvrirLeCollectifButton() {
         } as React.CSSProperties
       }
     >
-      <span className="ml-4">Découvrir le collectif</span>
-      <ArrowRightUpAnimated className="text-zinc-900" />
+      <span className="ml-4 text-foreground">Réserver 1h gratuit</span>
+      <ArrowRightUpAnimated className="text-foreground" />
     </CustomButton>
   );
 }
@@ -67,8 +70,13 @@ function ArrowRightUpAnimated({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "relative size-11 rounded-full bg-white",
+        "relative rounded-full bg-white",
         "overflow-hidden",
+        /* ↔️ */
+        "size-10",
+        "xs:size-10",
+        "xl:size-11",
+        "2xl:size-11",
         className
       )}
     >
@@ -79,9 +87,10 @@ function ArrowRightUpAnimated({ className }: { className?: string }) {
           "absolute",
           "transition-all",
           "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-100",
-          "group-hover:top-0 group-hover:left-full group-hover:-translate-x-1/2 group-hover:-translate-y-full group-hover:opacity-0"
+          "group-hover:top-0 group-hover:left-full group-hover:-translate-x-1/2 group-hover:-translate-y-full group-hover:opacity-0",
+          /*↔️ */
+          "w-5"
         )}
-        size={21}
         strokeWidth={2}
       />
       {/* Back arrow */}

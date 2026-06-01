@@ -17,20 +17,21 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
-import { useMediaQuery } from "usehooks-ts";
+import { FadeUp } from "@/components/dev-oc/animations/fade-up";
+import { ListItem } from "@/components/dev-oc/list-item";
+import { SectionCatchline } from "@/components/dev-oc/section-catchline";
+import { SupSection } from "@/components/dev-oc/sup-section";
 import RubiksCube from "@/components/motion-core/rubiks-cube/rubiks-cube";
 import GlowLine from "@/components/sera-ui/glow-line";
 import { cn } from "@/lib/utils";
 import PhotoGroupe from "./assets/photo-groupe.webp";
-import { ListItem } from "./components/list-item";
 import { PContent } from "./components/p-content";
 import { PIntro } from "./components/p-intro";
 import { Portrait } from "./components/portrait";
 import { ReasonCard } from "./components/reason-card";
-import { SectionCatchline } from "./components/section-catchline";
 import { SectionSeparator } from "./components/section-separator";
 import { ServiceCard } from "./components/service-card";
-import { SupSection } from "./components/sup-section";
+
 export function Main() {
   return (
     <div
@@ -202,10 +203,10 @@ function CustomCube() {
         "2xl:mt-14 2xl:size-100"
       )}
       initial={{
-        opacity: 0,
+        opacity: 0.3,
       }}
       transition={{
-        duration: 20,
+        duration: 10,
       }}
       viewport={{ margin: "-100px", once: true }}
       whileInView={{ opacity: 0.7 }}
@@ -543,7 +544,7 @@ function SectionValues() {
       <div>
         {values.map(({ id, ...props }, index) => (
           <FadeUp className="group w-full" delay={0.1} disableOnMobile key={id}>
-            <ListItem {...props} index={index + 1} />
+            <ListItem variant="dark" {...props} index={index + 1} />
           </FadeUp>
         ))}
       </div>
@@ -841,39 +842,3 @@ const itemContacts = [
     value: "Carcassonne, France",
   },
 ];
-
-// 🎬
-function FadeUp({
-  children,
-  delay = 0,
-  className,
-  disableOnMobile = false,
-}: {
-  children: React.ReactNode;
-  disableOnMobile?: boolean;
-  delay?: number;
-  className?: string;
-}) {
-  const isMobile = useMediaQuery("(max-width: 768px)");
-  if (isMobile && disableOnMobile) return children;
-
-  return (
-    <motion.div
-      className={cn(
-        "w-fit",
-        // ↔️
-        className
-      )}
-      initial={{ opacity: 0, y: 35 }}
-      transition={{
-        delay,
-        duration: 0.9,
-        ease: [0.32, 0.72, 0, 1],
-      }}
-      viewport={{ amount: 0.2, once: true }}
-      whileInView={{ opacity: 1, y: 0 }}
-    >
-      {children}
-    </motion.div>
-  );
-}

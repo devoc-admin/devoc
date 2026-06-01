@@ -1,0 +1,112 @@
+.scrollContainer {
+  position: relative;
+  height: 300vh;
+
+  /* ANIMATION */
+  view-timeline: --scroll-container block;
+
+  --line-progression: 0;
+  --opacity-svg: 1;
+  --background-opacity: 0;
+  --initial-shadow: rgba(0, 0, 0, 0) 0 0 0 0, rgba(0, 0, 0, 0) 0 0 0 0;
+  --final-shadow:
+    rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}
+
+.stickyContainer {
+  position: sticky;
+  top: 0;
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+
+.card {
+  /* ANIMATION */
+  animation-name: paperCut;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+  animation-timeline: --scroll-container;
+  animation-range: entry 100% exit 0%;
+}
+
+.cardLine {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  pointer-events: none;
+
+  opacity: var(--opacity-svg);
+
+  rect {
+    width: 100%;
+    height: 100%;
+
+    fill: none;
+
+    stroke: var(--color-zinc-200);
+    stroke-width: 2;
+    stroke-dasharray: 1;
+
+    stroke-dashoffset: var(--line-progression);
+  }
+}
+
+.cardBackground {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: var(--background-opacity);
+}
+
+@keyframes paperCut {
+  0% {
+    --line-progression: 1;
+    --opacity-svg: 1;
+    --background-opacity: 0;
+
+    box-shadow: var(--initial-shadow);
+    transform: translateY(0px);
+  }
+
+  15% {
+    --line-progression: 0;
+    --opacity-svg: 1;
+    --background-opacity: 0;
+
+    box-shadow: var(--initial-shadow);
+    transform: translateY(0px);
+  }
+
+  50%,
+  100% {
+    --line-progression: 0;
+    --opacity-svg: 0;
+    --background-opacity: 0.3;
+
+    box-shadow: var(--final-shadow);
+    transform: translateY(-40px);
+  }
+}
+
+@property --line-progression {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --background-opacity {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --opacity-svg {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}

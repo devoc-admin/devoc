@@ -1,0 +1,140 @@
+import { ArrowUpRight } from "lucide-react";
+import { CustomButton } from "@/components/ui/custom-button/custom-button";
+import { cn } from "@/lib/utils";
+
+const sharedClasses = cn(
+  "group",
+  "self-start",
+  "rounded-full!",
+  "font-semibold",
+  "justify-between!"
+);
+
+const responsiveClasses = cn(
+  // ↔️
+  "w-fit gap-x-4! px-1! py-1! pl-2! text-sm",
+  "xs:gap-x-4! xs:px-1! xs:py-1! pl-2! xs:text-sm",
+  "sm:gap-x-4! sm:px-1! sm:py-1! sm:text-base",
+  "md:gap-x-4! md:px-1! md:py-1! md:text-base",
+  "lg:gap-x-4! lg:px-1! lg:py-1! lg:text-base",
+  "xl:gap-x-6! xl:px-3! xl:py-2! xl:text-base"
+);
+
+export function ChoisirAvance({ className }: { className?: string }) {
+  return (
+    <CustomButton
+      className={cn(
+        sharedClasses,
+        responsiveClasses,
+        "brightness-106",
+        className
+      )}
+      href="#packs"
+      style={
+        {
+          "--accent": "#ff611a",
+          "--accent-secondary": "var(--primary-strong)",
+          "--degree": "200deg",
+        } as React.CSSProperties
+      }
+    >
+      <span className="ml-4">Choisir Avancé</span>
+      <ArrowRightUpAnimated className="text-[#ff611a]" />
+    </CustomButton>
+  );
+}
+
+export function ChoisirEssentiel({ className }: { className?: string }) {
+  return (
+    <CustomButton
+      className={cn(
+        "text-zinc-900!",
+        "font-medium!",
+        "hover:brightness-102!",
+        sharedClasses,
+        responsiveClasses,
+        className
+      )}
+      href="#contact"
+      style={
+        {
+          "--accent": "var(--color-zinc-50)",
+          "--accent-secondary": "var(--color-zinc-200)",
+          "--degree": "190deg",
+        } as React.CSSProperties
+      }
+    >
+      <span className="ml-4 text-foreground">Choisir Essentiel</span>
+      <ArrowRightUpAnimated className="text-foreground" />
+    </CustomButton>
+  );
+}
+
+export function ChoisirPremium({ className }: { className?: string }) {
+  return (
+    <CustomButton
+      className={cn(
+        "text-zinc-900!",
+        "font-medium!",
+        "hover:brightness-102!",
+        sharedClasses,
+        responsiveClasses,
+        className
+      )}
+      href="#contact"
+      style={
+        {
+          "--accent": "var(--color-zinc-50)",
+          "--accent-secondary": "var(--color-zinc-200)",
+          "--degree": "190deg",
+        } as React.CSSProperties
+      }
+    >
+      <span className="ml-4 text-foreground">Choisir Premium</span>
+      <ArrowRightUpAnimated className="text-foreground" />
+    </CustomButton>
+  );
+}
+
+function ArrowRightUpAnimated({ className }: { className?: string }) {
+  return (
+    <div
+      className={cn(
+        "relative size-11 rounded-full bg-white",
+        "overflow-hidden",
+        /* ↔️ */
+        "size-10",
+        "xs:size-10",
+        "xl:size-11",
+        "2xl:size-11",
+        className
+      )}
+    >
+      <ArrowUpRight
+        className={cn(
+          "text-inherit",
+          "duration-300",
+          "absolute",
+          "transition-all",
+          "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-100",
+          "group-hover:top-0 group-hover:left-full group-hover:-translate-x-1/2 group-hover:-translate-y-full group-hover:opacity-0",
+          /*↔️ */
+          "w-5"
+        )}
+        strokeWidth={2}
+      />
+      {/* Back arrow */}
+      <ArrowUpRight
+        className={cn(
+          "text-inherit",
+          "duration-300",
+          "transition-all",
+          "absolute bottom-0 left-0 -translate-x-1/2 translate-y-1/2 opacity-0",
+          "group-hover:top-1/2 group-hover:left-1/2 group-hover:-translate-x-1/2 group-hover:-translate-y-1/2 group-hover:opacity-100"
+        )}
+        size={21}
+        strokeWidth={2.5}
+      />
+    </div>
+  );
+}
