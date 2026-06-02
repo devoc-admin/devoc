@@ -13,7 +13,8 @@ export function HeroKeywords() {
         // ↔️
         "justify-start gap-x-2 gap-y-1",
         "xs:justify-center xs:gap-x-2 xs:gap-y-1",
-        "sm:justify-start sm:gap-x-2 sm:gap-y-1",
+        "sm:justify-center sm:gap-x-2 sm:gap-y-1",
+        "lg:justify-start lg:gap-x-2 lg:gap-y-1",
         // ↔️
         "text-[0.7rem] tracking-[0.08rem]",
         "xs:text-[0.7rem] xs:tracking-[0.08rem]",

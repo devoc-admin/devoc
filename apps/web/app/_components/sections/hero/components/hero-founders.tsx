@@ -9,72 +9,116 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
 import { cn } from "@/lib/utils.ts";
-
+import { OpenCarcaWinner } from "./open-carca-winner";
 export function HeroFounders() {
+  return (
+    <Container>
+      {/* 🔠 */}
+      <LeftPart />
+      {/* 🖼️🖼️ */}
+      <RightPart />
+      {/* 🌿 */}
+      <OpenCarcaWinner />
+    </Container>
+  );
+}
+
+// ===================================
+
+function Container({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "flex items-center",
-        "font-geist-mono",
+        "items-center",
+        "font-geist",
         // ↔️
-        "gap-x-3 self-center",
-        "xs:gap-x-3 xs:self-center",
-        "sm:gap-x-3 sm:self-center",
-        "md:gap-x-3 md:self-center",
-        "lg:gap-x-3 lg:self-start",
-        "xl:gap-x-4 xl:self-start"
+        "hidden flex-col gap-3",
+        "xs:flex xs:flex-col xs:gap-3",
+        "sm:flex sm:flex-row sm:gap-3",
+        "md:flex md:flex-row md:gap-3",
+        "lg:flex lg:flex-row lg:gap-5",
+        "xl:flex xl:flex-row xl:gap-8",
+        "2xl:flex 2xl:flex-row 2xl:gap-8"
       )}
     >
-      <div className="-space-x-2">
-        <ClementAvatar />
-        <ThibautAvatar />
-      </div>
-      <div
-        className={cn(
-          // ↔️
-          "space-y-0.5",
-          "xs:space-y-0.5",
-          "sm:space-y-0.5",
-          "md:space-y-0.5",
-          "lg:space-y-0.5",
-          "xl:-space-y-0.5"
-        )}
-      >
-        <div
-          className={cn(
-            "text-zinc-600",
-            "select-none",
-            "uppercase",
-            "font-geist-mono font-semibold",
-            // ↔️
-            "text-[0.7rem] tracking-[0.15rem]",
-            "xs:text-[0.75rem] xs:tracking-[0.15rem]",
-            "sm:text-[0.75rem] sm:tracking-[0.15rem]",
-            "md:text-[0.75rem] md:tracking-[0.15rem]",
-            "lg:text-[0.75rem] lg:tracking-[0.15rem]",
-            "xl:text-[0.85rem] xl:tracking-[0.17rem]"
-          )}
-        >
-          Fondateurs
-        </div>
-        <div
-          className={cn(
-            "flex gap-x-0.5 font-light",
-            "text-zinc-950",
-            // ↔️
-            "text-xs tracking-tight",
-            "xs:text-xs xs:tracking-tight",
-            "sm:text-xs sm:tracking-tight",
-            "md:text-xs md:tracking-tight",
-            "lg:text-xs lg:tracking-tight",
-            "xl:text-sm xl:tracking-tight"
-          )}
-        >
-          <span>Clément</span>
-          <span>•</span>
-          <span>Thibaut</span>
-        </div>
-      </div>
+      {children}
+    </div>
+  );
+}
+
+function LeftPart() {
+  return (
+    <div
+      className={cn(
+        "flex flex-col",
+        // ↔️
+        "items-center gap-y-0",
+        "xs:items-center xs:gap-y-0",
+        "sm:items-end sm:gap-y-0",
+        "md:items-end md:gap-y-0",
+        "lg:items-end lg:gap-y-0",
+        "xl:items-end xl:gap-y-0.5",
+        "2xl:items-end 2xl:gap-y-0.5"
+      )}
+    >
+      <Founders />
+      <ClementAndThibaut />
+    </div>
+  );
+}
+
+function RightPart() {
+  return (
+    <div className="-space-x-3">
+      <ClementAvatar />
+      <ThibautAvatar />
+    </div>
+  );
+}
+
+function Founders() {
+  return (
+    <div
+      className={cn(
+        "text-foreground/50",
+        "select-none",
+        "uppercase",
+        "font-geist font-medium tracking-[0.2em]",
+        // ↔️
+        "text-[0.6rem]",
+        "xs:text-[0.6rem",
+        "sm:text-[0.6rem",
+        "md:text-[0.6rem",
+        "lg:text-xs",
+        "xl:text-xs",
+        "2xl:text-xs"
+      )}
+    >
+      Fondateurs
+    </div>
+  );
+}
+
+function ClementAndThibaut() {
+  return (
+    <div
+      className={cn(
+        "flex gap-x-1.5",
+        "text-foreground/80",
+        "font-fraunces",
+        "font-normal",
+        // ↔️
+
+        "lg:text-xl lg:tracking-tight",
+        "xl:text-2xl xl:tracking-tight",
+        "2xl:text-2xl 2xl:tracking-tight"
+      )}
+    >
+      <span>Clément</span>
+      <span className="bg-linear-to-tr from-primary-strong to-primary-lighter bg-clip-text text-transparent">
+        •
+      </span>
+      <span>Thibaut</span>
     </div>
   );
 }
@@ -115,14 +159,15 @@ function AvatarWithTooltip({
   return (
     <Avatar
       className={cn(
-        "ring-[2px] ring-white transition-transform hover:z-10 hover:scale-105",
+        "transition-transform hover:z-10 hover:scale-105",
         // ↔️
         "size-10",
         "xs:size-11",
         "sm:size-11",
         "md:size-11",
-        "lg:size-11",
-        "xl:size-12"
+        "lg:size-13",
+        "xl:size-16",
+        "2xl:size-16"
       )}
     >
       <Tooltip>

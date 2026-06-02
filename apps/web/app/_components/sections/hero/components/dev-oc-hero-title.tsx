@@ -24,8 +24,8 @@ export function DevOcHeroTitle() {
         // ↔️
         "justify-start",
         "xs:justify-center",
-        "sm:justify-start",
-        "md:justify-start",
+        "sm:justify-center",
+        "md:justify-center",
         "lg:justify-start",
         "xl:justify-start"
       )}

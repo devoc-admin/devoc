@@ -318,7 +318,7 @@ function SectionServices() {
   return (
     <section
       className={cn(
-        "mx-auto",
+        "mx-auto overflow-hidden",
         // ↔️
         "space-y-14",
         "md:space-y-20",
