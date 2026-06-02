@@ -31,7 +31,7 @@ jobs:
           inject-env-vars: true
       - uses: ./.github/actions/setup
       - name: Install Vercel CLI
-        run: bun add -g vercel@latest
+        run: bun add -g vercel@54.6.1
       - name: Pull Vercel project config & env
         run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
       - name: Generate Payload artifacts
@@ -66,7 +66,7 @@ jobs:
           inject-env-vars: true
       - uses: ./.github/actions/setup
       - name: Install Vercel CLI
-        run: bun add -g vercel@latest
+        run: bun add -g vercel@54.6.1
       - name: Pull Vercel project config & env
         run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
       - name: Build
@@ -97,7 +97,7 @@ jobs:
           inject-env-vars: true
       - uses: ./.github/actions/setup
       - name: Install Vercel CLI
-        run: bun add -g vercel@latest
+        run: bun add -g vercel@54.6.1
       - name: Pull Vercel project config & env
         run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
       - name: Build
