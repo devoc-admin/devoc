@@ -15,7 +15,7 @@ export const RatingBadge = ({
       // ↔️
       "-space-x-0.5",
       "xs:space-x-0",
-      "lg:-space-x-5",
+      "lg:-space-x-3",
       className
     )}
   >
@@ -23,10 +23,7 @@ export const RatingBadge = ({
       className={cn(
         "shrink-0",
         // ↔️
-        "h-16",
-        "xs:h-17",
-        "sm:h-18",
-        "lg:size-22"
+        "2xl:size-16"
       )}
     />
     {children}
@@ -34,10 +31,7 @@ export const RatingBadge = ({
       className={cn(
         "shrink-0 -scale-x-100",
         //↔️
-        "h-16",
-        "xs:h-17",
-        "sm:h-18",
-        "lg:size-22"
+        "2xl:size-16"
       )}
     />
   </div>

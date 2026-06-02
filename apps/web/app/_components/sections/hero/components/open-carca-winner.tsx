@@ -5,6 +5,12 @@ import { cn } from "@/lib/utils.ts";
 export function OpenCarcaWinner() {
   return (
     <a
+      className={cn(
+        "mb-3 -translate-x-5",
+        //↔️
+        "hidden",
+        "2xl:inline-block"
+      )}
       href={OPEN_CARCA_WINNER_URL}
       rel="noopener"
       target="_blank"
@@ -14,14 +20,12 @@ export function OpenCarcaWinner() {
         <div
           className={cn(
             "flex flex-col",
-            "mt-4",
+            "mt-2",
             "max-w-50",
             "text-center font-bold",
-            "bg-linear-to-br from-primary-strong via-primary-lighter to-primary bg-clip-text",
-            "text-transparent",
+            "bg-linear-to-br from-primary-strong via-primary-lighter to-primary bg-clip-text text-transparent",
             // ↔️
-            "gap-y-1",
-            "xs:gap-y-1.5"
+            "gap-y-1"
           )}
         >
           <LaureatsConcours />
@@ -37,10 +41,7 @@ function LaureatsConcours() {
     <span
       className={cn(
         // ↔️
-        "text-sm leading-[110%]",
-        "xs:text-base xs:leading-[110%]",
-        "sm:text-base",
-        "lg:text-lg lg:leading-tight"
+        "2xl:text-[0.95rem] 2xl:leading-tight"
       )}
     >
       Lauréats concours Open Carca 2025
@@ -53,10 +54,9 @@ function CategorieEmergence() {
     <span
       className={cn(
         "uppercase",
+        "font-geist",
         // ↔️
-        "text-[0.65rem]",
-        "xs:text-[0.7rem]",
-        "lg:text-[0.7rem]"
+        "2xl:text-[0.7rem]"
       )}
     >
       Catégorie émergence
