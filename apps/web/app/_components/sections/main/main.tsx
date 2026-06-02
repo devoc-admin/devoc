@@ -563,7 +563,7 @@ const values = [
     description:
       "Vos données sont votre patrimoine. Nous privilégions les solutions open source et l'hébergement souverain pour garantir votre indépendance, en vous donnant les moyens de construire votre autonomie par la formation continue et la fourniture de guides d'utilisation de vos outils.",
     id: "autonomie",
-    title: "Autonomie et protection des donnée",
+    title: "Autonomie et protection des données",
   },
   {
     description:
