@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
+import { useMediaQuery } from "usehooks-ts";
 import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { ListItem } from "@/components/dev-oc/list-item";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
@@ -27,7 +28,7 @@ import { cn } from "@/lib/utils";
 import PhotoGroupe from "./assets/photo-groupe.webp";
 import { PContent } from "./components/p-content";
 import { PIntro } from "./components/p-intro";
-import { Portrait } from "./components/portrait";
+import { Portrait2 } from "./components/portrait";
 import { ReasonCard } from "./components/reason-card";
 import { SectionSeparator } from "./components/section-separator";
 import { ServiceCard } from "./components/service-card";
@@ -148,11 +149,11 @@ function SectionCollectif() {
             </PIntro>
           </FadeUp>
           <FadeUp delay={0.2} disableOnMobile>
-            <PIntro>
+            <PContent>
               Or nous sommes convaincus que l'exigence technique et la proximité
               humaine ne sont pas des luxes réservés aux grandes structures mais
               qu'elles peuvent, et doivent, être accessibles à tous les budgets.
-            </PIntro>
+            </PContent>
           </FadeUp>
 
           <FadeUp delay={0.3} disableOnMobile>
@@ -161,26 +162,6 @@ function SectionCollectif() {
               sur l'ensemble de leur transformation numérique : création de
               sites web, mise en conformité RGPD, cybersécurité, automatisation
               des processus ou déploiement de solutions souveraines.
-            </PContent>
-          </FadeUp>
-
-          <FadeUp delay={0.4} disableOnMobile>
-            <PContent>
-              À la transformation, nous ajoutons la transmission. Parce qu'un
-              outil numérique mal compris est un outil vite abandonné, nous
-              proposons des formations concrètes à destination des dirigeants,
-              des équipes et des élus. L'objectif n'est pas de tout savoir, mais
-              de reprendre la main : comprendre les enjeux, poser les bonnes
-              questions, et faire des choix éclairés.
-            </PContent>
-          </FadeUp>
-
-          <FadeUp delay={0.5} disableOnMobile>
-            <PContent>
-              Un territoire qui maîtrise son numérique attire, fidélise et
-              rayonne. Ce n'est pas une question de technologie mais de
-              souveraineté locale. C'est ce que nous construisons, commune après
-              commune, entreprise après entreprise, en Occitanie.
             </PContent>
           </FadeUp>
         </div>
@@ -217,48 +198,153 @@ function CustomCube() {
 }
 
 // 2️⃣📸📸
-const founders = [
-  {
-    color: "#F56E0F",
-    description:
-      "L'architecte de l'invisible. Bases de données, interconnexions de systèmes, automatisation des tâches répétitives, infrastructure et déploiement: il conçoit les fondations sur lesquelles reposent vos outils numériques. Avec toujours comme maîtres mots l'efficacité et la résilience.",
-    key: "clement",
-    name: "Clément",
-    src: "./clement-portrait.webp",
-    title: "Co-fondateur • Backend & infrastructure",
-  },
-  {
-    color: "#FFC731",
-    description:
-      "L'interface entre vous et vos utilisateurs. Il traduit vos besoins en expériences numériques claires, accessibles et efficaces. Expert en développement web, conformité RGPD et accessibilité, il s'assure que vos interfaces restent modernes, conformes et durables.",
-    key: "thibaut",
-    name: "Thibaut",
-    src: "./thibaut-portrait.webp",
-    title: "Co-fondateur • Design & accessibilité",
-  },
-];
-
 function Portraits() {
   return (
     <div
       className={cn(
-        "flex",
+        "grid",
         // ↔️
-        "flex-col gap-y-12",
-        "xs:flex-col xs:gap-y-12",
-        "sm:flex-col sm:gap-y-12",
-        "md:flex-row md:gap-x-3",
-        "lg:flex-row lg:gap-x-4",
-        "xl:flex-row xl:gap-x-6",
-        "2xl:flex-row 2xl:gap-x-8"
+        "my-16 flex flex-col gap-y-16",
+        "xs:my-16 xs:flex xs:flex-col xs:gap-y-16",
+        "sm:my-24 sm:flex sm:flex-col sm:gap-y-16",
+        "md:my-36 md:flex md:flex-col md:gap-y-24",
+        "lg:my-56 lg:flex lg:flex-col lg:gap-y-32",
+        "xl:my-72 xl:grid xl:grid-cols-2 xl:gap-12",
+        "2xl:my-96 2xl:grid 2xl:grid-cols-2 2xl:gap-12"
       )}
     >
-      {founders.map(({ key, ...props }, index) => (
-        <FadeUp delay={0.25 * index} disableOnMobile key={key}>
-          <Portrait {...props} />
-        </FadeUp>
-      ))}
+      {/* 🔠 */}
+      <FadeUp className="hidden place-items-center sm:grid">
+        <p
+          className={cn(
+            "font-fraunces font-light",
+            // ↔️
+            "sm:text-4xl",
+            "md:text-4xl",
+            "lg:text-5xl",
+            "xl:text-5xl",
+            "2xl:text-6xl"
+          )}
+        >
+          Notre mission : Façonner l'avenir numérique de l'Occitanie par
+          l'excellence technique, l'humain et l'autonomie locale. Nous croyons
+          en un digital souverain, accessible et durable pour chaque entreprise
+          et collectivité, de la conception à l'hébergement.
+        </p>
+      </FadeUp>
+      {/* 🙈🙈 */}
+      <div
+        className={cn(
+          // ↔️
+          "flex flex-col gap-y-10",
+          "xs:flex xs:flex-col xs:gap-y-10",
+          "sm:grid sm:grid-cols-2 sm:grid-rows-[repeat(4,auto)] sm:gap-5",
+          "md:grid md:grid-cols-2 md:grid-rows-[repeat(4,auto)] md:gap-6",
+          "lg:grid lg:grid-cols-2 lg:grid-rows-[repeat(4,auto)] lg:gap-10",
+          "xl:grid xl:grid-cols-2 xl:grid-rows-[repeat(4,auto)] xl:gap-10",
+          "2xl:grid 2xl:grid-cols-2 2xl:grid-rows-[repeat(4,auto)] 2xl:gap-10"
+        )}
+      >
+        <PortraitClement />
+        <PortraitThibaut />
+      </div>
     </div>
+  );
+}
+
+function PortraitClement() {
+  return (
+    <FadeMovePortrait
+      className={cn(
+        // ↔️
+        "translate-y-0",
+        "xs:translate-y-0",
+        "sm:translate-y-0",
+        "md:translate-y-0",
+        "lg:translate-y-0",
+        "xl:-translate-y-12",
+        "2xl:-translate-y-12"
+      )}
+      dir="up"
+    >
+      <Portrait2
+        description="L'architecte de l'invisible. Il conçoit les fondations sur lesquelles reposent vos outils numériques. Avec toujours comme maîtres mots l'efficacité et la résilience."
+        key="clement"
+        name="Clément"
+        src="/clement-portrait-orange.jpeg"
+        title="Co-fondateur • Backend & infrastructure"
+      />
+    </FadeMovePortrait>
+  );
+}
+
+function PortraitThibaut() {
+  return (
+    <FadeMovePortrait
+      className={cn(
+        // ↔️
+        "translate-y-0",
+        "xs:translate-y-0",
+        "sm:translate-y-0",
+        "md:translate-y-0",
+        "lg:translate-y-0",
+        "xl:translate-y-12",
+        "2xl:translate-y-12"
+      )}
+      dir="down"
+    >
+      <Portrait2
+        description="L'interface entre vous et vos utilisateurs. Expert en développement web, conformité RGPD et accessibilité, il s'assure que vos interfaces restent modernes, conformes et durables."
+        key="thibaut"
+        name="Thibaut"
+        src="/thibaut-portrait-orange.jpeg"
+        title="Co-fondateur • Design & accessibilité"
+      />
+    </FadeMovePortrait>
+  );
+}
+
+function FadeMovePortrait({
+  children,
+  className,
+  dir,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  dir: "up" | "down";
+}) {
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isTabletOrSmallLaptop = useMediaQuery("(max-width: 1280px)");
+
+  const sharedClasses =
+    "col-span-1 row-span-full grid grid-cols-subgrid grid-rows-subgrid";
+
+  if (isMobile) return children;
+  if (isTabletOrSmallLaptop)
+    return <FadeUp className={sharedClasses}>{children}</FadeUp>;
+
+  return (
+    <motion.div
+      className={cn(sharedClasses, className)}
+      initial={{
+        opacity: 0,
+        y: dir === "up" ? -100 : 100,
+      }}
+      transition={{
+        duration: 1,
+        ease: "easeOut",
+      }}
+      viewport={{
+        amount: 0.5,
+        once: true,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+    >
+      {children}
+    </motion.div>
   );
 }
 

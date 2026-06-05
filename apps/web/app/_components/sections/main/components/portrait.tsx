@@ -1,13 +1,12 @@
-import DitheredImage from "@/components/motion-core/dithered-image/dithered-image";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
-export function Portrait({
-  color,
+
+export function Portrait2({
   name,
   title,
   description,
   src,
 }: {
-  color: string;
   name: string;
   title: string;
   description: string;
@@ -16,135 +15,118 @@ export function Portrait({
   return (
     <div
       className={cn(
-        "relative",
-        "border",
-        "h-full",
-        "bg-surface-dark",
-        "border-foreground-dark/10",
-        "hover:border-foreground-dark/15",
-        "transition-colors",
-        "flex flex-col",
         // ↔️
-        "gap-y-3 rounded-2xl p-1",
-        "xs:gap-y-3 xs:rounded-2xl xs:p-1",
-        "sm:gap-y-4 sm:rounded-2xl sm:p-1",
-        "md:gap-y-4 md:rounded-2xl md:p-1.5",
-        "lg:gap-y-4 lg:rounded-2xl lg:p-2",
-        "2xl:gap-y-6 2xl:rounded-4xl 2xl:p-4"
+        "flex flex-col gap-y-2",
+        "xs:flex xs:flex-col xs:gap-y-2",
+        "sm:row-span-full sm:grid sm:grid-cols-subgrid sm:grid-rows-subgrid sm:gap-y-2",
+        "md:row-span-full md:grid md:grid-cols-subgrid md:grid-rows-subgrid md:gap-y-2",
+        "lg:row-span-full lg:grid lg:grid-cols-subgrid lg:grid-rows-subgrid lg:gap-y-4",
+        "xl:row-span-full xl:grid xl:grid-cols-subgrid xl:grid-rows-subgrid xl:gap-y-4",
+        "2xl:row-span-full 2xl:grid 2xl:grid-cols-subgrid 2xl:grid-rows-subgrid 2xl:gap-y-4"
       )}
     >
-      <PortraitImage color={color} name={name} src={src} title={title} />
-      <p
+      <PortraitImage alt={name} src={src} />
+      <div
         className={cn(
-          "text-foreground-dark/60",
-          "text-base",
           // ↔️
-          "mb-1.5 px-3 text-base",
-          "xs:mb-1.5 xs:px-3 text-base",
-          "sm:mb-1.5 sm:px-3 sm:text-base",
-          "md:mb-1.5 md:px-3 md:text-base",
-          "lg:mb-1.5 lg:px-3 lg:text-base",
-          "xl:mb-1.5 xl:px-3 xl:text-lg",
-          "2xl:mb-2 2xl:px-3 2xl:text-xl"
+          "-space-y-1",
+          "xs:space-y-0",
+          "sm:space-y-0.5",
+          "md:space-y-0.5",
+          "lg:space-y-0.5",
+          "xl:space-y-0.5",
+          "2xl:space-y-0.5"
         )}
       >
-        {description}
-      </p>
+        <PortraitName>{name}</PortraitName>
+        <PortraitTitle>{title}</PortraitTitle>
+      </div>
+      <PortraitDescription>{description}</PortraitDescription>
     </div>
   );
 }
 
-function PortraitImage({
-  color,
-  name,
-  title,
-  src,
-}: {
-  color: string;
-  title: string;
-  name: string;
-  src: string;
-}) {
+function PortraitImage({ alt, src }: { alt: string; src: string }) {
   return (
     <div
       className={cn(
-        "relative",
-        "flex flex-col gap-y-2",
         // ↔️
-        "h-80",
-        "xs:h-80",
-        "sm:h-80",
-        "md:h-90",
-        "lg:h-100",
-        "xl:h-140",
-        "2xl:h-220"
+        "relative col-span-full grow overflow-hidden",
+        "h-[400px]",
+        "xs:h-[400px]",
+        "sm:h-[400px]",
+        "md:h-[450px]",
+        "lg:h-[650px]",
+        "xl:h-[650px]",
+        "2xl:h-[650px]"
       )}
     >
-      {/* 🖼️ */}
-      <div
-        className={cn(
-          "grow overflow-hidden",
-          "bg-black",
-          // ↔️
-          "rounded-[0.8rem]",
-          "xs:rounded-[0.8rem]",
-          "sm:rounded-[0.8rem]",
-          "md:rounded-[0.7rem]",
-          "lg:rounded-[0.7rem]",
-          "2xl:rounded-3xl"
-        )}
-      >
-        <DitheredImage
-          backgroundColor="#000" // background-dark
-          className={cn(
-            "ease-out",
-            "mask-b-from-70% mask-b-to-100%",
-            "duration-500",
-            "transition-transform"
-          )}
-          color={color}
-          ditherMap="bayer4x4"
-          pixelSize={1}
-          src={src}
-          threshold={0.05}
-        />
-      </div>
-      {/* 🔤 */}
-      <span className="absolute bottom-4 left-6 flex flex-col gap-y-1.5">
-        <span
-          className={cn(
-            "font-geist-mono text-foreground-dark/50 uppercase",
-            // ↔️
-            "text-[0.7rem]",
-            "xs:text-[0.7rem]",
-            "sm:text-[0.7rem]",
-            "md:text-[0.7rem]",
-            "lg:text-[0.7rem]",
-            "xl:text-[0.7rem]",
-            "2xl:text-xs"
-          )}
-        >
-          {title}
-        </span>
-        <span
-          className={cn(
-            "bg-clip-text! font-fraunces text-transparent",
-            // ↔️
-            "text-4xl",
-            "xs:text-4xl",
-            "sm:text-4xl",
-            "md:text-4xl",
-            "lg:text-4xl",
-            "xl:text-4xl",
-            "2xl:text-5xl"
-          )}
-          style={{
-            background: `linear-gradient(to right, ${color}, ${color}20`,
-          }}
-        >
-          {name}
-        </span>
-      </span>
+      <Image
+        alt={alt}
+        className="object-cover"
+        fill
+        sizes="(min-width: 640px) 50vw, 100vw"
+        src={src}
+      />
     </div>
+  );
+}
+
+function PortraitName({ children }: { children: React.ReactNode }) {
+  return (
+    <h4
+      className={cn(
+        "font-geist font-medium text-primary-strong tracking-tight",
+        // ↔️
+        "text-2xl",
+        "xs:text-3xl",
+        "sm:text-3xl",
+        "md:text-3xl",
+        "lg:text-4xl",
+        "xl:text-[2.3rem]",
+        "2xl:text-5xl"
+      )}
+    >
+      {children}
+    </h4>
+  );
+}
+
+function PortraitTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h5
+      className={cn(
+        "font-geist-mono text-foreground-dark/70 leading-[1.1] tracking-tighter", // ↔️
+        "text-[0.85rem]",
+        "xs:text-[0.85rem]",
+        "sm:text-[0.85rem]",
+        "md:text-sm",
+        "lg:text-sm",
+        "xl:text-[0.9rem]",
+        "2xl:text-base"
+      )}
+    >
+      {children}
+    </h5>
+  );
+}
+
+function PortraitDescription({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      className={cn(
+        "text-foreground-dark",
+        // ↔️
+        "text-base leading-snug",
+        "xs:text-base xs:leading-snug",
+        "sm:text-base sm:leading-snug",
+        "md:text-base md:leading-tight",
+        "lg:text-lg lg:leading-tight",
+        "xl:text-lg xl:leading-tight",
+        "2xl:text-lg 2xl:leading-tight"
+      )}
+    >
+      {children}
+    </p>
   );
 }

@@ -9,7 +9,12 @@ export function StepCard({ children }: { children: React.ReactNode }) {
         "p-6",
         "transition-colors",
         "rounded-3xl",
-        "border border-foreground/10 hover:border-primary-strong/60"
+        "border border-foreground/10 hover:border-primary-strong/60",
+        // ↔️
+        "space-y-0 p-4",
+        "xs:space-y-0 xs:p-4",
+        "xl:space-y-6 xl:p-6",
+        "2xl:space-y-6 2xl:p-6"
       )}
     >
       {children}
