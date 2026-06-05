@@ -8,6 +8,7 @@ import {
   Fraunces,
   Geist,
   Geist_Mono,
+  Google_Sans_Code,
   Kanit,
   Lobster,
   Montserrat,
@@ -24,6 +25,12 @@ const geistSans = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
   weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const googleSans = Google_Sans_Code({
+  subsets: ["latin"],
+  variable: "--font-google-sans",
+  weight: "variable",
 });
 
 const geistMono = Geist_Mono({
@@ -101,7 +108,7 @@ export default function RootLayout({
     <html lang="fr" suppressHydrationWarning>
       {/*<ReactScan />*/}
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} ${fraunces.variable} mx-auto flex min-h-screen flex-col font-sans`}
+        className={`${geistSans.variable} ${googleSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} ${fraunces.variable} mx-auto flex min-h-screen flex-col font-sans`}
       >
         <SkipLink />
         <FontsReadyGate />

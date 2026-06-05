@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { ChoisirPremium } from "../buttons";
 import {
   PriceCard,
@@ -37,7 +38,16 @@ export function PriceCardPremium() {
       {/* 2️⃣ */}
       <PriceGridBottom>
         <PriceGridServices services={services} />
-        <div className="mt-auto grid place-items-center">
+        <div
+          className={cn(
+            "grid place-items-center",
+            // ↔️
+            "mt-12",
+            "xs:mt-12",
+            "xl:mt-auto",
+            "2xl:mt-auto"
+          )}
+        >
           <ChoisirPremium />
         </div>
       </PriceGridBottom>

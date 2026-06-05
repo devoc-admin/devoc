@@ -9,6 +9,7 @@
 
     /* 🖊️ */
     --font-sans: var(--font-geist-sans);
+    --font-google-sans: var(--font-google-sans);
     --font-geist-mono: var(--font-geist-mono);
     --font-lobster: var(--font-lobster);
     --font-kanit: var(--font-kanit);
