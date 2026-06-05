@@ -76,7 +76,7 @@ function PortraitName({ children }: { children: React.ReactNode }) {
   return (
     <h4
       className={cn(
-        "font-geist font-medium text-primary-strong tracking-tight",
+        "font-geist font-normal text-primary-strong tracking-tight",
         // ↔️
         "text-2xl",
         "xs:text-3xl",
