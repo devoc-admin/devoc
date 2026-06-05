@@ -25,14 +25,15 @@ import { SupSection } from "@/components/dev-oc/sup-section";
 import RubiksCube from "@/components/motion-core/rubiks-cube/rubiks-cube";
 import GlowLine from "@/components/sera-ui/glow-line";
 import { cn } from "@/lib/utils";
+import ClementPortrait from "./assets/clement-portrait-orange.jpeg";
 import PhotoGroupe from "./assets/photo-groupe.webp";
+import ThibautPortrait from "./assets/thibaut-portrait-orange.jpeg";
 import { PContent } from "./components/p-content";
 import { PIntro } from "./components/p-intro";
 import { Portrait2 } from "./components/portrait";
 import { ReasonCard } from "./components/reason-card";
 import { SectionSeparator } from "./components/section-separator";
 import { ServiceCard } from "./components/service-card";
-
 export function Main() {
   return (
     <div
@@ -271,7 +272,7 @@ function PortraitClement() {
         description="L'architecte de l'invisible. Il conçoit les fondations sur lesquelles reposent vos outils numériques. Avec toujours comme maîtres mots l'efficacité et la résilience."
         key="clement"
         name="Clément"
-        src="/clement-portrait-orange.jpeg"
+        src={ClementPortrait.src}
         title="Co-fondateur • Backend & infrastructure"
       />
     </FadeMovePortrait>
@@ -297,7 +298,7 @@ function PortraitThibaut() {
         description="L'interface entre vous et vos utilisateurs. Expert en développement web, conformité RGPD et accessibilité, il s'assure que vos interfaces restent modernes, conformes et durables."
         key="thibaut"
         name="Thibaut"
-        src="/thibaut-portrait-orange.jpeg"
+        src={ThibautPortrait.src}
         title="Co-fondateur • Design & accessibilité"
       />
     </FadeMovePortrait>
