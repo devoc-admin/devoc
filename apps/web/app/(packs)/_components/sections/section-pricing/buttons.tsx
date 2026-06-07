@@ -29,7 +29,7 @@ export function ChoisirAvance({ className }: { className?: string }) {
         "brightness-106",
         className
       )}
-      href="#packs"
+      href="#contact"
       style={
         {
           "--accent": "#ff611a",

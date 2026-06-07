@@ -32,7 +32,15 @@ export function DemarrerUnProjetButton() {
         } as React.CSSProperties
       }
     >
-      <span className="ml-4">Démarrer un projet</span>
+      <span
+        className={cn(
+          // ↔️
+          "ml-6",
+          "sm:ml-4"
+        )}
+      >
+        Démarrer un projet
+      </span>
       <ArrowRightUpAnimated className="text-primary" />
     </CustomButton>
   );
@@ -57,7 +65,15 @@ export function DecouvrirLeCollectifButton() {
         } as React.CSSProperties
       }
     >
-      <span className="ml-4">Découvrir le collectif</span>
+      <span
+        className={cn(
+          // ↔️
+          "ml-6",
+          "sm:ml-4"
+        )}
+      >
+        Découvrir le collectif
+      </span>
       <ArrowRightUpAnimated className="text-zinc-900" />
     </CustomButton>
   );

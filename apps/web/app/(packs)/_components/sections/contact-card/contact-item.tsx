@@ -55,7 +55,14 @@ export function ContactItem({
         <span className="font-medium group-hover:text-primary-strong">
           {children}
         </span>
-        <span className="mt-1 font-medium text-foreground/60 text-xs">
+        <span
+          className={cn(
+            "mt-1 font-medium text-foreground/60 text-xs",
+            // ↔️
+            "hidden",
+            "sm:inline"
+          )}
+        >
           {subtitle}
         </span>
       </div>
