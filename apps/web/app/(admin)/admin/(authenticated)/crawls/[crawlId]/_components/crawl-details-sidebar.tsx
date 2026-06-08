@@ -198,17 +198,14 @@ function CategoryIndicator({
         className={cn(
           "inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-sm transition-all",
           "cursor-pointer",
-          "hover:ring-2 hover:ring-green-500/50 hover:ring-offset-2 dark:hover:ring-green-400/50",
-          "focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:ring-offset-2 dark:focus-visible:ring-green-400/50",
+          "hover:ring-2 hover:ring-green-500/50 hover:ring-offset-2",
+          "focus-visible:ring-2 focus-visible:ring-green-500/50 focus-visible:ring-offset-2",
           "focus-visible:outline-none",
-          !isCovered &&
-            "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+          !isCovered && "bg-red-100 text-red-800",
           isCovered &&
             isActive &&
             "bg-primary text-primary-foreground hover:ring-primary",
-          isCovered &&
-            !isActive &&
-            "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+          isCovered && !isActive && "bg-green-100 text-green-800"
         )}
         onClick={onClick}
         type="button"
@@ -223,7 +220,7 @@ function CategoryIndicator({
     <span
       className={cn(
         "inline-flex items-center gap-x-1.5 rounded-full px-2.5 py-1 text-sm transition-all",
-        "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
+        "bg-red-100 text-red-800"
       )}
     >
       {content}
@@ -258,23 +255,23 @@ const HTTP_STATUS_COLORS: Record<
 > = {
   "1xx": {
     active: "bg-blue-500 text-white ring-blue-500",
-    base: "bg-blue-100 text-blue-700 ring-blue-500 dark:bg-blue-900/30 dark:text-blue-400",
+    base: "bg-blue-100 text-blue-700 ring-blue-500",
   },
   "2xx": {
     active: "bg-green-500 text-white ring-green-500",
-    base: "bg-green-100 text-green-700 dark:bg-green-900/30 ring-green-500 dark:text-green-400",
+    base: "bg-green-100 text-green-700 ring-green-500",
   },
   "3xx": {
     active: "bg-yellow-500 text-white ring-yellow-500",
-    base: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+    base: "bg-yellow-100 text-yellow-700",
   },
   "4xx": {
     active: "bg-orange-500 text-white  ring-orange-500",
-    base: "bg-orange-100 text-orange-700 ring-orange-500 dark:bg-orange-900/30 dark:text-orange-400",
+    base: "bg-orange-100 text-orange-700 ring-orange-500",
   },
   "5xx": {
     active: "bg-red-500 text-white ring-red-500",
-    base: "bg-red-100 text-red-700 ring-red-500 dark:bg-red-900/30 dark:text-red-400",
+    base: "bg-red-100 text-red-700 ring-red-500",
   },
 };
 
@@ -318,7 +315,7 @@ function HttpStatusIndicator({
         className={cn(
           "ml-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs",
           isActive && !hasPages && "bg-white/20 text-inherit",
-          isActive && hasPages && "bg-black/10 dark:bg-white/10",
+          isActive && hasPages && "bg-black/10",
           !(isActive || hasPages) && "hidden"
         )}
       >

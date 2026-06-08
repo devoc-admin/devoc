@@ -95,9 +95,8 @@ export function CrawledPageCard({ page }: CrawledPageCardProps) {
         "border border-border",
         "bg-sidebar-strong",
         "transition-shadow duration-300",
-        isRecentlyToggled && "border-2 border-amber-500 dark:border-amber-400",
-        isHighlighted &&
-          "shadow-[0_0_20px_4px_oklch(0.7363_0.1697_61.12/0.4)] dark:shadow-3xl dark:shadow-white/10"
+        isRecentlyToggled && "border-2 border-amber-500",
+        isHighlighted && "shadow-[0_0_20px_4px_oklch(0.7363_0.1697_61.12/0.4)]"
       )}
       ref={cardRef}
     >
@@ -363,16 +362,11 @@ function HttpStatusBadge({ status }: HttpStatusBadgeProps) {
     <span
       className={cn(
         "absolute right-3 bottom-3 inline-flex items-center rounded-md px-2 py-0.5 font-medium text-xs",
-        isInfo &&
-          "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-        isSuccess &&
-          "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
-        isRedirect &&
-          "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
-        isClientError &&
-          "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
-        isServerError &&
-          "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+        isInfo && "bg-blue-100 text-blue-700",
+        isSuccess && "bg-green-100 text-green-700",
+        isRedirect && "bg-yellow-100 text-yellow-700",
+        isClientError && "bg-orange-100 text-orange-700",
+        isServerError && "bg-red-100 text-red-700"
       )}
     >
       {status}

@@ -49,7 +49,7 @@ export function LoginForm() {
   return (
     <Card
       animation={false}
-      className="w-full max-w-130 border-none from-transparent to-transparent py-12 shadow-none! shadow-zinc-200! backdrop-blur-2xl dark:bg-sidebar"
+      className="w-full max-w-130 border-none from-transparent to-transparent py-12 shadow-none! shadow-zinc-200! backdrop-blur-2xl"
     >
       <CardHeader className="flex flex-col items-center justify-center text-center">
         <Image
@@ -59,7 +59,7 @@ export function LoginForm() {
           src={DevOcIcon.src}
           width={48}
         />
-        <CardTitle className="font-bold font-kanit text-4xl text-zinc-950 dark:text-white">
+        <CardTitle className="font-bold font-kanit text-4xl text-zinc-950">
           Connexion
         </CardTitle>
       </CardHeader>

@@ -24,10 +24,10 @@ export function RetryCrawlButton() {
         "py-3",
         "rounded-md",
         "h-11",
-        "bg-slate-600 hover:bg-slate-500 dark:bg-slate-600/60",
+        "bg-slate-600 hover:bg-slate-500",
         "cursor-pointer",
         "text-center font-semibold text-sm",
-        "text-primary-foreground dark:text-white",
+        "text-primary-foreground",
         "transition-colors",
         lockActions && "cursor-not-allowed opacity-50"
       )}

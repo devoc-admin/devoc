@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
-import { ModeToggle } from "@/components/toggle-theme";
 import { Button } from "@/components/ui/button";
 import { signOut } from "@/lib/auth/auth-client";
 import { cn } from "@/lib/utils";
@@ -53,7 +52,6 @@ function Sidebar() {
       {/* ⬇️ Footer */}
       <div className="mt-auto flex gap-x-2">
         <SignOutButton />
-        <ModeToggle />
       </div>
     </div>
   );
@@ -98,7 +96,7 @@ function SidebarLink({
       className={cn(
         /* ⬇️ Layout */ "flex items-center gap-x-3",
         /* 🔤 Text */ "text-foreground",
-        /* 🔲 Border */ "border-none dark:border dark:border-input",
+        /* 🔲 Border */ "border-none",
         /* ⭕ Radius */ "rounded-lg",
         /* 🫷 Padding */ "px-5 py-2.5",
         /* 🤹 Transition */ "transition-colors",
