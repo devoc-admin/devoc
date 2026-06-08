@@ -29,7 +29,7 @@
     "@payloadcms/translations": "^3.85.0",
     "@radix-ui/react-tooltip": "catalog:ui",
     "@react-email/components": "catalog:email",
-    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/typography": "^0.5.20",
     "@tanstack/react-form": "catalog:forms",
     "@vercel/analytics": "catalog:vercel",
     "class-variance-authority": "catalog:ui",
@@ -45,7 +45,7 @@
     "react-dom": "catalog:react",
     "resend": "catalog:email",
     "sharp": "catalog:crawler",
-    "simple-icons": "^16.21.0",
+    "simple-icons": "^16.23.0",
     "stripe": "^22.2.0",
     "tailwind-merge": "catalog:ui",
     "zod": "catalog:forms"
