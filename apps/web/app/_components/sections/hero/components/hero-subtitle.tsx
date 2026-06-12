@@ -19,8 +19,7 @@ export function HeroSubtitle() {
         } as React.CSSProperties
       }
     >
-      Sites, infrastructures et automatisations sur-mesure pour les entreprises,
-      artisans et collectivités d'
+      Nous réalisons la transformation numérique des PME/TPE et collectivités d'
       <Occitanie />.
     </p>
   );

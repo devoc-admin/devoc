@@ -40,7 +40,7 @@ export function VoirLesPacks() {
   );
 }
 
-export function Reserver1hGratuit({ className }: { className?: string }) {
+export function AgirMaintenant({ className }: { className?: string }) {
   return (
     <CustomButton
       className={cn(
@@ -60,7 +60,9 @@ export function Reserver1hGratuit({ className }: { className?: string }) {
         } as React.CSSProperties
       }
     >
-      <span className="ml-4 text-foreground">Réserver 1h gratuit</span>
+      <span className="ml-4 text-[1.05rem] text-foreground">
+        Faire un bilan
+      </span>
       <ArrowRightUpAnimated className="text-foreground" />
     </CustomButton>
   );
