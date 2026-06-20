@@ -42,7 +42,9 @@
       "!**/components/motion-core",
       "!**/bilan",
       "!**/payload-types.ts",
-      "!**/migrations"
+      "!**/migrations",
+      // 🖼️ SVG asset files are not source code — don't lint them as JSX
+      "!**/*.svg"
     ]
   },
   "formatter": {

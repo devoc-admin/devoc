@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
     "/api/screenshots": ["./screenshots/**"],
   },
   outputFileTracingRoot: path.join(import.meta.dirname, "../../"),
-  serverExternalPackages: ["resend", "pg"],
+  serverExternalPackages: ["resend", "pg", "sharp"],
   turbopack: {
     root: path.join(import.meta.dirname, "../../"),
   },
