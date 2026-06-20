@@ -86,24 +86,24 @@ function SearchAudits() {
 // --------------------------------
 // 🏷️ Type filter
 function TypeFilter() {
-  const { typeFilter, handleTypeFilter } = useAuditsContext();
+  const { selectedTypeProspect, handleTypeFilter } = useAuditsContext();
 
   return (
     <div className="flex gap-x-2">
       <TypeFilterButton
-        active={typeFilter === null}
+        active={selectedTypeProspect === null}
         onClick={() => handleTypeFilter(null)}
       >
         Tous
       </TypeFilterButton>
       <TypeFilterButton
-        active={typeFilter === "rgaa"}
+        active={selectedTypeProspect === "rgaa"}
         onClick={() => handleTypeFilter("rgaa")}
       >
         RGAA
       </TypeFilterButton>
       <TypeFilterButton
-        active={typeFilter === "wcag"}
+        active={selectedTypeProspect === "wcag"}
         onClick={() => handleTypeFilter("wcag")}
       >
         WCAG

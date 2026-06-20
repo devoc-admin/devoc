@@ -2,8 +2,8 @@
 import { ExternalLinkIcon, LoaderIcon, PencilIcon } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { useProspectsContext } from "../../prospects-context";
-import { EditorCombobox } from "../editor-combobox";
+import { useProspectsContext } from "../../../prospects-context";
+import { EditorCombobox } from "../../combobox/editor/editor-combobox";
 
 export function SiteEditorCell({
   prospectId,
@@ -19,8 +19,10 @@ export function SiteEditorCell({
     updatingSiteEditorProspectId,
     isUpdatingSiteEditor,
   } = useProspectsContext();
+
   const [isEditing, setIsEditing] = useState(false);
 
+  //⏳
   const isPending =
     isUpdatingSiteEditor && updatingSiteEditorProspectId === prospectId;
 
@@ -36,6 +38,8 @@ export function SiteEditorCell({
       <EditorCombobox
         autoFocus
         className="w-48"
+        closeCallback={() => setIsEditing(false)}
+        inputClassName="h-8"
         onCommit={handleCommit}
         value={value ?? ""}
       />
@@ -45,24 +49,39 @@ export function SiteEditorCell({
   return (
     <div className="flex w-48 items-center gap-x-1.5">
       <SiteEditorDisplay url={url} value={value} />
-      <button
-        aria-label="Modifier l'éditeur"
-        className={cn(
-          "ml-auto cursor-pointer rounded-md p-1 text-muted-foreground",
-          "hover:bg-accent hover:text-foreground",
-          "disabled:cursor-not-allowed disabled:opacity-50"
-        )}
-        disabled={isPending}
-        onClick={() => setIsEditing(true)}
-        type="button"
-      >
-        {isPending ? (
-          <LoaderIcon className="size-3.5 animate-spin" />
-        ) : (
-          <PencilIcon className="size-3.5" />
-        )}
-      </button>
+      <EditButton isPending={isPending} onClick={() => setIsEditing(true)} />
     </div>
+  );
+}
+
+function EditButton({
+  isPending,
+  onClick,
+}: {
+  isPending: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      aria-label="Modifier l'éditeur"
+      className={cn(
+        "cursor-pointer",
+        "rounded-md",
+        "p-1",
+        "text-muted-foreground",
+        "hover:bg-accent hover:text-foreground",
+        "disabled:cursor-not-allowed disabled:opacity-50"
+      )}
+      disabled={isPending}
+      onClick={onClick}
+      type="button"
+    >
+      {isPending ? (
+        <LoaderIcon className="size-3 animate-spin" />
+      ) : (
+        <PencilIcon className="size-3" />
+      )}
+    </button>
   );
 }
 

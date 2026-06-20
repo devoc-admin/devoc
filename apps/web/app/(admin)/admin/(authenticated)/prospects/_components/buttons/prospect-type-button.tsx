@@ -1,5 +1,6 @@
 import type { Prospect } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
+import { useProspectsContext } from "../../prospects-context";
 
 // biome-ignore assist/source/useSortedKeys: layout order
 export const PROSPECT_TYPES: Record<Exclude<Prospect["type"], null>, string> = {
@@ -8,7 +9,7 @@ export const PROSPECT_TYPES: Record<Exclude<Prospect["type"], null>, string> = {
   cultural_establishment: "Établ. culturel",
   epci: "EPCI",
   sme: "PME/TPE",
-  territorial_collectivity: "Collectivité territoriale",
+  territorial_collectivity: "Collectivité",
   other: "Autre",
 };
 
@@ -69,8 +70,10 @@ export function ProspectTypeButton({
 }: {
   type: Prospect["type"];
   isActive: boolean;
-  onSelectType: (type: Prospect["type"] | null) => void;
+  onSelectType?: (type: Prospect["type"] | null) => void;
 }) {
+  const { setTypeFilter } = useProspectsContext();
+  const handleSelect = onSelectType ?? setTypeFilter;
   return (
     <button
       className={cn(
@@ -84,7 +87,7 @@ export function ProspectTypeButton({
           : PROSPECT_TYPES_COLORS[type].inactive
       )}
       key={type}
-      onClick={() => onSelectType(isActive ? null : type)}
+      onClick={() => handleSelect(isActive ? null : type)}
       type="button"
     >
       {PROSPECT_TYPES[type]}
@@ -96,13 +99,15 @@ export function ProspectTypesButtons({
   selectedType,
   onSelectType,
 }: {
-  selectedType: Prospect["type"] | null;
-  onSelectType: (type: Prospect["type"] | null) => void;
-}) {
+  selectedType?: Prospect["type"] | null;
+  onSelectType?: (type: Prospect["type"] | null) => void;
+} = {}) {
+  const { selectedTypeProspect } = useProspectsContext();
+  const activeType = onSelectType ? selectedType : selectedTypeProspect;
   return (
     <div className="flex flex-wrap items-center gap-2">
       {(Object.keys(PROSPECT_TYPES) as Prospect["type"][]).map((type) => {
-        const isActive = selectedType === type;
+        const isActive = activeType === type;
         return (
           <ProspectTypeButton
             isActive={isActive}

@@ -2,9 +2,9 @@
 import { ChevronDownIcon } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { useExistingEditors } from "../prospects-context";
+import { useSortedDpos } from "./dpos-queries";
 
-type EditorComboboxProps = {
+type DpoComboboxProps = {
   value: string;
   onCommit: (next: string) => void;
   className?: string;
@@ -14,16 +14,16 @@ type EditorComboboxProps = {
   autoFocus?: boolean;
 };
 
-export function EditorCombobox({
+export function DpoCombobox({
   value,
   onCommit,
   className,
   inputClassName,
-  placeholder = "ex : Agence Acme",
+  placeholder = "ex : Dupont Conseil",
   disabled,
   autoFocus,
-}: EditorComboboxProps) {
-  const existingEditors = useExistingEditors();
+}: DpoComboboxProps) {
+  const sortedDpos = useSortedDpos();
   const [draft, setDraft] = useState(value);
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -34,7 +34,6 @@ export function EditorCombobox({
     setDraft(value);
   }, [value]);
 
-  // Close on outside click.
   useEffect(() => {
     if (!isOpen) return;
     function handlePointerDown(event: PointerEvent) {
@@ -47,9 +46,9 @@ export function EditorCombobox({
   }, [isOpen]);
 
   const normalizedDraft = draft.trim().toLowerCase();
-  const suggestions = existingEditors.filter(
-    (editor) =>
-      !normalizedDraft || editor.toLowerCase().includes(normalizedDraft)
+  const suggestions = sortedDpos.filter(
+    (dpoName) =>
+      !normalizedDraft || dpoName.toLowerCase().includes(normalizedDraft)
   );
 
   function commit(next: string) {
@@ -122,23 +121,22 @@ export function EditorCombobox({
           id={listId}
           role="listbox"
         >
-          {suggestions.map((editor) => (
+          {suggestions.map((dpoName) => (
             <button
               className={cn(
                 "block w-full px-2 py-1.5 text-left text-sm",
                 "hover:bg-accent hover:text-accent-foreground",
-                editor === draft.trim() && "bg-accent/50"
+                dpoName === draft.trim() && "bg-accent/50"
               )}
-              key={editor}
+              key={dpoName}
               onMouseDown={(event) => {
-                // Prevent input blur before click registers.
                 event.preventDefault();
-                commit(editor);
+                commit(dpoName);
               }}
               role="option"
               type="button"
             >
-              {editor}
+              {dpoName}
             </button>
           ))}
         </div>

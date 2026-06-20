@@ -25,7 +25,7 @@ const AuditsContext = createContext<AuditsContextType>({
 
   // 🔍 Filter
   searchAudit: "",
-  typeFilter: null,
+  selectedTypeProspect: null,
   handleSearchAudit: emptyFn,
   handleTypeFilter: emptyFn,
 
@@ -54,7 +54,9 @@ export function AuditsProvider({ children }: { children: React.ReactNode }) {
 
   // 🔍 Search audits
   const [searchAudit, setSearchAuditQuery] = useState("");
-  const [typeFilter, setTypeFilter] = useState<"rgaa" | "wcag" | null>(null);
+  const [selectedTypeProspect, setTypeFilter] = useState<
+    "rgaa" | "wcag" | null
+  >(null);
 
   const handleSearchAudit = (query: string) => {
     setSearchAuditQuery(query);
@@ -67,7 +69,8 @@ export function AuditsProvider({ children }: { children: React.ReactNode }) {
   const filteredAudits = audits
     ? audits.filter((audit) => {
         // Filter by type
-        if (typeFilter && audit.type !== typeFilter) return false;
+        if (selectedTypeProspect && audit.type !== selectedTypeProspect)
+          return false;
 
         // Filter by search query
         if (!searchAudit.trim()) return true;
@@ -127,7 +130,7 @@ export function AuditsProvider({ children }: { children: React.ReactNode }) {
 
         // 🔍 Filter
         searchAudit,
-        typeFilter,
+        selectedTypeProspect,
         handleSearchAudit,
         handleTypeFilter,
 
@@ -171,7 +174,7 @@ type AuditsContextType = {
 
   // 🔍 Filter
   searchAudit: string;
-  typeFilter: "rgaa" | "wcag" | null;
+  selectedTypeProspect: "rgaa" | "wcag" | null;
   handleSearchAudit: (query: string) => void;
   handleTypeFilter: (type: "rgaa" | "wcag" | null) => void;
 

@@ -31,8 +31,8 @@ import type { Prospect } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import type { ProspectResult } from "../../prospects-actions";
 import { useProspectsContext } from "../../prospects-context";
-import { DpoCombobox } from "../dpo-combobox";
-import { EditorCombobox } from "../editor-combobox";
+import { DpoCombobox } from "../combobox/dpo/dpo-combobox";
+import { EditorCombobox } from "../combobox/editor/editor-combobox";
 import { PROSPECT_TYPES, ProspectTypeBadge } from "./prospect-type-button";
 
 export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
@@ -311,11 +311,11 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
                     value={field.state.value}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Non renseigné" />
+                      <SelectValue placeholder="N.r." />
                     </SelectTrigger>
                     <SelectContent align="start">
                       <SelectGroup>
-                        <SelectItem value="unknown">Non renseigné</SelectItem>
+                        <SelectItem value="unknown">N.r.</SelectItem>
                         <SelectItem value="yes">Oui</SelectItem>
                         <SelectItem value="no">Non</SelectItem>
                       </SelectGroup>
@@ -423,13 +423,11 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
                           value={field.state.value}
                         >
                           <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Non renseigné" />
+                            <SelectValue placeholder="N.r." />
                           </SelectTrigger>
                           <SelectContent align="start">
                             <SelectGroup>
-                              <SelectItem value="unknown">
-                                Non renseigné
-                              </SelectItem>
+                              <SelectItem value="unknown">N.r.</SelectItem>
                               <SelectItem value="yes">Oui</SelectItem>
                               <SelectItem value="no">Non</SelectItem>
                             </SelectGroup>
@@ -453,11 +451,11 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
                     value={field.state.value}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Non renseigné" />
+                      <SelectValue placeholder="N.r." />
                     </SelectTrigger>
                     <SelectContent align="start">
                       <SelectGroup>
-                        <SelectItem value="unknown">Non renseigné</SelectItem>
+                        <SelectItem value="unknown">N.r.</SelectItem>
                         <SelectItem value="yes">Oui</SelectItem>
                         <SelectItem value="no">Non</SelectItem>
                       </SelectGroup>
