@@ -383,6 +383,10 @@ export const prospect = pgTable(
     usesPanneauPocket: boolean(),
     hasDpo: boolean(),
     dpoId: integer(),
+    referentName: text(),
+    referentEmail: text(),
+    referentPhone: text(),
+    referentLinkedin: text(),
     crawlId: text(),
     createdAt: timestamp({ mode: "string", withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)

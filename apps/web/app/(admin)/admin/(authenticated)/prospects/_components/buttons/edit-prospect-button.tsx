@@ -31,6 +31,7 @@ import type { Prospect } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import type { ProspectResult } from "../../prospects-actions";
 import { useProspectsContext } from "../../prospects-context";
+import { isValidEmailFormat, normalizeReferent } from "../../referent-utils";
 import { DpoCombobox } from "../combobox/dpo/dpo-combobox";
 import { EditorCombobox } from "../combobox/editor/editor-combobox";
 import { PROSPECT_TYPES, ProspectTypeBadge } from "./prospect-type-button";
@@ -81,12 +82,12 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
         </TooltipTrigger>
         <TooltipContent>Modifier ce prospect</TooltipContent>
       </Tooltip>
-      <DialogContent>
-        <div className="space-y-4">
-          <h3 className="text-center font-bold font-kanit text-3xl">
-            Modifier le prospect
-          </h3>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-6 py-4">
+      <DialogContent className="flex max-h-[85vh] flex-col gap-0 sm:max-w-xl">
+        <h3 className="shrink-0 text-center font-bold font-kanit text-3xl">
+          Modifier le prospect
+        </h3>
+        <div className="flex-1 space-y-6 overflow-y-auto py-4 pr-1">
+          <FormSection title="Identité">
             {/* 🔠 Name */}
             <form.Field
               name="name"
@@ -214,6 +215,8 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
                 </div>
               )}
             </form.Field>
+          </FormSection>
+          <FormSection title="Site internet">
             {/* 📅 Année de mise en ligne du site (tous types) */}
             <form.Field
               name="siteLaunchYear"
@@ -324,6 +327,8 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
                 </div>
               )}
             </form.Field>
+          </FormSection>
+          <FormSection title="Localisation & population">
             {/* 👥 Nombre d'habitants (uniquement pour les communes) */}
             <form.Subscribe selector={(state) => state.values.type}>
               {(currentType) =>
@@ -439,6 +444,8 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
                 ) : null
               }
             </form.Subscribe>
+          </FormSection>
+          <FormSection title="Conformité RGPD">
             {/* 🛡️ DPO (tristate + combobox + URL si Oui) */}
             <form.Field name="hasDpo">
               {(field) => (
@@ -513,75 +520,171 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
                 ) : null
               }
             </form.Subscribe>
-            {/* 🗺️ Coordinates (optional) */}
-            <div className="col-span-2">
-              <Label className="text-muted-foreground text-sm">
-                Coordonnées
-              </Label>
-              <div className="mt-1 grid grid-cols-2 gap-x-4">
-                <form.Field
-                  name="latitude"
-                  validators={{
-                    onSubmit: ({ value }) => {
-                      if (!value) return;
-                      const num = Number.parseFloat(value);
-                      if (Number.isNaN(num) || num < -90 || num > 90)
-                        return "Latitude invalide (-90 à 90)";
-                    },
-                  }}
-                >
-                  {(field) => (
-                    <div>
-                      <Input
-                        className="h-10"
-                        name={field.name}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          field.handleChange(e.target.value)
-                        }
-                        placeholder="Latitude (ex: 48.8566)"
-                        value={field.state.value}
-                      />
-                      {!field.state.meta.isValid && (
-                        <ErrorMessage>
-                          {field.state.meta.errors.join(", ")}
-                        </ErrorMessage>
-                      )}
-                    </div>
+          </FormSection>
+          <FormSection title="Référent">
+            {/* 🧑‍💼 Référent (nom + contacts optionnels) */}
+            <form.Field name="referentName">
+              {(field) => (
+                <div className="col-span-2">
+                  <Label>Ref.</Label>
+                  <Input
+                    className="h-10"
+                    name={field.name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      field.handleChange(e.target.value)
+                    }
+                    placeholder="Nom du référent"
+                    value={field.state.value}
+                  />
+                </div>
+              )}
+            </form.Field>
+            <form.Field
+              name="referentEmail"
+              validators={{
+                onSubmit: ({ value }) => {
+                  if (value.trim() && !isValidEmailFormat(value))
+                    return "L'email n'est pas valide";
+                },
+              }}
+            >
+              {(field) => (
+                <div>
+                  <Label>Email du référent</Label>
+                  <Input
+                    className="h-10"
+                    name={field.name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      field.handleChange(e.target.value)
+                    }
+                    placeholder="referent@exemple.fr"
+                    type="email"
+                    value={field.state.value}
+                  />
+                  {!field.state.meta.isValid && (
+                    <ErrorMessage>
+                      {field.state.meta.errors.join(", ")}
+                    </ErrorMessage>
                   )}
-                </form.Field>
-                <form.Field
-                  name="longitude"
-                  validators={{
-                    onSubmit: ({ value }) => {
-                      if (!value) return;
-                      const num = Number.parseFloat(value);
-                      if (Number.isNaN(num) || num < -180 || num > 180)
-                        return "Longitude invalide (-180 à 180)";
-                    },
-                  }}
-                >
-                  {(field) => (
-                    <div>
-                      <Input
-                        className="h-10"
-                        name={field.name}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          field.handleChange(e.target.value)
-                        }
-                        placeholder="Longitude (ex: 2.3522)"
-                        value={field.state.value}
-                      />
-                      {!field.state.meta.isValid && (
-                        <ErrorMessage>
-                          {field.state.meta.errors.join(", ")}
-                        </ErrorMessage>
-                      )}
-                    </div>
+                </div>
+              )}
+            </form.Field>
+            <form.Field name="referentPhone">
+              {(field) => (
+                <div>
+                  <Label>Téléphone du référent</Label>
+                  <Input
+                    className="h-10"
+                    inputMode="tel"
+                    name={field.name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      field.handleChange(e.target.value)
+                    }
+                    placeholder="06 12 34 56 78"
+                    type="tel"
+                    value={field.state.value}
+                  />
+                </div>
+              )}
+            </form.Field>
+            <form.Field
+              name="referentLinkedin"
+              validators={{
+                onSubmit: ({ value }) => {
+                  if (value.trim() && !isValidUrlFormat(value))
+                    return "L'URL n'est pas valide";
+                },
+              }}
+            >
+              {(field) => (
+                <div className="col-span-2">
+                  <Label>LinkedIn du référent</Label>
+                  <Input
+                    className="h-10"
+                    name={field.name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      field.handleChange(e.target.value)
+                    }
+                    placeholder="https://www.linkedin.com/in/…"
+                    type="url"
+                    value={field.state.value}
+                  />
+                  {!field.state.meta.isValid && (
+                    <ErrorMessage>
+                      {field.state.meta.errors.join(", ")}
+                    </ErrorMessage>
                   )}
-                </form.Field>
-              </div>
-            </div>
-          </div>
+                </div>
+              )}
+            </form.Field>
+          </FormSection>
+          {/* 🗺️ Coordinates (optional) */}
+          <FormSection title="Coordonnées">
+            <form.Field
+              name="latitude"
+              validators={{
+                onSubmit: ({ value }) => {
+                  if (!value) return;
+                  const num = Number.parseFloat(value);
+                  if (Number.isNaN(num) || num < -90 || num > 90)
+                    return "Latitude invalide (-90 à 90)";
+                },
+              }}
+            >
+              {(field) => (
+                <div>
+                  <Label>Latitude</Label>
+                  <Input
+                    className="h-10"
+                    name={field.name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      field.handleChange(e.target.value)
+                    }
+                    placeholder="ex : 48.8566"
+                    value={field.state.value}
+                  />
+                  {!field.state.meta.isValid && (
+                    <ErrorMessage>
+                      {field.state.meta.errors.join(", ")}
+                    </ErrorMessage>
+                  )}
+                </div>
+              )}
+            </form.Field>
+            <form.Field
+              name="longitude"
+              validators={{
+                onSubmit: ({ value }) => {
+                  if (!value) return;
+                  const num = Number.parseFloat(value);
+                  if (Number.isNaN(num) || num < -180 || num > 180)
+                    return "Longitude invalide (-180 à 180)";
+                },
+              }}
+            >
+              {(field) => (
+                <div>
+                  <Label>Longitude</Label>
+                  <Input
+                    className="h-10"
+                    name={field.name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      field.handleChange(e.target.value)
+                    }
+                    placeholder="ex : 2.3522"
+                    value={field.state.value}
+                  />
+                  {!field.state.meta.isValid && (
+                    <ErrorMessage>
+                      {field.state.meta.errors.join(", ")}
+                    </ErrorMessage>
+                  )}
+                </div>
+              )}
+            </form.Field>
+          </FormSection>
+        </div>
+        <div className="shrink-0 border-border border-t pt-4">
           <form.Subscribe selector={(state) => state.isSubmitting}>
             {(isSubmitting) => (
               <Button
@@ -618,6 +721,10 @@ function useEditProspectForm(prospect: ProspectResult) {
       location: prospect.location ?? "",
       longitude: prospect.longitude ?? "",
       name: prospect.name ?? "",
+      referentEmail: prospect.referentEmail ?? "",
+      referentLinkedin: prospect.referentLinkedin ?? "",
+      referentName: prospect.referentName ?? "",
+      referentPhone: prospect.referentPhone ?? "",
       siteEditor: prospect.siteEditor ?? "",
       siteEditorUrl: prospect.siteEditorUrl ?? "",
       siteLaunchYear: prospect.siteLaunchYear?.toString() ?? "",
@@ -652,6 +759,7 @@ function useEditProspectForm(prospect: ProspectResult) {
       const dpoName = hasDpo === true ? value.dpoName.trim() || null : null;
       const dpoUrl = hasDpo === true ? value.dpoUrl.trim() || null : null;
       editProspectMutate({
+        ...normalizeReferent(value),
         distanceFrom,
         dpoName,
         dpoUrl,
@@ -674,6 +782,23 @@ function useEditProspectForm(prospect: ProspectResult) {
   });
 
   return form;
+}
+
+function FormSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="space-y-3">
+      <h4 className="font-kanit font-semibold text-foreground text-sm uppercase tracking-wide">
+        {title}
+      </h4>
+      <div className="grid grid-cols-2 gap-x-4 gap-y-6">{children}</div>
+    </section>
+  );
 }
 
 function hasAccessibilityToFormValue(

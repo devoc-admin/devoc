@@ -159,6 +159,10 @@ export type ProspectAddData = {
   hasDpo?: boolean | null;
   dpoName?: string | null;
   dpoUrl?: string | null;
+  referentName?: string | null;
+  referentEmail?: string | null;
+  referentPhone?: string | null;
+  referentLinkedin?: string | null;
 };
 
 type ProspectEditData = ProspectAddData & { id: number };

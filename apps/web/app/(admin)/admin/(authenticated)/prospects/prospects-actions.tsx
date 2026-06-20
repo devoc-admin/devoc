@@ -30,6 +30,10 @@ const prospectsQuery = db
     location: prospect.location,
     longitude: prospect.longitude,
     name: prospect.name,
+    referentEmail: prospect.referentEmail,
+    referentLinkedin: prospect.referentLinkedin,
+    referentName: prospect.referentName,
+    referentPhone: prospect.referentPhone,
     siteEditor: prospect.siteEditor,
     siteEditorUrl: prospect.siteEditorUrl,
     siteLaunchYear: prospect.siteLaunchYear,
@@ -117,6 +121,10 @@ export async function addProspect({
   hasDpo,
   dpoName,
   dpoUrl,
+  referentName,
+  referentEmail,
+  referentPhone,
+  referentLinkedin,
 }: {
   name: string;
   type: Prospect["type"];
@@ -136,6 +144,10 @@ export async function addProspect({
   hasDpo?: boolean | null;
   dpoName?: string | null;
   dpoUrl?: string | null;
+  referentName?: string | null;
+  referentEmail?: string | null;
+  referentPhone?: string | null;
+  referentLinkedin?: string | null;
 }) {
   try {
     const dpoId = await resolveDpoId(hasDpo, dpoName, dpoUrl);
@@ -153,6 +165,10 @@ export async function addProspect({
         location,
         longitude,
         name,
+        referentEmail,
+        referentLinkedin,
+        referentName,
+        referentPhone,
         siteEditor,
         siteEditorUrl,
         siteLaunchYear,
@@ -190,6 +206,10 @@ export async function editProspect({
   hasDpo,
   dpoName,
   dpoUrl,
+  referentName,
+  referentEmail,
+  referentPhone,
+  referentLinkedin,
 }: {
   id: number;
   name: string;
@@ -209,6 +229,10 @@ export async function editProspect({
   hasDpo?: boolean | null;
   dpoName?: string | null;
   dpoUrl?: string | null;
+  referentName?: string | null;
+  referentEmail?: string | null;
+  referentPhone?: string | null;
+  referentLinkedin?: string | null;
 }) {
   try {
     const dpoId = await resolveDpoId(hasDpo, dpoName, dpoUrl);
@@ -225,6 +249,10 @@ export async function editProspect({
         location,
         longitude,
         name,
+        referentEmail,
+        referentLinkedin,
+        referentName,
+        referentPhone,
         siteEditor,
         siteEditorUrl,
         siteLaunchYear,
