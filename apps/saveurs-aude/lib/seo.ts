@@ -1,7 +1,9 @@
 import type { Media } from "@/payload-types";
 
 export function getBaseUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL ?? "https://saveurs-aude.fr";
+  return (
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://dev-oc.fr/demo/saveurs-aude"
+  );
 }
 
 export function getMediaUrl(
