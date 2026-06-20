@@ -55,7 +55,7 @@ export function AppelerMaintenant() {
       href={`tel:${TEL_THIBAUT}`}
       style={
         {
-          "--accent": "var(--color-primary-strong)",
+          "--accent": "var(--color-orange-red)",
           "--accent-secondary": "var(--color-primary-lighter)",
           "--degree": "190deg",
         } as React.CSSProperties

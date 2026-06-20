@@ -203,7 +203,7 @@ export function PriceGridServices({ services }: { services: string[] }) {
             {/* ✅ */}
             <div
               className={cn(
-                "grid place-items-center rounded-full bg-primary-strong p-1",
+                "grid place-items-center rounded-full bg-orange-red p-1",
                 // ↔️
                 "mt-0.5",
                 "xs:mt-0.5",

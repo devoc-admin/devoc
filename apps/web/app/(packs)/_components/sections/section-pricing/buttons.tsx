@@ -33,7 +33,7 @@ export function ChoisirAvance({ className }: { className?: string }) {
       style={
         {
           "--accent": "#ff611a",
-          "--accent-secondary": "var(--primary-strong)",
+          "--accent-secondary": "var(--orange-red)",
           "--degree": "200deg",
         } as React.CSSProperties
       }

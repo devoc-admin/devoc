@@ -774,7 +774,7 @@ function ContactCard() {
               "aspect-square h-full",
               "translate-x-1/4 -translate-y-1/4",
               "rounded-full",
-              "bg-radial from-primary-strong to-80% to-transparent",
+              "bg-radial from-orange-red to-80% to-transparent",
               "blur-2xl"
             )}
           />
@@ -803,7 +803,7 @@ function ContactCard() {
               )}
             >
               Parlons de votre{" "}
-              <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text text-transparent">
                 projet
               </span>
               .

@@ -41,7 +41,7 @@ export function BrickNumber({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "grid place-items-center rounded-full border-2 border-primary-strong bg-primary-strong/5 font-fraunces font-semibold text-primary-strong",
+        "grid place-items-center rounded-full border-2 border-orange-red bg-orange-red/5 font-fraunces font-semibold text-orange-red",
         //↔️
         "size-10 text-xl",
         "xl:size-12 xl:text-2xl",
@@ -129,7 +129,7 @@ export function GuaranteeItem({ children }: { children: React.ReactNode }) {
       <div
         className={cn(
           "mt-[3px] grid place-items-center rounded-full p-1",
-          "bg-primary-strong"
+          "bg-orange-red"
         )}
       >
         <CheckIcon
@@ -169,13 +169,13 @@ export function SmallCard({
   Icon: LucideIcon;
 }) {
   return (
-    <div className="group space-y-2 rounded-lg border border-foreground/10 p-3 transition hover:border-primary-strong/80">
+    <div className="group space-y-2 rounded-lg border border-foreground/10 p-3 transition hover:border-orange-red/80">
       {/* 🖼️🅰️ */}
       <div className="flex items-center gap-x-2">
         {/* 🖼️ */}
-        <Icon className="size-3 shrink-0 text-foreground/40 transition group-hover:text-primary-strong" />
+        <Icon className="size-3 shrink-0 text-foreground/40 transition group-hover:text-orange-red" />
         {/* 🅰️ */}
-        <span className="font-geist-mono text-[0.68rem] text-foreground/60 uppercase tracking-widest transition group-hover:text-primary-strong">
+        <span className="font-geist-mono text-[0.68rem] text-foreground/60 uppercase tracking-widest transition group-hover:text-orange-red">
           {title}
         </span>
       </div>
@@ -202,8 +202,8 @@ export function PlusDevOc({ children }: { children: React.ReactNode }) {
     <div
       className={cn(
         "rounded-3xl",
-        "border border-primary-strong/50",
-        "bg-linear-to-tr from-bg-primary-strong/4 to-primary-strong/7",
+        "border border-orange-red/50",
+        "bg-linear-to-tr from-bg-orange-red/4 to-orange-red/7",
         "flex flex-col",
         // ↔️
         "gap-y-1 p-4.5",
@@ -219,13 +219,13 @@ export function PlusDevOc({ children }: { children: React.ReactNode }) {
           className={cn(
             "mb-0",
             "font-geist-mono font-semibold",
-            "text-[0.83rem] text-primary-strong uppercase tracking-widest"
+            "text-[0.83rem] text-orange-red uppercase tracking-widest"
           )}
         >
           <span>Le + Dev'Oc</span>
         </h4>
         {/* 🖼️ */}
-        <div className="text-primary-strong">
+        <div className="text-orange-red">
           <ArrowUpRightIcon
             className={cn(
               //↔️

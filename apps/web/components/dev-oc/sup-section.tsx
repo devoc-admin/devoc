@@ -11,7 +11,7 @@ export function SupSection({
 }) {
   return (
     <div className="flex items-center gap-x-2">
-      <SupNumber className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text font-semibold text-transparent">
+      <SupNumber className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-semibold text-transparent">
         {number}
       </SupNumber>
       <div

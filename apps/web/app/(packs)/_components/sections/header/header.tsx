@@ -9,6 +9,7 @@ import {
   BadgeSouverain,
 } from "./badge/badge-header";
 import { AgirMaintenant, VoirLesPacks } from "./button/pack-button";
+import { HighlightText } from "./overlay/highlighted-text";
 export function Header() {
   return (
     <div
@@ -92,26 +93,6 @@ function DescriptionAndButtons() {
     >
       <PackDescription />
       <PackButtons />
-    </div>
-  );
-}
-
-function HighlightText({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      className={cn(
-        "relative",
-        "inline-block",
-        "px-1.5",
-        "text-white",
-        //🟠
-        "before:absolute before:left-0 before:-z-1",
-        "before:size-full",
-        "before:skew-[0.3deg]",
-        "before:bg-primary-strong"
-      )}
-    >
-      {children}
     </div>
   );
 }

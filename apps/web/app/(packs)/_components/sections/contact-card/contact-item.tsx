@@ -37,13 +37,13 @@ export function ContactItem({
           "grid place-items-center",
           "rounded-full",
           "transition",
-          "border border-foreground/20 group-hover:border-primary-strong/60",
-          "bg-foreground/2 group-hover:bg-primary-strong/10",
+          "border border-foreground/20 group-hover:border-orange-red/60",
+          "bg-foreground/2 group-hover:bg-orange-red/10",
           "p-3"
         )}
       >
         <Icon
-          className="text-foreground/60 transition group-hover:text-primary-strong"
+          className="text-foreground/60 transition group-hover:text-orange-red"
           size={18}
         />
       </div>
@@ -52,7 +52,7 @@ export function ContactItem({
         <span className="font-geist-mono font-medium text-[0.7rem] text-foreground/60 uppercase tracking-widest">
           {suptitle}
         </span>
-        <span className="font-medium group-hover:text-primary-strong">
+        <span className="font-medium group-hover:text-orange-red">
           {children}
         </span>
         <span

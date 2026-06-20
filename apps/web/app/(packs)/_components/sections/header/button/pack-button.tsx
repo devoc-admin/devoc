@@ -29,7 +29,7 @@ export function VoirLesPacks() {
       style={
         {
           "--accent": "var(--primary-lighter)",
-          "--accent-secondary": "var(--primary-strong)",
+          "--accent-secondary": "var(--orange-red)",
           "--degree": "200deg",
         } as React.CSSProperties
       }

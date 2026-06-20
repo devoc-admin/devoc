@@ -67,7 +67,7 @@ function OrangeDot({ className }: { className?: string }) {
     <div
       className={cn(
         "absolute",
-        "rounded-full bg-radial from-primary-strong to-60% to-transparent",
+        "rounded-full bg-radial from-orange-red to-60% to-transparent",
         "blur-[100px]",
         className
       )}

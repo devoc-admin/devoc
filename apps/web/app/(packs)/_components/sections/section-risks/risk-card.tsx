@@ -194,7 +194,7 @@ export function RiskCard({
   return (
     <div
       className={cn(
-        "group rounded-2xl border-[1.5px] border-foreground/20 p-4 hover:border-primary-strong/60",
+        "group rounded-2xl border-[1.5px] border-foreground/20 p-4 hover:border-orange-red/60",
         // ↔️
         "space-y-3",
         "xs:space-y-3",
@@ -207,13 +207,10 @@ export function RiskCard({
         className={cn(
           "w-fit rounded-full border bg-foreground/5 p-2 text-foreground/60",
           "transition",
-          "group-hover:border-primary-strong/60 group-hover:bg-primary-strong/10"
+          "group-hover:border-orange-red/60 group-hover:bg-orange-red/10"
         )}
       >
-        <Icon
-          className="transition group-hover:text-primary-strong"
-          size={18}
-        />
+        <Icon className="transition group-hover:text-orange-red" size={18} />
       </div>
       {/* 🔠 */}
       <div className="flex flex-col gap-y-1">
