@@ -5,7 +5,7 @@ import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { fr } from "@payloadcms/translations/languages/fr";
 import { buildConfig } from "payload";
 import sharp from "sharp";
-
+import { BASE_PATH } from "./lib/base-path";
 import { BlogPosts } from "./payload/collections/BlogPosts";
 import { Categories } from "./payload/collections/Categories";
 import { Customers } from "./payload/collections/Customers";
@@ -42,7 +42,7 @@ export default buildConfig({
         {
           rel: "icon",
           type: "image/svg+xml",
-          url: "/saveurs_aude_no_margin_no_title.svg",
+          url: `${BASE_PATH}/saveurs_aude_no_margin_no_title.svg`,
         },
       ],
       titleSuffix: " — Saveurs d'Aude",

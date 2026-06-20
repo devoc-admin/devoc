@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import type { Prospect } from "@/lib/db/schema";
 import { useProspectsContext } from "../../prospects-context";
+import { isValidEmailFormat, normalizeReferent } from "../../referent-utils";
 import { PROSPECT_TYPES } from "../buttons/prospect-type-button";
 import { DpoCombobox } from "../combobox/dpo/dpo-combobox";
 import { EditorCombobox } from "../combobox/editor/editor-combobox";
@@ -137,12 +138,12 @@ export function ProspectAddDialog() {
             <span>Ajouter un prospect</span>
           </Button>
         </DialogTrigger>
-        <DialogContent>
-          <div className="space-y-4">
-            <h3 className="text-center font-bold font-kanit text-3xl">
-              Ajouter un prospect
-            </h3>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-6 py-4">
+        <DialogContent className="flex max-h-[85vh] flex-col gap-0 sm:max-w-xl">
+          <h3 className="shrink-0 text-center font-bold font-kanit text-3xl">
+            Ajouter un prospect
+          </h3>
+          <div className="flex-1 space-y-6 overflow-y-auto py-4 pr-1">
+            <FormSection title="Identité">
               {/* 📌 Location with Google Places Autocomplete - PRIMARY FIELD */}
               <form.Field
                 name="location"
@@ -258,6 +259,8 @@ export function ProspectAddDialog() {
                   </div>
                 )}
               </form.Field>
+            </FormSection>
+            <FormSection title="Site internet">
               {/* 📅 Année de mise en ligne du site (tous types) */}
               <form.Field
                 name="siteLaunchYear"
@@ -336,6 +339,8 @@ export function ProspectAddDialog() {
                   </div>
                 )}
               </form.Field>
+            </FormSection>
+            <FormSection title="Localisation & population">
               {/* 👥 Nombre d'habitants (uniquement pour les communes) */}
               <form.Subscribe selector={(state) => state.values.type}>
                 {(currentType) =>
@@ -449,6 +454,8 @@ export function ProspectAddDialog() {
                   ) : null
                 }
               </form.Subscribe>
+            </FormSection>
+            <FormSection title="Conformité RGPD">
               {/* 🛡️ DPO (tristate + combobox + URL si Oui) */}
               <form.Field name="hasDpo">
                 {(field) => (
@@ -522,7 +529,102 @@ export function ProspectAddDialog() {
                   ) : null
                 }
               </form.Subscribe>
-            </div>
+            </FormSection>
+            <FormSection title="Référent">
+              {/* 🧑‍💼 Référent (nom + contacts optionnels) */}
+              <form.Field name="referentName">
+                {(field) => (
+                  <div className="col-span-2">
+                    <Label>Ref.</Label>
+                    <CustomInput
+                      name={field.name}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        field.handleChange(e.target.value)
+                      }
+                      placeholder="Nom du référent"
+                      value={field.state.value}
+                    />
+                  </div>
+                )}
+              </form.Field>
+              <form.Field
+                name="referentEmail"
+                validators={{
+                  onSubmit: ({ value }) => {
+                    if (value.trim() && !isValidEmailFormat(value))
+                      return "L'email n'est pas valide";
+                  },
+                }}
+              >
+                {(field) => (
+                  <div>
+                    <Label>Email du référent</Label>
+                    <CustomInput
+                      name={field.name}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        field.handleChange(e.target.value)
+                      }
+                      placeholder="referent@exemple.fr"
+                      type="email"
+                      value={field.state.value}
+                    />
+                    {!field.state.meta.isValid && (
+                      <ErrorMessage>
+                        {field.state.meta.errors.join(", ")}
+                      </ErrorMessage>
+                    )}
+                  </div>
+                )}
+              </form.Field>
+              <form.Field name="referentPhone">
+                {(field) => (
+                  <div>
+                    <Label>Téléphone du référent</Label>
+                    <CustomInput
+                      inputMode="tel"
+                      name={field.name}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        field.handleChange(e.target.value)
+                      }
+                      placeholder="06 12 34 56 78"
+                      type="tel"
+                      value={field.state.value}
+                    />
+                  </div>
+                )}
+              </form.Field>
+              <form.Field
+                name="referentLinkedin"
+                validators={{
+                  onSubmit: ({ value }) => {
+                    if (value.trim() && !isValidUrlFormat(value))
+                      return "L'URL n'est pas valide";
+                  },
+                }}
+              >
+                {(field) => (
+                  <div className="col-span-2">
+                    <Label>LinkedIn du référent</Label>
+                    <CustomInput
+                      name={field.name}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        field.handleChange(e.target.value)
+                      }
+                      placeholder="https://www.linkedin.com/in/…"
+                      type="url"
+                      value={field.state.value}
+                    />
+                    {!field.state.meta.isValid && (
+                      <ErrorMessage>
+                        {field.state.meta.errors.join(", ")}
+                      </ErrorMessage>
+                    )}
+                  </div>
+                )}
+              </form.Field>
+            </FormSection>
+          </div>
+          <div className="shrink-0 border-border border-t pt-4">
             <form.Subscribe selector={(state) => state.isSubmitting}>
               {(isSubmitting) => (
                 <Button
@@ -560,6 +662,10 @@ type ProspectFormData = {
   hasDpo: "unknown" | "yes" | "no";
   dpoName: string;
   dpoUrl: string;
+  referentName: string;
+  referentEmail: string;
+  referentPhone: string;
+  referentLinkedin: string;
 };
 
 const defaultProspect: ProspectFormData = {
@@ -573,6 +679,10 @@ const defaultProspect: ProspectFormData = {
   location: "",
   longitude: "",
   name: "",
+  referentEmail: "",
+  referentLinkedin: "",
+  referentName: "",
+  referentPhone: "",
   siteEditor: "",
   siteLaunchYear: "",
   type: "city",
@@ -612,6 +722,7 @@ function useProspectForm() {
       const dpoUrl = hasDpo === true ? value.dpoUrl.trim() || null : null;
       addProspectMutate({
         ...value,
+        ...normalizeReferent(value),
         distanceFrom,
         dpoName,
         dpoUrl,
@@ -632,6 +743,23 @@ function useProspectForm() {
   });
 
   return form;
+}
+
+function FormSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="space-y-3">
+      <h4 className="font-kanit font-semibold text-foreground text-sm uppercase tracking-wide">
+        {title}
+      </h4>
+      <div className="grid grid-cols-2 gap-x-4 gap-y-6">{children}</div>
+    </section>
+  );
 }
 
 function CustomInput({ ...props }) {

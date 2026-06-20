@@ -18,6 +18,24 @@ const nextConfig: NextConfig = {
     "/api/screenshots": ["./screenshots/**"],
   },
   outputFileTracingRoot: path.join(import.meta.dirname, "../../"),
+  // Multi-Zones: proxy the separately-deployed `saveurs-aude` app under this path.
+  // SAVEURS_AUDE_ORIGIN is the origin of its Vercel deployment (no trailing slash).
+  async rewrites() {
+    const origin = process.env.SAVEURS_AUDE_ORIGIN;
+    if (!origin) {
+      return [];
+    }
+    return [
+      {
+        destination: `${origin}/demo/saveurs-aude`,
+        source: "/demo/saveurs-aude",
+      },
+      {
+        destination: `${origin}/demo/saveurs-aude/:path*`,
+        source: "/demo/saveurs-aude/:path*",
+      },
+    ];
+  },
   serverExternalPackages: ["resend", "pg", "sharp"],
   turbopack: {
     root: path.join(import.meta.dirname, "../../"),

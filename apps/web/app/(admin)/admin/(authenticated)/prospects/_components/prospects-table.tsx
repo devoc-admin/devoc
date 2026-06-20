@@ -33,6 +33,7 @@ import { InhabitantsNumberCell } from "./cells/inhabitants-number-cell/inhabitan
 import { NameCell } from "./cells/name-cell/name-cell";
 import { PanneauPocketCell } from "./cells/panneau-pocket-cell/panneau-pocket-cell";
 import { ProspecTypeCell } from "./cells/prospect-type-cell/prospect-type-cell";
+import { ReferentCell } from "./cells/referent-cell/referent-cell";
 import { SiteEditorCell } from "./cells/site-editor-cell/site-editor-cell";
 import { YearCell } from "./cells/year-cell/year-cell";
 export function ProspectsTable() {
@@ -229,6 +230,26 @@ function useProspectsTable() {
         const a = String(rowA.original.hasDpo) as "true" | "false" | "null";
         const b = String(rowB.original.hasDpo) as "true" | "false" | "null";
         return order[a] - order[b];
+      },
+    }),
+    // 🧑‍💼 | 👁️ Référent
+    columnHelper.accessor("referentName", {
+      cell: ({ row }) => (
+        <ReferentCell
+          email={row.original.referentEmail}
+          linkedin={row.original.referentLinkedin}
+          name={row.original.referentName}
+          phone={row.original.referentPhone}
+        />
+      ),
+      header: ({ column }) => <SortableHeader column={column} label="Ref." />,
+      sortingFn: (rowA, rowB) => {
+        const a = rowA.original.referentName ?? "";
+        const b = rowB.original.referentName ?? "";
+        if (a === b) return 0;
+        if (!a) return 1;
+        if (!b) return -1;
+        return a.localeCompare(b, "fr");
       },
     }),
     // 🎯 Estimated opportunity

@@ -3,6 +3,7 @@
 import { z } from "zod/v4";
 import type { ActionResult } from "@/lib/api";
 import { getErrorMessage } from "@/lib/api";
+import { BASE_PATH } from "@/lib/base-path";
 import { getPayloadClient } from "@/lib/payload";
 import { calculateShipping } from "@/lib/shipping";
 import { getShippingConfig } from "@/lib/shipping.server";
@@ -161,7 +162,10 @@ export async function createCheckoutSession(
       metadata.shippingCountry = parsed.shippingAddress.country;
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
+    // Absolute URLs handed to Stripe — basePath is NOT auto-applied here, so the
+    // base must already contain it (NEXT_PUBLIC_URL includes /demo/saveurs-aude).
+    const baseUrl =
+      process.env.NEXT_PUBLIC_URL ?? `http://localhost:3000${BASE_PATH}`;
     const localePath = parsed.locale === "en" ? "/en/checkout" : "/fr/commande";
 
     const session = await getStripe().checkout.sessions.create({

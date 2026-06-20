@@ -35,6 +35,10 @@ export function useAddProspectMutation() {
       hasDpo,
       dpoName,
       dpoUrl,
+      referentName,
+      referentEmail,
+      referentPhone,
+      referentLinkedin,
     }: {
       name: string;
       website: string;
@@ -54,6 +58,10 @@ export function useAddProspectMutation() {
       hasDpo?: boolean | null;
       dpoName?: string | null;
       dpoUrl?: string | null;
+      referentName?: string | null;
+      referentEmail?: string | null;
+      referentPhone?: string | null;
+      referentLinkedin?: string | null;
     }) => {
       const result = await addProspect({
         distanceFrom,
@@ -68,6 +76,10 @@ export function useAddProspectMutation() {
         location,
         longitude,
         name,
+        referentEmail,
+        referentLinkedin,
+        referentName,
+        referentPhone,
         siteEditor,
         siteEditorUrl,
         siteLaunchYear,
@@ -118,6 +130,10 @@ export function useEditProspectMutation() {
       hasDpo,
       dpoName,
       dpoUrl,
+      referentName,
+      referentEmail,
+      referentPhone,
+      referentLinkedin,
     }: {
       id: number;
       name: string;
@@ -136,6 +152,10 @@ export function useEditProspectMutation() {
       hasDpo?: boolean | null;
       dpoName?: string | null;
       dpoUrl?: string | null;
+      referentName?: string | null;
+      referentEmail?: string | null;
+      referentPhone?: string | null;
+      referentLinkedin?: string | null;
     }) => {
       const result = await editProspect({
         distanceFrom,
@@ -149,6 +169,10 @@ export function useEditProspectMutation() {
         location,
         longitude,
         name,
+        referentEmail,
+        referentLinkedin,
+        referentName,
+        referentPhone,
         siteEditor,
         siteEditorUrl,
         siteLaunchYear,
