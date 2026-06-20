@@ -10,22 +10,22 @@
     "Edge >= 93"
   ],
   "scripts": {
-    "dev": "doppler run -- bun --bun next dev --turbopack -H 0.0.0.0",
-    "inngest": "doppler run -- npx inngest-cli@latest dev",
+    "dev": "doppler run --project=devoc-web --config=dev -- bun --bun next dev --turbopack -H 0.0.0.0",
+    "inngest": "doppler run --project=devoc-web --config=dev -- npx inngest-cli@latest dev",
     "build": "next build --turbopack",
     "start": "bun --bun next start",
     "lint": "bun x ultracite check",
     "lint:fix": "bun x ultracite fix",
     "format": "biome format",
     "format:fix": "biome format --write",
-    "create-admin": "doppler run -- bun run scripts/create-admin.ts",
-    "seed-prospects": "doppler run -- bun run scripts/seed-prospects.ts",
+    "create-admin": "doppler run --project=devoc-web --config=dev -- bun run scripts/create-admin.ts",
+    "seed-prospects": "doppler run --project=devoc-web --config=dev -- bun run scripts/seed-prospects.ts",
     "types": "tsc --noEmit",
-    "db:generate": "doppler run -- bun x drizzle-kit generate",
-    "db:migrate": "doppler run -- bun x drizzle-kit migrate",
-    "db:push": "doppler run -- bun x drizzle-kit push",
-    "db:pull": "doppler run -- bun x drizzle-kit pull",
-    "db:studio": "doppler run -- bun x drizzle-kit studio"
+    "db:generate": "doppler run --project=devoc-web --config=dev -- bun x drizzle-kit generate",
+    "db:migrate": "doppler run --project=devoc-web --config=dev -- bun x drizzle-kit migrate",
+    "db:push": "doppler run --project=devoc-web --config=dev -- bun x drizzle-kit push",
+    "db:pull": "doppler run --project=devoc-web --config=dev -- bun x drizzle-kit pull",
+    "db:studio": "doppler run --project=devoc-web --config=dev -- bun x drizzle-kit studio"
   },
   "dependencies": {
     "@dev-oc/crawler": "workspace:*",
