@@ -115,7 +115,7 @@ function ClementAndThibaut() {
       )}
     >
       <span>Clément</span>
-      <span className="bg-linear-to-tr from-primary-strong to-primary-lighter bg-clip-text text-transparent">
+      <span className="bg-linear-to-tr from-orange-red to-primary-lighter bg-clip-text text-transparent">
         •
       </span>
       <span>Thibaut</span>

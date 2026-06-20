@@ -53,7 +53,10 @@ export default function PackLayout({
           </div>
         </div>
       </div>
-      <Footer animate={false} />
+      <Footer
+        animate={false}
+        className="rounded-t-2xl border-3 border-t-primary"
+      />
     </div>
   );
 }
@@ -64,7 +67,7 @@ function OrangeDot({ className }: { className?: string }) {
     <div
       className={cn(
         "absolute",
-        "rounded-full bg-radial from-primary-strong to-60% to-transparent",
+        "rounded-full bg-radial from-orange-red to-60% to-transparent",
         "blur-[100px]",
         className
       )}

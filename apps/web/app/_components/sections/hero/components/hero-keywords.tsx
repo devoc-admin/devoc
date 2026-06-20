@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-const HERO_KEYWORDS = ["Sécurité", "Accessibilité", "Performance", "Design"];
+const HERO_KEYWORDS = ["Sécurité", "Accessibilité", "Protection des données"];
 
 export function HeroKeywords() {
   return (

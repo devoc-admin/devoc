@@ -10,10 +10,23 @@ import { Copyright } from "./components/copyright";
 import { Logo } from "./components/logo";
 import { OrangeDecorativeStone } from "./components/orange-decorative-stone";
 
-export function Footer({ animate = true }: { animate?: boolean }) {
+export function Footer({
+  animate = true,
+  className,
+}: {
+  animate?: boolean;
+  className?: string;
+}) {
   useFooterAnimation({ animate });
   return (
-    <footer className={cn("bottom-0", "overflow-hidden", "bg-background-dark")}>
+    <footer
+      className={cn(
+        "bottom-0",
+        "overflow-hidden",
+        "bg-background-dark",
+        className
+      )}
+    >
       <div
         className={cn(
           "rounded-t-4xl",

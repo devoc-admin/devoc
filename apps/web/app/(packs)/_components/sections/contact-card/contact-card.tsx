@@ -52,7 +52,7 @@ export function ContactCard() {
             )}
           >
             Une heure pour cerner vos{" "}
-            <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text text-transparent">
               besoins
             </span>
           </SectionCatchline>

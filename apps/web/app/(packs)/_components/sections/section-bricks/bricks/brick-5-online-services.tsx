@@ -62,7 +62,7 @@ export function Brick5OnlineServices() {
           américaines qui posent de plus en plus question en matière de
           souveraineté des données.{" "}
           <a
-            className="offset-de italic underline decoration-2 decoration-primary-strong/70 underline-offset-2"
+            className="offset-de italic underline decoration-2 decoration-orange-red/70 underline-offset-2"
             href="https://suiteterritoriale.anct.gouv.fr/services#socle"
             rel="noopener"
             target="_blank"
@@ -83,7 +83,7 @@ function CardDuration() {
     <SmallCard Icon={ClockIcon} title="Durée de réalisation">
       ≈ 2-3 mois (comprenant les délais d’habilitation de{" "}
       <a
-        className="offset-de italic underline decoration-2 decoration-primary-strong/70 underline-offset-2"
+        className="offset-de italic underline decoration-2 decoration-orange-red/70 underline-offset-2"
         href="https://www.franceconnect.gouv.fr/"
         rel="noopener"
         target="_blank"

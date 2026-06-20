@@ -19,7 +19,7 @@ export function ContactButtonNavbar() {
         style={
           {
             "--accent": "var(--primary-lighter)",
-            "--accent-secondary": "var(--primary-strong)",
+            "--accent-secondary": "var(--orange-red)",
           } as React.CSSProperties
         }
       >

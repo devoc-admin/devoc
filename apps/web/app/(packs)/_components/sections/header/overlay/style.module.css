@@ -1,0 +1,53 @@
+.highlighted {
+  --wipe: 0%;
+  --animation-duration: 1s;
+  --animation-delay: calc(0.5s + sibling-index() * 0.5s);
+  --animation-timing-function: ease-out;
+
+  display: inline-block;
+  color: transparent;
+  background-image: linear-gradient(
+    to right,
+    white 0%,
+    white var(--wipe, 0%),
+    var(--color-foreground) var(--wipe, 0%),
+    var(--color-foreground) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  animation-name: wipeText;
+  animation-duration: var(--animation-duration);
+  animation-timing-function: var(--animation-timing-function);
+  animation-delay: var(--animation-delay);
+  animation-fill-mode: both;
+
+  &::before {
+    animation-name: overlayReveal;
+    animation-duration: var(--animation-duration);
+    animation-timing-function: var(--animation-timing-function);
+    animation-delay: var(--animation-delay);
+    animation-fill-mode: both;
+  }
+}
+
+@keyframes wipeText {
+  to {
+    --wipe: 100%;
+  }
+}
+
+@keyframes overlayReveal {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@property --wipe {
+  syntax: "<percentage>";
+  initial-value: 0%;
+  inherits: false;
+}

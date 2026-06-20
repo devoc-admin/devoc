@@ -38,7 +38,7 @@ export function SectionIntro() {
         <FadeUp delay={0.1} disableOnMobile>
           <SectionCatchline className="font-normal!">
             Un guichet unique pour toute votre{" "}
-            <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text font-medium text-transparent italic">
+            <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-medium text-transparent italic">
               offre numérique
             </span>
           </SectionCatchline>

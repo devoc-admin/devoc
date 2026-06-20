@@ -11,7 +11,7 @@ export function BadgeSouverain() {
   return (
     <Badge
       Icon={CrownIcon}
-      subtitle="Technologies françaises ou européennes"
+      subtitle="Technologies françaises"
       title="Souveraineté numérique"
     />
   );
@@ -31,7 +31,7 @@ export function BadgeCarcassonne() {
   return (
     <Badge
       Icon={MapPinIcon}
-      subtitle="Déplacement sur tout le département"
+      subtitle="Intervention sur tout le département"
       title="Basés à Carcassonne"
     />
   );
@@ -61,9 +61,9 @@ export function Badge({
       <div
         className={cn(
           "rounded-full",
-          "border border-foreground/5 group-hover:border-primary-strong/80",
-          "text-foreground/60 group-hover:text-primary-strong",
-          "bg-foreground/5 group-hover:bg-primary-strong/5",
+          "border border-foreground/5 group-hover:border-orange-red/80",
+          "text-foreground/60 group-hover:text-orange-red",
+          "bg-foreground/5 group-hover:bg-orange-red/5",
           "transition",
           /* ↔️ */
           "p-2",
@@ -83,11 +83,11 @@ export function Badge({
         />
       </div>
       {/* 🔤 */}
-      <div className="flex flex-col">
+      <div className="flex select-none flex-col">
         <span
           className={cn(
             "font-geist-mono font-medium text-foreground/40 uppercase tracking-wider",
-            "group-hover:text-primary-strong",
+            "group-hover:text-orange-red",
             "transition",
             /* ↔️ */
             "text-[0.7rem]",

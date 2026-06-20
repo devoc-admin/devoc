@@ -37,7 +37,7 @@ export function BadgePackCommunes({ className }: { className?: string }) {
           "2xl:mb-1 2xl:size-5"
         )}
       />
-      <span className="bg-linear-to-bl from-primary-strong to-primary-lighter bg-clip-text text-transparent">
+      <span className="bg-linear-to-bl from-orange-red to-primary-lighter bg-clip-text text-transparent">
         Notre pack communes est disponible !
       </span>
       <SquareArrowOutUpRight

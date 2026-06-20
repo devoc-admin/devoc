@@ -88,8 +88,8 @@ function AccessibilityCard({
           <div className="grid h-[92%] place-items-center rounded-lg bg-white shadow-xl">
             <span>{value}%</span>
             <div className="absolute bottom-0 -translate-y-1/3">
-              <div className="mask-b-from-65% mask-b-to-65% absolute left-1/2 h-[35%] w-[130%] -translate-x-1/2 -translate-y-[16%] rounded-t-full border-4 border-primary-strong pt-8" />
-              <div className="grid aspect-square w-12 place-items-center rounded-full bg-primary-strong font-dancing-script text-2xl text-white leading-none shadow-xl">
+              <div className="mask-b-from-65% mask-b-to-65% absolute left-1/2 h-[35%] w-[130%] -translate-x-1/2 -translate-y-[16%] rounded-t-full border-4 border-orange-red pt-8" />
+              <div className="grid aspect-square w-12 place-items-center rounded-full bg-orange-red font-dancing-script text-2xl text-white leading-none shadow-xl">
                 {letter}
               </div>
             </div>
