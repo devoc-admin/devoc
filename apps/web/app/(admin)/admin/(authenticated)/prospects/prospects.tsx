@@ -9,8 +9,7 @@ import { ProspectsMap } from "./_components/prospects-map";
 import { ProspectsTable } from "./_components/prospects-table";
 import { useProspectsContext } from "./prospects-context";
 export function ProspectsPageContent() {
-  const { viewMode, typeFilter, setTypeFilter, isProspectsLoading } =
-    useProspectsContext();
+  const { viewMode, isProspectsLoading } = useProspectsContext();
 
   let ProspectsView: React.ReactNode = null;
   if (viewMode === "map") ProspectsView = <ProspectsMap />;
@@ -41,10 +40,7 @@ export function ProspectsPageContent() {
       {/* 🔛 View */}
       <ViewToggle />
       {/* 🟡 Badges */}
-      <ProspectTypesButtons
-        onSelectType={setTypeFilter}
-        selectedType={typeFilter}
-      />
+      <ProspectTypesButtons />
       {/* 🧮 | 🗺️ */}
       {ProspectsView}
     </div>

@@ -22,7 +22,7 @@ const mapOptions: google.maps.MapOptions = {
 };
 
 export function ProspectsMap() {
-  const { prospects } = useProspectsContext();
+  const { filteredProspects } = useProspectsContext();
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(
     null
   );
@@ -30,7 +30,7 @@ export function ProspectsMap() {
   const { isLoaded, loadError } = useGoogleMaps();
 
   const prospectsWithCoords =
-    prospects?.filter((p) => p.latitude && p.longitude) ?? [];
+    filteredProspects?.filter((p) => p.latitude && p.longitude) ?? [];
 
   // 🎯 Default center: Carcassonne
   const defaultCenter = useMemo(

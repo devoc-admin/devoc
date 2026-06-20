@@ -8,13 +8,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { useProspectsContext } from "../../prospects-context";
+import { useProspectsContext } from "../../../prospects-context";
 
 type AccessibilityValue = "unknown" | "yes" | "no";
 
 const LABELS: Record<AccessibilityValue, string> = {
   no: "Non",
-  unknown: "Non renseigné",
+  unknown: "N.r.",
   yes: "Oui",
 };
 
@@ -81,9 +81,7 @@ export function HasAccessibilitySettingsCell({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         <DropdownMenuRadioGroup onValueChange={handleChange} value={current}>
-          <DropdownMenuRadioItem value="unknown">
-            Non renseigné
-          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="unknown">N.r.</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="yes">Oui</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="no">Non</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>

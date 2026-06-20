@@ -5,10 +5,13 @@ export function proxy(request: NextRequest) {
   const sessionCookie = getSessionCookie(request);
   const { pathname } = request.nextUrl;
 
+  //🔒 ADMIN REDIRECTIONS
+  //🔑✅ If logged, redirect to prospects table
   if (sessionCookie && pathname === "/admin/login") {
-    return NextResponse.redirect(new URL("/admin/crawl", request.url));
+    return NextResponse.redirect(new URL("/admin/prospects", request.url));
   }
 
+  //🔑🔴 If not logged, redirect to login page
   if (
     !sessionCookie &&
     pathname.startsWith("/admin") &&

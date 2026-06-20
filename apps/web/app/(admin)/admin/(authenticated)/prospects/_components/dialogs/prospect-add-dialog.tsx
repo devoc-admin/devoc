@@ -25,8 +25,8 @@ import {
 import type { Prospect } from "@/lib/db/schema";
 import { useProspectsContext } from "../../prospects-context";
 import { PROSPECT_TYPES } from "../buttons/prospect-type-button";
-import { DpoCombobox } from "../dpo-combobox";
-import { EditorCombobox } from "../editor-combobox";
+import { DpoCombobox } from "../combobox/dpo/dpo-combobox";
+import { EditorCombobox } from "../combobox/editor/editor-combobox";
 import {
   type PlaceResult,
   PlacesAutocomplete,
@@ -323,11 +323,11 @@ export function ProspectAddDialog() {
                       value={field.state.value}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Non renseigné" />
+                        <SelectValue placeholder="N.r." />
                       </SelectTrigger>
                       <SelectContent align="start">
                         <SelectGroup>
-                          <SelectItem value="unknown">Non renseigné</SelectItem>
+                          <SelectItem value="unknown">N.r.</SelectItem>
                           <SelectItem value="yes">Oui</SelectItem>
                           <SelectItem value="no">Non</SelectItem>
                         </SelectGroup>
@@ -433,13 +433,11 @@ export function ProspectAddDialog() {
                             value={field.state.value}
                           >
                             <SelectTrigger className="w-full">
-                              <SelectValue placeholder="Non renseigné" />
+                              <SelectValue placeholder="N.r." />
                             </SelectTrigger>
                             <SelectContent align="start">
                               <SelectGroup>
-                                <SelectItem value="unknown">
-                                  Non renseigné
-                                </SelectItem>
+                                <SelectItem value="unknown">N.r.</SelectItem>
                                 <SelectItem value="yes">Oui</SelectItem>
                                 <SelectItem value="no">Non</SelectItem>
                               </SelectGroup>
@@ -463,11 +461,11 @@ export function ProspectAddDialog() {
                       value={field.state.value}
                     >
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Non renseigné" />
+                        <SelectValue placeholder="N.r." />
                       </SelectTrigger>
                       <SelectContent align="start">
                         <SelectGroup>
-                          <SelectItem value="unknown">Non renseigné</SelectItem>
+                          <SelectItem value="unknown">N.r.</SelectItem>
                           <SelectItem value="yes">Oui</SelectItem>
                           <SelectItem value="no">Non</SelectItem>
                         </SelectGroup>

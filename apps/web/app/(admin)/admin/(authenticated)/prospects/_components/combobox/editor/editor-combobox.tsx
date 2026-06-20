@@ -2,28 +2,30 @@
 import { ChevronDownIcon } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { useExistingDpos } from "../prospects-context";
+import { useExistingEditors } from "./editor-queries";
 
-type DpoComboboxProps = {
+type EditorComboboxProps = {
   value: string;
   onCommit: (next: string) => void;
   className?: string;
   inputClassName?: string;
   placeholder?: string;
+  closeCallback?: () => void;
   disabled?: boolean;
   autoFocus?: boolean;
 };
 
-export function DpoCombobox({
+export function EditorCombobox({
   value,
   onCommit,
   className,
+  closeCallback,
   inputClassName,
-  placeholder = "ex : Dupont Conseil",
+  placeholder = "ex : Agence Acme",
   disabled,
   autoFocus,
-}: DpoComboboxProps) {
-  const existingDpos = useExistingDpos();
+}: EditorComboboxProps) {
+  const existingEditors = useExistingEditors();
   const [draft, setDraft] = useState(value);
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -34,11 +36,13 @@ export function DpoCombobox({
     setDraft(value);
   }, [value]);
 
+  // Close on outside click.
   useEffect(() => {
     if (!isOpen) return;
     function handlePointerDown(event: PointerEvent) {
       if (!containerRef.current?.contains(event.target as Node)) {
         setIsOpen(false);
+        closeCallback?.();
       }
     }
     document.addEventListener("pointerdown", handlePointerDown);
@@ -46,9 +50,9 @@ export function DpoCombobox({
   }, [isOpen]);
 
   const normalizedDraft = draft.trim().toLowerCase();
-  const suggestions = existingDpos.filter(
-    (dpoName) =>
-      !normalizedDraft || dpoName.toLowerCase().includes(normalizedDraft)
+  const suggestions = existingEditors.filter(
+    (editor) =>
+      !normalizedDraft || editor.toLowerCase().includes(normalizedDraft)
   );
 
   function commit(next: string) {
@@ -82,7 +86,12 @@ export function DpoCombobox({
           aria-expanded={isOpen}
           autoFocus={autoFocus}
           className={cn(
-            "h-10 w-full rounded-md border bg-transparent px-2 pr-7 text-sm",
+            "h-10 w-full",
+            "rounded-md",
+            "border",
+            "bg-transparent",
+            "px-2 pr-7",
+            "text-sm",
             "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
             disabled && "opacity-60",
             inputClassName
@@ -106,41 +115,81 @@ export function DpoCombobox({
           type="text"
           value={draft}
         />
-        <ChevronDownIcon
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-muted-foreground"
-          size={14}
-        />
+        <DownIcon />
       </div>
+      {/* 🆕🆕🆕 */}
       {isOpen && suggestions.length > 0 && (
-        <div
-          className={cn(
-            "absolute top-full left-0 z-50 mt-1 w-full",
-            "max-h-48 overflow-auto rounded-md border bg-popover text-popover-foreground shadow-md"
-          )}
-          id={listId}
-          role="listbox"
-        >
-          {suggestions.map((dpoName) => (
-            <button
-              className={cn(
-                "block w-full px-2 py-1.5 text-left text-sm",
-                "hover:bg-accent hover:text-accent-foreground",
-                dpoName === draft.trim() && "bg-accent/50"
-              )}
-              key={dpoName}
-              onMouseDown={(event) => {
-                event.preventDefault();
-                commit(dpoName);
-              }}
-              role="option"
-              type="button"
-            >
-              {dpoName}
-            </button>
+        <SuggestionsContainer id={listId}>
+          {suggestions.map((editor) => (
+            <Suggestion
+              closeToDraft={editor === draft.trim()}
+              commit={commit}
+              value={editor}
+            />
           ))}
-        </div>
+        </SuggestionsContainer>
       )}
     </div>
+  );
+}
+
+function SuggestionsContainer({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "absolute top-full left-0 z-50 mt-1 w-full",
+        "max-h-48 overflow-auto rounded-md border bg-popover text-popover-foreground shadow-md"
+      )}
+      id={id}
+      role="listbox"
+    >
+      {children}
+    </div>
+  );
+}
+
+function Suggestion({
+  value,
+  closeToDraft,
+  commit,
+}: {
+  value: string;
+  closeToDraft: boolean;
+  commit: (next: string) => void;
+}) {
+  return (
+    <button
+      className={cn(
+        "block w-full px-2 py-1.5 text-left text-sm",
+        "hover:bg-accent hover:text-accent-foreground",
+        closeToDraft && "bg-accent/50"
+      )}
+      key={value}
+      onMouseDown={(event) => {
+        // Prevent input blur before click registers.
+        event.preventDefault();
+        commit(value);
+      }}
+      role="option"
+      type="button"
+    >
+      {value}
+    </button>
+  );
+}
+
+function DownIcon() {
+  return (
+    <ChevronDownIcon
+      aria-hidden="true"
+      className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-muted-foreground"
+      size={14}
+    />
   );
 }

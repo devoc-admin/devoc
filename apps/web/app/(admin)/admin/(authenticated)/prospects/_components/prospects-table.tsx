@@ -7,13 +7,7 @@ import {
   type SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  CheckIcon,
-  ExternalLinkIcon,
-  XIcon,
-} from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 import { useState } from "react";
 import {
   Table,
@@ -29,12 +23,18 @@ import { DeleteProspectButton } from "./buttons/delete-prospect-button";
 import { EditProspectButton } from "./buttons/edit-prospect-button";
 import { GoCrawlDetailsPageButton } from "./buttons/go-crawl-details-page";
 import { LaunchCrawlButton } from "./buttons/launch-crawl-button";
-import { ProspectTypeBadge } from "./buttons/prospect-type-button";
-import { CrawlStatusCell } from "./cells/crawl-status-cell";
-import { HasAccessibilitySettingsCell } from "./cells/has-accessibility-settings-cell";
-import { SiteEditorCell } from "./cells/site-editor-cell";
-import { EstimatedOpportunitySelect } from "./selects/estimated-opportunity-select";
-
+import { CrawlStatusCell } from "./cells/crawl-status-cell/crawl-status-cell";
+import { DistanceCell } from "./cells/distance-cell/distance-cell";
+import { DPOCell } from "./cells/dpo-cell/dpo-cell";
+import { EstimatedOpportunityCell } from "./cells/estimated-opportunity-cell/estimated-opportunity-cell";
+import { HasAccessibilitySettingsCell } from "./cells/has-accessibility-settings-cell/has-accessibility-settings-cell";
+import { InhabitantsNumberCell } from "./cells/inhabitants-number-cell/inhabitants-number-cell";
+// ▭ Cells
+import { NameCell } from "./cells/name-cell/name-cell";
+import { PanneauPocketCell } from "./cells/panneau-pocket-cell/panneau-pocket-cell";
+import { ProspecTypeCell } from "./cells/prospect-type-cell/prospect-type-cell";
+import { SiteEditorCell } from "./cells/site-editor-cell/site-editor-cell";
+import { YearCell } from "./cells/year-cell/year-cell";
 export function ProspectsTable() {
   const { prospects } = useProspectsContext();
   const table = useProspectsTable();
@@ -60,7 +60,17 @@ export function ProspectsTable() {
         {table.getRowModel().rows.map((row) => (
           <TableRow key={row.id}>
             {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
+              <TableCell
+                key={cell.id}
+                style={{
+                  maxWidth: cell.column.columnDef.maxSize,
+                  minWidth: cell.column.columnDef.minSize || undefined,
+                  width:
+                    cell.column.getSize() === 0
+                      ? undefined
+                      : cell.column.getSize(),
+                }}
+              >
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </TableCell>
             ))}
@@ -74,86 +84,66 @@ export function ProspectsTable() {
 }
 
 function useProspectsTable() {
-  const { prospects } = useProspectsContext();
+  const { filteredProspects } = useProspectsContext();
   const columnHelper = createColumnHelper<ProspectResult>();
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const defaultColumns = [
-    //🔠 Name (clickable to website if available)
+    //🔠 | 👁️ Name
     columnHelper.accessor("name", {
       cell: ({ getValue, row }) => {
         const name = getValue();
         const website = row.original.website;
-        if (website) {
-          return (
-            <a
-              className="flex items-center gap-x-1.5 text-blue-500 hover:underline"
-              href={website}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <span>{name}</span>
-              <ExternalLinkIcon className="shrink-0" size={14} />
-            </a>
-          );
-        }
-        return <span>{name}</span>;
+        return <NameCell name={name} website={website} />;
       },
       header: ({ column }) => <SortableHeader column={column} label="Nom" />,
+      maxSize: 400,
+      minSize: 200,
+      size: 200,
     }),
-    // 🟡 Type
+    // 🟡 | 👁️ Prospect type
     columnHelper.accessor("type", {
-      cell: ({ getValue }) => <ProspectTypeBadge type={getValue()} />,
+      cell: ({ getValue }) => {
+        const prospectType = getValue();
+        return <ProspecTypeCell prospectType={prospectType} />;
+      },
       header: ({ column }) => <SortableHeader column={column} label="Type" />,
     }),
-    // 👥 Nombre d'habitants (uniquement pour les communes)
+    // 👥 | 👁️ Nombre d'habitants
     columnHelper.accessor("inhabitants", {
       cell: ({ getValue, row }) => {
         if (row.original.type !== "city") return null;
         const value = getValue();
-        if (value === null || value === undefined) {
-          return <span className="text-muted-foreground">—</span>;
-        }
-        return <span>{value.toLocaleString("fr-FR")}</span>;
+        return <InhabitantsNumberCell n={value} />;
       },
-      header: ({ column }) => (
-        <SortableHeader column={column} label="Habitants" />
-      ),
+      header: ({ column }) => <SortableHeader column={column} label="Habit." />,
       sortingFn: (rowA, rowB) => {
         const a = rowA.original.inhabitants ?? -1;
         const b = rowB.original.inhabitants ?? -1;
         return a - b;
       },
     }),
-    // 📏 Distance depuis mon adresse (km)
+    // 📏 | 👁️ Distance depuis mon adresse
     columnHelper.accessor("distanceFrom", {
       cell: ({ getValue }) => {
         const value = getValue();
-        if (value === null || value === undefined) {
-          return <span className="text-muted-foreground">—</span>;
-        }
-        return <span>{value.toLocaleString("fr-FR")} km</span>;
+        return <DistanceCell n={value} />;
       },
-      header: ({ column }) => (
-        <SortableHeader column={column} label="Distance" />
-      ),
+      header: ({ column }) => <SortableHeader column={column} label="Dist." />,
       sortingFn: (rowA, rowB) => {
         const a = rowA.original.distanceFrom ?? Number.POSITIVE_INFINITY;
         const b = rowB.original.distanceFrom ?? Number.POSITIVE_INFINITY;
         return a - b;
       },
     }),
-    // 📅 Année de mise en ligne du site (read-only)
+    // 📅 | 👁️ Année de mise en ligne du site
     columnHelper.accessor("siteLaunchYear", {
       cell: ({ getValue }) => {
         const value = getValue();
-        if (value === null || value === undefined) {
-          return <span className="text-muted-foreground">—</span>;
-        }
-        return <span>{value}</span>;
+        return <YearCell n={value} />;
       },
       header: ({ column }) => (
-        <SortableHeader column={column} label="Mise en ligne" />
+        <SortableHeader column={column} label="Mise en l." />
       ),
       sortingFn: (rowA, rowB) => {
         const a = rowA.original.siteLaunchYear ?? Number.POSITIVE_INFINITY;
@@ -161,7 +151,7 @@ function useProspectsTable() {
         return a - b;
       },
     }),
-    // 🛠️ Éditeur du site (inline editable, combobox)
+    // 🛠️ | 👁️🖊️ Éditeur du site
     columnHelper.accessor("siteEditor", {
       cell: ({ getValue, row }) => (
         <SiteEditorCell
@@ -182,7 +172,7 @@ function useProspectsTable() {
         return a.localeCompare(b, "fr");
       },
     }),
-    // ♿ Paramètres d'accessibilité (inline editable)
+    // ♿ | 👁️🖊️ Paramètres d'accessibilité (inline editable)
     columnHelper.accessor("hasAccessibilitySettings", {
       cell: ({ getValue, row }) => (
         <HasAccessibilitySettingsCell
@@ -191,7 +181,7 @@ function useProspectsTable() {
         />
       ),
       header: ({ column }) => (
-        <SortableHeader column={column} label="Accessibilité" />
+        <SortableHeader column={column} label="Accessib." />
       ),
       sortingFn: (rowA, rowB) => {
         const order = { false: 1, null: 2, true: 0 };
@@ -206,22 +196,14 @@ function useProspectsTable() {
         return order[a] - order[b];
       },
     }),
-    // 📱 PanneauPocket (uniquement pour les communes, lecture seule)
+    // 📱 | 👁️ PanneauPocket
     columnHelper.accessor("usesPanneauPocket", {
       cell: ({ getValue, row }) => {
         if (row.original.type !== "city") return null;
         const value = getValue();
-        if (value === true) {
-          return <CheckIcon className="text-green-500" size={18} />;
-        }
-        if (value === false) {
-          return <XIcon className="text-red-500" size={18} />;
-        }
-        return <span className="text-muted-foreground">—</span>;
+        return <PanneauPocketCell value={value} />;
       },
-      header: ({ column }) => (
-        <SortableHeader column={column} label="PanneauPocket" />
-      ),
+      header: ({ column }) => <SortableHeader column={column} label="PP" />,
       sortingFn: (rowA, rowB) => {
         const order = { false: 1, null: 2, true: 0 };
         const a = String(rowA.original.usesPanneauPocket) as
@@ -235,21 +217,11 @@ function useProspectsTable() {
         return order[a] - order[b];
       },
     }),
-    // 🛡️ DPO (lecture seule, édition via le dialog)
+    // 🛡️ | 👁️ DPO
     columnHelper.accessor("hasDpo", {
       cell: ({ getValue }) => {
-        const v = getValue();
-        if (v === true) {
-          return <CheckIcon className="text-green-500" size={18} />;
-        }
-        if (v === false) {
-          return <XIcon className="text-red-500" size={18} />;
-        }
-        return (
-          <span className="rounded-full bg-zinc-500/10 px-2 py-0.5 text-xs text-zinc-400">
-            Non renseigné
-          </span>
-        );
+        const value = getValue();
+        return <DPOCell value={value} />;
       },
       header: ({ column }) => <SortableHeader column={column} label="DPO" />,
       sortingFn: (rowA, rowB) => {
@@ -259,14 +231,19 @@ function useProspectsTable() {
         return order[a] - order[b];
       },
     }),
-    // 🎯 Estimated opportunity (Urgence)
+    // 🎯 Estimated opportunity
     columnHelper.accessor("estimatedOpportunity", {
-      cell: ({ getValue, row }) => (
-        <EstimatedOpportunitySelect
-          prospectId={row.original.id}
-          value={getValue() ?? "medium"}
-        />
-      ),
+      cell: ({ getValue, row }) => {
+        const value = getValue();
+        const prospectId = row.original.id;
+        return (
+          <EstimatedOpportunityCell
+            key={prospectId}
+            prospectId={prospectId}
+            value={value}
+          />
+        );
+      },
       header: ({ column }) => (
         <SortableHeader column={column} label="Urgence" />
       ),
@@ -277,7 +254,7 @@ function useProspectsTable() {
         return order[a] - order[b];
       },
     }),
-    // 🟡🕷️ Crawl status
+    // 🕷️ | 👁️ Crawl status
     columnHelper.accessor("crawlStatus", {
       cell: ({ getValue, row }) => (
         <CrawlStatusCell
@@ -325,7 +302,7 @@ function useProspectsTable() {
 
   const table = useReactTable({
     columns: defaultColumns,
-    data: prospects ?? [],
+    data: filteredProspects ?? [],
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
