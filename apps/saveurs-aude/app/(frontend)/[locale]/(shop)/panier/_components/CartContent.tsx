@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { FadeInUp } from "@/components/motion";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/tooltip";
 import { Link } from "@/i18n/navigation";
+import { BASE_PATH } from "@/lib/base-path";
 import { type CartItem as CartItemData, useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -241,7 +242,7 @@ function CartItemImage({ image, title }: { image?: string; title: string }) {
           className="object-cover"
           fill
           sizes="80px"
-          src={image}
+          src={`${BASE_PATH}${image}`}
         />
       ) : (
         <div className="flex h-full items-center justify-center text-muted-foreground/30">
