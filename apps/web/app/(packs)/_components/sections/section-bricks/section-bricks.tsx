@@ -50,7 +50,7 @@ export function SectionBricks() {
           <FadeUp delay={0.1} disableOnMobile>
             <SectionCatchline className="font-normal!">
               Six briques{" "}
-              <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text font-medium text-transparent italic">
+              <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-medium text-transparent italic">
                 indispensables
               </span>{" "}
               à composer selon vos besoins

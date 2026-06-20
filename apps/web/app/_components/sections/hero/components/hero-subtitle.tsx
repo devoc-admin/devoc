@@ -19,8 +19,7 @@ export function HeroSubtitle() {
         } as React.CSSProperties
       }
     >
-      Sites, infrastructures et automatisations sur-mesure pour les entreprises,
-      artisans et collectivités d'
+      Nous réalisons la transformation numérique des PME/TPE et collectivités d'
       <Occitanie />.
     </p>
   );
@@ -28,7 +27,7 @@ export function HeroSubtitle() {
 
 function Occitanie() {
   return (
-    <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text font-semibold text-transparent">
+    <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-semibold text-transparent">
       Occitanie
     </span>
   );

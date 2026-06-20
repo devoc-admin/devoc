@@ -18,7 +18,7 @@ export default function MentionsLegalesPage() {
           Mentions{" "}
           <span
             className={cn(
-              "bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text text-transparent"
+              "bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text text-transparent"
             )}
           >
             légales

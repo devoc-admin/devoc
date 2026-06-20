@@ -4,7 +4,7 @@ export function PageSubtitle({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-x-4">
       {/* ― */}
-      <span className="bg-linear-to-r from-primary-strong to-primary-lighter bg-clip-text text-transparent">
+      <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text text-transparent">
         -
       </span>
       {/* ― */}
