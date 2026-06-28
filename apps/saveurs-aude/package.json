@@ -12,14 +12,14 @@
     "format": "biome format",
     "format:fix": "biome format --write",
     "types": "tsc --noEmit",
-    "payload": "doppler run -- payload",
+    "payload": "doppler run -- bun --bun node_modules/.bin/payload --disable-transpile",
     "seed": "doppler run -- bun --bun run payload/seed.ts",
     "db:migration:check": "doppler run --preserve-env=PAYLOAD_SECRET -- bun run scripts/check-migrations.ts",
     "gen:check": "doppler run -- bun run scripts/check-generated.ts",
-    "db:deploy": "doppler run --preserve-env=DATABASE_URL -- payload migrate --force",
-    "db:push": "doppler run -- payload db:push",
-    "gen:map": "doppler run --preserve-env=DATABASE_URL -- payload generate:importmap",
-    "gen:types": "doppler run --preserve-env=DATABASE_URL -- payload generate:types"
+    "db:deploy": "doppler run --preserve-env=DATABASE_URL -- bun --bun node_modules/.bin/payload migrate --force --disable-transpile",
+    "db:push": "doppler run -- bun --bun node_modules/.bin/payload db:push --disable-transpile",
+    "gen:map": "doppler run --preserve-env=DATABASE_URL -- bun --bun node_modules/.bin/payload generate:importmap --disable-transpile",
+    "gen:types": "doppler run --preserve-env=DATABASE_URL -- bun --bun node_modules/.bin/payload generate:types --disable-transpile"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.85.1",
@@ -45,8 +45,8 @@
     "react-dom": "catalog:react",
     "resend": "catalog:email",
     "sharp": "catalog:crawler",
-    "simple-icons": "^16.23.0",
-    "stripe": "^22.2.2",
+    "simple-icons": "^16.24.0",
+    "stripe": "^22.3.0",
     "tailwind-merge": "catalog:ui",
     "zod": "catalog:forms"
   },
