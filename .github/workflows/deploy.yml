@@ -75,7 +75,7 @@ jobs:
         env:
           DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_WEB_PRD }}
         working-directory: apps/web
-        run: bun run db:migrate
+        run: bun run db:deploy
       - name: Deploy prebuilt
         run: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
 

@@ -23,6 +23,7 @@
     "types": "tsc --noEmit",
     "db:generate": "doppler run --project=devoc-web --config=dev -- bun x drizzle-kit generate",
     "db:migrate": "doppler run --project=devoc-web --config=dev -- bun x drizzle-kit migrate",
+    "db:deploy": "doppler run -- bun x drizzle-kit migrate",
     "db:push": "doppler run --project=devoc-web --config=dev -- bun x drizzle-kit push",
     "db:pull": "doppler run --project=devoc-web --config=dev -- bun x drizzle-kit pull",
     "db:studio": "doppler run --project=devoc-web --config=dev -- bun x drizzle-kit studio"
