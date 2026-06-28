@@ -34,11 +34,9 @@ export function RiskReglementaire() {
       className={sharedRiskContainerClasses}
       style={{ gridTemplateColumns: "subgrid" }}
     >
-      <FadeUp disableOnMobile>
-        <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
-          Réglementaire
-        </h3>
-      </FadeUp>
+      <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
+        Réglementaire
+      </h3>
       <div
         className={sharedRiskCardsContainerClasses}
         style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
@@ -62,11 +60,9 @@ export function RiskEconomic() {
       className={sharedRiskContainerClasses}
       style={{ gridTemplateColumns: "subgrid" }}
     >
-      <FadeUp disableOnMobile>
-        <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
-          Économique
-        </h3>
-      </FadeUp>
+      <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
+        Économique
+      </h3>
       <div
         className={sharedRiskCardsContainerClasses}
         style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
@@ -90,11 +86,9 @@ export function RiskCybersecurity() {
       className={sharedRiskContainerClasses}
       style={{ gridTemplateColumns: "subgrid" }}
     >
-      <FadeUp disableOnMobile>
-        <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
-          Cybersécurité
-        </h3>
-      </FadeUp>
+      <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
+        Cybersécurité
+      </h3>
       <div
         className={sharedRiskCardsContainerClasses}
         style={{ gridTemplateColumns: "repeat(3, 1fr)" }}

@@ -28,6 +28,15 @@ export function Header() {
       <FadeUp delay={0.1} dir="down">
         <DescriptionAndButtons />
       </FadeUp>
+      <FadeUp delay={0.2} dir="down">
+        <P>
+          Conçus pour les communes de l'Aude, avec le soutien du{" "}
+          <a href="https://www.rmine.fr/" rel="noopener" target="_blank">
+            Réseau des Maisons de l'Innovation de Carcassonne
+          </a>
+          .
+        </P>
+      </FadeUp>
       <Separator />
       <div
         className={cn(
@@ -118,14 +127,9 @@ function PackDescription() {
         communes connaissent des difficultés pour s'adapter à ces changements.
       </P>
       <P>
-        Conçu pour{" "}
-        <CustomGradientText>les communes de l'Aude</CustomGradientText>, avec le
-        soutien du{" "}
-        <a href="https://www.rmine.fr/" rel="noopener" target="_blank">
-          Réseau des Maisons de l'Innovation, du Numérique et de
-          l'Entrepreunariat de Carcassonne
-        </a>
-        .
+        Nos solutions <HighlightText>sécurisent votre système</HighlightText> et
+        vous assurent de votre <HighlightText>mise en conformité</HighlightText>
+        avec les référentiels français et européens.
       </P>
     </div>
   );

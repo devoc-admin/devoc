@@ -431,29 +431,23 @@ function SectionServices() {
             "2xl:space-y-10"
           )}
         >
-          <FadeUp disableOnMobile>
-            <SupSection number={2}>Services</SupSection>
-          </FadeUp>
-          <FadeUp delay={0.1} disableOnMobile>
-            <SectionCatchline>
-              Une chaîne de valeur{" "}
-              <span className="font-extralight text-foreground-dark/60 italic">
-                complète
-              </span>
-              , de la conception à l'hébergement.
-            </SectionCatchline>
-          </FadeUp>
+          <SupSection number={2}>Services</SupSection>
+          <SectionCatchline>
+            Une chaîne de valeur{" "}
+            <span className="font-extralight text-foreground-dark/60 italic">
+              complète
+            </span>
+            , de la conception à l'hébergement.
+          </SectionCatchline>
         </div>
 
         <div className={cn("space-y-10", "md:self-end")}>
-          <FadeUp delay={0.2} disableOnMobile>
-            <PContent className="w-fit max-w-[50ch]">
-              Cinq pôles d'expertise complémentaires que nous mobilisons à la
-              carte selon vos besoins, vos délais et votre budget. Pas de
-              surcoût caché, pas de dépendance inutile à une plateforme externe
-              et des produits toujours dimensionnés à votre usage.
-            </PContent>
-          </FadeUp>
+          <PContent className="w-fit max-w-[50ch]">
+            Cinq pôles d'expertise complémentaires que nous mobilisons à la
+            carte selon vos besoins, vos délais et votre budget. Pas de surcoût
+            caché, pas de dépendance inutile à une plateforme externe et des
+            produits toujours dimensionnés à votre usage.
+          </PContent>
         </div>
       </div>
       {/* 🃏🃏🃏 */}
@@ -469,9 +463,7 @@ function SectionServices() {
             "2xl:col-span-7"
           )}
         >
-          <FadeUp className="size-full" disableOnMobile>
-            <ServiceCard {...services[0]} index={1} />
-          </FadeUp>
+          <ServiceCard {...services[0]} index={1} />
         </div>
 
         <div
@@ -485,9 +477,7 @@ function SectionServices() {
             "2xl:col-span-5"
           )}
         >
-          <FadeUp className="size-full" delay={0.1} disableOnMobile>
-            <ServiceCard {...services[1]} index={2} />
-          </FadeUp>
+          <ServiceCard {...services[1]} index={2} />
         </div>
 
         <div
@@ -501,9 +491,7 @@ function SectionServices() {
             "2xl:col-span-4"
           )}
         >
-          <FadeUp className="size-full" delay={0.2}>
-            <ServiceCard {...services[2]} index={3} />
-          </FadeUp>
+          <ServiceCard {...services[2]} index={3} />
         </div>
 
         <div
@@ -517,9 +505,7 @@ function SectionServices() {
             "2xl:col-span-8"
           )}
         >
-          <FadeUp className="size-full" delay={0.3}>
-            <ServiceCard {...services[3]} index={4} />
-          </FadeUp>
+          <ServiceCard {...services[3]} index={4} />
         </div>
 
         <div
@@ -533,9 +519,7 @@ function SectionServices() {
             "2xl:col-span-12"
           )}
         >
-          <FadeUp className="size-full" delay={0.4} disableOnMobile>
-            <ServiceCard {...services[4]} index={5} />
-          </FadeUp>
+          <ServiceCard {...services[4]} index={5} />
         </div>
       </div>
     </section>
@@ -614,25 +598,19 @@ function SectionValues() {
     >
       {/* 🔠 */}
       <div className="space-y-10">
-        <FadeUp disableOnMobile>
-          <SupSection number={3}>Nos valeurs</SupSection>
-        </FadeUp>
-        <FadeUp delay={0.1} disableOnMobile>
-          <SectionCatchline>
-            Trois{" "}
-            <span className="font-extralight text-foreground-dark/60 italic">
-              principes
-            </span>{" "}
-            qui guident chaque décision
-          </SectionCatchline>
-        </FadeUp>
+        <SupSection number={3}>Nos valeurs</SupSection>
+        <SectionCatchline>
+          Trois{" "}
+          <span className="font-extralight text-foreground-dark/60 italic">
+            principes
+          </span>{" "}
+          qui guident chaque décision
+        </SectionCatchline>
       </div>
       {/* 🪗🪗🪗 */}
       <div>
         {values.map(({ id, ...props }, index) => (
-          <FadeUp className="group w-full" delay={0.1} disableOnMobile key={id}>
-            <ListItem variant="dark" {...props} index={index + 1} />
-          </FadeUp>
+          <ListItem key={id} variant="dark" {...props} index={index + 1} />
         ))}
       </div>
     </section>
@@ -673,30 +651,19 @@ function SectionReasons() {
     >
       {/* 🔠 */}
       <div className="space-y-10">
-        <FadeUp disableOnMobile>
-          <SupSection number={4}>Pourquoi Dev'Oc</SupSection>
-        </FadeUp>
-        <FadeUp delay={0.1} disableOnMobile>
-          <SectionCatchline>
-            Quatre{" "}
-            <span className="font-extralight text-foreground-dark/60 italic">
-              raisons
-            </span>{" "}
-            de nous confier votre projet
-          </SectionCatchline>
-        </FadeUp>
+        <SupSection number={4}>Pourquoi Dev'Oc</SupSection>
+        <SectionCatchline>
+          Quatre{" "}
+          <span className="font-extralight text-foreground-dark/60 italic">
+            raisons
+          </span>{" "}
+          de nous confier votre projet
+        </SectionCatchline>
       </div>
       {/* 👆👆👆👆 */}
       <div className={cn("grid gap-6", "grid-cols-1", "sm:grid-cols-2")}>
         {reasons.map(({ id, ...props }, index) => (
-          <FadeUp
-            className="w-fit"
-            delay={0.1 * index}
-            disableOnMobile
-            key={id}
-          >
-            <ReasonCard {...props} index={index} />
-          </FadeUp>
+          <ReasonCard key={id} {...props} index={index} />
         ))}
       </div>
     </section>

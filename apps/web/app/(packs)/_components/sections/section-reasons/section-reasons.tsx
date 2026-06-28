@@ -1,6 +1,5 @@
 "use client";
 
-import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { ListItem } from "@/components/dev-oc/list-item";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
 import { SupSection } from "@/components/dev-oc/sup-section";
@@ -37,31 +36,20 @@ export function SectionReasons() {
             "2xl:w-1/2 2xl:space-y-10"
           )}
         >
-          <FadeUp disableOnMobile>
-            <SupSection number={3} variant="light">
-              Pourquoi maintenant
-            </SupSection>
-          </FadeUp>
-          <FadeUp delay={0.1} disableOnMobile>
-            <SectionCatchline className="font-normal!">
-              Cinq raisons d'engager cette transformation{" "}
-              <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-medium text-transparent italic">
-                dès ce mandat
-              </span>
-            </SectionCatchline>
-          </FadeUp>
+          <SupSection number={3} variant="light">
+            Pourquoi maintenant
+          </SupSection>
+          <SectionCatchline className="font-normal!">
+            Cinq raisons d'engager cette transformation{" "}
+            <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-medium text-transparent italic">
+              dès ce mandat
+            </span>
+          </SectionCatchline>
         </div>
       </div>
       <div>
         {reasons.map(({ id, ...props }, index) => (
-          <FadeUp
-            className="group w-full"
-            delay={0.1 * index}
-            disableOnMobile
-            key={id}
-          >
-            <ListItem {...props} index={index + 1} variant="light" />
-          </FadeUp>
+          <ListItem key={id} {...props} index={index + 1} variant="light" />
         ))}
       </div>
     </section>
