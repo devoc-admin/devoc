@@ -38,18 +38,14 @@ export function SectionSteps() {
             "2xl:w-1/2 2xl:space-y-10"
           )}
         >
-          <FadeUp disableOnMobile>
-            <SupSection number={6} variant="light">
-              Le processus
-            </SupSection>
-          </FadeUp>
-          <FadeUp delay={0.1} disableOnMobile>
-            <SectionCatchline className="font-normal!">
-              Un processus simplifié, de la
-              <HighlightedText>rencontre</HighlightedText>à la
-              <HighlightedText>livraison</HighlightedText>
-            </SectionCatchline>
-          </FadeUp>
+          <SupSection number={6} variant="light">
+            Le processus
+          </SupSection>
+          <SectionCatchline className="font-normal!">
+            Un processus simplifié, de la
+            <HighlightedText>rencontre</HighlightedText>à la
+            <HighlightedText>livraison</HighlightedText>
+          </SectionCatchline>
         </div>
       </div>
       <div

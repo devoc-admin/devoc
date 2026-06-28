@@ -30,19 +30,15 @@ export function SectionIntro() {
           "2xl:space-y-10"
         )}
       >
-        <FadeUp disableOnMobile>
-          <SupSection number={1} variant="light">
-            Tout-en-un
-          </SupSection>
-        </FadeUp>
-        <FadeUp delay={0.1} disableOnMobile>
-          <SectionCatchline className="font-normal!">
-            Un guichet unique pour toute votre{" "}
-            <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-medium text-transparent italic">
-              offre numérique
-            </span>
-          </SectionCatchline>
-        </FadeUp>
+        <SupSection number={1} variant="light">
+          Tout-en-un
+        </SupSection>
+        <SectionCatchline className="font-normal!">
+          Un guichet unique pour toute votre{" "}
+          <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-medium text-transparent italic">
+            offre numérique
+          </span>
+        </SectionCatchline>
       </div>
 
       <div

@@ -1,4 +1,3 @@
-import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
 import { SupSection } from "@/components/dev-oc/sup-section";
 import { cn } from "@/lib/utils";
@@ -40,19 +39,15 @@ export function SectionRisks() {
             "2xl:w-1/2 2xl:space-y-10"
           )}
         >
-          <FadeUp disableOnMobile>
-            <SupSection number={2} variant="light">
-              Le coût de l'inaction
-            </SupSection>
-          </FadeUp>
-          <FadeUp delay={0.1} disableOnMobile>
-            <SectionCatchline className="font-normal!">
-              Les risques que vous prenez{" "}
-              <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-medium text-transparent italic">
-                aujourd'hui
-              </span>
-            </SectionCatchline>
-          </FadeUp>
+          <SupSection number={2} variant="light">
+            Le coût de l'inaction
+          </SupSection>
+          <SectionCatchline className="font-normal!">
+            Les risques que vous prenez{" "}
+            <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-medium text-transparent italic">
+              aujourd'hui
+            </span>
+          </SectionCatchline>
         </div>
       </div>
       <div

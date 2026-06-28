@@ -35,8 +35,8 @@ export function BuildingIcon({ className }: { className?: string }) {
             y1="2.625"
             y2="22.168"
           >
-            <stop stop-color="#ffc731" />
-            <stop offset="1" stop-color="#f48c06" />
+            <stop stopColor="#ffc731" />
+            <stop offset="1" stopColor="#f48c06" />
           </linearGradient>
           <linearGradient
             gradientUnits="userSpaceOnUse"
@@ -46,8 +46,8 @@ export function BuildingIcon({ className }: { className?: string }) {
             y1="17.422"
             y2="20.102"
           >
-            <stop stop-color="#c76800" />
-            <stop offset="1" stop-color="#7a3f00" />
+            <stop stopColor="#c76800" />
+            <stop offset="1" stopColor="#7a3f00" />
           </linearGradient>
           <linearGradient
             gradientUnits="userSpaceOnUse"
@@ -57,8 +57,8 @@ export function BuildingIcon({ className }: { className?: string }) {
             y1="17.938"
             y2="21.159"
           >
-            <stop stop-color="#c76800" />
-            <stop offset="1" stop-color="#7a3f00" />
+            <stop stopColor="#c76800" />
+            <stop offset="1" stopColor="#7a3f00" />
           </linearGradient>
           <linearGradient
             gradientUnits="userSpaceOnUse"
@@ -68,8 +68,8 @@ export function BuildingIcon({ className }: { className?: string }) {
             y1="4.5"
             y2="16.337"
           >
-            <stop stop-color="#fdfdfd" />
-            <stop offset="1" stop-color="#ffe0b3" />
+            <stop stopColor="#fdfdfd" />
+            <stop offset="1" stopColor="#ffe0b3" />
           </linearGradient>
         </defs>
       </g>
