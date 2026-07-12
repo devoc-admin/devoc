@@ -9,12 +9,12 @@ export async function detectCategoryPage({
   page: Page;
   url: string;
 }): Promise<CategoryResult> {
-  const pathname = new URL(url).pathname;
+  const { pathname } = new URL(url);
+  const characteristics = await analyzePageCharacteristics(page);
 
   // 1. 🌐 Check URL patterns (more reliable)
   for (const [category, patterns] of Object.entries(URL_CATEGORY_PATTERNS)) {
     if (patterns.some((pattern) => pattern.test(pathname))) {
-      const characteristics = await analyzePageCharacteristics(page);
       return {
         category: category as CategoryResult["category"],
         characteristics,
@@ -24,7 +24,6 @@ export async function detectCategoryPage({
   }
 
   // 2. 🔍 Parse DOM
-  const characteristics = await analyzePageCharacteristics(page);
   if (characteristics.hasAuthentication) {
     return { category: "authentication", characteristics, confidence: 75 };
   }

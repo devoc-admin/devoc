@@ -28,7 +28,7 @@ type TemplateEmailProps = {
   };
 };
 
-export const TemplateEmail = ({
+const TemplateEmail = ({
   previewData,
   headingData,
   closingData,

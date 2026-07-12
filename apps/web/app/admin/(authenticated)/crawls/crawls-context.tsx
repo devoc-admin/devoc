@@ -106,19 +106,19 @@ export function CrawlsProvider({ children }: { children: React.ReactNode }) {
   };
 
   const filteredCrawls = crawls
-    ? crawls.filter((crawl) => {
+    ? crawls.filter((crawlItem) => {
         // Filter by type
-        if (prospectTypeFilter && crawl.prospectType !== prospectTypeFilter)
+        if (prospectTypeFilter && crawlItem.prospectType !== prospectTypeFilter)
           return false;
 
         // Filter by search query
         if (!searchCrawl.trim()) return true;
         const query = searchCrawl.toLowerCase();
         return (
-          crawl.title?.toLowerCase().includes(query) ||
-          crawl.prospectName?.toLowerCase().includes(query) ||
-          crawl.url?.toLowerCase().includes(query) ||
-          crawl.author?.toLowerCase().includes(query)
+          crawlItem.title?.toLowerCase().includes(query) ||
+          crawlItem.prospectName?.toLowerCase().includes(query) ||
+          crawlItem.url?.toLowerCase().includes(query) ||
+          crawlItem.author?.toLowerCase().includes(query)
         );
       })
     : undefined;

@@ -26,8 +26,6 @@
       "!.next",
       "!dist",
       "!build",
-      // To remove with Biome v2.3 because some v4 tailwind rules are not recognized yet
-      "!**/globals.css",
       // Remove preview apps
       "!**/preview",
       // 🧱 These components are pre-made components mostly copied/pasted from external registry so we don't want to apply to them linting rules
@@ -44,7 +42,10 @@
       "!**/payload-types.ts",
       "!**/migrations",
       // 🖼️ SVG asset files are not source code — don't lint them as JSX
-      "!**/*.svg"
+      "!**/*.svg",
+      // 🩹 Biome 2.5.3's module-graph scanner panics (module_resolver.rs:500 index out of bounds) on any call to
+      // startTransition from useTransition() — only this file uses it. Remove once fixed upstream.
+      "!!apps/saveurs-aude/lib/auth.tsx"
     ]
   },
   "formatter": {
@@ -54,6 +55,9 @@
   "linter": {
     "enabled": true,
     "rules": {
+      "performance": {
+        "noJsxPropsBind": "off" // Inline arrow functions in JSX props are our established style; React Compiler makes this micro-optimization obsolete
+      },
       "style": {
         "useBlockStatements": "off", // No need to wrap every if statement in a block statement eg. if(!condition) return;
         "useConsistentTypeDefinitions": "off"
@@ -64,6 +68,5 @@
   "javascript": {
     "globals": ["chrome"]
   },
-
   "extends": ["ultracite/biome/core", "ultracite/biome/next"]
 }

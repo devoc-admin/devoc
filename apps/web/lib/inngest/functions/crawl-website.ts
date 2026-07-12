@@ -376,20 +376,28 @@ export const crawlWebsite = inngest.createFunction(
       ] as const;
 
       // Select first page for each mandatory category (only 2xx pages)
-      const selectedMandatory: string[] = [];
-      for (const mandatoryCategory of mandatoryCategories) {
-        const selectedPage = pages.find(
-          (page) =>
-            page.category === mandatoryCategory && isSuccessfulPage(page)
-        );
-        if (selectedPage) {
-          selectedMandatory.push(mandatoryCategory);
-          await db
+      const mandatorySelections = mandatoryCategories.flatMap(
+        (mandatoryCategory) => {
+          const selectedPage = pages.find(
+            (page) =>
+              page.category === mandatoryCategory && isSuccessfulPage(page)
+          );
+          return selectedPage
+            ? [{ category: mandatoryCategory, page: selectedPage }]
+            : [];
+        }
+      );
+      const selectedMandatory: string[] = mandatorySelections.map(
+        (selection) => selection.category
+      );
+      await Promise.all(
+        mandatorySelections.map((selection) =>
+          db
             .update(crawledPage)
             .set({ selectedForAudit: true })
-            .where(eq(crawledPage.normalizedUrl, selectedPage.normalizedUrl));
-        }
-      }
+            .where(eq(crawledPage.normalizedUrl, selection.page.normalizedUrl))
+        )
+      );
 
       // ✨ Select pages with unique characteristics (only 2xx pages)
       const specialPages = pages.filter(
@@ -404,12 +412,14 @@ export const crawlWebsite = inngest.createFunction(
       const maxSpecialPages = 15;
       const selectedSpecial = specialPages.slice(0, maxSpecialPages);
 
-      for (const page of selectedSpecial) {
-        await db
-          .update(crawledPage)
-          .set({ selectedForAudit: true })
-          .where(eq(crawledPage.normalizedUrl, page.normalizedUrl));
-      }
+      await Promise.all(
+        selectedSpecial.map((page) =>
+          db
+            .update(crawledPage)
+            .set({ selectedForAudit: true })
+            .where(eq(crawledPage.normalizedUrl, page.normalizedUrl))
+        )
+      );
 
       logger.info("✅ Pages selected for audit", {
         crawlId,
@@ -470,44 +480,50 @@ async function saveTechnologies(
   let primaryFramework: string | undefined;
   const analyticsToolsList: string[] = [];
 
-  for (const tech of techs) {
-    // 1. Upsert technology to master table
-    const [insertedTech] = await db
-      .insert(technology)
-      .values({
-        category: tech.category,
-        icon: tech.icon,
-        name: tech.name,
-        slug: tech.slug,
-        website: tech.website,
-      })
-      .onConflictDoUpdate({
-        set: {
+  // 1. + 2. Upsert technologies to master table and link them to the crawl
+  // (each tech is independent, so writes run in parallel)
+  await Promise.all(
+    techs.map(async (tech) => {
+      // 1. Upsert technology to master table
+      const [insertedTech] = await db
+        .insert(technology)
+        .values({
           category: tech.category,
           icon: tech.icon,
           name: tech.name,
+          slug: tech.slug,
           website: tech.website,
-        },
-        target: technology.slug,
-      })
-      .returning({ id: technology.id });
+        })
+        .onConflictDoUpdate({
+          set: {
+            category: tech.category,
+            icon: tech.icon,
+            name: tech.name,
+            website: tech.website,
+          },
+          target: technology.slug,
+        })
+        .returning({ id: technology.id });
 
-    if (!insertedTech) continue;
+      if (!insertedTech) return;
 
-    // 2. Link to crawl via junction table
-    await db
-      .insert(crawlTechnology)
-      .values({
-        confidence: tech.confidence,
-        crawlId,
-        technologyId: insertedTech.id,
-        version: tech.version,
-      })
-      .onConflictDoNothing({
-        target: [crawlTechnology.crawlId, crawlTechnology.technologyId],
-      });
+      // 2. Link to crawl via junction table
+      await db
+        .insert(crawlTechnology)
+        .values({
+          confidence: tech.confidence,
+          crawlId,
+          technologyId: insertedTech.id,
+          version: tech.version,
+        })
+        .onConflictDoNothing({
+          target: [crawlTechnology.crawlId, crawlTechnology.technologyId],
+        });
+    })
+  );
 
-    // 3. Track summary data
+  // 3. Track summary data (order matters: first matching tech wins)
+  for (const tech of techs) {
     const categoryLower = tech.category.toLowerCase();
     if (categoryLower === "cms" && !primaryCms) {
       primaryCms = tech.name;

@@ -76,7 +76,7 @@ export default async function BlogPage({
   const allTags = [
     ...new Set(
       (allTagsResult.docs as BlogPost[]).flatMap(
-        (p) => p.tags?.map((t) => t.tag) ?? []
+        (p) => p.tags?.map((tagEntry) => tagEntry.tag) ?? []
       )
     ),
   ];

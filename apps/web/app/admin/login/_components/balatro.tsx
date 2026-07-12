@@ -193,14 +193,17 @@ export default function Balatro({
     if (!container) return;
 
     const renderer = new Renderer();
-    const gl = renderer.gl;
+    const { gl } = renderer;
     gl.clearColor(0, 0, 0, 1);
 
     function resize() {
-      const container = containerRef.current;
-      if (!container) return;
+      const currentContainer = containerRef.current;
+      if (!currentContainer) return;
 
-      renderer.setSize(container.offsetWidth, container.offsetHeight);
+      renderer.setSize(
+        currentContainer.offsetWidth,
+        currentContainer.offsetHeight
+      );
       if (programRef.current) {
         programRef.current.uniforms.iResolution.value = [
           gl.canvas.width,

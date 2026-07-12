@@ -16,8 +16,8 @@ lint:
 format:
     bun run format || bun x biome format --write
 
-types:
-    bun run types || bun x tsc --noEmit
+typecheck:
+    bun run typecheck || bun x tsc --noEmit
 
 help:
     echo "Commandes disponibles :"

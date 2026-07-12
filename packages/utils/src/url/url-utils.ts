@@ -9,7 +9,7 @@ export function normalizeUrl({
     const parsed = new URL(url, baseUrl);
 
     // Remove trailing slash for consistency (root "/" becomes "")
-    let pathname = parsed.pathname;
+    let { pathname } = parsed;
     if (pathname.endsWith("/")) {
       pathname = pathname.slice(0, -1);
     }
@@ -92,7 +92,7 @@ export function toAbsoluteUrl({
     const parsed = new URL(url, baseUrl);
 
     // Remove trailing slash from pathname (including root for consistency)
-    let pathname = parsed.pathname;
+    let { pathname } = parsed;
     if (pathname.endsWith("/")) {
       pathname = pathname.slice(0, -1);
     }

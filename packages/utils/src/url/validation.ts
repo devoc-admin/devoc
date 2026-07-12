@@ -30,7 +30,7 @@ export function isValidMapsUrl(url: string): boolean {
     ) {
       // Must be a maps URL with a place or coordinates
       // Example: /maps/place/... or /maps/@lat,lng
-      const pathname = urlObject.pathname;
+      const { pathname } = urlObject;
       return pathname.includes("/maps/place/") || pathname.includes("/maps/@");
     }
 

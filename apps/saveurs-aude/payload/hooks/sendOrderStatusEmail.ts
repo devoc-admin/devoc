@@ -32,10 +32,11 @@ export const sendOrderStatusEmail: CollectionAfterChangeHook = async ({
       lastName: customer.lastName ?? "",
     },
     deliveryMethod:
-      (doc.deliveryMethod as "shipping" | "clickAndCollect") ?? "shipping",
-    orderNumber: (doc.orderNumber as string) ?? "",
+      (doc.deliveryMethod as "shipping" | "clickAndCollect" | undefined) ??
+      "shipping",
+    orderNumber: (doc.orderNumber as string | undefined) ?? "",
     status: newStatus,
-    trackingNumber: (doc.trackingNumber as string) ?? null,
+    trackingNumber: (doc.trackingNumber as string | undefined) ?? null,
   };
 
   try {

@@ -56,13 +56,22 @@ async function initWappalyzer() {
   // Load all technology patterns
   const technologies: Record<string, unknown> = {};
 
-  for (const file of techFiles) {
-    try {
-      // Dynamic import for each technology file
-      const techModule = await import(`wapalyzer/technologies/${file}.json`);
-      Object.assign(technologies, techModule.default || techModule);
-    } catch {
-      // Some files might not exist
+  const techModules = await Promise.all(
+    techFiles.map(async (file) => {
+      try {
+        // Dynamic import for each technology file
+        const techModule = await import(`wapalyzer/technologies/${file}.json`);
+        return techModule.default || techModule;
+      } catch {
+        // Some files might not exist
+        return null;
+      }
+    })
+  );
+
+  for (const techModule of techModules) {
+    if (techModule) {
+      Object.assign(technologies, techModule);
     }
   }
 
@@ -163,7 +172,6 @@ function findInWappalyzerByName(
       }
     }
   }
-  return;
 }
 
 function findInSources(
@@ -178,7 +186,6 @@ function findInSources(
       return pattern.name;
     }
   }
-  return;
 }
 
 function detectConsentManager(
@@ -211,7 +218,6 @@ function detectAccessibilityTool(
       return at.name;
     }
   }
-  return;
 }
 
 function detectHostingProvider(
@@ -237,7 +243,6 @@ function detectHostingProvider(
       return hp.name;
     }
   }
-  return;
 }
 
 /**

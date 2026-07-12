@@ -289,7 +289,6 @@ function CustomerInfoSection({
             onBlur: ({ value }: { value: string }) => {
               if (!value.trim()) return t("fieldRequired");
               if (!EMAIL_REGEX.test(value)) return t("invalidEmail");
-              return;
             },
           }}
         />

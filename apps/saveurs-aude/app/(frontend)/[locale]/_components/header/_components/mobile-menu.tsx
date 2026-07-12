@@ -55,7 +55,7 @@ export function MobileMenu() {
     );
     if (!focusable.length) return;
 
-    const first = focusable[0];
+    const [first] = focusable;
     const last = focusable.at(-1);
     if (!(first && last)) return;
 

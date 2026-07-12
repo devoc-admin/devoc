@@ -15,11 +15,8 @@ async function Hero() {
     slug: "homepage",
   });
 
-  // 🆎
-  const title = homepage.hero.title;
-
-  // ⏹️
-  const cta = homepage.hero.cta;
+  // 🆎 ⏹️
+  const { title, cta } = homepage.hero;
 
   return (
     <div

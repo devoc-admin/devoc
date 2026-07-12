@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/performance/noAwaitInLoops: exception */
+/** biome-ignore-all lint/suspicious/noShadow: exception */
 import config from "@payload-config";
 import type { Payload } from "payload";
 import { getPayload } from "payload";
@@ -1272,11 +1274,11 @@ async function seedProducts(
 ) {
   console.log(`Creating ${PRODUCTS.length} products...`);
 
-  for (const p of PRODUCTS) {
-    const categoryId = categoryMap[p.categorySlug];
+  for (const prod of PRODUCTS) {
+    const categoryId = categoryMap[prod.categorySlug];
     if (!categoryId) {
       console.warn(
-        `  Category "${p.categorySlug}" not found, skipping ${p.slug}`
+        `  Category "${prod.categorySlug}" not found, skipping ${prod.slug}`
       );
       continue;
     }
@@ -1285,13 +1287,13 @@ async function seedProducts(
       collection: "products",
       data: {
         category: categoryId,
-        featured: p.featured ?? false,
-        promotion: p.promotion ?? {},
-        shortDescription: p.shortDescFr,
-        slug: p.slug,
+        featured: prod.featured ?? false,
+        promotion: prod.promotion ?? {},
+        shortDescription: prod.shortDescFr,
+        slug: prod.slug,
         status: "published",
-        title: p.titleFr,
-        variants: p.variants.map((v) => ({
+        title: prod.titleFr,
+        variants: prod.variants.map((v) => ({
           label: v.labelFr,
           price: v.price,
           sku: v.sku,
@@ -1306,9 +1308,9 @@ async function seedProducts(
     await payload.update({
       collection: "products",
       data: {
-        shortDescription: p.shortDescEn,
-        title: p.titleEn,
-        variants: p.variants.map((v, i) => ({
+        shortDescription: prod.shortDescEn,
+        title: prod.titleEn,
+        variants: prod.variants.map((v, i) => ({
           id: created.variants?.[i]?.id,
           label: v.labelEn,
           price: v.price,
@@ -1322,7 +1324,7 @@ async function seedProducts(
       overrideAccess: true,
     });
 
-    console.log(`  + ${p.titleFr}`);
+    console.log(`  + ${prod.titleFr}`);
   }
 
   console.log(`  ${PRODUCTS.length} products created.`);

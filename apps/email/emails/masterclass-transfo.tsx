@@ -8,7 +8,7 @@ const linkInline = {
   textDecoration: "underline" as const,
 };
 
-export const MasterClassTransfoEmail = () => (
+const MasterClassTransfoEmail = () => (
   <TemplateEmail
     closingData="En vous souhaitant le meilleur dans vos projets entrepreneuriaux !"
     cta={{

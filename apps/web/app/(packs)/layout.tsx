@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import Footer from "../_components/footer/footer";
+import { Footer } from "../_components/footer/footer";
 import { RetourAccueil } from "./_components/buttons/back-home";
 export default function PackLayout({
   children,

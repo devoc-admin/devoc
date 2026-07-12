@@ -28,7 +28,7 @@ lint app="web":
 format app="web":
     bun x --filter {{app}} biome format --write
 
-types app="web":
+typecheck app="web":
     bun x --filter {{app}} tsc --noEmit
 
 

@@ -13,7 +13,7 @@ export function ReactScan(): JSX.Element {
     if (process.env.NODE_ENV === "development") {
       const originalWarn = console.warn;
       console.warn = (...args: unknown[]) => {
-        const first = args[0];
+        const [first] = args;
         if (typeof first === "string" && first.includes("THREE.Clock")) return;
         originalWarn(...args);
       };

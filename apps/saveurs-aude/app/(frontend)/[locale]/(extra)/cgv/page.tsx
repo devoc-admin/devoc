@@ -20,7 +20,7 @@ async function getPage(): Promise<Page | null> {
     locale,
     where: { slug: { equals: "cgv" } },
   });
-  return (result.docs[0] as Page) ?? null;
+  return result.docs.at(0) ?? null;
 }
 
 export async function generateMetadata({

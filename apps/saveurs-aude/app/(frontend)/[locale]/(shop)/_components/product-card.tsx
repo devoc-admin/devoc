@@ -39,7 +39,7 @@ export function ProductCard({ product }: { product: Product }) {
   }, [locale, product.slug, router]);
 
   // 🏷️
-  const promotion = product.promotion;
+  const { promotion } = product;
   const promo = hasActivePromotion(promotion);
   const outOfStock = !isInStock(product);
 
@@ -185,17 +185,12 @@ function Promotion({ promotion }: { promotion: Product["promotion"] }) {
   if (!promotion) return null;
 
   let value: string | null = null;
-  switch (promotion.type) {
+  if (promotion.type === "percentage") {
     // %
-    case "percentage":
-      value = `-${promotion.value}%`;
-      break;
+    value = `-${promotion.value}%`;
+  } else if (promotion.type === "fixed") {
     // 🔢
-    case "fixed":
-      value = `-${formatPrice(promotion.value ?? 0)}`;
-      break;
-    default:
-      value = null;
+    value = `-${formatPrice(promotion.value ?? 0)}`;
   }
   return (
     <span

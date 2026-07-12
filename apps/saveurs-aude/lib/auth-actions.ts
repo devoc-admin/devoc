@@ -69,13 +69,13 @@ const addressSchema = z.object({
 
 function serializeCustomer(doc: Record<string, unknown>): CustomerData {
   return {
-    addresses: (doc.addresses as CustomerAddress[]) ?? [],
-    email: (doc.email as string) ?? "",
-    firstName: (doc.firstName as string) ?? "",
+    addresses: (doc.addresses as CustomerAddress[] | undefined) ?? [],
+    email: (doc.email as string | undefined) ?? "",
+    firstName: (doc.firstName as string | undefined) ?? "",
     id: doc.id as number,
-    lastName: (doc.lastName as string) ?? "",
-    newsletter: (doc.newsletter as boolean) ?? false,
-    phone: (doc.phone as string) ?? "",
+    lastName: (doc.lastName as string | undefined) ?? "",
+    newsletter: (doc.newsletter as boolean | undefined) ?? false,
+    phone: (doc.phone as string | undefined) ?? "",
   };
 }
 

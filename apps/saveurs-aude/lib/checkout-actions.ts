@@ -66,12 +66,18 @@ export async function createCheckoutSession(
       variantLabel: string;
     }[] = [];
 
-    for (const item of parsed.items) {
-      const product = await payload.findByID({
-        collection: "products",
-        id: item.productId,
-        locale: parsed.locale,
-      });
+    const products = await Promise.all(
+      parsed.items.map((item) =>
+        payload.findByID({
+          collection: "products",
+          id: item.productId,
+          locale: parsed.locale,
+        })
+      )
+    );
+
+    for (const [index, item] of parsed.items.entries()) {
+      const product = products[index];
 
       const variant = product.variants?.find((v) => v.id === item.variantId);
       if (!variant) {

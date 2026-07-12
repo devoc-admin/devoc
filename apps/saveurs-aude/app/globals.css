@@ -45,35 +45,35 @@
   --radius: 0.5rem;
 
   /* Saveurs d'Aude — palette crème / marron / cuivre */
-  --background: oklch(0.965 0.015 75);       /* Crème lin #FAF3E8 */
-  --foreground: oklch(0.22 0.04 45);         /* Brun profond #2C1810 */
+  --background: oklch(0.965 0.015 75); /* Crème lin #FAF3E8 */
+  --foreground: oklch(0.22 0.04 45); /* Brun profond #2C1810 */
 
-  --card: oklch(0.945 0.02 75);              /* Sable chaud #EDE0CC */
-  --card-foreground: oklch(0.22 0.04 45);    /* Brun profond */
+  --card: oklch(0.945 0.02 75); /* Sable chaud #EDE0CC */
+  --card-foreground: oklch(0.22 0.04 45); /* Brun profond */
 
-  --popover: oklch(0.965 0.015 75);          /* Crème lin */
+  --popover: oklch(0.965 0.015 75); /* Crème lin */
   --popover-foreground: oklch(0.22 0.04 45); /* Brun profond */
 
-  --primary: oklch(0.38 0.08 30);            /* Marron chaud #6B3A2A */
+  --primary: oklch(0.38 0.08 30); /* Marron chaud #6B3A2A */
   --primary-foreground: oklch(0.965 0.015 75); /* Crème lin */
 
-  --secondary: oklch(0.92 0.025 70);         /* Beige rosé #E8D5C0 */
+  --secondary: oklch(0.92 0.025 70); /* Beige rosé #E8D5C0 */
   --secondary-foreground: oklch(0.22 0.04 45); /* Brun profond */
 
-  --muted: oklch(0.945 0.02 75);             /* Sable chaud */
-  --muted-foreground: oklch(0.48 0.025 55);  /* Brun grisé #6B5E54 */
+  --muted: oklch(0.945 0.02 75); /* Sable chaud */
+  --muted-foreground: oklch(0.48 0.025 55); /* Brun grisé #6B5E54 */
 
-  --accent: oklch(0.62 0.12 60);             /* Cuivre #B87333 */
+  --accent: oklch(0.62 0.12 60); /* Cuivre #B87333 */
   --accent-foreground: oklch(0.965 0.015 75); /* Crème lin */
 
-  --destructive: oklch(0.52 0.12 35);        /* Terracotta #A0522D */
+  --destructive: oklch(0.52 0.12 35); /* Terracotta #A0522D */
 
-  --success: oklch(0.55 0.06 140);           /* Vert sauge #7A8B6F */
+  --success: oklch(0.55 0.06 140); /* Vert sauge #7A8B6F */
   --success-foreground: oklch(0.965 0.015 75);
 
-  --border: oklch(0.82 0.025 70);            /* Beige foncé #D1C4B2 */
-  --input: oklch(0.82 0.025 70);             /* Beige foncé */
-  --ring: oklch(0.62 0.12 60);               /* Cuivre */
+  --border: oklch(0.82 0.025 70); /* Beige foncé #D1C4B2 */
+  --input: oklch(0.82 0.025 70); /* Beige foncé */
+  --ring: oklch(0.62 0.12 60); /* Cuivre */
 
   scroll-behavior: smooth;
 }
@@ -106,33 +106,33 @@
 @media (prefers-contrast: more) {
   :root {
     /* Fond plus blanc, texte plus noir → contraste max */
-    --background: oklch(0.99 0.005 75);        /* Blanc cassé quasi pur */
-    --foreground: oklch(0.12 0.04 45);         /* Brun quasi noir */
+    --background: oklch(0.99 0.005 75); /* Blanc cassé quasi pur */
+    --foreground: oklch(0.12 0.04 45); /* Brun quasi noir */
 
-    --card: oklch(0.97 0.01 75);               /* Fond carte à peine teinté */
+    --card: oklch(0.97 0.01 75); /* Fond carte à peine teinté */
     --card-foreground: oklch(0.12 0.04 45);
 
     --popover: oklch(0.99 0.005 75);
     --popover-foreground: oklch(0.12 0.04 45);
 
-    --primary: oklch(0.28 0.08 30);            /* Marron plus foncé */
+    --primary: oklch(0.28 0.08 30); /* Marron plus foncé */
     --primary-foreground: oklch(0.99 0.005 75);
 
-    --secondary: oklch(0.88 0.03 70);          /* Beige plus marqué */
+    --secondary: oklch(0.88 0.03 70); /* Beige plus marqué */
     --secondary-foreground: oklch(0.12 0.04 45);
 
     --muted: oklch(0.93 0.015 75);
-    --muted-foreground: oklch(0.32 0.03 50);   /* Gris-brun bien plus foncé */
+    --muted-foreground: oklch(0.32 0.03 50); /* Gris-brun bien plus foncé */
 
-    --accent: oklch(0.48 0.14 55);             /* Cuivre assombri */
+    --accent: oklch(0.48 0.14 55); /* Cuivre assombri */
     --accent-foreground: oklch(0.99 0.005 75);
 
-    --destructive: oklch(0.42 0.14 30);        /* Terracotta plus profond */
+    --destructive: oklch(0.42 0.14 30); /* Terracotta plus profond */
 
-    --success: oklch(0.42 0.08 140);           /* Vert sauge assombri */
+    --success: oklch(0.42 0.08 140); /* Vert sauge assombri */
     --success-foreground: oklch(0.99 0.005 75);
 
-    --border: oklch(0.62 0.04 60);             /* Bordures bien visibles */
+    --border: oklch(0.62 0.04 60); /* Bordures bien visibles */
     --input: oklch(0.62 0.04 60);
     --ring: oklch(0.48 0.14 55);
   }

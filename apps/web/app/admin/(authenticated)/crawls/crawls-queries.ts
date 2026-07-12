@@ -73,10 +73,12 @@ export function useCurrentCrawl() {
     },
     queryKey: ["crawl-status", crawlId],
     refetchInterval: (query) => {
-      const data = query.state.data;
-      if (!data) return 2000;
+      const { data: crawlData } = query.state;
+      if (!crawlData) return 2000;
       // 🥱 Stop polling when crawl is finished
-      if (["completed", "failed", "cancelled"].includes(data.response.status)) {
+      if (
+        ["completed", "failed", "cancelled"].includes(crawlData.response.status)
+      ) {
         queryClient.invalidateQueries({ queryKey: ["list-crawls"] });
         queryClient.invalidateQueries({ queryKey: ["uncrawled-prospects"] });
         removeCrawlId();
@@ -84,7 +86,7 @@ export function useCurrentCrawl() {
       }
       return 2000; // Poll every 2 seconds
     },
-    select: (data) => data?.response,
+    select: (result) => result?.response,
   });
 
   return {

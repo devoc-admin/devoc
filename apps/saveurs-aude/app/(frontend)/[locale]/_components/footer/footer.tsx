@@ -298,8 +298,8 @@ async function formatOpeningHours({
 
   if (hour.closed) return t("closed");
 
-  const fmt = (t: string | null | undefined) =>
-    t ? formatTime(t, locale) : "";
+  const fmt = (time: string | null | undefined) =>
+    time ? formatTime(time, locale) : "";
 
   return `${fmt(hour.openMorning)}–${fmt(hour.closeMorning)} / ${fmt(hour.openAfternoon)}–${fmt(hour.closeAfternoon)}`;
 }

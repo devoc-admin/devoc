@@ -19,7 +19,7 @@ export async function createAudit({
   // ✅🌐 Validation de l'URL
   let origin: string;
   try {
-    origin = new URL(url).origin;
+    ({ origin } = new URL(url));
   } catch {
     return { error: "URL invalide", success: false };
   }
@@ -46,7 +46,7 @@ export async function createAudit({
     return { error: message, success: false };
   }
 
-  const insertedAudit = auditResult[0];
+  const [insertedAudit] = auditResult;
   if (!insertedAudit) {
     return { error: "Échec de l'insertion de l'audit", success: false };
   }

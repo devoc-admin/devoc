@@ -121,7 +121,7 @@ export async function detectContactInfo({
         if (!(localPart && domain)) return false;
 
         // Check if domain part looks like a retina suffix (e.g., 2x-1.png)
-        const domainFirstPart = domain.split(".")[0];
+        const [domainFirstPart] = domain.split(".");
         if (domainFirstPart && retinaPattern.test(domainFirstPart)) {
           return false;
         }
@@ -269,8 +269,7 @@ export async function detectContactInfo({
           const phoneMatches = text.matchAll(frenchPhoneRegex);
           for (const match of phoneMatches) {
             if (phones.length >= maxPhones) break;
-            const fullMatch = match[0];
-            const firstDigit = match[1];
+            const [fullMatch, firstDigit] = match;
             const normalized = normalizePhone(fullMatch);
 
             if (!seenPhones.has(normalized) && firstDigit) {
@@ -328,9 +327,9 @@ export async function detectContactInfo({
           const addressMatches = text.matchAll(postalAddressRegex);
           for (const match of addressMatches) {
             if (addresses.length >= maxAddresses) break;
-            const postalCode = match[1];
-            const city = match[2]?.trim();
-            const raw = match[0].trim();
+            const [rawMatch, postalCode, cityMatch] = match;
+            const city = cityMatch?.trim();
+            const raw = rawMatch.trim();
 
             // Avoid duplicates based on postal code
             const isDuplicate = addresses.some(

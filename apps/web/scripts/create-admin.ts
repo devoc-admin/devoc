@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { Pool } from "pg";
 
-const DATABASE_URL = process.env.DATABASE_URL;
+const { DATABASE_URL } = process.env;
 
 if (!DATABASE_URL) {
   console.error("DATABASE_URL is required");
@@ -18,8 +18,7 @@ const auth = betterAuth({
 });
 
 export async function createAdmin() {
-  const email = process.argv[2];
-  const password = process.argv[3];
+  const [, , email, password] = process.argv;
   const name = process.argv[4] || "Admin";
 
   if (!(email && password)) {

@@ -41,7 +41,7 @@ bunx turbo build
 bun --filter <app> run build
 
 # Type-check only (faster, no full build)
-bun --filter <app> run types
+bun --filter <app> run typecheck
 ```
 
 #### Apps in this monorepo
@@ -54,7 +54,7 @@ bun --filter <app> run types
 | `opencarca` | `apps/customers/opencarca` | Next.js 16 |
 | `saveurs-aude` | `apps/saveurs-aude` | Next.js 15 + Payload CMS |
 
-Apps with `types` script: `web`, `chrome-extension`, `opencarca`, `saveurs-aude`.
+Apps with `typecheck` script: `web`, `chrome-extension`, `opencarca`, `saveurs-aude`.
 
 If `$ARGUMENTS` is `--filter web`, only run `bun --filter web run build`.
 

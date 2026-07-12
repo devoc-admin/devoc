@@ -170,7 +170,7 @@ just dev lasbordes-preview
 ```bash
 just lint      # lint all main apps
 just format    # format code
-just types     # type checking
+just typecheck # type checking
 just commit    # commit message assistant
 ```
 

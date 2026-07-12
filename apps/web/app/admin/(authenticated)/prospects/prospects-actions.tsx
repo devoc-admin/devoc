@@ -74,7 +74,7 @@ async function upsertDpoByName(
     .limit(1)
     .execute();
   if (existing.length > 0) {
-    const row = existing[0];
+    const [row] = existing;
     if (url !== undefined && url !== row.url) {
       await db.update(dpo).set({ url }).where(eq(dpo.id, row.id)).execute();
     }

@@ -1,7 +1,7 @@
 import type { Media, Product } from "@/payload-types";
 
 export function getLowestPrice(product: Product): number {
-  const prices = product.variants?.map((v) => v.price) ?? [];
+  const prices = (product.variants ?? []).map((v) => v.price);
   return prices.length > 0 ? Math.min(...prices) : 0;
 }
 
@@ -10,7 +10,7 @@ export function getPriceRange(product: Product): {
   max: number;
   min: number;
 } {
-  const prices = product.variants?.map((v) => v.price) ?? [];
+  const prices = (product.variants ?? []).map((v) => v.price);
   if (prices.length === 0) return { hasRange: false, max: 0, min: 0 };
   const min = Math.min(...prices);
   const max = Math.max(...prices);

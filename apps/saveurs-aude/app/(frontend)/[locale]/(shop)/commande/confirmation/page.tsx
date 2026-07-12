@@ -51,9 +51,7 @@ export default async function ConfirmationPage({
         where: { stripeSessionId: { equals: session_id } },
       });
 
-      if (orders.docs.length > 0) {
-        orderNumber = orders.docs[0].orderNumber;
-      }
+      orderNumber = orders.docs.at(0)?.orderNumber ?? null;
     }
   } catch {
     return <ErrorState t={t} />;

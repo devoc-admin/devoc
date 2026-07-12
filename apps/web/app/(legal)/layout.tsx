@@ -1,7 +1,7 @@
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import Footer from "../_components/footer/footer";
+import { Footer } from "../_components/footer/footer";
 export default function LegalLayout({
   children,
 }: {

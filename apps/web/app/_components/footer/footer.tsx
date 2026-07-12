@@ -86,8 +86,6 @@ export function Footer({
   );
 }
 
-export default Footer;
-
 // ------------------------
 // ✨ Scroll animation
 gsap.registerPlugin(ScrollTrigger);
