@@ -94,7 +94,7 @@ function useProspectsTable() {
     columnHelper.accessor("name", {
       cell: ({ getValue, row }) => {
         const name = getValue();
-        const website = row.original.website;
+        const { website } = row.original;
         return <NameCell name={name} website={website} />;
       },
       header: ({ column }) => <SortableHeader column={column} label="Nom" />,

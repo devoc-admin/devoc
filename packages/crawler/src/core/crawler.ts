@@ -183,6 +183,7 @@ export class WebCrawler {
 
         // Wait for at least one task to complete if we have in-flight tasks
         if (inFlight.size > 0) {
+          // biome-ignore lint/performance/noAwaitInLoops: streaming concurrency pool intentionally waits for a slot before scheduling more work
           await Promise.race(inFlight.keys());
         }
 
@@ -536,6 +537,7 @@ export class WebCrawler {
     try {
       for (const selector of acceptSelectors) {
         const button = page.locator(selector).first();
+        // biome-ignore lint/performance/noAwaitInLoops: selectors must be tried sequentially in priority order, clicking only the first visible one
         if (await button.isVisible({ timeout: 200 })) {
           await button.click();
           await page.waitForTimeout(300);
@@ -613,7 +615,6 @@ export class WebCrawler {
     } catch (error) {
       // Screenshot capture itself failed
       console.error(`Screenshot failed for ${normalizedUrl}:`, error);
-      return;
     }
   }
 
@@ -640,7 +641,6 @@ export class WebCrawler {
       return `/api/screenshots/${this.crawlId}/${filename}`;
     } catch (error) {
       console.error("Failed to save screenshot locally:", error);
-      return;
     }
   }
 
@@ -731,12 +731,12 @@ async function waitForSpaLoad(page: Page) {
 // ⌚ Wait for DOM stable
 async function waitForDomStable(page: Page, timeout = 5000, debounce = 300) {
   await page.evaluate(
-    ({ timeout, debounce }) => {
+    ({ timeout: timeoutMs, debounce: debounceMs }) => {
       return new Promise<void>((resolve, reject) => {
         let timer: NodeJS.Timeout;
         const timeoutId = setTimeout(
           () => reject(new Error("DOM stability timeout")),
-          timeout
+          timeoutMs
         );
 
         const observer = new MutationObserver(() => {
@@ -745,7 +745,7 @@ async function waitForDomStable(page: Page, timeout = 5000, debounce = 300) {
             observer.disconnect();
             clearTimeout(timeoutId);
             resolve();
-          }, debounce);
+          }, debounceMs);
         });
 
         observer.observe(document.body, {
@@ -759,7 +759,7 @@ async function waitForDomStable(page: Page, timeout = 5000, debounce = 300) {
           observer.disconnect();
           clearTimeout(timeoutId);
           resolve();
-        }, debounce);
+        }, debounceMs);
       });
     },
     { debounce, timeout }

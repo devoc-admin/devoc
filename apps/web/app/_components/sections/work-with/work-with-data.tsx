@@ -30,7 +30,7 @@ export const companies = [
     name: "Bimpli",
   },
   {
-    link: "https://onepark.com",
+    link: "https://onepark.fr",
     logo: <CompanyLogo logo={OneparkLogo} name="Onepark" />,
     name: "Onepark",
   },

@@ -26,7 +26,7 @@ export async function upsertCrawl({
   // ✅🌐 Validation de l'URL
   let origin: string;
   try {
-    origin = new URL(url).origin;
+    ({ origin } = new URL(url));
   } catch {
     return { error: "URL invalide", success: false };
   }
@@ -54,7 +54,7 @@ export async function upsertCrawl({
     return { error: message, success: false };
   }
 
-  const insertedCrawl = crawlResult[0];
+  const [insertedCrawl] = crawlResult;
   if (!insertedCrawl) {
     return { error: "Échec de l'insertion du crawl", success: false };
   }
@@ -77,10 +77,10 @@ export async function upsertCrawl({
     await inngest.send({
       data: {
         config: {
-          concurrency: concurrency ?? 10,
-          maxDepth: maxDepth ?? 1,
-          maxPages: maxPages ?? 5,
-          useLocalScreenshots: useLocalScreenshots ?? false,
+          concurrency,
+          maxDepth,
+          maxPages,
+          useLocalScreenshots,
         },
         crawlId: insertedCrawl.id,
         url: origin,
@@ -372,6 +372,7 @@ async function deleteAllScreenshots(): Promise<void> {
   let cursor: string | undefined;
 
   do {
+    // biome-ignore lint/performance/noAwaitInLoops: paginated listing — each request needs the cursor from the previous response
     const response = await list({
       cursor,
       prefix: "screenshots/",
@@ -382,7 +383,7 @@ async function deleteAllScreenshots(): Promise<void> {
       await del(urls);
     }
 
-    cursor = response.cursor;
+    ({ cursor } = response);
   } while (cursor);
 }
 
@@ -469,7 +470,7 @@ export async function listUncrawledProspects(): Promise<
     const uncrawledProspects = prospects.filter((p) => {
       if (!p.website) return false;
       try {
-        const origin = new URL(p.website).origin;
+        const { origin } = new URL(p.website);
         return !crawledUrlSet.has(origin);
       } catch {
         return false;

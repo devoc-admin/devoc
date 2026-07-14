@@ -144,7 +144,6 @@ export function RegisterForm() {
             onBlur: ({ value }) => {
               if (!value.trim()) return tc("fieldRequired");
               if (!EMAIL_REGEX.test(value)) return tc("invalidEmail");
-              return;
             },
           }}
         />
@@ -198,7 +197,6 @@ export function RegisterForm() {
             onBlur: ({ value }) => {
               if (!value) return tc("fieldRequired");
               if (value.length < 8) return t("passwordMin");
-              return;
             },
           }}
         />

@@ -79,8 +79,8 @@ export function CrawlDetailsProvider({
       return { nonSelectedPages: [], selectedPages: [] };
     }
 
-    const selectedPages: CrawledPage[] = [];
-    const nonSelectedPages: CrawledPage[] = [];
+    const selected: CrawledPage[] = [];
+    const nonSelected: CrawledPage[] = [];
 
     // 🔍 Filter by search query
     const normalizedQuery = deferredSearchQuery.toLowerCase().trim();
@@ -90,9 +90,9 @@ export function CrawlDetailsProvider({
       if (!matchesCategory(page, selectedCategoryFilter)) continue;
       if (!matchesHttpStatus(page, selectedHttpStatusFilter)) continue;
       if (page.selectedForAudit) {
-        selectedPages.push(page);
+        selected.push(page);
       } else {
-        nonSelectedPages.push(page);
+        nonSelected.push(page);
       }
     }
 
@@ -103,10 +103,10 @@ export function CrawlDetailsProvider({
       return bRecent - aRecent;
     };
 
-    selectedPages.sort(sortByRecentlyToggled);
-    nonSelectedPages.sort(sortByRecentlyToggled);
+    selected.sort(sortByRecentlyToggled);
+    nonSelected.sort(sortByRecentlyToggled);
 
-    return { nonSelectedPages, selectedPages };
+    return { nonSelectedPages: nonSelected, selectedPages: selected };
   }, [
     crawlDetails?.crawledPages,
     recentlyToggledIds,
@@ -161,7 +161,7 @@ export function CrawlDetailsProvider({
     for (const page of crawlDetails.crawledPages) {
       const range = getHttpStatusRange(page.httpStatus);
       if (range) {
-        counts[range]++;
+        counts[range] += 1;
       }
     }
     return counts;

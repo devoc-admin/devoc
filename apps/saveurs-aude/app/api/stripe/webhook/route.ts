@@ -43,6 +43,7 @@ async function updateStock(
 ): Promise<Map<number, string>> {
   const productNames = new Map<number, string>();
   for (const item of items) {
+    // biome-ignore lint/performance/noAwaitInLoops: sequential read-modify-write; parallel updates would clobber each other when two cart items share the same product
     const product = await payload.findByID({
       collection: "products",
       id: item.pid,

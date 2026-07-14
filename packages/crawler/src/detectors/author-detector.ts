@@ -218,9 +218,9 @@ export async function detectAuthor({
      * Searches the footer text for signature patterns (fallback without links)
      */
     function searchFooterText(
-      searchArea: Element
+      footerArea: Element
     ): AuthorDetectionResult | null {
-      const footerText = searchArea.textContent || "";
+      const footerText = footerArea.textContent || "";
       const footerMatch = footerText.match(PATTERNS.footerSignature);
 
       if (footerMatch?.[1]) {

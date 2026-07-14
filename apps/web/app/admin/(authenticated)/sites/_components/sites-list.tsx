@@ -24,7 +24,7 @@ export function SitesList({ sites }: { sites: Crawl[] }) {
         Sites déjà référencés
       </h2>
       <div>
-        {sites?.length > 0 ? (
+        {sites.length > 0 ? (
           <Table>
             {/* 0️⃣ Header */}
             <TableHeader>

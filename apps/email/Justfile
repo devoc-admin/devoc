@@ -15,8 +15,8 @@ lint:
 format:
     bun run format
 
-types:
-    bun run types
+typecheck:
+    bun run typecheck
 
 help:
     echo "Commandes disponibles :"

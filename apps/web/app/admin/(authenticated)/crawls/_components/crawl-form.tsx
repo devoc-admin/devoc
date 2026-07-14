@@ -187,7 +187,6 @@ export function CrawlForm() {
                   if (!search) return "Veuillez saisir une URL";
                   if (!isWebsiteUrl(search))
                     return "La saisie n'est pas une URL valide";
-                  return;
                 },
                 onSubmitAsync: async ({ value: search }) => {
                   const result = await isValidWebsite(search);
@@ -469,12 +468,7 @@ function useCrawlForm({
 
 // --------------------------------------------
 function isWebsiteUrl(url: string): boolean {
-  try {
-    new URL(url);
-    return true;
-  } catch {
-    return false;
-  }
+  return URL.canParse(url);
 }
 
 // --------------------------------------------

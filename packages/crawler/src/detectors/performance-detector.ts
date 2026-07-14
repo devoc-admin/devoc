@@ -71,6 +71,7 @@ export async function detectPerformance({
       totalSize += size;
 
       // Categorize by initiator type
+      // biome-ignore-start lint/suspicious/noUnnecessaryConditions: initiatorType is runtime browser data; Biome misinfers its type inside page.evaluate and wrongly marks the cases unreachable
       switch (resource.initiatorType) {
         case "script":
           breakdown.scripts += size;
@@ -104,6 +105,7 @@ export async function detectPerformance({
         default:
           breakdown.other += size;
       }
+      // biome-ignore-end lint/suspicious/noUnnecessaryConditions: end of switch on runtime initiatorType
     }
 
     // Convert bytes to KB

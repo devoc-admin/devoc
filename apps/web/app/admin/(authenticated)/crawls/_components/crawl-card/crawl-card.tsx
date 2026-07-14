@@ -101,7 +101,7 @@ function CrawlCardHeader() {
 function Website() {
   const { crawl } = useCrawlCardContext();
   if (!crawl) return null;
-  const url = crawl.url;
+  const { url } = crawl;
   return (
     <a
       className="flex items-center gap-x-2 text-muted-foreground hover:underline"

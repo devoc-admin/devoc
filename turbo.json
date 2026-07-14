@@ -38,8 +38,8 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
-    "types": {
-      "dependsOn": ["^types"],
+    "typecheck": {
+      "dependsOn": ["^typecheck"],
       "inputs": [
         "$TURBO_DEFAULT$",
         "!README.md",

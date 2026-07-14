@@ -223,7 +223,7 @@ function ProductTitle({ product }: { product: Partial<Product> }) {
 
 // 🔢 Quantity
 function ProductQuantity({ product }: { product: Partial<Product> }) {
-  const label = product?.variants?.[0]?.label;
+  const label = product.variants?.[0]?.label;
   if (!label) return null;
 
   return <div className={cn("text-base", "text-center")}>{label}</div>;
@@ -231,7 +231,7 @@ function ProductQuantity({ product }: { product: Partial<Product> }) {
 
 //💰 Price
 function ProductPrice({ product }: { product: Partial<Product> }) {
-  const price = product?.variants?.[0]?.price;
+  const price = product.variants?.[0]?.price;
   if (!price) return null;
   return (
     <div
@@ -382,7 +382,7 @@ function CategoryCardHomepage({ category }: { category: Partial<Category> }) {
 // 🖼️
 function CategoryImage({ category }: { category: Partial<Category> }) {
   //  🖼️
-  const image = category.image;
+  const { image } = category;
   if (!image || typeof image === "number") return null;
 
   const imageUrl = image?.url;

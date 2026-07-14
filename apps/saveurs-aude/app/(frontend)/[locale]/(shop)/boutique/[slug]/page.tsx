@@ -30,7 +30,7 @@ async function getProduct(slug: string): Promise<Product | null> {
       status: { equals: "published" },
     },
   });
-  return (result.docs[0] as Product) ?? null;
+  return result.docs.at(0) ?? null;
 }
 
 export async function generateMetadata({

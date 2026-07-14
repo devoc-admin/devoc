@@ -60,7 +60,6 @@ export function AuditForm() {
                   if (!url) return "Veuillez saisir une URL";
                   if (!isWebsiteUrl(url))
                     return "La saisie n'est pas une URL valide";
-                  return;
                 },
                 onSubmitAsync: async ({ value: url }) => {
                   const result = await isValidWebsite(url);
@@ -185,12 +184,7 @@ export function AuditForm() {
 
 // --------------------------------------------
 function isWebsiteUrl(url: string): boolean {
-  try {
-    new URL(url);
-    return true;
-  } catch {
-    return false;
-  }
+  return URL.canParse(url);
 }
 
 // --------------------------------------------

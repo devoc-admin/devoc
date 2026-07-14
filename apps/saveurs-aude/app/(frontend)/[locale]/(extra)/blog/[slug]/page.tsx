@@ -26,7 +26,7 @@ async function getPost(slug: string): Promise<BlogPost | null> {
       status: { equals: "published" },
     },
   });
-  return (result.docs[0] as BlogPost) ?? null;
+  return result.docs.at(0) ?? null;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

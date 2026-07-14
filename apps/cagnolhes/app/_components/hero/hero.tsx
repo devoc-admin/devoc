@@ -142,8 +142,8 @@ function Navbar() {
       <Separator size="md" />
       <Separator size="sm" />
       <div className="flex grow items-center justify-between px-12 font-bold text-white">
-        <NavLinksSection navlinks={navlinks.slice(0, 2)} />
-        <NavLinksSection navlinks={navlinks.slice(2, 4)} />
+        <NavLinksSection links={navlinks.slice(0, 2)} />
+        <NavLinksSection links={navlinks.slice(2, 4)} />
       </div>
       <Separator size="sm" />
       <Separator size="md" />
@@ -169,10 +169,10 @@ interface Navlink {
   text: string;
 }
 
-function NavLinksSection({ navlinks }: { navlinks: Navlink[] }) {
+function NavLinksSection({ links }: { links: Navlink[] }) {
   return (
     <div className="flex uppercase">
-      {navlinks.map(({ text, href, id }) => (
+      {links.map(({ text, href, id }) => (
         <Link className="px-8 py-1" href={href} key={id}>
           {text}
         </Link>
