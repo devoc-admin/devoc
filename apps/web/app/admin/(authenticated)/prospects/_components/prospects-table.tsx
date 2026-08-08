@@ -1,11 +1,15 @@
 "use client";
 import {
+  type Column,
+  columnSizingFeature,
+  columnVisibilityFeature,
   createColumnHelper,
+  createSortedRowModel,
   flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
+  rowSortingFeature,
   type SortingState,
-  useReactTable,
+  tableFeatures,
+  useTable,
 } from "@tanstack/react-table";
 import { ArrowDownIcon, ArrowUpIcon } from "lucide-react";
 import { useState } from "react";
@@ -36,6 +40,16 @@ import { ProspecTypeCell } from "./cells/prospect-type-cell/prospect-type-cell";
 import { ReferentCell } from "./cells/referent-cell/referent-cell";
 import { SiteEditorCell } from "./cells/site-editor-cell/site-editor-cell";
 import { YearCell } from "./cells/year-cell/year-cell";
+
+const features = tableFeatures({
+  columnSizingFeature,
+  columnVisibilityFeature,
+  rowSortingFeature,
+  sortedRowModel: createSortedRowModel(),
+});
+
+const columnHelper = createColumnHelper<typeof features, ProspectResult>();
+
 export function ProspectsTable() {
   const { prospects } = useProspectsContext();
   const table = useProspectsTable();
@@ -86,10 +100,9 @@ export function ProspectsTable() {
 
 function useProspectsTable() {
   const { filteredProspects } = useProspectsContext();
-  const columnHelper = createColumnHelper<ProspectResult>();
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const defaultColumns = [
+  const defaultColumns = columnHelper.columns([
     //🔠 | 👁️ Name
     columnHelper.accessor("name", {
       cell: ({ getValue, row }) => {
@@ -118,7 +131,7 @@ function useProspectsTable() {
         return <InhabitantsNumberCell n={value} />;
       },
       header: ({ column }) => <SortableHeader column={column} label="Habit." />,
-      sortingFn: (rowA, rowB) => {
+      sortFn: (rowA, rowB) => {
         const a = rowA.original.inhabitants ?? -1;
         const b = rowB.original.inhabitants ?? -1;
         return a - b;
@@ -131,7 +144,7 @@ function useProspectsTable() {
         return <DistanceCell n={value} />;
       },
       header: ({ column }) => <SortableHeader column={column} label="Dist." />,
-      sortingFn: (rowA, rowB) => {
+      sortFn: (rowA, rowB) => {
         const a = rowA.original.distanceFrom ?? Number.POSITIVE_INFINITY;
         const b = rowB.original.distanceFrom ?? Number.POSITIVE_INFINITY;
         return a - b;
@@ -146,7 +159,7 @@ function useProspectsTable() {
       header: ({ column }) => (
         <SortableHeader column={column} label="Mise en l." />
       ),
-      sortingFn: (rowA, rowB) => {
+      sortFn: (rowA, rowB) => {
         const a = rowA.original.siteLaunchYear ?? Number.POSITIVE_INFINITY;
         const b = rowB.original.siteLaunchYear ?? Number.POSITIVE_INFINITY;
         return a - b;
@@ -164,7 +177,7 @@ function useProspectsTable() {
       header: ({ column }) => (
         <SortableHeader column={column} label="Éditeur" />
       ),
-      sortingFn: (rowA, rowB) => {
+      sortFn: (rowA, rowB) => {
         const a = rowA.original.siteEditor ?? "";
         const b = rowB.original.siteEditor ?? "";
         if (a === b) return 0;
@@ -184,7 +197,7 @@ function useProspectsTable() {
       header: ({ column }) => (
         <SortableHeader column={column} label="Accessib." />
       ),
-      sortingFn: (rowA, rowB) => {
+      sortFn: (rowA, rowB) => {
         const order = { false: 1, null: 2, true: 0 };
         const a = String(rowA.original.hasAccessibilitySettings) as
           | "true"
@@ -205,7 +218,7 @@ function useProspectsTable() {
         return <PanneauPocketCell value={value} />;
       },
       header: ({ column }) => <SortableHeader column={column} label="PP" />,
-      sortingFn: (rowA, rowB) => {
+      sortFn: (rowA, rowB) => {
         const order = { false: 1, null: 2, true: 0 };
         const a = String(rowA.original.usesPanneauPocket) as
           | "true"
@@ -225,7 +238,7 @@ function useProspectsTable() {
         return <DPOCell value={value} />;
       },
       header: ({ column }) => <SortableHeader column={column} label="DPO" />,
-      sortingFn: (rowA, rowB) => {
+      sortFn: (rowA, rowB) => {
         const order = { false: 1, null: 2, true: 0 };
         const a = String(rowA.original.hasDpo) as "true" | "false" | "null";
         const b = String(rowB.original.hasDpo) as "true" | "false" | "null";
@@ -243,7 +256,7 @@ function useProspectsTable() {
         />
       ),
       header: ({ column }) => <SortableHeader column={column} label="Ref." />,
-      sortingFn: (rowA, rowB) => {
+      sortFn: (rowA, rowB) => {
         const a = rowA.original.referentName ?? "";
         const b = rowB.original.referentName ?? "";
         if (a === b) return 0;
@@ -268,7 +281,7 @@ function useProspectsTable() {
       header: ({ column }) => (
         <SortableHeader column={column} label="Urgence" />
       ),
-      sortingFn: (rowA, rowB) => {
+      sortFn: (rowA, rowB) => {
         const order = { medium: 1, strong: 0, weak: 2 };
         const a = rowA.original.estimatedOpportunity ?? "medium";
         const b = rowB.original.estimatedOpportunity ?? "medium";
@@ -286,7 +299,7 @@ function useProspectsTable() {
       header: ({ column }) => (
         <SortableHeader column={column} label="Exploration" />
       ),
-      sortingFn: (rowA, rowB) => {
+      sortFn: (rowA, rowB) => {
         const order = {
           cancelled: 4,
           completed: 2,
@@ -319,13 +332,12 @@ function useProspectsTable() {
       header: "Actions",
       id: "actions",
     }),
-  ];
+  ]);
 
-  const table = useReactTable({
+  const table = useTable({
     columns: defaultColumns,
     data: filteredProspects ?? [],
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
+    features,
     onSortingChange: setSorting,
     state: { sorting },
   });
@@ -334,14 +346,11 @@ function useProspectsTable() {
 
 // -------------------------------------------
 // 🔃 Sortable header
-function SortableHeader({
+function SortableHeader<TValue>({
   column,
   label,
 }: {
-  column: {
-    toggleSorting: () => void;
-    getIsSorted: () => false | "asc" | "desc";
-  };
+  column: Column<typeof features, ProspectResult, TValue>;
   label: string;
 }) {
   return (

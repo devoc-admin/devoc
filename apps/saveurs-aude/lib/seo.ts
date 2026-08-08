@@ -20,7 +20,7 @@ export function buildOgImage(
   if (!media.url) return null;
 
   return {
-    alt: media.alt ?? "",
+    alt: media.alt,
     height: media.height ?? 630,
     url: media.url,
     width: media.width ?? 1200,

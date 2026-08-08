@@ -8,9 +8,6 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
   basePath: BASE_PATH,
-  experimental: {
-    viewTransition: true,
-  },
   // sharp is externalized (via withPayload) and loads its native binary
   // dynamically, so Next's file tracer misses it on Vercel. Force the linux-x64
   // binary + libvips into the serverless function. Paths are app-relative thanks
