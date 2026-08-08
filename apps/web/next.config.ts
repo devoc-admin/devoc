@@ -36,7 +36,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  serverExternalPackages: ["resend", "pg", "sharp"],
+  serverExternalPackages: ["pg", "sharp"],
   turbopack: {
     root: path.join(import.meta.dirname, "../../"),
   },
