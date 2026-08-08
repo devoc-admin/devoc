@@ -4,22 +4,22 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "rm -rf ./.next && rm -rf ./.turbo && doppler run -- next dev --turbopack -H 0.0.0.0",
     "build": "next build",
-    "start": "next start",
-    "lint": "bun x ultracite check",
-    "lint:fix": "bun x ultracite fix",
+    "db:deploy": "doppler run --preserve-env=DATABASE_URL -- bun --bun node_modules/.bin/payload migrate --force --disable-transpile",
+    "db:migration:check": "doppler run --preserve-env=PAYLOAD_SECRET -- bun run scripts/check-migrations.ts",
+    "db:push": "doppler run -- bun --bun node_modules/.bin/payload db:push --disable-transpile",
+    "dev": "rm -rf ./.next && rm -rf ./.turbo && doppler run -- next dev --turbopack -H 0.0.0.0",
     "format": "biome format",
     "format:fix": "biome format --write",
-    "typecheck": "tsc --noEmit",
+    "gen:check": "doppler run -- bun run scripts/check-generated.ts",
+    "gen:map": "doppler run --preserve-env=DATABASE_URL -- bun --bun node_modules/.bin/payload generate:importmap --disable-transpile",
+    "gen:types": "doppler run --preserve-env=DATABASE_URL -- bun --bun node_modules/.bin/payload generate:types --disable-transpile",
+    "lint": "bun x ultracite check",
+    "lint:fix": "bun x ultracite fix",
     "payload": "doppler run -- bun --bun node_modules/.bin/payload --disable-transpile",
     "seed": "doppler run -- bun --bun run payload/seed.ts",
-    "db:migration:check": "doppler run --preserve-env=PAYLOAD_SECRET -- bun run scripts/check-migrations.ts",
-    "gen:check": "doppler run -- bun run scripts/check-generated.ts",
-    "db:deploy": "doppler run --preserve-env=DATABASE_URL -- bun --bun node_modules/.bin/payload migrate --force --disable-transpile",
-    "db:push": "doppler run -- bun --bun node_modules/.bin/payload db:push --disable-transpile",
-    "gen:map": "doppler run --preserve-env=DATABASE_URL -- bun --bun node_modules/.bin/payload generate:importmap --disable-transpile",
-    "gen:types": "doppler run --preserve-env=DATABASE_URL -- bun --bun node_modules/.bin/payload generate:types --disable-transpile"
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.86.0",
@@ -50,10 +50,6 @@
     "tailwind-merge": "catalog:ui",
     "zod": "catalog:forms"
   },
-  "optionalDependencies": {
-    "@img/sharp-libvips-linux-x64": "1.3.2",
-    "@img/sharp-linux-x64": "0.35.3"
-  },
   "devDependencies": {
     "@tailwindcss/postcss": "catalog:tailwind",
     "@types/node": "catalog:next",
@@ -61,5 +57,9 @@
     "@types/react-dom": "catalog:react",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:tooling"
+  },
+  "optionalDependencies": {
+    "@img/sharp-libvips-linux-x64": "1.3.2",
+    "@img/sharp-linux-x64": "0.35.3"
   }
 }

@@ -1,16 +1,16 @@
 {
   "name": "email",
   "version": "1.1.0",
-  "type": "module",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "bash build.sh",
     "dev": "email dev",
     "export": "email export",
-    "lint": "bun x ultracite check",
-    "lint:fix": "bun x ultracite fix",
     "format": "biome format",
     "format:fix": "biome format --write",
+    "lint": "bun x ultracite check",
+    "lint:fix": "bun x ultracite fix",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
