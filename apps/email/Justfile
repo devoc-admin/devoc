@@ -3,8 +3,8 @@ set shell := ["zsh", "-c"]
 dev:
     bun run dev
 
-build:
-    bun run build
+export:
+    bun run export
 
 clean:
     rm -rf node_modules

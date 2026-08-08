@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bash build.sh",
     "ci": "biome ci",
     "dev": "email dev",
     "export": "email export",
