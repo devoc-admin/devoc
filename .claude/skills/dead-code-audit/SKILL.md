@@ -54,10 +54,6 @@ Use `npx next`, **not** `bun --bun next build` — Bun's runtime fails to load N
 server internals (`Expected CommonJS module to have a function wrapper`), which looks like a
 broken build but is unrelated to your change.
 
-`apps/saveurs-aude` cannot be built locally: its `build` task `dependsOn: ["gen:map"]`, which
-needs Doppler secrets and a live Payload database. Say a removal there is unverified by build
-rather than implying otherwise.
-
 ## Check node_modules first
 
 Biome's type-aware rules and every import-resolution heuristic silently degrade when the
@@ -87,9 +83,8 @@ The orphan script reports these, but they are reachable by mechanisms it cannot 
 
 | Path | Reached by |
 |---|---|
-| `apps/saveurs-aude/payload/components/{Icon,Logo,VisitSiteLink}.tsx` | Payload `importMap.js`, by string path |
 | `apps/email/emails/*.tsx` | react-email entry points (excluded by the script) |
-| `apps/*/proxy.ts`, `i18n/request.ts`, `payload.config.ts`, `*.config.ts` | framework convention (excluded) |
+| `apps/*/proxy.ts`, `i18n/request.ts`, `*.config.ts` | framework convention (excluded) |
 | `packages/*/src/index.ts`, `src/*/index.ts` | workspace `exports` map (excluded) |
 
 Deps the scripts can't see as used:

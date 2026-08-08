@@ -11,7 +11,7 @@ import os
 import re
 import sys
 
-ROOTS = ["apps/web", "apps/saveurs-aude", "apps/email", "packages/crawler", "packages/utils"]
+ROOTS = ["apps/web", "apps/email", "packages/crawler", "packages/utils"]
 SKIP_DIRS = {"node_modules", ".next", ".turbo", ".react-email", ".vercel", "migrations", ".git"}
 
 # Framework/tooling entry points — loaded by convention, never imported.
@@ -23,8 +23,8 @@ ENTRY = re.compile(
     r")\.(ts|tsx)$"
 )
 CONFIGISH = re.compile(
-    r"(next\.config|drizzle\.config|payload\.config|postcss\.config"
-    r"|/i18n/request\.|/scripts/|/payload/seed\.|/emails/)"   # emails/* are react-email entry points
+    r"(next\.config|drizzle\.config|postcss\.config"
+    r"|/i18n/request\.|/scripts/|/emails/)"   # emails/* are react-email entry points
 )
 
 SPEC_RE = re.compile(r"""(?:from|import|require)\s*\(?\s*["']([^"']+)["']""")
@@ -121,10 +121,7 @@ def main():
     print(f"{len(files)} source files scanned — {len(orphans)} imported by nothing:\n")
     for o in sorted(orphans):
         print("  ", o)
-    print(
-        "\nBefore deleting, check SKILL.md 'Known non-orphans': Payload admin components are\n"
-        "wired through importMap.js by string path and will show up here."
-    )
+    print("\nBefore deleting, check SKILL.md 'Known non-orphans'.")
 
 
 if __name__ == "__main__":

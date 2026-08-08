@@ -4,7 +4,7 @@ Templates d'emails transactionnels pour Dev-OC, basés sur **React Email**.
 
 ## Description
 
-Atelier de templates écrit avec `@react-email/components`. Le devserver `react-email` fournit une preview live dans le navigateur ; les templates compilés sont consommés par les apps qui envoient via Resend (par ex. `apps/web`, `apps/saveurs-aude`).
+Atelier de templates écrit avec `@react-email/components`. Le devserver `react-email` fournit une preview live dans le navigateur ; les templates compilés sont consommés par les apps qui envoient via Resend (par ex. `apps/web`).
 
 Les templates sont dans `emails/`. Le script `build.sh` génère leur version exportée (HTML/JSX) consommable par les apps.
 

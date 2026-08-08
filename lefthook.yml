@@ -15,16 +15,12 @@ pre-commit:
       stage_fixed: true
     - name: Check types on changed files
       run: doppler run -- bun x turbo typecheck --affected
-    - name: Check database migrations
-      run: doppler run -- bun x turbo db:migration:check --affected
     - name: Check workspace boundaries
       run: bun x turbo boundaries
 pre-push:
   jobs:
     - name: "Check bun lockfile is in sync"
       run: bun install --frozen-lockfile
-    - name: "Check generated artifacts are up to date"
-      run: doppler run -- bun x turbo gen:check --affected
 commit-msg:
   jobs:
     - name: commitlint

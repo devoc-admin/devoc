@@ -13,41 +13,6 @@ permissions:
   contents: read
 
 jobs:
-  saveurs-aude:
-    name: "Deploy saveurs-aude to Vercel"
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v6
-      - name: Fetch shared Vercel credentials from Doppler
-        uses: dopplerhq/secrets-fetch-action@v2.0.0
-        with:
-          doppler-token: ${{ secrets.DOPPLER_TOKEN_SHARED }}
-          inject-env-vars: true
-      - name: Fetch saveurs-aude Vercel project id from Doppler
-        uses: dopplerhq/secrets-fetch-action@v2.0.0
-        with:
-          doppler-token: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
-          inject-env-vars: true
-      - uses: ./.github/actions/setup
-      - name: Install Vercel CLI
-        run: bun add -g vercel@54.6.1
-      - name: Pull Vercel project config & env
-        run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
-      - name: Generate Payload artifacts
-        env:
-          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
-        run: bun x turbo gen:map --filter=saveurs-aude
-      - name: Build
-        run: vercel build --prod --token=$VERCEL_TOKEN
-      - name: Apply prod migrations
-        env:
-          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
-        working-directory: apps/saveurs-aude
-        run: bun run db:deploy
-      - name: Deploy prebuilt
-        run: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
-
   web:
     name: "Deploy web to Vercel"
     runs-on: ubuntu-latest
