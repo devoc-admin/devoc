@@ -1,8 +1,5 @@
 "use client";
-// import { Glass } from "@/components/sera-ui/liquid-glass";
-// import { cn } from "@/lib/utils";
 import { useFontsReady } from "../../_hooks/use-font-ready";
-// import s from "./styles.module.css";
 
 export function Header() {
   return <DesktopHeader />;
