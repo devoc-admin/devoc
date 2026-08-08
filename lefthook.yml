@@ -1,6 +1,5 @@
 pre-commit:
   parallel: true
-  # 🧽 Linter with safe fixs applied
   jobs:
     - name: Lint changed files
       run: bun x ultracite fix {staged_files}
