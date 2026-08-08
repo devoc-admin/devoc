@@ -42,10 +42,7 @@
       "!**/payload-types.ts",
       "!**/migrations",
       // 🖼️ SVG asset files are not source code — don't lint them as JSX
-      "!**/*.svg",
-      // 🩹 Biome 2.5.3's module-graph scanner panics (module_resolver.rs:500 index out of bounds) on any call to
-      // startTransition from useTransition() — only this file uses it. Remove once fixed upstream.
-      "!!apps/saveurs-aude/lib/auth.tsx"
+      "!**/*.svg"
     ]
   },
   "formatter": {
@@ -61,6 +58,12 @@
       "style": {
         "useBlockStatements": "off", // No need to wrap every if statement in a block statement eg. if(!condition) return;
         "useConsistentTypeDefinitions": "off"
+      },
+      "suspicious": {
+        // 🩹 Biome 2.5.7's type inference ignores explicit generic type arguments, so `useRef<HTMLDivElement>(null)`
+        // is inferred as `RefObject<null>` and every `if (!ref.current) return;` guard is reported as redundant.
+        // `useRef<T | null>(null)` is flagged too, so there is no code-level workaround. Remove once fixed upstream.
+        "noUnnecessaryConditions": "off"
       }
     }
   },

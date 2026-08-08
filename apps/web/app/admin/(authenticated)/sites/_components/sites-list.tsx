@@ -1,9 +1,10 @@
 "use client";
 import {
+  columnVisibilityFeature,
   createColumnHelper,
   flexRender,
-  getCoreRowModel,
-  useReactTable,
+  tableFeatures,
+  useTable,
 } from "@tanstack/react-table";
 import Link from "next/link";
 import {
@@ -15,6 +16,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Crawl } from "@/lib/db/schema";
+
+const features = tableFeatures({ columnVisibilityFeature });
+
+const columnHelper = createColumnHelper<typeof features, Crawl>();
 
 export function SitesList({ sites }: { sites: Crawl[] }) {
   const table = useSitesList({ sites });
@@ -72,9 +77,7 @@ export function SitesList({ sites }: { sites: Crawl[] }) {
 
 // --------------------------------------------
 function useSitesList({ sites }: { sites: Crawl[] }) {
-  const columnHelper = createColumnHelper<Crawl>();
-
-  const defaultColumns = [
+  const defaultColumns = columnHelper.columns([
     columnHelper.accessor("url", {
       cell: ({ getValue }) => (
         <a
@@ -103,12 +106,12 @@ function useSitesList({ sites }: { sites: Crawl[] }) {
       ),
       header: "Crawl",
     }),
-  ];
+  ]);
 
-  const table = useReactTable({
+  const table = useTable({
     columns: defaultColumns,
     data: sites,
-    getCoreRowModel: getCoreRowModel(),
+    features,
   });
   return table;
 }

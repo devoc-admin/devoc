@@ -73,7 +73,7 @@ export function Company({ link, logo, name }: CompanyProps) {
 // 🪝↔️
 function useResizeObserver() {
   const [size, setSize] = useState({ diagonal: 0, rotationInDegrees: 0 });
-  const ref = useRef(null);
+  const ref = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     const handleResize = (entries: ResizeObserverEntry[]) => {
