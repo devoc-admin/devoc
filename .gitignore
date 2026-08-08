@@ -50,13 +50,8 @@ bun-debug.log*
 **next-env.d.ts
 .env*.local
 
-# Mockup apps
-**/apps/*-2/
-**/apps/*-3/
-
 # Direnv
 .direnv
-**/.zed
 
-# Local screenshots
-**/screenshots/
+# IDE
+**/.zed
