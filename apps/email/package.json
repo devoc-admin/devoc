@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "bash build.sh",
+    "ci": "biome ci",
     "dev": "email dev",
     "export": "email export",
-    "format": "biome format",
     "format:fix": "biome format --write",
     "lint": "bun x ultracite check",
     "lint:fix": "bun x ultracite fix",
