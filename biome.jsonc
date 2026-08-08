@@ -38,8 +38,6 @@
       "!**/components/magicui",
       "!**/components/motion-core",
       "!**/bilan",
-      "!**/payload-types.ts",
-      "!**/migrations",
       // 🖼️ SVG asset files are not source code — don't lint them as JSX
       "!**/*.svg"
     ]

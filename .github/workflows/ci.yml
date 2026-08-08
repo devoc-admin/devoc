@@ -33,25 +33,6 @@ jobs:
       - uses: ./.github/actions/setup
       - run: bun x turbo typecheck --affected
 
-  db-migration-check:
-    name: "Check database migrations"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - uses: dopplerhq/secrets-fetch-action@v2.0.0
-        with:
-          doppler-token: ${{ secrets.DOPPLER_TOKEN_SHARED }}
-          inject-env-vars: true
-      - uses: ./.github/actions/setup
-      - name: Check migrations
-        env:
-          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SHARED }}
-          PAYLOAD_SECRET: "ci-dummy-secret-for-config-validation-only-not-used-at-runtime"
-        run: bun x turbo db:migration:check --affected
-
   boundaries:
     name: "Check workspace boundaries"
     runs-on: ubuntu-latest
@@ -82,21 +63,6 @@ jobs:
     name: "Build apps and packages"
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    services:
-      postgres:
-        image: postgres:17-alpine
-        env:
-          POSTGRES_USER: payload
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: saveurs_aude
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 5s
-          --health-timeout 3s
-          --health-retries 10
-          --tmpfs /var/lib/postgresql/data:rw
     steps:
       - uses: actions/checkout@v6
         with:
@@ -106,23 +72,8 @@ jobs:
         with:
           doppler-token: ${{ secrets.DOPPLER_TOKEN_SHARED }}
           inject-env-vars: true
-      - name: Fetch saveurs-aude prod secrets
-        uses: dopplerhq/secrets-fetch-action@v2.0.0
-        with:
-          doppler-token: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
-          inject-env-vars: true
       - uses: ./.github/actions/setup
-      - name: Apply migrations
-        env:
-          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
-          DATABASE_URL: postgresql://payload:password@localhost:5432/saveurs_aude
-        run: bun x turbo db:deploy --affected
-      - name: Generate Payload artifacts
-        env:
-          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
-        run: bun x turbo gen:map --filter=saveurs-aude
       - name: Build
         env:
-          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SAVEURS_PRD }}
-          DATABASE_URL: postgresql://payload:password@localhost:5432/saveurs_aude
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SHARED }}
         run: bun x turbo build --affected
