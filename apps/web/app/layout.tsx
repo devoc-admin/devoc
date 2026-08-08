@@ -106,7 +106,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      {/*<ReactScan />*/}
       <body
         className={`${geistSans.variable} ${googleSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} ${fraunces.variable} mx-auto flex min-h-screen flex-col font-sans`}
       >

@@ -36,9 +36,9 @@ bun install && npx turbo lint typecheck --force
 
 Deleting a file orphans everything only it imported. One pass is never enough: removing 27
 files here exposed a second wave (`react-bits/{laser-flow,threads}.tsx`, `ui/textarea.tsx`)
-plus three newly-unused deps (`zod`, `resend`, `react-scan`), and dropping `react-scan` in
-turn made the `react-grab` and `commander` root `overrides` dead. Re-run both scripts after
-every deletion round until the output is stable.
+plus three newly-unused deps (`zod`, `resend`, and a dev-only profiler), and dropping that
+profiler in turn made the `react-grab` and `commander` root `overrides` dead. Re-run both
+scripts after every deletion round until the output is stable.
 
 ### Build verification
 
@@ -96,15 +96,15 @@ Deps the scripts can't see as used:
 - Root `overrides` pin *transitive* deps, so they outlive the package that needed them. Check
   what still pulls each one in before deciding: `grep -c "<name>" bun.lock` after a removal +
   `bun install` tells you whether the pin still has a subject. `entities` (pinned for
-  `@react-email/render`) is the only one left; `commander`/`react-grab` were dropped with
-  `react-scan`.
+  `@react-email/render`) is the only one left; `commander`/`react-grab` were dropped with the
+  dev-only profiler that pulled them in.
 
 ## Gotchas that produce wrong answers
 
 - **Imports carry explicit extensions here** (`from "./main.tsx"`). A matcher keyed on
   `/name"` finds nothing. Strip `\.(tsx?|jsx?|mjs)$` from specifiers before comparing.
-- **A file importing an npm package of its own name** (`react-scan.tsx` → `import "react-scan"`)
-  looks self-referencing. Exclude the file's own text when deciding if it is referenced.
+- **A file importing an npm package of its own name** (`foo.tsx` → `import "foo"`) looks
+  self-referencing. Exclude the file's own text when deciding if it is referenced.
 - **`grep -c <dep>` over the tree matches `package.json` and `bun.lock`.** Exclude both, or
   every dependency looks used.
 - **Substring collisions**: `main` matches `domain`, `old` matches `bold`. Match on resolved
@@ -123,7 +123,8 @@ Report these; let the user decide:
   kibo-ui,sera-ui,fancy}`) — pasted in from shadcn-style registries and deliberately excluded
   from linting in `biome.jsonc`. Unused ones are removable, but they are cheap to keep and
   annoying to re-fetch.
-- Dev-only tooling wired up in one place (`components/react-scan.tsx`).
+- Dev-only tooling wired up in one place (a profiler or debug overlay mounted only in the
+  root layout).
 
 ## Safe to remove without asking
 
