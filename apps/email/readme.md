@@ -25,4 +25,4 @@ bun run build     # via build.sh (export + post-traitement)
 | `bun run export` | Export des templates (HTML) |
 | `bun run build` | Pipeline de build (`build.sh`) |
 | `bun lint` | Lint via ultracite |
-| `bun run format` | Format Biome |
+| `bun run ci` | `biome ci` — lint + format + assist, sans écriture (utilisé par la CI) |

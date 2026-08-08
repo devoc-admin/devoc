@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "build": "next build",
+    "ci": "biome ci",
     "db:deploy": "doppler run --preserve-env=DATABASE_URL -- bun --bun node_modules/.bin/payload migrate --force --disable-transpile",
     "db:migration:check": "doppler run --preserve-env=PAYLOAD_SECRET -- bun run scripts/check-migrations.ts",
     "db:push": "doppler run -- bun --bun node_modules/.bin/payload db:push --disable-transpile",
     "dev": "rm -rf ./.next && rm -rf ./.turbo && doppler run -- next dev --turbopack -H 0.0.0.0",
-    "format": "biome format",
     "format:fix": "biome format --write",
     "gen:check": "doppler run -- bun run scripts/check-generated.ts",
     "gen:map": "doppler run --preserve-env=DATABASE_URL -- bun --bun node_modules/.bin/payload generate:importmap --disable-transpile",

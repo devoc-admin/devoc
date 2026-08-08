@@ -35,6 +35,9 @@
         "dist/**"
       ]
     },
+    "ci": {
+      "dependsOn": ["^ci"]
+    },
     "lint": {
       "dependsOn": ["^lint"]
     },
@@ -47,9 +50,6 @@
         "!Justfile",
         "!.gitignore"
       ]
-    },
-    "format": {
-      "dependsOn": ["^format"]
     },
     "dev": {
       "persistent": true,

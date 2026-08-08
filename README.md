@@ -203,11 +203,11 @@ This project uses several tools to maintain code quality:
 ### Linting & Formatting
 
 ```bash
-# Check and fix code style issues
+# Lint (Biome via ultracite), report only
 turbo lint --filter=web
 
-# Format code with Biome (runs on all files)
-turbo format --filter=web
+# Lint + format + assist checks in one pass, never writes — this is what CI runs
+turbo ci --filter=web
 ```
 
 ## Understanding the Tech Stack

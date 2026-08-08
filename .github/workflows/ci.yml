@@ -64,7 +64,7 @@ jobs:
       - run: bun x turbo boundaries
 
   lint-and-format:
-    name: "Lint and format check"
+    name: "Lint and format check (biome ci)"
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -76,7 +76,7 @@ jobs:
           doppler-token: ${{ secrets.DOPPLER_TOKEN_SHARED }}
           inject-env-vars: true
       - uses: ./.github/actions/setup
-      - run: bun x turbo lint format --affected
+      - run: bun x turbo ci --affected
 
   build:
     name: "Build apps and packages"

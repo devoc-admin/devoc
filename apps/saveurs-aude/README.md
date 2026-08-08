@@ -34,7 +34,7 @@ bun run payload      # CLI Payload
 | `bun start` | Démarrage production |
 | `bun run seed` | Seed Payload via `payload/seed.ts` |
 | `bun run payload` | CLI Payload |
-| `bun lint` / `bun run format` / `bun run typecheck` | Qualité de code |
+| `bun lint` / `bun run ci` / `bun run typecheck` | Qualité de code (`ci` = lint + format + assist, sans écriture) |
 
 ## Variables d'environnement
 
