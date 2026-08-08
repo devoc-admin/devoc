@@ -41,12 +41,10 @@
         "playwright": "^1.62.1"
       },
       "email": {
-        "resend": "^6.18.1",
         "@react-email/components": "^1.0.12"
       },
       "forms": {
         "@tanstack/react-form": "^1.33.3",
-        "zod": "^4.4.3",
         "nuqs": "^2.9.5"
       },
       "crawler": {
