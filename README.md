@@ -1,365 +1,184 @@
-# Dev-OC Monorepo
+# Dev'Oc
 
-Welcome! This is a monorepo containing multiple web applications. This guide will help you get started, even if you're new to JavaScript development.
+Monorepo du collectif **Dev-OC** : le site principal, l'atelier de templates d'emails et les packages TypeScript partagés. Géré avec **Bun** (workspaces + catalogs) et **Turborepo**.
 
-## What's a Monorepo?
-
-A monorepo is a single repository that contains multiple projects (apps, shared libraries, etc.). This makes it easier to share code and manage related projects together.
-
-## Project Structure
+## Structure
 
 ```
 dev-oc/
-├── apps/                    # All applications live here
-│   ├── web/                # Main Next.js website
-│   └── customers/          # Customer-specific projects
-│       ├── opencarca/      # OpenCarca 2025 presentation (Next.js + SwiperJS)
-│       └── lasbordes/
-│           ├── front/      # Lasbordes frontend
-│           └── preview/    # Lasbordes preview app (Vite)
-├── packages/               # Shared packages
-├── tooling/                # Shared configurations
-│   └── typescript-config/  # TypeScript settings
-└── package.json            # Root package file
+├── apps/
+│   ├── web/                    # Site principal Next.js (vitrine + back-office prospection)
+│   └── email/                  # Atelier de templates React Email
+├── packages/
+│   ├── crawler/                # @dev-oc/crawler — crawler Playwright + Wapalyzer
+│   └── utils/                  # @dev-oc/utils — helpers URL et dates
+├── tooling/
+│   └── typescript-config/      # tsconfig partagés (base.json, next.json)
+├── docs/                       # Notes techniques
+├── .github/workflows/          # CI (ci.yml) et déploiement (deploy.yml)
+├── package.json                # Workspaces, catalogs de versions, outils racine
+├── turbo.json                  # Tâches du monorepo
+├── biome.jsonc                 # Lint + format + assist
+├── lefthook.yml                # Hooks Git
+└── Justfile                    # Raccourcis de commandes
 ```
 
-## Prerequisites
+Chaque app et package a son propre `readme.md` avec le détail de ses scripts.
 
-Before you start, you need to install these tools on your computer:
+## Applications et packages
 
-### 1. Bun (JavaScript runtime & package manager)
-This project uses **Bun** as the default JavaScript runtime - a fast all-in-one JavaScript runtime and package manager with built-in bundling and testing.
+| Workspace | Chemin | Rôle |
+|-----------|--------|------|
+| `web` | `apps/web` | Next.js 16 (App Router, Turbopack). Vitrine publique + back-office : better-auth, Postgres/Neon via Drizzle ORM, files Inngest, Vercel Blob, animations GSAP / Motion / Three.js |
+| `email` | `apps/email` | Templates transactionnels React Email, avec preview live dans le navigateur |
+| `@dev-oc/crawler` | `packages/crawler` | Crawl de pages, extraction de métadonnées et détection de technologies. Consommé par `web` |
+| `@dev-oc/utils` | `packages/utils` | Helpers sans dépendances, exportés en sous-chemins (`/url`, `/dates`) |
 
-Install with Homebrew/Linuxbrew (recommended):
+`tooling/typescript-config` n'est pas un package npm : c'est un dossier de `tsconfig` que les workspaces étendent par chemin relatif.
+
+## Prérequis
+
+| Outil | Requis | Installation |
+|-------|--------|--------------|
+| [Bun](https://bun.sh) | oui — runtime et gestionnaire de paquets | `brew install oven-sh/bun/bun` |
+| [Git](https://git-scm.com/) | oui | `brew install git` |
+| [Node.js](https://nodejs.org/) | oui — `.envrc` s'arrête sans lui, et certains outils s'y appuient | `brew install node` |
+| [direnv](https://direnv.net/) | oui — prépare l'environnement automatiquement | `brew install direnv` |
+| [Doppler CLI](https://docs.doppler.com/docs/cli) | oui — les scripts de `apps/web` passent par `doppler run` | `brew install dopplerhq/cli/doppler` |
+| [just](https://github.com/casey/just) | optionnel — raccourcis du `Justfile` | `brew install just` |
+
+La version de Bun utilisée par le repo est épinglée dans le champ `packageManager` du `package.json` racine ; la CI s'en sert pour installer la même.
+
+Pour direnv, activez le hook dans votre shell (zsh ici) puis rechargez :
 
 ```bash
-brew install oven-sh/bun/bun
-
-# Check if installed
-bun --version
+echo 'eval "$(direnv hook zsh)"' >> ~/.zshrc && source ~/.zshrc
 ```
 
-Alternatively, use the official installer from https://bun.sh
+Extensions d'éditeur recommandées : [Biome](https://biomejs.dev/guides/editors/first-party-extensions/) (format et lint à la sauvegarde) et Tailwind CSS IntelliSense.
 
-Tip: If you use direnv, the provided `.envrc` adds `~/.bun/bin` to your PATH automatically.
-
-### 2. Git (Version control)
-- Download from: https://git-scm.com/
-- To check if installed: `git --version`
-
-### 3. Turborepo
-Tool for managing the whole monorepo
+## Démarrage
 
 ```bash
-bun add -g turbo
-```
-
-### 4. just (optional but recommended)
-Lightweight task runner to centralize commands (alternative to Make). Used here via the `Justfile`.
-
-```bash
-brew install just
-just --list   # view available recipes
-```
-
-If you prefer not to use it, all commands remain accessible via `bun` and `turbo`.
-
-### 5. IDE Extensions (recommended)
-
-#### Biome
-Formatter and linter for JavaScript and TypeScript. Install the plugin for your IDE to enable automatic formatting on save.
-- [Biome IDE Extensions](https://biomejs.dev/guides/editors/first-party-extensions/)
-
-#### Tailwind CSS IntelliSense
-Essential for TailwindCSS development - provides autocomplete, syntax highlighting, and linting for Tailwind classes.
-- [VS Code Extension](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
-- Available for other IDEs via their extension marketplaces
-
-## Getting Started
-
-### Zero Setup Philosophy
-This repo is designed so you can clone and start coding without unnecessary manual configuration thanks to [Direnv](#install-direnv).
-
-1. Allow direnv when you enter the folder: `direnv allow`.
-2. The `.envrc` file handles:
-	- Checking for key tools (git, node, bun)
-	- Installing dependencies automatically (`bun install`)
-	- Installing/verifying Git hooks (lefthook: pre-commit + commit-msg)
-	- Exporting environment variables and adding `node_modules/.bin` to PATH
-	- Displaying versions and hints for missing installations
-
-Then run `just dev` or `turbo dev`. Nothing else required.
-
-### Install direnv
-Direnv automatically reloads your environment based on `.envrc`.
-
-macOS/Linux (Homebrew/Linuxbrew):
-```bash
-brew install direnv
-```
-
-Enable the hook for your shell (zsh by default here). Add to `~/.zshrc`:
-```bash
-eval "$(direnv hook zsh)"
-```
-
-Then reload:
-```bash
-source ~/.zshrc
-```
-
-Usage:
-```bash
-cd dev-oc
-direnv allow   # first time only
-```
-
-Direnv will ask for confirmation each time `.envrc` changes.
-
-### Step 1: Clone the Repository
-
-```bash
-# Clone the project to your computer
-git clone <repository-url>
-
-# Navigate into the project folder
+git clone https://github.com/devoc-admin/devoc.git
 cd devoc
+direnv allow      # première fois — voir ci-dessous
+doppler login     # accès aux secrets
+just dev          # ou: bun x turbo dev --filter=web — http://localhost:3000
 ```
 
-### Step 2: Install Dependencies
+`direnv allow` déclenche le `.envrc`, qui vérifie la présence de git/bun/node, ajoute les binaires locaux au `PATH`, installe les dépendances (`bun install`), installe les hooks Git (`lefthook install`), désactive la télémétrie Next et Turbo, charge `.env`/`.env.local` s'ils existent et définit des placeholders sûrs pour les variables référencées par `turbo.json`.
 
-This will install all the packages needed for all apps in the monorepo:
+## Commandes
+
+Les tâches passent par Turborepo, qui met en cache les résultats et ne relance que ce qui a changé.
 
 ```bash
-bun install  # or: bun i
-# or via just
-just install
+bun x turbo dev --filter=web        # ou: just dev
+bun x turbo build --filter=web      # ou: just build
+bun x turbo typecheck               # tout le monorepo
+bun x turbo ci                      # lint + format + assist, sans écriture
+bun x turbo boundaries              # vérifie les frontières entre workspaces
 ```
 
-## Running the Applications
+| Tâche | Ce qu'elle fait |
+|-------|-----------------|
+| `dev` | Serveur de développement (persistante, non mise en cache) |
+| `build` | Build de production. Seul `web` en a un |
+| `ci` | `biome ci` : lint + format + assist en une passe, sans écriture — ce que lance la CI |
+| `lint` / `lint:fix` | `ultracite check` / `fix` (Biome) |
+| `typecheck` | `tsc --noEmit` |
 
-### Run All Apps (Development Mode)
+`--filter` cible un workspace par le champ `name` de son `package.json` (`web`, `email`, `@dev-oc/crawler`…). Ajoutez `--affected` pour ne traiter que les workspaces touchés depuis la branche de base.
+
+Sans `--filter`, `turbo dev` démarre tous les serveurs de dev en parallèle : `web` et `email` écoutent tous deux sur le port 3000, donc lancez-les séparément.
+
+Le `Justfile` racine expose les mêmes raccourcis (`just install`, `just dev [app]`, `just build [app]`, `just lint [app]`, `just typecheck [app]`, `just clean`, `just versions`, `just help`), avec `web` comme app par défaut. Chaque app a aussi son `Justfile` local.
+
+## Gestion des dépendances
+
+Les versions partagées sont centralisées dans les **catalogs Bun** du `package.json` racine, par thème : `react`, `next`, `tailwind`, `ui`, `tooling`, `testing`, `email`, `forms`, `crawler`, `vercel`.
+
+Un workspace y fait référence au lieu de figer une version :
+
+```json
+{
+  "dependencies": {
+    "react": "catalog:react",
+    "lucide-react": "catalog:ui"
+  }
+}
+```
+
+Une seule ligne à modifier pour mettre à jour la version partout. Si une dépendance est déjà dans un catalog, utilisez `catalog:<nom>` plutôt qu'une version littérale.
 
 ```bash
-turbo dev
-# or
-just dev
+bun install                              # installe tous les workspaces
+bun add <paquet> --filter=web            # ajoute une dépendance à un workspace
+bun add <paquet> --dev                   # dépendance de développement
+bun run update                           # mise à jour interactive, récursive, en dernières versions
 ```
 
-### Run a Specific App
+## Qualité de code
+
+- **Biome** (via [ultracite](https://www.ultracite.ai/)) pour le lint, le format et les actions d'assist (tri des imports, des attributs, des clés). Configuration à la racine dans `biome.jsonc`.
+- **knip** pour l'audit de code mort : `bun x knip` signale fichiers, exports, dépendances et entrées de catalog inutilisés.
+- **TypeScript** en `strict`, configs partagées dans `tooling/typescript-config`.
+- **Tests** : `bun test` dans `packages/crawler`.
+
+### Hooks Git (lefthook)
+
+Installés automatiquement par `.envrc`, définis dans `lefthook.yml` :
+
+| Hook | Vérifications |
+|------|---------------|
+| `pre-commit` | `ultracite fix` sur les fichiers indexés (corrections réindexées), `turbo typecheck --affected`, `turbo boundaries` |
+| `commit-msg` | `commitlint` |
+| `pre-push` | `bun install --frozen-lockfile` — le lockfile doit être à jour |
+
+### Messages de commit
+
+Convention [Conventional Commits](https://www.conventionalcommits.org/fr/) (`@commitlint/config-conventional`) : `feat`, `fix`, `refactor`, `chore`, `docs`, `style`, `test`, `perf`, `ci`, `build`.
+
+```
+feat(web): ajoute le formulaire de contact
+fix(crawler): corrige la normalisation des URLs relatives
+```
+
+## Secrets et variables d'environnement
+
+Les secrets sont gérés avec **Doppler**, pas avec des `.env` versionnés :
+
+| Projet Doppler | Config | Utilisé par |
+|----------------|--------|-------------|
+| `devoc-shared` | `dev` | Racine du monorepo (`doppler.yaml`) et CI |
+| `devoc-web` | `dev` | `apps/web` — scripts `dev`, `db:*`, `inngest`, `create-admin`, `seed-prospects` |
+
+Après `doppler login`, les scripts qui en ont besoin s'exécutent via `doppler run --` et récupèrent les secrets automatiquement. En local, `.envrc` charge aussi `.env` et `.env.local` s'ils existent (ignorés par Git).
+
+## CI/CD
+
+**`ci.yml`** — sur push sur `main` et sur les pull requests, en jobs parallèles : typecheck des workspaces affectés, `turbo boundaries`, `turbo ci` (lint + format), et build des workspaces affectés.
+
+**`deploy.yml`** — sur push sur `main` (ou déclenchement manuel) : build et déploiement de `apps/web` sur Vercel, avec application des migrations Drizzle de production entre le build et le déploiement.
+
+## Dépannage
+
+**`command not found: bun`** — installez Bun (`brew install oven-sh/bun/bun`) ; `.envrc` ajoute `~/.bun/bin` au `PATH`.
+
+**Le port 3000 est déjà utilisé** — `web` et `email` l'utilisent tous les deux ; lancez-les séparément avec `--filter`.
+
+**Erreurs de secrets manquants au démarrage de `web`** — vérifiez `doppler login` puis `doppler setup` dans `apps/web`.
+
+**Erreurs « module not found » ou builds incohérents** — nettoyez et réinstallez :
 
 ```bash
-# Run the main web app
-turbo dev --filter=web
-# or
-just dev web
-
-# Run the OpenCarca presentation (Next.js)
-turbo dev --filter=opencarca
-# or
-just dev opencarca
-
-# Run the lasbordes preview app (Vite)
-turbo dev --filter=lasbordes-preview
-# or
-just dev lasbordes-preview
+just clean        # supprime .turbo, node_modules et apps/web/.next
+bun install
 ```
 
-### Code Quality (centralized)
+**Les changements de `.envrc` ne sont pas pris en compte** — direnv demande une confirmation à chaque modification : relancez `direnv allow`.
 
-```bash
-just lint      # lint all main apps
-just format    # format code
-just typecheck # type checking
-just commit    # commit message assistant
-```
+## Ressources
 
-**What does this mean?**
-- `--filter` tells turbo which app to run, name is indicated in each package.json file
-- `dev` is the development mode (with hot reloading)
-
-### Access the Apps
-
-After running, you can access the apps in your browser:
-- Main web app: http://localhost:3000 (usually)
-- Check the terminal output for the exact URLs
-
-## Building for Production
-
-To create optimized production builds:
-
-```bash
-# Build all apps
-turbo build
-
-# Build a specific app
-turbo build --filter=web
-```
-
-## Code Quality Tools
-
-This project uses several tools to maintain code quality:
-
-### Linting & Formatting
-
-```bash
-# Lint (Biome via ultracite), report only
-turbo lint --filter=web
-
-# Lint + format + assist checks in one pass, never writes — this is what CI runs
-turbo ci --filter=web
-```
-
-## Understanding the Tech Stack
-
-### Core Technologies
-
-- **Bun**: Default JavaScript runtime, package manager, and bundler - a fast all-in-one toolkit that replaces Node.js, npm, and webpack
-- **TypeScript**: JavaScript with types (helps catch errors early)
-- **Turbo**: Tool that helps run tasks across multiple projects efficiently
-
-### Frameworks & Libraries
-
-- **Next.js** (apps/web): React framework for building full-stack web apps
-- **React**: JavaScript library for building user interfaces
-- **Vite** (apps/customers/lasbordes/preview): Fast build tool for modern web projects
-- **TailwindCSS**: Utility-first CSS framework for styling
-
-### Development Tools
-
-- **Biome**: Fast linter and formatter for JavaScript/TypeScript
-- **lefthook**: Git hooks manager (runs checks before commits)
-
-### Commit Message Format
-
-Follow this convention:
-- `feat`: New feature (e.g., `feat: add user login`)
-- `fix`: Bug fix (e.g., `fix: resolve navbar issue`)
-- `style`: Styling changes (e.g., `style: update hero section`)
-- `docs`: Documentation (e.g., `docs: update README`)
-- `refactor`: Code refactoring (e.g., `refactor: simplify auth logic`)
-
-## Troubleshooting
-
-### "Command not found: bun"
-
-Install Bun: `brew install oven-sh/bun/bun` (or visit https://bun.sh)
-
-### "Port already in use"
-
-Another app is using the port. Either:
-- Stop the other app
-- Change the port in the app's configuration
-
-### "Module not found" errors
-
-Try:
-```bash
-# Clean install
-rm -rf node_modules
-bun install  # or: bun i
-```
-
-### Build/Dev server issues
-
-Clear the cache:
-```bash
-# Clear Turbo cache
-rm -rf .turbo
-
-# Clear Next.js cache (for web app)
-rm -rf apps/web/.next
-
-# Reinstall dependencies
-bun install  # or: bun i
-```
-
-## Getting Help
-
-- Check the documentation for specific technologies on their official websites
-- Ask your team members for help
-- Look for similar issues on Stack Overflow
-
-## Useful Resources
-
-- [Node.js Documentation](https://nodejs.org/docs)
-- [Bun Documentation](https://bun.sh/docs)
-- [Turbo Documentation](https://turbo.build/repo/docs)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [React Documentation](https://react.dev/)
-- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
-- [TailwindCSS Documentation](https://tailwindcss.com/docs)
-- [Vite Documentation](https://vitejs.dev/)
-
-## Project Maintenance
-
-### Adding a New App
-
-1. Create a new folder in `apps/`
-2. Add a `package.json` file
-3. The workspace will automatically detect it
-
-### Managing Dependencies
-
-#### Installing Dependencies Recursively
-
-Bun can install dependencies across all workspaces (apps, packages, tooling) in the monorepo:
-
-```bash
-# Install all dependencies in all workspaces from root
-bun install  # or: bun i
-
-# Install a specific package in all workspaces
-bun add <package-name> --workspace  # or: bun a <package-name> --workspace
-```
-
-#### Updating Dependencies
-
-```bash
-# Update all dependencies across all workspaces
-bun update --recursive  # or: bun u --recursive
-
-# Interactive update - choose which packages to update
-bun update --interactive  # or: bun u -i
-
-# Interactive update across all workspaces
-bun update --interactive --recursive  # or: bun u -i --recursive
-
-# Update a specific package everywhere
-bun update <package-name>  # or: bun u <package-name>
-
-# Update dependencies in a specific workspace
-cd apps/web
-bun update  # or: bun u
-```
-
-**Tip**: The `--interactive` (or `-i`) flag opens an interactive menu where you can:
-- See all available updates with version comparisons
-- Select specific packages to update using arrow keys and spacebar
-- Skip packages you don't want to update yet
-- Combine with `--recursive` to interactively update across all workspaces
-
-#### Adding Dependencies to Specific Workspaces
-
-```bash
-# Add to a specific app (from root)
-bun add <package-name> --filter=web  # or: bun a <package-name> --filter=web
-
-# Add as dev dependency
-bun add <package-name> --dev  # or: bun a <package-name> -d or -D
-
-# Or navigate to the workspace
-cd apps/web
-bun add <package-name>  # or: bun a <package-name>
-```
-
-**Common Bun shortcuts**:
-- `bun i` = `bun install`
-- `bun a` = `bun add`
-- `bun u` = `bun update`
-- `bun rm` or `bun remove` = remove package
-- `-d` or `-D` = `--dev` (dev dependency)
-- `-g` = `--global` (global install)
-- `-i` = `--interactive`
-
----
+[Bun](https://bun.sh/docs) · [Turborepo](https://turborepo.com/docs) · [Next.js](https://nextjs.org/docs) · [React](https://react.dev/) · [TypeScript](https://www.typescriptlang.org/docs/) · [Tailwind CSS](https://tailwindcss.com/docs) · [Biome](https://biomejs.dev/) · [Drizzle ORM](https://orm.drizzle.team/docs/overview) · [React Email](https://react.email/docs) · [Doppler](https://docs.doppler.com/docs)
