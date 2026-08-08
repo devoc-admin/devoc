@@ -5,6 +5,5 @@
   "exports": {
     "./url": "./src/url/index.ts",
     "./dates": "./src/dates/index.ts"
-  },
-  "module": "src/index.ts"
+  }
 }
