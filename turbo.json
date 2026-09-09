@@ -8,23 +8,7 @@
     "lefthook.yml"
   ],
   "globalEnv": ["NODE_ENV"],
-  "globalPassThroughEnv": [
-    "DOPPLER_TOKEN",
-    "DATABASE_URL_UNPOOLED",
-    "EDGE_CONFIG",
-    "NEON_PROJECT_ID",
-    "PGDATABASE",
-    "PGHOST",
-    "PGHOST_UNPOOLED",
-    "PGPASSWORD",
-    "PGUSER",
-    "POSTGRES_DATABASE",
-    "POSTGRES_HOST",
-    "POSTGRES_PASSWORD",
-    "POSTGRES_URL_NON_POOLING",
-    "POSTGRES_URL_NO_SSL",
-    "POSTGRES_USER"
-  ],
+  "globalPassThroughEnv": ["DOPPLER_TOKEN"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

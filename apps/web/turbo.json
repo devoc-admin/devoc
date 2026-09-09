@@ -5,12 +5,17 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["DATABASE_URL", "NEXT_PUBLIC_SITE_URL", "NEXT_PUBLIC_URL"]
+      "env": ["DATABASE_URL", "VERCEL_BLOB_URL"],
+      "passThroughEnv": [
+        "BETTER_AUTH_SECRET",
+        "BLOB_READ_WRITE_TOKEN",
+        "INNGEST_EVENT_KEY",
+        "INNGEST_SIGNING_KEY"
+      ]
     },
     "dev": {
       "persistent": true,
-      "cache": false,
-      "env": ["RESEND_API_KEY", "CONTACT_EMAIL"]
+      "cache": false
     }
   }
 }
