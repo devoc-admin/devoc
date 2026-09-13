@@ -13,7 +13,7 @@ import os
 import re
 import sys
 
-PKGS = ["apps/web", "apps/email", "packages/crawler", "packages/utils"]
+PKGS = ["apps/web", "apps/admin", "apps/email", "packages/crawler", "packages/utils"]
 SKIP_DIRS = {"node_modules", ".next", ".turbo", ".react-email", ".vercel", ".git"}
 SRC_EXT = (".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".css", ".sh", ".json")
 

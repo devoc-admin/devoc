@@ -1,13 +1,14 @@
 # Dev'Oc
 
-Monorepo du collectif **Dev-OC** : le site principal, l'atelier de templates d'emails et les packages TypeScript partagés. Géré avec **Bun** (workspaces + catalogs) et **Turborepo**.
+Monorepo du collectif **Dev-OC** : le site vitrine, le back-office de prospection, l'atelier de templates d'emails et les packages TypeScript partagés. Géré avec **Bun** (workspaces + catalogs) et **Turborepo**.
 
 ## Structure
 
 ```
 dev-oc/
 ├── apps/
-│   ├── web/                    # Site principal Next.js (vitrine + back-office prospection)
+│   ├── web/                    # Site vitrine Next.js
+│   ├── admin/                  # Back-office Next.js (prospection, crawls, audits)
 │   └── email/                  # Atelier de templates React Email
 ├── packages/
 │   ├── crawler/                # @dev-oc/crawler — crawler Playwright + Wapalyzer
@@ -29,9 +30,10 @@ Chaque app et package a son propre `readme.md` avec le détail de ses scripts.
 
 | Workspace | Chemin | Rôle |
 |-----------|--------|------|
-| `web` | `apps/web` | Next.js 16 (App Router, Turbopack). Vitrine publique + back-office : better-auth, Postgres/Neon via Drizzle ORM, files Inngest, Vercel Blob, animations GSAP / Motion / Three.js |
+| `web` | `apps/web` | Next.js 16 (App Router, Turbopack). Vitrine publique : animations GSAP / Motion / Three.js, pages packs et pages légales. Port 3000 |
+| `admin` | `apps/admin` | Next.js 16 (App Router, Turbopack). Back-office : better-auth, Postgres/Neon via Drizzle ORM, files Inngest, Vercel Blob. Port 3001 |
 | `email` | `apps/email` | Templates transactionnels React Email, avec preview live dans le navigateur |
-| `@dev-oc/crawler` | `packages/crawler` | Crawl de pages, extraction de métadonnées et détection de technologies. Consommé par `web` |
+| `@dev-oc/crawler` | `packages/crawler` | Crawl de pages, extraction de métadonnées et détection de technologies. Consommé par `admin` |
 | `@dev-oc/utils` | `packages/utils` | Helpers sans dépendances, exportés en sous-chemins (`/url`, `/dates`) |
 
 `tooling/typescript-config` n'est pas un package npm : c'est un dossier de `tsconfig` que les workspaces étendent par chemin relatif.
@@ -44,7 +46,7 @@ Chaque app et package a son propre `readme.md` avec le détail de ses scripts.
 | [Git](https://git-scm.com/) | oui | `brew install git` |
 | [Node.js](https://nodejs.org/) | oui — `.envrc` s'arrête sans lui, et certains outils s'y appuient | `brew install node` |
 | [direnv](https://direnv.net/) | oui — prépare l'environnement automatiquement | `brew install direnv` |
-| [Doppler CLI](https://docs.doppler.com/docs/cli) | oui — les scripts de `apps/web` passent par `doppler run` | `brew install dopplerhq/cli/doppler` |
+| [Doppler CLI](https://docs.doppler.com/docs/cli) | oui — les scripts de `apps/web` et `apps/admin` passent par `doppler run` | `brew install dopplerhq/cli/doppler` |
 | [just](https://github.com/casey/just) | optionnel — raccourcis du `Justfile` | `brew install just` |
 
 La version de Bun utilisée par le repo est épinglée dans le champ `packageManager` du `package.json` racine ; la CI s'en sert pour installer la même.
@@ -65,6 +67,7 @@ cd devoc
 direnv allow      # première fois — voir ci-dessous
 doppler login     # accès aux secrets
 just dev          # ou: bun x turbo dev --filter=web — http://localhost:3000
+just dev admin    # back-office — http://localhost:3001
 ```
 
 `direnv allow` déclenche le `.envrc`, qui vérifie la présence de git/bun/node, ajoute les binaires locaux au `PATH`, installe les dépendances (`bun install`), installe les hooks Git (`lefthook install`), désactive la télémétrie Next et Turbo, charge `.env`/`.env.local` s'ils existent et définit des placeholders sûrs pour les variables référencées par `turbo.json`.
@@ -75,6 +78,7 @@ Les tâches passent par Turborepo, qui met en cache les résultats et ne relance
 
 ```bash
 bun x turbo dev --filter=web        # ou: just dev
+bun x turbo dev --filter=admin      # ou: just dev admin
 bun x turbo build --filter=web      # ou: just build
 bun x turbo typecheck               # tout le monorepo
 bun x turbo ci                      # lint + format + assist, sans écriture
@@ -84,14 +88,14 @@ bun x turbo boundaries              # vérifie les frontières entre workspaces
 | Tâche | Ce qu'elle fait |
 |-------|-----------------|
 | `dev` | Serveur de développement (persistante, non mise en cache) |
-| `build` | Build de production. Seul `web` en a un |
+| `build` | Build de production. `web` et `admin` en ont un |
 | `ci` | `biome ci` : lint + format + assist en une passe, sans écriture — ce que lance la CI |
 | `lint` / `lint:fix` | `ultracite check` / `fix` (Biome) |
 | `typecheck` | `tsc --noEmit` |
 
-`--filter` cible un workspace par le champ `name` de son `package.json` (`web`, `email`, `@dev-oc/crawler`…). Ajoutez `--affected` pour ne traiter que les workspaces touchés depuis la branche de base.
+`--filter` cible un workspace par le champ `name` de son `package.json` (`web`, `admin`, `email`, `@dev-oc/crawler`…). Ajoutez `--affected` pour ne traiter que les workspaces touchés depuis la branche de base.
 
-Sans `--filter`, `turbo dev` démarre tous les serveurs de dev en parallèle : `web` et `email` écoutent tous deux sur le port 3000, donc lancez-les séparément.
+Sans `--filter`, `turbo dev` démarre tous les serveurs de dev en parallèle. `web` et `email` écoutent tous deux sur le port 3000, donc lancez-les séparément ; `admin` écoute sur le port 3001 et cohabite sans conflit.
 
 Le `Justfile` racine expose les mêmes raccourcis (`just install`, `just dev [app]`, `just build [app]`, `just lint [app]`, `just typecheck [app]`, `just clean`, `just versions`, `just help`), avec `web` comme app par défaut. Chaque app a aussi son `Justfile` local.
 
@@ -141,7 +145,7 @@ Installés automatiquement par `.envrc`, définis dans `lefthook.yml` :
 Convention [Conventional Commits](https://www.conventionalcommits.org/fr/) (`@commitlint/config-conventional`) : `feat`, `fix`, `refactor`, `chore`, `docs`, `style`, `test`, `perf`, `ci`, `build`.
 
 ```
-feat(web): ajoute le formulaire de contact
+feat(admin): ajoute le filtre par département sur les prospects
 fix(crawler): corrige la normalisation des URLs relatives
 ```
 
@@ -152,7 +156,7 @@ Les secrets sont gérés avec **Doppler**, pas avec des `.env` versionnés :
 | Projet Doppler | Config | Utilisé par |
 |----------------|--------|-------------|
 | `devoc-shared` | `dev` | Racine du monorepo (`doppler.yaml`) et CI |
-| `devoc-web` | `dev` | `apps/web` — scripts `dev`, `db:*`, `inngest`, `create-admin`, `seed-prospects` |
+| `devoc-web` | `dev` | `apps/web` — script `dev` · `apps/admin` — scripts `dev`, `db:*`, `inngest`, `create-admin`, `seed-rgaa` |
 
 Après `doppler login`, les scripts qui en ont besoin s'exécutent via `doppler run --` et récupèrent les secrets automatiquement. En local, `.envrc` charge aussi `.env` et `.env.local` s'ils existent (ignorés par Git).
 
@@ -160,7 +164,7 @@ Après `doppler login`, les scripts qui en ont besoin s'exécutent via `doppler 
 
 **`ci.yml`** — sur push sur `main` et sur les pull requests, en jobs parallèles : typecheck des workspaces affectés, `turbo boundaries`, `turbo ci` (lint + format), et build des workspaces affectés.
 
-**`deploy.yml`** — sur push sur `main` (ou déclenchement manuel) : build et déploiement de `apps/web` sur Vercel, avec application des migrations Drizzle de production entre le build et le déploiement.
+**`deploy.yml`** — sur push sur `main` (ou déclenchement manuel) : build et déploiement de `apps/web` sur Vercel, avec application des migrations Drizzle de production (`apps/admin`) entre le build et le déploiement. `apps/admin` n'a pas encore de job de déploiement : il lui faut son propre projet Vercel.
 
 ## Dépannage
 
@@ -168,12 +172,12 @@ Après `doppler login`, les scripts qui en ont besoin s'exécutent via `doppler 
 
 **Le port 3000 est déjà utilisé** — `web` et `email` l'utilisent tous les deux ; lancez-les séparément avec `--filter`.
 
-**Erreurs de secrets manquants au démarrage de `web`** — vérifiez `doppler login` puis `doppler setup` dans `apps/web`.
+**Erreurs de secrets manquants au démarrage de `web` ou `admin`** — vérifiez `doppler login` puis `doppler setup` dans le dossier de l'app.
 
 **Erreurs « module not found » ou builds incohérents** — nettoyez et réinstallez :
 
 ```bash
-just clean        # supprime .turbo, node_modules et apps/web/.next
+just clean        # supprime .turbo, node_modules et les .next des apps
 bun install
 ```
 

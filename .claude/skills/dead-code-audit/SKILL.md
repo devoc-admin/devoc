@@ -43,11 +43,13 @@ scripts after every deletion round until the output is stable.
 ### Build verification
 
 A build is the only check that catches a dependency needed at bundle time but never imported
-by name. For `apps/web` it runs locally with dummy env:
+by name. `apps/web` needs no secrets; `apps/admin` runs locally with dummy env:
 
 ```bash
-cd apps/web && DATABASE_URL="postgresql://u:p@localhost:5432/x" \
-  NEXT_PUBLIC_SITE_URL="http://localhost:3000" npx next build --turbopack
+cd apps/web && npx next build --turbopack
+
+cd apps/admin && DATABASE_URL="postgresql://u:p@localhost:5432/x" \
+  NEXT_PUBLIC_APP_URL="http://localhost:3001" npx next build --turbopack
 ```
 
 Use `npx next`, **not** `bun --bun next build` — Bun's runtime fails to load Next's compiled
@@ -71,7 +73,7 @@ trusting any result. Symptom of a broken install: correctly-typed code reported 
 
 This matters beyond the noise: **`ultracite fix` autofixes it by deleting the guard.** A Stop
 hook and the lefthook pre-commit job both run `ultracite fix`, and it has already silently
-removed a real null check from `apps/web/app/admin/login/_components/balatro.tsx`, turning
+removed a real null check from `apps/admin/app/login/_components/balatro.tsx`, turning
 clean code into four `TS18047: possibly 'null'` errors.
 
 > Always run `npx turbo typecheck` after any `ultracite fix`, and read `git diff` for guards
@@ -92,7 +94,7 @@ Deps the scripts can't see as used:
 - `react-email` — provides the `email` binary used by the `dev`/`export` scripts, not imported.
 - `@react-email/preview-server`, `@react-email/ui` — version pins for the generated
   `.react-email` preview app. Verify `bun run dev` in `apps/email` before touching them.
-- `sharp` in `apps/web` `serverExternalPackages` — used by `@dev-oc/crawler`, not by web source.
+- `sharp` in `apps/admin` `serverExternalPackages` — used by `@dev-oc/crawler`, not by admin source.
 - Root `overrides` pin *transitive* deps, so they outlive the package that needed them. Check
   what still pulls each one in before deciding: `grep -c "<name>" bun.lock` after a removal +
   `bun install` tells you whether the pin still has a subject. `entities` (pinned for

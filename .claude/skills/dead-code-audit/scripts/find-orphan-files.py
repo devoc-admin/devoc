@@ -11,7 +11,7 @@ import os
 import re
 import sys
 
-ROOTS = ["apps/web", "apps/email", "packages/crawler", "packages/utils"]
+ROOTS = ["apps/web", "apps/admin", "apps/email", "packages/crawler", "packages/utils"]
 SKIP_DIRS = {"node_modules", ".next", ".turbo", ".react-email", ".vercel", "migrations", ".git"}
 
 # Framework/tooling entry points — loaded by convention, never imported.

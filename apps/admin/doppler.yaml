@@ -1,0 +1,3 @@
+setup:
+  project: devoc-web
+  config: dev

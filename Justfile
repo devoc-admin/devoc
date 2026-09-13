@@ -12,6 +12,7 @@ clean:
     rm -rf .turbo
     rm -rf node_modules
     rm -rf apps/web/.next
+    rm -rf apps/admin/.next
 
 ## --- Développement ---
 dev app="web":

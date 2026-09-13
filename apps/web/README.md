@@ -1,14 +1,14 @@
 # web
 
-Site principal **Dev-OC** (vitrine + back-office prospection).
+Site vitrine **Dev-OC**.
 
 ## Description
 
-Application Next.js (App Router, Turbopack) qui héberge :
+Application Next.js (App Router, Turbopack) qui héberge la vitrine publique :
+hero, services, réalisations, contact, pages packs, pages légales et sections
+éditoriales animées (GSAP / Motion / Three.js).
 
-- la vitrine publique (hero, services, réalisations, contact, sections éditoriales avec animations GSAP / Motion / Three.js) ;
-- un back-office d'audit et de prospection : authentification (better-auth), base Postgres via Drizzle ORM, files Inngest, intégrations Resend (emails) et Vercel Blob (stockage) ;
-- la consommation des packages internes `@dev-oc/crawler` et `@dev-oc/utils`.
+Le back-office de prospection vit dans une application séparée : [`apps/admin`](../admin).
 
 ## Démarrage
 
@@ -26,12 +26,9 @@ bun dev           # http://localhost:3000
 | `bun run typecheck` | Vérification TypeScript |
 | `bun lint` | Lint via ultracite |
 | `bun run ci` | `biome ci` — lint + format + assist, sans écriture (utilisé par la CI) |
-| `bun run inngest` | Démarre le devserver Inngest |
-| `bun run db:generate` / `db:migrate` / `db:push` / `db:pull` / `db:studio` | Drizzle Kit (lit `.env.local`) |
-| `bun run create-admin` | Crée un compte administrateur |
-| `bun run seed-prospects` | Seed des prospects à auditer |
 
 ## Variables d'environnement
 
 À renseigner dans `apps/web/.env.local` (chargé par `.envrc`) :
-`DATABASE_URL`, `POSTGRES_URL`, `RESEND_API_KEY`, `BLOB_READ_WRITE_TOKEN`, etc. Les placeholders globaux sont définis à la racine du monorepo.
+`RESEND_API_KEY`, `CONTACT_EMAIL`. Les placeholders globaux sont définis à la
+racine du monorepo.
