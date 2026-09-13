@@ -67,6 +67,23 @@
         "typescript": "catalog:tooling",
       },
     },
+    "apps/clients": {
+      "name": "clients",
+      "version": "0.1.0",
+      "dependencies": {
+        "next": "catalog:next",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+      },
+      "devDependencies": {
+        "@tailwindcss/postcss": "catalog:tailwind",
+        "@types/node": "catalog:next",
+        "@types/react": "catalog:react",
+        "@types/react-dom": "catalog:react",
+        "tailwindcss": "catalog:tailwind",
+        "typescript": "catalog:tooling",
+      },
+    },
     "apps/email": {
       "name": "email",
       "version": "1.1.0",
@@ -1211,6 +1228,8 @@
     "cli-truncate": ["cli-truncate@6.1.1", "", { "dependencies": { "slice-ansi": "^9.0.0", "string-width": "^8.2.0" } }, "sha512-06p9vyLahLa4zkGcgsGxU6iEkSOiuI4fhCH6Emhe2lPAcoUv73n72DnODsnHA+5wwXGnV0n9M9/qOQJSjYhFhw=="],
 
     "client-only": ["client-only@0.0.1", "", {}, "sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA=="],
+
+    "clients": ["clients@workspace:apps/clients"],
 
     "cliui": ["cliui@9.0.1", "", { "dependencies": { "string-width": "^7.2.0", "strip-ansi": "^7.1.0", "wrap-ansi": "^9.0.0" } }, "sha512-k7ndgKhwoQveBL+/1tqGJYNz097I7WOvwbmmU2AR5+magtbjPWQTS1C5vzGkBC8Ym8UWRzfKUzUUqFLypY4Q+w=="],
 
