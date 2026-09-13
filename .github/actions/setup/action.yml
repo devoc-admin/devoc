@@ -1,5 +1,5 @@
 name: Setup
-description: Restore bun + turbo caches, set up bun, install Doppler CLI, install dependencies.
+description: Restore bun + turbo caches, set up bun, install dependencies.
 runs:
   using: composite
   steps:
@@ -12,7 +12,5 @@ runs:
     - uses: oven-sh/setup-bun@v2
       with:
         bun-version-file: package.json
-    - name: Install Doppler CLI
-      uses: dopplerhq/cli-action@v4
     - run: bun install --frozen-lockfile
       shell: bash

@@ -23,7 +23,6 @@ dev-oc/
 ├── knip.json                   # Audit de code mort
 ├── lefthook.yml                # Hooks Git
 ├── commitlint.config.js        # Convention de messages de commit
-├── doppler.yaml                # Projet Doppler de la racine
 ├── .envrc                      # Environnement de dev (direnv)
 └── Justfile                    # Raccourcis de commandes
 ```
@@ -51,7 +50,6 @@ Chaque app et package a son propre `readme.md` avec le détail de ses scripts.
 | [Git](https://git-scm.com/) | oui | `brew install git` |
 | [Node.js](https://nodejs.org/) | oui — `.envrc` s'arrête sans lui, et certains outils s'y appuient | `brew install node` |
 | [direnv](https://direnv.net/) | oui — prépare l'environnement automatiquement | `brew install direnv` |
-| [Doppler CLI](https://docs.doppler.com/docs/cli) | oui — les scripts `dev` des apps Next passent par `doppler run` | `brew install dopplerhq/cli/doppler` |
 | [just](https://github.com/casey/just) | optionnel — raccourcis du `Justfile` | `brew install just` |
 
 La version de Bun utilisée par le repo est épinglée dans le champ `packageManager` du `package.json` racine ; la CI s'en sert pour installer la même.
@@ -70,7 +68,6 @@ Extensions d'éditeur recommandées : [Biome](https://biomejs.dev/guides/editors
 git clone https://github.com/devoc-admin/devoc.git
 cd devoc
 direnv allow      # première fois — voir ci-dessous
-doppler login     # accès aux secrets
 just dev          # ou: bun x turbo dev --filter=web — http://localhost:3000
 just dev admin    # back-office — http://localhost:3001
 just dev clients  # espace clients — http://localhost:3002
@@ -162,14 +159,18 @@ fix(crawler): corrige la normalisation des URLs relatives
 
 ## Secrets et variables d'environnement
 
-Les secrets sont gérés avec **Doppler**, pas avec des `.env` versionnés :
+Les secrets locaux vivent dans des fichiers `.env.local` non versionnés, un par
+workspace (`apps/admin/.env.local`, etc.). Ils sont chargés trois fois plutôt
+qu'une : par `.envrc` (direnv), par Next.js et par Bun lui-même — aucun wrapper
+n'est nécessaire autour des scripts.
 
-| Projet Doppler | Config | Utilisé par |
-|----------------|--------|-------------|
-| `devoc-shared` | `dev` | Racine du monorepo (`doppler.yaml`) et CI |
-| `devoc-web` | `dev` | `apps/web` et `apps/clients` — script `dev` · `apps/admin` — scripts `dev`, `db:*`, `inngest`, `create-admin`, `seed-rgaa` |
+| Workspace | Variables |
+|-----------|-----------|
+| `apps/web` | aucune |
+| `apps/clients` | aucune |
+| `apps/admin` | `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BLOB_READ_WRITE_TOKEN`, `VERCEL_BLOB_URL`, `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`, `INNGEST_DEV` |
 
-Après `doppler login`, les scripts qui en ont besoin s'exécutent via `doppler run --` et récupèrent les secrets automatiquement. En local, `.envrc` charge aussi `.env` et `.env.local` s'ils existent (ignorés par Git).
+En production, les variables sont définies dans le dashboard Vercel de chaque app.
 
 ## CI/CD
 
@@ -183,7 +184,7 @@ Après `doppler login`, les scripts qui en ont besoin s'exécutent via `doppler 
 
 **Le port 3000 est déjà utilisé** — `web` et `email` l'utilisent tous les deux ; lancez-les séparément avec `--filter`.
 
-**Erreurs de secrets manquants au démarrage d'une app Next** — vérifiez `doppler login` puis `doppler setup` dans le dossier de l'app.
+**Erreurs de secrets manquants au démarrage d'une app Next** — vérifiez que le `.env.local` du workspace existe et contient les variables listées dans son readme.
 
 **Erreurs « module not found » ou builds incohérents** — nettoyez et réinstallez :
 
@@ -196,4 +197,4 @@ bun install
 
 ## Ressources
 
-[Bun](https://bun.sh/docs) · [Turborepo](https://turborepo.com/docs) · [Next.js](https://nextjs.org/docs) · [React](https://react.dev/) · [TypeScript](https://www.typescriptlang.org/docs/) · [Tailwind CSS](https://tailwindcss.com/docs) · [Biome](https://biomejs.dev/) · [Drizzle ORM](https://orm.drizzle.team/docs/overview) · [React Email](https://react.email/docs) · [Doppler](https://docs.doppler.com/docs)
+[Bun](https://bun.sh/docs) · [Turborepo](https://turborepo.com/docs) · [Next.js](https://nextjs.org/docs) · [React](https://react.dev/) · [TypeScript](https://www.typescriptlang.org/docs/) · [Tailwind CSS](https://tailwindcss.com/docs) · [Biome](https://biomejs.dev/) · [Drizzle ORM](https://orm.drizzle.team/docs/overview) · [React Email](https://react.email/docs)

@@ -26,10 +26,6 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: dopplerhq/secrets-fetch-action@v2.0.0
-        with:
-          doppler-token: ${{ secrets.DOPPLER_TOKEN_SHARED }}
-          inject-env-vars: true
       - uses: ./.github/actions/setup
       - run: bun x turbo typecheck --affected
 
@@ -52,10 +48,6 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: dopplerhq/secrets-fetch-action@v2.0.0
-        with:
-          doppler-token: ${{ secrets.DOPPLER_TOKEN_SHARED }}
-          inject-env-vars: true
       - uses: ./.github/actions/setup
       - run: bun x turbo ci --affected
 
@@ -67,13 +59,6 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - name: Fetch shared CI secrets
-        uses: dopplerhq/secrets-fetch-action@v2.0.0
-        with:
-          doppler-token: ${{ secrets.DOPPLER_TOKEN_SHARED }}
-          inject-env-vars: true
       - uses: ./.github/actions/setup
       - name: Build
-        env:
-          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_SHARED }}
         run: bun x turbo build --affected
