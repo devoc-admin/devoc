@@ -10,6 +10,7 @@ const geistSans = Geist({
 
 export const metadata: Metadata = {
   description: "Espace clients Dev'Oc",
+  icons: { icon: "/icon.svg" },
   robots: {
     follow: false,
     index: false,

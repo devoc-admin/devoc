@@ -15,7 +15,7 @@ const kanit = Kanit({
 });
 
 export const metadata: Metadata = {
-  description: "Administration backoffice",
+  description: "Outils d'administration de Dev'Oc",
   icons: { icon: "/icon.svg" },
   robots: {
     follow: false,
