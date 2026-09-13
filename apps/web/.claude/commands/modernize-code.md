@@ -1,1 +1,0 @@
-- Identify old or deprecated patterns and replace them with modern alternatives. Use Context7 or Exa MCP to compare outdated patterns with the available documentation. Create a change plan in a markdown file and await explicit approval before implementing any modifications.
