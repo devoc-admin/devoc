@@ -3,22 +3,30 @@
 import { LockIcon, MailIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { type ChangeEventHandler, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { signIn } from "@/lib/auth/auth-client";
+import { cn } from "@/lib/utils";
 import DevOcIcon from "@/public/icon.svg";
 
 const REDIRECTION_PATH_AFTER_LOGIN = "/prospects";
 
 export function LoginForm() {
   const router = useRouter();
+
+  // 📨
   const [email, setEmail] = useState("");
+  // 🔑
   const [password, setPassword] = useState("");
+
+  // 🚫
   const [error, setError] = useState<string | null>(null);
+
+  // ⏳
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
@@ -49,16 +57,15 @@ export function LoginForm() {
   return (
     <Card
       animation={false}
-      className="w-full max-w-130 border-none from-transparent to-transparent py-12 shadow-none! shadow-zinc-200! backdrop-blur-2xl"
+      className={cn(
+        "h-full w-full min-w-200 max-w-220 justify-center",
+        "px-12",
+        "border-none"
+      )}
     >
       <CardHeader className="flex flex-col items-center justify-center text-center">
-        <Image
-          alt="DevOc Logo"
-          className="size-12"
-          height={48}
-          src={DevOcIcon.src}
-          width={48}
-        />
+        {/* 🌼 */}
+        <DevOcLogo />
         <CardTitle className="font-bold font-kanit text-4xl text-zinc-950">
           Connexion
         </CardTitle>
@@ -68,53 +75,121 @@ export function LoginForm() {
       </div>
       <CardContent className="px-10 text-zinc-950">
         <form className="space-y-4" onSubmit={handleSubmit}>
-          {error && (
-            <div className="rounded-md bg-red-100 p-3 text-red-600 text-sm">
-              {error}
-            </div>
-          )}
-
-          <div className="space-y-2">
-            <Label className="font-normal text-zinc-400" htmlFor="email">
-              <MailIcon className="mr-0 h-4 w-4" />
-              <span>Email</span>
-            </Label>
-            <Input
-              className="border-zinc-300! ring-0!"
-              disabled={isLoading}
-              id="email"
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              type="email"
-              value={email}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label className="font-normal text-zinc-400" htmlFor="password">
-              <LockIcon className="mr-0 h-4 w-4" />
-              <span>Mot de passe</span>
-            </Label>
-            <Input
-              className="border-zinc-300! ring-0!"
-              disabled={isLoading}
-              id="password"
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              type="password"
-              value={password}
-            />
-          </div>
-
-          <Button
-            className="mt-6 h-12 w-full cursor-pointer bg-zinc-950! text-md text-white"
-            disabled={isLoading}
-            type="submit"
-          >
-            {isLoading ? "Connexion..." : "Se connecter"}
-          </Button>
+          {/* 🚫 */}
+          <ErrorMessage error={error} />
+          {/* 📨 */}
+          <Mail
+            isLoading={isLoading}
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+          />
+          {/* 🔑 */}
+          <Password
+            isLoading={isLoading}
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+          />
+          {/* ⏹️ */}
+          <ButtonLogin isLoading={isLoading} />
         </form>
       </CardContent>
     </Card>
+  );
+}
+
+// ================================
+// 🌼
+function DevOcLogo() {
+  return (
+    <Image
+      alt="DevOc Logo"
+      className="size-12"
+      height={48}
+      src={DevOcIcon.src}
+      width={48}
+    />
+  );
+}
+// ================================
+// 🚫
+function ErrorMessage({ error }: { error: string | null }) {
+  if (!error) return null;
+  return (
+    <div className="rounded-md bg-red-100 p-3 text-red-600 text-sm">
+      {error}
+    </div>
+  );
+}
+
+// ================================
+// 🔠
+function Mail({
+  value,
+  onChange,
+  isLoading,
+}: {
+  value: string;
+  onChange: ChangeEventHandler<HTMLInputElement, HTMLInputElement> | undefined;
+  isLoading: boolean;
+}) {
+  return (
+    <div className="space-y-2">
+      <Label className="font-normal text-zinc-400" htmlFor="email">
+        <MailIcon className="mr-0 h-4 w-4" />
+        <span>Email</span>
+      </Label>
+      <Input
+        className="border-zinc-300! ring-0!"
+        disabled={isLoading}
+        id="email"
+        onChange={onChange}
+        required
+        type="email"
+        value={value}
+      />
+    </div>
+  );
+}
+
+// ================================
+// 🔑
+function Password({
+  value,
+  onChange,
+  isLoading,
+}: {
+  value: string;
+  onChange: ChangeEventHandler<HTMLInputElement, HTMLInputElement> | undefined;
+  isLoading: boolean;
+}) {
+  return (
+    <div className="space-y-2">
+      <Label className="font-normal text-zinc-400" htmlFor="password">
+        <LockIcon className="mr-0 h-4 w-4" />
+        <span>Mot de passe</span>
+      </Label>
+      <Input
+        className="border-zinc-300! ring-0!"
+        disabled={isLoading}
+        id="password"
+        onChange={onChange}
+        required
+        type="password"
+        value={value}
+      />
+    </div>
+  );
+}
+
+// ⏹️
+function ButtonLogin({ isLoading }: { isLoading: boolean }) {
+  return (
+    <Button
+      className="mt-6 h-12 w-full cursor-pointer bg-zinc-950! text-md text-white"
+      disabled={isLoading}
+      type="submit"
+    >
+      {isLoading ? "Connexion..." : "Se connecter"}
+    </Button>
   );
 }
