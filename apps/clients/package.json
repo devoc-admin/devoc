@@ -1,0 +1,35 @@
+{
+  "name": "clients",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "next build --turbopack",
+    "ci": "biome ci",
+    "dev": "doppler run --project=devoc-web --config=dev -- bun --bun next dev --turbopack -H 0.0.0.0 -p 3002",
+    "format:fix": "biome format --write",
+    "lint": "bun x ultracite check",
+    "lint:fix": "bun x ultracite fix",
+    "start": "bun --bun next start -p 3002",
+    "typecheck": "tsc --noEmit"
+  },
+  "browserslist": [
+    "Chrome >= 93",
+    "Firefox >= 92",
+    "Safari >= 15.4",
+    "Edge >= 93"
+  ],
+  "dependencies": {
+    "next": "catalog:next",
+    "react": "catalog:react",
+    "react-dom": "catalog:react"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "catalog:tailwind",
+    "@types/node": "catalog:next",
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react",
+    "tailwindcss": "catalog:tailwind",
+    "typescript": "catalog:tooling"
+  }
+}

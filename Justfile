@@ -13,6 +13,7 @@ clean:
     rm -rf node_modules
     rm -rf apps/web/.next
     rm -rf apps/admin/.next
+    rm -rf apps/clients/.next
 
 ## --- Développement ---
 dev app="web":
