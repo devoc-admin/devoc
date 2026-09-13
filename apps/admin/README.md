@@ -47,5 +47,3 @@ Aucune URL d'application à configurer : better-auth résout son origine par
 requête (`baseURL.allowedHosts` dans `lib/auth/auth.ts`) et le client
 l'infère depuis `window.location`. En production, ajoutez le host à
 `allowedHosts` plutôt qu'une variable d'environnement.
-
-Les scripts passent par `doppler run --project=devoc-web --config=dev`.

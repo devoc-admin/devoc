@@ -30,9 +30,8 @@ bun dev           # http://localhost:3002
 
 ## Variables d'environnement
 
-Aucune pour l'instant. Les secrets passeront par `doppler run`
-(`devoc-web` / `dev`) comme dans les autres apps ; ajoutez-les dans
-`apps/clients/.env.local` pour le développement local.
+Aucune pour l'instant. Ajoutez-les dans `apps/clients/.env.local` (non
+versionné, chargé par `.envrc`, Next.js et Bun) quand le besoin arrivera.
 
 ## Ajouter des composants shadcn/ui
 
