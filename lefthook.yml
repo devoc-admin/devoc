@@ -13,7 +13,7 @@ pre-commit:
         - "*.css"
       stage_fixed: true
     - name: Check types on changed files
-      run: doppler run -- bun x turbo typecheck --affected
+      run: bun x turbo typecheck --affected
     - name: Check workspace boundaries
       run: bun x turbo boundaries
 pre-push:

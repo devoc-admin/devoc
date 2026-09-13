@@ -36,9 +36,9 @@ jobs:
         run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
       - name: Build
         run: vercel build --prod --token=$VERCEL_TOKEN
+      # DATABASE_URL comes from the Doppler secrets-fetch step above
+      # (inject-env-vars). db:deploy no longer wraps itself in `doppler run`.
       - name: Apply prod migrations
-        env:
-          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN_WEB_PRD }}
         working-directory: apps/admin
         run: bun run db:deploy
       - name: Deploy prebuilt

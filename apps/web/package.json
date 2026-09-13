@@ -6,7 +6,7 @@
   "scripts": {
     "build": "next build --turbopack",
     "ci": "biome ci",
-    "dev": "doppler run --project=devoc-web --config=dev -- bun --bun next dev --turbopack -H 0.0.0.0",
+    "dev": "bun --bun next dev --turbopack -H 0.0.0.0",
     "format:fix": "biome format --write",
     "lint": "bun x ultracite check",
     "lint:fix": "bun x ultracite fix",
