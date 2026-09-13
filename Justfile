@@ -24,14 +24,17 @@ build app="web":
     bun x turbo build --filter={{app}}
 
 ## --- Qualité de code ---
+# Attention: `bun --filter <app> run <script>` et `bun x --filter <app> <cmd>` ne
+# fonctionnent pas — bun lit alors `--filter` comme un flag d'installation et peut
+# remonter les versions des catalogs. La bonne forme est `bun run --filter <app>`.
 lint app="web":
-    bun --filter {{app}} run lint
+    bun x turbo lint --filter={{app}}
 
 format app="web":
-    bun x --filter {{app}} biome format --write
+    bun run --filter {{app}} format:fix
 
 typecheck app="web":
-    bun x --filter {{app}} tsc --noEmit
+    bun x turbo typecheck --filter={{app}}
 
 
 ## --- Diagnostics ---

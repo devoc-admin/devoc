@@ -1,6 +1,6 @@
 # Dev'Oc
 
-Monorepo du collectif **Dev-OC** : le site vitrine, le back-office de prospection, l'atelier de templates d'emails et les packages TypeScript partagés. Géré avec **Bun** (workspaces + catalogs) et **Turborepo**.
+Monorepo du collectif **Dev-OC** : le site vitrine, le back-office de prospection, l'espace clients, l'atelier de templates d'emails et les packages TypeScript partagés. Géré avec **Bun** (workspaces + catalogs) et **Turborepo**.
 
 ## Structure
 
@@ -16,12 +16,15 @@ dev-oc/
 │   └── utils/                  # @dev-oc/utils — helpers URL et dates
 ├── tooling/
 │   └── typescript-config/      # tsconfig partagés (base.json, next.json)
-├── docs/                       # Notes techniques
 ├── .github/workflows/          # CI (ci.yml) et déploiement (deploy.yml)
 ├── package.json                # Workspaces, catalogs de versions, outils racine
 ├── turbo.json                  # Tâches du monorepo
 ├── biome.jsonc                 # Lint + format + assist
+├── knip.json                   # Audit de code mort
 ├── lefthook.yml                # Hooks Git
+├── commitlint.config.js        # Convention de messages de commit
+├── doppler.yaml                # Projet Doppler de la racine
+├── .envrc                      # Environnement de dev (direnv)
 └── Justfile                    # Raccourcis de commandes
 ```
 
@@ -94,8 +97,10 @@ bun x turbo boundaries              # vérifie les frontières entre workspaces
 | `dev` | Serveur de développement (persistante, non mise en cache) |
 | `build` | Build de production. `web`, `admin` et `clients` en ont un |
 | `ci` | `biome ci` : lint + format + assist en une passe, sans écriture — ce que lance la CI |
-| `lint` / `lint:fix` | `ultracite check` / `fix` (Biome) |
+| `lint` | `ultracite check` (Biome) |
 | `typecheck` | `tsc --noEmit` |
+
+Seules ces cinq tâches sont déclarées dans `turbo.json`. `lint:fix` et `format:fix` existent en scripts de workspace uniquement : lancez-les avec `bun run --filter <app> lint:fix`.
 
 `--filter` cible un workspace par le champ `name` de son `package.json` (`web`, `admin`, `clients`, `email`, `@dev-oc/crawler`…). Ajoutez `--affected` pour ne traiter que les workspaces touchés depuis la branche de base.
 
@@ -120,6 +125,8 @@ Un workspace y fait référence au lieu de figer une version :
 
 Une seule ligne à modifier pour mettre à jour la version partout. Si une dépendance est déjà dans un catalog, utilisez `catalog:<nom>` plutôt qu'une version littérale.
 
+> ⚠️ Lancez toujours `bun install` et `bun run update` **depuis la racine**, et respectez l'ordre des flags : `bun run --filter <app> <script>`. Écrit à l'envers (`bun --filter <app> run <script>`) ou avec `bun x --filter`, bun interprète `--filter` comme un flag d'installation, remonte les plages de versions des catalogs et réécrit `bun.lock` sans rien signaler. Si cela arrive : `git checkout -- package.json apps/*/package.json bun.lock`.
+
 ```bash
 bun install                              # installe tous les workspaces
 bun add <paquet> --filter=web            # ajoute une dépendance à un workspace
@@ -132,7 +139,7 @@ bun run update                           # mise à jour interactive, récursive,
 - **Biome** (via [ultracite](https://www.ultracite.ai/)) pour le lint, le format et les actions d'assist (tri des imports, des attributs, des clés). Configuration à la racine dans `biome.jsonc`.
 - **knip** pour l'audit de code mort : `bun x knip` signale fichiers, exports, dépendances et entrées de catalog inutilisés.
 - **TypeScript** en `strict`, configs partagées dans `tooling/typescript-config`.
-- **Tests** : `bun test` dans `packages/crawler`.
+- **Tests** : aucune suite pour l'instant. `packages/crawler` expose un script `test` (`bun test`) mais ne contient pas encore de fichier de test.
 
 ### Hooks Git (lefthook)
 
