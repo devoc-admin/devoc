@@ -40,8 +40,12 @@ bun run inngest   # dans un second terminal, devserver Inngest
 ## Variables d'environnement
 
 À renseigner dans `apps/admin/.env.local` (chargé par `.envrc`) :
-`DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `NEXT_PUBLIC_APP_URL`,
-`BLOB_READ_WRITE_TOKEN`, `VERCEL_BLOB_URL`,
-`NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`, `INNGEST_DEV`.
+`DATABASE_URL`, `BETTER_AUTH_SECRET`, `BLOB_READ_WRITE_TOKEN`,
+`VERCEL_BLOB_URL`, `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`, `INNGEST_DEV`.
+
+Aucune URL d'application à configurer : better-auth résout son origine par
+requête (`baseURL.allowedHosts` dans `lib/auth/auth.ts`) et le client
+l'infère depuis `window.location`. En production, ajoutez le host à
+`allowedHosts` plutôt qu'une variable d'environnement.
 
 Les scripts passent par `doppler run --project=devoc-web --config=dev`.
