@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Fetch shared Vercel credentials from Doppler
         uses: dopplerhq/secrets-fetch-action@v2.0.0
         with:
@@ -31,7 +31,7 @@ jobs:
           inject-env-vars: true
       - uses: ./.github/actions/setup
       - name: Install Vercel CLI
-        run: bun add -g vercel@54.6.1
+        run: bun add -g vercel@59.16.0
       - name: Pull Vercel project config & env
         run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
       - name: Build
