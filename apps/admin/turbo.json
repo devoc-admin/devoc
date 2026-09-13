@@ -5,7 +5,11 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["DATABASE_URL", "NEXT_PUBLIC_APP_URL"]
+      "env": [
+        "DATABASE_URL",
+        "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY",
+        "VERCEL_BLOB_URL"
+      ]
     },
     "dev": {
       "persistent": true,
