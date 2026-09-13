@@ -5,12 +5,11 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["NEXT_PUBLIC_SITE_URL", "NEXT_PUBLIC_URL"]
+      "env": ["DATABASE_URL", "NEXT_PUBLIC_APP_URL"]
     },
     "dev": {
       "persistent": true,
-      "cache": false,
-      "env": ["RESEND_API_KEY", "CONTACT_EMAIL"]
+      "cache": false
     }
   }
 }

@@ -27,7 +27,7 @@ declarations in this repo. The other ~70 are what this skill is for.
 ## Never run `bun update` from inside a workspace
 
 `cd apps/web && bun update --latest` does bump that workspace's own deps — and **flattens every
-`catalog:` reference into a literal range** on the way (22 of them in `apps/web`), silently
+`catalog:` reference into a literal range** on the way (over 20 of them per app), silently
 dismantling the catalog architecture. The install still works, so nothing warns you; only the
 diff shows it.
 
@@ -87,7 +87,7 @@ Next and Tailwind live in catalogs whose entries must move together — bumping 
 
 ### Verification
 
-`bun x turbo typecheck build` covers most of it. For a real build of `apps/web`, use
-`npx next build` rather than `bun --bun next build` — Bun's runtime fails to load Next's
+`bun x turbo typecheck build` covers most of it. For a real build of `apps/web` or
+`apps/admin`, use `npx next build` rather than `bun --bun next build` — Bun's runtime fails to load Next's
 compiled server internals, which looks like a broken upgrade but is not. See the
 `dead-code-audit` skill for the full note.

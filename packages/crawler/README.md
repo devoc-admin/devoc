@@ -12,7 +12,7 @@ Fonctionnalités principales :
 - détecteurs spécialisés : SEO (`detectSeo`), contact (`detectContactInfo`), auteurs (`detectAuthor`), pages catégorie (`detectCategoryPage`), langues (`detectLanguages`) ;
 - helpers d'URL (`isInternalUrl`, `normalizeUrl`, `toAbsoluteUrl`, `shouldCrawlUrl`).
 
-Consommé par `apps/web` (prospection, fiches collectivités).
+Consommé par `apps/admin` (prospection, fiches collectivités).
 
 ## API publique (extrait)
 

@@ -1,0 +1,18 @@
+{
+  "extends": "../../tooling/typescript-config/next.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "strict": true,
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "devoc.d.ts"
+  ],
+  "exclude": ["node_modules"]
+}
