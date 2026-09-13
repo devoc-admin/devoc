@@ -170,11 +170,27 @@ n'est nécessaire autour des scripts.
 | `apps/clients` | aucune |
 | `apps/admin` | `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BLOB_READ_WRITE_TOKEN`, `VERCEL_BLOB_URL`, `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`, `INNGEST_DEV` |
 
-En production, les variables sont définies dans le dashboard Vercel de chaque app.
+En production, les variables sont définies dans le dashboard Vercel de chaque
+app. `vercel pull` les récupère au moment du build, donc elles n'ont pas à être
+dupliquées dans GitHub.
+
+### Secrets GitHub Actions
+
+Seul `deploy.yml` en a besoin, dans **Settings → Secrets and variables → Actions** :
+
+| Secret | Rôle |
+|--------|------|
+| `VERCEL_TOKEN` | jeton d'accès Vercel |
+| `VERCEL_ORG_ID` | id de la team ; sert aussi de « team signal » exigé par la CLI en non-interactif depuis vercel@55 |
+| `VERCEL_PROJECT_ID` | projet `web` — indispensable car `.vercel/` est ignoré par Git |
+| `DATABASE_URL` | Postgres de production, pour l'étape de migration Drizzle |
+
+`ci.yml` n'a besoin d'aucun secret : `web` et `admin` se construisent tous les
+deux sans aucune variable d'environnement.
 
 ## CI/CD
 
-**`ci.yml`** — sur push sur `main` et sur les pull requests, en jobs parallèles : typecheck des workspaces affectés, `turbo boundaries`, `turbo ci` (lint + format), et build des workspaces affectés.
+**`ci.yml`** — sur push sur `main` et sur les pull requests, en jobs parallèles : typecheck des workspaces affectés, `turbo boundaries`, `turbo ci` (lint + format), et build des workspaces affectés. Aucun secret requis.
 
 **`deploy.yml`** — sur push sur `main` (ou déclenchement manuel) : build et déploiement de `apps/web` sur Vercel, avec application des migrations Drizzle de production (`apps/admin`) entre le build et le déploiement. `apps/admin` et `apps/clients` n'ont pas encore de job de déploiement : il leur faut chacun leur propre projet Vercel.
 

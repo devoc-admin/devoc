@@ -17,29 +17,32 @@ jobs:
     name: "Deploy web to Vercel"
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Repository secrets required by this job:
+    #   VERCEL_TOKEN      — Vercel access token
+    #   VERCEL_ORG_ID     — team id; also the team signal the CLI needs in CI
+    #   VERCEL_PROJECT_ID — the web project, since .vercel/ is git-ignored
+    #   DATABASE_URL      — prod Postgres, for the Drizzle migration step
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - uses: actions/checkout@v7
-      - name: Fetch shared Vercel credentials from Doppler
-        uses: dopplerhq/secrets-fetch-action@v2.0.0
-        with:
-          doppler-token: ${{ secrets.DOPPLER_TOKEN_SHARED }}
-          inject-env-vars: true
-      - name: Fetch web Vercel project id from Doppler
-        uses: dopplerhq/secrets-fetch-action@v2.0.0
-        with:
-          doppler-token: ${{ secrets.DOPPLER_TOKEN_WEB_PRD }}
-          inject-env-vars: true
       - uses: ./.github/actions/setup
       - name: Install Vercel CLI
         run: bun add -g vercel@59.16.0
+      # Also writes the project's env vars to .vercel/.env.production.local,
+      # which is what `vercel build` uses for build-time values.
       - name: Pull Vercel project config & env
         run: vercel pull --yes --environment=production --token=$VERCEL_TOKEN
       - name: Build
         run: vercel build --prod --token=$VERCEL_TOKEN
-      # DATABASE_URL comes from the Doppler secrets-fetch step above
-      # (inject-env-vars). db:deploy no longer wraps itself in `doppler run`.
+      # Between build and deploy on purpose: a failed build leaves the database
+      # untouched, and failed migrations stop the new code from going live.
       - name: Apply prod migrations
         working-directory: apps/admin
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: bun run db:deploy
       - name: Deploy prebuilt
         run: vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
