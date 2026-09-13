@@ -48,7 +48,7 @@
     "@types/node": "catalog:next",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
-    "@types/three": "^0.185.4",
+    "@types/three": "^0.186.0",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:tooling"
   }
