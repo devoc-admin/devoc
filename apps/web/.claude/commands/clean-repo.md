@@ -1,2 +1,0 @@
-- Find components that are not used anywhere in the project and delete them.
-- Check for unused fonts and remove them by examining `@app/globals.css` and `@app/layout.tsx` (using Tailwind 4, no other config file needed).
