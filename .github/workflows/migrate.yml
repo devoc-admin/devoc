@@ -1,7 +1,15 @@
 name: "Migrate"
 
+# Gated on CI rather than on a raw push: a red build must never reach the
+# database. workflow_run fires once "Github Actions" finishes on main, and the
+# job is skipped unless it finished green.
+#
+# Note: GitHub always runs the copy of this file that is on the default branch,
+# so changes here only take effect once merged to main.
 on:
-  push:
+  workflow_run:
+    workflows: ["Github Actions"]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
@@ -15,14 +23,25 @@ permissions:
 jobs:
   migrate:
     name: "Apply prod Drizzle migrations"
+    # Manual runs are always allowed; automatic ones only after a green CI run.
+    if: >-
+      ${{ github.event_name == 'workflow_dispatch'
+          || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    # Holds DATABASE_URL, and is where a required reviewer can be added to make
+    # every production migration wait for a human approval.
+    environment: production
     steps:
       - uses: actions/checkout@v7
+        with:
+          # workflow_run would otherwise check out the default branch tip; pin
+          # to the exact commit whose CI passed.
+          ref: ${{ github.event.workflow_run.head_sha || github.ref }}
       - uses: ./.github/actions/setup
-      # Building and deploying the apps is Vercel's Git integration, not ours.
-      # This runs alongside it rather than before it, so a migration must stay
-      # compatible with the currently-deployed code for the length of a build.
+      # Vercel's Git integration builds and deploys the apps independently, so
+      # this is not ordered against the deploy. Keep migrations backward
+      # compatible with the code that is already live (expand/contract).
       - name: Apply prod migrations
         working-directory: apps/admin
         env:
