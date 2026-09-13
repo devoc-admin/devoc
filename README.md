@@ -192,7 +192,9 @@ deux sans aucune variable d'environnement.
 
 **`ci.yml`** — sur push sur `main` et sur les pull requests, en jobs parallèles : typecheck des workspaces affectés, `turbo boundaries`, `turbo ci` (lint + format), et build des workspaces affectés. Aucun secret requis.
 
-**`deploy.yml`** — sur push sur `main` (ou déclenchement manuel) : build et déploiement de `apps/web` sur Vercel, avec application des migrations Drizzle de production (`apps/admin`) entre le build et le déploiement. `apps/admin` et `apps/clients` n'ont pas encore de job de déploiement : il leur faut chacun leur propre projet Vercel.
+**`migrate.yml`** — sur push sur `main` (ou déclenchement manuel) : applique les migrations Drizzle de production depuis `apps/admin`. Seul secret requis : `DATABASE_URL`.
+
+Le build et le déploiement des apps sont assurés par l'intégration Git de Vercel (projets `devoc-web`, `devoc-admin`, `devoc-clients`), pas par GitHub Actions : chaque push sur `main` déclenche un déploiement de production, chaque PR une preview. Les variables d'environnement de build vivent dans le dashboard Vercel de chaque projet.
 
 ## Dépannage
 
