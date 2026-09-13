@@ -1,0 +1,30 @@
+name: "Migrate"
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: migrate-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    name: "Apply prod Drizzle migrations"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      # Building and deploying the apps is Vercel's Git integration, not ours.
+      # This runs alongside it rather than before it, so a migration must stay
+      # compatible with the currently-deployed code for the length of a build.
+      - name: Apply prod migrations
+        working-directory: apps/admin
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: bun run db:deploy
