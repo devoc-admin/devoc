@@ -13,7 +13,6 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import type React from "react";
 
 type TemplateEmailProps = {
   closingData: string;
