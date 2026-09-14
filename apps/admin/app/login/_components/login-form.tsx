@@ -13,15 +13,83 @@ import { signIn } from "@/lib/auth/auth-client";
 import { cn } from "@/lib/utils";
 import DevOcIcon from "@/public/icon.svg";
 
+export function LoginForm() {
+  const {
+    email,
+    error,
+    handleEmail,
+    handlePassword,
+    handleSubmit,
+    isLoading,
+    password,
+  } = useLoginForm();
+
+  return (
+    <Card
+      animation={false}
+      className={cn(
+        "w-full max-w-220",
+        "border-none",
+        // ↔️
+        "xl:min-w-180 xl:px-12"
+      )}
+    >
+      {/* 🌼🆎 */}
+      <CardHeader className="flex flex-col items-center justify-center text-center">
+        {/* 🌼 */}
+        <DevOcLogo />
+        {/* 🆎 */}
+        <CardTitle className="font-bold font-kanit text-4xl text-zinc-950">
+          Connexion
+        </CardTitle>
+      </CardHeader>
+      {/* ― */}
+      <div className="px-10">
+        <Separator orientation="horizontal" />
+      </div>
+      {/* 🚫📨🔑⏹️ */}
+      <CardContent className="text-zinc-950">
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          {/* 🚫 */}
+          <ErrorMessage error={error} />
+          {/* 📨 */}
+          <Mail
+            isLoading={isLoading}
+            onChange={(e) => handleEmail(e.target.value)}
+            value={email}
+          />
+          {/* 🔑 */}
+          <Password
+            isLoading={isLoading}
+            onChange={(e) => handlePassword(e.target.value)}
+            value={password}
+          />
+          {/* ⏹️ */}
+          <ButtonLogin isLoading={isLoading} />
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
+
+// ================================
+// 🪝
 const REDIRECTION_PATH_AFTER_LOGIN = "/prospects";
 
-export function LoginForm() {
+function useLoginForm() {
   const router = useRouter();
 
   // 📨
   const [email, setEmail] = useState("");
+  function handleEmail(newEmail: string) {
+    setEmail(newEmail);
+  }
+
   // 🔑
   const [password, setPassword] = useState("");
+  function handlePassword(newPassword: string) {
+    setPassword(newPassword);
+  }
 
   // 🚫
   const [error, setError] = useState<string | null>(null);
@@ -54,47 +122,15 @@ export function LoginForm() {
     }
   }
 
-  return (
-    <Card
-      animation={false}
-      className={cn(
-        "h-full w-full min-w-200 max-w-220 justify-center",
-        "px-12",
-        "border-none"
-      )}
-    >
-      <CardHeader className="flex flex-col items-center justify-center text-center">
-        {/* 🌼 */}
-        <DevOcLogo />
-        <CardTitle className="font-bold font-kanit text-4xl text-zinc-950">
-          Connexion
-        </CardTitle>
-      </CardHeader>
-      <div className="px-10">
-        <Separator orientation="horizontal" />
-      </div>
-      <CardContent className="px-10 text-zinc-950">
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          {/* 🚫 */}
-          <ErrorMessage error={error} />
-          {/* 📨 */}
-          <Mail
-            isLoading={isLoading}
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          />
-          {/* 🔑 */}
-          <Password
-            isLoading={isLoading}
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-          />
-          {/* ⏹️ */}
-          <ButtonLogin isLoading={isLoading} />
-        </form>
-      </CardContent>
-    </Card>
-  );
+  return {
+    email,
+    error,
+    handleEmail,
+    handlePassword,
+    handleSubmit,
+    isLoading,
+    password,
+  };
 }
 
 // ================================
