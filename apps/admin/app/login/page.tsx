@@ -12,7 +12,10 @@ export default function LoginPage() {
     <div
       className={cn(
         "grid min-h-screen",
-        "grid-cols-1 place-items-center xl:grid-cols-[1fr_auto] xl:place-items-stretch"
+        "place-items-center",
+        // ↔️
+        "grid-cols-1",
+        "xl:grid-cols-[1fr_auto]"
       )}
     >
       <AnimatedBackground />
@@ -21,9 +24,18 @@ export default function LoginPage() {
   );
 }
 
+// 🃏
+// ======================
 function AnimatedBackground() {
   return (
-    <div className="hidden xl:block">
+    <div
+      className={cn(
+        "size-full",
+        // ↔️
+        "hidden",
+        "xl:block"
+      )}
+    >
       <Balatro
         color1="#F48C06"
         color2="#FFC731"
