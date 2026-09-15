@@ -2,7 +2,6 @@
 
 import { LockIcon, MailIcon } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { type ChangeEventHandler, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { signIn } from "@/lib/auth/auth-client";
+// import { signIn } from "@/lib/auth/auth-client";
 import { cn } from "@/lib/utils";
 import DevOcIcon from "@/public/icon.svg";
 
@@ -49,7 +48,7 @@ export function LoginForm() {
           Connexion
         </CardTitle>
         <CardDescription className="-mt-1 font-medium uppercase">
-          Admin
+          Espace client
         </CardDescription>
       </CardHeader>
       {/* ― */}
@@ -83,10 +82,10 @@ export function LoginForm() {
 
 // ================================
 // 🪝
-const REDIRECTION_PATH_AFTER_LOGIN = "/prospects";
+// const REDIRECTION_PATH_AFTER_LOGIN = "/prospects";
 
 function useLoginForm() {
-  const router = useRouter();
+  // const router = useRouter();
 
   // 📨
   const [email, setEmail] = useState("");
@@ -101,34 +100,31 @@ function useLoginForm() {
   }
 
   // 🚫
-  const [error, setError] = useState<string | null>(null);
+  const [error /*  , setError*/] = useState<string | null>(null);
 
   // ⏳
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading /*  , setIsLoading */] = useState(false);
 
-  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setError(null);
-    setIsLoading(true);
-
-    try {
-      const result = await signIn.email({
-        email,
-        password,
-      });
-
-      if (result.error) {
-        setError(result.error.message || "Une erreur est survenue");
-        setIsLoading(false);
-        return;
-      }
-
-      router.push(REDIRECTION_PATH_AFTER_LOGIN);
-      router.refresh();
-    } catch {
-      setError("Une erreur est survenue lors de la connexion");
-      setIsLoading(false);
-    }
+  async function handleSubmit(/* e: React.SubmitEvent<HTMLFormElement> */) {
+    // e.preventDefault();
+    // setError(null);
+    // setIsLoading(true);
+    // try {
+    //   const result = await signIn.email({
+    //     email,
+    //     password,
+    //   });
+    //   if (result.error) {
+    //     setError(result.error.message || "Une erreur est survenue");
+    //     setIsLoading(false);
+    //     return;
+    //   }
+    //   router.push(REDIRECTION_PATH_AFTER_LOGIN);
+    //   router.refresh();
+    // } catch {
+    //   setError("Une erreur est survenue lors de la connexion");
+    //   setIsLoading(false);
+    // }
   }
 
   return {
