@@ -1,8 +1,9 @@
 "use client";
 
+import { useEmailSignIn } from "@dev-oc/auth/client";
 import { LockIcon, MailIcon } from "lucide-react";
 import Image from "next/image";
-import { type ChangeEventHandler, useState } from "react";
+import type { ChangeEventHandler } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,7 +15,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-// import { signIn } from "@/lib/auth/auth-client";
 import { cn } from "@/lib/utils";
 import DevOcIcon from "@/public/icon.svg";
 
@@ -27,7 +27,7 @@ export function LoginForm() {
     handleSubmit,
     isLoading,
     password,
-  } = useLoginForm();
+  } = useEmailSignIn({ redirectTo: "/" });
 
   return (
     <Card
@@ -78,64 +78,6 @@ export function LoginForm() {
       </CardContent>
     </Card>
   );
-}
-
-// ================================
-// 🪝
-// const REDIRECTION_PATH_AFTER_LOGIN = "/prospects";
-
-function useLoginForm() {
-  // const router = useRouter();
-
-  // 📨
-  const [email, setEmail] = useState("");
-  function handleEmail(newEmail: string) {
-    setEmail(newEmail);
-  }
-
-  // 🔑
-  const [password, setPassword] = useState("");
-  function handlePassword(newPassword: string) {
-    setPassword(newPassword);
-  }
-
-  // 🚫
-  const [error /*  , setError*/] = useState<string | null>(null);
-
-  // ⏳
-  const [isLoading /*  , setIsLoading */] = useState(false);
-
-  async function handleSubmit(/* e: React.SubmitEvent<HTMLFormElement> */) {
-    // e.preventDefault();
-    // setError(null);
-    // setIsLoading(true);
-    // try {
-    //   const result = await signIn.email({
-    //     email,
-    //     password,
-    //   });
-    //   if (result.error) {
-    //     setError(result.error.message || "Une erreur est survenue");
-    //     setIsLoading(false);
-    //     return;
-    //   }
-    //   router.push(REDIRECTION_PATH_AFTER_LOGIN);
-    //   router.refresh();
-    // } catch {
-    //   setError("Une erreur est survenue lors de la connexion");
-    //   setIsLoading(false);
-    // }
-  }
-
-  return {
-    email,
-    error,
-    handleEmail,
-    handlePassword,
-    handleSubmit,
-    isLoading,
-    password,
-  };
 }
 
 // ================================

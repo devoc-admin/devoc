@@ -4,6 +4,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["192.168.1.*"],
   outputFileTracingRoot: path.join(import.meta.dirname, "../../"),
+  serverExternalPackages: ["pg"],
   turbopack: {
     root: path.join(import.meta.dirname, "../../"),
   },
