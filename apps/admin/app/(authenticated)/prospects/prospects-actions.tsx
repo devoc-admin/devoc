@@ -1,8 +1,8 @@
 "use server";
+import { db } from "@dev-oc/db";
+import { crawl, dpo, type Prospect, prospect } from "@dev-oc/db/schema";
 import { desc, eq } from "drizzle-orm";
 import { getErrorMessage } from "@/lib/api";
-import { db } from "@/lib/db";
-import { crawl, dpo, type Prospect, prospect } from "@/lib/db/schema";
 
 // --------------------------------------
 // 💥 ACTIONS

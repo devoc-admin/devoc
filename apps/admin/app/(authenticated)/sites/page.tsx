@@ -1,6 +1,6 @@
+import { db } from "@dev-oc/db";
+import { crawl } from "@dev-oc/db/schema";
 import { desc } from "drizzle-orm";
-import { db } from "@/lib/db";
-import { crawl } from "@/lib/db/schema";
 import { SitesList } from "./_components/sites-list";
 
 export const dynamic = "force-dynamic";

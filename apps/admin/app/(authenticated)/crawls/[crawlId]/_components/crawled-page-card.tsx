@@ -1,4 +1,5 @@
 "use client";
+import { type CrawledPage, pageCategoryEnum } from "@dev-oc/db/schema";
 import {
   ChevronDownIcon,
   ExternalLinkIcon,
@@ -25,7 +26,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { type CrawledPage, pageCategoryEnum } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import type { PageCategory } from "../crawl-details-actions";
 import { useCrawlDetailsContext } from "../crawl-details-context";

@@ -1,8 +1,8 @@
 "use server";
+import { db } from "@dev-oc/db";
+import { type Audit, audit } from "@dev-oc/db/schema";
 import { desc, eq } from "drizzle-orm";
 import { type ActionResult, getErrorMessage } from "@/lib/api";
-import { db } from "@/lib/db";
-import { type Audit, audit } from "@/lib/db/schema";
 
 // --------------------------------------
 // 💥 ACTIONS

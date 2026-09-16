@@ -1,6 +1,6 @@
 "use client";
+import type { Crawl } from "@dev-oc/db/schema";
 import { BanIcon, LoaderIcon } from "lucide-react";
-import type { Crawl } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 
 type CrawlStatusCellProps = {

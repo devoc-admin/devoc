@@ -1,4 +1,4 @@
-import type { Prospect } from "@/lib/db/schema";
+import type { Prospect } from "@dev-oc/db/schema";
 import { ProspectTypeBadge } from "../../buttons/prospect-type-button";
 
 export function ProspecTypeCell({

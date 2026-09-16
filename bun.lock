@@ -22,8 +22,8 @@
       "dependencies": {
         "@dev-oc/auth": "workspace:*",
         "@dev-oc/crawler": "workspace:*",
+        "@dev-oc/db": "workspace:*",
         "@dev-oc/utils": "workspace:*",
-        "@neondatabase/serverless": "^1.1.0",
         "@radix-ui/react-alert-dialog": "^1.1.23",
         "@radix-ui/react-checkbox": "^1.3.11",
         "@radix-ui/react-dialog": "catalog:ui",
@@ -43,7 +43,7 @@
         "@vercel/blob": "catalog:crawler",
         "class-variance-authority": "catalog:ui",
         "clsx": "catalog:ui",
-        "drizzle-orm": "^0.45.2",
+        "drizzle-orm": "catalog:db",
         "inngest": "^4.20.0",
         "lucide-react": "catalog:ui",
         "next": "catalog:next",
@@ -61,7 +61,6 @@
         "@types/node": "catalog:next",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
-        "drizzle-kit": "^0.31.10",
         "tailwindcss": "catalog:tailwind",
         "typescript": "catalog:tooling",
       },
@@ -182,6 +181,21 @@
         "typescript": "catalog:tooling",
       },
     },
+    "packages/db": {
+      "name": "@dev-oc/db",
+      "version": "0.0.1",
+      "dependencies": {
+        "@neondatabase/serverless": "catalog:db",
+        "drizzle-orm": "catalog:db",
+      },
+      "devDependencies": {
+        "@types/node": "catalog:next",
+        "drizzle-kit": "catalog:db",
+      },
+      "peerDependencies": {
+        "typescript": "catalog:tooling",
+      },
+    },
     "packages/utils": {
       "name": "@dev-oc/utils",
       "version": "0.0.1",
@@ -195,6 +209,11 @@
       "@vercel/blob": "^2.8.0",
       "sharp": "^0.35.4",
       "wapalyzer": "^6.10.65",
+    },
+    "db": {
+      "@neondatabase/serverless": "^1.1.0",
+      "drizzle-kit": "^0.31.10",
+      "drizzle-orm": "^0.45.2",
     },
     "email": {
       "@react-email/components": "^1.0.12",
@@ -347,6 +366,8 @@
     "@dev-oc/auth": ["@dev-oc/auth@workspace:packages/auth"],
 
     "@dev-oc/crawler": ["@dev-oc/crawler@workspace:packages/crawler"],
+
+    "@dev-oc/db": ["@dev-oc/db@workspace:packages/db"],
 
     "@dev-oc/utils": ["@dev-oc/utils@workspace:packages/utils"],
 

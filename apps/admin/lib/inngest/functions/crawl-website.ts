@@ -1,13 +1,13 @@
 import type { TechnologyDetectionResult } from "@dev-oc/crawler";
 import { WebCrawler } from "@dev-oc/crawler";
-import { eq } from "drizzle-orm";
-import { db } from "@/lib/db";
+import { db } from "@dev-oc/db";
 import {
   crawl,
   crawledPage,
   crawlTechnology,
   technology,
-} from "@/lib/db/schema";
+} from "@dev-oc/db/schema";
+import { eq } from "drizzle-orm";
 import { inngest } from "../client";
 
 type CrawlRequestEvent = {

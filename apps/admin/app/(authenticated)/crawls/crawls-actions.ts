@@ -1,11 +1,11 @@
 "use server";
 import { rm } from "node:fs/promises";
 import { join } from "node:path";
+import { db } from "@dev-oc/db";
+import { type Crawl, crawl, crawledPage, prospect } from "@dev-oc/db/schema";
 import { del, list } from "@vercel/blob";
 import { and, asc, desc, eq, isNotNull } from "drizzle-orm";
 import { type ActionResult, getErrorMessage } from "@/lib/api";
-import { db } from "@/lib/db";
-import { type Crawl, crawl, crawledPage, prospect } from "@/lib/db/schema";
 import { inngest } from "@/lib/inngest/client";
 
 // --------------------------------------

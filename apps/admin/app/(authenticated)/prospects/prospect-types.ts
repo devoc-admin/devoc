@@ -1,5 +1,5 @@
+import type { Prospect } from "@dev-oc/db/schema";
 import type { UseMutateFunction } from "@tanstack/react-query";
-import type { Prospect } from "@/lib/db/schema";
 import type { ProspectResult } from "./prospects-actions";
 
 // biome-ignore lint/suspicious/noEmptyBlockStatements: no-op default for context

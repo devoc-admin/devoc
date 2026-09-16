@@ -1,6 +1,7 @@
 // biome-ignore-all lint/suspicious/noEmptyBlockStatements: exception
 // biome-ignore-all assist/source/useSortedKeys: context requires specific order
 "use client";
+import type { Prospect } from "@dev-oc/db/schema";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 import {
   createContext,
@@ -9,7 +10,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import type { Prospect } from "@/lib/db/schema";
 import {
   defaultProspectsContext,
   type ProspectsContext,
