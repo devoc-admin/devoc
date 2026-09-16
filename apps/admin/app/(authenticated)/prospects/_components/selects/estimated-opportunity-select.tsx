@@ -1,4 +1,5 @@
 "use client";
+import type { Prospect } from "@dev-oc/db/schema";
 import { ChevronDownIcon, LoaderIcon } from "lucide-react";
 import {
   DropdownMenu,
@@ -7,7 +8,6 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { Prospect } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import { useProspectsContext } from "../../prospects-context";
 import {

@@ -1,12 +1,12 @@
 "use server";
-import { and, eq } from "drizzle-orm";
-import { db } from "@/lib/db";
+import { db } from "@dev-oc/db";
 import {
   type CrawledPage,
   crawl,
   crawledPage,
   type pageCategoryEnum,
-} from "@/lib/db/schema";
+} from "@dev-oc/db/schema";
+import { and, eq } from "drizzle-orm";
 
 // --------------------------------------
 // 💥 ACTIONS

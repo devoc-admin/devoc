@@ -1,0 +1,29 @@
+{
+  "name": "@dev-oc/db",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/index.ts"
+  },
+  "scripts": {
+    "db:deploy": "bun x drizzle-kit migrate",
+    "db:generate": "bun x drizzle-kit generate",
+    "db:migrate": "bun x drizzle-kit migrate",
+    "db:pull": "bun x drizzle-kit pull",
+    "db:push": "bun x drizzle-kit push",
+    "db:studio": "bun x drizzle-kit studio",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "catalog:db",
+    "drizzle-orm": "catalog:db"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:next",
+    "drizzle-kit": "catalog:db"
+  },
+  "peerDependencies": {
+    "typescript": "catalog:tooling"
+  }
+}

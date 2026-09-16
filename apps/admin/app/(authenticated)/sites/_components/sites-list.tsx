@@ -1,4 +1,5 @@
 "use client";
+import type { Crawl } from "@dev-oc/db/schema";
 import {
   columnVisibilityFeature,
   createColumnHelper,
@@ -15,7 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Crawl } from "@/lib/db/schema";
 
 const features = tableFeatures({ columnVisibilityFeature });
 

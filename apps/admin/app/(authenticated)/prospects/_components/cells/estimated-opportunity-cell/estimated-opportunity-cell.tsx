@@ -1,4 +1,4 @@
-import type { Prospect } from "@/lib/db/schema";
+import type { Prospect } from "@dev-oc/db/schema";
 import { EstimatedOpportunitySelect } from "../../selects/estimated-opportunity-select";
 export function EstimatedOpportunityCell({
   prospectId,

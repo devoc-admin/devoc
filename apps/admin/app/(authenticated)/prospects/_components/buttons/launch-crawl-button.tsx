@@ -1,11 +1,11 @@
 "use client";
+import type { Crawl } from "@dev-oc/db/schema";
 import { LoaderIcon, PlayIcon, RotateCcwIcon } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import type { Crawl } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import { useProspectsContext } from "../../prospects-context";
 export function LaunchCrawlButton({

@@ -1,9 +1,5 @@
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
-import { rgaaCriterion, rgaaTest, rgaaTheme } from "../lib/db/schema";
-
-const sql = neon(process.env.DATABASE_URL ?? "");
-const db = drizzle(sql);
+import { db } from "@dev-oc/db";
+import { rgaaCriterion, rgaaTest, rgaaTheme } from "@dev-oc/db/schema";
 
 type ThemeData = {
   number: number;

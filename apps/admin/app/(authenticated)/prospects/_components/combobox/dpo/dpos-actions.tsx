@@ -1,8 +1,8 @@
 "use server";
+import { db } from "@dev-oc/db";
+import { dpo } from "@dev-oc/db/schema";
 import { asc } from "drizzle-orm";
 import { getErrorMessage } from "@/lib/api";
-import { db } from "@/lib/db";
-import { dpo } from "@/lib/db/schema";
 
 const dposQuery = db
   .select({ id: dpo.id, name: dpo.name, url: dpo.url })

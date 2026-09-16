@@ -1,4 +1,5 @@
 "use client";
+import type { Prospect } from "@dev-oc/db/schema";
 import { isValidMapsUrl, isValidUrlFormat } from "@dev-oc/utils/url";
 import { useForm } from "@tanstack/react-form";
 import { LoaderIcon, PencilIcon, SaveIcon, XIcon } from "lucide-react";
@@ -27,7 +28,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import type { Prospect } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import type { ProspectResult } from "../../prospects-actions";
 import { useProspectsContext } from "../../prospects-context";

@@ -1,4 +1,4 @@
-import type { Prospect } from "@/lib/db/schema";
+import type { Prospect } from "@dev-oc/db/schema";
 export function inferProspectType(
   placeTypes: string[],
   placeName: string

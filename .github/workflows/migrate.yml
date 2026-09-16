@@ -43,7 +43,7 @@ jobs:
       # this is not ordered against the deploy. Keep migrations backward
       # compatible with the code that is already live (expand/contract).
       - name: Apply prod migrations
-        working-directory: apps/admin
+        working-directory: packages/db
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: bun run db:deploy

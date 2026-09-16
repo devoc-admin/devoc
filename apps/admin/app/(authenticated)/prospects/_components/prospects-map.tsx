@@ -1,9 +1,9 @@
 "use client";
 
+import type { Prospect } from "@dev-oc/db/schema";
 import { GoogleMap, InfoWindowF, MarkerF } from "@react-google-maps/api";
 import { ExternalLinkIcon, LoaderCircleIcon, MapPinIcon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
-import type { Prospect } from "@/lib/db/schema";
 import { useProspectsContext } from "../prospects-context";
 import { EstimatedOpportunityBadge } from "./buttons/estimated-opportunity-button";
 import { ProspectTypeBadge } from "./buttons/prospect-type-button";

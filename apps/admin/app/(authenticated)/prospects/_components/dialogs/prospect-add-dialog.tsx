@@ -1,4 +1,5 @@
 "use client";
+import type { Prospect } from "@dev-oc/db/schema";
 import { isValidUrlFormat } from "@dev-oc/utils/url";
 import { useForm } from "@tanstack/react-form";
 import { PlusIcon, UserRoundPlusIcon, XIcon } from "lucide-react";
@@ -22,7 +23,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Prospect } from "@/lib/db/schema";
 import { useProspectsContext } from "../../prospects-context";
 import { isValidEmailFormat, normalizeReferent } from "../../referent-utils";
 import { PROSPECT_TYPES } from "../buttons/prospect-type-button";

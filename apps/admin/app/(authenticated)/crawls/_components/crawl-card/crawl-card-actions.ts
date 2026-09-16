@@ -1,8 +1,8 @@
 "use server";
+import { db } from "@dev-oc/db";
+import { crawl, prospect } from "@dev-oc/db/schema";
 import { asc, eq } from "drizzle-orm";
 import { type ActionResult, getErrorMessage } from "@/lib/api";
-import { db } from "@/lib/db";
-import { crawl, prospect } from "@/lib/db/schema";
 
 // --------------------------------------
 // 🏢 List available prospects for a crawl (unassigned + current)

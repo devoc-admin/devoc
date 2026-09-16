@@ -1,4 +1,5 @@
 "use client";
+import type { Prospect } from "@dev-oc/db/schema";
 import { useForm } from "@tanstack/react-form";
 import {
   BuildingIcon,
@@ -36,7 +37,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Prospect } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
 import { PROSPECT_TYPES } from "../../../../prospects/_components/buttons/prospect-type-button";
 import {
