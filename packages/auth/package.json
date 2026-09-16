@@ -1,0 +1,28 @@
+{
+  "name": "@dev-oc/auth",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    "./server": "./src/server.ts",
+    "./next": "./src/next.ts",
+    "./client": "./src/client.ts",
+    "./proxy": "./src/proxy.ts",
+    "./scripts": "./src/scripts.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "better-auth": "^1.7.5",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.23.1",
+    "@types/react": "catalog:react"
+  },
+  "peerDependencies": {
+    "next": "catalog:next",
+    "react": "catalog:react",
+    "typescript": "catalog:tooling"
+  }
+}

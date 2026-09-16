@@ -1,21 +1,4 @@
-import { betterAuth } from "better-auth";
-import { Pool } from "pg";
-
-const { DATABASE_URL } = process.env;
-
-if (!DATABASE_URL) {
-  console.error("DATABASE_URL is required");
-  process.exit(1);
-}
-
-const pool = new Pool({ connectionString: DATABASE_URL });
-
-const auth = betterAuth({
-  database: pool,
-  emailAndPassword: {
-    enabled: true,
-  },
-});
+import { createUser } from "@dev-oc/auth/scripts";
 
 export async function createAdmin() {
   const [, , email, password] = process.argv;
@@ -29,18 +12,10 @@ export async function createAdmin() {
   }
 
   try {
-    await auth.api.signUpEmail({
-      body: {
-        email,
-        name,
-        password,
-      },
-    });
+    await createUser({ email, name, password });
   } catch (error) {
     console.error("Failed to create admin user:", error);
     process.exit(1);
-  } finally {
-    await pool.end();
   }
 }
 

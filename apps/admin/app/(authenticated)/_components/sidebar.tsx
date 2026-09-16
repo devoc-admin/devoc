@@ -1,4 +1,5 @@
 "use client";
+import { useSignOut } from "@dev-oc/auth/client";
 import {
   ClipboardCheckIcon,
   DoorOpenIcon,
@@ -7,9 +8,8 @@ import {
   WaypointsIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { signOut } from "@/lib/auth/auth-client";
 import { cn } from "@/lib/utils";
 
 function Sidebar() {
@@ -58,18 +58,11 @@ function Sidebar() {
 }
 // ------------------------------
 function SignOutButton() {
+  const signOut = useSignOut({ redirectTo: "/login" });
   return (
     <Button
       className="grow cursor-pointer"
-      onClick={() =>
-        signOut({
-          fetchOptions: {
-            onSuccess: () => {
-              redirect("/login");
-            },
-          },
-        })
-      }
+      onClick={signOut}
       size="icon"
       variant="outline"
     >
