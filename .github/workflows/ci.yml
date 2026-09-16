@@ -62,3 +62,7 @@ jobs:
       - uses: ./.github/actions/setup
       - name: Build
         run: bun x turbo build --affected
+        env:
+          # @dev-oc/auth checks DATABASE_URL when the auth route is loaded,
+          # which `next build` does while collecting page data.
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
