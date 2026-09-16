@@ -707,7 +707,8 @@ function ContactCard() {
     <FadeUp className="w-full" disableOnMobile>
       <div
         className={cn(
-          "flex justify-between gap-x-24",
+          "flex items-start justify-between md:items-end",
+          "gap-x-12 lg:gap-x-20 xl:gap-x-24",
           "scroll-mt-12",
           "relative",
           "rounded-3xl",
@@ -746,7 +747,7 @@ function ContactCard() {
             )}
           />
         </div>
-        {/* 1️⃣ */}
+        {/* 1️⃣⬅️ */}
         <div className="relative max-w-[55ch]">
           <div
             className={cn(
@@ -789,8 +790,8 @@ function ContactCard() {
             </p>
           </div>
         </div>
-        {/* 2️⃣ */}
-        <div className={cn("relative", "w-full", "md:max-w-130")}>
+        {/* 2️⃣➡️ */}
+        <div className={cn("relative", "w-full", "md:min-w-80 md:max-w-130")}>
           {itemContacts.map(({ id, ...props }) => (
             <ListItemContact {...props} key={id} />
           ))}
@@ -816,8 +817,9 @@ function ListItemContact({
       className={cn(
         "group",
         "flex items-center gap-x-4",
-        "border-t last-of-type:border-b",
-        "py-4"
+        "border-t-[0.5px] last-of-type:border-b-[0.5px]",
+        "py-4",
+        "max-xl:last-of-type:hidden"
       )}
       href={href}
       style={{
@@ -832,18 +834,18 @@ function ListItemContact({
           "size-10",
           "rounded-full",
           "border",
-          "transition-colors",
+          "transition-colors duration-500",
           "border-foreground-dark/10 bg-foreground-dark/3",
           "group-hover:border-primary/50 group-hover:bg-primary/10"
         )}
       >
         <Icon
-          className="text-[#AEABA4] transition-colors group-hover:text-primary/80"
+          className="text-[#AEABA4] transition-colors duration-500 group-hover:text-primary/80"
           size={16}
         />
       </div>
       {/* 2️⃣ 🔤 */}
-      <div>
+      <div className="space-y-0.5">
         <div
           className={cn(
             "font-geist-mono text-foreground-dark/50 uppercase",
@@ -854,13 +856,19 @@ function ListItemContact({
         >
           {label}
         </div>
-        <div className="font-light text-sm transition-colors group-hover:text-primary">
+        <div
+          className={cn(
+            "font-light",
+            "text-sm sm:text-[0.95rem]",
+            "transition-colors duration-500 group-hover:text-primary"
+          )}
+        >
           {value}
         </div>
       </div>
       {/* 3️⃣ ➡️ */}
-      <div className="ml-auto transition-transform group-hover:-translate-x-0.5">
-        <ArrowRightIcon size={14} />
+      <div className="ml-auto transition-all duration-500 group-hover:-translate-x-2 group-hover:text-primary/80">
+        <ArrowRightIcon size={18} />
       </div>
     </a>
   );
