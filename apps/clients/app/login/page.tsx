@@ -4,7 +4,7 @@ import Balatro from "./_components/balatro";
 import { LoginForm } from "./_components/login-form";
 
 export const metadata: Metadata = {
-  title: "Connexion | Admin Dev'Oc",
+  title: "Connexion | Espace client Dev'Oc",
 };
 
 export default function LoginPage() {
