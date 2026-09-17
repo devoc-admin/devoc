@@ -3,9 +3,9 @@ import Icon from "@/public/icon.svg";
 
 export function Logo() {
   return (
-    <div className="flex items-center gap-2 text-2xl">
-      <Image alt="" aria-hidden="true" height={22} src={Icon} width={22} />
-      <div>
+    <div className="flex items-center gap-3">
+      <Image alt="" aria-hidden="true" height={28} src={Icon} width={28} />
+      <div className="text-[1.7rem]">
         <span className="font-black text-primary-foreground tracking-tighter">
           Dev'
         </span>

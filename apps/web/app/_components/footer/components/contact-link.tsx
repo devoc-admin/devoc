@@ -1,16 +1,6 @@
-export function ContactLink({
-  href,
-  icon,
-  label,
-  newPage,
-}: {
-  href: string;
-  icon: React.ReactNode;
-  label: string;
-  newPage?: boolean;
-}) {
+export function ContactLink({ href, icon, label, newPage }: ContactLinkType) {
   return (
-    <div className="flex items-center gap-2.5 text-sm hover:text-primary">
+    <div className="flex items-center gap-2.5 transition-colors hover:text-primary">
       {icon}
       <a
         aria-label={
@@ -28,4 +18,12 @@ export function ContactLink({
       </a>
     </div>
   );
+}
+
+export interface ContactLinkType {
+  href: string;
+  icon: React.ReactNode;
+  id: string;
+  label: string;
+  newPage?: boolean;
 }

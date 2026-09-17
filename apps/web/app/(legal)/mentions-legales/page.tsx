@@ -52,11 +52,6 @@ const informationBarItems = [
     type: "Lecture",
     value: "3 min",
   },
-  {
-    id: " statut",
-    type: "Statut",
-    value: "En vigueur",
-  },
 ];
 
 const items = [
