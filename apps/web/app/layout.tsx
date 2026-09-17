@@ -28,6 +28,9 @@ const geistSans = Geist({
 });
 
 const googleSans = Google_Sans_Code({
+  // Next.js has no metrics for this font, so it can't generate an adjusted fallback
+  adjustFontFallback: false,
+  fallback: ["ui-monospace", "monospace"],
   subsets: ["latin"],
   variable: "--font-google-sans",
   weight: "variable",
