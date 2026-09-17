@@ -112,20 +112,46 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${googleSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} ${fraunces.variable} mx-auto flex min-h-screen flex-col font-sans`}
       >
-        <SkipLink />
-        <FontsReadyGate />
-        <NuqsAdapter>
+        {/* 🔌 */}
+        <Adapters>
           <main className="grow" id="main-content">
             {children}
           </main>
-        </NuqsAdapter>
-        <Analytics />
-        <SpeedInsights />
-        <TailwindLandmark />
+        </Adapters>
+
+        {/* ♿➡️ */}
+        <SkipLink />
+
+        {/* 🖊️ */}
+        <FontsReadyGate />
+
+        {/* 🔧 */}
+        <Helpers />
       </body>
     </html>
   );
 }
+
+// 🔌
+// =======================
+function Adapters({ children }: { children: React.ReactNode }) {
+  return <NuqsAdapter>{children}</NuqsAdapter>;
+}
+
+// 🔧
+// =======================
+function Helpers() {
+  return (
+    <>
+      <Analytics />
+      <SpeedInsights />
+      <TailwindLandmark />
+    </>
+  );
+}
+
+// ℹ️
+// =======================
 
 export const metadata: Metadata = {
   authors: [{ name: "Dev'Oc", url: "https://dev-oc.fr" }],

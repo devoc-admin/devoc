@@ -11,12 +11,7 @@ import { SectionRisks } from "../_components/sections/section-risks/section-risk
 import { SectionSteps } from "../_components/sections/section-steps/section-steps";
 export default function PackCommunesPage() {
   return (
-    <div
-      className={cn(
-        // ↔️
-        "space-y-20"
-      )}
-    >
+    <div className={cn("space-y-20")}>
       <Header />
       <div
         className={cn(

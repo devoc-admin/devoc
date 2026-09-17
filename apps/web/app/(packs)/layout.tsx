@@ -53,15 +53,14 @@ export default function PackLayout({
           </div>
         </div>
       </div>
-      <Footer
-        animate={false}
-        className="rounded-t-2xl border-3 border-t-primary"
-      />
+      {/* 🦶 */}
+      <Footer animate={false} className="rounded-t-2xl" />
     </div>
   );
 }
 
 // 🟠
+// =======================
 function OrangeDot({ className }: { className?: string }) {
   return (
     <div

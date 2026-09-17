@@ -1,4 +1,5 @@
 import { ArrowUpRightIcon, type LucideIcon } from "lucide-react";
+import type { ReactNode } from "react";
 import { SupNumber } from "@/components/dev-oc/sup-number";
 import { BorderGlow } from "@/components/react-bits/border-glow";
 import { cn } from "@/lib/utils";
@@ -16,17 +17,7 @@ export function ServiceCard({
   Icon: LucideIcon;
 }) {
   return (
-    <BorderGlow
-      backgroundColor="#302E2D" // foreground-dark/20
-      borderRadius={24}
-      className="h-full"
-      colors={["#FF5709", "#F48C06", "#FFC731"]}
-      coneSpread={25}
-      edgeSensitivity={10}
-      glowColor="0 0 99"
-      glowIntensity={0.7}
-      glowRadius={40}
-    >
+    <CustomBorderGlow>
       <article
         className={cn("@container", "h-full", "bg-surface-dark", "rounded-3xl")}
       >
@@ -50,24 +41,15 @@ export function ServiceCard({
             >
               {index}
             </SupNumber>
-            <div
+
+            <Icon
               className={cn(
-                "grid",
-                "place-items-center rounded-full border border-foreground-dark/10 bg-foreground-dark/3",
                 // ↔️
-                "size-9.5",
-                "@sm:size-12"
+                "size-6",
+                "@sm:size-6"
               )}
-            >
-              <Icon
-                className={cn(
-                  // ↔️
-                  "size-4",
-                  "@sm:size-5"
-                )}
-                color="#AEABA4"
-              />
-            </div>
+              color="#AEABA4"
+            />
           </div>
           {/* 2️⃣ */}
           <div className="mt-8 space-y-3">
@@ -112,8 +94,8 @@ export function ServiceCard({
                 className={cn(
                   "flex flex-wrap gap-x-2 text-nowrap font-geist-mono font-light text-foreground-dark/50 uppercase",
                   // ↔️
-                  "text-[0.65rem] tracking-[0.10rem]",
-                  "@sm:text-[0.7rem] @md:tracking-[0.12rem]"
+                  "@sm:text-[0.7rem] text-[0.65rem]",
+                  "@md:tracking-[0.12rem] tracking-[0.10rem]"
                 )}
               >
                 {features.map((feature) => (
@@ -126,7 +108,7 @@ export function ServiceCard({
             </div>
             {/* 4️⃣ */}
             <a
-              className="mt-5 flex items-center gap-x-1.5 text-foreground-dark/80 text-sm"
+              className="mt-5 flex items-center gap-x-1.5 text-foreground-dark/80"
               href="#contact"
             >
               <span>Échanger sur ce service</span>
@@ -135,6 +117,25 @@ export function ServiceCard({
           </div>
         </div>
       </article>
+    </CustomBorderGlow>
+  );
+}
+
+//
+function CustomBorderGlow({ children }: { children: ReactNode }) {
+  return (
+    <BorderGlow
+      backgroundColor="#302E2D" // foreground-dark/20
+      borderRadius={24}
+      className="h-full"
+      colors={["#FF5709", "#F48C06", "#FFC731"]}
+      coneSpread={25}
+      edgeSensitivity={10}
+      glowColor="0 0 99"
+      glowIntensity={0.7}
+      glowRadius={40}
+    >
+      {children}
     </BorderGlow>
   );
 }

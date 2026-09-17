@@ -40,7 +40,7 @@ export function ReserverUnRendezVous() {
       }
       target="_blank"
     >
-      <span className="ml-4 text-white">Réserver rendez-vous</span>
+      <span className="ml-4 text-white">Réserver un rendez-vous</span>
       <div className="rounded-full bg-white p-3 text-zinc-700">
         <ReserverRendezVousIcon strokeWidth={2} />
       </div>
