@@ -3,8 +3,19 @@ import Icon from "@/public/icon.svg";
 
 export function Logo() {
   return (
-    <div className="flex items-center gap-3">
-      <Image alt="" aria-hidden="true" height={28} src={Icon} width={28} />
+    <a
+      className="group flex items-center gap-2.5"
+      href="#main-content"
+      rel="noopener noreferrer"
+    >
+      <Image
+        alt=""
+        aria-hidden="true"
+        className="-mt-0.5 transition-transform duration-1000 ease-in-out group-hover:rotate-360"
+        height={28}
+        src={Icon}
+        width={28}
+      />
       <div className="text-[1.7rem]">
         <span className="font-black text-primary-foreground tracking-tighter">
           Dev'
@@ -13,6 +24,6 @@ export function Logo() {
           Oc
         </span>
       </div>
-    </div>
+    </a>
   );
 }
