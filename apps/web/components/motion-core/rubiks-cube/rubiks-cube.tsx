@@ -3,6 +3,7 @@
 import { Canvas } from "@react-three/fiber";
 import type { ComponentProps } from "react";
 import { NoToneMapping } from "three";
+import "../silence-three-clock-deprecation";
 import { cn } from "@/lib/utils";
 import { RubiksCubeScene } from "./rubiks-cube-scene";
 

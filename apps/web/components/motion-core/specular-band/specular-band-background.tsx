@@ -1,6 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { clsx } from "clsx"; // ou remplace clsx par ton utilitaire cn
 import { NoToneMapping } from "three";
+import "../silence-three-clock-deprecation";
 import { SpecularBandsMesh } from "./specular-band-scene"; // le mesh interne — voir note ci-dessous
 
 export default function SpecularBandsBackground({
