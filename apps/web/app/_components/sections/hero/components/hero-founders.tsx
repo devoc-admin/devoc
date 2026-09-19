@@ -32,7 +32,7 @@ function Container({ children }: { children: React.ReactNode }) {
         "items-center",
         "font-geist",
         // ↔️
-        "hidden flex-col gap-3",
+        "flex flex-col gap-3",
         "xs:flex xs:flex-col xs:gap-3",
         "sm:flex sm:flex-row sm:gap-3",
         "md:flex md:flex-row md:gap-3",
