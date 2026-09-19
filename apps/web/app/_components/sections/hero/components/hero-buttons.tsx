@@ -11,7 +11,7 @@ const sharedClasses = cn(
 
 const responsiveClasses = cn(
   // ↔️
-  "w-fit gap-x-4! px-1! py-1! text-base",
+  "w-auto gap-x-4! px-1! py-1! text-base",
   "xs:w-auto! xs:gap-x-4! xs:px-1! xs:py-1! xs:text-base",
   "sm:w-auto! sm:gap-x-4! sm:px-1! sm:py-1! sm:text-base",
   "md:w-auto! md:gap-x-4! md:px-1! md:py-1! md:text-base",
