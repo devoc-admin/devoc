@@ -67,8 +67,7 @@ export function ServiceCard({
               className={cn(
                 "text-foreground-dark/50",
                 // ↔️
-                "text-md",
-                "@sm:text-lg"
+                "text-lg leading-snug"
               )}
             >
               {subtitle}

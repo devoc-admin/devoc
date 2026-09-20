@@ -4,13 +4,10 @@ import type { Metadata } from "next";
 import {
   Dancing_Script,
   Faustina,
-  Fira_Code,
   Fraunces,
   Geist,
   Geist_Mono,
-  Google_Sans_Code,
   Kanit,
-  Lobster,
   Montserrat,
   Sarina,
   Style_Script,
@@ -27,26 +24,10 @@ const geistSans = Geist({
   weight: ["400", "500", "600", "700", "800", "900"],
 });
 
-const googleSans = Google_Sans_Code({
-  // Next.js has no metrics for this font, so it can't generate an adjusted fallback
-  adjustFontFallback: false,
-  fallback: ["ui-monospace", "monospace"],
-  subsets: ["latin"],
-  variable: "--font-google-sans",
-  weight: "variable",
-});
-
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
   weight: ["400", "500", "600", "700", "800", "900"],
-});
-
-const lobster = Lobster({
-  preload: false,
-  subsets: ["latin"],
-  variable: "--font-lobster",
-  weight: ["400"],
 });
 
 const kanit = Kanit({
@@ -61,12 +42,6 @@ const sarina = Sarina({
   subsets: ["latin"],
   variable: "--font-sarina",
   weight: ["400"],
-});
-
-const firaCode = Fira_Code({
-  subsets: ["latin"],
-  variable: "--font-fira-code",
-  weight: ["400", "700"],
 });
 
 const styleScript = Style_Script({
@@ -110,7 +85,7 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${googleSans.variable} ${geistMono.variable} ${lobster.variable} ${kanit.variable} ${firaCode.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} ${fraunces.variable} mx-auto flex min-h-screen flex-col font-sans`}
+        className={`${geistSans.variable} ${geistMono.variable} ${kanit.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} ${fraunces.variable} mx-auto flex min-h-screen flex-col font-sans`}
       >
         {/* 🔌 */}
         <Adapters>

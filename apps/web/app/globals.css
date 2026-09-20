@@ -4,16 +4,13 @@
 
 @theme inline {
   /* 🖥️ */
-  --breakpoint-xs: 25rem;
+  --breakpoint-xs: 23rem;
   --breakpoint-3xl: 87.5rem;
 
   /* 🖊️ */
   --font-sans: var(--font-geist-sans);
-  --font-google-sans: var(--font-google-sans);
   --font-geist-mono: var(--font-geist-mono);
-  --font-lobster: var(--font-lobster);
   --font-kanit: var(--font-kanit);
-  --font-fira-code: var(--font-fira-code);
   --font-style-script: var(--font-style-script);
   --font-dancing-script: var(--font-dancing-script);
   --font-montserrat: var(--font-montserrat);

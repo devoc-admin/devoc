@@ -54,7 +54,8 @@ export function DecouvrirLeCollectifButton() {
         "font-medium!",
         "hover:brightness-102!",
         sharedClasses,
-        responsiveClasses
+        responsiveClasses,
+        "hidden! xs:flex!"
       )}
       href="#collectif"
       style={

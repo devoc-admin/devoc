@@ -14,12 +14,12 @@ export function SectionCatchline({
         "max-w-[20ch]",
         "text-balance",
         // ↔️
-        "font-medium text-4xl",
-        "xs:font-medium xs:text-4xl",
-        "sm:font-light sm:text-5xl",
+        "font-medium text-[2.6rem] leading-none",
+        "xs:font-medium xs:text-5xl",
+        "sm:font-light sm:text-6xl",
         "md:font-light md:text-5xl",
-        "lg:font-light lg:text-5xl",
-        "xl:font-light xl:text-6xl",
+        "lg:font-light lg:text-6xl",
+        "xl:font-light xl:text-7xl",
         "2xl:font-light 2xl:text-7xl",
         className
       )}

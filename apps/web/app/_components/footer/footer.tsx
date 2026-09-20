@@ -26,6 +26,7 @@ export function Footer({
         "bottom-0",
         "overflow-hidden",
         "bg-background-dark",
+        "text-[0.95rem]",
         "text-muted-foreground",
         className
       )}
@@ -96,8 +97,9 @@ function OuterContainer({ children }: { children: React.ReactNode }) {
         "bg-linear-to-br from-primary/5 via-transparent to-primary/5",
         "rounded-t-4xl",
         "border-t border-t-foreground-dark/5",
-        "px-4 xs:px-6 sm:px-8 md:px-10",
-        "py-12 xl:py-24"
+        // ↔️
+        "px-6 sm:px-8 md:px-10",
+        "py-8 xl:py-24"
       )}
     >
       {children}
@@ -135,7 +137,8 @@ function Bottom({ children }: { children: React.ReactNode }) {
     <div
       className={cn(
         "relative",
-        "flex items-center justify-between gap-y-3",
+        "flex items-center justify-between gap-y-4",
+        // ↔️
         "flex-col md:flex-row"
       )}
     >

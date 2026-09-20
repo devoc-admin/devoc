@@ -40,7 +40,7 @@ export function ListItem({
     >
       <SupNumber
         className={cn(
-          "pt-1 text-[0.6rem]",
+          "pt-1 text-[0.9rem]",
           variant === "dark" && "text-foreground-dark/60",
           variant === "light" && "font-bold text-foreground/50"
         )}
@@ -53,11 +53,11 @@ export function ListItem({
           "font-fraunces leading-[1.15]!",
           "grow",
           // ↔️
-          "text-2xl",
-          "sm:text-3xl",
-          "md:text-2xl",
-          "lg:text-2xl",
-          "xl:text-3xl",
+          "text-4xl",
+          "sm:text-4xl",
+          "md:text-4xl",
+          "lg:text-4xl",
+          "xl:text-4xl",
           // 🌙☀️
           variant === "dark" && "text-foreground-dark",
           variant === "light" && "font-medium text-foreground"
@@ -67,12 +67,13 @@ export function ListItem({
       </div>
       <p
         className={cn(
+          "text-xl",
           // ↔️
-          "max-w-[50ch] text-sm",
-          "sm:max-w-[50ch] sm:text-base",
-          "md:max-w-[50ch] md:text-sm",
-          "lg:max-w-[50ch] lg:text-sm",
-          "xl:max-w-[60ch] xl:text-base",
+          "max-w-[50ch]",
+          "sm:max-w-[50ch]",
+          "md:max-w-[50ch]",
+          "lg:max-w-[50ch]",
+          "xl:max-w-[60ch]",
           // 🌙☀️
           variant === "dark" && "text-foreground-dark/50",
           variant === "light" && "text-foreground/60"

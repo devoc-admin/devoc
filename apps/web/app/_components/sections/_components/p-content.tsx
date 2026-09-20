@@ -10,15 +10,9 @@ export function PContent({
   return (
     <p
       className={cn(
-        "max-w-[60ch] font-geist text-foreground-dark/60",
+        "max-w-[60ch] font-geist text-foreground-dark/75",
         // ↔️
-        "text-base",
-        "xs:text-base",
-        "sm:text-lg",
-        "md:text-lg",
-        "lg:text-lg",
-        "xl:text-lg",
-        "2xl:text-xl",
+        "text-lg md:text-xl lg:text-2xl",
         className
       )}
     >

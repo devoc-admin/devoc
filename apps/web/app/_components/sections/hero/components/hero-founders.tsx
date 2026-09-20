@@ -24,21 +24,16 @@ export function HeroFounders() {
 }
 
 // ===================================
-
+// 📦
 function Container({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "items-center",
+        "flex items-center",
         "font-geist",
         // ↔️
-        "flex flex-col gap-3",
-        "xs:flex xs:flex-col xs:gap-3",
-        "sm:flex sm:flex-row sm:gap-3",
-        "md:flex md:flex-row md:gap-3",
-        "lg:flex lg:flex-row lg:gap-5",
-        "xl:flex xl:flex-row xl:gap-8",
-        "2xl:flex 2xl:flex-row 2xl:gap-8"
+        "flex-col sm:flex-row",
+        "gap-3 lg:gap-5 xl:gap-8"
       )}
     >
       {children}
@@ -52,13 +47,8 @@ function LeftPart() {
       className={cn(
         "flex flex-col",
         // ↔️
-        "items-center gap-y-0",
-        "xs:items-center xs:gap-y-0",
-        "sm:items-end sm:gap-y-0",
-        "md:items-end md:gap-y-0",
-        "lg:items-end lg:gap-y-0",
-        "xl:items-end xl:gap-y-0.5",
-        "2xl:items-end 2xl:gap-y-0.5"
+        "items-center sm:items-end",
+        "gap-y-0 xl:gap-y-0.5"
       )}
     >
       <Founders />
@@ -80,18 +70,12 @@ function Founders() {
   return (
     <div
       className={cn(
-        "text-foreground/50",
+        "text-foreground/60",
         "select-none",
         "uppercase",
         "font-geist font-medium tracking-[0.2em]",
         // ↔️
-        "text-[0.6rem]",
-        "xs:text-[0.6rem",
-        "sm:text-[0.6rem",
-        "md:text-[0.6rem",
-        "lg:text-xs",
-        "xl:text-xs",
-        "2xl:text-xs"
+        "text-[0.65rem] lg:text-xs"
       )}
     >
       Fondateurs
@@ -108,10 +92,8 @@ function ClementAndThibaut() {
         "font-fraunces",
         "font-normal",
         // ↔️
-
-        "lg:text-xl lg:tracking-tight",
-        "xl:text-2xl xl:tracking-tight",
-        "2xl:text-2xl 2xl:tracking-tight"
+        "text-base xs:text-lg lg:text-xl xl:text-2xl",
+        "tracking-normal lg:tracking-tight"
       )}
     >
       <span>Clément</span>
@@ -161,13 +143,7 @@ function AvatarWithTooltip({
       className={cn(
         "transition-transform hover:z-10 hover:scale-105",
         // ↔️
-        "size-10",
-        "xs:size-11",
-        "sm:size-11",
-        "md:size-11",
-        "lg:size-13",
-        "xl:size-16",
-        "2xl:size-16"
+        "size-10 xs:size-11 lg:size-13 xl:size-16"
       )}
     >
       <Tooltip>

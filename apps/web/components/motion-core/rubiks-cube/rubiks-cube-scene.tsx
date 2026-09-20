@@ -123,7 +123,7 @@ const fragmentShader = `
 
 const DEFAULT_FRESNEL: Required<FresnelConfig> = {
   color: "#0F0D0B",
-  rimColor: "#FF6900",
+  rimColor: "#F95709",
   rimIntensity: 1.5,
   rimPower: 6,
 };
