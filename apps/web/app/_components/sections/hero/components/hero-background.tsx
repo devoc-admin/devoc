@@ -7,7 +7,7 @@ export function HeroBackground() {
     <div
       className={cn(
         s.backgroundEntry,
-        "absolute z-0",
+        "absolute inset-0 z-0",
         "size-full",
         "bg-white",
         maskLeft
@@ -19,11 +19,7 @@ export function HeroBackground() {
           className={cn(
             "size-full",
             // ↔️
-            "opacity-20",
-            "xs:opacity-20",
-            "sm:opacity-20",
-            "md:opacity-20",
-            "lg:opacity-100"
+            "opacity-20 lg:opacity-100"
           )}
           speed={0.5}
         />

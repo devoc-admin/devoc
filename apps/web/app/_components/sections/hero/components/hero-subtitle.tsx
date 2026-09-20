@@ -2,30 +2,31 @@ import { cn } from "@/lib/utils.ts";
 import { CSSEntryAnimation } from "./css-entry-animation";
 export function HeroSubtitle() {
   return (
-    <CSSEntryAnimation className="max-w-220" position={2}>
-      <p
-        className={cn(
-          "text-balance font-fraunces font-medium",
-          // ↔️
-          "text-center text-lg leading-snug",
-          "xs:text-center xs:text-lg xs:leading-snug",
-          "sm:text-center sm:text-lg sm:leading-snug",
-          "md:text-center md:text-xl md:leading-snug",
-          "lg:text-left lg:text-2xl lg:leading-snug",
-          "xl:text-left xl:text-2xl xl:leading-snug",
-          "2xl:text-left 2xl:text-3xl 2xl:leading-tight"
-        )}
-        style={
-          {
-            "--position": 4,
-          } as React.CSSProperties
-        }
-      >
-        Nous réalisons la transformation numérique des PME/TPE et collectivités
-        d'
+    <CSSEntryAnimation className="max-w-[60ch]" position={2}>
+      <P>
+        Nous réalisons la transformation numérique des PME et collectivités d'
         <Occitanie />.
-      </p>
+      </P>
     </CSSEntryAnimation>
+  );
+}
+
+// 📦
+// ==================
+function P({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      className={cn(
+        "text-balance font-fraunces font-medium",
+        // ↔️
+        "text-center lg:text-left",
+        "mx-auto lg:mx-0",
+        "text-lg xs:text-xl lg:text-2xl 2xl:text-3xl",
+        "leading-snug lg:leading-tight"
+      )}
+    >
+      {children}
+    </p>
   );
 }
 

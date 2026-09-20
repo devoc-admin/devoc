@@ -1,6 +1,5 @@
 "use client";
 import {
-  ArrowRightIcon,
   WandIcon as AuditIcon,
   BotIcon as AutomatisationIcon,
   Scale as ExpertiseIcon,
@@ -8,38 +7,45 @@ import {
   Earth as ImpactIcon,
   ServerIcon as InfrastructureIcon,
   UserCheck as InterlocuteurIcon,
-  MapPin as LocalisationIcon,
-  type LucideIcon,
-  Mail as MailIcon,
-  Smartphone as PhoneIcon,
   Award as ReconnaissanceIcon,
   MonitorIcon as SitesWebIcon,
 } from "lucide-react";
-import { motion } from "motion/react";
 import Image from "next/image";
-import { useMediaQuery } from "usehooks-ts";
 import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { ListItem } from "@/components/dev-oc/list-item";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
 import { SupSection } from "@/components/dev-oc/sup-section";
-import RubiksCube from "@/components/motion-core/rubiks-cube/rubiks-cube";
 import GlowLine from "@/components/sera-ui/glow-line";
 import { cn } from "@/lib/utils";
-import ClementPortrait from "./assets/clement-portrait-orange.jpeg";
+import { ContactCard } from "../_components/contact-card";
+import { PContent } from "../_components/p-content";
+import { ReasonCard } from "../_components/reason-card";
+import { ServiceCard } from "../_components/service-card";
+import { SectionCollectif } from "../section-collectif";
+import { SectionPortraits } from "../section-portraits";
 import PhotoGroupe from "./assets/photo-groupe.webp";
-import ThibautPortrait from "./assets/thibaut-portrait-orange.jpeg";
-import { PContent } from "./components/p-content";
-import { PIntro } from "./components/p-intro";
-import { Portrait2 } from "./components/portrait";
-import { ReasonCard } from "./components/reason-card";
-import { SectionSeparator } from "./components/section-separator";
-import { ServiceCard } from "./components/service-card";
 export function Main() {
+  return (
+    <Container>
+      <TopLine />
+      <SectionCollectif />
+      <SectionPortraits />
+      <PortraitGroupe />
+      <SectionServices />
+      <SectionValues />
+      <SectionReasons />
+      <ContactCard />
+    </Container>
+  );
+}
+
+// 📦
+function Container({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "relative",
-        "z-1",
+        "relative z-1",
+        "overflow-hidden",
         "bg-background-dark text-white",
         "min-h-400"
       )}
@@ -49,303 +55,26 @@ export function Main() {
           "max-w-430",
           "mx-auto",
           // ↔️
-          "space-y-14 px-5 py-34",
-          "xs:space-y-14 xs:px-5 xs:py-34",
-          "sm:space-y-20 sm:px-5 sm:py-38",
-          "md:space-y-24 md:px-8 md:py-40",
-          "lg:space-y-28 lg:px-10 lg:py-48",
-          "xl:space-y-44 xl:px-14 xl:py-54",
-          "2xl:space-y-52 2xl:px-14 2xl:py-62"
+          "space-y-14 xs:space-y-14 sm:space-y-20 md:space-y-24 lg:space-y-28 xl:space-y-44 2xl:space-y-52",
+          "px-5 md:px-8 lg:px-10 xl:px-14",
+          "py-24 sm:py-38 md:py-40 lg:py-48 xl:py-54 2xl:py-62"
         )}
       >
-        <TopLine />
-        <SectionCollectif />
-        <Portraits />
-        <PortraitGroupe />
-        <SectionServices />
-        <SectionValues />
-        <SectionReasons />
-        <ContactCard />
+        {children}
       </div>
     </div>
   );
 }
 
+// ―
 function TopLine() {
   return (
     <GlowLine
-      className="left-0"
+      className={cn("left-0", "xs:block hidden")}
       color="orange"
       orientation="horizontal"
       position="0px"
     />
-  );
-}
-
-// 1️⃣🔤
-function SectionCollectif() {
-  return (
-    <section
-      className={cn(
-        "mx-auto",
-        "scroll-mt-12",
-        // ↔️
-        "space-y-14",
-        "xs:space-y-14",
-        "sm:space-y-20",
-        "md:space-y-24",
-        "lg:space-y-28",
-        "xl:space-y-34",
-        "2xl:space-y-34"
-      )}
-      id="collectif"
-    >
-      <div
-        className={cn(
-          "flex",
-          // ↔️
-          "flex-col gap-y-12",
-          "xs:flex-col xs:gap-y-12",
-          "sm:flex-col sm:gap-y-12",
-          "md:flex-row md:gap-x-12",
-          "2xl:flew-row 2xl:gap-x-42"
-        )}
-      >
-        <div>
-          <div
-            className={cn(
-              // ↔️
-              "space-y-6",
-              "2xl:space-y-10"
-            )}
-          >
-            <FadeUp disableOnMobile>
-              <SupSection number={1}>Le collectif</SupSection>
-            </FadeUp>
-            <FadeUp delay={0.1} disableOnMobile>
-              <SectionCatchline>
-                Remettre la transmission et l'autonomie au{" "}
-                <span className="font-extralight text-foreground-dark/60 italic">
-                  centre
-                </span>
-                .
-              </SectionCatchline>
-            </FadeUp>
-          </div>
-          <CustomCube />
-        </div>
-
-        <div
-          className={cn(
-            // ↔️
-            "space-y-8",
-            "2xl:grow 2xl:space-y-10"
-          )}
-        >
-          <FadeUp delay={0.1} disableOnMobile>
-            <PIntro>
-              Dev'Oc est né d'un constat : trop d'artisans, de commerçants et de
-              communes d'Occitanie naviguent seuls dans leur transformation
-              numérique, faute d'un interlocuteur de confiance à leur échelle.
-            </PIntro>
-          </FadeUp>
-          <FadeUp delay={0.2} disableOnMobile>
-            <PContent>
-              Or nous sommes convaincus que l'exigence technique et la proximité
-              humaine ne sont pas des luxes réservés aux grandes structures mais
-              qu'elles peuvent, et doivent, être accessibles à tous les budgets.
-            </PContent>
-          </FadeUp>
-
-          <FadeUp delay={0.3} disableOnMobile>
-            <PContent>
-              Nous accompagnons ainsi les TPE, PME et collectivités d'Occitanie
-              sur l'ensemble de leur transformation numérique : création de
-              sites web, mise en conformité RGPD, cybersécurité, automatisation
-              des processus ou déploiement de solutions souveraines.
-            </PContent>
-          </FadeUp>
-        </div>
-      </div>
-      <SectionSeparator />
-    </section>
-  );
-}
-
-// 🧊
-function CustomCube() {
-  return (
-    <motion.div
-      className={cn(
-        "mx-auto",
-        "max-md:hidden",
-        "md:mt-42 md:size-60",
-        "lg:mt-28 lg:size-70",
-        "xl:mt-28 xl:size-80",
-        "2xl:mt-14 2xl:size-100"
-      )}
-      initial={{
-        opacity: 0.3,
-      }}
-      transition={{
-        duration: 10,
-      }}
-      viewport={{ margin: "-100px", once: true }}
-      whileInView={{ opacity: 0.7 }}
-    >
-      <RubiksCube />
-    </motion.div>
-  );
-}
-
-// 2️⃣📸📸
-function Portraits() {
-  return (
-    <div
-      className={cn(
-        "grid",
-        // ↔️
-        "my-16 flex flex-col gap-y-16",
-        "xs:my-16 xs:flex xs:flex-col xs:gap-y-16",
-        "sm:my-24 sm:flex sm:flex-col sm:gap-y-16",
-        "md:my-36 md:flex md:flex-col md:gap-y-24",
-        "lg:my-56 lg:flex lg:flex-col lg:gap-y-32",
-        "xl:my-72 xl:grid xl:grid-cols-2 xl:gap-12",
-        "2xl:my-96 2xl:grid 2xl:grid-cols-2 2xl:gap-12"
-      )}
-    >
-      {/* 🔠 */}
-      <FadeUp className="hidden place-items-center sm:grid">
-        <p
-          className={cn(
-            "font-fraunces font-light",
-            // ↔️
-            "sm:text-4xl",
-            "md:text-4xl",
-            "lg:text-5xl",
-            "xl:text-5xl",
-            "2xl:text-6xl"
-          )}
-        >
-          Notre mission : Façonner l'avenir numérique de l'Occitanie par
-          l'excellence technique, l'humain et l'autonomie locale. Nous croyons
-          en un digital souverain, accessible et durable pour chaque entreprise
-          et collectivité, de la conception à l'hébergement.
-        </p>
-      </FadeUp>
-      {/* 🙈🙈 */}
-      <div
-        className={cn(
-          // ↔️
-          "flex flex-col gap-y-10",
-          "xs:flex xs:flex-col xs:gap-y-10",
-          "sm:grid sm:grid-cols-2 sm:grid-rows-[repeat(4,auto)] sm:gap-5",
-          "md:grid md:grid-cols-2 md:grid-rows-[repeat(4,auto)] md:gap-6",
-          "lg:grid lg:grid-cols-2 lg:grid-rows-[repeat(4,auto)] lg:gap-10",
-          "xl:grid xl:grid-cols-2 xl:grid-rows-[repeat(4,auto)] xl:gap-10",
-          "2xl:grid 2xl:grid-cols-2 2xl:grid-rows-[repeat(4,auto)] 2xl:gap-10"
-        )}
-      >
-        <PortraitClement />
-        <PortraitThibaut />
-      </div>
-    </div>
-  );
-}
-
-function PortraitClement() {
-  return (
-    <FadeMovePortrait
-      className={cn(
-        // ↔️
-        "translate-y-0",
-        "xs:translate-y-0",
-        "sm:translate-y-0",
-        "md:translate-y-0",
-        "lg:translate-y-0",
-        "xl:-translate-y-12",
-        "2xl:-translate-y-12"
-      )}
-      dir="up"
-    >
-      <Portrait2
-        description="L'architecte de l'invisible. Il conçoit les fondations sur lesquelles reposent vos outils numériques. Avec toujours comme maîtres mots l'efficacité et la résilience."
-        key="clement"
-        name="Clément"
-        src={ClementPortrait.src}
-        title="Co-fondateur • Backend & infrastructure"
-      />
-    </FadeMovePortrait>
-  );
-}
-
-function PortraitThibaut() {
-  return (
-    <FadeMovePortrait
-      className={cn(
-        // ↔️
-        "translate-y-0",
-        "xs:translate-y-0",
-        "sm:translate-y-0",
-        "md:translate-y-0",
-        "lg:translate-y-0",
-        "xl:translate-y-12",
-        "2xl:translate-y-12"
-      )}
-      dir="down"
-    >
-      <Portrait2
-        description="L'interface entre vous et vos utilisateurs. Expert en développement web, conformité RGPD et accessibilité, il s'assure que vos interfaces restent modernes, conformes et durables."
-        key="thibaut"
-        name="Thibaut"
-        src={ThibautPortrait.src}
-        title="Co-fondateur • Design & accessibilité"
-      />
-    </FadeMovePortrait>
-  );
-}
-
-function FadeMovePortrait({
-  children,
-  className,
-  dir,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  dir: "up" | "down";
-}) {
-  const isMobile = useMediaQuery("(max-width: 768px)");
-  const isTabletOrSmallLaptop = useMediaQuery("(max-width: 1280px)");
-
-  const sharedClasses =
-    "col-span-1 row-span-full grid grid-cols-subgrid grid-rows-subgrid";
-
-  if (isMobile) return children;
-  if (isTabletOrSmallLaptop)
-    return <FadeUp className={sharedClasses}>{children}</FadeUp>;
-
-  return (
-    <motion.div
-      className={cn(sharedClasses, className)}
-      initial={{
-        opacity: 0,
-        y: dir === "up" ? -100 : 100,
-      }}
-      transition={{
-        duration: 1,
-        ease: "easeOut",
-      }}
-      viewport={{
-        amount: 0.5,
-        once: true,
-      }}
-      whileInView={{
-        opacity: 1,
-        y: 0,
-      }}
-    >
-      {children}
-    </motion.div>
   );
 }
 
@@ -654,7 +383,7 @@ function SectionReasons() {
         <SupSection number={4}>Pourquoi Dev'Oc</SupSection>
         <SectionCatchline>
           Quatre{" "}
-          <span className="font-extralight text-foreground-dark/60 italic">
+          <span className="font-normal text-foreground-dark/60 italic">
             raisons
           </span>{" "}
           de nous confier votre projet
@@ -698,209 +427,5 @@ const reasons = [
     Icon: ReconnaissanceIcon,
     id: "reconnaissance",
     title: "Une reconnaissance indépendante",
-  },
-];
-
-// 7️⃣📞
-function ContactCard() {
-  return (
-    <FadeUp className="w-full" disableOnMobile>
-      <div
-        className={cn(
-          "flex items-start justify-between md:items-end",
-          "gap-x-12 lg:gap-x-20 xl:gap-x-24",
-          "scroll-mt-12",
-          "relative",
-          "rounded-3xl",
-          "border border-foreground-dark/10",
-          "bg-surface-dark",
-          "overflow-hidden",
-          // ↔️
-          "flex-col gap-y-12 px-6 py-10",
-          "md:flex-row md:px-8",
-          "2xl:flex-row 2xl:px-22 2xl:py-32"
-        )}
-        id="contact"
-      >
-        {/* 🔙 */}
-        <div className="absolute inset-0 size-full opacity-30">
-          {/* 🟡 */}
-          <div
-            className={cn(
-              "absolute bottom-0 left-0",
-              "aspect-square h-[80%]",
-              "rounded-full",
-              "-translate-x-1/2 translate-y-1/2",
-              "bg-radial from-primary-lighter to-80% to-transparent",
-              "blur-2xl"
-            )}
-          />
-          {/* 🟠 */}
-          <div
-            className={cn(
-              "absolute top-0 right-0",
-              "aspect-square h-full",
-              "translate-x-1/4 -translate-y-1/4",
-              "rounded-full",
-              "bg-radial from-orange-red to-80% to-transparent",
-              "blur-2xl"
-            )}
-          />
-        </div>
-        {/* 1️⃣⬅️ */}
-        <div className="relative max-w-[55ch]">
-          <div
-            className={cn(
-              // ↔️
-              "space-y-5",
-              "2xl:space-y-10"
-            )}
-          >
-            <SupSection number={5}>Contact</SupSection>
-            <SectionCatchline
-              className={cn(
-                // ↔️
-                "leading-[0.9]!",
-                "font-medium text-4xl",
-                "xs:font-medium xs:text-4xl",
-                "sm:font-light sm:text-5xl",
-                "md:font-light md:text-5xl",
-                "lg:font-light lg:text-5xl",
-                "xl:font-light xl:text-6xl",
-                "2xl:font-normal 2xl:text-8xl"
-              )}
-            >
-              Parlons de votre{" "}
-              <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text text-transparent">
-                projet
-              </span>
-              .
-            </SectionCatchline>
-            <p
-              className={cn(
-                "text-foreground-dark/60",
-                // ↔️
-                "text-md",
-                "xl:text-lg"
-              )}
-            >
-              Décrivez-nous votre besoin en quelques lignes. Nous vous répondons
-              sous 24h ouvrées avec une première grille de lecture — sans
-              engagement, sans jargon.
-            </p>
-          </div>
-        </div>
-        {/* 2️⃣➡️ */}
-        <div className={cn("relative", "w-full", "md:min-w-80 md:max-w-130")}>
-          {itemContacts.map(({ id, ...props }) => (
-            <ListItemContact {...props} key={id} />
-          ))}
-        </div>
-      </div>
-    </FadeUp>
-  );
-}
-
-function ListItemContact({
-  Icon,
-  label,
-  value,
-  href,
-}: {
-  Icon: LucideIcon;
-  label: string;
-  value: string;
-  href: string;
-}) {
-  return (
-    <a
-      className={cn(
-        "group",
-        "flex items-center gap-x-4",
-        "border-t-[0.5px] last-of-type:border-b-[0.5px]",
-        "py-4",
-        "max-xl:last-of-type:hidden"
-      )}
-      href={href}
-      style={{
-        borderImage:
-          "linear-gradient(to right, transparent, oklch(from var(--color-foreground-dark) calc(l - 0.40) c h) 20%, oklch(from var(--color-foreground-dark) calc(l - 0.60) c h) 80%, transparent) 1",
-      }}
-    >
-      {/* 1️⃣ 🖼️ */}
-      <div
-        className={cn(
-          "grid place-items-center",
-          "size-10",
-          "rounded-full",
-          "border",
-          "transition-colors duration-500",
-          "border-foreground-dark/10 bg-foreground-dark/3",
-          "group-hover:border-primary/50 group-hover:bg-primary/10"
-        )}
-      >
-        <Icon
-          className="text-[#AEABA4] transition-colors duration-500 group-hover:text-primary/80"
-          size={16}
-        />
-      </div>
-      {/* 2️⃣ 🔤 */}
-      <div className="space-y-0.5">
-        <div
-          className={cn(
-            "font-geist-mono text-foreground-dark/50 uppercase",
-            // ↔️
-            "text-[0.55rem] tracking-[0.15rem]",
-            "2xl:text-[0.6rem] 2xl:tracking-[0.15rem]"
-          )}
-        >
-          {label}
-        </div>
-        <div
-          className={cn(
-            "font-light",
-            "text-sm sm:text-[0.95rem]",
-            "transition-colors duration-500 group-hover:text-primary"
-          )}
-        >
-          {value}
-        </div>
-      </div>
-      {/* 3️⃣ ➡️ */}
-      <div className="ml-auto transition-all duration-500 group-hover:-translate-x-2 group-hover:text-primary/80">
-        <ArrowRightIcon size={18} />
-      </div>
-    </a>
-  );
-}
-
-const itemContacts = [
-  {
-    href: "mailto:contact@dev-oc.fr",
-    Icon: MailIcon,
-    id: "email",
-    label: "Email",
-    value: "contact@dev-oc.fr",
-  },
-  {
-    href: "tel:+33620239838",
-    Icon: PhoneIcon,
-    id: "tel-1",
-    label: "Téléphone — Thibaut",
-    value: "+33 6 20 23 98 38",
-  },
-  {
-    href: "tel:+6258889701",
-    Icon: PhoneIcon,
-    id: "tel-2",
-    label: "Téléphone — Clément",
-    value: "+33 6 58 88 97 01",
-  },
-  {
-    href: "",
-    Icon: LocalisationIcon,
-    id: "localisation",
-    label: "Localisation",
-    value: "Carcassonne, France",
   },
 ];

@@ -8,15 +8,19 @@ export function FadeUp({
   delay = 0,
   className,
   disableOnMobile = false,
+  duration = 0.9,
   dir = "up",
 }: {
   children: React.ReactNode;
   disableOnMobile?: boolean;
+  duration?: number;
   delay?: number;
   className?: string;
   dir?: "up" | "down";
 }) {
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isMobile = useMediaQuery("(max-width: 768px)", {
+    initializeWithValue: false,
+  });
   if (isMobile && disableOnMobile) return children;
 
   return (
@@ -29,7 +33,7 @@ export function FadeUp({
       initial={{ opacity: 0, y: dir === "up" ? 35 : -35 }}
       transition={{
         delay,
-        duration: 0.9,
+        duration,
         ease: [0.32, 0.72, 0, 1],
       }}
       viewport={{ amount: 0.2, once: true }}
