@@ -5,7 +5,7 @@ export function Logo() {
   return (
     <a
       className={cn(
-        "group flex items-center gap-2.5",
+        "group flex select-none items-center gap-2.5",
         // ↔️
         "text-[1.7rem]"
       )}

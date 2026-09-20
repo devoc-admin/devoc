@@ -20,6 +20,7 @@ export function OpenCarcaWinner() {
         <div
           className={cn(
             "flex flex-col",
+            "select-none",
             "mt-2",
             "max-w-50",
             "text-center font-bold",

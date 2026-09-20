@@ -60,6 +60,8 @@ function ContentContainer({ children }: { children: React.ReactNode }) {
     <div
       className={cn(
         "w-full",
+        "max-w-550",
+        "mx-auto",
         // ↔️
         "px-10 lg:px-16 xl:px-22 2xl:px-32",
         "py-6 lg:py-10 2xl:py-12"
