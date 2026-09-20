@@ -30,6 +30,7 @@ function Container({ children }: { children: React.ReactNode }) {
     <div
       className={cn(
         "flex items-center",
+        "select-none",
         "font-geist",
         // ↔️
         "flex-col sm:flex-row",

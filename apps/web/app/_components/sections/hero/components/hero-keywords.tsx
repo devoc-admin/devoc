@@ -20,6 +20,7 @@ export function HeroKeywords() {
       <div
         className={cn(
           "font-geist-mono",
+          "select-none",
           "text-zinc-400",
           "font-light",
           "flex-wrap items-center",

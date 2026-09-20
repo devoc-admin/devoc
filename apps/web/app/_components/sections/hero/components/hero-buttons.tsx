@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils.ts";
 
 const sharedClasses = cn(
   "group",
+  "select-none",
   "rounded-full!",
   "font-semibold",
   "justify-between!"

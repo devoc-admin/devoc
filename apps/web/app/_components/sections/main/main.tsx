@@ -24,6 +24,8 @@ import { ServiceCard } from "../_components/service-card";
 import { SectionCollectif } from "../section-collectif";
 import { SectionPortraits } from "../section-portraits";
 import PhotoGroupe from "./assets/photo-groupe.webp";
+import TextureImage from "./assets/texture.webp";
+
 export function Main() {
   return (
     <Container>
@@ -50,6 +52,7 @@ function Container({ children }: { children: React.ReactNode }) {
         "min-h-400"
       )}
     >
+      <TexturedBackground />
       <div
         className={cn(
           "max-w-430",
@@ -63,6 +66,15 @@ function Container({ children }: { children: React.ReactNode }) {
         {children}
       </div>
     </div>
+  );
+}
+
+function TexturedBackground() {
+  return (
+    <div
+      className="absolute inset-0 -z-1 size-full opacity-20"
+      style={{ backgroundImage: `url(${TextureImage.src})` }}
+    />
   );
 }
 
@@ -134,11 +146,10 @@ function SectionServices() {
   return (
     <section
       className={cn(
-        "mx-auto overflow-hidden",
+        "mx-auto",
         // ↔️
-        "space-y-14",
-        "md:space-y-20",
-        "lg:space-y-24"
+        "overflow-hidden md:overflow-visible",
+        "space-y-14 md:space-y-20 lg:space-y-24"
       )}
     >
       {/* 🔠 */}

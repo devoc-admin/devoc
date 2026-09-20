@@ -16,7 +16,7 @@ export function SectionCollectif() {
           "flex",
           // ↔️
           "flex-col md:flex-row",
-          "gap-12 md:gap-0 2xl:gap-42"
+          "gap-12 md:gap-6 2xl:gap-42"
         )}
       >
         {/* ⬅️ LEFT PART */}
@@ -105,17 +105,16 @@ function CustomCube() {
     <motion.div
       className={cn(
         "mx-auto",
-        "max-md:hidden",
-        "md:mt-42 md:size-60",
-        "lg:mt-28 lg:size-70",
-        "xl:mt-28 xl:size-80",
-        "2xl:mt-14 2xl:size-100"
+        "max-lg:hidden",
+        "lg:mt-6 xl:mt-10 2xl:mt-14",
+        "lg:size-100 xl:size-110 2xl:size-120"
       )}
       initial={{
-        opacity: 0.3,
+        opacity: 0,
       }}
       transition={{
-        duration: 10,
+        duration: 1,
+        ease: [0.7, 0, 0.84, 0],
       }}
       viewport={{ margin: "-100px", once: true }}
       whileInView={{ opacity: 1 }}

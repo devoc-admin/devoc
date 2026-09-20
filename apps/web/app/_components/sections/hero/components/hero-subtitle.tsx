@@ -17,7 +17,7 @@ function P({ children }: { children: React.ReactNode }) {
   return (
     <p
       className={cn(
-        "text-balance font-fraunces font-medium",
+        "select-none text-balance font-fraunces font-medium",
         // ↔️
         "text-center lg:text-left",
         "mx-auto lg:mx-0",

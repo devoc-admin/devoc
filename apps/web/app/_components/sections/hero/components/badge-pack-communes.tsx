@@ -10,6 +10,7 @@ export function BadgePackCommunes({ className }: { className?: string }) {
       <a
         className={cn(
           "relative z-10",
+          "select-none",
           "flex items-center",
           "font-semibold text-primary backdrop-blur-2xl",
           "w-fit",

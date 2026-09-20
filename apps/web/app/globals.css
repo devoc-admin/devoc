@@ -160,6 +160,11 @@
   }
 }
 
+::selection {
+  color: white;
+  background-color: var(--orange-red);
+}
+
 :root {
   --radius: 0.625rem;
 
