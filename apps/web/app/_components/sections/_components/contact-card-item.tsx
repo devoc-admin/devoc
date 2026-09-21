@@ -41,7 +41,7 @@ function A({ href, children }: { href: string; children: React.ReactNode }) {
       href={href}
       style={{
         borderImage:
-          "linear-gradient(to right, transparent, oklch(from var(--color-foreground-dark) calc(l - 0.40) c h) 20%, oklch(from var(--color-foreground-dark) calc(l - 0.60) c h) 80%, transparent) 1",
+          "linear-gradient(to right, transparent, oklch(from var(--color-foreground-dark) calc(l - 0.60) c h) 20%, oklch(from var(--color-foreground-dark) calc(l - 0.60) c h) 50%, transparent) 1",
       }}
     >
       {children}
@@ -60,11 +60,11 @@ function ContactIcon({ Icon }: { Icon: LucideIcon }) {
         "border",
         "transition-colors duration-500",
         "border-foreground-dark/10 bg-foreground-dark/3",
-        "group-hover:border-primary/50 group-hover:bg-primary/10"
+        "group-hover:border-orange-red/50 group-hover:bg-orange-red/10"
       )}
     >
       <Icon
-        className="text-[#AEABA4] transition-colors duration-500 group-hover:text-primary/80"
+        className="text-[#AEABA4] transition-colors duration-500 group-hover:text-orange-red/80"
         size={16}
       />
     </div>
@@ -93,7 +93,7 @@ function ContactValue({ children }: { children: React.ReactNode }) {
       className={cn(
         "font-light",
         "text-[0.95rem]",
-        "transition-colors duration-500 group-hover:text-primary"
+        "transition-colors duration-500 group-hover:text-orange-red"
       )}
     >
       {children}
@@ -104,7 +104,7 @@ function ContactValue({ children }: { children: React.ReactNode }) {
 /* ➡️ */
 function ArrowContact() {
   return (
-    <div className="ml-auto transition-all duration-500 group-hover:-translate-x-2 group-hover:text-primary/80">
+    <div className="ml-auto transition-all duration-500 group-hover:-translate-x-2 group-hover:text-orange-red">
       <ArrowRightIcon size={18} />
     </div>
   );

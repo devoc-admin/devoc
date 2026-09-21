@@ -204,7 +204,7 @@ function LegalLinks() {
     >
       {legalLinks.map((link) => (
         <Link
-          className="transition-colors hover:text-primary"
+          className="transition-colors hover:text-orange-red"
           href={link.href}
           key={link.key}
         >

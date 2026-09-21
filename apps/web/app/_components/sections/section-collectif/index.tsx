@@ -47,10 +47,10 @@ export function SectionCollectif() {
 
           <FadeUp delay={0.3} disableOnMobile>
             <PContent>
-              Nous accompagnons ainsi les TPE, PME et collectivités d'Occitanie
-              sur l'ensemble de leur transformation numérique : création de
-              sites web, mise en conformité RGPD, cybersécurité, automatisation
-              des processus ou déploiement de solutions souveraines.
+              Nous accompagnons ainsi les PME et collectivités sur l'ensemble de
+              leur transformation numérique : création de sites web, mise en
+              conformité RGPD, cybersécurité, automatisation des processus ou
+              déploiement de solutions souveraines.
             </PContent>
           </FadeUp>
         </div>

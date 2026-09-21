@@ -1,24 +1,19 @@
-import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 export function ReasonCard({
   title,
   description,
   index,
-  Icon,
 }: {
   title: string;
   description: string;
   index: number;
-  Icon: LucideIcon;
 }) {
   const number = index + 1;
 
   return (
     <Article>
-      {/* 🖼️ */}
-      <CircleIcon Icon={Icon} />
       {/* 🆎🔤 */}
-      <div className="mt-10 mb-4 flex flex-col gap-y-5">
+      <div className="flex flex-col gap-y-5">
         {/* 🆎 */}
         <Title number={number}>{title}</Title>
         {/* 🔤 */}
@@ -40,31 +35,11 @@ function Article({ children }: { children: React.ReactNode }) {
         "rounded-3xl",
         "border border-foreground-dark/10",
         // ↔️
-        "p-8",
-        "2xl:p-8"
+        "p-10"
       )}
     >
       {children}
     </article>
-  );
-}
-
-// ⚫
-function CircleIcon({ Icon }: { Icon: LucideIcon }) {
-  return (
-    <div
-      className={cn(
-        "grid place-items-center",
-        "rounded-full",
-        "border border-foreground-dark/10 bg-foreground-dark/3",
-        "size-11",
-        // ↔️
-        "absolute top-4 right-4",
-        "lg:static"
-      )}
-    >
-      <Icon color="#AEABA4" size={18} />
-    </div>
   );
 }
 
@@ -81,12 +56,13 @@ function Title({
       className={cn(
         "flex font-fraunces",
         // ↔️
-        "text-2xl",
+        "text-3xl",
         "flex-col items-center",
         "lg:flex-row lg:items-start lg:gap-x-3"
       )}
     >
       <span>#{number}</span>
+      <span className="hidden lg:inline">|</span>
       <span
         className={cn(
           // ↔️
@@ -108,10 +84,9 @@ function Description({ children }: { children: React.ReactNode }) {
         "text-foreground-dark/50",
         "mt-auto",
         "leading-snug!",
-        "text-lg",
+        "text-xl",
         // ↔️
-        "text-center",
-        "lg:text-left"
+        "text-center lg:text-left"
       )}
     >
       {children}
