@@ -7,7 +7,7 @@ export function ListItem({
   description,
   variant = "dark",
 }: {
-  index: number;
+  index?: number;
   title: string;
   description: string;
   variant: "light" | "dark";
@@ -23,7 +23,7 @@ export function ListItem({
         // ↔️
         "flex-col gap-5",
         "md:flex-row md:gap-8",
-        "px-2 py-6",
+        "px-2 py-10",
         "md:px-6 md:py-12",
         // 🌙☀️
         variant === "dark" && "hover:via-foreground-dark/5",
@@ -38,16 +38,18 @@ export function ListItem({
               "linear-gradient(to right, transparent, color-mix(in oklab, var(--foreground) 10%, transparent) 20%,  color-mix(in oklab, var(--foreground) 10%, transparent) 80%, transparent) 1",
       }}
     >
-      <SupNumber
-        className={cn(
-          "pt-1 text-[0.9rem]",
-          variant === "dark" && "text-foreground-dark/60",
-          variant === "light" && "font-bold text-foreground/50"
-        )}
-        prefix="#  "
-      >
-        {index}
-      </SupNumber>
+      {index !== undefined && (
+        <SupNumber
+          className={cn(
+            "pt-1 text-[0.9rem]",
+            variant === "dark" && "text-foreground-dark/60",
+            variant === "light" && "font-bold text-foreground/50"
+          )}
+          prefix="#  "
+        >
+          {index}
+        </SupNumber>
+      )}
       <div
         className={cn(
           "font-fraunces leading-[1.15]!",

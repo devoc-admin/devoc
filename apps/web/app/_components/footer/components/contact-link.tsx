@@ -1,6 +1,6 @@
 export function ContactLink({ href, icon, label, newPage }: ContactLinkType) {
   return (
-    <div className="flex items-center gap-2.5 transition-colors hover:text-primary">
+    <div className="flex items-center gap-2.5 transition-colors hover:text-orange-red">
       {icon}
       <a
         aria-label={

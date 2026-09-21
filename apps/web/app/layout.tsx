@@ -14,8 +14,8 @@ import {
 } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import SkipLink from "@/components/ui/skip-link";
+import { TailwindLandmark } from "../components/tailwind-landmark/tailwind-landmark";
 import { FontsReadyGate } from "./_components/fonts-ready-gate";
-import { TailwindLandmark } from "./_components/tailwind-landmark/tailwind-landmark";
 import "./globals.css";
 
 const geistSans = Geist({

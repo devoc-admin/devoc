@@ -6,7 +6,6 @@ import {
 } from "lucide-react";
 import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
-import { SupSection } from "@/components/dev-oc/sup-section";
 import { cn } from "@/lib/utils";
 import { ContactCardItem } from "./contact-card-item";
 
@@ -18,7 +17,6 @@ export function ContactCard() {
         <Background />
         {/* 1️⃣⬅️ */}
         <Left>
-          <SupSection number={5}>Contact</SupSection>
           <ParlonsProjet />
           <Description />
         </Left>
@@ -46,12 +44,11 @@ function Card({ children }: { children: React.ReactNode }) {
         "bg-surface-dark",
         "overflow-hidden",
         // ↔️
-        "justify-between md:items-end",
+        "justify-between",
         "gap-x-12 lg:gap-x-20 xl:gap-x-24",
         "gap-y-12",
         "flex-col md:flex-row",
-        "px-7 md:px-8 2xl:px-22",
-        "py-7 2xl:py-32"
+        "px-6 xs:px-8 py-8 xs:py-8 sm:px-12 sm:py-12 2xl:px-22 2xl:py-22"
       )}
       id="contact"
     >
@@ -124,7 +121,7 @@ function ParlonsProjet() {
     >
       {" "}
       Parlons de votre{" "}
-      <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text text-transparent">
+      <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-medium text-transparent">
         projet
       </span>
       .{" "}
@@ -135,7 +132,7 @@ function ParlonsProjet() {
 // 🔠
 function Description() {
   return (
-    <p className={cn("text-foreground-dark/60", "text-lg 2xl:text-xl")}>
+    <p className={cn("text-foreground-dark/70", "text-lg 2xl:text-xl")}>
       Décrivez-nous votre besoin en quelques lignes. Nous vous répondons sous
       24h ouvrées avec une première grille de lecture. Sans engagement, sans
       jargon.
