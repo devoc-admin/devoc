@@ -1,12 +1,11 @@
-import { motion } from "motion/react";
 import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
 import { SupSection } from "@/components/dev-oc/sup-section";
-import RubiksCube from "@/components/motion-core/rubiks-cube/rubiks-cube";
 import { cn } from "@/lib/utils";
 import { PContent } from "../_components/p-content";
 import { PIntro } from "../_components/p-intro";
 import { SectionSeparator } from "../_components/section-separator";
+import { CustomCube } from "./_components/cube";
 
 export function SectionCollectif() {
   return (
@@ -96,30 +95,5 @@ function RemettreLaTransmission() {
         .
       </SectionCatchline>
     </FadeUp>
-  );
-}
-
-// 🧊
-function CustomCube() {
-  return (
-    <motion.div
-      className={cn(
-        "mx-auto",
-        "max-lg:hidden",
-        "lg:mt-6 xl:mt-10 2xl:mt-14",
-        "lg:size-100 xl:size-110 2xl:size-120"
-      )}
-      initial={{
-        opacity: 0,
-      }}
-      transition={{
-        duration: 1,
-        ease: [0.7, 0, 0.84, 0],
-      }}
-      viewport={{ margin: "-100px", once: true }}
-      whileInView={{ opacity: 1 }}
-    >
-      <RubiksCube />
-    </motion.div>
   );
 }

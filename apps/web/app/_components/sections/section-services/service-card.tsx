@@ -165,16 +165,13 @@ function EchangerSurCeService() {
           "scale-y-0 group-hover:scale-y-110"
         )}
       />
-      <a
-        className="relative mt-5 flex items-center gap-x-1.5 text-foreground-dark/80 transition-colors duration-500 group-hover:text-foreground"
-        href="#contact"
-      >
+      <div className="relative mt-5 flex items-center gap-x-1.5 text-foreground-dark/80 transition-colors duration-500 group-hover:text-foreground">
         <span>Échanger sur ce service</span>
         <ArrowUpRightIcon
           className="text-foreground-dark/80 transition-colors duration-500 group-hover:text-foreground"
           size={16}
         />
-      </a>
+      </div>
     </div>
   );
 }
