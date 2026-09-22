@@ -13,10 +13,10 @@ import {
   Style_Script,
 } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import SkipLink from "@/components/ui/skip-link";
 import { TailwindLandmark } from "../components/tailwind-landmark/tailwind-landmark";
-import { FontsReadyGate } from "./_components/fonts-ready-gate";
 import "./globals.css";
+import SkipLink from "@/components/ui/skip-link";
+import { FontsReadyGate } from "./_components/fonts-ready-gate";
 
 const geistSans = Geist({
   subsets: ["latin"],

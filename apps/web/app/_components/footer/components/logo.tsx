@@ -5,9 +5,9 @@ export function Logo() {
   return (
     <a
       className={cn(
-        "group flex select-none items-center gap-2.5",
+        "group flex select-none items-center gap-3",
         // ↔️
-        "text-[1.7rem]"
+        "text-[2rem]"
       )}
       href="#main-content"
       rel="noopener noreferrer"
@@ -28,9 +28,9 @@ function Flower() {
       alt=""
       aria-hidden="true"
       className="-mt-0.5 transition-transform duration-1000 ease-in-out group-hover:rotate-360"
-      height={28}
+      height={32}
       src={Icon}
-      width={28}
+      width={32}
     />
   );
 }

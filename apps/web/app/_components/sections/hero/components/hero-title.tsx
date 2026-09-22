@@ -22,8 +22,8 @@ function H1({ children }: { children: React.ReactNode }) {
       className={cn(
         "relative flex select-none items-center leading-none!",
         // ↔️
-        "text-[5.5rem]",
-        "xs:text-[7rem]",
+        "text-[5.15rem]",
+        "xs:text-[6.7rem]",
         "sm:text-[10rem]",
         "md:text-[11rem]",
         "lg:text-[12rem]",

@@ -31,6 +31,7 @@ function Container({ children }: { children: React.ReactNode }) {
     <div
       className={cn(
         "relative z-1",
+        "translate-y-8",
         "overflow-hidden",
         "bg-background-dark text-white",
         "min-h-400"
@@ -56,7 +57,10 @@ function Container({ children }: { children: React.ReactNode }) {
 function TexturedBackground() {
   return (
     <div
-      className="absolute inset-0 -z-1 size-full opacity-30"
+      className={cn(
+        "absolute inset-0 -z-1 size-full opacity-30",
+        "bg-contain opacity-50 xl:opacity-30 2xl:bg-auto"
+      )}
       style={{ backgroundImage: `url(${TextureImage.src})` }}
     />
   );
