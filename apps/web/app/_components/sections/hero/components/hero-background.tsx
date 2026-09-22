@@ -37,4 +37,4 @@ const maskLeft = cn(
   "lg:mask-linear-225 lg:mask-linear-from-20% lg:mask-linear-to-40%",
   "xl:mask-linear-225 xl:mask-linear-from-50% xl:mask-linear-to-60%"
 );
-const maskBottom = "mask-b-from-50% mask-b-to-9-100%";
+const maskBottom = cn("mask-b-from-90%", "sm:mask-b-from-50%");

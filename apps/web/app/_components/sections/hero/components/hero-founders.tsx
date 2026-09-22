@@ -74,7 +74,7 @@ function Founders() {
         "text-foreground/60",
         "select-none",
         "uppercase",
-        "font-geist font-medium tracking-[0.2em]",
+        "font-geist-mono font-medium tracking-[0.2em]",
         // ↔️
         "text-[0.65rem] lg:text-xs"
       )}

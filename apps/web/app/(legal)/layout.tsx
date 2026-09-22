@@ -55,7 +55,7 @@ export default function LegalLayout({
           </div>
         </div>
       </div>
-      <Footer animate={false} />
+      <Footer animate={false} className="rounded-t-0!" />
     </div>
   );
 }

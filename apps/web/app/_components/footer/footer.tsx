@@ -23,10 +23,12 @@ export function Footer({
   return (
     <footer
       className={cn(
+        "relative z-10",
+        "rounded-t-4xl",
         "bottom-0",
         "overflow-hidden",
         "bg-background-dark",
-        "text-[0.95rem]",
+        "text-base sm:text-lg",
         "text-muted-foreground",
         className
       )}
@@ -99,7 +101,7 @@ function OuterContainer({ children }: { children: React.ReactNode }) {
         "border-t border-t-foreground-dark/5",
         // ↔️
         "px-6 sm:px-8 md:px-10",
-        "py-8 xl:py-24"
+        "py-10 xl:py-18"
       )}
     >
       {children}
@@ -114,7 +116,7 @@ function Content({ children }: { children: React.ReactNode }) {
     <div
       className={cn(
         FOOTER_CONTENT_CLASS,
-        "relative mx-auto max-w-300 space-y-8"
+        "relative mx-auto max-w-300 space-y-18"
       )}
     >
       {children}
@@ -126,7 +128,7 @@ function Content({ children }: { children: React.ReactNode }) {
 // =======================
 function Top({ children }: { children: React.ReactNode }) {
   return (
-    <div className="col-span-2 flex max-w-175 flex-col gap-5">{children}</div>
+    <div className="col-span-2 flex max-w-175 flex-col gap-10">{children}</div>
   );
 }
 
@@ -154,27 +156,27 @@ const ICON_CLASS = "transition-colors duration-300";
 const contactLinks: ContactLinkType[] = [
   {
     href: "mailto:contact@dev-oc.fr",
-    icon: <MailIcon className={ICON_CLASS} size={16} />,
+    icon: <MailIcon className={ICON_CLASS} size={17} />,
     id: "email",
     label: "contact@dev-oc.fr",
     newPage: false,
   },
   {
     href: "tel:+33620239838",
-    icon: <PhoneIcon className={ICON_CLASS} size={16} />,
+    icon: <PhoneIcon className={ICON_CLASS} size={17} />,
     id: "phone1",
     label: "+33 6 20 23 98 38",
     newPage: false,
   },
   {
     href: "tel:+33658889701",
-    icon: <PhoneIcon className={ICON_CLASS} size={16} />,
+    icon: <PhoneIcon className={ICON_CLASS} size={17} />,
     id: "phone2",
     label: "+33 6 58 88 97 01",
   },
   {
     href: "https://maps.app.goo.gl/u8M4QDvL5pA4o4Xt6",
-    icon: <MapPinIcon className={ICON_CLASS} size={16} />,
+    icon: <MapPinIcon className={ICON_CLASS} size={17} />,
     id: "address",
     label: "Carcassonne, France",
     newPage: true,
@@ -199,7 +201,7 @@ function LegalLinks() {
       className={cn(
         "flex items-center gap-4",
         "flex-col sm:flex-row",
-        "text-base text-muted-foreground"
+        "text-muted-foreground"
       )}
     >
       {legalLinks.map((link) => (

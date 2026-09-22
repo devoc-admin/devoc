@@ -44,16 +44,18 @@ export function ServiceCard({
 // 📦
 function Card({ children }: { children: React.ReactNode }) {
   return (
-    <article
-      className={cn(
-        "@container group flex h-full flex-col rounded-3xl bg-surface-dark",
-        // ↔️
-        "p-6 sm:p-8",
-        "min-h-95 xs:min-h-80 sm:min-h-110"
-      )}
-    >
-      {children}
-    </article>
+    <a href="#contact">
+      <article
+        className={cn(
+          "@container group flex h-full flex-col rounded-3xl bg-surface-dark",
+          // ↔️
+          "p-6 sm:p-8",
+          "min-h-95 xs:min-h-80 sm:min-h-110 lg:min-h-100 xl:min-h-95 2xl:min-h-85"
+        )}
+      >
+        {children}
+      </article>
+    </a>
   );
 }
 
@@ -75,9 +77,9 @@ function Title({
       <h4
         className={cn(
           "font-fraunces",
+          "transition-[text-shadow] duration-500 group-hover:text-shadow-[0px_0px_15px_rgb(255_255_255_/_50%)]",
           // ↔️
-          "text-3xl",
-          "sm:text-4xl"
+          "text-3xl sm:text-4xl"
         )}
       >
         {children}
@@ -105,7 +107,7 @@ function CustomIcon({ Icon }: { Icon: LucideIcon }) {
       <Icon
         className={cn(
           "col-start-1 row-start-1",
-          "size-6.5",
+          "size-7",
           "text-[#AEABA4] group-hover:text-white",
           "transition-colors duration-500"
         )}
@@ -114,8 +116,8 @@ function CustomIcon({ Icon }: { Icon: LucideIcon }) {
       <Icon
         className={cn(
           "col-start-1 row-start-1",
-          "size-6.5 blur-sm",
-          "opacity-0 group-hover:opacity-40",
+          "size-7 blur-md",
+          "opacity-0 group-hover:opacity-50",
           "text-[#AEABA4] group-hover:text-white",
           "transition-opacity duration-500"
         )}
@@ -155,13 +157,25 @@ function FeaturesContainer({ children }: { children: React.ReactNode }) {
 // 📨
 function EchangerSurCeService() {
   return (
-    <a
-      className="mt-5 flex items-center gap-x-1.5 text-foreground-dark/80"
-      href="#contact"
-    >
-      <span>Échanger sur ce service</span>
-      <ArrowUpRightIcon color="#AEABA4" size={16} />
-    </a>
+    <div className="relative w-fit">
+      <div
+        className={cn(
+          "absolute inset-0 h-full w-full origin-bottom scale-x-105 bg-white",
+          "transition-transform duration-500",
+          "scale-y-0 group-hover:scale-y-110"
+        )}
+      />
+      <a
+        className="relative mt-5 flex items-center gap-x-1.5 text-foreground-dark/80 transition-colors duration-500 group-hover:text-foreground"
+        href="#contact"
+      >
+        <span>Échanger sur ce service</span>
+        <ArrowUpRightIcon
+          className="text-foreground-dark/80 transition-colors duration-500 group-hover:text-foreground"
+          size={16}
+        />
+      </a>
+    </div>
   );
 }
 
