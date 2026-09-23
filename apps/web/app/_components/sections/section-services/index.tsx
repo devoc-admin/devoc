@@ -9,6 +9,7 @@ import { SectionCatchline } from "@/components/dev-oc/section-catchline";
 import { SupSection } from "@/components/dev-oc/sup-section";
 import { cn } from "@/lib/utils";
 import { PContent } from "../_components/p-content";
+import { VariableFont } from "../_components/variable-font";
 import { ServiceCard } from "./service-card";
 
 export function SectionServices() {
@@ -83,10 +84,10 @@ function Title() {
       <SupSection number={2}>Nos services</SupSection>
       <SectionCatchline>
         Une chaîne de valeur{" "}
-        <span className="font-light text-foreground-dark/60 italic">
+        <VariableFont className="text-foreground-dark/60 italic">
           complète
-        </span>
-        , de la conception à la livraison
+        </VariableFont>{" "}
+        de la conception à la livraison
       </SectionCatchline>
     </div>
   );

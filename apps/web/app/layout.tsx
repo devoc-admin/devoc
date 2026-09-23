@@ -72,9 +72,10 @@ const faustina = Faustina({
 });
 
 const fraunces = Fraunces({
-  axes: ["opsz", "SOFT"],
+  axes: ["opsz", "SOFT", "WONK"],
   subsets: ["latin"],
   variable: "--font-fraunces",
+  weight: "variable",
 });
 
 export default function RootLayout({

@@ -1,6 +1,7 @@
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
 import { SupSection } from "@/components/dev-oc/sup-section";
 import { cn } from "@/lib/utils";
+import { VariableFont } from "../_components/variable-font";
 import { ReasonCard } from "./reason-card";
 
 export function SectionReasons() {
@@ -38,11 +39,11 @@ function Title() {
   return (
     <div className="space-y-10">
       <SupSection number={4}>Pourquoi Dev'Oc ?</SupSection>
-      <SectionCatchline>
+      <SectionCatchline className="max-w-[10ch]">
         Les{" "}
-        <span className="font-light text-foreground-dark/60 italic">
+        <VariableFont className="text-foreground-dark/60 italic">
           raisons
-        </span>{" "}
+        </VariableFont>{" "}
         de nous confier votre projet
       </SectionCatchline>
     </div>

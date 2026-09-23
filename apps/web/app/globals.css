@@ -216,29 +216,24 @@
   }
 }
 
-@utility bg-dotted-zinc {
-  background-image:
-    radial-gradient(circle, #141415, transparent 2px),
-    linear-gradient(
-      to bottom right,
-      var(--color-zinc-950),
-      var(--color-zinc-900)
-    );
-  background-repeat: repeat;
-  background-size:
-    13px 13px,
-    100% 100%;
+body {
+  font-variation-settings:
+    "SOFT" 50,
+    "WONK" 1;
+  font-optical-sizing: auto;
 }
 
-@utility laser-shadow {
-  box-shadow:
-    0 0 0 1px #f6821f,
-    0 0 12px 1px rgba(246, 130, 31, 0.75),
-    0 0 32px 4px rgba(246, 130, 31, 0.45),
-    0 0 60px 10px rgba(246, 130, 31, 0.22),
-    inset 0 0 8px 0 rgba(246, 130, 31, 0.6),
-    inset 0 0 20px 2px rgba(246, 130, 31, 0.3);
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
-  transition-property: box-shadow;
+h1,
+h2 {
+  font-variation-settings:
+    "opsz" 72,
+    "SOFT" 50,
+    "WONK" 1;
+}
+
+p {
+  font-variation-settings:
+    "opsz" 14,
+    "SOFT" 50,
+    "WONK" 1;
 }
