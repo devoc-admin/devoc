@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { PContent } from "../_components/p-content";
 import { PIntro } from "../_components/p-intro";
 import { SectionSeparator } from "../_components/section-separator";
+import { VariableFont } from "../_components/variable-font";
 import { CustomCube } from "./_components/cube";
 
 export function SectionCollectif() {
@@ -15,7 +16,7 @@ export function SectionCollectif() {
           "flex",
           // ↔️
           "flex-col md:flex-row",
-          "gap-12 md:gap-6 2xl:gap-42"
+          "gap-12 md:gap-6 2xl:gap-34"
         )}
       >
         {/* ⬅️ LEFT PART */}
@@ -89,10 +90,9 @@ function RemettreLaTransmission() {
     <FadeUp delay={0.1} disableOnMobile>
       <SectionCatchline>
         Remettre la transmission et l'autonomie au{" "}
-        <span className="font-light text-foreground-dark/60 italic">
+        <VariableFont className="text-foreground-dark/60 italic">
           centre
-        </span>
-        .
+        </VariableFont>
       </SectionCatchline>
     </FadeUp>
   );

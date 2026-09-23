@@ -2,6 +2,7 @@ import { ListItem } from "@/components/dev-oc/list-item";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
 import { SupSection } from "@/components/dev-oc/sup-section";
 import { cn } from "@/lib/utils";
+import { VariableFont } from "../_components/variable-font";
 
 export function SectionValues() {
   return (
@@ -40,9 +41,9 @@ function Title() {
       <SupSection number={3}>Nos engagements</SupSection>
       <SectionCatchline>
         Trois{" "}
-        <span className="font-light text-foreground-dark/60 italic">
+        <VariableFont className="text-foreground-dark/60 italic">
           principes
-        </span>{" "}
+        </VariableFont>{" "}
         qui guident chaque décision
       </SectionCatchline>
     </div>

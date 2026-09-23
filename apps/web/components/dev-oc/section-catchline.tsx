@@ -11,7 +11,7 @@ export function SectionCatchline({
     <h3
       className={cn(
         "font-fraunces",
-        "max-w-[20ch]",
+        "max-w-[13ch]",
         "text-balance",
         // ↔️
         "font-medium text-[2.6rem] leading-none",

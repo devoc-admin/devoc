@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "motion/react";
 import dynamic from "next/dynamic";
-import { useCallback, useSyncExternalStore } from "react";
+import { useMatchMedia } from "@/hooks/use-match-media";
 import { cn } from "@/lib/utils";
 
 const RubiksCube = dynamic(
@@ -31,21 +31,5 @@ export function CustomCube() {
     >
       {shouldDisplayCube && <RubiksCube />}
     </motion.div>
-  );
-}
-
-function useMatchMedia(query: string) {
-  const subscribe = useCallback(
-    (onChange: () => void) => {
-      const media = window.matchMedia(query);
-      media.addEventListener("change", onChange);
-      return () => media.removeEventListener("change", onChange);
-    },
-    [query]
-  );
-  return useSyncExternalStore(
-    subscribe,
-    () => window.matchMedia(query).matches,
-    () => false
   );
 }
