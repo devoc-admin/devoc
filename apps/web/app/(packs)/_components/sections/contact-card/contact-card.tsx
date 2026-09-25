@@ -60,7 +60,7 @@ export function ContactCard() {
             <span>
               Réservez un temps d'échange gratuit, sur site ou en visio.
             </span>
-            <span className="hidden sm:inline">
+            <span className="hidden sm:inline-block">
               Nous évaluons ensemble l'opportunité, l'ampleur des gains et le
               pack qui correspond à votre situation. Sans engagement, sans
               jargon.

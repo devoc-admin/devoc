@@ -169,18 +169,27 @@ function EchangerSurCeService() {
         className={cn(
           "relative",
           "flex items-center",
+          "px-1 py-0",
           "mt-5 gap-x-1.5",
           "font-semibold text-foreground-dark/80",
           "transition-colors duration-500 group-hover:text-foreground"
         )}
       >
-        <span>Échanger sur ce service</span>
-        <ArrowUpRightIcon
-          className="text-foreground-dark/80 transition-colors duration-500 group-hover:text-foreground"
-          size={16}
-        />
+        <span className="text-base lg:text-[1.12rem]">
+          Échanger sur ce service
+        </span>
+        <Arrow />
       </div>
     </div>
+  );
+}
+
+function Arrow() {
+  return (
+    <ArrowUpRightIcon
+      className="text-foreground-dark/80 transition-colors duration-500 group-hover:text-foreground"
+      size={18}
+    />
   );
 }
 

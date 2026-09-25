@@ -65,7 +65,7 @@ function HeaderContainer({ children }: { children: React.ReactNode }) {
 function Subtitle() {
   return (
     <FadeUp delay={0.1} disableOnMobile>
-      <SectionCatchline className="hidden sm:inline">
+      <SectionCatchline className="hidden sm:inline-block">
         Remettre la transmission et l'autonomie au{" "}
         <VariableFont className="text-foreground-dark/60 italic">
           centre

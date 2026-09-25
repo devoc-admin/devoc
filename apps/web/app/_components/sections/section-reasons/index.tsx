@@ -45,7 +45,7 @@ function HeaderContainer({ children }: { children: React.ReactNode }) {
 function Subtitle() {
   return (
     <FadeUp disableOnMobile>
-      <SectionCatchline className="hidden sm:inline">
+      <SectionCatchline className="hidden sm:inline-block">
         Les{" "}
         <VariableFont className="text-foreground-dark/60 italic">
           raisons
