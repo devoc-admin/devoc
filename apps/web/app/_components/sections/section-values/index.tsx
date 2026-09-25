@@ -37,7 +37,7 @@ function Container({ children }: { children: React.ReactNode }) {
 function Subtitle() {
   return (
     <FadeUp delay={0.1} disableOnMobile>
-      <SectionCatchline className="hidden sm:inline">
+      <SectionCatchline className="hidden sm:inline-block">
         Trois{" "}
         <VariableFont className="text-foreground-dark/60 italic">
           principes

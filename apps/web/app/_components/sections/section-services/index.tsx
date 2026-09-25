@@ -69,7 +69,7 @@ function HeaderContainer({ children }: { children: React.ReactNode }) {
 function Subtitle() {
   return (
     <FadeUp disableOnMobile>
-      <SectionCatchline className="hidden sm:inline">
+      <SectionCatchline className="hidden sm:inline-block">
         Une chaîne de valeur{" "}
         <VariableFont className="text-foreground-dark/60 italic">
           complète
@@ -119,7 +119,7 @@ const services = [
     href: "#",
     Icon: SitesWebIcon,
     subtitle:
-      "Identités numériques modernes, ultra rapides, accessibles et pensées pour convertir.",
+      "Identités numériques modernes, rapides, accessibles et pensées pour convertir.",
     title: "Site web",
   },
   {
@@ -131,7 +131,7 @@ const services = [
     href: "#",
     Icon: InfrastructureIcon,
     subtitle:
-      "Des fondations numériques solides et locales pour reprendre le contrôle de vos données.",
+      "Des fondations numériques solides et locales tout en conservant le contrôle de vos données.",
     title: "Infrastructure",
   },
   {
@@ -152,7 +152,7 @@ const services = [
     Icon: AutomatisationIcon,
     subtitle:
       "Automatisez les tâches répétitives et libérez du temps pour ce qui compte.",
-    title: "Automatisation & IA",
+    title: "Automatisations",
   },
   {
     features: [
