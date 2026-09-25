@@ -10,39 +10,7 @@ export function SectionPortraits() {
   return (
     <Container>
       {/* 🔠 */}
-      <div className="space-y-16">
-        <FadeUp
-          className={cn("hidden", "sm:grid sm:place-items-center")}
-          duration={2.5}
-        >
-          <p
-            className={cn(
-              "font-fraunces font-light",
-              // ↔️
-              "sm:text-4xl lg:text-5xl 2xl:text-6xl"
-            )}
-          >
-            Notre mission : Façonner l'avenir numérique de l'Occitanie par
-            l'excellence technique, l'humain et l'autonomie locale.
-          </p>
-        </FadeUp>
-        <FadeUp
-          className={cn("hidden", "sm:grid sm:place-items-center")}
-          dir="down"
-          duration={2.5}
-        >
-          <p
-            className={cn(
-              "text-right font-fraunces font-light",
-              // ↔️
-              "sm:text-4xl lg:text-5xl 2xl:text-6xl"
-            )}
-          >
-            Nous croyons en un digital souverain, accessible et durable pour
-            chaque entreprise et collectivité, de la conception à l'hébergement.
-          </p>
-        </FadeUp>
-      </div>
+      <Quotes />
       {/* 🙈🙈 */}
       <PortraitsContainer>
         <PortraitClement />
@@ -59,7 +27,7 @@ function Container({ children }: { children: React.ReactNode }) {
       className={cn(
         // ↔️
         "flex flex-col xl:grid xl:grid-cols-2",
-        "my-16 sm:my-24 md:my-36 lg:my-56 xl:my-72 2xl:my-96",
+        "my-16 sm:my-24 md:my-36 lg:my-56 xl:my-72",
         "gap-y-16 md:gap-y-24 lg:gap-y-32 xl:gap-12 2xl:gap-18"
       )}
     >
@@ -79,6 +47,42 @@ function PortraitsContainer({ children }: { children: React.ReactNode }) {
       )}
     >
       {children}
+    </div>
+  );
+}
+
+// 🔡
+function Quotes() {
+  return (
+    <div className={cn("space-y-16", "hidden md:block")}>
+      <FadeUp className={cn("sm:grid sm:place-items-center")} duration={2.5}>
+        <p
+          className={cn(
+            "font-fraunces font-light",
+            // ↔️
+            "sm:text-4xl lg:text-5xl 2xl:text-6xl"
+          )}
+        >
+          Notre mission : Façonner l'avenir numérique de l'Occitanie par
+          l'excellence technique, l'humain et l'autonomie locale.
+        </p>
+      </FadeUp>
+      <FadeUp
+        className={cn("sm:grid sm:place-items-center")}
+        dir="down"
+        duration={2.5}
+      >
+        <p
+          className={cn(
+            "text-right font-fraunces font-light",
+            // ↔️
+            "sm:text-4xl lg:text-5xl 2xl:text-6xl"
+          )}
+        >
+          Nous croyons en un digital souverain, accessible et durable pour
+          chaque entreprise et collectivité, de la conception à l'hébergement.
+        </p>
+      </FadeUp>
     </div>
   );
 }

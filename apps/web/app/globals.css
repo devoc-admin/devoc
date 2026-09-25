@@ -10,6 +10,7 @@
   /* 🖊️ */
   --font-sans: var(--font-geist-sans);
   --font-geist-mono: var(--font-geist-mono);
+  --font-geist-pixel: var(--font-geist-pixel);
   --font-kanit: var(--font-kanit);
   --font-style-script: var(--font-style-script);
   --font-dancing-script: var(--font-dancing-script);
@@ -17,6 +18,8 @@
   --font-faustina: var(--font-faustina);
   --font-fraunces: var(--font-fraunces);
   --font-sarina: var(--font-sarina);
+  --font-orbitron: var(--font-orbitron);
+  --font-audiowide: var(--font-audiowide);
 
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -39,6 +42,8 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-orange-red: var(--orange-red);
+  --color-orange-red-300: var(--orange-red-300);
+  --color-orange-red-500: var(--orange-red-500);
   --color-primary-lighter: var(--primary-lighter);
 
   --color-secondary-foreground: var(--secondary-foreground);
@@ -176,6 +181,8 @@
   --foreground-dark: lab(98.2748% 0.282407 1.88136);
 
   --orange-red: oklch(67.83% 0.21534036616300026 38.815041935570434);
+  --orange-red-300: oklch(77.3% 0.149 42.7);
+  --orange-red-500: oklch(62.2% 0.253 36.2);
   --primary: oklch(0.7363 0.1697 61.12); /* #F48C06 */
   --primary-lighter: oklch(0.8568 0.1635 86.22); /*  #FFC731 */
   --primary-foreground: oklch(1 0 0);

@@ -31,7 +31,7 @@ function Article({ children }: { children: React.ReactNode }) {
         "relative",
         "flex flex-col",
         "h-full",
-        "bg-surface-dark",
+        "bg-neutral-950",
         "rounded-3xl",
         "border border-foreground-dark/10",
         // ↔️

@@ -21,7 +21,7 @@ export function VariableFont({
   );
 }
 
-const MAX_DIST = 600;
+const MAX_DIST = 1200;
 
 function useDetection(target: RefObject<HTMLSpanElement | null>) {
   const shouldActivateDetectionEffect = useMatchMedia(

@@ -15,7 +15,7 @@ export function SectionPortraitGroupe() {
 // 📸
 function Photo() {
   return (
-    <FadeUp className="w-full" disableOnMobile>
+    <FadeUp amount={0.3} className="w-full" disableOnMobile>
       <div
         className={cn(
           "relative",

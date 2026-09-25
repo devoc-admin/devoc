@@ -133,7 +133,8 @@ export function SpecularBandsMesh({
     const m = materialRef.current;
     if (!m) return;
 
-    m.uniforms.uTime.value += delta;
+    // Clamp so resuming after an off-screen pause doesn't jump the animation
+    m.uniforms.uTime.value += Math.min(delta, 0.1);
     m.uniforms.uResolution.value.set(size.width, size.height);
     m.uniforms.uColor.value.set(color);
     m.uniforms.uBackgroundColor.value.set(backgroundColor);
