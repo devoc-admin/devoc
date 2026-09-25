@@ -5,43 +5,30 @@ import {
   ServerIcon as InfrastructureIcon,
   MonitorIcon as SitesWebIcon,
 } from "lucide-react";
+import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
-import { SupSection } from "@/components/dev-oc/sup-section";
 import { cn } from "@/lib/utils";
 import { PContent } from "../_components/p-content";
+import { PIntro } from "../_components/p-intro";
+import { SectionTitle } from "../_components/section-title";
 import { VariableFont } from "../_components/variable-font";
 import { ServiceCard } from "./service-card";
 
 export function SectionServices() {
   return (
     <Container>
-      {/* 🆎 */}
       <HeaderContainer>
-        <Title />
+        <div className="space-y-12">
+          <SectionTitle>
+            Nos <br /> services
+          </SectionTitle>
+          <Subtitle />
+        </div>
         <Description />
       </HeaderContainer>
+
       {/* 🃏🃏🃏 */}
-      <ServicesContainer>
-        <div className="col-span-12 sm:col-span-6 lg:col-span-5 xl:col-span-7">
-          <ServiceCard {...services[0]} />
-        </div>
-
-        <div className="col-span-12 sm:col-span-6 lg:col-span-7 xl:col-span-5">
-          <ServiceCard {...services[1]} />
-        </div>
-
-        <div className="col-span-12 xl:col-span-4">
-          <ServiceCard {...services[2]} />
-        </div>
-
-        <div className="col-span-12 sm:col-span-6 lg:col-span-7 xl:col-span-8">
-          <ServiceCard {...services[3]} />
-        </div>
-
-        <div className="col-span-12 sm:col-span-6 lg:col-span-5 xl:col-span-12">
-          <ServiceCard {...services[4]} />
-        </div>
-      </ServicesContainer>
+      <Services />
     </Container>
   );
 }
@@ -69,7 +56,8 @@ function HeaderContainer({ children }: { children: React.ReactNode }) {
       className={cn(
         "flex w-full",
         // ↔️
-        "flex-col gap-y-12 2xl:flex-row 2xl:gap-x-42"
+        "flex-col xl:flex-row",
+        "gap-y-12 xl:gap-x-16 2xl:gap-x-20"
       )}
     >
       {children}
@@ -77,35 +65,42 @@ function HeaderContainer({ children }: { children: React.ReactNode }) {
   );
 }
 
-// 🆎
-function Title() {
+// 🔠
+function Subtitle() {
   return (
-    <div className="space-y-6 2xl:space-y-10">
-      <SupSection number={2}>Nos services</SupSection>
-      <SectionCatchline>
+    <FadeUp disableOnMobile>
+      <SectionCatchline className="hidden sm:inline">
         Une chaîne de valeur{" "}
         <VariableFont className="text-foreground-dark/60 italic">
           complète
         </VariableFont>{" "}
         de la conception à la livraison
       </SectionCatchline>
-    </div>
+    </FadeUp>
   );
 }
 
 // 🔤
 function Description() {
   return (
-    <div className={cn("w-fit max-w-[70ch] space-y-4", "md:self-end")}>
-      <PContent>
-        Nous disposons de plusieurs pôles d'expertise complémentaires que nous
-        mobilisons à la carte selon vos besoins, vos délais et votre budget.
-      </PContent>
-      <PContent>
-        Avec nous, pas de surcoût caché, pas de dépendance inutile et des
-        services toujours dimensionnés à votre usage réel.
-      </PContent>
-    </div>
+    <FadeUp amount={0.5} dir="down" disableOnMobile>
+      <div
+        className={cn(
+          "w-fit max-w-[60ch] space-y-4",
+          "md:text-right xl:text-left",
+          "md:self-end xl:self-start"
+        )}
+      >
+        <PIntro>
+          Plusieurs pôles d'expertise que nous mobilisons selon vos besoins, vos
+          délais et votre budget.
+        </PIntro>
+        <PContent>
+          Pas de surcoût ou de dépendance cachée et des services toujours
+          dimensionnés à votre usage réel.
+        </PContent>
+      </div>
+    </FadeUp>
   );
 }
 
@@ -125,7 +120,7 @@ const services = [
     Icon: SitesWebIcon,
     subtitle:
       "Identités numériques modernes, ultra rapides, accessibles et pensées pour convertir.",
-    title: "Site web sur-mesure",
+    title: "Site web",
   },
   {
     features: [
@@ -172,3 +167,32 @@ const services = [
     title: "Formation & support",
   },
 ];
+
+// 🃏🃏🃏
+function Services() {
+  return (
+    <FadeUp amount={0.2} className="w-full" dir="down" disableOnMobile>
+      <ServicesContainer>
+        <div className="col-span-12 sm:col-span-6 lg:col-span-5 xl:col-span-7">
+          <ServiceCard {...services[0]} />
+        </div>
+
+        <div className="col-span-12 sm:col-span-6 lg:col-span-7 xl:col-span-5">
+          <ServiceCard {...services[1]} />
+        </div>
+
+        <div className="col-span-12 xl:col-span-4">
+          <ServiceCard {...services[2]} />
+        </div>
+
+        <div className="col-span-12 sm:col-span-6 lg:col-span-7 xl:col-span-8">
+          <ServiceCard {...services[3]} />
+        </div>
+
+        <div className="col-span-12 sm:col-span-6 lg:col-span-5 xl:col-span-12">
+          <ServiceCard {...services[4]} />
+        </div>
+      </ServicesContainer>
+    </FadeUp>
+  );
+}

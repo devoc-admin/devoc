@@ -1,23 +1,23 @@
 "use client";
 import GlowLine from "@/components/sera-ui/glow-line";
 import { cn } from "@/lib/utils";
-import { ContactCard } from "../_components/contact-card";
-import { SectionCollectif } from "../section-collectif";
-import { SectionPortraitGroupe } from "../section-portrait-groupe";
-import { SectionPortraits } from "../section-portraits";
-import { SectionReasons } from "../section-reasons";
-import { SectionServices } from "../section-services";
-import { SectionValues } from "../section-values";
+import { ContactCard } from "../sections/contact-card";
+import { SectionCollectif } from "../sections/section-collectif";
+import { SectionPortraitGroupe } from "../sections/section-portrait-groupe";
+import { SectionPortraits } from "../sections/section-portraits";
+import { SectionReasons } from "../sections/section-reasons";
+import { SectionServices } from "../sections/section-services";
+import { SectionValues } from "../sections/section-values";
 import TextureImage from "./assets/texture.webp";
 
 export function Main() {
   return (
     <Container>
       <TopLine />
+      <SectionServices />
       <SectionCollectif />
       <SectionPortraits />
       <SectionPortraitGroupe />
-      <SectionServices />
       <SectionValues />
       <SectionReasons />
       <ContactCard />
@@ -43,7 +43,7 @@ function Container({ children }: { children: React.ReactNode }) {
           "max-w-430",
           "mx-auto",
           // ↔️
-          "space-y-24 lg:space-y-28 xl:space-y-44 2xl:space-y-52",
+          "space-y-18 lg:space-y-28 xl:space-y-44 2xl:space-y-52",
           "px-5 md:px-8 lg:px-10 xl:px-14",
           "py-24 sm:py-38 md:py-40 lg:py-48 xl:py-54 2xl:py-62"
         )}
@@ -59,7 +59,8 @@ function TexturedBackground() {
     <div
       className={cn(
         "absolute inset-0 -z-1 size-full opacity-40",
-        "bg-contain opacity-50 xl:opacity-30 2xl:bg-auto"
+        "opacity-50 sm:opacity-30",
+        "bg-contain 2xl:bg-auto"
       )}
       style={{ backgroundImage: `url(${TextureImage.src})` }}
     />

@@ -1,7 +1,4 @@
 "use client";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/all";
 import { MailIcon, MapPinIcon, Smartphone as PhoneIcon } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -10,16 +7,7 @@ import { Copyright } from "./components/copyright";
 import { Logo } from "./components/logo";
 import { OrangeDecorativeStone } from "./components/orange-decorative-stone";
 
-export function Footer({
-  animate = true,
-  className,
-}: {
-  animate?: boolean;
-  className?: string;
-}) {
-  // ✨ Fade in animation
-  useFooterAnimation({ animate });
-
+export function Footer({ className }: { className?: string }) {
   return (
     <footer
       className={cn(
@@ -65,31 +53,6 @@ export function Footer({
   );
 }
 
-// ------------------------
-// ✨ Scroll animation
-gsap.registerPlugin(ScrollTrigger);
-function useFooterAnimation({ animate = true }: { animate: boolean }) {
-  useGSAP(() => {
-    if (!animate) return;
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        end: () => ScrollTrigger.maxScroll(window),
-        invalidateOnRefresh: true,
-        scrub: 1.5,
-        start: () => ScrollTrigger.maxScroll(window) - 500,
-        trigger: document.body,
-      },
-    });
-
-    tl.from(`.${FOOTER_CONTENT_CLASS}`, {
-      ease: "power4.in",
-      opacity: 0,
-    });
-  });
-}
-
-const FOOTER_CONTENT_CLASS = "footer-content";
-
 // 📦 OUTER
 // =======================
 function OuterContainer({ children }: { children: React.ReactNode }) {
@@ -113,12 +76,7 @@ function OuterContainer({ children }: { children: React.ReactNode }) {
 // =======================
 function Content({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      className={cn(
-        FOOTER_CONTENT_CLASS,
-        "relative mx-auto max-w-300 space-y-18"
-      )}
-    >
+    <div className={cn("relative mx-auto max-w-300 space-y-18")}>
       {children}
     </div>
   );

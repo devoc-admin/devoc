@@ -47,7 +47,7 @@ function Card({ children }: { children: React.ReactNode }) {
     <a href="#contact">
       <article
         className={cn(
-          "@container group flex h-full flex-col rounded-3xl bg-surface-dark",
+          "@container group flex h-full flex-col rounded-3xl bg-neutral-950",
           // ↔️
           "p-6 sm:p-8",
           "min-h-95 xs:min-h-80 sm:min-h-110 lg:min-h-100 xl:min-h-95 2xl:min-h-85"

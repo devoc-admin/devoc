@@ -2,7 +2,7 @@ import type React from "react";
 
 // Type definitions
 type Orientation = "vertical" | "horizontal";
-type ColorScheme = "purple" | "blue" | "green" | "red" | "orange";
+type ColorScheme = "purple" | "blue" | "green" | "red" | "orange" | "orange-red";
 
 type GlowLineProps = {
   orientation: Orientation;
@@ -28,6 +28,15 @@ const COLOR_SCHEMES: Record<ColorScheme, ColorSchemeConfig> = {
   blue: {
     core: "via-blue-400",
     glow: ["via-blue-400", "via-blue-500", "via-blue-400", "via-blue-300"],
+  },
+  "orange-red": {
+    core: "via-orange-red",
+    glow: [
+      "via-orange-red",
+      "via-orange-red-500",
+      "via-orange-red",
+      "via-orange-red-300",
+    ],
   },
   orange: {
     core: "via-orange-400",

@@ -1,20 +1,19 @@
+import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { ListItem } from "@/components/dev-oc/list-item";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
-import { SupSection } from "@/components/dev-oc/sup-section";
 import { cn } from "@/lib/utils";
+import { SectionTitle } from "../_components/section-title";
 import { VariableFont } from "../_components/variable-font";
-
 export function SectionValues() {
   return (
     <Container>
-      {/* 🆎 */}
-      <Title />
-      {/* 🪗🪗🪗 */}
-      <div>
-        {values.map(({ id, ...props }) => (
-          <ListItem key={id} variant="dark" {...props} />
-        ))}
+      <div className="space-y-12">
+        <SectionTitle>
+          Nos <br /> valeurs
+        </SectionTitle>
+        <Subtitle />
       </div>
+      <Values />
     </Container>
   );
 }
@@ -35,18 +34,17 @@ function Container({ children }: { children: React.ReactNode }) {
 }
 
 // 🆎
-function Title() {
+function Subtitle() {
   return (
-    <div className="space-y-6 2xl:space-y-10">
-      <SupSection number={3}>Nos engagements</SupSection>
-      <SectionCatchline>
+    <FadeUp delay={0.1} disableOnMobile>
+      <SectionCatchline className="hidden sm:inline">
         Trois{" "}
         <VariableFont className="text-foreground-dark/60 italic">
           principes
         </VariableFont>{" "}
-        qui guident chaque décision
+        derrière chaque décision
       </SectionCatchline>
-    </div>
+    </FadeUp>
   );
 }
 
@@ -70,3 +68,13 @@ const values = [
     title: "L'esprit ingénieur à votre service",
   },
 ];
+
+function Values() {
+  return (
+    <FadeUp amount={0.5} className="w-full" dir="down" disableOnMobile>
+      {values.map(({ id, ...props }) => (
+        <ListItem key={id} variant="dark" {...props} />
+      ))}
+    </FadeUp>
+  );
+}

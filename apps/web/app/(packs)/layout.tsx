@@ -54,7 +54,7 @@ export default function PackLayout({
         </div>
       </div>
       {/* 🦶 */}
-      <Footer animate={false} className="rounded-t-2xl" />
+      <Footer className="rounded-t-2xl" />
     </div>
   );
 }

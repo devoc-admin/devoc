@@ -69,7 +69,7 @@ export function ListItem({
       </div>
       <p
         className={cn(
-          "text-xl",
+          "text-[1.3rem]",
           // ↔️
           "max-w-[50ch]",
           "sm:max-w-[50ch]",

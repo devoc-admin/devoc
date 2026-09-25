@@ -1,20 +1,22 @@
+import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
-import { SupSection } from "@/components/dev-oc/sup-section";
 import { cn } from "@/lib/utils";
+import { SectionTitle } from "../_components/section-title";
 import { VariableFont } from "../_components/variable-font";
 import { ReasonCard } from "./reason-card";
-
 export function SectionReasons() {
   return (
+    /* 📦 */
     <Container>
       {/* 🆎 */}
-      <Title />
+      <HeaderContainer>
+        <SectionTitle>
+          Notre <br /> force
+        </SectionTitle>
+        <Subtitle />
+      </HeaderContainer>
       {/* 👆👆👆👆 */}
-      <ReasonsContainer>
-        {reasons.map(({ id, ...props }, index) => (
-          <ReasonCard key={id} {...props} index={index} />
-        ))}
-      </ReasonsContainer>
+      <Reasons />
     </Container>
   );
 }
@@ -34,23 +36,41 @@ function Container({ children }: { children: React.ReactNode }) {
   );
 }
 
+// 📦
+function HeaderContainer({ children }: { children: React.ReactNode }) {
+  return <div className="space-y-12">{children}</div>;
+}
+
 // 🆎
-function Title() {
+function Subtitle() {
   return (
-    <div className="space-y-10">
-      <SupSection number={4}>Pourquoi Dev'Oc ?</SupSection>
-      <SectionCatchline className="max-w-[10ch]">
+    <FadeUp disableOnMobile>
+      <SectionCatchline className="hidden sm:inline">
         Les{" "}
         <VariableFont className="text-foreground-dark/60 italic">
           raisons
-        </VariableFont>{" "}
-        de nous confier votre projet
+        </VariableFont>
+        <br />
+        de nous confier
+        <br />
+        votre projet
       </SectionCatchline>
-    </div>
+    </FadeUp>
   );
 }
 
 // 📦
+function Reasons() {
+  return (
+    <FadeUp amount={0.4} disableOnMobile>
+      <ReasonsContainer>
+        {reasons.map(({ id, ...props }, index) => (
+          <ReasonCard key={id} {...props} index={index} />
+        ))}
+      </ReasonsContainer>
+    </FadeUp>
+  );
+}
 function ReasonsContainer({ children }: { children: React.ReactNode }) {
   return (
     <div className={cn("grid gap-6", "grid-cols-1 sm:grid-cols-2")}>

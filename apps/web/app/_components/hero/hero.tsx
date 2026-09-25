@@ -1,6 +1,6 @@
 "use client";
+import { useFontsReady } from "@/app/_hooks/use-font-ready";
 import { cn } from "@/lib/utils.ts";
-import { useFontsReady } from "../../../_hooks/use-font-ready";
 import { BadgePackCommunes } from "./components/badge-pack-communes";
 import { CSSEntryAnimation } from "./components/css-entry-animation";
 import { HeroBackground as Background } from "./components/hero-background";

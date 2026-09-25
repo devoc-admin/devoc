@@ -15,11 +15,10 @@ export function SectionCatchline({
         "text-balance",
         // ↔️
         "font-medium text-[2.6rem] leading-none",
-        "xs:font-medium xs:text-5xl",
-        "sm:font-light sm:text-6xl",
+        "sm:font-light sm:text-5xl",
         "md:font-light md:text-5xl",
         "lg:font-light lg:text-6xl",
-        "xl:font-light xl:text-7xl",
+        "xl:font-light xl:text-[3.5rem]",
         "2xl:font-light 2xl:text-7xl",
         className
       )}
