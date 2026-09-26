@@ -155,7 +155,7 @@ export const Compare = ({
   return (
     <button
       type="button"
-      className={cn("h-[400px] w-[400px] overflow-hidden", className)}
+      className={cn("h-100 w-100 overflow-hidden", className)}
       onMouseDown={handleMouseDown}
       onMouseEnter={mouseEnterHandler}
       onMouseLeave={mouseLeaveHandler}
@@ -172,7 +172,7 @@ export const Compare = ({
     >
       <AnimatePresence initial={false}>
         <motion.div
-          className="absolute top-0 z-30 m-auto h-full w-px bg-gradient-to-b from-5% from-transparent via-orange-500 to-95% to-transparent"
+          className="absolute top-0 z-30 m-auto h-full w-px bg-linear-to-b from-5% from-transparent via-orange-500 to-95% to-transparent"
           style={{
             left: `${sliderXPercent}%`,
             top: "0",
@@ -180,9 +180,9 @@ export const Compare = ({
           }}
           transition={{ duration: 0 }}
         >
-          <div className="-translate-y-1/2 absolute top-1/2 left-0 z-20 h-full w-36 bg-gradient-to-r from-orange-400 via-transparent to-transparent opacity-50 [mask-image:radial-gradient(100px_at_left,white,transparent)]" />
-          <div className="-translate-y-1/2 absolute top-1/2 left-0 z-10 h-1/2 w-10 bg-gradient-to-r from-yellow-400 via-transparent to-transparent opacity-100 [mask-image:radial-gradient(50px_at_left,white,transparent)]" />
-          <div className="-translate-y-1/2 -right-10 absolute top-1/2 h-3/4 w-10 [mask-image:radial-gradient(100px_at_left,white,transparent)]">
+          <div className="-translate-y-1/2 absolute top-1/2 left-0 z-20 h-full w-36 bg-linear-to-r from-orange-400 via-transparent to-transparent opacity-50 mask-[radial-gradient(100px_at_left,white,transparent)]" />
+          <div className="-translate-y-1/2 absolute top-1/2 left-0 z-10 h-1/2 w-10 bg-linear-to-r from-yellow-400 via-transparent to-transparent opacity-100 mask-[radial-gradient(50px_at_left,white,transparent)]" />
+          <div className="-translate-y-1/2 -right-10 absolute top-1/2 h-3/4 w-10 mask-[radial-gradient(100px_at_left,white,transparent)]">
             <MemoizedSparklesCore
               background="transparent"
               className="h-full w-full"
