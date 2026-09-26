@@ -1,6 +1,7 @@
 "use client";
 
 import { useEmailSignIn } from "@dev-oc/auth/client";
+import { cn } from "cn";
 import { LockIcon, MailIcon } from "lucide-react";
 import Image from "next/image";
 import type { ChangeEventHandler } from "react";
@@ -15,7 +16,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
 import DevOcIcon from "@/public/icon.svg";
 
 export function LoginForm() {
