@@ -2,20 +2,16 @@ import { cn } from "@/lib/utils";
 export function ReasonCard({
   title,
   description,
-  index,
 }: {
   title: string;
   description: string;
-  index: number;
 }) {
-  const number = index + 1;
-
   return (
     <Article>
       {/* 🆎🔤 */}
       <div className="flex flex-col gap-y-5">
         {/* 🆎 */}
-        <Title number={number}>{title}</Title>
+        <Title>{title}</Title>
         {/* 🔤 */}
         <Description>{description}</Description>
       </div>
@@ -44,13 +40,7 @@ function Article({ children }: { children: React.ReactNode }) {
 }
 
 // 🆎
-function Title({
-  children,
-  number,
-}: {
-  children: React.ReactNode;
-  number: number;
-}) {
+function Title({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
@@ -61,8 +51,6 @@ function Title({
         "lg:flex-row lg:items-start lg:gap-x-3"
       )}
     >
-      <span>#{number}</span>
-      <span className="hidden lg:inline">|</span>
       <span
         className={cn(
           // ↔️
