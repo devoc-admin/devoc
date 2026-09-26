@@ -2,7 +2,7 @@
 
 @theme inline {
   /* 🖊️ Fonts */
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-sans);
   --font-kanit: var(--font-kanit);
 
   /* 🎨 Colors */
@@ -10,21 +10,64 @@
   --color-foreground: var(--foreground);
 
   --color-muted-foreground: var(--muted-foreground);
-
   --color-border: var(--border);
+
+  --color-sidebar-background: var(--sidebar-background);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+
+  --color-header-background: var(--header-background);
+  --color-header-foreground: var(--header-foreground);
+
+  --color-ink: var(--ink);
+  --color-ink2: var(--ink2);
+  --color-ink3: var(--ink3);
 }
 
 :root {
+  --muted-foreground: oklch(0.556 0 0);
+  --border: oklch(0.922 0 0);
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
 
-  --muted-foreground: oklch(0.7088 0 302.32);
+  --sidebar-background: lab(98.26% 0 0);
+  --sidebar-foreground: lab(2.75381% 0 0);
 
-  --border: oklch(0.922 0 0);
+  --header-background: lab(98.26% 0 0);
+  --header-foreground: lab(2.75381% 0 0);
+
+  /* ink ramp */
+  --ink: oklch(0.247 0.006 258.361);
+  --ink-2: oklch(0.506 0.01 264.477);
+  --ink-3: oklch(0.695 0.009 264.505);
 }
 
 @layer base {
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* pixel-grid loader — brighten plateau, staggered per cell */
+@keyframes pixel-on {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  18%,
+  42% {
+    opacity: 1;
+  }
+  62% {
+    opacity: 0.15;
+  }
+}
+
+@keyframes shimmer-text {
+  from {
+    background-position: 150% center;
+  }
+  to {
+    background-position: -50% center;
   }
 }

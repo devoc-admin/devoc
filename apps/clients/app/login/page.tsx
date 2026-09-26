@@ -1,5 +1,5 @@
+import { cn } from "cn";
 import type { Metadata } from "next";
-import { cn } from "@/lib/utils";
 import Balatro from "./_components/balatro";
 import { LoginForm } from "./_components/login-form";
 
