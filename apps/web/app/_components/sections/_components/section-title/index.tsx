@@ -44,16 +44,18 @@ const STRIPES_GRADIENT = `repeating-linear-gradient(0deg, transparent 0 var(--bi
 export function SectionTitle({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLHeadingElement>(null);
   const shouldReduceMotion = useReducedMotion();
+
   const { scrollYProgress } = useScroll({
     offset: ["start end", "end start"],
     target: ref,
   });
-  const y = useTransform(
+
+  const drift = useTransform(
     scrollYProgress,
     [0, 1],
     [0, shouldReduceMotion ? 0 : STRIPES_DRIFT]
   );
-  const backgroundPosition = useMotionTemplate`0px ${y}px, 0px 0px`;
+  const backgroundPosition = useMotionTemplate`0px ${drift}px, 0px 0px`;
 
   return (
     <FadeUp delay={0.1} dir="down" disableOnMobile>
@@ -66,10 +68,10 @@ export function SectionTitle({ children }: { children: React.ReactNode }) {
           "font-bold text-transparent",
           "uppercase leading-none",
           // ↔️
-          "text-[3rem] xs:text-[3.5rem] sm:text-[5.5rem] md:text-8xl lg:text-[7.6rem] xl:text-[7rem] 2xl:text-[9.2rem]",
+          "text-[3rem] xs:text-[3.4rem] sm:text-[5.5rem] md:text-8xl lg:text-[7.6rem] xl:text-[7rem] 2xl:text-[9.2rem]",
           "leading-none",
           "max-sm:mb-0",
-          // 🦓 --big-gap-sm is set in style from BIG_GAP
+          //
           "[--big-gap:var(--stripe-size)] sm:[--big-gap:var(--big-gap-sm)]"
         )}
         ref={ref}

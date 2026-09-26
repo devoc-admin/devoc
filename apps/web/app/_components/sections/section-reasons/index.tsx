@@ -11,7 +11,7 @@ export function SectionReasons() {
       {/* 🆎 */}
       <HeaderContainer>
         <SectionTitle>
-          Notre <br /> force
+          Nos <br /> forces
         </SectionTitle>
         <Subtitle />
       </HeaderContainer>
@@ -64,8 +64,8 @@ function Reasons() {
   return (
     <FadeUp amount={0.4} disableOnMobile>
       <ReasonsContainer>
-        {reasons.map(({ id, ...props }, index) => (
-          <ReasonCard key={id} {...props} index={index} />
+        {reasons.map(({ id, ...props }) => (
+          <ReasonCard key={id} {...props} />
         ))}
       </ReasonsContainer>
     </FadeUp>
