@@ -15,8 +15,8 @@
         "@types/react-dom": "^19.3.0"
       },
       "next": {
-        "next": "16.3.5",
-        "@types/node": "^26.6.2"
+        "next": "16.3.6",
+        "@types/node": "^26.6.3"
       },
       "tailwind": {
         "tailwindcss": "^4.3.3",
@@ -50,7 +50,7 @@
       "crawler": {
         "@vercel/blob": "^2.8.0",
         "wapalyzer": "^6.10.65",
-        "sharp": "^0.35.4"
+        "sharp": "^0.35.5"
       },
       "vercel": {
         "@vercel/analytics": "^2.0.1"
@@ -72,12 +72,12 @@
     "@biomejs/biome": "^2.5.14",
     "@commitlint/cli": "^21.2.3",
     "@commitlint/config-conventional": "^21.2.3",
-    "@types/node": "^26.6.2",
+    "@types/node": "^26.6.3",
     "knip": "^6.38.0",
     "lefthook": "^2.1.14",
-    "turbo": "^2.11.4",
+    "turbo": "^2.11.5",
     "typescript": "^7.0.2",
-    "ultracite": "^7.12.0"
+    "ultracite": "^7.12.1"
   },
   "packageManager": "bun@1.3.14"
 }
