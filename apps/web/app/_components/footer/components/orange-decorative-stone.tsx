@@ -15,7 +15,6 @@ export function OrangeDecorativeStone() {
         "hue-rotate-125",
         "mask-radial-[135%_117%] mask-radial-at-bottom-right mask-radial-from-0% mask-radial-to-92%"
       )}
-      height={300}
       src={PurpleCircleImage}
       width={300}
     />
