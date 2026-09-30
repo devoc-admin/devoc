@@ -205,7 +205,14 @@
   --shadow-pulse-start: color-mix(in oklch, var(--primary), transparent 50%);
   --shadow-pulse-peak: color-mix(in oklch, var(--primary), transparent 30%);
 
-  scroll-behavior: smooth;
+  /* 🖱️ */
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
+
+  :target {
+    scroll-margin: 10vb;
+  }
 }
 
 @layer base {
