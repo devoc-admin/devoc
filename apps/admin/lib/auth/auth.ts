@@ -5,7 +5,7 @@ export const auth = createAuth({
     "localhost:3001",
     "127.0.0.1:3001",
     "192.168.1.*:3001",
-    "devoc-admin.vercel.app",
+    "admin.dev-oc.fr",
     "devoc-admin-*.vercel.app",
   ],
   trustedOrigins: ["http://192.168.1.*:3001"],
