@@ -223,7 +223,7 @@
     @apply bg-background text-foreground;
   }
   html {
-    overflow: hidden;
+    overscroll-behavior-y: none;
   }
   html[data-fonts-ready="true"] {
     overflow: auto;
