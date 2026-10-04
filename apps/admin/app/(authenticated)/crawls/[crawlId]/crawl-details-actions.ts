@@ -1,11 +1,11 @@
 "use server";
-import { db } from "@dev-oc/db";
+import { db } from "@dev-oc/data/db";
 import {
   type CrawledPage,
   crawl,
   crawledPage,
   type pageCategoryEnum,
-} from "@dev-oc/db/schema";
+} from "@dev-oc/data/db/schema";
 import { and, eq } from "drizzle-orm";
 
 // --------------------------------------

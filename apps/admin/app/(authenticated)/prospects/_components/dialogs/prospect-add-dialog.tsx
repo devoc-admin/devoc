@@ -1,5 +1,5 @@
 "use client";
-import type { Prospect } from "@dev-oc/db/schema";
+import type { Prospect } from "@dev-oc/data/db/schema";
 import { isValidUrlFormat } from "@dev-oc/utils/url";
 import { useForm } from "@tanstack/react-form";
 import { PlusIcon, UserRoundPlusIcon, XIcon } from "lucide-react";

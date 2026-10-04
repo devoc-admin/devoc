@@ -1,5 +1,5 @@
 "use client";
-import type { Prospect } from "@dev-oc/db/schema";
+import type { Prospect } from "@dev-oc/data/db/schema";
 import { useForm } from "@tanstack/react-form";
 import {
   BuildingIcon,

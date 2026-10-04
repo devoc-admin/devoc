@@ -1,6 +1,6 @@
 "use server";
-import { db } from "@dev-oc/db";
-import { type Audit, audit } from "@dev-oc/db/schema";
+import { db } from "@dev-oc/data/db";
+import { type Audit, audit } from "@dev-oc/data/db/schema";
 import { desc, eq } from "drizzle-orm";
 import { type ActionResult, getErrorMessage } from "@/lib/api";
 

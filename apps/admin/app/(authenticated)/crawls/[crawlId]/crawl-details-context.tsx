@@ -1,6 +1,6 @@
 // biome-ignore-all assist/source/useSortedKeys: exception
 "use client";
-import type { CrawledPage } from "@dev-oc/db/schema";
+import type { CrawledPage } from "@dev-oc/data/db/schema";
 import type { UseMutateFunction } from "@tanstack/react-query";
 import {
   createContext,

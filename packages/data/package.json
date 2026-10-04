@@ -1,0 +1,32 @@
+{
+  "name": "@dev-oc/data",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    "./db": "./src/db/index.ts",
+    "./db/schema": "./src/db/schema/index.ts",
+    "./customers": "./src/customers/queries.ts",
+    "./projects": "./src/projects/queries.ts"
+  },
+  "scripts": {
+    "db:deploy": "bun x --bun drizzle-kit migrate",
+    "db:generate": "bun x --bun drizzle-kit generate",
+    "db:migrate": "bun x --bun drizzle-kit migrate",
+    "db:pull": "bun x --bun drizzle-kit pull",
+    "db:push": "bun x --bun drizzle-kit push",
+    "db:studio": "bun x --bun drizzle-kit studio",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "catalog:db",
+    "@vercel/blob": "^2.8.0",
+    "drizzle-orm": "catalog:db"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:next",
+    "drizzle-kit": "catalog:db"
+  },
+  "peerDependencies": {
+    "typescript": "catalog:tooling"
+  }
+}

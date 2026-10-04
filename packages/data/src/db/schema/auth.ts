@@ -1,6 +1,5 @@
 /** biome-ignore-all assist/source/useSortedKeys: database schema */
 
-import { sql } from "drizzle-orm";
 import {
   boolean,
   foreignKey,
@@ -15,7 +14,7 @@ export const user = pgTable(
   "user",
   {
     createdAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
     email: text().notNull(),
     emailVerified: boolean().notNull(),
@@ -23,7 +22,7 @@ export const user = pgTable(
     image: text(),
     name: text().notNull(),
     updatedAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
   },
   (table) => [unique("user_email_key").on(table.email)]
@@ -33,7 +32,7 @@ export const session = pgTable(
   "session",
   {
     createdAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
     expiresAt: timestamp({ mode: "string", withTimezone: true }).notNull(),
     id: text().primaryKey().notNull(),
@@ -64,7 +63,7 @@ export const account = pgTable(
     accessTokenExpiresAt: timestamp({ mode: "string", withTimezone: true }),
     accountId: text().notNull(),
     createdAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
     id: text().primaryKey().notNull(),
     idToken: text(),
@@ -93,13 +92,13 @@ export const verification = pgTable(
   "verification",
   {
     createdAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
     expiresAt: timestamp({ mode: "string", withTimezone: true }).notNull(),
     id: text().primaryKey().notNull(),
     identifier: text().notNull(),
     updatedAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
     value: text().notNull(),
   },

@@ -1,5 +1,5 @@
-import { db } from "@dev-oc/db";
-import { crawl } from "@dev-oc/db/schema";
+import { db } from "@dev-oc/data/db";
+import { crawl } from "@dev-oc/data/db/schema";
 import { desc } from "drizzle-orm";
 import { SitesList } from "./_components/sites-list";
 

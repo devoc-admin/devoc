@@ -1,6 +1,5 @@
 /** biome-ignore-all assist/source/useSortedKeys: database schema */
 
-import { sql } from "drizzle-orm";
 import {
   boolean,
   foreignKey,
@@ -161,10 +160,10 @@ export const crawl = pgTable(
     startedAt: timestamp({ mode: "string", withTimezone: true }),
     completedAt: timestamp({ mode: "string", withTimezone: true }),
     createdAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
     updatedAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
   },
   (table) => [
@@ -204,7 +203,7 @@ export const crawledPage = pgTable(
     errorMessage: text(),
     selectedForAudit: boolean().default(false),
     createdAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
   },
   (table) => [
@@ -252,10 +251,10 @@ export const dpo = pgTable("dpo", {
   name: text().notNull(),
   url: text(),
   createdAt: timestamp({ mode: "string", withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
+    .defaultNow()
     .notNull(),
   updatedAt: timestamp({ mode: "string", withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
+    .defaultNow()
     .notNull(),
 });
 
@@ -289,10 +288,10 @@ export const prospect = pgTable(
     referentLinkedin: text(),
     crawlId: text(),
     createdAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
     updatedAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
   },
   (table) => [
@@ -329,7 +328,7 @@ export const technology = pgTable(
     icon: text(),
     website: text(),
     createdAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
   },
   (table) => [
@@ -353,7 +352,7 @@ export const crawlTechnology = pgTable(
     version: text(),
     confidence: integer().notNull(),
     createdAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
   },
   (table) => [
@@ -473,7 +472,7 @@ export const crawledPageAudit = pgTable(
     comment: text(),
     testedAt: timestamp({ mode: "string", withTimezone: true }),
     createdAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
   },
   (table) => [
@@ -533,10 +532,10 @@ export const audit = pgTable(
     startedAt: timestamp({ mode: "string", withTimezone: true }),
     completedAt: timestamp({ mode: "string", withTimezone: true }),
     createdAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
     updatedAt: timestamp({ mode: "string", withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
+      .defaultNow()
       .notNull(),
   },
   (table) => [
