@@ -106,6 +106,13 @@
       "when": 1791123896044,
       "tag": "0014_polite_vin_gonzales",
       "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1791127266985,
+      "tag": "0015_pluralize_table_names",
+      "breakpoints": true
     }
   ]
 }

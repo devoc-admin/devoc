@@ -11,7 +11,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 export const user = pgTable(
-  "user",
+  "users",
   {
     createdAt: timestamp({ mode: "string", withTimezone: true })
       .defaultNow()
@@ -29,7 +29,7 @@ export const user = pgTable(
 );
 
 export const session = pgTable(
-  "session",
+  "sessions",
   {
     createdAt: timestamp({ mode: "string", withTimezone: true })
       .defaultNow()
@@ -57,7 +57,7 @@ export const session = pgTable(
 );
 
 export const account = pgTable(
-  "account",
+  "accounts",
   {
     accessToken: text(),
     accessTokenExpiresAt: timestamp({ mode: "string", withTimezone: true }),
@@ -89,7 +89,7 @@ export const account = pgTable(
 );
 
 export const verification = pgTable(
-  "verification",
+  "verifications",
   {
     createdAt: timestamp({ mode: "string", withTimezone: true })
       .defaultNow()

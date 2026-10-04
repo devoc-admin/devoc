@@ -56,7 +56,7 @@ export type CrawlConfig = {
 };
 
 export const crawl = pgTable(
-  "crawl",
+  "crawls",
   {
     id: text()
       .primaryKey()
@@ -176,7 +176,7 @@ export type Crawl = typeof crawl.$inferSelect;
 export type NewCrawl = typeof crawl.$inferInsert;
 
 export const crawledPage = pgTable(
-  "crawled_page",
+  "crawled_pages",
   {
     id: text()
       .primaryKey()
@@ -246,7 +246,7 @@ export const estimatedOpportunityEnum = pgEnum("estimated_opportunity", [
   "weak",
 ]);
 
-export const dpo = pgTable("dpo", {
+export const dpo = pgTable("dpos", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: text().notNull(),
   url: text(),
@@ -262,7 +262,7 @@ export type Dpo = typeof dpo.$inferSelect;
 export type NewDpo = typeof dpo.$inferInsert;
 
 export const prospect = pgTable(
-  "prospect",
+  "prospects",
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     name: text().notNull(),
@@ -319,7 +319,7 @@ export type NewProspect = typeof prospect.$inferInsert;
 // Technology detection
 
 export const technology = pgTable(
-  "technology",
+  "technologies",
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     name: text().notNull(),
@@ -344,7 +344,7 @@ export type Technology = typeof technology.$inferSelect;
 export type NewTechnology = typeof technology.$inferInsert;
 
 export const crawlTechnology = pgTable(
-  "crawl_technology",
+  "crawl_technologies",
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     crawlId: text().notNull(),
@@ -398,7 +398,7 @@ export const auditStatusEnum = pgEnum("audit_status", [
   "not_tested",
 ]);
 
-export const rgaaTheme = pgTable("rgaa_theme", {
+export const rgaaTheme = pgTable("rgaa_themes", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   number: integer().notNull().unique(),
   name: text().notNull(),
@@ -408,7 +408,7 @@ export type RgaaTheme = typeof rgaaTheme.$inferSelect;
 export type NewRgaaTheme = typeof rgaaTheme.$inferInsert;
 
 export const rgaaCriterion = pgTable(
-  "rgaa_criterion",
+  "rgaa_criteria",
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     themeId: integer().notNull(),
@@ -439,7 +439,7 @@ export type RgaaCriterion = typeof rgaaCriterion.$inferSelect;
 export type NewRgaaCriterion = typeof rgaaCriterion.$inferInsert;
 
 export const rgaaTest = pgTable(
-  "rgaa_test",
+  "rgaa_tests",
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     criterionId: integer().notNull(),
@@ -463,7 +463,7 @@ export type RgaaTest = typeof rgaaTest.$inferSelect;
 export type NewRgaaTest = typeof rgaaTest.$inferInsert;
 
 export const crawledPageAudit = pgTable(
-  "crawled_page_audit",
+  "crawled_page_audits",
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
     crawledPageId: text().notNull(),
@@ -509,7 +509,7 @@ export type NewCrawledPageAudit = typeof crawledPageAudit.$inferInsert;
 export const auditTypeEnum = pgEnum("audit_type", ["rgaa", "wcag"]);
 
 export const audit = pgTable(
-  "audit",
+  "audits",
   {
     id: text()
       .primaryKey()

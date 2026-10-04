@@ -4,6 +4,7 @@ import { Pool } from "pg";
 
 // Settings shared by every app: same user tables, same session lifetime.
 export const baseAuthOptions = {
+  account: { modelName: "accounts" },
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 8,
@@ -14,8 +15,11 @@ export const baseAuthOptions = {
       maxAge: 60 * 5, // 5 minutes
     },
     expiresIn: 60 * 60 * 24 * 7, // 7 days
+    modelName: "sessions",
     updateAge: 60 * 60 * 24, // 1 day
   },
+  user: { modelName: "users" },
+  verification: { modelName: "verifications" },
 } satisfies BetterAuthOptions;
 
 export function createPool(databaseUrl = process.env.DATABASE_URL) {
