@@ -42,7 +42,7 @@
     "@tabler/icons-react": "^3.48.0",
     "@tanstack/react-form": "catalog:forms",
     "@tanstack/react-query": "^5.104.1",
-    "@tanstack/react-table": "^9.2.4",
+    "@tanstack/react-table": "^9.2.5",
     "@vercel/blob": "catalog:crawler",
     "class-variance-authority": "catalog:ui",
     "clsx": "catalog:ui",
