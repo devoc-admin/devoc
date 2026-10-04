@@ -10,28 +10,8 @@ import s from "./style.module.css";
 
 export function ContactCard() {
   return (
-    <div
-      className={cn(
-        "rounded-3xl",
-        "bg-white",
-        "relative",
-        "overflow-hidden",
-        // ↔️
-        "space-y-8 px-8 py-10",
-        "xs:space-y-8 xs:px-8 xs:py-10",
-        "sm:scroll-mt-42 sm:space-y-8 sm:px-18 sm:py-22",
-        "md:scroll-mt-42 md:space-y-8 md:px-18 md:py-22",
-        "lg:scroll-mt-42 lg:space-y-8 lg:px-18 lg:py-22",
-        "xl:scroll-mt-42 xl:space-y-8 xl:px-18 xl:py-22",
-        "2xl:scroll-mt-42 2xl:space-y-8 2xl:px-18 2xl:py-22",
-        s.card
-      )}
-      id="contact"
-    >
-      {/* ――― Stroke */}
-      <svg aria-hidden="true" className={s.cardLine} preserveAspectRatio="none">
-        <rect pathLength="1" rx="24" ry="24" />
-      </svg>
+    <Container>
+      <SvgBorder />
       {/* 🔙 */}
       <ContactCardBackground />
       {/* 1️⃣ */}
@@ -130,6 +110,32 @@ export function ContactCard() {
           <AppelerMaintenant />
         </div>
       </ContactCardSecondRow>
+    </Container>
+  );
+}
+
+// 📦
+export function Container({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      className={cn(
+        "rounded-3xl",
+        "bg-white",
+        "relative",
+        "overflow-hidden",
+        // ↔️
+        "space-y-8 px-8 py-10",
+        "xs:space-y-8 xs:px-8 xs:py-10",
+        "sm:scroll-mt-42 sm:space-y-8 sm:px-18 sm:py-22",
+        "md:scroll-mt-42 md:space-y-8 md:px-18 md:py-22",
+        "lg:scroll-mt-42 lg:space-y-8 lg:px-18 lg:py-22",
+        "xl:scroll-mt-42 xl:space-y-8 xl:px-18 xl:py-22",
+        "2xl:scroll-mt-42 2xl:space-y-8 2xl:px-18 2xl:py-22",
+        s.card
+      )}
+      id="contact"
+    >
+      {children}
     </div>
   );
 }
@@ -139,6 +145,15 @@ function ContactCardFirstRow({ children }: { children: React.ReactNode }) {
     <div className={cn("flex justify-between gap-x-12", "relative")}>
       {children}
     </div>
+  );
+}
+
+// ▭
+function SvgBorder() {
+  return (
+    <svg aria-hidden="true" className={s.cardLine} preserveAspectRatio="none">
+      <rect pathLength="1" rx="24" ry="24" />
+    </svg>
   );
 }
 
