@@ -1,0 +1,28 @@
+@media (prefers-reduced-motion: no-preference) and (width >= 96rem) {
+  .contactCard {
+    animation:
+      scaleUp linear both,
+      opacityUp linear both;
+    animation-timeline: view(), view();
+    animation-range:
+      cover 40% cover 60%,
+      entry;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.03);
+  }
+}
+@keyframes opacityUp {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

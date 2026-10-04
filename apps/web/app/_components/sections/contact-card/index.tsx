@@ -4,30 +4,28 @@ import {
   Mail as MailIcon,
   Smartphone as PhoneIcon,
 } from "lucide-react";
-import { FadeUp } from "@/components/dev-oc/animations/fade-up";
 import { SectionCatchline } from "@/components/dev-oc/section-catchline";
 import { cn } from "@/lib/utils";
-import { ContactCardItem } from "./contact-card-item";
+import { ContactItem } from "./contact-item";
+import s from "./style.module.css";
 
 export function ContactCard() {
   return (
-    <FadeUp className="w-full" disableOnMobile>
-      <Card>
-        {/* 🔙 */}
-        <Background />
-        {/* 1️⃣⬅️ */}
-        <Left>
-          <ParlonsProjet />
-          <Description />
-        </Left>
-        {/* 2️⃣➡️ */}
-        <div className={cn("relative", "w-full", "md:min-w-80 md:max-w-130")}>
-          {itemContacts.map(({ id, ...props }) => (
-            <ContactCardItem {...props} key={id} />
-          ))}
-        </div>
-      </Card>
-    </FadeUp>
+    <Card>
+      {/* 🔙 */}
+      <Background />
+      {/* 1️⃣⬅️ */}
+      <Left>
+        <ParlonsProjet />
+        <Description />
+      </Left>
+      {/* 2️⃣➡️ */}
+      <ItemsContainer>
+        {itemContacts.map(({ id, ...props }) => (
+          <ContactItem {...props} key={id} />
+        ))}
+      </ItemsContainer>
+    </Card>
   );
 }
 
@@ -36,6 +34,7 @@ function Card({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
+        s.contactCard,
         "flex items-start",
         "scroll-mt-12",
         "relative",
@@ -137,6 +136,15 @@ function Description() {
       24h ouvrées avec une première grille de lecture. Sans engagement, sans
       jargon.
     </p>
+  );
+}
+
+// 📦
+function ItemsContainer({ children }: { children: React.ReactNode }) {
+  return (
+    <div className={cn("relative", "w-full", "md:min-w-80 md:max-w-130")}>
+      {children}
+    </div>
   );
 }
 
