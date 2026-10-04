@@ -1,7 +1,7 @@
 import { ArrowRightIcon, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export function ContactCardItem({
+export function ContactItem({
   Icon,
   label,
   value,

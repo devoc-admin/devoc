@@ -32,7 +32,7 @@ function Container({ children }: { children: React.ReactNode }) {
       className={cn(
         "relative z-1",
         "translate-y-8",
-        "overflow-hidden",
+        "overflow-clip",
         "bg-black text-white",
         "min-h-400"
       )}
