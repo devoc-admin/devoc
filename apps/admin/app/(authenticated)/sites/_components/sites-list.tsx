@@ -1,5 +1,5 @@
 "use client";
-import type { Crawl } from "@dev-oc/db/schema";
+import type { Crawl } from "@dev-oc/data/db/schema";
 import {
   columnVisibilityFeature,
   createColumnHelper,

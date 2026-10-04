@@ -1,6 +1,6 @@
 /** biome-ignore-all assist/source/useSortedKeys: needs specific order here */
 "use client";
-import type { Prospect } from "@dev-oc/db/schema";
+import type { Prospect } from "@dev-oc/data/db/schema";
 import type { UseMutateFunction } from "@tanstack/react-query";
 import {
   createContext,

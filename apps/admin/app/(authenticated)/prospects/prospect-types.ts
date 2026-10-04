@@ -1,4 +1,4 @@
-import type { Prospect } from "@dev-oc/db/schema";
+import type { Prospect } from "@dev-oc/data/db/schema";
 import type { UseMutateFunction } from "@tanstack/react-query";
 import type { ProspectResult } from "./prospects-actions";
 

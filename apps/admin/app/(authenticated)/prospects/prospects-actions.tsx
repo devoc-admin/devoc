@@ -1,6 +1,6 @@
 "use server";
-import { db } from "@dev-oc/db";
-import { crawl, dpo, type Prospect, prospect } from "@dev-oc/db/schema";
+import { db } from "@dev-oc/data/db";
+import { crawl, dpo, type Prospect, prospect } from "@dev-oc/data/db/schema";
 import { desc, eq } from "drizzle-orm";
 import { getErrorMessage } from "@/lib/api";
 

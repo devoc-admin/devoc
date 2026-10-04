@@ -9,8 +9,6 @@ export function Sidenav({ className }: { className?: string }) {
         "border-border border-r",
         className
       )}
-    >
-      Sidenav
-    </div>
+    />
   );
 }

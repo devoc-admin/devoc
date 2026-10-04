@@ -1,5 +1,5 @@
 "use client";
-import type { CrawledPage } from "@dev-oc/db/schema";
+import type { CrawledPage } from "@dev-oc/data/db/schema";
 import { CrawledPageCard } from "./crawled-page-card";
 
 type PagesSectionProps = {

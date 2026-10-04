@@ -1,5 +1,5 @@
-import { db } from "@dev-oc/db";
-import { rgaaCriterion, rgaaTest, rgaaTheme } from "@dev-oc/db/schema";
+import { db } from "@dev-oc/data/db";
+import { rgaaCriterion, rgaaTest, rgaaTheme } from "@dev-oc/data/db/schema";
 
 type ThemeData = {
   number: number;

@@ -7,10 +7,10 @@ Back-office **Dev-OC** (prospection, crawls, audits).
 Application Next.js (App Router, Turbopack) qui héberge l'outillage interne :
 
 - authentification par email / mot de passe (better-auth) ;
-- base Postgres / Neon via Drizzle ORM (schéma et migrations dans [`@dev-oc/db`](../../packages/db)) ;
+- base Postgres / Neon via Drizzle ORM (schéma et migrations dans [`@dev-oc/data`](../../packages/data)) ;
 - files de traitement Inngest pour le crawl de sites ;
 - stockage des captures d'écran sur Vercel Blob ;
-- consommation des packages internes `@dev-oc/auth`, `@dev-oc/db`, `@dev-oc/crawler` et `@dev-oc/utils`.
+- consommation des packages internes `@dev-oc/auth`, `@dev-oc/data`, `@dev-oc/crawler` et `@dev-oc/utils`.
 
 La vitrine publique vit dans une application séparée : [`apps/web`](../web).
 

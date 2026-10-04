@@ -1,5 +1,5 @@
 "use client";
-import { type CrawledPage, pageCategoryEnum } from "@dev-oc/db/schema";
+import { type CrawledPage, pageCategoryEnum } from "@dev-oc/data/db/schema";
 import {
   ChevronDownIcon,
   ExternalLinkIcon,

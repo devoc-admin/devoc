@@ -14,7 +14,7 @@ dev-oc/
 ├── packages/
 │   ├── auth/                   # @dev-oc/auth — authentification better-auth partagée
 │   ├── crawler/                # @dev-oc/crawler — crawler Playwright + Wapalyzer
-│   ├── db/                     # @dev-oc/db — schéma Drizzle, client et migrations
+│   ├── data/                   # @dev-oc/data — schéma Drizzle, client et migrations
 │   └── utils/                  # @dev-oc/utils — helpers URL et dates
 ├── tooling/
 │   └── typescript-config/      # tsconfig partagés (base.json, next.json)
@@ -40,7 +40,7 @@ Chaque app et package a son propre `readme.md` avec le détail de ses scripts.
 | `clients` | `apps/clients` | Next.js 16 (App Router, Turbopack). Espace clients, template vierge. Port 3002 |
 | `email` | `apps/email` | Templates transactionnels React Email, avec preview live dans le navigateur |
 | `@dev-oc/auth` | `packages/auth` | Authentification better-auth (serveur, route, proxy, hooks client). Consommé par `admin` et `clients` |
-| `@dev-oc/db` | `packages/db` | Schéma Drizzle, client Neon et migrations de la base partagée. Consommé par `admin` |
+| `@dev-oc/data` | `packages/data` | Schéma Drizzle, client Neon et migrations de la base partagée. Consommé par `admin` |
 | `@dev-oc/crawler` | `packages/crawler` | Crawl de pages, extraction de métadonnées et détection de technologies. Consommé par `admin` |
 | `@dev-oc/utils` | `packages/utils` | Helpers sans dépendances, exportés en sous-chemins (`/url`, `/dates`) |
 
@@ -196,7 +196,7 @@ deux sans aucune variable d'environnement.
 
 **`ci.yml`** — sur push sur `main` et sur les pull requests, en jobs parallèles : typecheck des workspaces affectés, `turbo boundaries`, `turbo ci` (lint + format), et build des workspaces affectés. Aucun secret requis.
 
-**`migrate.yml`** — sur push sur `main` (ou déclenchement manuel) : applique les migrations Drizzle de production depuis `packages/db`. Seul secret requis : `DATABASE_URL`.
+**`migrate.yml`** — sur push sur `main` (ou déclenchement manuel) : applique les migrations Drizzle de production depuis `packages/data`. Seul secret requis : `DATABASE_URL`.
 
 Le build et le déploiement des apps sont assurés par l'intégration Git de Vercel (projets `devoc-web`, `devoc-admin`, `devoc-clients`), pas par GitHub Actions : chaque push sur `main` déclenche un déploiement de production, chaque PR une preview. Les variables d'environnement de build vivent dans le dashboard Vercel de chaque projet.
 

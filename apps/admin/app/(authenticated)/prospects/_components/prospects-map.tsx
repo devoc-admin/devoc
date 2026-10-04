@@ -1,6 +1,6 @@
 "use client";
 
-import type { Prospect } from "@dev-oc/db/schema";
+import type { Prospect } from "@dev-oc/data/db/schema";
 import { GoogleMap, InfoWindowF, MarkerF } from "@react-google-maps/api";
 import { ExternalLinkIcon, LoaderCircleIcon, MapPinIcon } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
