@@ -1,20 +1,20 @@
 import { cn } from "cn";
-import { Logo } from "./_components/logo";
+
 export function Header({
   className,
-  title,
+  breadcrumbs, // 🎰
+  logo, // 🎰
 }: {
   className?: string;
-  title?: React.ReactNode;
+  breadcrumbs?: React.ReactNode;
+  logo?: React.ReactNode;
 }) {
   return (
     <Container className={className}>
       {/* 🖼️ */}
-      <LogoContainer>
-        <Logo />
-      </LogoContainer>
-      {/* 🏷️ */}
-      <div className="flex items-center px-6">{title}</div>
+      <LogoContainer>{logo}</LogoContainer>
+      {/* 🛣️ */}
+      <BreadcrumbsContainer>{breadcrumbs}</BreadcrumbsContainer>
     </Container>
   );
 }
@@ -31,7 +31,6 @@ export function Container({
     <div
       className={cn(
         "bg-header-background text-header-foreground",
-        "py-3",
         "border-border border-b",
         "grid grid-cols-subgrid",
         className
@@ -42,8 +41,16 @@ export function Container({
   );
 }
 
-// 🖼️
+// 📦🛣️
+export function BreadcrumbsContainer({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <div className={cn("flex items-center")}>{children}</div>;
+}
 
+// 📦🖼️
 function LogoContainer({ children }: { children: React.ReactNode }) {
   return <div className="grid place-items-center">{children}</div>;
 }

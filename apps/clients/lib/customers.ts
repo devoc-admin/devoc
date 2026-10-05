@@ -4,7 +4,6 @@ import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 import { auth } from "@/lib/auth/auth";
 
-// Deduplicated per request: the page and the @title slot share one query
 export const getCustomer = cache(async (customerId: string) => {
   const session = await auth.api.getSession({ headers: await headers() });
 

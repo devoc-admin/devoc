@@ -79,6 +79,7 @@
         "cn": "^0.4.0",
         "lucide-react": "^1.52.0",
         "next": "catalog:next",
+        "nucleo-ui-essential-fill-12": "^1.1.7",
         "ogl": "^1.0.11",
         "react": "catalog:react",
         "react-dom": "catalog:react",
@@ -2153,6 +2154,8 @@
     "normalize-path": ["normalize-path@3.0.0", "", {}, "sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA=="],
 
     "npm-run-path": ["npm-run-path@6.0.0", "", { "dependencies": { "path-key": "^4.0.0", "unicorn-magic": "^0.3.0" } }, "sha512-9qny7Z9DsQU8Ou39ERsPU4OZQlSTP47ShQzuKZ6PRXpYLtIFgl/DEBYEXKlvcEa+9tHVcK8CF81Y2V72qaZhWA=="],
+
+    "nucleo-ui-essential-fill-12": ["nucleo-ui-essential-fill-12@1.1.7", "", { "dependencies": { "tslib": "^2.0.0" }, "peerDependencies": { "react": ">=16.8.0", "react-dom": ">=16.8.0" } }, "sha512-BUYUT/r8/vLvXHh4IEKG+6gRetEf1/845PkKwIOHm9A7gVdqgF+JT1aLwRK5PCr56tPnjF1zwBcUey931N27ew=="],
 
     "number-flow": ["number-flow@0.6.2", "", { "dependencies": { "esm-env": "^1.1.4" } }, "sha512-MCnImG4Q5vPwhSXnov56nOuyyKn6LC+Qd7II1UiKc+ACRtug5iAtn0+CwXNxM38AC5lSowEY+oYEtZX2qMnUyw=="],
 
