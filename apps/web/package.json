@@ -7,7 +7,7 @@
     "build": "next build --turbopack",
     "ci": "biome ci",
     "dev": "bun --bun next dev --turbopack -H 0.0.0.0",
-    "format:fix": "biome format --write",
+    "format": "biome format --write",
     "lint": "bun x ultracite check",
     "lint:fix": "bun x ultracite fix",
     "start": "bun --bun next start",
