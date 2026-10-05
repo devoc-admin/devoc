@@ -8,7 +8,7 @@
     "ci": "biome ci",
     "create-admin": "bun run scripts/create-admin.ts",
     "dev": "bun --bun next dev --turbopack -H 0.0.0.0 -p 3001",
-    "format:fix": "biome format --write",
+    "format": "biome format --write",
     "inngest": "npx inngest-cli@latest dev",
     "lint": "bun x ultracite check",
     "lint:fix": "bun x ultracite fix",
