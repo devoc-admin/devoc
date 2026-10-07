@@ -31,7 +31,6 @@ export function LoginForm() {
 
   return (
     <Card
-      animation={false}
       className={cn(
         "w-full max-w-220",
         "border-none",
