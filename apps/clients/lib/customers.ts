@@ -1,27 +1,35 @@
-import { getCustomerById } from "@dev-oc/data/customers";
-import { headers } from "next/headers";
-import { notFound, redirect } from "next/navigation";
+import {
+  getAllCustomers,
+  getCustomerById,
+  getCustomersByUserId,
+  getUserCustomerById,
+} from "@dev-oc/data/customers";
+import { notFound } from "next/navigation";
 import { cache } from "react";
-import { auth } from "@/lib/auth/auth";
+import { getCurrentUser } from "@/lib/auth/session";
+
+export const getMyCustomers = cache(async () => {
+  const user = await getCurrentUser();
+
+  if (user.type === "admin") {
+    return await getAllCustomers();
+  }
+
+  return await getCustomersByUserId(user.id);
+});
 
 export const getCustomer = cache(async (customerId: string) => {
-  const session = await auth.api.getSession({ headers: await headers() });
-
-  if (!session) {
-    redirect("/login");
-  }
-
+  const user = await getCurrentUser();
   const id = Number(customerId);
 
-  if (!Number.isInteger(id) || id <= 0) {
-    notFound();
-  }
+  if (!Number.isInteger(id) || id <= 0) notFound();
 
-  const customer = await getCustomerById(id);
+  const customer =
+    user.type === "admin"
+      ? await getCustomerById(id)
+      : await getUserCustomerById(user.id, id);
 
-  if (!customer) {
-    notFound();
-  }
+  if (!customer) notFound();
 
   return customer;
 });
