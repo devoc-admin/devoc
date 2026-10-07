@@ -18,7 +18,17 @@ export const baseAuthOptions = {
     modelName: "sessions",
     updateAge: 60 * 60 * 24, // 1 day
   },
-  user: { modelName: "users" },
+  user: {
+    additionalFields: {
+      type: {
+        defaultValue: "user",
+        input: false,
+        required: false,
+        type: ["user", "admin"],
+      },
+    },
+    modelName: "users",
+  },
   verification: { modelName: "verifications" },
 } satisfies BetterAuthOptions;
 

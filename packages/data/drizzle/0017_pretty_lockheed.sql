@@ -1,0 +1,1 @@
+ALTER TABLE "users_to_customers" ADD CONSTRAINT "users_to_customers_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "public"."customers"("id") ON DELETE cascade ON UPDATE no action;
