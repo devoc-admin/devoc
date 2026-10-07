@@ -49,6 +49,11 @@ export const usersToCustomers = pgTable(
       foreignColumns: [users.id],
       name: "users_to_customers_userId_fkey",
     }).onDelete("cascade"),
+    foreignKey({
+      columns: [table.customerId],
+      foreignColumns: [customers.id],
+      name: "users_to_customers_customerId_fkey",
+    }).onDelete("cascade"),
   ]
 );
 
