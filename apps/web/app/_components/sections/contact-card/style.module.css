@@ -3,10 +3,11 @@
     animation:
       scaleUp linear both,
       opacityUp linear both;
+    animation-timing-function: linear, ease-in;
     animation-timeline: view(), view();
     animation-range:
-      cover 40% cover 60%,
-      entry 20% entry 100%;
+      cover 30% cover 50%,
+      entry 50% entry 100%;
   }
 }
 
