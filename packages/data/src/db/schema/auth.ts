@@ -1,16 +1,23 @@
 /** biome-ignore-all assist/source/useSortedKeys: database schema */
 
+import { relations } from "drizzle-orm";
 import {
   boolean,
   foreignKey,
   index,
+  integer,
+  pgEnum,
   pgTable,
+  primaryKey,
   text,
   timestamp,
   unique,
 } from "drizzle-orm/pg-core";
+import { customers } from "./customers";
 
-export const user = pgTable(
+export const userTypeEnum = pgEnum("userType", ["user", "admin"]);
+
+export const users = pgTable(
   "users",
   {
     createdAt: timestamp({ mode: "string", withTimezone: true })
@@ -21,6 +28,7 @@ export const user = pgTable(
     id: text().primaryKey().notNull(),
     image: text(),
     name: text().notNull(),
+    type: userTypeEnum().notNull().default("user"),
     updatedAt: timestamp({ mode: "string", withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -28,7 +36,45 @@ export const user = pgTable(
   (table) => [unique("user_email_key").on(table.email)]
 );
 
-export const session = pgTable(
+export const usersToCustomers = pgTable(
+  "users_to_customers",
+  {
+    userId: text().notNull(),
+    customerId: integer().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.userId, table.customerId] }),
+    foreignKey({
+      columns: [table.userId],
+      foreignColumns: [users.id],
+      name: "users_to_customers_userId_fkey",
+    }).onDelete("cascade"),
+  ]
+);
+
+export const usersRelations = relations(users, ({ many }) => ({
+  usersToCustomers: many(usersToCustomers),
+}));
+
+export const customersRelations = relations(customers, ({ many }) => ({
+  usersToCustomers: many(usersToCustomers),
+}));
+
+export const usersToCustomersRelations = relations(
+  usersToCustomers,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [usersToCustomers.userId],
+      references: [users.id],
+    }),
+    customer: one(customers, {
+      fields: [usersToCustomers.customerId],
+      references: [customers.id],
+    }),
+  })
+);
+
+export const sessions = pgTable(
   "sessions",
   {
     createdAt: timestamp({ mode: "string", withTimezone: true })
@@ -49,14 +95,14 @@ export const session = pgTable(
     ),
     foreignKey({
       columns: [table.userId],
-      foreignColumns: [user.id],
+      foreignColumns: [users.id],
       name: "session_userId_fkey",
     }).onDelete("cascade"),
     unique("session_token_key").on(table.token),
   ]
 );
 
-export const account = pgTable(
+export const accounts = pgTable(
   "accounts",
   {
     accessToken: text(),
@@ -82,13 +128,13 @@ export const account = pgTable(
     ),
     foreignKey({
       columns: [table.userId],
-      foreignColumns: [user.id],
+      foreignColumns: [users.id],
       name: "account_userId_fkey",
     }).onDelete("cascade"),
   ]
 );
 
-export const verification = pgTable(
+export const verifications = pgTable(
   "verifications",
   {
     createdAt: timestamp({ mode: "string", withTimezone: true })

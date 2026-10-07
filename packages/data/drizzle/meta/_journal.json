@@ -113,6 +113,13 @@
       "when": 1791127266985,
       "tag": "0015_pluralize_table_names",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1791376930578,
+      "tag": "0016_salty_paladin",
+      "breakpoints": true
     }
   ]
 }
