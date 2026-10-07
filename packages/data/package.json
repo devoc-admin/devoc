@@ -9,6 +9,7 @@
     "./projects": "./src/projects/queries.ts"
   },
   "scripts": {
+    "create-user": "bun run src/scripts/create-user.ts",
     "db:deploy": "bun x --bun drizzle-kit migrate",
     "db:generate": "bun x --bun drizzle-kit generate",
     "db:migrate": "bun x --bun drizzle-kit migrate",
@@ -18,6 +19,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@dev-oc/auth": "workspace:*",
     "@neondatabase/serverless": "catalog:db",
     "@vercel/blob": "^2.8.0",
     "drizzle-orm": "catalog:db"

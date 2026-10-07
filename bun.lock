@@ -190,6 +190,7 @@
       "name": "@dev-oc/data",
       "version": "0.0.1",
       "dependencies": {
+        "@dev-oc/auth": "workspace:*",
         "@neondatabase/serverless": "catalog:db",
         "@vercel/blob": "^2.8.0",
         "drizzle-orm": "catalog:db",
