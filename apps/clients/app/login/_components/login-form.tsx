@@ -33,7 +33,7 @@ export function LoginForm() {
     <Card
       className={cn(
         "w-full max-w-220",
-        "border-none",
+        "border-none ring-0!",
         // ↔️
         "xl:min-w-180 xl:px-12"
       )}
