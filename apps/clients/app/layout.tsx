@@ -21,7 +21,7 @@ export default function RootLayout({
 // 🖊️
 const geistSans = Geist({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  variable: "--font-geist",
   weight: ["400", "500", "600", "700"],
 });
 
