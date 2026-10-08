@@ -1,3 +1,3 @@
 export default function HomeBreadcrumbs() {
-  return <div className="font-semibold text-xl">Vue générale</div>;
+  return <div className="font-medium">Vue générale</div>;
 }
