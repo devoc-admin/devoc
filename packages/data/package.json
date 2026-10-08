@@ -21,7 +21,7 @@
   "dependencies": {
     "@dev-oc/auth": "workspace:*",
     "@neondatabase/serverless": "catalog:db",
-    "@vercel/blob": "^2.8.0",
+    "@vercel/blob": "^2.8.1",
     "drizzle-orm": "catalog:db"
   },
   "devDependencies": {
