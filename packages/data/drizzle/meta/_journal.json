@@ -127,6 +127,13 @@
       "when": 1791379223628,
       "tag": "0017_pretty_lockheed",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1791813113293,
+      "tag": "0018_tired_steel_serpent",
+      "breakpoints": true
     }
   ]
 }

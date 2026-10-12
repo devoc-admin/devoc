@@ -1,5 +1,5 @@
 import { db } from "@dev-oc/data/db";
-import { projects } from "@dev-oc/data/db/schema";
+import { links, projects } from "@dev-oc/data/db/schema";
 import { get } from "@vercel/blob";
 import { and, asc, eq } from "drizzle-orm";
 
@@ -35,6 +35,14 @@ export async function getCustomerProjectById(
     where: and(eq(projects.id, projectId), eq(projects.customerId, customerId)),
   });
   return project;
+}
+
+export async function getLinksByProjectId(projectId: number) {
+  return await db
+    .select({ id: links.id, name: links.name, url: links.url })
+    .from(links)
+    .where(eq(links.projectId, projectId))
+    .orderBy(asc(links.name));
 }
 
 // Returns null when the project has no logo; statusCode 304 when `ifNoneMatch` matches
