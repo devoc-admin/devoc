@@ -1,12 +1,7 @@
+import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
-import { Geist, Kanit } from "next/font/google";
+import { Kanit } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist-sans",
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
 
 const kanit = Kanit({
   subsets: ["latin"],
@@ -32,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${kanit.variable} min-h-screen font-sans`}
+        className={`${GeistSans.variable} ${kanit.variable} min-h-screen font-sans`}
       >
         {children}
       </body>

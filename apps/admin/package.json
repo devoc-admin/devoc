@@ -47,6 +47,7 @@
     "class-variance-authority": "catalog:ui",
     "clsx": "catalog:ui",
     "drizzle-orm": "catalog:db",
+    "geist": "catalog:ui",
     "inngest": "^4.22.0",
     "lucide-react": "catalog:ui",
     "next": "catalog:next",
