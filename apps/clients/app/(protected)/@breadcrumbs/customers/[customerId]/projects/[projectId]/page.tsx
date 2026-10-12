@@ -10,18 +10,23 @@ export default async function Breadcrumbs({
   const { customerId, projectId } = await params;
   const { customer, project } = await getProject(customerId, projectId);
 
+  if (customer.projects.length === 1) {
+    return (
+      <BreadcrumbsLink href={`/customers/${customerId}/projects/${projectId}`}>
+        {project.name}
+      </BreadcrumbsLink>
+    );
+  }
+
   return (
     <Container>
-      <Link className="hover:underline" href={`/customers/${customerId}`}>
+      <BreadcrumbsLink href={`/customers/${customerId}`}>
         {customer.name}
-      </Link>
+      </BreadcrumbsLink>
       <Separator />
-      <Link
-        className="hover:underline"
-        href={`/customers/${customerId}/projects/${projectId}`}
-      >
+      <BreadcrumbsLink href={`/customers/${customerId}/projects/${projectId}`}>
         {project.name}
-      </Link>
+      </BreadcrumbsLink>
     </Container>
   );
 }
@@ -29,12 +34,26 @@ export default async function Breadcrumbs({
 // 📦
 export function Container({ children }: { children: React.ReactNode }) {
   return (
-    <div className={cn("inline-flex items-center gap-x-1.5 font-medium")}>
-      {children}
-    </div>
+    <div className={cn("inline-flex items-center gap-x-1.5")}>{children}</div>
   );
 }
 
+// ―
 function Separator() {
   return <IconChevronRightFill12 />;
+}
+
+// 🔗
+function BreadcrumbsLink({
+  children,
+  href,
+}: {
+  children: React.ReactNode;
+  href: string;
+}) {
+  return (
+    <Link className="font-medium hover:underline" href={href}>
+      {children}
+    </Link>
+  );
 }

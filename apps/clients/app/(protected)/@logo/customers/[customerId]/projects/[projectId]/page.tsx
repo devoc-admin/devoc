@@ -42,12 +42,11 @@ function ProjectLogo({
   return (
     <Image
       alt={projectName}
-      className="h-full"
-      height={86}
+      height={48}
       src={`/api/customers/${customerId}/projects/${projectId}/logo`}
       // 🔒 The optimizer fetches server-side without cookies, so the auth-gated route 401s
       unoptimized
-      width={86}
+      width={48}
     />
   );
 }
