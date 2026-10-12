@@ -6,7 +6,7 @@
 
 @theme inline {
   /* 🖊️ Fonts */
-  --font-sans: var(--font-geist);
+  --font-sans: var(--font-geist-sans);
   --font-kanit: var(--font-kanit);
 
   /* 🎨 Colors */
