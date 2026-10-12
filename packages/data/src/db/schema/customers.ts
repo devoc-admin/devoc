@@ -1,5 +1,6 @@
 /** biome-ignore-all assist/source/useSortedKeys: database schema */
 
+import { relations } from "drizzle-orm";
 import {
   foreignKey,
   index,
@@ -52,6 +53,14 @@ export const projects = pgTable(
     unique("projects_customer_id_name_unique").on(table.customerId, table.name),
   ]
 );
+
+// customers -> projects lives in customersRelations (auth.ts): one relations() per table
+export const projectsRelations = relations(projects, ({ one }) => ({
+  customer: one(customers, {
+    fields: [projects.customerId],
+    references: [customers.id],
+  }),
+}));
 
 export type Project = typeof projects.$inferSelect;
 export type NewProject = typeof projects.$inferInsert;

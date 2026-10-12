@@ -13,7 +13,7 @@ import {
   timestamp,
   unique,
 } from "drizzle-orm/pg-core";
-import { customers } from "./customers";
+import { customers, projects } from "./customers";
 
 export const userTypeEnum = pgEnum("userType", ["user", "admin"]);
 
@@ -63,6 +63,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 
 export const customersRelations = relations(customers, ({ many }) => ({
   usersToCustomers: many(usersToCustomers),
+  projects: many(projects),
 }));
 
 export const usersToCustomersRelations = relations(

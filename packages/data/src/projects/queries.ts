@@ -1,7 +1,7 @@
 import { db } from "@dev-oc/data/db";
 import { projects } from "@dev-oc/data/db/schema";
 import { get } from "@vercel/blob";
-import { and, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 
 export async function getProjectById(projectId: number) {
   const project = await db.query.projects.findFirst({
@@ -12,6 +12,14 @@ export async function getProjectById(projectId: number) {
     where: eq(projects.id, projectId),
   });
   return project;
+}
+
+export async function getProjectsByCustomerId(customerId: number) {
+  return await db
+    .select({ id: projects.id, name: projects.name })
+    .from(projects)
+    .where(eq(projects.customerId, customerId))
+    .orderBy(asc(projects.name));
 }
 
 // Returns undefined when the project doesn't belong to this customer
