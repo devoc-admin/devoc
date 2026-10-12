@@ -1,4 +1,5 @@
 import { cn } from "cn";
+import { IconBoxCaretRight as BreadcrumbsLogo } from "nucleo-glass";
 
 export function Header({
   className,
@@ -47,7 +48,12 @@ export function BreadcrumbsContainer({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className={cn("flex items-center")}>{children}</div>;
+  return (
+    <div className={cn("flex items-center gap-x-2")}>
+      <BreadcrumbsLogo />
+      <div className="mt-0.5">{children}</div>
+    </div>
+  );
 }
 
 // 📦🖼️
