@@ -1,11 +1,13 @@
 import { cn } from "cn";
 import { IconHouse } from "nucleo-glass";
+import { LogoutButton } from "./logout-button";
 
 export function Sidenav({ className }: { className?: string }) {
   return (
     <ul
       className={cn(
         "bg-sidebar-background text-sidebar-foreground",
+        "flex flex-col",
         "px-3 py-5",
         "border-border border-r",
         className
@@ -15,6 +17,8 @@ export function Sidenav({ className }: { className?: string }) {
         <IconHouse />
         <SidenavLabel>Accueil</SidenavLabel>
       </SidenavItem>
+
+      <LogoutButton />
     </ul>
   );
 }
