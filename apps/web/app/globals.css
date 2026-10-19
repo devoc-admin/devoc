@@ -10,7 +10,6 @@
   /* 🖊️ */
   --font-sans: var(--font-geist-sans);
   --font-geist-mono: var(--font-geist-mono);
-  --font-geist-pixel: var(--font-geist-pixel);
   --font-kanit: var(--font-kanit);
   --font-style-script: var(--font-style-script);
   --font-dancing-script: var(--font-dancing-script);
@@ -18,7 +17,6 @@
   --font-faustina: var(--font-faustina);
   --font-fraunces: var(--font-fraunces);
   --font-sarina: var(--font-sarina);
-  --font-orbitron: var(--font-orbitron);
   --font-audiowide: var(--font-audiowide);
 
   --color-ring: var(--ring);
