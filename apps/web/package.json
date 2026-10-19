@@ -14,10 +14,10 @@
     "typecheck": "next typegen && tsc --noEmit"
   },
   "browserslist": [
-    "Chrome >= 93",
-    "Firefox >= 92",
-    "Safari >= 15.4",
-    "Edge >= 93"
+    "Chrome >= 111",
+    "Firefox >= 128",
+    "Safari >= 16.4",
+    "Edge >= 111"
   ],
   "dependencies": {
     "@gsap/react": "^2.1.2",
