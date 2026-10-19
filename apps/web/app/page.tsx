@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Footer } from "./_components/footer/footer";
 import { Hero } from "./_components/hero/hero";
 import { Main } from "./_components/main";
@@ -13,3 +14,7 @@ export default function Home() {
     </>
   );
 }
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
