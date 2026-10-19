@@ -106,7 +106,7 @@ function ClementAndThibaut() {
   );
 }
 
-function getGithubAvatarUrl({ id, res = 150 }: { id: number; res?: number }) {
+function getGithubAvatarUrl({ id, res = 77 }: { id: number; res?: number }) {
   return `https://avatars.githubusercontent.com/u/${id}?s=${res}`;
 }
 
