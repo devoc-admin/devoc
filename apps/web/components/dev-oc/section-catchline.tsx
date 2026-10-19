@@ -8,7 +8,7 @@ export function SectionCatchline({
   className?: string;
 }) {
   return (
-    <h3
+    <h2
       className={cn(
         "font-fraunces",
         "max-w-[13ch]",
@@ -24,6 +24,6 @@ export function SectionCatchline({
       )}
     >
       {children}
-    </h3>
+    </h2>
   );
 }
