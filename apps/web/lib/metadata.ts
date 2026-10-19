@@ -30,6 +30,7 @@ export function pageMetadata({
   const fullTitle = `${title} | ${SITE_NAME}`;
 
   return {
+    alternates: { canonical: path },
     description,
     openGraph: {
       description,
