@@ -69,7 +69,7 @@ function HeaderContainer({ children }: { children: React.ReactNode }) {
 function Subtitle() {
   return (
     <FadeUp disableOnMobile>
-      <SectionCatchline className="hidden sm:inline-block">
+      <SectionCatchline className="sr-only sm:not-sr-only sm:inline-block">
         Une chaîne de valeur{" "}
         <VariableFont className="text-foreground-dark/60 italic">
           complète

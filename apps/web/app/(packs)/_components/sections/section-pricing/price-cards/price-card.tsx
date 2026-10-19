@@ -72,7 +72,7 @@ export function PriceCardTitle({
   className?: string;
 }) {
   return (
-    <h4
+    <h3
       className={cn(
         "font-fraunces font-medium",
         //↔️
@@ -84,7 +84,7 @@ export function PriceCardTitle({
       )}
     >
       {children}
-    </h4>
+    </h3>
   );
 }
 

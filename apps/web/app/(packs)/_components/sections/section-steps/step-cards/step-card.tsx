@@ -36,9 +36,9 @@ export function StepCardNumber({ value }: { value: number }) {
 
 export function StepCardTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h4 className="font-fraunces font-medium text-2xl transition group-hover:text-orange-red">
+    <h3 className="font-fraunces font-medium text-2xl transition group-hover:text-orange-red">
       {children}
-    </h4>
+    </h3>
   );
 }
 

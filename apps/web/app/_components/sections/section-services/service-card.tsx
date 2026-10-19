@@ -74,7 +74,7 @@ function Title({
 }) {
   return (
     <div className="flex items-baseline justify-between gap-x-4">
-      <h4
+      <h3
         className={cn(
           "font-fraunces",
           "transition-[text-shadow] duration-500 group-hover:text-shadow-[0px_0px_15px_rgb(255_255_255_/_50%)]",
@@ -83,7 +83,7 @@ function Title({
         )}
       >
         {children}
-      </h4>
+      </h3>
       <CustomIcon Icon={Icon} />
     </div>
   );

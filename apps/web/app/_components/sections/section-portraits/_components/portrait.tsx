@@ -54,7 +54,7 @@ function PortraitImage({ alt, src }: { alt: string; src: string }) {
 // 🆎
 function PortraitName({ children }: { children: React.ReactNode }) {
   return (
-    <h4
+    <h3
       className={cn(
         "font-geist font-medium text-orange-red tracking-tight",
         // ↔️
@@ -62,19 +62,19 @@ function PortraitName({ children }: { children: React.ReactNode }) {
       )}
     >
       {children}
-    </h4>
+    </h3>
   );
 }
 
 function PortraitTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h5
+    <h4
       className={cn(
         "font-geist-mono text-base text-foreground-dark/70 leading-[1.1]! tracking-tighter"
       )}
     >
       {children}
-    </h5>
+    </h4>
   );
 }
 
