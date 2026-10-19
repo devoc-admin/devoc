@@ -160,7 +160,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Dev'Oc", url: "https://dev-oc.fr" }],
   creator: "Dev'Oc",
   description:
-    "Dev'Oc est une collectif de développeurs en Occitanie spécialisée dans la création de sites internet, applications web, solutions digitales sur-mesure et automatisation des tâches avec l'IA. Expertise en UX/UI, référencement, accompagnement digital et innovation.",
+    "Dev'Oc est un collectif de développeurs en Occitanie spécialisé dans la création de sites internet, applications web, solutions digitales sur-mesure et automatisation des tâches avec l'IA. Expertise en UX/UI, référencement, accompagnement digital et innovation.",
   keywords: [
     "Occitanie",
     "développement web",
