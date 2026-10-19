@@ -22,12 +22,12 @@ html:not([data-fonts-ready="true"]) .backgroundEntry {
   animation-play-state: paused;
 }
 
-/* 0.01, not 0: Chrome never reports an LCP for elements first painted at
+/* 0.001, not 0: Chrome never reports an LCP for elements first painted at
    opacity 0, and the whole above-the-fold content uses this animation */
 @keyframes hero-reveal {
   from {
     transform: translate(0px, -16px);
-    opacity: 0.01;
+    opacity: 0.001;
   }
 
   to {

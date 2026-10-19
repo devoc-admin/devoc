@@ -1,8 +1,22 @@
-import SpecularBandsBackground from "@/components/motion-core/specular-band/specular-band-background.tsx";
+"use client";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import { useMatchMedia } from "@/hooks/use-match-media";
 import { cn } from "@/lib/utils.ts";
+import mobileBackground from "../assets/mobile_hero_background.webp";
 import s from "./styles.module.css";
 
+const SpecularBandsBackground = dynamic(
+  () =>
+    import(
+      "@/components/motion-core/specular-band/specular-band-background.tsx"
+    ),
+  { ssr: false }
+);
+
 export function HeroBackground() {
+  const isLargeScreen = useMatchMedia("(width >= 64rem)");
+
   return (
     <div
       className={cn(
@@ -13,16 +27,21 @@ export function HeroBackground() {
         maskLeft
       )}
     >
-      <div className={cn("size-full", maskBottom)}>
-        <SpecularBandsBackground
-          backgroundColor="#ffffff"
-          className={cn(
-            "size-full",
-            // ↔️
-            "opacity-20 lg:opacity-100"
-          )}
-          speed={0.5}
+      <div className={cn("relative size-full", maskBottom)}>
+        <Image
+          alt=""
+          className="object-cover lg:hidden"
+          fill
+          sizes="100vw"
+          src={mobileBackground}
         />
+        {isLargeScreen && (
+          <SpecularBandsBackground
+            backgroundColor="#ffffff"
+            className="size-full"
+            speed={0.5}
+          />
+        )}
       </div>
     </div>
   );
