@@ -3,7 +3,7 @@
 import { Canvas } from "@react-three/fiber";
 import { clsx } from "clsx"; // ou remplace clsx par ton utilitaire cn
 import { useInView } from "motion/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { NoToneMapping } from "three";
 import "../silence-three-clock-deprecation";
 import { SpecularBandsMesh } from "./specular-band-scene"; // le mesh interne — voir note ci-dessous
@@ -25,6 +25,7 @@ export default function SpecularBandsBackground({
   const containerRef = useRef<HTMLDivElement>(null);
   // ⏸️ Stop the render loop while the background is off-screen
   const isInView = useInView(containerRef);
+  const [isReady, setIsReady] = useState(false);
 
   return (
     <div
@@ -32,11 +33,19 @@ export default function SpecularBandsBackground({
       ref={containerRef}
       {...rest}
     >
-      <div className="absolute inset-0 z-0">
+      <div
+        className={clsx(
+          "absolute inset-0 z-0",
+          "transition-opacity duration-5000 ease-out",
+          isReady ? "opacity-100" : "opacity-0"
+        )}
+      >
         <Canvas
           dpr={DPR_RANGE}
           frameloop={isInView ? "always" : "never"}
           gl={{ antialias: false, toneMapping: NoToneMapping }}
+          // Fade in once the first frame is drawn, not when the chunk is loaded
+          onCreated={() => requestAnimationFrame(() => setIsReady(true))}
         >
           <SpecularBandsMesh
             backgroundColor={backgroundColor}
