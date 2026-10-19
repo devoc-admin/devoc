@@ -6,7 +6,9 @@ import localFont from "next/font/local";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TailwindLandmark } from "../components/tailwind-landmark/tailwind-landmark";
 import "./globals.css";
+import { JsonLd } from "@/components/json-ld";
 import SkipLink from "@/components/ui/skip-link";
+import { siteStructuredData } from "@/lib/structured-data";
 import { FontsReadyScript } from "./_components/fonts-ready-script";
 
 const geistSans = Geist({
@@ -53,6 +55,7 @@ export default function RootLayout({
     <html lang="fr" suppressHydrationWarning>
       <head>
         <FontsReadyScript />
+        <JsonLd data={siteStructuredData} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${styleScript.variable} ${fraunces.variable} ${audiowide.variable} mx-auto flex min-h-screen flex-col font-sans`}
