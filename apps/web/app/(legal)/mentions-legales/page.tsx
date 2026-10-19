@@ -1,3 +1,4 @@
+import { pageMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 import { HeaderWrapper } from "../_components/header-wrapper";
 import { InformationBar } from "../_components/information-bar";
@@ -240,3 +241,10 @@ const items = [
     title: "Contact",
   },
 ];
+
+export const metadata = pageMetadata({
+  description:
+    "Mentions légales du site Dev'Oc : éditeur, hébergeur, propriété intellectuelle et conditions d'utilisation.",
+  path: "/mentions-legales",
+  title: "Mentions légales",
+});
