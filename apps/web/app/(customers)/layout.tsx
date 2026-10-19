@@ -8,7 +8,6 @@ import {
 } from "next/font/google";
 import { cn } from "@/lib/utils";
 
-// Fonts only used on customer pages, so public pages don't ship their CSS
 const dancingScript = Dancing_Script({
   preload: false,
   subsets: ["latin"],
@@ -44,7 +43,6 @@ const sarina = Sarina({
   weight: ["400"],
 });
 
-// Customer pages are private: keep them out of search results.
 export const metadata: Metadata = {
   robots: { follow: false, index: false },
 };

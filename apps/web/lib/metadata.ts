@@ -12,7 +12,6 @@ const OG_IMAGE = {
 
 type PageMetadataInput = {
   description: string;
-  /** Route path, starting with "/" */
   path: string;
   title: string;
 };
@@ -41,7 +40,6 @@ export function pageMetadata({
       type: "website",
       url: `${SITE_URL}${path}`,
     },
-    // Rendered as "<title> | Dev'Oc" by the root layout's title template
     title,
     twitter: {
       card: "summary_large_image",
