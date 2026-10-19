@@ -3,7 +3,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Audiowide, Geist, Geist_Mono, Style_Script } from "next/font/google";
 import localFont from "next/font/local";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TailwindLandmark } from "../components/tailwind-landmark/tailwind-landmark";
 import "./globals.css";
 import { JsonLd } from "@/components/json-ld";
@@ -60,12 +59,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${styleScript.variable} ${fraunces.variable} ${audiowide.variable} mx-auto flex min-h-screen flex-col font-sans`}
       >
-        {/* 🔌 */}
-        <Adapters>
-          <main className="grow" id="main-content">
-            {children}
-          </main>
-        </Adapters>
+        <main className="grow" id="main-content">
+          {children}
+        </main>
 
         {/* ♿➡️ */}
         <SkipLink />
@@ -75,12 +71,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
-
-// 🔌
-// =======================
-function Adapters({ children }: { children: React.ReactNode }) {
-  return <NuqsAdapter>{children}</NuqsAdapter>;
 }
 
 // 🔧
