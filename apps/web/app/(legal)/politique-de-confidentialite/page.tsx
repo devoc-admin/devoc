@@ -1,3 +1,4 @@
+import { pageMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 import { HeaderWrapper } from "../_components/header-wrapper";
 import { InformationBar } from "../_components/information-bar";
@@ -337,3 +338,10 @@ const items = [
     title: "Évolution de cette politique",
   },
 ];
+
+export const metadata = pageMetadata({
+  description:
+    "Quelles données Dev'Oc collecte, pourquoi, combien de temps elles sont conservées et comment exercer vos droits RGPD.",
+  path: "/politique-de-confidentialite",
+  title: "Politique de confidentialité",
+});

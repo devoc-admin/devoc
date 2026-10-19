@@ -197,7 +197,10 @@ export const metadata: Metadata = {
     index: true,
     nocache: false,
   },
-  title: "Dev'Oc | Création de sites & applications",
+  title: {
+    default: "Dev'Oc | Création de sites & applications",
+    template: "%s | Dev'Oc",
+  },
   twitter: {
     card: "summary_large_image",
     creator: "@devoc",
