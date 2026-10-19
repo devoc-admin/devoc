@@ -106,13 +106,17 @@ function ClementAndThibaut() {
   );
 }
 
+function getGithubAvatarUrl({ id, res = 150 }: { id: number; res?: number }) {
+  return `https://avatars.githubusercontent.com/u/${id}?s=${res}`;
+}
+
 function ClementAvatar() {
   return (
     <AvatarWithTooltip
       fallback="CB"
       name="Clément Dubos"
       url="https://www.linkedin.com/in/clement-dubos-707747a5/"
-      urlImage="https://avatars.githubusercontent.com/u/52322202"
+      urlImage={getGithubAvatarUrl({ id: 52_322_202 })}
     />
   );
 }
@@ -123,7 +127,7 @@ function ThibautAvatar() {
       fallback="TI"
       name="Thibaut Izard"
       url="https://www.linkedin.com/in/thibaut-izard/"
-      urlImage="https://avatars.githubusercontent.com/u/8688023"
+      urlImage={getGithubAvatarUrl({ id: 8_688_023 })}
     />
   );
 }

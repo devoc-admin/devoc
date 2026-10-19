@@ -8,7 +8,7 @@ import { SectionPortraits } from "../sections/section-portraits";
 import { SectionReasons } from "../sections/section-reasons";
 import { SectionServices } from "../sections/section-services";
 import { SectionValues } from "../sections/section-values";
-import TextureImage from "./assets/texture.webp";
+import TextureImage from "./assets/texture.avif";
 
 export function Main() {
   return (
