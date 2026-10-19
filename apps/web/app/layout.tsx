@@ -10,25 +10,14 @@ import {
   Geist_Mono,
   Kanit,
   Montserrat,
-  Orbitron,
   Sarina,
   Style_Script,
 } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TailwindLandmark } from "../components/tailwind-landmark/tailwind-landmark";
 import "./globals.css";
-import { Geist_Pixel } from "next/font/google";
 import SkipLink from "@/components/ui/skip-link";
 import { FontsReadyGate } from "./_components/fonts-ready-gate";
-
-const geistPixel = Geist_Pixel({
-  // Next.js has no metrics for Geist Pixel to generate a fallback font
-  adjustFontFallback: false,
-  fallback: ["monospace"],
-  subsets: ["latin"],
-  variable: "--font-geist-pixel",
-  weight: "variable",
-});
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -90,13 +79,6 @@ const fraunces = Fraunces({
   weight: "variable",
 });
 
-const orbitron = Orbitron({
-  preload: false,
-  subsets: ["latin"],
-  variable: "--font-orbitron",
-  weight: "variable",
-});
-
 const audiowide = Audiowide({
   preload: false,
   style: ["normal"],
@@ -113,7 +95,7 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${kanit.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} ${fraunces.variable} ${geistPixel.variable} ${orbitron.variable} ${audiowide.variable} mx-auto flex min-h-screen flex-col font-sans`}
+        className={`${geistSans.variable} ${geistMono.variable} ${kanit.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} ${fraunces.variable} ${audiowide.variable} mx-auto flex min-h-screen flex-col font-sans`}
       >
         {/* 🔌 */}
         <Adapters>
