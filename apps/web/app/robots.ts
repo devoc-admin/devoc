@@ -1,37 +1,16 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/metadata";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = "https://dev-oc.fr";
-
   return {
-    host: baseUrl,
+    host: SITE_URL,
     rules: [
       {
         allow: "/",
         disallow: ["/private/"],
         userAgent: "*",
       },
-      {
-        disallow: "/",
-        userAgent: "GPTBot",
-      },
-      {
-        disallow: "/",
-        userAgent: "ChatGPT-User",
-      },
-      {
-        disallow: "/",
-        userAgent: "CCBot",
-      },
-      {
-        disallow: "/",
-        userAgent: "anthropic-ai",
-      },
-      {
-        disallow: "/",
-        userAgent: "Claude-Web",
-      },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }
