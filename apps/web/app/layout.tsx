@@ -1,13 +1,8 @@
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import {
-  Audiowide,
-  Fraunces,
-  Geist,
-  Geist_Mono,
-  Style_Script,
-} from "next/font/google";
+import { Audiowide, Geist, Geist_Mono, Style_Script } from "next/font/google";
+import localFont from "next/font/local";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TailwindLandmark } from "../components/tailwind-landmark/tailwind-landmark";
 import "./globals.css";
@@ -32,11 +27,13 @@ const styleScript = Style_Script({
   weight: ["400"],
 });
 
-const fraunces = Fraunces({
-  axes: ["opsz", "SOFT", "WONK"],
-  subsets: ["latin"],
+// Google Fonts instance with SOFT=50 and WONK=1 pinned (the only values used
+// in globals.css): 67 KB instead of 121 KB, same rendering
+const fraunces = localFont({
+  adjustFontFallback: "Times New Roman",
+  src: "./_assets/fonts/fraunces-soft50-wonk1-latin.woff2",
   variable: "--font-fraunces",
-  weight: "variable",
+  weight: "100 900",
 });
 
 const audiowide = Audiowide({
