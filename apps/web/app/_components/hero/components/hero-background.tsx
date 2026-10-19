@@ -1,6 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useIdle } from "@/hooks/use-idle";
 import { useMatchMedia } from "@/hooks/use-match-media";
 import { cn } from "@/lib/utils.ts";
 import mobileBackground from "../assets/mobile_hero_background.webp";
@@ -15,7 +16,12 @@ const SpecularBandsBackground = dynamic(
 );
 
 export function HeroBackground() {
-  const isLargeScreen = useMatchMedia("(width >= 64rem)");
+  // 🎞️ Animated WebGL only on desktop, and never when motion is reduced
+  const shouldAnimate = useMatchMedia(
+    "(width >= 64rem) and (prefers-reduced-motion: no-preference)"
+  );
+  // ⏳ Load Three.js once the page is loaded and the browser is idle
+  const isIdle = useIdle();
 
   return (
     <div
@@ -30,12 +36,13 @@ export function HeroBackground() {
       <div className={cn("relative size-full", maskBottom)}>
         <Image
           alt=""
-          className="object-cover lg:hidden"
+          // Static image also serves desktop users who reduce motion
+          className="object-cover motion-safe:lg:hidden"
           fill
           sizes="100vw"
           src={mobileBackground}
         />
-        {isLargeScreen && (
+        {shouldAnimate && isIdle && (
           <SpecularBandsBackground
             backgroundColor="#ffffff"
             className="size-full"
