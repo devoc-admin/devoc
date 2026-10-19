@@ -123,7 +123,7 @@ function PackDescription() {
     >
       <P>
         Face aux <HighlightText>cyberattaques</HighlightText> et à la{" "}
-        <HighlightText>pression réglementaire</HighlightText>, beaucoup de
+        <HighlightText>pression réglementaire</HighlightText> beaucoup de
         communes connaissent des difficultés pour s'adapter à ces changements.
       </P>
       <P>
