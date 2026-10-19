@@ -1,5 +1,4 @@
 "use client";
-import { useFontsReady } from "@/app/_hooks/use-font-ready";
 import { cn } from "@/lib/utils.ts";
 import { BadgePackCommunes } from "./components/badge-pack-communes";
 import { CSSEntryAnimation } from "./components/css-entry-animation";
@@ -38,7 +37,6 @@ export function Hero() {
 
 // 📦
 function GlobalContainer({ children }: { children: React.ReactNode }) {
-  const fontsReady = useFontsReady();
   return (
     <div
       className={cn(
@@ -49,7 +47,7 @@ function GlobalContainer({ children }: { children: React.ReactNode }) {
         "items-end"
       )}
     >
-      {fontsReady ? children : null}
+      {children}
     </div>
   );
 }
