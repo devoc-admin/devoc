@@ -3,14 +3,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import {
   Audiowide,
-  Dancing_Script,
-  Faustina,
   Fraunces,
   Geist,
   Geist_Mono,
-  Kanit,
-  Montserrat,
-  Sarina,
   Style_Script,
 } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
@@ -22,54 +17,19 @@ import { FontsReadyGate } from "./_components/fonts-ready-gate";
 const geistSans = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: "variable",
 });
 
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
-
-const kanit = Kanit({
-  preload: false,
-  subsets: ["latin"],
-  variable: "--font-kanit",
-  weight: ["400", "500", "600", "700"],
-});
-
-const sarina = Sarina({
-  preload: false,
-  subsets: ["latin"],
-  variable: "--font-sarina",
-  weight: ["400"],
+  weight: "variable",
 });
 
 const styleScript = Style_Script({
   subsets: ["latin"],
   variable: "--font-style-script",
   weight: ["400"],
-});
-
-const dancingScript = Dancing_Script({
-  preload: false,
-  subsets: ["latin"],
-  variable: "--font-dancing-script",
-  weight: ["400", "500", "600", "700"],
-});
-
-const montserrat = Montserrat({
-  preload: false,
-  subsets: ["latin"],
-  variable: "--font-montserrat",
-  weight: ["400", "500", "600", "700"],
-});
-
-const faustina = Faustina({
-  preload: false,
-  subsets: ["latin"],
-  variable: "--font-faustina",
-  weight: ["400", "300"],
 });
 
 const fraunces = Fraunces({
@@ -95,7 +55,7 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${kanit.variable} ${styleScript.variable} ${dancingScript.variable} ${montserrat.variable} ${faustina.variable} ${sarina.variable} ${fraunces.variable} ${audiowide.variable} mx-auto flex min-h-screen flex-col font-sans`}
+        className={`${geistSans.variable} ${geistMono.variable} ${styleScript.variable} ${fraunces.variable} ${audiowide.variable} mx-auto flex min-h-screen flex-col font-sans`}
       >
         {/* 🔌 */}
         <Adapters>
