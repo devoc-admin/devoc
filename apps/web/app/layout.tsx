@@ -12,7 +12,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { TailwindLandmark } from "../components/tailwind-landmark/tailwind-landmark";
 import "./globals.css";
 import SkipLink from "@/components/ui/skip-link";
-import { FontsReadyGate } from "./_components/fonts-ready-gate";
+import { FontsReadyScript } from "./_components/fonts-ready-script";
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -54,6 +54,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
+      <head>
+        <FontsReadyScript />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${styleScript.variable} ${fraunces.variable} ${audiowide.variable} mx-auto flex min-h-screen flex-col font-sans`}
       >
@@ -66,9 +69,6 @@ export default function RootLayout({
 
         {/* ♿➡️ */}
         <SkipLink />
-
-        {/* 🖊️ */}
-        <FontsReadyGate />
 
         {/* 🔧 */}
         <Helpers />
