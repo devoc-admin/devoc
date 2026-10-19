@@ -8,7 +8,6 @@ import {
   DemarrerUnProjetButton,
 } from "./components/hero-buttons";
 import { HeroFounders } from "./components/hero-founders";
-import { HeroKeywords as Keywords } from "./components/hero-keywords";
 import { HeroSubtitle as Description } from "./components/hero-subtitle";
 import { DevOc } from "./components/hero-title";
 
@@ -19,7 +18,6 @@ export function Hero() {
       <ContentContainer>
         <DevOc />
         <Description />
-        <Keywords />
 
         <BadgePackCommunes />
 
