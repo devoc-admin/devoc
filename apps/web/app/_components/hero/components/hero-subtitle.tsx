@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils.ts";
 import { CSSEntryAnimation } from "./css-entry-animation";
 export function HeroSubtitle() {
   return (
-    <CSSEntryAnimation className="max-w-[60ch]" position={2}>
+    <CSSEntryAnimation className="mx-auto max-w-[60ch]" position={2}>
       <P>
         Nous réalisons la transformation numérique des PME et collectivités d'
         <Occitanie />.
