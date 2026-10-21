@@ -1,20 +1,15 @@
 import { pageMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 import { HeaderWrapper } from "../_components/header-wrapper";
-import { InformationBar } from "../_components/information-bar";
 import { LI } from "../_components/li";
 import { ListItems } from "../_components/list-items";
 import { PIntro } from "../_components/p-intro";
-import { PageSubtitle } from "../_components/page-subtitle";
 import { PageTitle } from "../_components/page-title";
 export default function PolitiqueDeConfidentialitePage() {
   return (
     <>
       {/* 1️⃣ / 🔠 ... 🆎*/}
       <HeaderWrapper>
-        {/*🔠*/}
-        <PageSubtitle>RGPD & vie privée</PageSubtitle>
-        {/*🆎*/}
         <PageTitle>
           Politique de{" "}
           <span
@@ -24,36 +19,17 @@ export default function PolitiqueDeConfidentialitePage() {
           >
             confidentialité
           </span>
-          .
         </PageTitle>
       </HeaderWrapper>
-      {/* 2️⃣ / 🔤 */}
-      <InformationBar informationBarItems={informationBarItems} />
-      {/* 3️⃣ */}
       <PIntro>
         Le respect de votre vie privée et de vos données personnelles fait
-        partie intégrante de notre démarche d'ingénieur. Cette page décrit, en
-        langage clair, ce que nous collectons, pourquoi, et comment vous gardez
-        la main.
+        partie intégrante de notre démarche. Cette page décrit ce que nous
+        collectons, pourquoi, et comment vous gardez la main.
       </PIntro>
-      {/* 4️⃣ */}
       <ListItems items={items} />
     </>
   );
 }
-
-const informationBarItems = [
-  {
-    id: "maj",
-    type: "Mise à jour",
-    value: "Mai 2026",
-  },
-  {
-    id: "lecture",
-    type: "Lecture",
-    value: "6 min",
-  },
-];
 
 const items = [
   {
@@ -67,7 +43,7 @@ const items = [
           <a className="text-foreground-dark/85 underline" href="www.dev-oc.fr">
             dev-oc.fr
           </a>{" "}
-          est édité par le collectif Dev'Oc, association de fait composée de
+          est édité par le collectif Dev'Oc, GIE dont les administrateurs sont
           Clément Dubos et Thibaut Izard.
         </p>
         <p>
