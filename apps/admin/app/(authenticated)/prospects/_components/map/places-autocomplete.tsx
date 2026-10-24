@@ -19,12 +19,14 @@ type PlacesAutocompleteProps = {
   onPlaceSelect: (place: PlaceResult) => void;
   placeholder?: string;
   defaultValue?: string;
+  id?: string;
 };
 
 export function PlacesAutocomplete({
   onPlaceSelect,
   placeholder = "Rechercher une adresse...",
   defaultValue = "",
+  id,
 }: PlacesAutocompleteProps) {
   const { isLoaded } = useGoogleMaps();
   const [inputValue, setInputValue] = useState(defaultValue);
@@ -72,6 +74,7 @@ export function PlacesAutocomplete({
         <Input
           className="h-10 pl-9"
           disabled
+          id={id}
           placeholder="Chargement de Google Maps..."
         />
         <MapPinIcon className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -92,6 +95,7 @@ export function PlacesAutocomplete({
       <div className="relative">
         <Input
           className="h-10 pl-9"
+          id={id}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder={placeholder}
           value={inputValue}

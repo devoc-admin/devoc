@@ -155,8 +155,11 @@ export function ProspectAddDialog() {
               >
                 {(field) => (
                   <div className="col-span-2">
-                    <Label>Rechercher un lieu</Label>
+                    <Label htmlFor={`add-prospect-${field.name}`}>
+                      Rechercher un lieu
+                    </Label>
                     <PlacesAutocomplete
+                      id={`add-prospect-${field.name}`}
                       key={formKey}
                       onPlaceSelect={handlePlaceSelect}
                       placeholder="Mairie, ville, administration..."
@@ -180,8 +183,9 @@ export function ProspectAddDialog() {
               >
                 {(field) => (
                   <div>
-                    <Label>Nom</Label>
+                    <Label htmlFor={`add-prospect-${field.name}`}>Nom</Label>
                     <CustomInput
+                      id={`add-prospect-${field.name}`}
                       name={field.name}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         field.handleChange(e.target.value)
@@ -201,14 +205,17 @@ export function ProspectAddDialog() {
               <form.Field name="type">
                 {(field) => (
                   <div>
-                    <Label>Type</Label>
+                    <Label htmlFor={`add-prospect-${field.name}`}>Type</Label>
                     <Select
                       onValueChange={(newValue) =>
                         field.handleChange(newValue as Prospect["type"])
                       }
                       value={field.state.value}
                     >
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger
+                        className="w-full"
+                        id={`add-prospect-${field.name}`}
+                      >
                         <SelectValue placeholder="Auto-détecté" />
                       </SelectTrigger>
                       <SelectContent align="start" className="max-h-64">
@@ -243,8 +250,11 @@ export function ProspectAddDialog() {
               >
                 {(field) => (
                   <div className="col-span-2">
-                    <Label>Site web</Label>
+                    <Label htmlFor={`add-prospect-${field.name}`}>
+                      Site web
+                    </Label>
                     <CustomInput
+                      id={`add-prospect-${field.name}`}
                       name={field.name}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         field.handleChange(e.target.value)
@@ -281,8 +291,11 @@ export function ProspectAddDialog() {
               >
                 {(field) => (
                   <div className="col-span-2">
-                    <Label>Année de mise en ligne du site</Label>
+                    <Label htmlFor={`add-prospect-${field.name}`}>
+                      Année de mise en ligne du site
+                    </Label>
                     <CustomInput
+                      id={`add-prospect-${field.name}`}
                       inputMode="numeric"
                       max={2100}
                       min={1900}
@@ -306,8 +319,11 @@ export function ProspectAddDialog() {
               <form.Field name="siteEditor">
                 {(field) => (
                   <div>
-                    <Label>Éditeur du site</Label>
+                    <Label htmlFor={`add-prospect-${field.name}`}>
+                      Éditeur du site
+                    </Label>
                     <EditorCombobox
+                      id={`add-prospect-${field.name}`}
                       onCommit={(next) => field.handleChange(next)}
                       value={field.state.value}
                     />
@@ -318,14 +334,19 @@ export function ProspectAddDialog() {
               <form.Field name="hasAccessibilitySettings">
                 {(field) => (
                   <div>
-                    <Label>Paramètres d'accessibilité</Label>
+                    <Label htmlFor={`add-prospect-${field.name}`}>
+                      Paramètres d'accessibilité
+                    </Label>
                     <Select
                       onValueChange={(newValue) =>
                         field.handleChange(newValue as "unknown" | "yes" | "no")
                       }
                       value={field.state.value}
                     >
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger
+                        className="w-full"
+                        id={`add-prospect-${field.name}`}
+                      >
                         <SelectValue placeholder="N.r." />
                       </SelectTrigger>
                       <SelectContent align="start">
@@ -363,8 +384,11 @@ export function ProspectAddDialog() {
                     >
                       {(field) => (
                         <div>
-                          <Label>Nombre d'habitants</Label>
+                          <Label htmlFor={`add-prospect-${field.name}`}>
+                            Nombre d'habitants
+                          </Label>
                           <CustomInput
+                            id={`add-prospect-${field.name}`}
                             inputMode="numeric"
                             name={field.name}
                             onChange={(
@@ -403,8 +427,11 @@ export function ProspectAddDialog() {
               >
                 {(field) => (
                   <div>
-                    <Label>Distance depuis mon adresse</Label>
+                    <Label htmlFor={`add-prospect-${field.name}`}>
+                      Distance depuis mon adresse
+                    </Label>
                     <CustomInput
+                      id={`add-prospect-${field.name}`}
                       inputMode="numeric"
                       name={field.name}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -428,7 +455,9 @@ export function ProspectAddDialog() {
                     <form.Field name="usesPanneauPocket">
                       {(field) => (
                         <div>
-                          <Label>PanneauPocket</Label>
+                          <Label htmlFor={`add-prospect-${field.name}`}>
+                            PanneauPocket
+                          </Label>
                           <Select
                             onValueChange={(newValue) =>
                               field.handleChange(
@@ -437,7 +466,10 @@ export function ProspectAddDialog() {
                             }
                             value={field.state.value}
                           >
-                            <SelectTrigger className="w-full">
+                            <SelectTrigger
+                              className="w-full"
+                              id={`add-prospect-${field.name}`}
+                            >
                               <SelectValue placeholder="N.r." />
                             </SelectTrigger>
                             <SelectContent align="start">
@@ -460,14 +492,17 @@ export function ProspectAddDialog() {
               <form.Field name="hasDpo">
                 {(field) => (
                   <div className="col-span-2">
-                    <Label>DPO</Label>
+                    <Label htmlFor={`add-prospect-${field.name}`}>DPO</Label>
                     <Select
                       onValueChange={(newValue) =>
                         field.handleChange(newValue as "unknown" | "yes" | "no")
                       }
                       value={field.state.value}
                     >
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger
+                        className="w-full"
+                        id={`add-prospect-${field.name}`}
+                      >
                         <SelectValue placeholder="N.r." />
                       </SelectTrigger>
                       <SelectContent align="start">
@@ -488,8 +523,11 @@ export function ProspectAddDialog() {
                       <form.Field name="dpoName">
                         {(field) => (
                           <div>
-                            <Label>Nom du DPO</Label>
+                            <Label htmlFor={`add-prospect-${field.name}`}>
+                              Nom du DPO
+                            </Label>
                             <DpoCombobox
+                              id={`add-prospect-${field.name}`}
                               onCommit={(next) => field.handleChange(next)}
                               value={field.state.value}
                             />
@@ -507,8 +545,11 @@ export function ProspectAddDialog() {
                       >
                         {(field) => (
                           <div>
-                            <Label>URL du DPO</Label>
+                            <Label htmlFor={`add-prospect-${field.name}`}>
+                              URL du DPO
+                            </Label>
                             <CustomInput
+                              id={`add-prospect-${field.name}`}
                               name={field.name}
                               onChange={(
                                 e: React.ChangeEvent<HTMLInputElement>
@@ -535,8 +576,9 @@ export function ProspectAddDialog() {
               <form.Field name="referentName">
                 {(field) => (
                   <div className="col-span-2">
-                    <Label>Ref.</Label>
+                    <Label htmlFor={`add-prospect-${field.name}`}>Ref.</Label>
                     <CustomInput
+                      id={`add-prospect-${field.name}`}
                       name={field.name}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         field.handleChange(e.target.value)
@@ -558,8 +600,11 @@ export function ProspectAddDialog() {
               >
                 {(field) => (
                   <div>
-                    <Label>Email du référent</Label>
+                    <Label htmlFor={`add-prospect-${field.name}`}>
+                      Email du référent
+                    </Label>
                     <CustomInput
+                      id={`add-prospect-${field.name}`}
                       name={field.name}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         field.handleChange(e.target.value)
@@ -579,8 +624,11 @@ export function ProspectAddDialog() {
               <form.Field name="referentPhone">
                 {(field) => (
                   <div>
-                    <Label>Téléphone du référent</Label>
+                    <Label htmlFor={`add-prospect-${field.name}`}>
+                      Téléphone du référent
+                    </Label>
                     <CustomInput
+                      id={`add-prospect-${field.name}`}
                       inputMode="tel"
                       name={field.name}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -604,8 +652,11 @@ export function ProspectAddDialog() {
               >
                 {(field) => (
                   <div className="col-span-2">
-                    <Label>LinkedIn du référent</Label>
+                    <Label htmlFor={`add-prospect-${field.name}`}>
+                      LinkedIn du référent
+                    </Label>
                     <CustomInput
+                      id={`add-prospect-${field.name}`}
                       name={field.name}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         field.handleChange(e.target.value)
