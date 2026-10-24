@@ -12,6 +12,7 @@ type DpoComboboxProps = {
   placeholder?: string;
   disabled?: boolean;
   autoFocus?: boolean;
+  id?: string;
 };
 
 export function DpoCombobox({
@@ -22,6 +23,7 @@ export function DpoCombobox({
   placeholder = "ex : Dupont Conseil",
   disabled,
   autoFocus,
+  id,
 }: DpoComboboxProps) {
   const sortedDpos = useSortedDpos();
   const [draft, setDraft] = useState(value);
@@ -88,6 +90,7 @@ export function DpoCombobox({
             inputClassName
           )}
           disabled={disabled}
+          id={id}
           onBlur={(event) => {
             if (containerRef.current?.contains(event.relatedTarget as Node)) {
               return;

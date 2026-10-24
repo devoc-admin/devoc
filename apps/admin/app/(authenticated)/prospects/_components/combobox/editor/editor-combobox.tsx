@@ -13,6 +13,7 @@ type EditorComboboxProps = {
   closeCallback?: () => void;
   disabled?: boolean;
   autoFocus?: boolean;
+  id?: string;
 };
 
 export function EditorCombobox({
@@ -24,6 +25,7 @@ export function EditorCombobox({
   placeholder = "ex : Agence Acme",
   disabled,
   autoFocus,
+  id,
 }: EditorComboboxProps) {
   const existingEditors = useExistingEditors();
   const [draft, setDraft] = useState(value);
@@ -97,6 +99,7 @@ export function EditorCombobox({
             inputClassName
           )}
           disabled={disabled}
+          id={id}
           onBlur={(event) => {
             if (containerRef.current?.contains(event.relatedTarget as Node)) {
               return;

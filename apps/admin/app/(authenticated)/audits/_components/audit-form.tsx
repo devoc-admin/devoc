@@ -69,10 +69,16 @@ export function AuditForm() {
             >
               {(field) => (
                 <div className="flex w-full flex-col gap-y-1">
-                  <Label className="font-kanit text-lg">URL du site *</Label>
+                  <Label
+                    className="font-kanit text-lg"
+                    htmlFor={`audit-${field.name}`}
+                  >
+                    URL du site *
+                  </Label>
                   <Input
                     className="h-10"
                     disabled={isSubmitting || lockActions}
+                    id={`audit-${field.name}`}
                     name={field.name}
                     onChange={(e) => field.handleChange(e.target.value)}
                     placeholder="https://example.com"
@@ -95,12 +101,16 @@ export function AuditForm() {
             <form.Field name="name">
               {(field) => (
                 <div className="flex w-full flex-col gap-y-1">
-                  <Label className="font-kanit text-lg">
+                  <Label
+                    className="font-kanit text-lg"
+                    htmlFor={`audit-${field.name}`}
+                  >
                     Nom de l'audit (optionnel)
                   </Label>
                   <Input
                     className="h-10"
                     disabled={isSubmitting || lockActions}
+                    id={`audit-${field.name}`}
                     name={field.name}
                     onChange={(e) => field.handleChange(e.target.value)}
                     placeholder="Mon audit..."
@@ -118,12 +128,16 @@ export function AuditForm() {
             <form.Field name="type">
               {(field) => (
                 <div className="flex w-full flex-col gap-y-2">
-                  <Label className="font-kanit text-lg">
+                  <Label
+                    className="font-kanit text-lg"
+                    htmlFor={`audit-${field.name}`}
+                  >
                     Type de référentiel *
                   </Label>
                   <RadioGroup
                     className="flex gap-x-4"
                     disabled={isSubmitting || lockActions}
+                    id={`audit-${field.name}`}
                     onValueChange={(value) =>
                       field.handleChange(value as "rgaa" | "wcag")
                     }

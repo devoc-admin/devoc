@@ -93,11 +93,11 @@ export function CrawlForm() {
         <crawlForm.Subscribe selector={(state) => state.isSubmitting}>
           {(isSubmitting) => (
             <div className="flex w-full flex-col gap-y-1">
-              <Label className="font-kanit text-lg">
+              <Label className="font-kanit text-lg" htmlFor="crawl-prospect">
                 Sélectionner un prospect
               </Label>
               <DropdownMenu onOpenChange={handleDropdownOpenChange}>
-                <DropdownMenuTrigger asChild>
+                <DropdownMenuTrigger asChild id="crawl-prospect">
                   <button
                     className={cn(
                       "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2",
@@ -196,10 +196,16 @@ export function CrawlForm() {
             >
               {(field) => (
                 <div className="flex w-full flex-col gap-y-1">
-                  <Label className="font-kanit text-lg">URL du site</Label>
+                  <Label
+                    className="font-kanit text-lg"
+                    htmlFor={`crawl-${field.name}`}
+                  >
+                    URL du site
+                  </Label>
                   <Input
                     className="h-10"
                     disabled={currentCrawlRunning || isSubmitting}
+                    id={`crawl-${field.name}`}
                     name={field.name}
                     onChange={(e) => field.handleChange(e.target.value)}
                     placeholder="Explorer un site..."
@@ -223,10 +229,16 @@ export function CrawlForm() {
               <crawlForm.Field name="maxPages">
                 {(field) => (
                   <div>
-                    <Label className="font-kanit text-lg">Max. pages</Label>
+                    <Label
+                      className="font-kanit text-lg"
+                      htmlFor={`crawl-${field.name}`}
+                    >
+                      Max. pages
+                    </Label>
                     <div className="flex items-center gap-4">
                       <Slider
                         disabled={currentCrawlRunning || isSubmitting}
+                        id={`crawl-${field.name}`}
                         max={MAX_PAGES_CRAWLED}
                         min={1}
                         name="maxPages"
@@ -249,12 +261,16 @@ export function CrawlForm() {
               <crawlForm.Field name="maxDepth">
                 {(field) => (
                   <div>
-                    <Label className="font-kanit text-lg">
+                    <Label
+                      className="font-kanit text-lg"
+                      htmlFor={`crawl-${field.name}`}
+                    >
                       Max. profondeur
                     </Label>
                     <div className="flex items-center gap-4">
                       <Slider
                         disabled={currentCrawlRunning || isSubmitting}
+                        id={`crawl-${field.name}`}
                         max={MAX_DEPTH}
                         min={1}
                         name="maxDepth"
@@ -277,10 +293,16 @@ export function CrawlForm() {
               <crawlForm.Field name="concurrency">
                 {(field) => (
                   <div>
-                    <Label className="font-kanit text-lg">Max. crawlers</Label>
+                    <Label
+                      className="font-kanit text-lg"
+                      htmlFor={`crawl-${field.name}`}
+                    >
+                      Max. crawlers
+                    </Label>
                     <div className="flex items-center gap-4">
                       <Slider
                         disabled={currentCrawlRunning || isSubmitting}
+                        id={`crawl-${field.name}`}
                         max={MAX_CONCURRENCY}
                         min={1}
                         name="concurrency"

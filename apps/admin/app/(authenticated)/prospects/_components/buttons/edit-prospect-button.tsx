@@ -99,9 +99,10 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             >
               {(field) => (
                 <div>
-                  <Label>Nom</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>Nom</Label>
                   <Input
                     className="h-10"
+                    id={`edit-prospect-${field.name}`}
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       field.handleChange(e.target.value)
@@ -120,14 +121,17 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             <form.Field name="type">
               {(field) => (
                 <div>
-                  <Label>Type</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>Type</Label>
                   <Select
                     onValueChange={(newValue) =>
                       field.handleChange(newValue as Prospect["type"])
                     }
                     value={field.state.value}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger
+                      className="w-full"
+                      id={`edit-prospect-${field.name}`}
+                    >
                       <SelectValue placeholder="Sélectionnez une catégorie" />
                     </SelectTrigger>
                     <SelectContent align="start" className="max-h-64">
@@ -162,9 +166,12 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             >
               {(field) => (
                 <div className="col-span-2">
-                  <Label>Site web</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>
+                    Site web
+                  </Label>
                   <Input
                     className="h-10"
+                    id={`edit-prospect-${field.name}`}
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       field.handleChange(e.target.value)
@@ -198,9 +205,12 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             >
               {(field) => (
                 <div className="col-span-2">
-                  <Label>Localisation</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>
+                    Localisation
+                  </Label>
                   <Input
                     className="h-10"
+                    id={`edit-prospect-${field.name}`}
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       field.handleChange(e.target.value)
@@ -237,9 +247,12 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             >
               {(field) => (
                 <div className="col-span-2">
-                  <Label>Année de mise en ligne du site</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>
+                    Année de mise en ligne du site
+                  </Label>
                   <Input
                     className="h-10"
+                    id={`edit-prospect-${field.name}`}
                     inputMode="numeric"
                     max={2100}
                     min={1900}
@@ -263,8 +276,11 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             <form.Field name="siteEditor">
               {(field) => (
                 <div>
-                  <Label>Éditeur du site</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>
+                    Éditeur du site
+                  </Label>
                   <EditorCombobox
+                    id={`edit-prospect-${field.name}`}
                     onCommit={(next) => field.handleChange(next)}
                     value={field.state.value}
                   />
@@ -283,9 +299,12 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             >
               {(field) => (
                 <div>
-                  <Label>URL de l'éditeur</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>
+                    URL de l'éditeur
+                  </Label>
                   <Input
                     className="h-10"
+                    id={`edit-prospect-${field.name}`}
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       field.handleChange(e.target.value)
@@ -306,14 +325,19 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             <form.Field name="hasAccessibilitySettings">
               {(field) => (
                 <div>
-                  <Label>Paramètres d'accessibilité</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>
+                    Paramètres d'accessibilité
+                  </Label>
                   <Select
                     onValueChange={(newValue) =>
                       field.handleChange(newValue as "unknown" | "yes" | "no")
                     }
                     value={field.state.value}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger
+                      className="w-full"
+                      id={`edit-prospect-${field.name}`}
+                    >
                       <SelectValue placeholder="N.r." />
                     </SelectTrigger>
                     <SelectContent align="start">
@@ -351,9 +375,12 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
                   >
                     {(field) => (
                       <div>
-                        <Label>Nombre d'habitants</Label>
+                        <Label htmlFor={`edit-prospect-${field.name}`}>
+                          Nombre d'habitants
+                        </Label>
                         <Input
                           className="h-10"
+                          id={`edit-prospect-${field.name}`}
                           inputMode="numeric"
                           name={field.name}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -392,9 +419,12 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             >
               {(field) => (
                 <div>
-                  <Label>Distance depuis mon adresse</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>
+                    Distance depuis mon adresse
+                  </Label>
                   <Input
                     className="h-10"
+                    id={`edit-prospect-${field.name}`}
                     inputMode="numeric"
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -418,7 +448,9 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
                   <form.Field name="usesPanneauPocket">
                     {(field) => (
                       <div>
-                        <Label>PanneauPocket</Label>
+                        <Label htmlFor={`edit-prospect-${field.name}`}>
+                          PanneauPocket
+                        </Label>
                         <Select
                           onValueChange={(newValue) =>
                             field.handleChange(
@@ -427,7 +459,10 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
                           }
                           value={field.state.value}
                         >
-                          <SelectTrigger className="w-full">
+                          <SelectTrigger
+                            className="w-full"
+                            id={`edit-prospect-${field.name}`}
+                          >
                             <SelectValue placeholder="N.r." />
                           </SelectTrigger>
                           <SelectContent align="start">
@@ -450,14 +485,17 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             <form.Field name="hasDpo">
               {(field) => (
                 <div className="col-span-2">
-                  <Label>DPO</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>DPO</Label>
                   <Select
                     onValueChange={(newValue) =>
                       field.handleChange(newValue as "unknown" | "yes" | "no")
                     }
                     value={field.state.value}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger
+                      className="w-full"
+                      id={`edit-prospect-${field.name}`}
+                    >
                       <SelectValue placeholder="N.r." />
                     </SelectTrigger>
                     <SelectContent align="start">
@@ -478,8 +516,11 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
                     <form.Field name="dpoName">
                       {(field) => (
                         <div>
-                          <Label>Nom du DPO</Label>
+                          <Label htmlFor={`edit-prospect-${field.name}`}>
+                            Nom du DPO
+                          </Label>
                           <DpoCombobox
+                            id={`edit-prospect-${field.name}`}
                             onCommit={(next) => field.handleChange(next)}
                             value={field.state.value}
                           />
@@ -497,9 +538,12 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
                     >
                       {(field) => (
                         <div>
-                          <Label>URL du DPO</Label>
+                          <Label htmlFor={`edit-prospect-${field.name}`}>
+                            URL du DPO
+                          </Label>
                           <Input
                             className="h-10"
+                            id={`edit-prospect-${field.name}`}
                             name={field.name}
                             onChange={(
                               e: React.ChangeEvent<HTMLInputElement>
@@ -526,9 +570,10 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             <form.Field name="referentName">
               {(field) => (
                 <div className="col-span-2">
-                  <Label>Ref.</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>Ref.</Label>
                   <Input
                     className="h-10"
+                    id={`edit-prospect-${field.name}`}
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       field.handleChange(e.target.value)
@@ -550,9 +595,12 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             >
               {(field) => (
                 <div>
-                  <Label>Email du référent</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>
+                    Email du référent
+                  </Label>
                   <Input
                     className="h-10"
+                    id={`edit-prospect-${field.name}`}
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       field.handleChange(e.target.value)
@@ -572,9 +620,12 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             <form.Field name="referentPhone">
               {(field) => (
                 <div>
-                  <Label>Téléphone du référent</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>
+                    Téléphone du référent
+                  </Label>
                   <Input
                     className="h-10"
+                    id={`edit-prospect-${field.name}`}
                     inputMode="tel"
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -598,9 +649,12 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             >
               {(field) => (
                 <div className="col-span-2">
-                  <Label>LinkedIn du référent</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>
+                    LinkedIn du référent
+                  </Label>
                   <Input
                     className="h-10"
+                    id={`edit-prospect-${field.name}`}
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       field.handleChange(e.target.value)
@@ -633,9 +687,12 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             >
               {(field) => (
                 <div>
-                  <Label>Latitude</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>
+                    Latitude
+                  </Label>
                   <Input
                     className="h-10"
+                    id={`edit-prospect-${field.name}`}
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       field.handleChange(e.target.value)
@@ -664,9 +721,12 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             >
               {(field) => (
                 <div>
-                  <Label>Longitude</Label>
+                  <Label htmlFor={`edit-prospect-${field.name}`}>
+                    Longitude
+                  </Label>
                   <Input
                     className="h-10"
+                    id={`edit-prospect-${field.name}`}
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       field.handleChange(e.target.value)

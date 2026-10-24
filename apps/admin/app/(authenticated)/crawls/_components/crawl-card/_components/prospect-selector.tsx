@@ -256,8 +256,11 @@ function AddProspectForCrawlButton({
             >
               {(field) => (
                 <div className="col-span-2">
-                  <Label>Rechercher un lieu</Label>
+                  <Label htmlFor={`select-prospect-${field.name}`}>
+                    Rechercher un lieu
+                  </Label>
                   <PlacesAutocomplete
+                    id={`select-prospect-${field.name}`}
                     key={formKey}
                     onPlaceSelect={handlePlaceSelect}
                     placeholder="Mairie, ville, administration..."
@@ -281,9 +284,10 @@ function AddProspectForCrawlButton({
             >
               {(field) => (
                 <div>
-                  <Label>Nom</Label>
+                  <Label htmlFor={`select-prospect-${field.name}`}>Nom</Label>
                   <Input
                     className="h-10"
+                    id={`select-prospect-${field.name}`}
                     name={field.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       field.handleChange(e.target.value)
@@ -303,14 +307,17 @@ function AddProspectForCrawlButton({
             <form.Field name="type">
               {(field) => (
                 <div>
-                  <Label>Type</Label>
+                  <Label htmlFor={`select-prospect-${field.name}`}>Type</Label>
                   <Select
                     onValueChange={(newValue) =>
                       field.handleChange(newValue as Prospect["type"])
                     }
                     value={field.state.value}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger
+                      className="w-full"
+                      id={`select-prospect-${field.name}`}
+                    >
                       <SelectValue placeholder="Auto-détecté" />
                     </SelectTrigger>
                     <SelectContent align="start" className="max-h-64">
