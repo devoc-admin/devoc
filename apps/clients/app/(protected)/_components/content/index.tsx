@@ -7,5 +7,14 @@ export function Content({
   children: React.ReactNode;
   className?: string;
 }) {
-  return <main className={cn("p-6", className)}>{children}</main>;
+  return (
+    <main
+      className={cn(
+        "grow rounded-xl bg-main-background p-6 shadow-xl",
+        className
+      )}
+    >
+      {children}
+    </main>
+  );
 }

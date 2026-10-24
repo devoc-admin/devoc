@@ -2,79 +2,73 @@ import {
   getCustomerProjectById,
   getProjectLogoById,
 } from "@dev-oc/data/projects";
+import { ALLOWED_CONTENT_TYPES } from "@/lib/api/logo-allowed-types";
+import {
+  INVALID_RESPONSE,
+  NOT_FOUND_RESPONSE,
+  NOT_MODIFIED_RESPONSE,
+  UNAUTHORIZED_RESPONSE,
+  UNSUPPORTED_TYPE_RESPONSE,
+} from "@/lib/api/responses";
+import { areCustomerAndProjectIdValid } from "@/lib/api/utils";
 import { auth } from "@/lib/auth/auth";
 
-// Private blobs have no public URL, so <img> tags load them through this route
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ customerId: string; projectId: string }> }
 ) {
+  // CHECK SESSION ================================================
+
+  // 🔑
   const session = await auth.api.getSession({ headers: request.headers });
 
-  if (!session) {
-    return Response.json({ error: "unauthorized" }, { status: 401 });
-  }
+  // ✋
+  if (!session) return UNAUTHORIZED_RESPONSE;
+
+  // ================================================
+  // 👥 📦
 
   const { customerId, projectId } = await params;
+
   const customerIdNumber = Number(customerId);
   const projectIdNumber = Number(projectId);
 
-  if (
-    !(
-      Number.isInteger(customerIdNumber) &&
-      customerIdNumber > 0 &&
-      Number.isInteger(projectIdNumber) &&
-      projectIdNumber > 0
-    )
-  ) {
-    return Response.json({ error: "invalid_id" }, { status: 400 });
-  }
+  const idsOk = areCustomerAndProjectIdValid(customerIdNumber, projectIdNumber);
 
+  // 🚫
+  if (!idsOk) return INVALID_RESPONSE;
+
+  // 🐝📦
   const project = await getCustomerProjectById(
     customerIdNumber,
     projectIdNumber
   );
 
-  if (!project) {
-    return Response.json({ error: "not_found" }, { status: 404 });
-  }
+  // 🚫
+  if (!project) return NOT_FOUND_RESPONSE;
 
-  const logo = await getProjectLogoById(project.id, {
+  // 🐝🖼️
+  const projectLogo = await getProjectLogoById(project.id, {
     ifNoneMatch: request.headers.get("if-none-match") ?? undefined,
   });
 
-  if (!logo) {
-    return Response.json({ error: "not_found" }, { status: 404 });
+  // 🚫
+  if (!projectLogo) return NOT_FOUND_RESPONSE;
+  if (projectLogo.statusCode === 304) return NOT_MODIFIED_RESPONSE;
+  const notRightType = !ALLOWED_CONTENT_TYPES.has(projectLogo.blob.contentType);
+  if (notRightType) {
+    await projectLogo.stream.cancel();
+    return UNSUPPORTED_TYPE_RESPONSE;
   }
 
-  const headers = {
-    "Cache-Control": "private, max-age=3600",
-    ETag: logo.blob.etag,
-  };
-
-  if (logo.statusCode === 304) {
-    return new Response(null, { headers, status: 304 });
-  }
-
-  // Never serve HTML/SVG from our origin: a crafted upload could run scripts
-  if (!ALLOWED_CONTENT_TYPES.has(logo.blob.contentType)) {
-    await logo.stream.cancel();
-    return Response.json({ error: "unsupported_type" }, { status: 415 });
-  }
-
-  return new Response(logo.stream, {
+  // ⬆️✅
+  return new Response(projectLogo.stream, {
     headers: {
-      ...headers,
+      "Cache-Control": "private, max-age=3600",
       "Content-Security-Policy": "default-src 'none'; sandbox",
-      "Content-Type": logo.blob.contentType,
+      "Content-Type": projectLogo.blob.contentType,
+      ETag: projectLogo.blob.etag,
       "X-Content-Type-Options": "nosniff",
     },
   });
 }
-
-const ALLOWED_CONTENT_TYPES = new Set([
-  "image/png",
-  "image/jpeg",
-  "image/webp",
-  "image/gif",
-]);
