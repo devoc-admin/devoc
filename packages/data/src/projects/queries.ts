@@ -45,7 +45,7 @@ export async function getLinksByProjectId(projectId: number) {
     .orderBy(asc(links.name));
 }
 
-// Returns null when the project has no logo; statusCode 304 when `ifNoneMatch` matches
+// 🖼️
 export async function getProjectLogoById(
   projectId: number,
   { ifNoneMatch }: { ifNoneMatch?: string } = {}

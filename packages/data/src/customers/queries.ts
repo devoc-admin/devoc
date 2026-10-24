@@ -1,5 +1,6 @@
 import { db } from "@dev-oc/data/db";
 import { customers, usersToCustomers } from "@dev-oc/data/db/schema";
+import { get } from "@vercel/blob";
 import { and, asc, eq } from "drizzle-orm";
 
 export async function getCustomerById(customerId: number) {
@@ -39,4 +40,15 @@ export async function getUserCustomerById(userId: string, customerId: number) {
     )
     .limit(1);
   return customer;
+}
+
+// 🖼️
+export async function getCustomerLogoById(
+  customerId: number,
+  { ifNoneMatch }: { ifNoneMatch?: string } = {}
+) {
+  return await get(`customers/${customerId}/logo.png`, {
+    access: "private",
+    ifNoneMatch,
+  });
 }

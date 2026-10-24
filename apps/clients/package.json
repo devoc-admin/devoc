@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "next build --turbopack",
+    "check": "biome check",
     "ci": "biome ci",
     "dev": "next dev --turbopack -H 0.0.0.0 -p 3002",
     "format": "biome format --write",
