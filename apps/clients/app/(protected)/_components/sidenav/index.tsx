@@ -62,7 +62,7 @@ function Container({
   return (
     <div
       className={cn(
-        "bg-sidebar-background text-sidebar-foreground",
+        "bg-sidenav-background text-sidenav-foreground",
         "flex flex-col",
         "space-y-3",
         className
