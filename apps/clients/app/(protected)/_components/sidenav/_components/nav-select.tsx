@@ -79,7 +79,7 @@ function OptionContent({ option }: { option: NavSelectOption }) {
       {option.imageSrc && (
         <Image
           alt=""
-          className="size-5 rounded-sm object-contain"
+          className="size-4.5 rounded-sm object-contain"
           height={20}
           src={option.imageSrc}
           // 🔒 The optimizer fetches server-side without cookies, so the auth-gated route 401s

@@ -10,17 +10,15 @@ import Link from "next/link";
 import { getCustomer, getMyCustomers } from "@/lib/customers";
 import { LogoutButton } from "./_components/logout-button";
 import { NavSelect, type NavSelectOption } from "./_components/nav-select";
+import { SidenavHeader } from "./_components/sidenav-header";
 import { SidenavItem } from "./_components/sidenav-item";
 import { SidenavLabel } from "./_components/sidenav-label";
-
 export function Sidenav({
   customerId,
   projectId,
-  className,
 }: {
   customerId?: string;
   projectId?: string;
-  className?: string;
 }) {
   const projectHref =
     customerId && projectId
@@ -28,7 +26,9 @@ export function Sidenav({
       : null;
 
   return (
-    <Container className={className}>
+    <Container>
+      {/* 🌼 */}
+      <SidenavHeader />
       {/* 👥📦 */}
       <ContainerSelect>
         <CustomerSelect customerId={customerId} />
@@ -52,20 +52,15 @@ export function Sidenav({
 }
 
 // 📦 ===================================================
-function Container({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+function Container({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
         "bg-sidenav-background text-sidenav-foreground",
         "flex flex-col",
         "space-y-3",
-        className
+        "w-60",
+        "pt-2"
       )}
     >
       {children}
@@ -78,7 +73,7 @@ export function ContainerSelect({ children }: { children: React.ReactNode }) {
 }
 
 export function ContainerProject({ children }: { children: React.ReactNode }) {
-  return <div className="space-y-1">{children}</div>;
+  return <ul className="list-none space-y-1">{children}</ul>;
 }
 
 // 👥 ===================================================

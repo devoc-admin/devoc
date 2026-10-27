@@ -66,7 +66,7 @@
 }
 
 :root {
-  --border: oklch(0.922 0 0);
+  --border: oklch(91.042% 0.00685 277.16);
   --muted-foreground: oklch(24.113% 0.00969 248.23);
   --muted-background: oklch(93.214% 0.00536 286.3);
 
@@ -76,7 +76,7 @@
   --background: lab(98.26% 0 0);
   --foreground: oklch(0.145 0 0);
 
-  --sidenav-background: lab(98.26% 0 0);
+  --sidenav-background: oklch(98.268% 0.00264 286.35);
   --sidenav-foreground: oklch(0.145 0 0);
 
   --header-background: lab(98.26% 0 0);

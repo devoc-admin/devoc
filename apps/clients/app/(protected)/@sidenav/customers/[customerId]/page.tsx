@@ -6,5 +6,5 @@ export default async function CustomerSidenav({
   params: Promise<{ customerId: string }>;
 }) {
   const { customerId } = await params;
-  return <Sidenav className="w-60" customerId={customerId} />;
+  return <Sidenav customerId={customerId} />;
 }
