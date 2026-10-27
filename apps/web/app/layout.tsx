@@ -7,6 +7,7 @@ import { TailwindLandmark } from "../components/tailwind-landmark/tailwind-landm
 import "./globals.css";
 import { JsonLd } from "@/components/json-ld";
 import SkipLink from "@/components/ui/skip-link";
+import { SITE_URL } from "@/lib/metadata";
 import { siteStructuredData } from "@/lib/structured-data";
 import { FontsReadyScript } from "./_components/fonts-ready-script";
 
@@ -89,7 +90,7 @@ function Helpers() {
 // =======================
 
 export const metadata: Metadata = {
-  authors: [{ name: "Dev'Oc", url: "https://dev-oc.fr" }],
+  authors: [{ name: "Dev'Oc", url: SITE_URL }],
   creator: "Dev'Oc",
   description:
     "Dev'Oc est un collectif de développeurs en Occitanie spécialisé dans la création de sites internet, applications web, solutions digitales sur-mesure et automatisation des tâches avec l'IA. Expertise en UX/UI, référencement, accompagnement digital et innovation.",
@@ -105,7 +106,7 @@ export const metadata: Metadata = {
     "intelligence artificielle",
     "Dev'Oc",
   ],
-  metadataBase: new URL("https://dev-oc.fr"),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     description:
       "Collectif de développeurs en Occitanie spécialisés en développement de sites internet, applications web, UX/UI, référencement et automatisation des tâches avec l'IA. Découvrez nos réalisations et contactez-nous pour votre projet digital.",
@@ -113,7 +114,7 @@ export const metadata: Metadata = {
       {
         alt: "Dev'Oc - Création de sites & applications",
         height: 630,
-        url: "https://dev-oc.fr/og-image.jpg",
+        url: `${SITE_URL}/og-image.jpg`,
         width: 1200,
       },
     ],
@@ -121,7 +122,7 @@ export const metadata: Metadata = {
     siteName: "Dev'Oc",
     title: "Dev'Oc | Création de sites & applications",
     type: "website",
-    url: "https://dev-oc.fr",
+    url: SITE_URL,
   },
   publisher: "Dev'Oc",
   robots: {
@@ -138,7 +139,7 @@ export const metadata: Metadata = {
     creator: "@devoc",
     description:
       "Collectif de développeurs en Occitanie spécialisés en développement de sites internet, applications web, UX/UI, référencement et automatisation des tâches avec l'IA. Découvrez nos réalisations et contactez-nous pour votre projet digital.",
-    images: ["https://dev-oc.fr/og-image.jpg"],
+    images: [`${SITE_URL}/og-image.jpg`],
     site: "@devoc",
     title: "Dev'Oc | Création de sites & applications",
   },

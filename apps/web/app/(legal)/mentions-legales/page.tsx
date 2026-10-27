@@ -1,4 +1,4 @@
-import { pageMetadata } from "@/lib/metadata";
+import { pageMetadata, SITE_URL } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 import { HeaderWrapper } from "../_components/header-wrapper";
 import { LI } from "../_components/li";
@@ -37,7 +37,7 @@ const items = [
       <>
         <p className="text-foreground-dark/60">
           Le site{" "}
-          <a className="text-foreground-dark/85 underline" href="www.dev-oc.fr">
+          <a className="text-foreground-dark/85 underline" href={SITE_URL}>
             dev-oc.fr
           </a>{" "}
           est édité par le collectif Dev'Oc, association de fait composée de
@@ -145,7 +145,7 @@ const items = [
     content: (
       <p className="text-foreground-dark/60">
         Le site{" "}
-        <a className="text-foreground-dark/85 underline" href="www.dev-oc.fr">
+        <a className="text-foreground-dark/85 underline" href={SITE_URL}>
           dev-oc.fr
         </a>{" "}
         utilise des cookies strictement nécessaires à son fonctionnement ainsi
