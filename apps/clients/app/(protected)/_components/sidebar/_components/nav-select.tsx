@@ -29,6 +29,8 @@ export function NavSelect({
   value: string | null;
 }) {
   const router = useRouter();
+  if (options.length === 0) return null;
+
   const items = [
     { label: placeholder, value: null },
     ...options.map((option) => ({ label: option.label, value: option.href })),

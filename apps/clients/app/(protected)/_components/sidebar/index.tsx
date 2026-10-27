@@ -2,15 +2,18 @@ import { cn } from "cn";
 import {
   UserRoundGroup as AllOrganizationsIcon,
   FolderIcon as AllProjectsIcon,
+  ArrowLeft as BackToOrganizationIcon,
+  Grid2X2 as OverviewIcon,
+  Cog as SettingsIcon,
 } from "lucide-react";
-import { IconHouse as OverviewIcon } from "nucleo-glass";
+import Link from "next/link";
 import { getCustomer, getMyCustomers } from "@/lib/customers";
 import { LogoutButton } from "./_components/logout-button";
 import { NavSelect, type NavSelectOption } from "./_components/nav-select";
 import { SidenavItem } from "./_components/sidenav-item";
 import { SidenavLabel } from "./_components/sidenav-label";
 
-export async function Sidenav({
+export function Sidenav({
   customerId,
   projectId,
   className,
@@ -19,79 +22,192 @@ export async function Sidenav({
   projectId?: string;
   className?: string;
 }) {
-  // 👥
-  const [customers, customer] = await Promise.all([
-    getMyCustomers(),
-    customerId ? getCustomer(customerId) : null,
-  ]);
+  const projectHref =
+    customerId && projectId
+      ? `/customers/${customerId}/projects/${projectId}`
+      : null;
 
-  const customerHref = customerId ? `/customers/${customerId}` : null;
-  const customersOptions: NavSelectOption[] = customers.map((c) => ({
-    href: `/customers/${c.id}`,
-    imageSrc: `/api/customers/${customer?.id}/logo`,
-    label: c.name,
+  return (
+    <Container className={className}>
+      {/* 👥📦 */}
+      <ContainerSelect>
+        <CustomerSelect customerId={customerId} />
+        <ProjectSelect customerId={customerId} projectId={projectId} />
+      </ContainerSelect>
+
+      {/* ⬅️ */}
+      <BackToOrganization customerId={customerId} projectId={projectId} />
+
+      {/* 📝 */}
+      {projectHref && (
+        <ContainerProject>
+          <Overview href={projectHref} />
+          <Settings href={`${projectHref}/settings`} />
+        </ContainerProject>
+      )}
+
+      <LogoutButton />
+    </Container>
+  );
+}
+
+// 📦 ===================================================
+function Container({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "bg-sidebar-background text-sidebar-foreground",
+        "flex flex-col",
+        "space-y-3",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function ContainerSelect({ children }: { children: React.ReactNode }) {
+  return <div className="space-y-2">{children}</div>;
+}
+
+export function ContainerProject({ children }: { children: React.ReactNode }) {
+  return <div className="space-y-1">{children}</div>;
+}
+
+// 👥 ===================================================
+async function CustomerSelect({ customerId }: { customerId?: string }) {
+  const customers = await getMyCustomers();
+
+  return (
+    <NavSelect
+      label="Organisations"
+      options={toCustomerOptions(customers)}
+      placeholder="Sélectionner une organisation"
+      value={customerId ? `/customers/${customerId}` : null}
+    />
+  );
+}
+
+function toCustomerOptions(
+  customers: Awaited<ReturnType<typeof getMyCustomers>>
+): NavSelectOption[] {
+  const options: NavSelectOption[] = customers.map(({ id, name }) => ({
+    href: `/customers/${id}`,
+    imageSrc: `/api/customers/${id}/logo`,
+    label: name,
   }));
 
-  if (customersOptions.length >= 1) {
-    customersOptions.push({
+  if (options.length > 1) {
+    options.push({
       href: "/",
       icon: <AllOrganizationsIcon className="size-4" />,
       label: "Toutes les organisations",
     });
   }
 
-  // 📦
-  const projectHref =
-    customerHref && projectId ? `${customerHref}/projects/${projectId}` : null;
-  const projectsOptions: NavSelectOption[] = (customer?.projects ?? []).map(
-    (p) => ({
-      href: `/customers/${customer?.id}/projects/${p.id}`,
-      imageSrc: `/api/customers/${customer?.id}/projects/${p.id}/logo`,
-      label: p.name,
-    })
-  );
+  return options;
+}
 
-  if (projectsOptions.length >= 1) {
-    projectsOptions.push({
-      href: `/customers/${customer?.id}`,
+// 📦 ===================================================
+type Customer = Awaited<ReturnType<typeof getCustomer>>;
+
+async function ProjectSelect({
+  customerId,
+  projectId,
+}: {
+  customerId?: string;
+  projectId?: string;
+}) {
+  // 🔁 `getCustomer` is wrapped in React `cache`, so repeated calls in one request hit the DB once
+  const customer = customerId ? await getCustomer(customerId) : null;
+
+  return (
+    <NavSelect
+      label="Projets"
+      options={toProjectOptions(customer)}
+      placeholder="Sélectionner un projet"
+      value={
+        customerId && projectId
+          ? `/customers/${customerId}/projects/${projectId}`
+          : null
+      }
+    />
+  );
+}
+
+function toProjectOptions(customer: Customer | null): NavSelectOption[] {
+  if (!customer) {
+    return [];
+  }
+
+  const options: NavSelectOption[] = customer.projects.map(({ id, name }) => ({
+    href: `/customers/${customer.id}/projects/${id}`,
+    imageSrc: `/api/customers/${customer.id}/projects/${id}/logo`,
+    label: name,
+  }));
+
+  if (options.length > 1) {
+    options.push({
+      href: `/customers/${customer.id}`,
       icon: <AllProjectsIcon className="size-4.5" />,
       label: "Tous les projets",
     });
   }
 
+  return options;
+}
+
+// ⬅️ ===================================================
+export function BackToOrganization({
+  customerId,
+  projectId,
+}: {
+  customerId?: string;
+  projectId?: string;
+}) {
+  if (!projectId) return null;
   return (
-    <ul
+    <Link
       className={cn(
-        "bg-sidebar-background text-sidebar-foreground",
-        "flex flex-col",
-        className
+        "flex items-center gap-x-2",
+        "transition-colors",
+        "font-light text-sm",
+        "text-muted-foreground",
+        "hover:bg-muted-background",
+        "px-3 py-2",
+        "rounded-lg"
       )}
+      href={`/customers/${customerId}`}
     >
-      {/* 👥📦 */}
-      <div className="space-y-2">
-        {/* 👥 */}
-        <NavSelect
-          label="Organisations"
-          options={customersOptions}
-          placeholder="Sélectionner une organisation"
-          value={customerHref}
-        />
-        {/* 📦 */}
-        <NavSelect
-          label="Projets"
-          options={projectsOptions}
-          placeholder="Sélectionner un projet"
-          value={projectHref}
-        />
-      </div>
+      <BackToOrganizationIcon size={16} />
+      <span>Organisation</span>
+    </Link>
+  );
+}
 
-      {/* 📝 */}
-      <SidenavItem>
-        <OverviewIcon size={20} />
-        <SidenavLabel>Overview</SidenavLabel>
-      </SidenavItem>
+// 👁️ ===================================================
+export function Overview({ href }: { href: string }) {
+  return (
+    <SidenavItem href={href}>
+      <OverviewIcon size={18} />
+      <SidenavLabel>Vue générale</SidenavLabel>
+    </SidenavItem>
+  );
+}
 
-      <LogoutButton />
-    </ul>
+// ⚙️ ===================================================
+export function Settings({ href }: { href: string }) {
+  return (
+    <SidenavItem href={href}>
+      <SettingsIcon size={18} />
+      <SidenavLabel>Réglages</SidenavLabel>
+    </SidenavItem>
   );
 }

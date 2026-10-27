@@ -11,6 +11,7 @@ export default function LoginPage() {
   return (
     <div
       className={cn(
+        "bg-white",
         "grid min-h-screen",
         "place-items-center",
         // ↔️

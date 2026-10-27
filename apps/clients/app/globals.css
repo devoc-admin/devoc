@@ -16,8 +16,9 @@
   --color-main-background: var(--main-background);
   --color-main-foreground: var(--main-foreground);
 
-  --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted-background: var(--muted-background);
 
   --color-sidebar-background: var(--sidebar-background);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -65,8 +66,9 @@
 }
 
 :root {
-  --muted-foreground: oklch(0.556 0 0);
   --border: oklch(0.922 0 0);
+  --muted-foreground: oklch(24.113% 0.00969 248.23);
+  --muted-background: oklch(93.214% 0.00536 286.3);
 
   --main-background: lab(100% 0 0);
   --main-foreground: oklch(0.145 0 0);
