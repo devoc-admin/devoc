@@ -1,4 +1,4 @@
-import { Sidenav } from "../_components/sidebar";
+import { Sidenav } from "../_components/sidenav";
 
 export default function SidenavNotFound() {
   return <Sidenav className="w-60" />;

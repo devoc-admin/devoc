@@ -1,4 +1,4 @@
-import { Sidenav } from "@/app/(protected)/_components/sidebar/index";
+import { Sidenav } from "@/app/(protected)/_components/sidenav/index";
 
 export default async function CustomerSidenav({
   params,
