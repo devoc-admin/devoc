@@ -7,7 +7,5 @@ export default async function ProjectSidenav({
 }) {
   const { customerId, projectId } = await params;
 
-  return (
-    <Sidenav className="w-60" customerId={customerId} projectId={projectId} />
-  );
+  return <Sidenav customerId={customerId} projectId={projectId} />;
 }
