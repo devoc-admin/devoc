@@ -17,11 +17,11 @@ function P({ children }: { children: React.ReactNode }) {
   return (
     <p
       className={cn(
-        "select-none text-balance font-fraunces font-medium",
+        "font-fraunces font-medium text-balance select-none",
         // ↔️
         "text-center lg:text-left",
         "mx-auto lg:mx-0",
-        "text-lg xs:text-xl lg:text-2xl 2xl:text-3xl",
+        "xs:text-xl text-lg lg:text-2xl 2xl:text-3xl",
         "leading-snug lg:leading-tight"
       )}
     >
@@ -34,7 +34,7 @@ function P({ children }: { children: React.ReactNode }) {
 // ==================
 function Occitanie() {
   return (
-    <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-semibold text-transparent">
+    <span className="from-orange-red to-primary-lighter bg-linear-to-r bg-clip-text font-semibold text-transparent">
       Occitanie
     </span>
   );

@@ -12,7 +12,7 @@ export function BadgePackCommunes({ className }: { className?: string }) {
           "relative z-10",
           "select-none",
           "flex items-center",
-          "font-semibold text-primary backdrop-blur-2xl",
+          "text-primary font-semibold backdrop-blur-2xl",
           "w-fit",
           "cursor-pointer",
           "rounded-full",
@@ -49,7 +49,7 @@ export function BadgePackCommunes({ className }: { className?: string }) {
             "2xl:mb-1 2xl:size-5"
           )}
         />
-        <span className="bg-linear-to-bl from-orange-red to-primary-lighter bg-clip-text text-center text-transparent">
+        <span className="from-orange-red to-primary-lighter bg-linear-to-bl bg-clip-text text-center text-transparent">
           Notre pack communes est disponible !
         </span>
         <SquareArrowOutUpRight

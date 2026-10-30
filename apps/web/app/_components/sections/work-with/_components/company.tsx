@@ -21,7 +21,7 @@ export function Company({ link, logo, name }: CompanyProps) {
   return (
     <a
       aria-label={`Visiter le site de ${name} (ouvre dans une nouvelle fenêtre)`}
-      className="group relative flex h-24 items-center justify-center overflow-hidden border-border border-t border-r px-12 py-2"
+      className="group border-border relative flex h-24 items-center justify-center overflow-hidden border-t border-r px-12 py-2"
       href={link}
       ref={ref}
       rel="noopener noreferrer"
@@ -30,7 +30,7 @@ export function Company({ link, logo, name }: CompanyProps) {
     >
       <div
         className={cn(
-          "absolute top-0 left-0 h-full origin-bottom-left not-group-hover:-rotate-90! overflow-hidden bg-linear-to-b from-[#FF5709] to-[#FFC731] transition-transform duration-300 ease-linear"
+          "absolute top-0 left-0 h-full origin-bottom-left overflow-hidden bg-linear-to-b from-[#FF5709] to-[#FFC731] transition-transform duration-300 ease-linear not-group-hover:-rotate-90!"
         )}
         style={{
           rotate: `-${size.rotationInDegrees - 1}deg`,
@@ -48,7 +48,7 @@ export function Company({ link, logo, name }: CompanyProps) {
       </div>
       <div
         className={cn(
-          "absolute top-0 right-0 h-full origin-top-right not-group-hover:-rotate-90! overflow-hidden bg-linear-to-t from-[#FF5709] to-[#FFC731] transition-transform duration-300 ease-linear"
+          "absolute top-0 right-0 h-full origin-top-right overflow-hidden bg-linear-to-t from-[#FF5709] to-[#FFC731] transition-transform duration-300 ease-linear not-group-hover:-rotate-90!"
         )}
         style={{
           rotate: `-${size.rotationInDegrees - 1}deg`,

@@ -34,7 +34,7 @@ export function RiskReglementaire() {
       className={sharedRiskContainerClasses}
       style={{ gridTemplateColumns: "subgrid" }}
     >
-      <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
+      <h3 className="font-fraunces text-foreground col-span-1 text-3xl">
         Réglementaire
       </h3>
       <div
@@ -60,7 +60,7 @@ export function RiskEconomic() {
       className={sharedRiskContainerClasses}
       style={{ gridTemplateColumns: "subgrid" }}
     >
-      <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
+      <h3 className="font-fraunces text-foreground col-span-1 text-3xl">
         Économique
       </h3>
       <div
@@ -86,7 +86,7 @@ export function RiskCybersecurity() {
       className={sharedRiskContainerClasses}
       style={{ gridTemplateColumns: "subgrid" }}
     >
-      <h3 className="col-span-1 font-fraunces text-3xl text-foreground">
+      <h3 className="font-fraunces text-foreground col-span-1 text-3xl">
         Cybersécurité
       </h3>
       <div
@@ -188,7 +188,7 @@ export function RiskCard({
   return (
     <div
       className={cn(
-        "group rounded-2xl border-[1.5px] border-foreground/20 p-4 hover:border-orange-red/60",
+        "group border-foreground/20 hover:border-orange-red/60 rounded-2xl border-[1.5px] p-4",
         // ↔️
         "space-y-3",
         "xs:space-y-3",
@@ -199,18 +199,18 @@ export function RiskCard({
       {/* 🖼️ */}
       <div
         className={cn(
-          "w-fit rounded-full border bg-foreground/5 p-2 text-foreground/60",
+          "bg-foreground/5 text-foreground/60 w-fit rounded-full border p-2",
           "transition",
           "group-hover:border-orange-red/60 group-hover:bg-orange-red/10"
         )}
       >
-        <Icon className="transition group-hover:text-orange-red" size={18} />
+        <Icon className="group-hover:text-orange-red transition" size={18} />
       </div>
       {/* 🔠 */}
       <div className="flex flex-col gap-y-1">
         <h4
           className={cn(
-            "font-medium text-foreground",
+            "text-foreground font-medium",
             //↔️
             "text-base",
             "xs:text-base",

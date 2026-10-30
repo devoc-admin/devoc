@@ -21,18 +21,18 @@ export function AuditCard(audit: AuditResult) {
   const isDeleting = deletingAuditId === audit.id;
 
   return (
-    <li className="flex max-w-100 flex-col gap-y-4 self-start rounded-md border border-border bg-sidebar-strong p-4">
+    <li className="border-border bg-sidebar-strong flex max-w-100 flex-col gap-y-4 self-start rounded-md border p-4">
       {/* ⬆️ Header */}
       <div>
         <div className="flex items-center gap-x-2">
-          <h3 className="max-w-full truncate font-kanit text-xl">
+          <h3 className="font-kanit max-w-full truncate text-xl">
             {audit.name || new URL(audit.url).hostname}
           </h3>
           <AuditTypeBadge type={audit.type} />
         </div>
         {/* 🌐 URL */}
         <a
-          className="flex items-center gap-x-2 text-muted-foreground hover:underline"
+          className="text-muted-foreground flex items-center gap-x-2 hover:underline"
           href={audit.url}
           rel="noopener noreferrer"
           target="_blank"
@@ -74,7 +74,7 @@ export function AuditCard(audit: AuditResult) {
 
       {/* ⚠️ Error message */}
       {audit.status === "failed" && audit.errorMessage && (
-        <div className="flex items-start gap-x-2 rounded-md bg-red-500/10 p-2 text-red-500 text-sm">
+        <div className="flex items-start gap-x-2 rounded-md bg-red-500/10 p-2 text-sm text-red-500">
           <AlertCircleIcon className="mt-0.5 shrink-0" size={14} />
           <span>{audit.errorMessage}</span>
         </div>
@@ -124,7 +124,7 @@ function AuditTypeBadge({ type }: { type: "rgaa" | "wcag" }) {
     <span
       className={cn(
         "shrink-0 rounded-full px-2 py-0.5",
-        "font-medium text-xs uppercase",
+        "text-xs font-medium uppercase",
         type === "rgaa"
           ? "bg-blue-500/20 text-blue-400"
           : "bg-purple-500/20 text-purple-400"
@@ -181,7 +181,7 @@ function AuditStatusBadge({
     <span
       className={cn(
         "flex items-center gap-x-1.5 rounded-full px-2 py-0.5",
-        "font-medium text-xs",
+        "text-xs font-medium",
         bgColor,
         textColor
       )}
@@ -202,7 +202,7 @@ function ComplianceRate({ rate }: { rate: number }) {
   }
 
   return (
-    <span className={cn("font-kanit font-semibold text-lg", getColor())}>
+    <span className={cn("font-kanit text-lg font-semibold", getColor())}>
       {rate}%
     </span>
   );

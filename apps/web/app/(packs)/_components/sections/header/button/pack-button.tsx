@@ -14,7 +14,7 @@ const sharedClasses = cn(
 const responsiveClasses = cn(
   // ↔️
   "w-fit gap-x-4! px-1! py-1! pl-2! text-sm",
-  "xs:gap-x-4! xs:px-1! xs:py-1! pl-2! xs:text-sm",
+  "xs:gap-x-4! xs:px-1! xs:py-1! xs:text-sm pl-2!",
   "sm:gap-x-4! sm:px-1! sm:py-1! sm:text-base",
   "md:gap-x-4! md:px-1! md:py-1! md:text-base",
   "lg:gap-x-4! lg:px-1! lg:py-1! lg:text-base",
@@ -60,7 +60,7 @@ export function AgirMaintenant({ className }: { className?: string }) {
         } as React.CSSProperties
       }
     >
-      <span className="ml-4 text-[1.05rem] text-foreground">
+      <span className="text-foreground ml-4 text-[1.05rem]">
         Faire un bilan
       </span>
       <ArrowRightUpAnimated className="text-foreground" />

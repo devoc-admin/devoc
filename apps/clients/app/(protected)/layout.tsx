@@ -8,7 +8,7 @@ export default function DashboardLayout({
   sidenav: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen flex-row gap-x-4 bg-background p-4">
+    <div className="bg-background flex h-screen flex-row gap-x-4 p-4">
       {sidenav}
       <Content>{children}</Content>
     </div>

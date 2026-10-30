@@ -5,7 +5,7 @@ export function Logo() {
   return (
     <a
       className={cn(
-        "group flex select-none items-center gap-3",
+        "group flex items-center gap-3 select-none",
         // ↔️
         "text-[2rem]"
       )}
@@ -51,7 +51,7 @@ function Flower() {
 function Dev() {
   return (
     <span
-      className="font-black text-primary-foreground tracking-tighter"
+      className="text-primary-foreground font-black tracking-tighter"
       style={{
         textShadow: `0px 0px 12px color-mix(
         in srgb,
@@ -68,7 +68,7 @@ function Dev() {
 function Oc() {
   return (
     <span
-      className="bg-linear-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black font-regular text-transparent tracking-tighter"
+      className="font-regular bg-linear-to-br from-[#FF5709] to-[#FFC731] bg-clip-text font-black tracking-tighter text-transparent"
       style={{
         textShadow: `0px 0px 12px color-mix(
       in srgb,

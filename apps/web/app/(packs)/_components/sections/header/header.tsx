@@ -64,7 +64,7 @@ function PackTitle() {
   return (
     <h1
       className={cn(
-        "font-fraunces font-medium! text-foreground",
+        "font-fraunces text-foreground font-medium!",
         "max-w-[15ch]",
         "leading-[0.9]!",
         // ↔️
@@ -157,7 +157,7 @@ function PackButtons() {
 function P({ children }: { children: React.ReactNode }) {
   return (
     <p
-      className={cn("max-w-[40ch] font-fraunces font-medium", "leading-snug!")}
+      className={cn("font-fraunces max-w-[40ch] font-medium", "leading-snug!")}
     >
       {children}
     </p>

@@ -77,7 +77,7 @@ export function PlacesAutocomplete({
           id={id}
           placeholder="Chargement de Google Maps..."
         />
-        <MapPinIcon className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+        <MapPinIcon className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
       </div>
     );
   }
@@ -100,7 +100,7 @@ export function PlacesAutocomplete({
           placeholder={placeholder}
           value={inputValue}
         />
-        <MapPinIcon className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+        <MapPinIcon className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
       </div>
     </Autocomplete>
   );

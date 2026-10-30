@@ -24,8 +24,8 @@ const columnHelper = createColumnHelper<typeof features, Crawl>();
 export function SitesList({ sites }: { sites: Crawl[] }) {
   const table = useSitesList({ sites });
   return (
-    <div className="space-y-8 rounded-md bg-sidebar p-8">
-      <h2 className="font-kanit font-semibold text-3xl">
+    <div className="bg-sidebar space-y-8 rounded-md p-8">
+      <h2 className="font-kanit text-3xl font-semibold">
         Sites déjà référencés
       </h2>
       <div>

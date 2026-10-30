@@ -83,7 +83,7 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
         <TooltipContent>Modifier ce prospect</TooltipContent>
       </Tooltip>
       <DialogContent className="flex max-h-[85vh] flex-col gap-0 sm:max-w-xl">
-        <h3 className="shrink-0 text-center font-bold font-kanit text-3xl">
+        <h3 className="font-kanit shrink-0 text-center text-3xl font-bold">
           Modifier le prospect
         </h3>
         <div className="flex-1 space-y-6 overflow-y-auto py-4 pr-1">
@@ -232,7 +232,7 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
               name="siteLaunchYear"
               validators={{
                 onSubmit: ({ value }) => {
-                  const normalized = value.replace(/\s+/g, "");
+                  const normalized = value.replace(/\s+/gu, "");
                   if (!normalized) return;
                   const num = Number.parseInt(normalized, 10);
                   if (
@@ -361,7 +361,7 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
                     name="inhabitants"
                     validators={{
                       onSubmit: ({ value }) => {
-                        const normalized = value.replace(/\s+/g, "");
+                        const normalized = value.replace(/\s+/gu, "");
                         if (!normalized) return;
                         const num = Number.parseInt(normalized, 10);
                         if (
@@ -405,7 +405,7 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
               name="distanceFrom"
               validators={{
                 onSubmit: ({ value }) => {
-                  const normalized = value.replace(/\s+/g, "");
+                  const normalized = value.replace(/\s+/gu, "");
                   if (!normalized) return;
                   const num = Number.parseInt(normalized, 10);
                   if (
@@ -744,7 +744,7 @@ export function EditProspectButton({ prospect }: { prospect: ProspectResult }) {
             </form.Field>
           </FormSection>
         </div>
-        <div className="shrink-0 border-border border-t pt-4">
+        <div className="border-border shrink-0 border-t pt-4">
           <form.Subscribe selector={(state) => state.isSubmitting}>
             {(isSubmitting) => (
               <Button
@@ -793,18 +793,18 @@ function useEditProspectForm(prospect: ProspectResult) {
       website: prospect.website ?? "",
     },
     onSubmit: ({ value }) => {
-      const inhabitantsRaw = value.inhabitants.replace(/\s+/g, "");
+      const inhabitantsRaw = value.inhabitants.replace(/\s+/gu, "");
       let inhabitants: number | null = null;
       if (value.type === "city" && inhabitantsRaw) {
         inhabitants = Number.parseInt(inhabitantsRaw, 10);
       }
-      const siteLaunchYearRaw = value.siteLaunchYear.replace(/\s+/g, "");
+      const siteLaunchYearRaw = value.siteLaunchYear.replace(/\s+/gu, "");
       const siteLaunchYear = siteLaunchYearRaw
         ? Number.parseInt(siteLaunchYearRaw, 10)
         : null;
       const siteEditor = value.siteEditor.trim() || null;
       const siteEditorUrl = value.siteEditorUrl.trim() || null;
-      const distanceFromRaw = value.distanceFrom.replace(/\s+/g, "");
+      const distanceFromRaw = value.distanceFrom.replace(/\s+/gu, "");
       const distanceFrom = distanceFromRaw
         ? Number.parseInt(distanceFromRaw, 10)
         : null;
@@ -853,7 +853,7 @@ function FormSection({
 }) {
   return (
     <section className="space-y-3">
-      <h4 className="font-kanit font-semibold text-foreground text-sm uppercase tracking-wide">
+      <h4 className="font-kanit text-foreground text-sm font-semibold tracking-wide uppercase">
         {title}
       </h4>
       <div className="grid grid-cols-2 gap-x-4 gap-y-6">{children}</div>
@@ -888,7 +888,7 @@ function formTristateToBoolean(
 function ErrorMessage({ children }: { children: string }) {
   return (
     <div
-      className="flex items-center gap-x-0.5 font-normal text-red-500 text-sm"
+      className="flex items-center gap-x-0.5 text-sm font-normal text-red-500"
       role="alert"
     >
       <XIcon size={16} />

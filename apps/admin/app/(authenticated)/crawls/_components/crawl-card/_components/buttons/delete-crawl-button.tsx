@@ -41,7 +41,7 @@ export function DeleteCrawlButton() {
             "h-11",
             "bg-destructive hover:bg-red-500",
             "text-primary-foreground",
-            "text-center font-semibold text-sm",
+            "text-center text-sm font-semibold",
             "transition-colors",
             (lockActions || open) && "opacity-50"
           )}

@@ -13,9 +13,9 @@ export function RetourAccueil() {
           "inline-flex items-center",
           "cursor-pointer",
           "rounded-full",
-          "border border-foreground/5",
-          "bg-linear-to-r from-foreground/1 to-foreground/7",
-          "font-geist-mono text-foreground/90 uppercase tracking-widest",
+          "border-foreground/5 border",
+          "from-foreground/1 to-foreground/7 bg-linear-to-r",
+          "font-geist-mono text-foreground/90 tracking-widest uppercase",
           "transition",
           "opacity-80 hover:opacity-100",
           //↔️

@@ -12,7 +12,7 @@ export function PriceCard({
     <div
       className={cn(
         "rounded-xl",
-        "border border-foreground-70",
+        "border-foreground-70 border",
         "grid",
         "row-span-2",
         "grid-rows-subgrid",
@@ -92,7 +92,7 @@ export function PriceCardSupTitle({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "font-geist-mono font-medium text-foreground/50 uppercase tracking-widest",
+        "font-geist-mono text-foreground/50 font-medium tracking-widest uppercase",
         //↔️
         "hidden",
         "xs:hidden",
@@ -147,7 +147,7 @@ export function PriceCardDPrice({
     >
       <span
         className={cn(
-          "text-foreground/60 uppercase tracking-widest",
+          "text-foreground/60 tracking-widest uppercase",
           //↔️
           "text-[0.65rem]",
           "xs:text-[0.65rem]",
@@ -184,7 +184,7 @@ export function PriceGridServices({ services }: { services: string[] }) {
         "2xl:space-y-6"
       )}
     >
-      <div className="font-geist-mono text-[0.7rem] text-foreground/60 uppercase tracking-widest">
+      <div className="font-geist-mono text-foreground/60 text-[0.7rem] tracking-widest uppercase">
         Inclus
       </div>
       <ul className="space-y-3">
@@ -203,7 +203,7 @@ export function PriceGridServices({ services }: { services: string[] }) {
             {/* ✅ */}
             <div
               className={cn(
-                "grid place-items-center rounded-full bg-orange-red p-1",
+                "bg-orange-red grid place-items-center rounded-full p-1",
                 // ↔️
                 "mt-0.5",
                 "xs:mt-0.5",
@@ -226,7 +226,7 @@ export function PriceGridServices({ services }: { services: string[] }) {
             {/* 🔢 */}
             <span
               className={cn(
-                "font-geist-mono text-[0.8rem] text-foreground/60 tracking-widest",
+                "font-geist-mono text-foreground/60 text-[0.8rem] tracking-widest",
                 //↔️
                 "hidden",
                 "xs:hidden",

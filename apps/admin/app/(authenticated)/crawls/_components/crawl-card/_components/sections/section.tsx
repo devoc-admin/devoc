@@ -2,7 +2,7 @@ import type { LucideIcon } from "lucide-react";
 
 export function Section({ ...props }: React.ComponentProps<"section">) {
   return (
-    <section className="space-y-2 border-border border-t pt-4" {...props} />
+    <section className="border-border space-y-2 border-t pt-4" {...props} />
   );
 }
 export function SectionContent({ ...props }: React.ComponentProps<"div">) {
@@ -12,7 +12,7 @@ export function SectionContent({ ...props }: React.ComponentProps<"div">) {
 export function SectionTitle({ ...props }: React.ComponentProps<"h4">) {
   return (
     <h4
-      className="font-medium text-muted-foreground text-xs uppercase tracking-wide"
+      className="text-muted-foreground text-xs font-medium tracking-wide uppercase"
       {...props}
     />
   );
@@ -23,7 +23,7 @@ export function SectionInformation({ ...props }: React.ComponentProps<"div">) {
 }
 
 export function SectionInformationIcon({ Icon }: { Icon: LucideIcon }) {
-  return <Icon className="shrink-0 text-muted-foreground" size={14} />;
+  return <Icon className="text-muted-foreground shrink-0" size={14} />;
 }
 
 export function SectionInformationName({ children }: { children: string }) {

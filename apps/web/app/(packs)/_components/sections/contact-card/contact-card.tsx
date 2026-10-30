@@ -24,15 +24,15 @@ export function ContactCard() {
           <SectionCatchline
             className={cn(
               // ↔️
-              "font-medium! text-5xl!",
+              "text-5xl! font-medium!",
               "xs:font-medium! xs:text-5xl!",
-              "xl:font-normal! xl:text-8xl!",
-              "2xl:font-normal! 2xl:text-8xl!",
+              "xl:text-8xl! xl:font-normal!",
+              "2xl:text-8xl! 2xl:font-normal!",
               "leading-[0.9]!"
             )}
           >
             Une heure pour cerner vos{" "}
-            <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text text-transparent">
+            <span className="from-orange-red to-primary-lighter bg-linear-to-r bg-clip-text text-transparent">
               besoins
             </span>
           </SectionCatchline>

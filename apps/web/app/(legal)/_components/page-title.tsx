@@ -4,7 +4,7 @@ export function PageTitle({ children }: { children: React.ReactNode }) {
   return (
     <h1
       className={cn(
-        "text-balance font-fraunces font-normal text-white leading-[0.9]!",
+        "font-fraunces leading-[0.9]! font-normal text-balance text-white",
         // ↔️
         "text-left text-5xl",
         "xs:text-left xs:text-5xl",

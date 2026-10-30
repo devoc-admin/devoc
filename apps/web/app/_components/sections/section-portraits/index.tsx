@@ -74,7 +74,7 @@ function Quotes() {
       >
         <p
           className={cn(
-            "text-right font-fraunces font-light",
+            "font-fraunces text-right font-light",
             // ↔️
             "sm:text-4xl lg:text-5xl 2xl:text-6xl"
           )}

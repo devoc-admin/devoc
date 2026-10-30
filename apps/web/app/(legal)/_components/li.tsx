@@ -11,7 +11,7 @@ export function LI({
     <li className="flex items-start gap-x-3">
       <div
         className={cn(
-          "mt-2.5 h-px min-w-4 bg-foreground-dark/20",
+          "bg-foreground-dark/20 mt-2.5 h-px min-w-4",
           // ↔️
           "hidden",
           "sm:inline-flex"
@@ -25,7 +25,7 @@ export function LI({
           "sm:inline"
         )}
       >
-        <span className="text-nowrap text-foreground-dark/85 empty:hidden">
+        <span className="text-foreground-dark/85 text-nowrap empty:hidden">
           {label}
         </span>
         <span

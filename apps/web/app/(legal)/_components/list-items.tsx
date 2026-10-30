@@ -86,7 +86,7 @@ export function Title({ children }: { children: React.ReactNode }) {
 // 🔠
 export function Content({ children }: { children: React.ReactNode }) {
   return (
-    <p className={cn("space-y-4 text-foreground-dark/60 text-lg")}>
+    <p className={cn("text-foreground-dark/60 space-y-4 text-lg")}>
       {children}
     </p>
   );

@@ -45,7 +45,7 @@ function Legend() {
     <div
       className={cn(
         "max-w-[34ch]",
-        "font-fraunces font-light leading-snug",
+        "font-fraunces leading-snug font-light",
         "space-y-8",
         // ↔️
         "text-3xl 2xl:text-4xl"

@@ -27,7 +27,7 @@ export function CrawlCard(crawl: CrawlResult) {
   return (
     <CrawlCardContextProvider crawl={crawl}>
       <li
-        className="flex max-w-100 flex-col gap-y-6 self-start rounded-md border border-border bg-sidebar-strong p-4"
+        className="border-border bg-sidebar-strong flex max-w-100 flex-col gap-y-6 self-start rounded-md border p-4"
         key={crawl.id}
       >
         <div>
@@ -88,7 +88,7 @@ function CrawlCardHeader() {
 
   return (
     <h3
-      className="max-w-full truncate font-kanit text-xl"
+      className="font-kanit max-w-full truncate text-xl"
       title={crawl.prospectName ?? crawl.title ?? undefined}
     >
       {crawlName}
@@ -104,7 +104,7 @@ function Website() {
   const { url } = crawl;
   return (
     <a
-      className="flex items-center gap-x-2 text-muted-foreground hover:underline"
+      className="text-muted-foreground flex items-center gap-x-2 hover:underline"
       href={url}
       rel="noopener"
       target="_blank"

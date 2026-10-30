@@ -47,10 +47,10 @@ function Card({ children }: { children: React.ReactNode }) {
     <a href="#contact">
       <article
         className={cn(
-          "@container group flex h-full flex-col rounded-3xl bg-neutral-950",
+          "group @container flex h-full flex-col rounded-3xl bg-neutral-950",
           // ↔️
           "p-6 sm:p-8",
-          "min-h-95 xs:min-h-80 sm:min-h-110 lg:min-h-100 xl:min-h-95 2xl:min-h-85"
+          "xs:min-h-80 min-h-95 sm:min-h-110 lg:min-h-100 xl:min-h-95 2xl:min-h-85"
         )}
       >
         {children}
@@ -134,7 +134,7 @@ function CardContent({ children }: { children: React.ReactNode }) {
 // ―
 function CardSeparator() {
   return (
-    <div className="h-px w-full bg-linear-to-r from-transparent via-foreground-dark/30 to-transparent" />
+    <div className="via-foreground-dark/30 h-px w-full bg-linear-to-r from-transparent to-transparent" />
   );
 }
 
@@ -143,7 +143,7 @@ function FeaturesContainer({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "flex flex-wrap gap-x-2 text-nowrap font-geist-mono font-light text-foreground-dark/50 uppercase",
+        "font-geist-mono text-foreground-dark/50 flex flex-wrap gap-x-2 font-light text-nowrap uppercase",
         // ↔️
         "text-[0.7rem] sm:text-[0.8rem]",
         "tracking-widest"
@@ -171,8 +171,8 @@ function EchangerSurCeService() {
           "flex items-center",
           "px-1 py-0",
           "mt-5 gap-x-1.5",
-          "font-semibold text-foreground-dark/80",
-          "transition-colors duration-500 group-hover:text-foreground"
+          "text-foreground-dark/80 font-semibold",
+          "group-hover:text-foreground transition-colors duration-500"
         )}
       >
         <span className="text-base lg:text-[1.12rem]">
@@ -187,7 +187,7 @@ function EchangerSurCeService() {
 function Arrow() {
   return (
     <ArrowUpRightIcon
-      className="text-foreground-dark/80 transition-colors duration-500 group-hover:text-foreground"
+      className="text-foreground-dark/80 group-hover:text-foreground transition-colors duration-500"
       size={18}
     />
   );

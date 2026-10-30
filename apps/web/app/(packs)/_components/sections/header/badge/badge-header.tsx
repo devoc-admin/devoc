@@ -61,7 +61,7 @@ export function Badge({
       <div
         className={cn(
           "rounded-full",
-          "border border-foreground/5 group-hover:border-orange-red/80",
+          "border-foreground/5 group-hover:border-orange-red/80 border",
           "text-foreground/60 group-hover:text-orange-red",
           "bg-foreground/5 group-hover:bg-orange-red/5",
           "transition",
@@ -83,10 +83,10 @@ export function Badge({
         />
       </div>
       {/* 🔤 */}
-      <div className="flex select-none flex-col">
+      <div className="flex flex-col select-none">
         <span
           className={cn(
-            "font-geist-mono font-medium text-foreground/40 uppercase tracking-wider",
+            "font-geist-mono text-foreground/40 font-medium tracking-wider uppercase",
             "group-hover:text-orange-red",
             "transition",
             /* ↔️ */

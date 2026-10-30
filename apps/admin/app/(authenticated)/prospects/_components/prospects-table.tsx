@@ -355,7 +355,7 @@ function SortableHeader<TValue>({
 }) {
   return (
     <button
-      className="flex cursor-pointer items-center gap-x-1 hover:text-foreground"
+      className="hover:text-foreground flex cursor-pointer items-center gap-x-1"
       onClick={() => column.toggleSorting()}
       type="button"
     >

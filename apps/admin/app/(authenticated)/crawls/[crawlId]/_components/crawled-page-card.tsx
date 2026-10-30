@@ -92,7 +92,7 @@ export function CrawledPageCard({ page }: CrawledPageCardProps) {
         "flex flex-col gap-y-4",
         "rounded-lg",
         "p-4 pb-10",
-        "border border-border",
+        "border-border border",
         "bg-sidebar-strong",
         "transition-shadow duration-300",
         isRecentlyToggled && "border-2 border-amber-500",
@@ -111,7 +111,7 @@ export function CrawledPageCard({ page }: CrawledPageCardProps) {
           <div className="min-w-0 flex-1">
             <TruncatableTitle title={page.title || "Sans titre"} />
             <a
-              className="flex items-center gap-x-1 text-muted-foreground text-sm hover:underline"
+              className="text-muted-foreground flex items-center gap-x-1 text-sm hover:underline"
               href={page.url}
               rel="noopener noreferrer"
               target="_blank"
@@ -201,7 +201,7 @@ function ToggleSwitch({
       aria-checked={checked}
       className={cn(
         "relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full transition-colors",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
         "disabled:cursor-not-allowed disabled:opacity-50",
         checked ? "bg-primary" : "bg-input"
       )}
@@ -212,12 +212,12 @@ function ToggleSwitch({
     >
       <span
         className={cn(
-          "pointer-events-none flex h-5 w-5 items-center justify-center rounded-full bg-sidebar-strong shadow-lg ring-0 transition-transform",
+          "bg-sidebar-strong pointer-events-none flex h-5 w-5 items-center justify-center rounded-full shadow-lg ring-0 transition-transform",
           checked ? "translate-x-5" : "translate-x-0.5"
         )}
       >
         {loading && (
-          <LoaderIcon className="size-3 animate-spin text-muted-foreground" />
+          <LoaderIcon className="text-muted-foreground size-3 animate-spin" />
         )}
       </span>
     </button>
@@ -243,7 +243,7 @@ function DeletePageButton({ pageId }: { pageId: string }) {
             "h-8 w-8",
             "rounded-md transition-colors",
             "bg-destructive/10 text-destructive",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            "focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none",
             "disabled:cursor-not-allowed disabled:opacity-50",
             "cursor-pointer"
           )}
@@ -335,7 +335,7 @@ type ContentIndicatorProps = {
 
 function ContentIndicator({ icon, label }: ContentIndicatorProps) {
   return (
-    <span className="inline-flex items-center gap-x-1 rounded-full bg-accent px-2 py-0.5 text-accent-foreground text-xs">
+    <span className="bg-accent text-accent-foreground inline-flex items-center gap-x-1 rounded-full px-2 py-0.5 text-xs">
       {icon}
       {label}
     </span>
@@ -361,7 +361,7 @@ function HttpStatusBadge({ status }: HttpStatusBadgeProps) {
   return (
     <span
       className={cn(
-        "absolute right-3 bottom-3 inline-flex items-center rounded-md px-2 py-0.5 font-medium text-xs",
+        "absolute right-3 bottom-3 inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium",
         isInfo && "bg-blue-100 text-blue-700",
         isSuccess && "bg-green-100 text-green-700",
         isRedirect && "bg-yellow-100 text-yellow-700",
@@ -401,7 +401,7 @@ function TruncatableTitle({ title }: TruncatableTitleProps) {
   }, []);
 
   const titleElement = (
-    <h3 className="truncate font-kanit font-medium text-lg" ref={titleRef}>
+    <h3 className="font-kanit truncate text-lg font-medium" ref={titleRef}>
       {title}
     </h3>
   );
@@ -456,7 +456,7 @@ function LazyImage({ alt, src }: LazyImageProps) {
 
   return (
     <div
-      className="relative aspect-video w-full overflow-hidden rounded-md bg-sidebar"
+      className="bg-sidebar relative aspect-video w-full overflow-hidden rounded-md"
       ref={containerRef}
     >
       {isInView ? (
@@ -469,7 +469,7 @@ function LazyImage({ alt, src }: LazyImageProps) {
         />
       ) : (
         <div className="flex h-full items-center justify-center">
-          <div className="size-8 animate-pulse rounded-full bg-muted" />
+          <div className="bg-muted size-8 animate-pulse rounded-full" />
         </div>
       )}
     </div>

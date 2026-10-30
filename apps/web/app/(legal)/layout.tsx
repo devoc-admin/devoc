@@ -13,7 +13,7 @@ export default function LegalLayout({
         className={cn(
           "relative z-1",
           "overflow-hidden",
-          "mx-auto bg-background-dark",
+          "bg-background-dark mx-auto",
           // ↔️
           "pt-16 pb-18",
           "xs:pt-16 xs:pb-18",
@@ -69,10 +69,10 @@ function RetourAccueil() {
         "gap-x-3",
         "cursor-pointer",
         "rounded-full",
-        "border border-foreground-dark/10",
-        "bg-linear-to-r from-foreground-dark/5 to-foreground-dark/15",
+        "border-foreground-dark/10 border",
+        "from-foreground-dark/5 to-foreground-dark/15 bg-linear-to-r",
         "py-2 pr-5 pl-4",
-        "font-geist-mono text-foreground-dark/70 text-xs uppercase tracking-widest",
+        "font-geist-mono text-foreground-dark/70 text-xs tracking-widest uppercase",
         "transition-transform",
         "brightness-90! hover:brightness-100!"
       )}
@@ -90,7 +90,7 @@ function OrangeDot({ className }: { className?: string }) {
     <div
       className={cn(
         "absolute",
-        "rounded-full bg-radial from-primary to-60% to-transparent",
+        "from-primary rounded-full bg-radial to-transparent to-60%",
         "blur-[100px]",
         className
       )}

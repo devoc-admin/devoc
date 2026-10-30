@@ -37,11 +37,11 @@ export function ContactInfoSection() {
                   <TooltipTrigger asChild>
                     <a
                       className="hover:underline"
-                      href={`tel:${phone.number.replace(/[\s.-]/g, "")}`}
+                      href={`tel:${phone.number.replace(/[\s.-]/gu, "")}`}
                     >
                       {phone.number}
                       {phone.type === "mobile" && (
-                        <span className="ml-1 text-muted-foreground text-xs">
+                        <span className="text-muted-foreground ml-1 text-xs">
                           (mobile)
                         </span>
                       )}

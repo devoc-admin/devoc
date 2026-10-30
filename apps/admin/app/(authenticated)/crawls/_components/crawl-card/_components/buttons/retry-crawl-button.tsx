@@ -26,7 +26,7 @@ export function RetryCrawlButton() {
         "h-11",
         "bg-slate-600 hover:bg-slate-500",
         "cursor-pointer",
-        "text-center font-semibold text-sm",
+        "text-center text-sm font-semibold",
         "text-primary-foreground",
         "transition-colors",
         lockActions && "cursor-not-allowed opacity-50"

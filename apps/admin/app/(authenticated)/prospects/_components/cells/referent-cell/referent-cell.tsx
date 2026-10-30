@@ -59,7 +59,7 @@ export function ReferentCell({
             </ReferentLink>
           )}
           {phone?.trim() && (
-            <ReferentLink href={`tel:${phone.replace(/\s+/g, "")}`}>
+            <ReferentLink href={`tel:${phone.replace(/\s+/gu, "")}`}>
               <PhoneIcon className="shrink-0" size={14} />
               <span className="truncate">{phone.trim()}</span>
             </ReferentLink>

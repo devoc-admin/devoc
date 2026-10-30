@@ -53,7 +53,7 @@ export function ProspectsMap() {
   if (!isLoaded) {
     return (
       <div className="flex h-96 items-center justify-center rounded-md border border-dashed">
-        <div className="text-center text-muted-foreground">
+        <div className="text-muted-foreground text-center">
           <LoaderCircleIcon className="mx-auto mb-2 size-8 animate-spin" />
           <p>Chargement de la carte...</p>
         </div>
@@ -65,7 +65,7 @@ export function ProspectsMap() {
   if (loadError) {
     return (
       <div className="flex h-96 items-center justify-center rounded-md border border-dashed">
-        <div className="text-center text-muted-foreground">
+        <div className="text-muted-foreground text-center">
           <MapPinIcon className="mx-auto mb-2 size-8" />
           <p>Erreur lors du chargement de la carte.</p>
           <p className="text-sm">
@@ -129,7 +129,7 @@ function ProspectPopupContent({ prospect }: { prospect: Prospect }) {
     <div className="min-w-48 space-y-2 p-1">
       {/* 🆎 Name */}
       <div className="flex items-center gap-x-2">
-        <span className="font-semibold text-lg">{prospect.name}</span>
+        <span className="text-lg font-semibold">{prospect.name}</span>
         <ProspectTypeBadge type={prospect.type} />
       </div>
       {/* 🔴 Estimated opportunity */}
@@ -143,7 +143,7 @@ function ProspectPopupContent({ prospect }: { prospect: Prospect }) {
         {/* 🌐 Website */}
         {prospect.website && (
           <a
-            className="flex items-center gap-x-1 text-blue-500 text-xs hover:underline"
+            className="flex items-center gap-x-1 text-xs text-blue-500 hover:underline"
             href={prospect.website}
             rel="noopener noreferrer"
             target="_blank"
@@ -155,7 +155,7 @@ function ProspectPopupContent({ prospect }: { prospect: Prospect }) {
         {/* 📍 Location */}
         {prospect.location && (
           <a
-            className="flex items-center gap-x-1 text-blue-500 text-xs hover:underline"
+            className="flex items-center gap-x-1 text-xs text-blue-500 hover:underline"
             href={prospect.location}
             rel="noopener noreferrer"
             target="_blank"
@@ -177,7 +177,7 @@ function ProspectPopupContent({ prospect }: { prospect: Prospect }) {
 function NoProspectsFound() {
   return (
     <div className="flex h-96 items-center justify-center rounded-md border border-dashed">
-      <div className="text-center text-muted-foreground">
+      <div className="text-muted-foreground text-center">
         <MapPinIcon className="mx-auto mb-2 size-8" />
         <p>Aucun prospect avec des coordonnées.</p>
         <p className="text-sm">

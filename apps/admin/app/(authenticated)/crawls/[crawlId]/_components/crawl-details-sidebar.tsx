@@ -82,11 +82,11 @@ export function CrawlDetailsSidebar() {
   const { crawl } = crawlDetails;
 
   return (
-    <div className="rounded-lg bg-sidebar p-6">
+    <div className="bg-sidebar rounded-lg p-6">
       <div className="mb-6">
-        <h1 className="font-kanit font-semibold text-3xl">Pages</h1>
+        <h1 className="font-kanit text-3xl font-semibold">Pages</h1>
         <a
-          className="mt-1 flex items-center gap-x-2 text-muted-foreground underline hover:underline"
+          className="text-muted-foreground mt-1 flex items-center gap-x-2 underline hover:underline"
           href={crawl.crawlUrl ?? ""}
           rel="noopener noreferrer"
           target="_blank"
@@ -96,7 +96,7 @@ export function CrawlDetailsSidebar() {
         </a>
       </div>
       <div className="mt-6">
-        <h2 className="mb-3 font-kanit font-medium text-lg">
+        <h2 className="font-kanit mb-3 text-lg font-medium">
           Catégories pour l'audit
         </h2>
         <div className="flex flex-col items-start gap-3">
@@ -119,7 +119,7 @@ export function CrawlDetailsSidebar() {
       </div>
 
       <div className="mt-6">
-        <h2 className="mb-3 font-kanit font-medium text-lg">Statuts HTTP</h2>
+        <h2 className="font-kanit mb-3 text-lg font-medium">Statuts HTTP</h2>
         <div className="flex flex-col items-start gap-y-2">
           {ALL_HTTP_STATUS_RANGES.map((range) => {
             const count = httpStatusCounts[range];

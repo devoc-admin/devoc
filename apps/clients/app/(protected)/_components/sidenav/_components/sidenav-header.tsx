@@ -9,7 +9,7 @@ export function SidenavHeader() {
       target="_blank"
     >
       <Image alt="Dev'Oc" className="w-5" src={LogoBlack} />
-      <span className="font-bold text-xl tracking-tight">Dev'Oc</span>
+      <span className="text-xl font-bold tracking-tight">Dev'Oc</span>
     </a>
   );
 }

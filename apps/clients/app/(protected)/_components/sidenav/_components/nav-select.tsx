@@ -47,7 +47,7 @@ export function NavSelect({
       }}
       value={value}
     >
-      <SelectTrigger className="w-full cursor-pointer rounded-full bg-main-background px-4 py-5.5 shadow-sm hover:shadow-md">
+      <SelectTrigger className="bg-main-background w-full cursor-pointer rounded-full px-4 py-5.5 shadow-sm hover:shadow-md">
         <SelectValue>
           {(href: string | null) => {
             const selected = options.find((option) => option.href === href);

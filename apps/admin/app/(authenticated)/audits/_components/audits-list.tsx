@@ -13,7 +13,7 @@ export function AuditsCards() {
   // 👀 No results
   const AuditCards =
     audits && audits.length === 0 ? (
-      <p className="text-center text-muted-foreground">
+      <p className="text-muted-foreground text-center">
         Aucun audit ne correspond à votre recherche
       </p>
     ) : (
@@ -25,7 +25,7 @@ export function AuditsCards() {
     );
 
   return (
-    <div className="space-y-6 rounded-md bg-sidebar p-8">
+    <div className="bg-sidebar space-y-6 rounded-md p-8">
       {/* 🔍 Search bar & filters */}
       <div className="flex flex-wrap items-center gap-4">
         <SearchAudits />
@@ -55,14 +55,14 @@ function SearchAudits() {
   return (
     <div className="relative max-w-125 grow">
       <SearchIcon
-        className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
+        className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 -translate-y-1/2"
         size={18}
       />
       <input
         className={cn(
-          "h-10 w-full rounded-md border border-input bg-sidebar-strong pr-10 pl-10",
-          "text-sm placeholder:text-muted-foreground",
-          "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+          "border-input bg-sidebar-strong h-10 w-full rounded-md border pr-10 pl-10",
+          "placeholder:text-muted-foreground text-sm",
+          "focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-none"
         )}
         onChange={(e) => handleSearchAudit(e.target.value)}
         placeholder="Rechercher par nom ou URL..."
@@ -72,7 +72,7 @@ function SearchAudits() {
       {searchAudit && (
         <button
           aria-label="Effacer la recherche"
-          className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2"
           onClick={() => handleSearchAudit("")}
           type="button"
         >
@@ -125,7 +125,7 @@ function TypeFilterButton({
     <button
       className={cn(
         "rounded-md px-3 py-1.5",
-        "font-medium text-sm",
+        "text-sm font-medium",
         "transition-colors",
         active
           ? "bg-primary text-primary-foreground"
@@ -143,8 +143,8 @@ function TypeFilterButton({
 // 🧌 No audit found
 function NoAuditFound() {
   return (
-    <div className="flex h-full items-center justify-center rounded-md bg-sidebar p-8">
-      <p className="text-center text-muted-foreground">
+    <div className="bg-sidebar flex h-full items-center justify-center rounded-md p-8">
+      <p className="text-muted-foreground text-center">
         Aucun audit trouvé. Créez votre premier audit !
       </p>
     </div>

@@ -85,7 +85,7 @@ export function DpoCombobox({
           autoFocus={autoFocus}
           className={cn(
             "h-10 w-full rounded-md border bg-transparent px-2 pr-7 text-sm",
-            "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            "focus-visible:ring-ring focus:outline-none focus-visible:ring-2",
             disabled && "opacity-60",
             inputClassName
           )}
@@ -111,7 +111,7 @@ export function DpoCombobox({
         />
         <ChevronDownIcon
           aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-muted-foreground"
+          className="text-muted-foreground pointer-events-none absolute top-1/2 right-2 -translate-y-1/2"
           size={14}
         />
       </div>
@@ -119,7 +119,7 @@ export function DpoCombobox({
         <div
           className={cn(
             "absolute top-full left-0 z-50 mt-1 w-full",
-            "max-h-48 overflow-auto rounded-md border bg-popover text-popover-foreground shadow-md"
+            "bg-popover text-popover-foreground max-h-48 overflow-auto rounded-md border shadow-md"
           )}
           id={listId}
           role="listbox"

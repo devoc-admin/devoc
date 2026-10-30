@@ -48,7 +48,7 @@ export function EstimatedOpportunitySelect({
         <button
           className={cn(
             "w-22.5",
-            "flex cursor-pointer items-center gap-x-1 rounded-full px-3 py-1 font-medium text-xs transition-colors",
+            "flex cursor-pointer items-center gap-x-1 rounded-full px-3 py-1 text-xs font-medium transition-colors",
             ESTIMATED_OPPORTUNITY_COLORS[value],
             "hover:opacity-80"
           )}

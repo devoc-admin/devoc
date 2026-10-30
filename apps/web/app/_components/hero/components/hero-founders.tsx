@@ -93,12 +93,12 @@ function ClementAndThibaut() {
         "font-fraunces",
         "font-normal",
         // ↔️
-        "text-base xs:text-lg lg:text-xl xl:text-2xl",
+        "xs:text-lg text-base lg:text-xl xl:text-2xl",
         "tracking-normal lg:tracking-tight"
       )}
     >
       <span>Clément</span>
-      <span className="bg-linear-to-tr from-orange-red to-primary-lighter bg-clip-text text-transparent">
+      <span className="from-orange-red to-primary-lighter bg-linear-to-tr bg-clip-text text-transparent">
         •
       </span>
       <span>Thibaut</span>
@@ -148,7 +148,7 @@ function AvatarWithTooltip({
       className={cn(
         "transition-transform hover:z-10 hover:scale-105",
         // ↔️
-        "size-10 xs:size-11 lg:size-13 xl:size-16"
+        "xs:size-11 size-10 lg:size-13 xl:size-16"
       )}
     >
       <Tooltip>

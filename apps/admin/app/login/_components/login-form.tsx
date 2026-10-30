@@ -44,7 +44,7 @@ export function LoginForm() {
         {/* 🌼 */}
         <DevOcLogo />
         {/* 🆎 */}
-        <CardTitle className="font-bold font-kanit text-4xl text-zinc-950">
+        <CardTitle className="font-kanit text-4xl font-bold text-zinc-950">
           Connexion
         </CardTitle>
         <CardDescription className="-mt-1 font-medium uppercase">
@@ -98,7 +98,7 @@ function DevOcLogo() {
 function ErrorMessage({ error }: { error: string | null }) {
   if (!error) return null;
   return (
-    <div className="rounded-md bg-red-100 p-3 text-red-600 text-sm">
+    <div className="rounded-md bg-red-100 p-3 text-sm text-red-600">
       {error}
     </div>
   );
@@ -168,7 +168,7 @@ function Password({
 function ButtonLogin({ isLoading }: { isLoading: boolean }) {
   return (
     <Button
-      className="mt-6 h-12 w-full cursor-pointer bg-zinc-950! text-md text-white"
+      className="text-md mt-6 h-12 w-full cursor-pointer bg-zinc-950! text-white"
       disabled={isLoading}
       type="submit"
     >

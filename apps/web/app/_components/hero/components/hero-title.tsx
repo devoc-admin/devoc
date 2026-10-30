@@ -20,7 +20,7 @@ function H1({ children }: { children: React.ReactNode }) {
   return (
     <h1
       className={cn(
-        "relative flex select-none items-center leading-none!",
+        "relative flex items-center leading-none! select-none",
         // ↔️
         "text-[5.15rem]",
         "xs:text-[6.7rem]",
@@ -69,7 +69,7 @@ function Dev() {
 function Oc() {
   return (
     <AuroraText
-      className="font-extrabold font-geist text-transparent tracking-tighter"
+      className="font-geist font-extrabold tracking-tighter text-transparent"
       colors={["#FFC731", "#FF5709", "#FFC731", "#FF5709"]}
     >
       <span>O</span>

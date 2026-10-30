@@ -29,7 +29,7 @@ function Article({ children }: { children: React.ReactNode }) {
         "h-full",
         "bg-neutral-950",
         "rounded-3xl",
-        "border border-foreground-dark/10",
+        "border-foreground-dark/10 border",
         // ↔️
         "p-10"
       )}
@@ -44,7 +44,7 @@ function Title({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "flex font-fraunces",
+        "font-fraunces flex",
         // ↔️
         "text-3xl",
         "flex-col items-center",
