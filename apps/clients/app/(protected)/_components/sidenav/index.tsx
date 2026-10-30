@@ -59,7 +59,7 @@ function Container({ children }: { children: React.ReactNode }) {
         "bg-sidenav-background text-sidenav-foreground",
         "flex flex-col",
         "space-y-3",
-        "w-60",
+        "w-65",
         "pt-2"
       )}
     >
