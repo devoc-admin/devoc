@@ -4,7 +4,7 @@ export function PIntro({ children }: { children: React.ReactNode }) {
   return (
     <p
       className={cn(
-        "max-w-[60ch] text-balance font-fraunces text-foreground-dark",
+        "font-fraunces text-foreground-dark max-w-[60ch] text-balance",
         // ↔️
         "text-xl",
         "xs:text-xl",

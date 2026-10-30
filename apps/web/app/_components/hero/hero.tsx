@@ -78,7 +78,7 @@ function BottomContainer({ children }: { children: React.ReactNode }) {
         "flex-col lg:flex-row",
         "justify-between",
         "mt-12 lg:mt-14 xl:mt-16 2xl:mt-18",
-        "gap-10 xs:gap-8 md:gap-12"
+        "xs:gap-8 gap-10 md:gap-12"
       )}
       position={5}
     >

@@ -37,27 +37,27 @@ export function ContactItem({
           "grid place-items-center",
           "rounded-full",
           "transition",
-          "border border-foreground/20 group-hover:border-orange-red/60",
+          "border-foreground/20 group-hover:border-orange-red/60 border",
           "bg-foreground/2 group-hover:bg-orange-red/10",
           "p-3"
         )}
       >
         <Icon
-          className="text-foreground/60 transition group-hover:text-orange-red"
+          className="text-foreground/60 group-hover:text-orange-red transition"
           size={18}
         />
       </div>
       {/* 🔠 */}
       <div className="flex flex-col">
-        <span className="font-geist-mono font-medium text-[0.7rem] text-foreground/60 uppercase tracking-widest">
+        <span className="font-geist-mono text-foreground/60 text-[0.7rem] font-medium tracking-widest uppercase">
           {suptitle}
         </span>
-        <span className="font-medium group-hover:text-orange-red">
+        <span className="group-hover:text-orange-red font-medium">
           {children}
         </span>
         <span
           className={cn(
-            "mt-1 font-medium text-foreground/60 text-xs",
+            "text-foreground/60 mt-1 text-xs font-medium",
             // ↔️
             "hidden",
             "sm:inline"

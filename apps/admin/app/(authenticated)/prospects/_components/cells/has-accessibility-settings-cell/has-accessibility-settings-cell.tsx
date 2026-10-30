@@ -68,7 +68,7 @@ export function HasAccessibilitySettingsCell({
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
-            "flex cursor-pointer items-center gap-x-1 rounded-full px-3 py-1 font-medium text-xs transition-colors",
+            "flex cursor-pointer items-center gap-x-1 rounded-full px-3 py-1 text-xs font-medium transition-colors",
             COLORS[current]
           )}
           disabled={isPending}

@@ -13,7 +13,7 @@ export function OrangeDecorativeStone() {
         "translate-x-[60%]",
         "opacity-100",
         "hue-rotate-125",
-        "mask-radial-[135%_117%] mask-radial-at-bottom-right mask-radial-from-0% mask-radial-to-92%"
+        "mask-radial-[135%_117%] mask-radial-from-0% mask-radial-to-92% mask-radial-at-bottom-right"
       )}
       src={PurpleCircleImage}
       width={300}

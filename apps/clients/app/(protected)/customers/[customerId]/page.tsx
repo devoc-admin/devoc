@@ -7,5 +7,5 @@ export default async function CustomerPage({
 }) {
   const { customerId } = await params;
   const customer = await getCustomer(customerId);
-  return <h1 className="font-semibold text-2xl">{customer.name}</h1>;
+  return <h1 className="text-2xl font-semibold">{customer.name}</h1>;
 }

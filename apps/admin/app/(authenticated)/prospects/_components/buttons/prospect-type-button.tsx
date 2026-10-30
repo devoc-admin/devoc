@@ -54,7 +54,7 @@ export function ProspectTypeBadge({ type }: { type: Prospect["type"] }) {
         "cursor-auto",
         "rounded-full",
         "px-3 py-1",
-        "font-medium text-xs",
+        "text-xs font-medium",
         PROSPECT_TYPES_COLORS[type].inactive
       )}
     >
@@ -80,7 +80,7 @@ export function ProspectTypeButton({
         "cursor-pointer",
         "rounded-full",
         "px-3 py-1",
-        "font-medium text-xs",
+        "text-xs font-medium",
         "transition-colors",
         isActive
           ? PROSPECT_TYPES_COLORS[type].active

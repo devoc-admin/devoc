@@ -9,7 +9,7 @@ export function StepCard({ children }: { children: React.ReactNode }) {
         "p-6",
         "transition-colors",
         "rounded-3xl",
-        "border border-foreground/10 hover:border-orange-red/60",
+        "border-foreground/10 hover:border-orange-red/60 border",
         // ↔️
         "space-y-0 p-4",
         "xs:space-y-0 xs:p-4",
@@ -28,7 +28,7 @@ export function StepCardContent({ children }: { children: React.ReactNode }) {
 
 export function StepCardNumber({ value }: { value: number }) {
   return (
-    <span className="font-geist-mono text-[0.7rem] text-foreground/60 uppercase tracking-widest">
+    <span className="font-geist-mono text-foreground/60 text-[0.7rem] tracking-widest uppercase">
       Étape {value}
     </span>
   );
@@ -36,7 +36,7 @@ export function StepCardNumber({ value }: { value: number }) {
 
 export function StepCardTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="font-fraunces font-medium text-2xl transition group-hover:text-orange-red">
+    <h3 className="font-fraunces group-hover:text-orange-red text-2xl font-medium transition">
       {children}
     </h3>
   );
@@ -57,13 +57,13 @@ export function StepCardIcon({ Icon }: { Icon: LucideIcon }) {
         "grid place-items-center",
         "rounded-full",
         "transition-colors",
-        "border border-foreground/20 group-hover:border-orange-red/60",
+        "border-foreground/20 group-hover:border-orange-red/60 border",
         "bg-foreground/2 group-hover:bg-orange-red/5",
         "p-2"
       )}
     >
       <Icon
-        className="text-foreground/60 transition group-hover:text-orange-red"
+        className="text-foreground/60 group-hover:text-orange-red transition"
         size={18}
       />
     </div>

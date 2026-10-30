@@ -23,7 +23,7 @@ export function CrawlDetailsContent() {
         <CrawlDetailsSidebar />
       </div>
       <div className="basis-5/6 space-y-6">
-        <div className="flex items-center gap-x-4 rounded-lg bg-sidebar p-6">
+        <div className="bg-sidebar flex items-center gap-x-4 rounded-lg p-6">
           <BackCrawlListButton />
           <SearchCrawledPages />
         </div>
@@ -57,10 +57,10 @@ function CrawlDetailsSkeleton() {
 // 🚫 Error
 function ErrorMessage({ children }: { children: string }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-y-4 rounded-lg bg-sidebar p-12">
-      <AlertCircleIcon className="size-12 text-destructive" />
+    <div className="bg-sidebar flex flex-col items-center justify-center gap-y-4 rounded-lg p-12">
+      <AlertCircleIcon className="text-destructive size-12" />
       <div className="text-center">
-        <h2 className="font-kanit font-semibold text-xl">
+        <h2 className="font-kanit text-xl font-semibold">
           Erreur lors du chargement
         </h2>
         <p className="text-muted-foreground">{children}</p>

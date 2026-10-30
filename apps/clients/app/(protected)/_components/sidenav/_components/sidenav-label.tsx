@@ -8,7 +8,7 @@ export function SidenavLabel({
   className?: string;
 }) {
   return (
-    <div className={cn("font-normal text-sm leading-none", className)}>
+    <div className={cn("text-sm leading-none font-normal", className)}>
       {children}
     </div>
   );

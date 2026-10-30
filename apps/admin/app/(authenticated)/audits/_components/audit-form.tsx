@@ -41,9 +41,9 @@ export function AuditForm() {
   }, [createAuditIsSuccess, form]);
 
   return (
-    <div className="rounded-md bg-sidebar p-6">
+    <div className="bg-sidebar rounded-md p-6">
       <form
-        className="mx-auto flex h-full max-w-75 flex-col items-center justify-center gap-y-4 space-y-4"
+        className="mx-auto flex h-full max-w-75 flex-col items-center justify-center space-y-4 gap-y-4"
         onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -205,7 +205,7 @@ function isWebsiteUrl(url: string): boolean {
 function ErrorMessage({ children }: { children: string }) {
   return (
     <div
-      className="flex items-center gap-x-0.5 font-normal text-red-500 text-sm"
+      className="flex items-center gap-x-0.5 text-sm font-normal text-red-500"
       role="alert"
     >
       <XIcon size={16} />

@@ -22,7 +22,7 @@ export function PriceCardAdvanced() {
   return (
     <PriceCard
       className={cn(
-        "border border-orange-red bg-orange-red/2",
+        "border-orange-red bg-orange-red/2 border",
         //↔️
         "translate-y-0",
         "xs:translate-y-0",
@@ -34,7 +34,7 @@ export function PriceCardAdvanced() {
       <PriceGridUpper>
         <div>
           <PriceCardSupTitle>Protection totale</PriceCardSupTitle>
-          <PriceCardTitle className="bg-linear-to-r from-orange-red to-50% to-primary-lighter bg-clip-text text-transparent">
+          <PriceCardTitle className="from-orange-red to-primary-lighter bg-linear-to-r to-50% bg-clip-text text-transparent">
             Avancé
           </PriceCardTitle>
         </div>
@@ -43,7 +43,7 @@ export function PriceCardAdvanced() {
           souverains. La couverture la plus demandée.
         </PriceCardDescription>
         <PriceCardDPrice
-          className="mt-auto bg-linear-to-r from-orange-red to-80% to-primary-lighter bg-clip-text text-transparent"
+          className="from-orange-red to-primary-lighter mt-auto bg-linear-to-r to-80% bg-clip-text text-transparent"
           value={13_500}
         />
       </PriceGridUpper>

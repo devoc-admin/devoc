@@ -14,7 +14,7 @@ export default function PolitiqueDeConfidentialitePage() {
           Politique de{" "}
           <span
             className={cn(
-              "bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text text-transparent"
+              "from-orange-red to-primary-lighter bg-linear-to-r bg-clip-text text-transparent"
             )}
           >
             confidentialité

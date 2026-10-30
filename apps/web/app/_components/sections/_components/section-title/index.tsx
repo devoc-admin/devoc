@@ -66,9 +66,9 @@ export function SectionTitle({ children }: { children: React.ReactNode }) {
           "leading-none",
           "bg-clip-text",
           "font-bold text-transparent",
-          "uppercase leading-none",
+          "leading-none uppercase",
           // ↔️
-          "text-[3rem] xs:text-[3.4rem] sm:text-[5.5rem] md:text-8xl lg:text-[7.6rem] xl:text-[7rem] 2xl:text-[9.2rem]",
+          "xs:text-[3.4rem] text-[3rem] sm:text-[5.5rem] md:text-8xl lg:text-[7.6rem] xl:text-[7rem] 2xl:text-[9.2rem]",
           "leading-none",
           "max-sm:mb-0",
           //

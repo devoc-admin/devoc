@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 export function TailwindLandmark() {
   if (process.env.NODE_ENV !== "development") return;
   return (
-    <div className="fixed top-5 left-5 z-999 rounded-sm bg-black/80 px-4 py-2 font-geist-mono text-sm text-white">
+    <div className="font-geist-mono fixed top-5 left-5 z-999 rounded-sm bg-black/80 px-4 py-2 text-sm text-white">
       <TailwindBelowXs />
       <TailwindXs />
       <TailwindSm />

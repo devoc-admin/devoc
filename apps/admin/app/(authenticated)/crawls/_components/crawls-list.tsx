@@ -22,7 +22,7 @@ export function CrawlsCards() {
   // 👀 No results
   const CrawlCards =
     crawls && crawls.length === 0 ? (
-      <p className="text-center text-muted-foreground">
+      <p className="text-muted-foreground text-center">
         Aucun crawl ne correspond à votre recherche
       </p>
     ) : (
@@ -34,7 +34,7 @@ export function CrawlsCards() {
     );
 
   return (
-    <div className="space-y-6 rounded-md bg-sidebar p-8">
+    <div className="bg-sidebar space-y-6 rounded-md p-8">
       {/* 🔍 Search bar */}
       <SearchCrawls />
 
@@ -83,11 +83,11 @@ function SearchCrawls() {
   return (
     <div className="relative max-w-125">
       <SearchIcon
-        className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
+        className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 -translate-y-1/2"
         size={18}
       />
       <input
-        className="h-10 w-full rounded-md border border-input bg-sidebar-strong pr-10 pl-10 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+        className="border-input bg-sidebar-strong placeholder:text-muted-foreground focus:ring-ring h-10 w-full rounded-md border pr-10 pl-10 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none"
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Rechercher par titre, URL ou prestataire..."
         type="text"
@@ -96,7 +96,7 @@ function SearchCrawls() {
       {searchQuery && (
         <button
           aria-label="Effacer la recherche"
-          className="absolute top-1/2 right-3 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2"
           onClick={() => setSearchQuery("")}
           type="button"
         >
@@ -110,6 +110,6 @@ function SearchCrawls() {
 // 🧌 No crawl found
 function NoCrawlFound() {
   return (
-    <p className="text-center text-muted-foreground">Aucun crawl trouvé</p>
+    <p className="text-muted-foreground text-center">Aucun crawl trouvé</p>
   );
 }

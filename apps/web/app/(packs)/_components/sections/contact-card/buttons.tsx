@@ -62,7 +62,7 @@ export function AppelerMaintenant() {
       }
     >
       <span className="ml-4 text-white">Appeler maintenant</span>
-      <div className="rounded-full bg-white p-3 text-primary">
+      <div className="text-primary rounded-full bg-white p-3">
         <AppelerMaintenantIcon strokeWidth={2.1} />
       </div>
     </CustomButton>

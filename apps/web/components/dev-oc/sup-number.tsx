@@ -12,7 +12,7 @@ export function SupNumber({
   return (
     <span
       className={cn(
-        "whitespace-nowrap font-geist-mono text-[0.7rem] text-xs",
+        "font-geist-mono text-[0.7rem] text-xs whitespace-nowrap",
         className
       )}
     >

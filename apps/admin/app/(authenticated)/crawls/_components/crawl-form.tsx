@@ -79,10 +79,10 @@ export function CrawlForm() {
   }
 
   return (
-    <div className="rounded-md bg-sidebar p-6">
+    <div className="bg-sidebar rounded-md p-6">
       {/* 📝 Form */}
       <form
-        className="mx-auto flex h-full max-w-75 flex-col items-center justify-center gap-y-4 space-y-4"
+        className="mx-auto flex h-full max-w-75 flex-col items-center justify-center space-y-4 gap-y-4"
         onSubmit={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -100,9 +100,9 @@ export function CrawlForm() {
                 <DropdownMenuTrigger asChild id="crawl-prospect">
                   <button
                     className={cn(
-                      "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2",
-                      "text-sm ring-offset-background",
-                      "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                      "border-input bg-background flex h-10 w-full items-center justify-between rounded-md border px-3 py-2",
+                      "ring-offset-background text-sm",
+                      "focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-none",
                       "disabled:cursor-not-allowed disabled:opacity-50",
                       !selectedProspect && "text-muted-foreground"
                     )}
@@ -133,14 +133,14 @@ export function CrawlForm() {
                   <div className="p-2">
                     <div className="relative">
                       <SearchIcon
-                        className="pointer-events-none absolute top-1/2 left-2 -translate-y-1/2 text-muted-foreground"
+                        className="text-muted-foreground pointer-events-none absolute top-1/2 left-2 -translate-y-1/2"
                         size={14}
                       />
                       <input
                         className={cn(
-                          "h-8 w-full rounded-md border border-input bg-background pr-2 pl-7",
-                          "text-sm placeholder:text-muted-foreground",
-                          "focus:outline-none focus:ring-1 focus:ring-ring"
+                          "border-input bg-background h-8 w-full rounded-md border pr-2 pl-7",
+                          "placeholder:text-muted-foreground text-sm",
+                          "focus:ring-ring focus:ring-1 focus:outline-none"
                         )}
                         onChange={(e) => setProspectSearchQuery(e.target.value)}
                         onClick={(e) => e.stopPropagation()}
@@ -497,7 +497,7 @@ function isWebsiteUrl(url: string): boolean {
 function ErrorMessage({ children }: { children: string }) {
   return (
     <div
-      className="flex items-center gap-x-0.5 font-normal text-red-500 text-sm"
+      className="flex items-center gap-x-0.5 text-sm font-normal text-red-500"
       role="alert"
     >
       <XIcon size={16} />

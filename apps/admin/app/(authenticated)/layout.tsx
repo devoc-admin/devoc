@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 function Container({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen w-screen gap-x-4 bg-sidebar py-4 pl-4">
+    <div className="bg-sidebar flex h-screen w-screen gap-x-4 py-4 pl-4">
       {children}
     </div>
   );
@@ -29,7 +29,7 @@ function Container({ children }: { children: React.ReactNode }) {
 
 function Content({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative grow overflow-auto rounded-xl bg-sidebar-strong p-4">
+    <div className="bg-sidebar-strong relative grow overflow-auto rounded-xl p-4">
       {children}
     </div>
   );

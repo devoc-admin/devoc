@@ -94,7 +94,7 @@ function SidebarLink({
         /* 🫷 Padding */ "px-5 py-2.5",
         /* 🤹 Transition */ "transition-colors",
         "hover:bg-accent",
-        /* 👁️ Hover */ "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        /* 👁️ Hover */ "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
         /* 🔆 */ isActive && "bg-muted"
       )}
       href={pathname}

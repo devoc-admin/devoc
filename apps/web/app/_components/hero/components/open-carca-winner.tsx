@@ -24,7 +24,7 @@ export function OpenCarcaWinner() {
             "mt-2",
             "max-w-50",
             "text-center font-bold",
-            "bg-linear-to-br from-orange-red via-primary-lighter to-primary bg-clip-text text-transparent",
+            "from-orange-red via-primary-lighter to-primary bg-linear-to-br bg-clip-text text-transparent",
             // ↔️
             "gap-y-1"
           )}

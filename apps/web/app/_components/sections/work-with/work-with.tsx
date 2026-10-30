@@ -49,7 +49,7 @@ function NoxExpertsOntTravailléAvecEux() {
     <div
       className={cn(
         "px-8",
-        "text-center font-regular",
+        "font-regular text-center",
         // ↔️
         "xs:mb-6 xs:text-2xl",
         "sm:mb-6 sm:text-2xl",

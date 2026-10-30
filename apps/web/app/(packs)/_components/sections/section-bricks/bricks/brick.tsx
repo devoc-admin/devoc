@@ -41,7 +41,7 @@ export function BrickNumber({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "grid place-items-center rounded-full border-2 border-orange-red bg-orange-red/5 font-fraunces font-semibold text-orange-red",
+        "border-orange-red bg-orange-red/5 font-fraunces text-orange-red grid place-items-center rounded-full border-2 font-semibold",
         //↔️
         "size-10 text-xl",
         "xl:size-12 xl:text-2xl",
@@ -73,7 +73,7 @@ export function BrickTitle({ children }: { children: React.ReactNode }) {
   return (
     <h3
       className={cn(
-        "font-fraunces font-semibold text-foreground leading-none!",
+        "font-fraunces text-foreground leading-none! font-semibold",
         //↔️
         "text-[2.1rem]",
         "xs:text-[2.1rem]",
@@ -107,7 +107,7 @@ export function BrickRight({ children }: { children: React.ReactNode }) {
 
 export function GuaranteesTitle() {
   return (
-    <h4 className="font-geist-mono font-semibold text-foreground/40 text-xs uppercase tracking-[0.15rem]">
+    <h4 className="font-geist-mono text-foreground/40 text-xs font-semibold tracking-[0.15rem] uppercase">
       Vos garanties
     </h4>
   );
@@ -169,13 +169,13 @@ export function SmallCard({
   Icon: LucideIcon;
 }) {
   return (
-    <div className="group space-y-2 rounded-lg border border-foreground/10 p-3 transition hover:border-orange-red/80">
+    <div className="group border-foreground/10 hover:border-orange-red/80 space-y-2 rounded-lg border p-3 transition">
       {/* 🖼️🅰️ */}
       <div className="flex items-center gap-x-2">
         {/* 🖼️ */}
-        <Icon className="size-3 shrink-0 text-foreground/40 transition group-hover:text-orange-red" />
+        <Icon className="text-foreground/40 group-hover:text-orange-red size-3 shrink-0 transition" />
         {/* 🅰️ */}
-        <span className="font-geist-mono text-[0.68rem] text-foreground/60 uppercase tracking-widest transition group-hover:text-orange-red">
+        <span className="font-geist-mono text-foreground/60 group-hover:text-orange-red text-[0.68rem] tracking-widest uppercase transition">
           {title}
         </span>
       </div>
@@ -202,8 +202,8 @@ export function PlusDevOc({ children }: { children: React.ReactNode }) {
     <div
       className={cn(
         "rounded-3xl",
-        "border border-orange-red/50",
-        "bg-linear-to-tr from-bg-orange-red/4 to-orange-red/7",
+        "border-orange-red/50 border",
+        "from-bg-orange-red/4 to-orange-red/7 bg-linear-to-tr",
         "flex flex-col",
         // ↔️
         "gap-y-1 p-4.5",
@@ -219,7 +219,7 @@ export function PlusDevOc({ children }: { children: React.ReactNode }) {
           className={cn(
             "mb-0",
             "font-geist-mono font-semibold",
-            "text-[0.83rem] text-orange-red uppercase tracking-widest"
+            "text-orange-red text-[0.83rem] tracking-widest uppercase"
           )}
         >
           <span>Le + Dev'Oc</span>

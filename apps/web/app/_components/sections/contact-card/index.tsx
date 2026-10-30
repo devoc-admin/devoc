@@ -39,7 +39,7 @@ function Card({ children }: { children: React.ReactNode }) {
         "scroll-mt-12",
         "relative",
         "rounded-3xl",
-        "border border-foreground-dark/10",
+        "border-foreground-dark/10 border",
         "bg-surface-dark",
         "overflow-hidden",
         // ↔️
@@ -47,7 +47,7 @@ function Card({ children }: { children: React.ReactNode }) {
         "gap-x-12 lg:gap-x-20 xl:gap-x-24",
         "gap-y-12",
         "flex-col md:flex-row",
-        "px-6 xs:px-8 py-8 xs:py-8 sm:px-12 sm:py-12 2xl:px-22 2xl:py-22"
+        "xs:px-8 xs:py-8 px-6 py-8 sm:px-12 sm:py-12 2xl:px-22 2xl:py-22"
       )}
       id="contact"
     >
@@ -83,7 +83,7 @@ function Background() {
           "aspect-square h-[80%]",
           "rounded-full",
           "-translate-x-1/2 translate-y-1/2",
-          "bg-radial from-primary-lighter to-80% to-transparent",
+          "from-primary-lighter bg-radial to-transparent to-80%",
           "blur-2xl"
         )}
       />
@@ -94,7 +94,7 @@ function Background() {
           "aspect-square h-full",
           "translate-x-1/4 -translate-y-1/4",
           "rounded-full",
-          "bg-radial from-orange-red to-80% to-transparent",
+          "from-orange-red bg-radial to-transparent to-80%",
           "blur-2xl"
         )}
       />
@@ -109,18 +109,18 @@ function ParlonsProjet() {
       className={cn(
         // ↔️
         "leading-[0.9]!",
-        "font-medium text-5xl",
+        "text-5xl font-medium",
         "xs:font-medium xs:text-5xl",
-        "sm:font-light sm:text-5xl",
-        "md:font-light md:text-5xl",
-        "lg:font-light lg:text-5xl",
-        "xl:font-light xl:text-6xl",
-        "2xl:font-normal 2xl:text-8xl"
+        "sm:text-5xl sm:font-light",
+        "md:text-5xl md:font-light",
+        "lg:text-5xl lg:font-light",
+        "xl:text-6xl xl:font-light",
+        "2xl:text-8xl 2xl:font-normal"
       )}
     >
       {" "}
       Parlons de votre{" "}
-      <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-medium text-transparent">
+      <span className="from-orange-red to-primary-lighter bg-linear-to-r bg-clip-text font-medium text-transparent">
         projet
       </span>
       .{" "}
@@ -142,7 +142,7 @@ function Description() {
 // 📦
 function ItemsContainer({ children }: { children: React.ReactNode }) {
   return (
-    <div className={cn("relative", "w-full", "md:min-w-80 md:max-w-130")}>
+    <div className={cn("relative", "w-full", "md:max-w-130 md:min-w-80")}>
       {children}
     </div>
   );

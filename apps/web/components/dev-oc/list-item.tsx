@@ -43,7 +43,7 @@ export function ListItem({
           className={cn(
             "pt-1 text-[0.9rem]",
             variant === "dark" && "text-foreground-dark/60",
-            variant === "light" && "font-bold text-foreground/50"
+            variant === "light" && "text-foreground/50 font-bold"
           )}
           prefix="#  "
         >
@@ -62,7 +62,7 @@ export function ListItem({
           "xl:text-4xl",
           // 🌙☀️
           variant === "dark" && "text-foreground-dark",
-          variant === "light" && "font-medium text-foreground"
+          variant === "light" && "text-foreground font-medium"
         )}
       >
         {title}

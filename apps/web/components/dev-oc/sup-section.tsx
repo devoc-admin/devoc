@@ -21,7 +21,7 @@ export function SupSection({
 // 🔢
 function CustomNumber({ children }: { children: number }) {
   return (
-    <SupNumber className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-semibold text-[0.85rem] text-transparent">
+    <SupNumber className="from-orange-red to-primary-lighter bg-linear-to-r bg-clip-text text-[0.85rem] font-semibold text-transparent">
       {children}
     </SupNumber>
   );
@@ -51,7 +51,7 @@ function Title({
   return (
     <span
       className={cn(
-        "font-geist-mono uppercase tracking-[0.15rem]",
+        "font-geist-mono tracking-[0.15rem] uppercase",
         // ↔️
         "text-[0.85rem]",
         "xs:text-[0.85rem]",
@@ -61,8 +61,8 @@ function Title({
         "xl:text-[0.85rem]",
         "2xl:text-[0.85rem]",
         //🌙☀️
-        variant === "dark" && "font-normal text-foreground-dark/60",
-        variant === "light" && "font-semibold text-foreground/60"
+        variant === "dark" && "text-foreground-dark/60 font-normal",
+        variant === "light" && "text-foreground/60 font-semibold"
       )}
     >
       {children}

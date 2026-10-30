@@ -50,5 +50,5 @@ export function ProspectsPageContent() {
 // ------------------------------------------
 // 🆎 Header
 function ProspectsHeader() {
-  return <h2 className="font-kanit font-semibold text-4xl">Prospects</h2>;
+  return <h2 className="font-kanit text-4xl font-semibold">Prospects</h2>;
 }

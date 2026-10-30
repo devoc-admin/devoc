@@ -41,7 +41,7 @@ export function SectionReasons() {
           </SupSection>
           <SectionCatchline className="font-normal!">
             Cinq raisons d'engager cette transformation{" "}
-            <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-medium text-transparent italic">
+            <span className="from-orange-red to-primary-lighter bg-linear-to-r bg-clip-text font-medium text-transparent italic">
               dès ce mandat
             </span>
           </SectionCatchline>

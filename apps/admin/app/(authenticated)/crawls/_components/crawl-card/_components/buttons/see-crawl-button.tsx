@@ -17,7 +17,7 @@ export function SeeCrawlButton() {
         "bg-primary hover:bg-primary/90",
         "transition-colors",
         "rounded-md",
-        "text-center font-semibold text-primary-foreground text-sm"
+        "text-primary-foreground text-center text-sm font-semibold"
       )}
       href={`/crawls/${crawl.id}`}
     >

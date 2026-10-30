@@ -11,7 +11,7 @@ export default function PackLayout({
       <div
         className={cn(
           "relative z-1",
-          "mx-auto bg-background text-foreground",
+          "bg-background text-foreground mx-auto",
           // ↔️
           "pt-16 pb-18",
           "xs:pt-16 xs:pb-18",
@@ -66,7 +66,7 @@ function OrangeDot({ className }: { className?: string }) {
     <div
       className={cn(
         "absolute",
-        "rounded-full bg-radial from-orange-red to-60% to-transparent",
+        "from-orange-red rounded-full bg-radial to-transparent to-60%",
         "blur-[100px]",
         className
       )}

@@ -59,9 +59,9 @@ function OuterContainer({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "bg-linear-to-br from-primary/5 via-transparent to-primary/5",
+        "from-primary/5 to-primary/5 bg-linear-to-br via-transparent",
         "rounded-t-4xl",
-        "border-t border-t-foreground-dark/5",
+        "border-t-foreground-dark/5 border-t",
         // ↔️
         "px-6 sm:px-8 md:px-10",
         "py-10 xl:py-18"
@@ -164,7 +164,7 @@ function LegalLinks() {
     >
       {legalLinks.map((link) => (
         <Link
-          className="transition-colors hover:text-orange-red"
+          className="hover:text-orange-red transition-colors"
           href={link.href}
           key={link.key}
         >

@@ -173,7 +173,7 @@ export function BackToOrganization({
       className={cn(
         "flex items-center gap-x-2",
         "transition-colors",
-        "font-light text-sm",
+        "text-sm font-light",
         "text-muted-foreground",
         "hover:bg-muted-background",
         "px-3 py-2",

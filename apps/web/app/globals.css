@@ -218,6 +218,10 @@
     @apply border-border outline-ring/50;
   }
   body {
+    font-variation-settings:
+      "SOFT" 50,
+      "WONK" 1;
+    font-optical-sizing: auto;
     @apply bg-background text-foreground;
   }
   html {
@@ -226,13 +230,6 @@
   html[data-fonts-ready="true"] {
     overflow: auto;
   }
-}
-
-body {
-  font-variation-settings:
-    "SOFT" 50,
-    "WONK" 1;
-  font-optical-sizing: auto;
 }
 
 h1,

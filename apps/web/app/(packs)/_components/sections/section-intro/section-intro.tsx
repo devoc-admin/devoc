@@ -35,7 +35,7 @@ export function SectionIntro() {
         </SupSection>
         <SectionCatchline className="font-normal!">
           Un guichet unique pour toute votre{" "}
-          <span className="bg-linear-to-r from-orange-red to-primary-lighter bg-clip-text font-medium text-transparent italic">
+          <span className="from-orange-red to-primary-lighter bg-linear-to-r bg-clip-text font-medium text-transparent italic">
             offre numérique
           </span>
         </SectionCatchline>

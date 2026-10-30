@@ -35,7 +35,7 @@ export function LanguageSection() {
             {crawl.availableLanguages && crawl.availableLanguages.length > 1
               ? crawl.availableLanguages.map((lang) => (
                   <span
-                    className="rounded bg-muted px-1.5 py-0.5 text-xs"
+                    className="bg-muted rounded px-1.5 py-0.5 text-xs"
                     key={lang}
                   >
                     {getLanguageName(lang)}

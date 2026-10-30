@@ -98,7 +98,7 @@ function SiteEditorDisplay({
   if (url) {
     return (
       <a
-        className="flex items-center gap-x-1 truncate text-blue-500 text-sm hover:underline"
+        className="flex items-center gap-x-1 truncate text-sm text-blue-500 hover:underline"
         href={url}
         rel="noopener noreferrer"
         target="_blank"

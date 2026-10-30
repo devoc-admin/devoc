@@ -85,7 +85,7 @@ export function ProspectSelector() {
 
   return (
     <div className="mt-2 flex items-center gap-x-2">
-      <BuildingIcon className="shrink-0 text-muted-foreground" size={14} />
+      <BuildingIcon className="text-muted-foreground shrink-0" size={14} />
       <DropdownMenu onOpenChange={handleOpenChange} open={dropdownOpen}>
         <DropdownMenuTrigger asChild>
           <button
@@ -110,15 +110,15 @@ export function ProspectSelector() {
           <div className="space-y-2 p-2">
             <div className="relative">
               <SearchIcon
-                className="pointer-events-none absolute top-1/2 left-2 -translate-y-1/2 text-muted-foreground"
+                className="text-muted-foreground pointer-events-none absolute top-1/2 left-2 -translate-y-1/2"
                 size={14}
               />
               <input
                 autoFocus
                 className={cn(
-                  "h-8 w-full rounded-md border border-input bg-background pr-2 pl-7",
-                  "text-sm placeholder:text-muted-foreground",
-                  "focus:outline-none focus:ring-1 focus:ring-ring"
+                  "border-input bg-background h-8 w-full rounded-md border pr-2 pl-7",
+                  "placeholder:text-muted-foreground text-sm",
+                  "focus:ring-ring focus:ring-1 focus:outline-none"
                 )}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onClick={(e) => e.stopPropagation()}
@@ -241,7 +241,7 @@ function AddProspectForCrawlButton({
       </DialogTrigger>
       <DialogContent onClick={(e) => e.stopPropagation()}>
         <div className="space-y-4">
-          <h3 className="text-center font-bold font-kanit text-3xl">
+          <h3 className="font-kanit text-center text-3xl font-bold">
             Ajouter un prospect
           </h3>
           <div className="grid grid-cols-2 gap-x-4 gap-y-6 py-4">
@@ -359,7 +359,7 @@ function AddProspectForCrawlButton({
 function FormErrorMessage({ children }: { children: string }) {
   return (
     <div
-      className="flex items-center gap-x-0.5 font-normal text-red-500 text-sm"
+      className="flex items-center gap-x-0.5 text-sm font-normal text-red-500"
       role="alert"
     >
       <XIcon size={16} />

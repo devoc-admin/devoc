@@ -4,7 +4,7 @@ export function JsonLd({ data }: { data: Record<string, unknown> }) {
     <script
       // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD must be inlined as raw JSON
       dangerouslySetInnerHTML={{
-        __html: JSON.stringify(data).replace(/</g, "\\u003c"),
+        __html: JSON.stringify(data).replace(/</gu, "\\u003c"),
       }}
       type="application/ld+json"
     />

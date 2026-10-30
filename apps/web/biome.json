@@ -10,5 +10,17 @@
         "useUniqueElementIds": "off"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.css"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "useBaseline": "off"
+          }
+        }
+      }
+    }
+  ]
 }

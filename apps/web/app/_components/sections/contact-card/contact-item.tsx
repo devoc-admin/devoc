@@ -64,7 +64,7 @@ function ContactIcon({ Icon }: { Icon: LucideIcon }) {
       )}
     >
       <Icon
-        className="text-[#AEABA4] transition-colors duration-500 group-hover:text-orange-red/80"
+        className="group-hover:text-orange-red/80 text-[#AEABA4] transition-colors duration-500"
         size={16}
       />
     </div>
@@ -93,7 +93,7 @@ function ContactValue({ children }: { children: React.ReactNode }) {
       className={cn(
         "font-light",
         "text-[0.95rem]",
-        "transition-colors duration-500 group-hover:text-orange-red"
+        "group-hover:text-orange-red transition-colors duration-500"
       )}
     >
       {children}
@@ -104,7 +104,7 @@ function ContactValue({ children }: { children: React.ReactNode }) {
 /* ➡️ */
 function ArrowContact() {
   return (
-    <div className="ml-auto transition-all duration-500 group-hover:-translate-x-2 group-hover:text-orange-red">
+    <div className="group-hover:text-orange-red ml-auto transition-all duration-500 group-hover:-translate-x-2">
       <ArrowRightIcon size={18} />
     </div>
   );
