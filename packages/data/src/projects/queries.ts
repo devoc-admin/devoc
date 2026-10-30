@@ -29,6 +29,7 @@ export async function getCustomerProjectById(
 ) {
   const project = await db.query.projects.findFirst({
     columns: {
+      githubUrl: true,
       id: true,
       name: true,
     },

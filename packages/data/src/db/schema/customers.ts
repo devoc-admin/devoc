@@ -32,6 +32,7 @@ export const projects = pgTable(
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
     customerId: integer("customer_id").notNull(),
     name: text().notNull(),
+    githubUrl: text("github_url"),
     createdAt: timestamp({ mode: "string", withTimezone: true })
       .defaultNow()
       .notNull(),
