@@ -6,13 +6,16 @@ import { getMyCustomers } from "@/lib/customers";
 import { CustomersList } from "./_components/customers-list/customers-list";
 
 export default async function Page() {
-  const user = await getCurrentUser();
-  console.log(user);
-  // 👤 A regular user linked to a single customer lands straight on it
-  if (user.type !== "admin") {
-    const customers = await getMyCustomers();
-    if (customers.length === 1) redirect(`/customers/${customers[0].id}`);
-  }
+  // 🐝
+  const [user, customers] = await Promise.all([
+    getCurrentUser(),
+    getMyCustomers(),
+  ]);
+
+  const isAdmin = user.type === "admin";
+
+  if (!isAdmin && customers.length === 1)
+    redirect(`/customers/${customers[0].id}`);
 
   return (
     <div className="size-full">
