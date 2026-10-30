@@ -29,19 +29,29 @@ function CustomerCard({
   const { id, name } = customer;
   return (
     <Link href={`/customers/${id}`}>
-      <button
-        className="grid h-65 w-80 cursor-pointer place-items-center rounded-2xl border transition-transform hover:scale-101 active:scale-99"
-        type="button"
-      >
+      <Card>
         <LogoAndNameContainer>
           <CompanyLogo customerId={id} />
           <Title>{name}</Title>
         </LogoAndNameContainer>
-      </button>
+      </Card>
     </Link>
   );
 }
 
+// 📦
+export function Card({ children }: { children: React.ReactNode }) {
+  return (
+    <button
+      className="grid h-65 w-80 cursor-pointer place-items-center rounded-2xl border transition-transform hover:scale-101 active:scale-99"
+      type="button"
+    >
+      {children}
+    </button>
+  );
+}
+
+// 📦🆎🖼️
 export function LogoAndNameContainer({
   children,
 }: {
@@ -54,6 +64,7 @@ export function LogoAndNameContainer({
   );
 }
 
+// 🖼️
 export function CompanyLogo({ customerId }: { customerId: number }) {
   const imageSrc = `/api/customers/${customerId}/logo`;
   return (
@@ -68,6 +79,7 @@ export function CompanyLogo({ customerId }: { customerId: number }) {
   );
 }
 
+// 🆎
 export function Title({ children }: { children: React.ReactNode }) {
   return <h2 className="font-medium">{children}</h2>;
 }
