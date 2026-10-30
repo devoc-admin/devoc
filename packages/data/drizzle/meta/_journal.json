@@ -134,6 +134,13 @@
       "when": 1791813113293,
       "tag": "0018_tired_steel_serpent",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1793396379676,
+      "tag": "0019_freezing_smiling_tiger",
+      "breakpoints": true
     }
   ]
 }

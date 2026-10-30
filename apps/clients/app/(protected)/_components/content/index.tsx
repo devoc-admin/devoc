@@ -15,7 +15,7 @@ export function Content({ children }: { children: React.ReactNode }) {
           "rgba(0, 0, 0, 0.08) 0px 3px 6px 0px, rgba(0, 0, 0, 0.07) 0px 2px 4px 0px",
       }}
     >
-      {children}
+      <div className="mx-auto max-w-300">{children}</div>
     </main>
   );
 }
