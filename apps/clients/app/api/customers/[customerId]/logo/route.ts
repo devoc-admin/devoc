@@ -1,4 +1,4 @@
-import { getCustomerById, getCustomerLogoById } from "@dev-oc/data/customers";
+import { getCustomerLogoById } from "@dev-oc/data/customers";
 import { ALLOWED_CONTENT_TYPES } from "@/lib/api/logo-allowed-types";
 import {
   INVALID_RESPONSE,
@@ -32,13 +32,8 @@ export async function GET(
 
   if (!idOk) return INVALID_RESPONSE;
 
-  // 🐝
-  const customer = await getCustomerById(customerIdNumber);
-
-  if (!customer) return NOT_FOUND_RESPONSE;
-
   // 🖼️
-  const customerLogo = await getCustomerLogoById(customer.id, {
+  const customerLogo = await getCustomerLogoById(customerIdNumber, {
     ifNoneMatch: request.headers.get("if-none-match") ?? undefined,
   });
   if (!customerLogo) return NOT_FOUND_RESPONSE;
@@ -56,7 +51,7 @@ export async function GET(
   // ⬆️✅
   return new Response(customerLogo.stream, {
     headers: {
-      "Cache-Control": "private, max-age=3600",
+      "Cache-Control": "private, max-age=3600, stale-while-revalidate=86400",
       "Content-Security-Policy": "default-src 'none'; sandbox",
       "Content-Type": customerLogo.blob.contentType,
       ETag: customerLogo.blob.etag,
