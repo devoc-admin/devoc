@@ -38,21 +38,19 @@ export async function GET(
   // 🚫
   if (!idsOk) return INVALID_RESPONSE;
 
-  // 🐝📦
-  const project = await getCustomerProjectById(
-    customerIdNumber,
-    projectIdNumber
-  );
+  // 🐝📦🖼️ Ownership check and logo fetch run in parallel
+  const [project, projectLogo] = await Promise.all([
+    getCustomerProjectById(customerIdNumber, projectIdNumber),
+    getProjectLogoById(projectIdNumber, {
+      ifNoneMatch: request.headers.get("if-none-match") ?? undefined,
+    }),
+  ]);
 
   // 🚫
-  if (!project) return NOT_FOUND_RESPONSE;
-
-  // 🐝🖼️
-  const projectLogo = await getProjectLogoById(project.id, {
-    ifNoneMatch: request.headers.get("if-none-match") ?? undefined,
-  });
-
-  // 🚫
+  if (!project) {
+    if (projectLogo?.statusCode === 200) await projectLogo.stream.cancel();
+    return NOT_FOUND_RESPONSE;
+  }
   if (!projectLogo) return NOT_FOUND_RESPONSE;
   if (projectLogo.statusCode === 304) return NOT_MODIFIED_RESPONSE;
   const notRightType = !ALLOWED_CONTENT_TYPES.has(projectLogo.blob.contentType);
@@ -64,7 +62,7 @@ export async function GET(
   // ⬆️✅
   return new Response(projectLogo.stream, {
     headers: {
-      "Cache-Control": "private, max-age=3600",
+      "Cache-Control": "private, max-age=3600, stale-while-revalidate=86400",
       "Content-Security-Policy": "default-src 'none'; sandbox",
       "Content-Type": projectLogo.blob.contentType,
       ETag: projectLogo.blob.etag,

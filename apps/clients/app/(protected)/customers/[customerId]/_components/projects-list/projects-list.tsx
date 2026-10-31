@@ -84,6 +84,7 @@ export function ProjectLogo({
       alt=""
       className="size-16 rounded-sm object-contain"
       height={64}
+      preload
       src={imageSrc}
       unoptimized
       width={64}

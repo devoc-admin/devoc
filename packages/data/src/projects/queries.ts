@@ -6,6 +6,8 @@ import { and, asc, eq } from "drizzle-orm";
 export async function getProjectById(projectId: number) {
   const project = await db.query.projects.findFirst({
     columns: {
+      createdAt: true,
+      customerId: true,
       id: true,
       name: true,
     },
@@ -22,7 +24,6 @@ export async function getProjectsByCustomerId(customerId: number) {
     .orderBy(asc(projects.name));
 }
 
-// Returns undefined when the project doesn't belong to this customer
 export async function getCustomerProjectById(
   customerId: number,
   projectId: number
