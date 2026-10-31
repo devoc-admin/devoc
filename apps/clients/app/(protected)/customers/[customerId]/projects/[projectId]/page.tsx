@@ -4,6 +4,8 @@ import { cn } from "cn";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getProject, getProjectLinks } from "@/lib/projects";
+import { ProjectDetailsSidebar } from "./_components/project-details-sidebar";
+
 export default async function ProjectPage({
   params,
 }: {
@@ -58,6 +60,10 @@ async function ProjectHeader({
       <div className="space-y-1.5">
         <ProjectTitle projectName={projectName} />
         <GithubLink url={githubUrl} />
+      </div>
+      {/* 📝 */}
+      <div className="ml-auto self-start">
+        <ProjectDetailsSidebar projectId={projectId} />
       </div>
     </div>
   );
