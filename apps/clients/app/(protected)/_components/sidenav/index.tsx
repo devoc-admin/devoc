@@ -8,8 +8,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { getCustomer, getMyCustomers } from "@/lib/customers";
-import { LogoutButton } from "./_components/logout-button";
 import { NavSelect, type NavSelectOption } from "./_components/nav-select";
+import { SidenavFooter } from "./_components/sidenav-footer";
 import { SidenavHeader } from "./_components/sidenav-header";
 import { SidenavItem } from "./_components/sidenav-item";
 import { SidenavLabel } from "./_components/sidenav-label";
@@ -46,7 +46,8 @@ export function Sidenav({
         </ContainerProject>
       )}
 
-      <LogoutButton />
+      {/* 🦶 */}
+      <SidenavFooter />
     </Container>
   );
 }

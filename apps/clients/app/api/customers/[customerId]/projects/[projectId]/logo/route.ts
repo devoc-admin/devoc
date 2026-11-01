@@ -4,11 +4,11 @@ import {
 } from "@dev-oc/data/projects";
 import { ALLOWED_CONTENT_TYPES } from "@/lib/api/logo-allowed-types";
 import {
-  INVALID_RESPONSE,
-  NOT_FOUND_RESPONSE,
-  NOT_MODIFIED_RESPONSE,
-  UNAUTHORIZED_RESPONSE,
-  UNSUPPORTED_TYPE_RESPONSE,
+  invalidResponse,
+  notFoundResponse,
+  notModifiedResponse,
+  unauthorizedResponse,
+  unsupportedTypeResponse,
 } from "@/lib/api/responses";
 import { areCustomerAndProjectIdValid } from "@/lib/api/utils";
 import { auth } from "@/lib/auth/auth";
@@ -23,7 +23,7 @@ export async function GET(
   const session = await auth.api.getSession({ headers: request.headers });
 
   // ✋
-  if (!session) return UNAUTHORIZED_RESPONSE;
+  if (!session) return unauthorizedResponse();
 
   // ================================================
   // 👥 📦
@@ -36,7 +36,7 @@ export async function GET(
   const idsOk = areCustomerAndProjectIdValid(customerIdNumber, projectIdNumber);
 
   // 🚫
-  if (!idsOk) return INVALID_RESPONSE;
+  if (!idsOk) return invalidResponse();
 
   // 🐝📦🖼️ Ownership check and logo fetch run in parallel
   const [project, projectLogo] = await Promise.all([
@@ -49,14 +49,14 @@ export async function GET(
   // 🚫
   if (!project) {
     if (projectLogo?.statusCode === 200) await projectLogo.stream.cancel();
-    return NOT_FOUND_RESPONSE;
+    return notFoundResponse();
   }
-  if (!projectLogo) return NOT_FOUND_RESPONSE;
-  if (projectLogo.statusCode === 304) return NOT_MODIFIED_RESPONSE;
+  if (!projectLogo) return notFoundResponse();
+  if (projectLogo.statusCode === 304) return notModifiedResponse();
   const notRightType = !ALLOWED_CONTENT_TYPES.has(projectLogo.blob.contentType);
   if (notRightType) {
     await projectLogo.stream.cancel();
-    return UNSUPPORTED_TYPE_RESPONSE;
+    return unsupportedTypeResponse();
   }
 
   // ⬆️✅

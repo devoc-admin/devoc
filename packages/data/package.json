@@ -6,7 +6,8 @@
     "./db": "./src/db/index.ts",
     "./db/schema": "./src/db/schema/index.ts",
     "./customers": "./src/customers/queries.ts",
-    "./projects": "./src/projects/queries.ts"
+    "./projects": "./src/projects/queries.ts",
+    "./users": "./src/users/queries.ts"
   },
   "scripts": {
     "create-user": "bun run src/scripts/create-user.ts",
