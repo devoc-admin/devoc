@@ -1,11 +1,11 @@
 import { getCustomerLogoById } from "@dev-oc/data/customers";
 import { ALLOWED_CONTENT_TYPES } from "@/lib/api/logo-allowed-types";
 import {
-  INVALID_RESPONSE,
-  NOT_FOUND_RESPONSE,
-  NOT_MODIFIED_RESPONSE,
-  UNAUTHORIZED_RESPONSE,
-  UNSUPPORTED_TYPE_RESPONSE,
+  invalidResponse,
+  notFoundResponse,
+  notModifiedResponse,
+  unauthorizedResponse,
+  unsupportedTypeResponse,
 } from "@/lib/api/responses";
 import { isCustomerIdValid } from "@/lib/api/utils";
 import { auth } from "@/lib/auth/auth";
@@ -20,7 +20,7 @@ export async function GET(
   const session = await auth.api.getSession({ headers: request.headers });
 
   // ✋
-  if (!session) return UNAUTHORIZED_RESPONSE;
+  if (!session) return unauthorizedResponse();
 
   // ================================================
   // 👥
@@ -30,14 +30,14 @@ export async function GET(
 
   const idOk = isCustomerIdValid(customerIdNumber);
 
-  if (!idOk) return INVALID_RESPONSE;
+  if (!idOk) return invalidResponse();
 
   // 🖼️
   const customerLogo = await getCustomerLogoById(customerIdNumber, {
     ifNoneMatch: request.headers.get("if-none-match") ?? undefined,
   });
-  if (!customerLogo) return NOT_FOUND_RESPONSE;
-  if (customerLogo.statusCode === 304) return NOT_MODIFIED_RESPONSE;
+  if (!customerLogo) return notFoundResponse();
+  if (customerLogo.statusCode === 304) return notModifiedResponse();
 
   // 🚫
   const notRightType = !ALLOWED_CONTENT_TYPES.has(
@@ -45,7 +45,7 @@ export async function GET(
   );
   if (notRightType) {
     await customerLogo.stream.cancel();
-    return UNSUPPORTED_TYPE_RESPONSE;
+    return unsupportedTypeResponse();
   }
 
   // ⬆️✅
