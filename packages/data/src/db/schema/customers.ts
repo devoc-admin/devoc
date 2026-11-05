@@ -5,6 +5,7 @@ import {
   foreignKey,
   index,
   integer,
+  pgEnum,
   pgTable,
   text,
   timestamp,
@@ -32,6 +33,7 @@ export const projects = pgTable(
     id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
     customerId: integer("customer_id").notNull(),
     name: text().notNull(),
+    dueDate: timestamp({ mode: "string", withTimezone: true }),
     githubUrl: text("github_url"),
     createdAt: timestamp({ mode: "string", withTimezone: true })
       .defaultNow()
@@ -62,6 +64,7 @@ export const projectsRelations = relations(projects, ({ one, many }) => ({
     references: [customers.id],
   }),
   links: many(links),
+  steps: many(projectSteps),
 }));
 
 export type Project = typeof projects.$inferSelect;
@@ -105,3 +108,56 @@ export const linksRelations = relations(links, ({ one }) => ({
 
 export type Link = typeof links.$inferSelect;
 export type NewLink = typeof links.$inferInsert;
+
+export const projectStepStatusEnum = pgEnum("project_step_status", [
+  "pending",
+  "in_progress",
+  "done",
+]);
+
+export const projectSteps = pgTable(
+  "project_steps",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    projectId: integer("project_id").notNull(),
+    name: text().notNull(),
+    description: text(),
+    position: integer().notNull(),
+    status: projectStepStatusEnum().default("pending").notNull(),
+    startDate: timestamp("start_date", { mode: "string", withTimezone: true }),
+    dueDate: timestamp("due_date", { mode: "string", withTimezone: true }),
+    completedAt: timestamp("completed_at", {
+      mode: "string",
+      withTimezone: true,
+    }),
+    createdAt: timestamp({ mode: "string", withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp({ mode: "string", withTimezone: true })
+      .defaultNow()
+      .notNull()
+      .$onUpdate(() => new Date().toISOString()),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.projectId],
+      foreignColumns: [projects.id],
+      name: "project_steps_project_id_fkey",
+    }).onDelete("cascade"),
+    index("project_steps_project_id_position_idx").using(
+      "btree",
+      table.projectId.asc().nullsLast(),
+      table.position.asc().nullsLast()
+    ),
+  ]
+);
+
+export const projectStepsRelations = relations(projectSteps, ({ one }) => ({
+  project: one(projects, {
+    fields: [projectSteps.projectId],
+    references: [projects.id],
+  }),
+}));
+
+export type ProjectStep = typeof projectSteps.$inferSelect;
+export type NewProjectStep = typeof projectSteps.$inferInsert;

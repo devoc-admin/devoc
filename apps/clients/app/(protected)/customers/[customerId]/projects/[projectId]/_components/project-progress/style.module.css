@@ -1,0 +1,22 @@
+.bar::after {
+  animation-name: bar-progress;
+  animation-duration: 3s;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes bar-progress {
+  from {
+    width: 0;
+    opacity: 1;
+  }
+
+  90% {
+    /*opacity: 0.5;*/
+  }
+
+  to {
+    width: 100%;
+    opacity: 0;
+  }
+}

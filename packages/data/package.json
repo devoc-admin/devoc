@@ -7,6 +7,7 @@
     "./db/schema": "./src/db/schema/index.ts",
     "./customers": "./src/customers/queries.ts",
     "./projects": "./src/projects/queries.ts",
+    "./projects/mutations": "./src/projects/mutations.ts",
     "./users": "./src/users/queries.ts"
   },
   "scripts": {

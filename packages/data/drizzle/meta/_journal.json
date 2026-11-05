@@ -141,6 +141,20 @@
       "when": 1793396379676,
       "tag": "0019_freezing_smiling_tiger",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1793909006883,
+      "tag": "0020_nasty_blazing_skull",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1793909705991,
+      "tag": "0021_superb_lila_cheney",
+      "breakpoints": true
     }
   ]
 }

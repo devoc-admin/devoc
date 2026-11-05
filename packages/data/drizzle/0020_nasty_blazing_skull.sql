@@ -1,0 +1,1 @@
+ALTER TABLE "projects" ADD COLUMN "dueDate" timestamp with time zone;
