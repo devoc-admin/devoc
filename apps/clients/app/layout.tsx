@@ -2,6 +2,7 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import "./globals.css";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export default function RootLayout({
   children,
@@ -13,7 +14,7 @@ export default function RootLayout({
       <body
         className={`${GeistSans.variable} ${kanit.variable} min-h-screen font-sans`}
       >
-        {children}
+        <TooltipProvider>{children}</TooltipProvider>
       </body>
     </html>
   );

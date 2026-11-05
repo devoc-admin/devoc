@@ -41,7 +41,7 @@ export async function ProjectDetailsSidebar({
 function DetailsButtonTrigger() {
   return (
     <button
-      className="flex cursor-pointer items-center gap-x-1 rounded-full bg-[#F0F0F3] px-3 py-1.5 text-xs font-medium text-[#1C2024] transition-colors hover:bg-[#E0E1E6]"
+      className="flex cursor-pointer items-center gap-x-1 rounded-full bg-[#F0F0F3] px-3 py-1.5 text-[0.8rem] font-medium text-[#1C2024] transition-colors hover:bg-[#E0E1E6]"
       type="button"
     >
       <DetailsButtonIcon size={14} />
@@ -61,27 +61,53 @@ function DetailsTable({
     <div className="overflow-hidden rounded-lg border">
       <table className="w-full">
         <tbody>
-          <tr className="h-12 border-b">
-            <td className="border-r bg-[#F9F9FB] px-4 text-[#60646c]">Nom</td>
-            <td className="w-full bg-white px-4">{project.name}</td>
-          </tr>
-          <tr className="h-12 border-b">
-            <td className="border-r bg-[#F9F9FB] px-4 text-[#60646c]">ID</td>
-            <td className="w-full bg-white px-4">{project.id}</td>
-          </tr>
-          <tr className="h-12">
-            <td className="border-r bg-[#F9F9FB] px-4 text-nowrap text-[#60646c]">
-              Date démarrage
-            </td>
-            <td className="w-full overflow-visible bg-white px-4">
-              {formatDate(project.createdAt)}
-            </td>
-          </tr>
+          <TR>
+            <TD_left>Nom</TD_left>
+            <TD_right>{project.name}</TD_right>
+          </TR>
+          <TR>
+            <TD_left>ID</TD_left>
+            <TD_right>{project.id}</TD_right>
+          </TR>
+          <TR>
+            <TD_left>Date démarrage</TD_left>
+            <TD_right>
+              {formatDate(project.createdAt)} (
+              {totalDaysFromNow(project.createdAt)} jours effectués)
+            </TD_right>
+          </TR>
+          {project.dueDate && (
+            <TR>
+              <TD_left>Fin prévue</TD_left>
+              <TD_right>
+                {formatDate(project.dueDate)} ({remainingDays(project.dueDate)}{" "}
+                jours restants)
+              </TD_right>
+            </TR>
+          )}
         </tbody>
       </table>
     </div>
   );
 }
+
+function TR({ children }: { children: React.ReactNode }) {
+  return <tr className="h-12 not-last-of-type:border-b">{children}</tr>;
+}
+
+function TD_left({ children }: { children: React.ReactNode }) {
+  return (
+    <td className="border-r bg-[#F9F9FB] px-4 text-nowrap text-[#60646c]">
+      {children}
+    </td>
+  );
+}
+
+function TD_right({ children }: { children: React.ReactNode }) {
+  return <td className="w-full bg-white px-4">{children}</td>;
+}
+
+// 🔧 =========================================================
 
 function formatDate(date: string) {
   const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
@@ -90,4 +116,20 @@ function formatDate(date: string) {
     year: "numeric",
   });
   return dateFormatter.format(new Date(date));
+}
+
+function remainingDays(date: string) {
+  const today = new Date();
+  const dueDate = new Date(date);
+  const diffTime = Math.abs(dueDate.getTime() - today.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays;
+}
+
+function totalDaysFromNow(date: string) {
+  const today = new Date();
+  const endDate = new Date(date);
+  const diffTime = Math.abs(endDate.getTime() - today.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays;
 }
