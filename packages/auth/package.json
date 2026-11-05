@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "better-auth": "^1.7.14",
+    "better-auth": "^1.7.18",
     "pg": "^8.23.1"
   },
   "devDependencies": {
