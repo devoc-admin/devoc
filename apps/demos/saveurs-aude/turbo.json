@@ -11,7 +11,8 @@
         "BLOB_READ_WRITE_TOKEN",
         "NEXT_PUBLIC_SITE_URL",
         "NEXT_PUBLIC_URL",
-        "VERCEL_BLOB_URL"
+        "VERCEL_BLOB_URL",
+        "VERCEL_PROJECT_PRODUCTION_URL"
       ]
     },
     "dev": {
@@ -40,12 +41,12 @@
       "dependsOn": ["gen:types"],
       "inputs": ["payload.config.ts", "payload/**"],
       "outputs": ["app/\\(payload\\)/admin/importMap.js"],
-      "env": ["PAYLOAD_SECRET", "DATABASE_URL"]
+      "env": ["PAYLOAD_SECRET", "DATABASE_URL", "BLOB_READ_WRITE_TOKEN"]
     },
     "gen:types": {
       "inputs": ["payload.config.ts", "payload/**"],
       "outputs": ["payload-types.ts"],
-      "env": ["PAYLOAD_SECRET", "DATABASE_URL"]
+      "env": ["PAYLOAD_SECRET", "DATABASE_URL", "BLOB_READ_WRITE_TOKEN"]
     }
   }
 }

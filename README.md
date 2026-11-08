@@ -1,6 +1,6 @@
 # Dev'Oc
 
-Monorepo du collectif **Dev-OC** : le site vitrine, le back-office de prospection, l'espace clients, l'atelier de templates d'emails et les packages TypeScript partagés. Géré avec **Bun** (workspaces + catalogs) et **Turborepo**.
+Monorepo du collectif **Dev-OC** : le site vitrine, le back-office de prospection, l'espace clients, l'atelier de templates d'emails, les démos prospects et les packages TypeScript partagés. Géré avec **Bun** (workspaces + catalogs) et **Turborepo**.
 
 ## Structure
 
@@ -10,7 +10,10 @@ dev-oc/
 │   ├── web/                    # Site vitrine Next.js
 │   ├── admin/                  # Back-office Next.js (prospection, crawls, audits)
 │   ├── clients/                # Espace clients Next.js (template vierge)
-│   └── email/                  # Atelier de templates React Email
+│   ├── email/                  # Atelier de templates React Email
+│   └── demos/                  # Démos présentées aux prospects
+│       ├── cagnolhes/          # Landing Next.js
+│       └── saveurs-aude/       # E-commerce Next.js + Payload CMS
 ├── packages/
 │   ├── auth/                   # @dev-oc/auth — authentification better-auth partagée
 │   ├── crawler/                # @dev-oc/crawler — crawler Playwright + Wapalyzer
@@ -18,7 +21,7 @@ dev-oc/
 │   └── utils/                  # @dev-oc/utils — helpers URL et dates
 ├── tooling/
 │   └── typescript-config/      # tsconfig partagés (base.json, next.json)
-├── .github/workflows/          # CI (ci.yml) et déploiement (deploy.yml)
+├── .github/workflows/          # CI (ci.yml) et migrations de prod (migrate.yml)
 ├── package.json                # Workspaces, catalogs de versions, outils racine
 ├── turbo.json                  # Tâches du monorepo
 ├── biome.jsonc                 # Lint + format + assist
@@ -39,6 +42,8 @@ Chaque app et package a son propre `readme.md` avec le détail de ses scripts.
 | `admin` | `apps/admin` | Next.js 16 (App Router, Turbopack). Back-office : better-auth, Postgres/Neon via Drizzle ORM, files Inngest, Vercel Blob. Port 3001 |
 | `clients` | `apps/clients` | Next.js 16 (App Router, Turbopack). Espace clients, template vierge. Port 3002 |
 | `email` | `apps/email` | Templates transactionnels React Email, avec preview live dans le navigateur |
+| `cagnolhes` | `apps/demos/cagnolhes` | Démo prospect : landing Next.js 16, shadcn/ui, Base UI. Port 3000 |
+| `saveurs-aude` | `apps/demos/saveurs-aude` | Démo prospect : e-commerce Next.js 16 + Payload CMS (Postgres, Stripe, Resend). Port 3000 |
 | `@dev-oc/auth` | `packages/auth` | Authentification better-auth (serveur, route, proxy, hooks client). Consommé par `admin` et `clients` |
 | `@dev-oc/data` | `packages/data` | Schéma Drizzle, client Neon et migrations de la base partagée. Consommé par `admin` |
 | `@dev-oc/crawler` | `packages/crawler` | Crawl de pages, extraction de métadonnées et détection de technologies. Consommé par `admin` |
@@ -96,16 +101,16 @@ bun x turbo boundaries              # vérifie les frontières entre workspaces
 | Tâche | Ce qu'elle fait |
 |-------|-----------------|
 | `dev` | Serveur de développement (persistante, non mise en cache) |
-| `build` | Build de production. `web`, `admin` et `clients` en ont un |
+| `build` | Build de production. Toutes les apps Next en ont un (`web`, `admin`, `clients`, `cagnolhes`, `saveurs-aude`) |
 | `ci` | `biome ci` : lint + format + assist en une passe, sans écriture — ce que lance la CI |
 | `lint` | `ultracite check` (Biome) |
 | `typecheck` | `tsc --noEmit` |
 
-Seules ces cinq tâches sont déclarées dans `turbo.json`. `lint:fix` et `format:fix` existent en scripts de workspace uniquement : lancez-les avec `bun run --filter <app> lint:fix`.
+Ce sont les tâches du `turbo.json` racine (plus `format`). `saveurs-aude` déclare en plus, dans son propre `turbo.json`, `gen:types` et `gen:map` (lancées avant son `build`), `gen:check`, `db:deploy` et `db:migration:check`. `lint:fix` et `format:fix` existent en scripts de workspace uniquement : lancez-les avec `bun run --filter <app> lint:fix`.
 
 `--filter` cible un workspace par le champ `name` de son `package.json` (`web`, `admin`, `clients`, `email`, `@dev-oc/crawler`…). Ajoutez `--affected` pour ne traiter que les workspaces touchés depuis la branche de base.
 
-Sans `--filter`, `turbo dev` démarre tous les serveurs de dev en parallèle. `web` et `email` écoutent tous deux sur le port 3000, donc lancez-les séparément ; `admin` (3001) et `clients` (3002) cohabitent sans conflit.
+Sans `--filter`, `turbo dev` démarre tous les serveurs de dev en parallèle. `web`, `email` et les deux démos écoutent tous sur le port 3000, donc lancez-les séparément ; `admin` (3001) et `clients` (3002) cohabitent sans conflit.
 
 Le `Justfile` racine expose les mêmes raccourcis (`just install`, `just dev [app]`, `just build [app]`, `just lint [app]`, `just typecheck [app]`, `just clean`, `just versions`, `just help`), avec `web` comme app par défaut. Chaque app a aussi son `Justfile` local.
 
@@ -173,38 +178,49 @@ n'est nécessaire autour des scripts.
 | `apps/web` | aucune |
 | `apps/clients` | aucune |
 | `apps/admin` | `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BLOB_READ_WRITE_TOKEN`, `VERCEL_BLOB_URL`, `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`, `INNGEST_DEV` |
+| `apps/demos/cagnolhes` | aucune |
+| `apps/demos/saveurs-aude` | `DATABASE_URL`, `PAYLOAD_SECRET`, `BLOB_READ_WRITE_TOKEN`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_URL`, clés Stripe et Resend — voir son readme |
 
 En production, les variables sont définies dans le dashboard Vercel de chaque
-app. `vercel pull` les récupère au moment du build, donc elles n'ont pas à être
-dupliquées dans GitHub.
+app, pour les environnements **Production** et **Preview**. Les variables
+marquées *sensitive* ne peuvent pas être récupérées en local avec
+`vercel env pull`.
 
 ### Secrets GitHub Actions
 
-Seul `deploy.yml` en a besoin, dans **Settings → Secrets and variables → Actions** :
+Dans **Settings → Secrets and variables → Actions** :
 
-| Secret | Rôle |
-|--------|------|
-| `VERCEL_TOKEN` | jeton d'accès Vercel |
-| `VERCEL_ORG_ID` | id de la team ; sert aussi de « team signal » exigé par la CLI en non-interactif depuis vercel@55 |
-| `VERCEL_PROJECT_ID` | projet `web` — indispensable car `.vercel/` est ignoré par Git |
-| `DATABASE_URL` | Postgres de production, pour l'étape de migration Drizzle |
+| Secret | Utilisé par | Rôle |
+|--------|-------------|------|
+| `DATABASE_URL` | `ci.yml` (job build) | Base partagée : `@dev-oc/auth` la vérifie pendant le `next build` |
+| `DATABASE_URL` | `migrate.yml` (environnement `production`) | Postgres de production, pour les migrations Drizzle |
 
-`ci.yml` n'a besoin d'aucun secret : `web` et `admin` se construisent tous les
-deux sans aucune variable d'environnement.
+Le build de `saveurs-aude` en CI n'utilise aucun secret : il tourne sur un
+Postgres jetable avec un `PAYLOAD_SECRET` factice.
 
 ## CI/CD
 
-**`ci.yml`** — sur push sur `main` et sur les pull requests, en jobs parallèles : typecheck des workspaces affectés, `turbo boundaries`, `turbo ci` (lint + format), et build des workspaces affectés. Aucun secret requis.
+**`ci.yml`** — sur push sur `main` et sur les pull requests, en jobs parallèles, pour les workspaces affectés : typecheck, `turbo boundaries`, `turbo ci` (lint + format) et build. `saveurs-aude` est construit dans un job séparé (`build-saveurs-aude`) qui démarre un Postgres jetable et y applique les migrations Payload avant le build.
 
-**`migrate.yml`** — sur push sur `main` (ou déclenchement manuel) : applique les migrations Drizzle de production depuis `packages/data`. Seul secret requis : `DATABASE_URL`.
+**`migrate.yml`** — une fois `ci.yml` terminé avec succès sur `main` (ou sur déclenchement manuel) : applique les migrations Drizzle de production depuis `packages/data`. Seul secret requis : `DATABASE_URL`.
 
-Le build et le déploiement des apps sont assurés par l'intégration Git de Vercel (projets `devoc-web`, `devoc-admin`, `devoc-clients`), pas par GitHub Actions : chaque push sur `main` déclenche un déploiement de production, chaque PR une preview. Les variables d'environnement de build vivent dans le dashboard Vercel de chaque projet.
+Le build et le déploiement des apps sont assurés par l'intégration Git de Vercel, pas par GitHub Actions : chaque push sur `main` déclenche un déploiement de production, chaque PR une preview. Les variables d'environnement de build vivent dans le dashboard Vercel de chaque projet.
+
+| Projet Vercel | App |
+|---------------|-----|
+| `devoc-web` | `web` |
+| `devoc-admin` | `admin` |
+| `devoc-clients` | `clients` |
+| `demo-cagnolhes` | `cagnolhes` |
+| `devoc` | `saveurs-aude` — migrations Payload lancées par le build (`vercel.json`), déploiements automatiques depuis `main` désactivés |
+
+`main` est protégée : les changements passent obligatoirement par une pull request avec les checks de la CI au vert.
 
 ## Dépannage
 
 **`command not found: bun`** — installez Bun (`brew install oven-sh/bun/bun`) ; `.envrc` ajoute `~/.bun/bin` au `PATH`.
 
-**Le port 3000 est déjà utilisé** — `web` et `email` l'utilisent tous les deux ; lancez-les séparément avec `--filter`.
+**Le port 3000 est déjà utilisé** — `web`, `email` et les démos l'utilisent tous ; lancez-les séparément avec `--filter`.
 
 **Erreurs de secrets manquants au démarrage d'une app Next** — vérifiez que le `.env.local` du workspace existe et contient les variables listées dans son readme.
 
@@ -219,4 +235,4 @@ bun install
 
 ## Ressources
 
-[Bun](https://bun.sh/docs) · [Turborepo](https://turborepo.com/docs) · [Next.js](https://nextjs.org/docs) · [React](https://react.dev/) · [TypeScript](https://www.typescriptlang.org/docs/) · [Tailwind CSS](https://tailwindcss.com/docs) · [Biome](https://biomejs.dev/) · [Drizzle ORM](https://orm.drizzle.team/docs/overview) · [React Email](https://react.email/docs)
+[Bun](https://bun.sh/docs) · [Turborepo](https://turborepo.com/docs) · [Next.js](https://nextjs.org/docs) · [React](https://react.dev/) · [TypeScript](https://www.typescriptlang.org/docs/) · [Tailwind CSS](https://tailwindcss.com/docs) · [Biome](https://biomejs.dev/) · [Drizzle ORM](https://orm.drizzle.team/docs/overview) · [React Email](https://react.email/docs) · [Payload CMS](https://payloadcms.com/docs)

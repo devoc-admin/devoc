@@ -1,5 +1,3 @@
-import { BASE_PATH } from "@/lib/base-path";
-
 export default function Icon() {
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
@@ -7,7 +5,7 @@ export default function Icon() {
       <img
         alt="Saveurs d'Aude"
         height={250}
-        src={`${BASE_PATH}/saveurs_aude_logo_no_margin.svg`}
+        src="/saveurs_aude_logo_no_margin.svg"
         style={{ maxWidth: "100%" }}
         width={250}
       />

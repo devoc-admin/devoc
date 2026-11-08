@@ -2,7 +2,6 @@
 
 import { useReducedMotion } from "motion/react";
 import Image from "next/image";
-import { BASE_PATH } from "@/lib/base-path";
 import { cn } from "@/lib/utils";
 import heroPhoto from "./hero-photo.webp";
 
@@ -38,17 +37,14 @@ function HeroVideo() {
           loop
           muted
           playsInline
-          poster={`${BASE_PATH}/videos/video-poster.webp`}
+          poster="/videos/video-poster.webp"
         >
           <source
-            src={`${BASE_PATH}/videos/video-hero-av1.mp4`}
+            src="/videos/video-hero-av1.mp4"
             type='video/mp4; codecs="av01.0.05M.08"'
           />
-          <source
-            src={`${BASE_PATH}/videos/video-hero.webm`}
-            type="video/webm"
-          />
-          <source src={`${BASE_PATH}/videos/video-hero.mp4`} type="video/mp4" />
+          <source src="/videos/video-hero.webm" type="video/webm" />
+          <source src="/videos/video-hero.mp4" type="video/mp4" />
         </video>
       )}
     </>

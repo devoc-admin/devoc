@@ -1,9 +1,14 @@
 import type { Media } from "@/payload-types";
 
 export function getBaseUrl(): string {
-  return (
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://dev-oc.fr/demo/saveurs-aude"
-  );
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL;
+  }
+  // Set by Vercel: the project's production domain, without protocol.
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  return "http://localhost:3000";
 }
 
 export function getMediaUrl(

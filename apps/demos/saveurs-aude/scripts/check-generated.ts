@@ -16,7 +16,9 @@ if (status) {
   console.error("  Uncommitted changes detected:");
   console.error(status);
   console.error("");
-  console.error("  Run the following inside apps/saveurs-aude/ and commit:");
+  console.error(
+    "  Run the following inside apps/demos/saveurs-aude/ and commit:"
+  );
   console.error("    bun run gen:types && bun run gen:map");
   process.exit(1);
 }
