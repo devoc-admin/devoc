@@ -61,8 +61,44 @@ jobs:
           fetch-depth: 0
       - uses: ./.github/actions/setup
       - name: Build
-        run: bun x turbo build --affected
+        # saveurs-aude needs its own database, so it builds in its own job.
+        run: bun x turbo build --affected --filter=!saveurs-aude
         env:
           # @dev-oc/auth checks DATABASE_URL when the auth route is loaded,
           # which `next build` does while collecting page data.
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+  build-saveurs-aude:
+    name: "Build saveurs-aude"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Payload queries the database while prerendering pages. A throwaway
+    # Postgres with migrations applied is enough: the build needs the schema,
+    # not real content, so no production secrets are involved.
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: payload
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: saveurs_aude
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+          --tmpfs /var/lib/postgresql/data:rw
+    env:
+      DATABASE_URL: postgresql://payload:password@localhost:5432/saveurs_aude
+      PAYLOAD_SECRET: ci-dummy-secret-not-used-at-runtime
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+      - name: Apply migrations
+        run: bun x turbo db:deploy --affected --filter=saveurs-aude
+      - name: Build
+        run: bun x turbo build --affected --filter=saveurs-aude
