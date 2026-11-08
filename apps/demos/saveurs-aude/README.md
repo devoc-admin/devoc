@@ -66,5 +66,5 @@ La base locale est un Postgres 15 (`payload` / `password`, base `saveurs_aude`, 
 ## CI et déploiement
 
 - **GitHub Actions** (`ci.yml`, job `build-saveurs-aude`) : build sur un Postgres jetable, migrations appliquées, avec un `PAYLOAD_SECRET` factice. Aucun secret de production n'est utilisé.
-- **Vercel** (projet `devoc`, root directory `apps/demos/saveurs-aude`) : `vercel.json` lance `bun run db:deploy` avant le build, car les variables marquées *sensitive* ne peuvent pas être récupérées en local avec `vercel env pull`. Les déploiements automatiques depuis `main` sont désactivés : redéployez depuis le dashboard.
+- **Vercel** (projet `devoc`, root directory `apps/demos/saveurs-aude`) : `vercel.json` lance `bun run db:deploy` avant le build, car les variables marquées *sensitive* ne peuvent pas être récupérées en local avec `vercel env pull`.
 - Les variables Vercel doivent exister pour **Production** et **Preview** (notamment `PAYLOAD_SECRET`). Preview et Production partagent le même `DATABASE_URL` : une preview applique donc ses migrations à la base de production.

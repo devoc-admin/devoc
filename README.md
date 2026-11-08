@@ -212,7 +212,7 @@ Le build et le déploiement des apps sont assurés par l'intégration Git de Ver
 | `devoc-admin` | `admin` |
 | `devoc-clients` | `clients` |
 | `demo-cagnolhes` | `cagnolhes` |
-| `devoc` | `saveurs-aude` — migrations Payload lancées par le build (`vercel.json`), déploiements automatiques depuis `main` désactivés |
+| `devoc` | `saveurs-aude` — migrations Payload lancées par le build (`vercel.json`) |
 
 `main` est protégée : les changements passent obligatoirement par une pull request avec les checks de la CI au vert.
 
