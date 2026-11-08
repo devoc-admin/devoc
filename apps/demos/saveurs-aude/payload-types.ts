@@ -452,6 +452,7 @@ export interface Customer {
   password?: string | null;
   phone?: string | null;
   resetPasswordExpiration?: string | null;
+  resetPasswordRequestedAt?: string | null;
   resetPasswordToken?: string | null;
   salt?: string | null;
   sessions?:
@@ -607,6 +608,7 @@ export interface User {
   createdAt: string;
   email: string;
   enableAPIKey?: boolean | null;
+  hasAPIKey?: boolean | null;
   hash?: string | null;
   id: number;
   lockUntil?: string | null;
@@ -614,6 +616,7 @@ export interface User {
   name: string;
   password?: string | null;
   resetPasswordExpiration?: string | null;
+  resetPasswordRequestedAt?: string | null;
   resetPasswordToken?: string | null;
   role: "admin" | "editor";
   salt?: string | null;
@@ -891,6 +894,7 @@ export interface CustomersSelect<T extends boolean = true> {
   newsletter?: T;
   phone?: T;
   resetPasswordExpiration?: T;
+  resetPasswordRequestedAt?: T;
   resetPasswordToken?: T;
   salt?: T;
   sessions?:
@@ -1018,11 +1022,13 @@ export interface UsersSelect<T extends boolean = true> {
   createdAt?: T;
   email?: T;
   enableAPIKey?: T;
+  hasAPIKey?: T;
   hash?: T;
   lockUntil?: T;
   loginAttempts?: T;
   name?: T;
   resetPasswordExpiration?: T;
+  resetPasswordRequestedAt?: T;
   resetPasswordToken?: T;
   role?: T;
   salt?: T;

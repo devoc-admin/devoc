@@ -1,6 +1,9 @@
 {
   "root": false,
   "extends": "//",
+  "files": {
+    "includes": ["**", "!payload-types.ts", "!migrations", "!**/*.svg"]
+  },
   "linter": {
     "rules": {
       "style": {
