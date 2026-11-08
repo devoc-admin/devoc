@@ -5,6 +5,7 @@
   "workspaces": {
     "packages": [
       "apps/*",
+      "apps/demos/*",
       "packages/**"
     ],
     "catalogs": {
@@ -19,8 +20,8 @@
         "@types/node": "^26.6.6"
       },
       "tailwind": {
-        "tailwindcss": "^4.3.4",
-        "@tailwindcss/postcss": "^4.3.4"
+        "tailwindcss": "^4.3.5",
+        "@tailwindcss/postcss": "^4.3.5"
       },
       "ui": {
         "class-variance-authority": "^0.7.1",
@@ -42,11 +43,13 @@
         "playwright": "^1.65.0"
       },
       "email": {
-        "@react-email/components": "^1.0.12"
+        "@react-email/components": "^1.0.12",
+        "resend": "^6.18.1"
       },
       "forms": {
         "@tanstack/react-form": "^1.33.5",
-        "nuqs": "^2.10.2"
+        "nuqs": "^2.10.2",
+        "zod": "^4.4.3"
       },
       "crawler": {
         "@vercel/blob": "^2.8.2",
@@ -71,7 +74,7 @@
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
     "@types/node": "^26.6.6",
-    "knip": "^6.44.1",
+    "knip": "^6.44.2",
     "lefthook": "^2.2.2",
     "turbo": "^2.11.10",
     "typescript": "^7.0.2",
