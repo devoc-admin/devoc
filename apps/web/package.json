@@ -27,6 +27,7 @@
     "@vercel/analytics": "catalog:vercel",
     "@vercel/speed-insights": "^2.1.0",
     "clsx": "catalog:ui",
+    "cn": "^0.5.2",
     "lucide-react": "catalog:ui",
     "motion": "catalog:ui",
     "next": "catalog:next",

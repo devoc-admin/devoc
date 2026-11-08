@@ -11,7 +11,7 @@ const MasterClassSecurityEmail = () => (
   </Html>
 );
 
-// 🎨
+// ============================================= 🎨
 const fontFamily =
   "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Ubuntu, sans-serif";
 
@@ -30,5 +30,4 @@ const container = {
 
 MasterClassSecurityEmail.PreviewProps = {};
 
-// ⬅️
 export default MasterClassSecurityEmail;

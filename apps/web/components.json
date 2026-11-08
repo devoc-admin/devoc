@@ -24,6 +24,7 @@
     "@magicui": "https://magicui.design/r/{name}.json",
     "@aceternity": "https://ui.aceternity.com/registry/{name}.json",
     "@fancy": "https://fancycomponents.dev/r/{name}.json",
-    "@react-bits": "https://reactbits.dev/r/{name}.json"
+    "@react-bits": "https://reactbits.dev/r/{name}.json",
+    "@eldoraui": "https://eldoraui.site/r/{name}.json"
   }
 }

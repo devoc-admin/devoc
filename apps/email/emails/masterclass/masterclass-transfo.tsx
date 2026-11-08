@@ -3,11 +3,6 @@ import TemplateEmail from "./template";
 
 type MasterClassTransfoEmail = typeof TemplateEmail;
 
-const linkInline = {
-  color: "#e5e7eb",
-  textDecoration: "underline" as const,
-};
-
 const MasterClassTransfoEmail = () => (
   <TemplateEmail
     closingData="En vous souhaitant le meilleur dans vos projets entrepreneuriaux !"
@@ -47,5 +42,12 @@ const MasterClassTransfoEmail = () => (
     previewData="Merci pour votre participation à notre masterclass !"
   />
 );
+
+// ============================================= 🎨
+
+const linkInline = {
+  color: "#e5e7eb",
+  textDecoration: "underline" as const,
+};
 
 export default MasterClassTransfoEmail;
