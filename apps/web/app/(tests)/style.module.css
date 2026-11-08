@@ -1,7 +1,9 @@
 .marker {
-  animation-timeline: scroll();
-  animation-name: markerAnimation;
-  transform: translateY(25px);
+  @media (prefers-reduced-motion: no-preference) {
+    animation-timeline: scroll();
+    animation-name: markerAnimation;
+    transform: translateY(25px);
+  }
 }
 
 @keyframes markerAnimation {

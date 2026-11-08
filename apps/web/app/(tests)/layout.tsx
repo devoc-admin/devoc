@@ -61,6 +61,7 @@ function LeftMarker() {
     <div
       className={cn(
         "bg-orange-red absolute top-0 left-full h-10 w-4.25",
+        "motion-reduce:hidden",
         s.marker
       )}
       style={{ clipPath: "polygon(100% 50%, 0 0, 0 100%)" }}
@@ -93,6 +94,7 @@ function RightMarker() {
     <div
       className={cn(
         "bg-orange-red absolute top-0 -left-full h-10 w-4.25",
+        "motion-reduce:hidden",
         s.marker
       )}
       style={{ clipPath: "polygon(0 50%, 100% 0, 100% 100%)" }}

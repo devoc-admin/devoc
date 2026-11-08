@@ -1,6 +1,8 @@
 /* 🤖 ============================================== */
 .browser {
-  animation: browserUpAndDown 2s ease-in-out alternate infinite;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: browserUpAndDown 2s ease-in-out alternate infinite;
+  }
 }
 
 @keyframes browserUpAndDown {
@@ -16,16 +18,24 @@
 .highlightWord {
   --animation-duration: 0.5s;
   --animation-delay: calc(1s + 0.5s * var(--position));
-  animation: revealHighlight var(--animation-duration) ease-in-out;
-  animation-delay: var(--animation-delay);
-  animation-fill-mode: forwards;
+  color: white;
+
+  @media (prefers-reduced-motion: no-preference) {
+    color: black;
+    animation: revealHighlight var(--animation-duration) ease-in-out;
+    animation-delay: var(--animation-delay);
+    animation-fill-mode: forwards;
+  }
 
   &::before {
-    transform: skewX(8deg);
+    transform: skewX(8deg) scaleX(1);
     transform-origin: left;
-    animation: revealHighlightBefore var(--animation-duration) ease-in-out;
-    animation-delay: var(--animation-delay);
-    animation-fill-mode: both;
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: revealHighlightBefore var(--animation-duration) ease-in-out;
+      animation-delay: var(--animation-delay);
+      animation-fill-mode: both;
+    }
   }
 }
 
