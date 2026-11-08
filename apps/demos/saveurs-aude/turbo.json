@@ -39,7 +39,7 @@
     "gen:map": {
       "dependsOn": ["gen:types"],
       "inputs": ["payload.config.ts", "payload/**"],
-      "outputs": ["app/(payload)/admin/importMap.js"],
+      "outputs": ["app/\\(payload\\)/admin/importMap.js"],
       "env": ["PAYLOAD_SECRET", "DATABASE_URL"]
     },
     "gen:types": {
