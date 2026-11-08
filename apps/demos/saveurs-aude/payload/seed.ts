@@ -1607,7 +1607,11 @@ async function seed() {
   process.exit(0);
 }
 
-seed().catch((error) => {
+// Awaited at the top level: `payload run` exits as soon as this module has
+// loaded, so an un-awaited promise would be cut off before seeding.
+try {
+  await seed();
+} catch (error) {
   console.error("Seed failed:", error);
   process.exit(1);
-});
+}

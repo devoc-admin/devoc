@@ -15,6 +15,7 @@
     "DATABASE_URL",
     "DATABASE_URL_UNPOOLED",
     "EDGE_CONFIG",
+    "NEON_AUTH_BASE_URL",
     "NEON_PROJECT_ID",
     "PGDATABASE",
     "PGHOST",
@@ -28,7 +29,8 @@
     "POSTGRES_URL",
     "POSTGRES_URL_NON_POOLING",
     "POSTGRES_URL_NO_SSL",
-    "POSTGRES_USER"
+    "POSTGRES_USER",
+    "VITE_NEON_AUTH_URL"
   ],
   "tasks": {
     "build": {

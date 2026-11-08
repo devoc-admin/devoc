@@ -1,5 +1,3 @@
-import { BASE_PATH } from "@/lib/base-path";
-
 export default function Logo() {
   return (
     <a
@@ -18,7 +16,7 @@ export default function Logo() {
       <img
         alt="Saveurs d'Aude"
         height={80}
-        src={`${BASE_PATH}/saveurs_aude_logo_no_margin.svg`}
+        src="/saveurs_aude_logo_no_margin.svg"
         width={80}
       />
       <span

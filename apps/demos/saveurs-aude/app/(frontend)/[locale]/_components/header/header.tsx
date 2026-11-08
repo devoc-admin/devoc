@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { BASE_PATH } from "@/lib/base-path";
 import { cn } from "@/lib/utils";
 import { CartBadge } from "./_components/cart-badge";
 import { LanguageSwitcher } from "./_components/language-switcher";
@@ -71,7 +70,7 @@ function Logo() {
       <Image
         alt=""
         height={36}
-        src={`${BASE_PATH}/saveurs_aude_no_margin_no_title.svg`}
+        src="/saveurs_aude_no_margin_no_title.svg"
         width={36}
       />
       <h2 className={cn("text-lg")}>Saveurs d&apos;Aude</h2>

@@ -2,12 +2,10 @@ import path from "node:path";
 import { withPayload } from "@payloadcms/next/withPayload";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
-import { BASE_PATH } from "./lib/base-path";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 const nextConfig: NextConfig = {
-  basePath: BASE_PATH,
   // sharp is externalized (via withPayload) and loads its native binary
   // dynamically, so Next's file tracer misses it on Vercel. Force the linux-x64
   // binary + libvips into the serverless function. Paths are app-relative thanks
@@ -19,9 +17,7 @@ const nextConfig: NextConfig = {
     ],
   },
   outputFileTracingRoot: path.join(import.meta.dirname, "../../../"),
-  // Root of the zone has no page (localePrefix: "always") → force the default
-  // locale. basePath is applied to source/destination automatically, so this
-  // maps /demo/saveurs-aude → /demo/saveurs-aude/fr.
+  // The root has no page (localePrefix: "always") → force the default locale.
   async redirects() {
     return [
       {

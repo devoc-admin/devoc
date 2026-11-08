@@ -7,7 +7,6 @@ import { useState } from "react";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { useAuth } from "@/lib/auth";
-import { BASE_PATH } from "@/lib/base-path";
 import { useCart } from "@/lib/cart";
 import { createCheckoutSession } from "@/lib/checkout-actions";
 import { formatPrice } from "@/lib/format";
@@ -580,7 +579,7 @@ function SummaryItem({
             className="object-cover"
             fill
             sizes="48px"
-            src={BASE_PATH + item.image}
+            src={item.image}
           />
         ) : (
           <div className="text-muted-foreground/30 flex h-full items-center justify-center">
