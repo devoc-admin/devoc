@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getPayloadClient } from "@/lib/payload";
-import { getBaseUrl } from "@/lib/seo";
+import { getBaseUrl, SITE_INDEXABLE } from "@/lib/seo";
 import type { BlogPost, Product } from "@/payload-types";
 
 type StaticRoute = {
@@ -64,6 +64,8 @@ const staticRoutes: StaticRoute[] = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (!SITE_INDEXABLE) return [];
+
   const baseUrl = getBaseUrl();
   const payload = await getPayloadClient();
 

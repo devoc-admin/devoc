@@ -23,7 +23,7 @@ import { AuthProvider } from "@/lib/auth";
 import { getCurrentCustomer } from "@/lib/auth-actions";
 import { CartProvider } from "@/lib/cart";
 import { getPayloadClient } from "@/lib/payload";
-import { getBaseUrl } from "@/lib/seo";
+import { getBaseUrl, SITE_INDEXABLE } from "@/lib/seo";
 import { SiteDemo } from "./_components/site-demo/site-demo";
 import { SkipLink } from "./_components/skip-link";
 import "../../globals.css";
@@ -79,8 +79,8 @@ export async function generateMetadata({
       type: "website",
     },
     robots: {
-      follow: false,
-      index: false,
+      follow: SITE_INDEXABLE,
+      index: SITE_INDEXABLE,
     },
     title: {
       default: "Saveurs d'Aude — Spécialités artisanales de Carcassonne",

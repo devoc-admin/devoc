@@ -1,5 +1,9 @@
 import type { Media } from "@/payload-types";
 
+// Demo site: kept out of search engines (noindex header + meta, no sitemap).
+// Flip to true when the site goes public.
+export const SITE_INDEXABLE = false;
+
 export function getBaseUrl(): string {
   if (process.env.NEXT_PUBLIC_SITE_URL) {
     return process.env.NEXT_PUBLIC_SITE_URL;
