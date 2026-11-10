@@ -30,7 +30,7 @@ export const Homepage: GlobalConfig = {
         {
           fields: [
             { label: "Libellé", localized: true, name: "label", type: "text" },
-            { label: "Lien", name: "link", type: "text" },
+            { label: "Lien", localized: true, name: "link", type: "text" },
           ],
           label: "Bouton d'action",
           name: "cta",
@@ -51,7 +51,7 @@ export const Homepage: GlobalConfig = {
     {
       fields: [
         { label: "Texte", localized: true, name: "text", type: "text" },
-        { label: "Lien", name: "link", type: "text" },
+        { label: "Lien", localized: true, name: "link", type: "text" },
         {
           defaultValue: false,
           label: "Active",
