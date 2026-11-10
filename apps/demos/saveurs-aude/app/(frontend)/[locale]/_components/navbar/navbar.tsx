@@ -1,4 +1,5 @@
 import { NavbarCategoryLink } from "@/app/(frontend)/[locale]/_components/navbar/category-link";
+import clayTexture from "@/assets/texture/clay.webp";
 import { getTypedLocale } from "@/i18n/routing";
 import { getPayloadClient } from "@/lib/payload";
 import { cn } from "@/lib/utils";
@@ -9,23 +10,45 @@ export async function Navbar() {
   const categories = await getCategoriesForNavbar();
 
   return (
-    <div
-      className={cn(
-        "hidden",
-        "lg:flex",
-        "items-center justify-center gap-x-6",
-        "py-2",
-        "w-full",
-        "bg-primary",
-        "text-primary-foreground"
-      )}
-    >
+    <Container>
       {categories.map(({ id, title, slug }) => (
         <NavbarCategoryLink key={id} slug={slug}>
           {title}
         </NavbarCategoryLink>
       ))}
+    </Container>
+  );
+}
+
+// 📦 ==============================================================
+function Container({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      className={cn(
+        "hidden lg:flex",
+        "items-center justify-center gap-x-6",
+        "w-full",
+        "relative isolate",
+        "bg-primary text-primary-foreground",
+        "py-2"
+      )}
+      style={{
+        boxShadow: "0px 6px 10px 0px rgba(0, 0, 0, 0.2) inset",
+      }}
+    >
+      <ClayTexture />
+      {children}
     </div>
+  );
+}
+
+function ClayTexture() {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 -z-10 bg-auto bg-repeat opacity-30 brightness-40"
+      style={{ backgroundImage: `url(${clayTexture.src})` }}
+    />
   );
 }
 

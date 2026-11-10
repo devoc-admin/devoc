@@ -4,7 +4,6 @@ import { getTranslations } from "next-intl/server";
 import { ViewTransition } from "react";
 import { JsonLd } from "@/components/JsonLd";
 import {
-  FadeIn,
   FadeInUpOnScroll,
   StaggerContainerOnScroll,
   StaggerItem,
@@ -40,36 +39,26 @@ export default function HomePage() {
       <SEO />
       {/* 🦸‍♂️ */}
       <Hero />
-      <div
-        className={cn(
-          "max-w-[1200px]",
-          "mx-auto",
-          "px-6",
-          "md:px-6",
-          "py-24",
-          "space-y-24"
-        )}
-      >
+      <ContentContainer>
         <NotreSelection />
         <NosUniversGourmands />
-      </div>
-      <FadeIn>
-        <div
-          className={cn(
-            "flex flex-col items-center justify-center",
-            "px-4 pb-20"
-          )}
-        >
-          {/*♿*/}
-          <AccessibleTitle />
-        </div>
-      </FadeIn>
+      </ContentContainer>
+      {/* ♿ */}
+      <AccessibleTitle />
     </>
   );
 }
 
-// ===================================
-// 🆎 Section title
+// 📦 =============================================
+function ContentContainer({ children }: { children: React.ReactNode }) {
+  return (
+    <div className={cn("mx-auto max-w-300", "px-6 py-24", "space-y-24")}>
+      {children}
+    </div>
+  );
+}
+
+// 🆎 =============================================
 
 function SectionTitle({
   children,
@@ -79,18 +68,14 @@ function SectionTitle({
   className: string;
 }) {
   return (
-    <h3
+    <h2
       className={cn(
-        "text-4xl",
-        "text-center",
-        "text-primary",
-        "font-medium",
-        "uppercase",
+        "text-primary text-center text-4xl font-medium uppercase",
         className
       )}
     >
       {children}
-    </h3>
+    </h2>
   );
 }
 
