@@ -27,34 +27,77 @@ import { getBaseUrl, SITE_INDEXABLE } from "@/lib/seo";
 import { SiteDemo } from "./_components/site-demo/site-demo";
 import { SkipLink } from "./_components/skip-link";
 import "../../globals.css";
+import { TailwindLandmark } from "@/components/tailwind-landmark/tailwind-landmark";
+export default async function LocaleLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  // 🌐
+  const { locale } = await params;
+  // ❓
+  if (!hasLocale(routing.locales, locale)) notFound();
 
-const playfair = Playfair_Display({
-  display: "swap",
-  subsets: ["latin"],
-  variable: "--font-playfair",
-});
+  const [customer, cookieConsentData] = await Promise.all([
+    getCurrentCustomer(),
+    getCookieConsentConfig(locale),
+  ]);
 
-const fleurDeLeah = Fleur_De_Leah({
-  display: "swap",
-  subsets: ["latin"],
-  variable: "--font-fleur-de-leah",
-  weight: ["400"],
-});
+  return (
+    <html lang={locale} suppressHydrationWarning>
+      <meta content="Saveurs d'Aude" name="apple-mobile-web-app-title" />
+      <body
+        className={`${playfair.variable} ${lato.variable} ${cormorant.variable} ${fleurDeLeah.variable}`}
+      >
+        <Providers customer={customer}>
+          <CartAnnouncer />
+          <SkipLink />
+          <Header />
+          <Navbar />
+          <SiteDemo />
+          <main className="min-h-screen" id="main-content">
+            {children}
+          </main>
+          <Footer />
+          {/* 📐 */}
+          <TailwindLandmark />
+          {/* 🍪 */}
+          <CookieConsent config={cookieConsentData} />
+          {/* 📈 */}
+          <AnalyticsWrapper />
+        </Providers>
+      </body>
+    </html>
+  );
+}
 
-const lato = Lato({
-  display: "swap",
-  subsets: ["latin"],
-  variable: "--font-lato",
-  weight: ["300", "400", "700"],
-});
+// 🔌 ========================================================
+function Providers({
+  children,
+  customer,
+}: {
+  children: React.ReactNode;
+  customer: Awaited<ReturnType<typeof getCurrentCustomer>>;
+}) {
+  return (
+    <NuqsAdapter>
+      <NextIntlClientProvider>
+        <AuthProvider initialCustomer={customer}>
+          <CartProvider>{children} </CartProvider>
+        </AuthProvider>
+      </NextIntlClientProvider>
+    </NuqsAdapter>
+  );
+}
 
-const cormorant = Cormorant_Garamond({
-  display: "swap",
-  subsets: ["latin"],
-  variable: "--font-cormorant",
-  weight: ["400", "600", "700"],
-});
+// 🌐 ========================================================
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
+// 🏷️ ========================================================
 export async function generateMetadata({
   params,
 }: {
@@ -92,60 +135,35 @@ export async function generateMetadata({
   };
 }
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
+// 🖋️ ========================================================
+const playfair = Playfair_Display({
+  display: "swap",
+  subsets: ["latin"],
+  variable: "--font-playfair",
+});
 
-export default async function LocaleLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
+const fleurDeLeah = Fleur_De_Leah({
+  display: "swap",
+  subsets: ["latin"],
+  variable: "--font-fleur-de-leah",
+  weight: ["400"],
+});
 
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
+const lato = Lato({
+  display: "swap",
+  subsets: ["latin"],
+  variable: "--font-lato",
+  weight: ["300", "400", "700"],
+});
 
-  const [customer, cookieConsentData] = await Promise.all([
-    getCurrentCustomer(),
-    getCookieConsentConfig(locale),
-  ]);
+const cormorant = Cormorant_Garamond({
+  display: "swap",
+  subsets: ["latin"],
+  variable: "--font-cormorant",
+  weight: ["400", "600", "700"],
+});
 
-  return (
-    <html lang={locale} suppressHydrationWarning>
-      <meta content="Saveurs d'Aude" name="apple-mobile-web-app-title" />
-      <body
-        className={`${playfair.variable} ${lato.variable} ${cormorant.variable} ${fleurDeLeah.variable}`}
-      >
-        <NuqsAdapter>
-          <NextIntlClientProvider>
-            <AuthProvider initialCustomer={customer}>
-              <CartProvider>
-                <CartAnnouncer />
-                <SkipLink />
-                <Header />
-                <Navbar />
-                <SiteDemo />
-                <main className="min-h-screen" id="main-content">
-                  {children}
-                </main>
-                <Footer />
-                <CookieConsent config={cookieConsentData} />
-                <AnalyticsWrapper />
-              </CartProvider>
-            </AuthProvider>
-          </NextIntlClientProvider>
-        </NuqsAdapter>
-      </body>
-    </html>
-  );
-}
-
-// ================================
-// 🍪
+// 🍪 ========================================================
 async function getCookieConsentConfig(
   locale: Locale
 ): Promise<CookieConsentConfig> {

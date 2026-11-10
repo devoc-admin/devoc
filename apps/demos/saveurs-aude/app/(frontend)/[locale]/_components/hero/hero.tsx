@@ -40,7 +40,7 @@ async function Hero() {
           "text-center"
         )}
       >
-        <LExcellenceDuTerroir title={title} />
+        <LesSaveursAuthentiques title={title} />
         <DecouvrezNotreSelection cta={cta} />
       </div>
       <HeroVideo />
@@ -48,9 +48,8 @@ async function Hero() {
   );
 }
 
-// ================
-// 🆎
-function LExcellenceDuTerroir({ title }: { title: string }) {
+// 🆎 =============================================
+function LesSaveursAuthentiques({ title }: { title: string }) {
   return (
     <h2
       className={cn(
@@ -58,10 +57,14 @@ function LExcellenceDuTerroir({ title }: { title: string }) {
         "font-fleur-de-leah",
         "text-balance",
         "text-center",
-        "text-shadow-lg",
         "font-light",
-        "xs:text-6xl text-5xl sm:text-7xl lg:text-8xl"
+        "leading-[0.75em]!",
+        "xs:text-[4rem] sm:text-[4.9rem] md:text-8xl lg:text-9xl"
       )}
+      style={{
+        textShadow:
+          "rgb(0 0 0) 0px 0px 25px, rgb(0 0 0) 0px 0px 25px, rgb(0 0 0) 0.015em 0.015em 0px",
+      }}
     >
       {title}
     </h2>
@@ -74,22 +77,20 @@ function DecouvrezNotreSelection({ cta }: { cta: Homepage["hero"]["cta"] }) {
   return (
     <Link
       className={cn(
-        "text-black",
-        "flex items-center gap-2",
-        "bg-secondary",
-        "w-fit",
-        "mx-auto",
-        "px-4 py-2.5",
-        "rounded-md",
+        "flex items-center gap-x-3",
+        "outline-secondary/70 outline-2 outline-offset-4",
+        "mt-12",
+        "mx-auto w-fit",
+        "bg-secondary hover:bg-secondary/90 text-black",
+        "px-5 py-3 sm:px-8 sm:py-4",
+        "rounded-full",
         "font-extrabold",
-        "text-sm",
-        "cursor-pointer",
-        "hover:bg-secondary/90",
-        "transition-colors"
+        "sm:text-lg md:text-xl lg:text-xl",
+        "cursor-pointer transition-colors duration-700"
       )}
       href={cta?.link ?? "/"}
     >
-      <VineLeaf className="size-4" />
+      <VineLeaf className="size-5 sm:size-6" />
       <div className="mr-1.5">{cta?.label ?? "Découvrez notre sélection"}</div>
     </Link>
   );
