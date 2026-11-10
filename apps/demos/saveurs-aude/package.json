@@ -33,7 +33,7 @@
     "@tanstack/react-form": "catalog:forms",
     "@vercel/analytics": "catalog:vercel",
     "clsx": "catalog:ui",
-    "lexical": "0.50.0",
+    "lexical": "0.53.0",
     "lucide-react": "catalog:ui",
     "motion": "catalog:ui",
     "next": "catalog:next",
