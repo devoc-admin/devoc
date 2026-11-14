@@ -7,6 +7,7 @@ import FlagIcon from "./_assets/icons/flag.png";
 import KeyIcon from "./_assets/icons/key.png";
 import PhoneIcon from "./_assets/icons/phone.png";
 import ShieldIcon from "./_assets/icons/shield.png";
+import CagnolhesScreenshot from "./_assets/screenshots/cagnolhes.jpg";
 import Scribble1 from "./_assets/scribbles/scribble-1.svg";
 import Scribble2 from "./_assets/scribbles/scribble-2.svg";
 import s from "./style.module.css";
@@ -187,13 +188,26 @@ function Crown() {
 }
 
 // 🤖 ==============================================
+const URL_DISPLAYED = "cagnolhes.fr";
+const URL = "https://cagnolhes.dev-oc.fr/";
 function Browser() {
   return (
-    <div className={cn("perspective-normal transform-3d", s.browser)}>
+    <a
+      className={cn("block perspective-normal transform-3d", s.browser)}
+      href={URL}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
       <div className="rotate-y-[-5deg] rotate-z-0">
-        <Safari height={451} url="cavignac.fr" width={721} />
+        <Safari
+          borderWidth={2}
+          height={451}
+          src={CagnolhesScreenshot.src}
+          url={URL_DISPLAYED}
+          width={721}
+        />
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -233,7 +247,8 @@ function Highlight({
   return (
     <span
       className={cn(
-        "before:bg-orange-red before:absolute before:inset-0 before:-z-1 before:inline-block before:w-[calc(100%+0.4ch)] before:translate-x-[-0.2ch] before:content-['']",
+        "before:bg-orange-red before:absolute before:inset-0 before:-z-1 before:inline-block before:w-[calc(100%+0.4ch)] before:translate-x-[-0.2ch] before:transition-colors before:content-['']",
+        "hover:before:bg-orange-red/90",
         "relative",
         s.highlightWord
       )}

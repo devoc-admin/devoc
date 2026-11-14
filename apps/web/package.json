@@ -4,12 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "next build --turbopack",
+    "build": "bun scripts/capture-screenshots.ts && next build --turbopack",
     "ci": "biome ci",
     "dev": "bun --bun next dev --turbopack -H 0.0.0.0",
     "format": "biome check --write",
     "lint": "bun x ultracite check",
     "lint:fix": "bun x ultracite fix",
+    "screenshots": "bun scripts/capture-screenshots.ts",
     "start": "bun --bun next start",
     "typecheck": "next typegen && tsc --noEmit"
   },
@@ -38,11 +39,13 @@
     "usehooks-ts": "catalog:ui"
   },
   "devDependencies": {
+    "@sparticuz/chromium": "^153.0.0",
     "@tailwindcss/postcss": "catalog:tailwind",
     "@types/node": "catalog:next",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "@types/three": "^0.187.0",
+    "playwright": "catalog:testing",
     "tailwindcss": "catalog:tailwind",
     "typescript": "catalog:tooling"
   }

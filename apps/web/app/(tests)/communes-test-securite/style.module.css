@@ -1,7 +1,7 @@
 /* 🤖 ============================================== */
 .browser {
   @media (prefers-reduced-motion: no-preference) {
-    animation: browserUpAndDown 2s ease-in-out alternate infinite;
+    animation: browserUpAndDown 3s ease-in-out alternate infinite;
   }
 }
 
