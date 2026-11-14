@@ -17,7 +17,7 @@
 /* 🔤 ============================================== */
 .highlightWord {
   --animation-duration: 0.5s;
-  --animation-delay: calc(1s + 0.5s * var(--position));
+  --animation-delay: calc(2.5s + 0.5s * var(--position));
   color: white;
 
   @media (prefers-reduced-motion: no-preference) {
@@ -54,5 +54,161 @@
   }
   to {
     transform: skewX(8deg) scaleX(1);
+  }
+}
+
+/* ✅👑🔑🛡️🚩 ============================================== */
+.icons {
+  --entrance-duration: 1.5s;
+  --entrance-delay: 0.5s;
+  --entrance-animation-fill-mode: both;
+  --entrance-timing-function: ease-in-out;
+
+  --opacity-timing-function: linear;
+  --opacity-animation-fill-mode: both;
+}
+
+@keyframes fadeIconEntrance {
+  0% {
+    opacity: 0;
+  }
+
+  60% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ✅ ============================================== */
+.checkIcon {
+  @media (prefers-reduced-motion: no-preference) {
+    --common-delay: calc(var(--entrance-delay) + 0.05s);
+    animation:
+      checkIconEntrance var(--entrance-duration) var(--entrance-timing-function)
+      var(--entrance-animation-fill-mode),
+      fadeIconEntrance var(--entrance-duration) var(--opacity-timing-function)
+      var(--opacity-animation-fill-mode);
+    animation-delay: var(--common-delay), var(--common-delay);
+  }
+}
+
+@keyframes checkIconEntrance {
+  from {
+    transform: translateX(-50%) translateY(-50%);
+  }
+  to {
+    transform: translateX(calc(-50% - 25cqw)) translateY(calc(-50% - 2.2lh));
+  }
+}
+
+/* 🔑 ============================================== */
+.keyIcon {
+  @media (prefers-reduced-motion: no-preference) {
+    --common-delay: calc(var(--entrance-delay) - 0.075s);
+    animation:
+      keyIconEntrance var(--entrance-duration) var(--entrance-timing-function)
+      var(--entrance-animation-fill-mode),
+      fadeIconEntrance var(--entrance-duration) var(--opacity-timing-function)
+      var(--opacity-animation-fill-mode);
+    animation-delay: var(--common-delay), var(--common-delay);
+  }
+}
+
+@keyframes keyIconEntrance {
+  from {
+    transform: translateX(-50%) translateY(-50%);
+  }
+  to {
+    transform: translateX(calc(-50% - 43cqw)) translateY(calc(-50% - 0.8lh));
+  }
+}
+
+/* 📱 ============================================== */
+.phoneIcon {
+  @media (prefers-reduced-motion: no-preference) {
+    --common-delay: calc(var(--entrance-delay) + 0.05s);
+    animation:
+      phoneIconEntrance var(--entrance-duration) var(--entrance-timing-function)
+      var(--entrance-animation-fill-mode),
+      fadeIconEntrance var(--entrance-duration) var(--opacity-timing-function)
+      var(--opacity-animation-fill-mode);
+    animation-delay: var(--common-delay), var(--common-delay);
+  }
+}
+
+@keyframes phoneIconEntrance {
+  from {
+    transform: translateX(-50%) translateY(-50%);
+  }
+  to {
+    transform: translateX(calc(-50% - 46cqw)) translateY(calc(-50% + 1.1lh));
+  }
+}
+
+/* 🛡️ ============================================== */
+.shieldIcon {
+  @media (prefers-reduced-motion: no-preference) {
+    --common-delay: calc(var(--entrance-delay) - 0.05s);
+    animation:
+      shieldIconEntrance var(--entrance-duration)
+      var(--entrance-timing-function) var(--entrance-animation-fill-mode),
+      fadeIconEntrance var(--entrance-duration) var(--opacity-timing-function)
+      var(--opacity-animation-fill-mode);
+    animation-delay: var(--common-delay), var(--common-delay);
+  }
+}
+
+@keyframes shieldIconEntrance {
+  from {
+    transform: translateX(-50%) translateY(-50%);
+  }
+  to {
+    transform: translateX(calc(-50% + 20cqw)) translateY(calc(-50% - 1.6lh));
+  }
+}
+
+/* 🚩 ============================================== */
+.flagIcon {
+  @media (prefers-reduced-motion: no-preference) {
+    animation:
+      flagIconEntrance var(--entrance-duration) var(--entrance-timing-function)
+      var(--entrance-animation-fill-mode),
+      fadeIconEntrance var(--entrance-duration) var(--opacity-timing-function)
+      var(--opacity-animation-fill-mode);
+    animation-delay: var(--entrance-delay), var(--entrance-delay);
+  }
+}
+
+@keyframes flagIconEntrance {
+  from {
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  to {
+    transform: translateX(calc(-50% + 40cqw)) translateY(calc(-50% - 0.8lh));
+  }
+}
+
+/* 👑 ============================================== */
+.crownIcon {
+  @media (prefers-reduced-motion: no-preference) {
+    animation:
+      crownIconEntrance var(--entrance-duration) var(--entrance-timing-function)
+      var(--entrance-animation-fill-mode),
+      fadeIconEntrance var(--entrance-duration) var(--opacity-timing-function)
+      var(--opacity-animation-fill-mode);
+    animation-delay: var(--entrance-delay), var(--entrance-delay);
+  }
+}
+
+@keyframes crownIconEntrance {
+  from {
+    transform: translateX(-50%) translateY(-50%);
+  }
+  to {
+    transform: translateX(calc(-50% + 47cqw)) translateY(calc(-50% + 1.2lh));
   }
 }
