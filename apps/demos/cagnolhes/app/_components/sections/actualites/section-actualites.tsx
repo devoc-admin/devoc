@@ -1,78 +1,33 @@
-import {
-  Megaphone01Icon as ActualitesIcon,
-  ArrowRight01Icon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import type { StaticImageData } from "next/image";
-import Image from "next/image";
-import Link from "next/link";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Section, SectionTitle } from "../section";
-import FeteVendangesImage from "./assets/fete-vendanges.jpeg";
-import MediathequeImage from "./assets/mediatheque.jpeg";
-import PontCagneImage from "./assets/pont-cagne.jpeg";
+import FeteVendangesImage from "./_assets/fete-vendanges.jpeg";
+import MediathequeImage from "./_assets/mediatheque.jpeg";
+import PontCagneImage from "./_assets/pont-cagne.jpeg";
+import { ActualiteCard } from "./_components/actualite-card";
+import type { Actualite } from "./_types/index";
+
 export function Actualites() {
   return (
     <Section>
-      <SectionTitle Icon={ActualitesIcon}>Actualités</SectionTitle>
-      <div className="mt-12 grid grid-cols-3 gap-x-6">
+      <Title />
+      <CardsContainer>
         {actualites.map((actualite) => (
           <ActualiteCard key={actualite.slug} {...actualite} />
         ))}
-      </div>
+      </CardsContainer>
     </Section>
   );
 }
 
-// 🗞️ Actualite
-function ActualiteCard({ img, slug, title, excerpt, category }: Actualite) {
-  return (
-    <Link href={`/${slug}`}>
-      <Card className="group pt-0">
-        <div className="overflow-hidden">
-          <Image
-            alt=""
-            className="w-full transition-transform duration-[0.5s] group-hover:scale-105"
-            src={img}
-            width="400"
-          />
-        </div>
-        <CardHeader>
-          <div
-            className="font-medium uppercase"
-            style={{
-              color: category.color,
-            }}
-          >
-            {category.label}
-          </div>
-          <CardTitle className="font-montserrat text-2xl font-bold text-balance">
-            {title}
-          </CardTitle>
-          <CardDescription className="line-clamp-3 text-ellipsis">
-            {excerpt}
-          </CardDescription>
-        </CardHeader>
-        <CardFooter className="font-medium text-emerald-700">
-          <div className="flex items-center gap-x-1">
-            <span>Lire la suite</span>
-            <HugeiconsIcon
-              icon={ArrowRight01Icon}
-              size={16}
-              strokeWidth={1.5}
-            />
-          </div>
-        </CardFooter>
-      </Card>
-    </Link>
-  );
+// 🆎 ====================================
+function Title() {
+  return <SectionTitle>Actualités</SectionTitle>;
 }
+
+// 📦 ====================================
+function CardsContainer({ children }: { children: React.ReactNode }) {
+  return <div className="mt-12 grid grid-cols-3 gap-x-6">{children}</div>;
+}
+
 const actualites: Actualite[] = [
   {
     category: {
@@ -111,15 +66,3 @@ const actualites: Actualite[] = [
     title: "Inauguration du nouvel espace lecture de la médiathèque",
   },
 ];
-
-interface Actualite {
-  category: {
-    color: string;
-    label: string;
-  };
-  date: string;
-  excerpt: string;
-  img: StaticImageData;
-  slug: string;
-  title: string;
-}

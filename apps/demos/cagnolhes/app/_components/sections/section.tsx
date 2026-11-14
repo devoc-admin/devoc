@@ -11,16 +11,18 @@ export function SectionTitle({
   Icon,
 }: {
   children: string;
-  Icon: IconSvgElement;
+  Icon?: IconSvgElement;
 }) {
   return (
     <div className={cn("relative w-fit text-7xl text-emerald-800")}>
       <h3 className="font-montserrat font-bold">{children}</h3>
-      <HugeiconsIcon
-        className="absolute top-0 right-0 size-[1em] translate-x-[calc(100%+10px)] -translate-y-1/3"
-        icon={Icon}
-        strokeWidth={2}
-      />
+      {Icon && (
+        <HugeiconsIcon
+          className="absolute top-0 right-0 size-[1em] translate-x-[calc(100%+10px)] -translate-y-1/3"
+          icon={Icon}
+          strokeWidth={2}
+        />
+      )}
       <div className="absolute bottom-0 h-[0.6em] w-[35%] -translate-x-[40%] bg-emerald-800/20" />
     </div>
   );
