@@ -47,7 +47,7 @@ function ContentContainer({ children }: { children: React.ReactNode }) {
       className={cn(
         "grid grid-cols-2 place-items-center content-center",
         "mx-auto h-full max-w-350",
-        "gap-y-16"
+        "gap-x-12 gap-y-22"
       )}
     >
       {children}
@@ -189,11 +189,9 @@ function Crown() {
 // 🤖 ==============================================
 function Browser() {
   return (
-    <div
-      className={cn("scale-[0.55] perspective-normal transform-3d", s.browser)}
-    >
-      <div className="-translate-x-[40%] rotate-y-[-5deg] rotate-z-0">
-        <Safari url="cavignac.fr" />
+    <div className={cn("perspective-normal transform-3d", s.browser)}>
+      <div className="rotate-y-[-5deg] rotate-z-0">
+        <Safari height={451} url="cavignac.fr" width={721} />
       </div>
     </div>
   );
@@ -253,7 +251,7 @@ function Highlight({
 // ⏺️ ==============================================
 function FaitesLeTest() {
   return (
-    <div className="relative mt-16">
+    <div className="group relative mt-16">
       <RightTopScribble />
       <GoToTestButton />
       <LeftBottomScribble />
@@ -265,7 +263,7 @@ function GoToTestButton() {
   return (
     <button
       className={cn(
-        "bg-orange-red hover:bg-orange-red/90",
+        "bg-orange-red group-hover:bg-orange-red/90",
         "px-12 py-4",
         "transition-colors",
         "font-racing cursor-pointer rounded-full",
@@ -283,7 +281,7 @@ function RightTopScribble() {
     <Image
       alt=""
       aria-hidden
-      className="pointer-events-none absolute top-1 right-10 w-16 translate-x-full -translate-y-full"
+      className="pointer-events-none absolute top-1 right-10 w-16 translate-x-full -translate-y-full transition-opacity group-hover:opacity-90"
       src={Scribble1}
     />
   );
@@ -294,7 +292,7 @@ function LeftBottomScribble() {
     <Image
       alt=""
       aria-hidden
-      className="pointer-events-none absolute bottom-3 left-3 w-16 -translate-x-full translate-y-full scale-70 rotate-[250deg]"
+      className="pointer-events-none absolute bottom-3 left-3 w-16 -translate-x-full translate-y-full scale-70 rotate-[250deg] transition-opacity group-hover:opacity-90"
       src={Scribble2}
     />
   );

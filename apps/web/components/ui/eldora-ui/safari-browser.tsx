@@ -18,7 +18,7 @@ export function Safari({
     <svg
       width={width}
       height={height}
-      viewBox={`0 0 ${width} ${height}`}
+      viewBox="0 0 1203 753"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
@@ -139,7 +139,7 @@ export function Safari({
       </g>
       <defs>
         <clipPath id="path0">
-          <rect width={width} height={height} fill="white" />
+          <rect width="1203" height="753" fill="white" />
         </clipPath>
         <clipPath id="roundedBottom">
           <path
