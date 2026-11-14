@@ -5,13 +5,25 @@ const MasterClassSecurityEmail = () => (
     <Head />
     <Body style={main}>
       <Container style={container}>
+        <Adornment />
         Initialize masterclass security email template
       </Container>
     </Body>
   </Html>
 );
 
-// ============================================= 🎨
+// ⚜ ==============================================
+function Adornment() {
+  return <div style={adornment} />;
+}
+
+const adornment = {
+  backgroundColor: "#FF5709",
+  height: "4px",
+  width: "100%",
+};
+
+// 🎨 =============================================
 const fontFamily =
   "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Ubuntu, sans-serif";
 
