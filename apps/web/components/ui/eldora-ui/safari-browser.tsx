@@ -5,6 +5,8 @@ export interface SafariProps extends SVGProps<SVGSVGElement> {
   src?: string
   width?: number
   height?: number
+  /** Frame thickness in viewBox units (1203 wide). */
+  borderWidth?: number
 }
 
 export function Safari({
@@ -12,8 +14,14 @@ export function Safari({
   url,
   width = 1203,
   height = 753,
+  borderWidth = 1,
   ...props
 }: SafariProps) {
+  const b = borderWidth
+  const r = Math.max(12 - b, 0)
+  const W = 1202
+  const H = 753
+
   return (
     <svg
       width={width}
@@ -37,7 +45,7 @@ export function Safari({
         <path
           fillRule="evenodd"
           clipRule="evenodd"
-          d="M1.06738 12C1.06738 5.92487 5.99225 1 12.0674 1H1189.93C1196.01 1 1200.93 5.92487 1200.93 12V51H1.06738V12Z"
+          d={`M${b} 51V${b + r}A${r} ${r} 0 0 1 ${b + r} ${b}H${W - b - r}A${r} ${r} 0 0 1 ${W - b} ${b + r}V51Z`}
           className="fill-white dark:fill-[#262626]"
         />
         <circle
@@ -129,9 +137,9 @@ export function Safari({
         </g>
         <image
           href={src}
-          width="1200"
-          height="700"
-          x="1"
+          width={W - 2 * b}
+          height={H - 52 - b}
+          x={b}
           y="52"
           preserveAspectRatio="xMidYMid slice"
           clipPath="url(#roundedBottom)"
@@ -143,7 +151,7 @@ export function Safari({
         </clipPath>
         <clipPath id="roundedBottom">
           <path
-            d="M1 52H1201V741C1201 747.075 1196.08 752 1190 752H12C5.92486 752 1 747.075 1 741V52Z"
+            d={`M${b} 52H${W - b}V${H - b - r}A${r} ${r} 0 0 1 ${W - b - r} ${H - b}H${b + r}A${r} ${r} 0 0 1 ${b} ${H - b - r}Z`}
             fill="white"
           />
         </clipPath>
