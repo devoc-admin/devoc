@@ -11,12 +11,13 @@ import CagnolhesScreenshot from "./_assets/screenshots/cagnolhes.jpg";
 import Scribble1 from "./_assets/scribbles/scribble-1.svg";
 import Scribble2 from "./_assets/scribbles/scribble-2.svg";
 import s from "./style.module.css";
+
 export default function TestCommunesSecurity() {
   return (
     <div className="h-screen">
       <OrangeDot />
       <ContentContainer>
-        <div className="col-span-1 col-start-1 space-y-4">
+        <div className="@container col-span-1 col-start-1 w-full space-y-4">
           <TitleAndIcons />
           <Subtitle />
         </div>
@@ -59,7 +60,14 @@ function ContentContainer({ children }: { children: React.ReactNode }) {
 // 🆎 ==============================================
 function TitleAndIcons() {
   return (
-    <div className="text-orange-red font-anton relative w-fit text-8xl leading-[1.1] uppercase">
+    <div
+      className={cn(
+        "relative",
+        "w-fit",
+        "text-orange-red font-anton text-8xl leading-[1.1] uppercase",
+        s.icons
+      )}
+    >
       <Icons />
       <Title />
     </div>
@@ -91,99 +99,107 @@ function Icons() {
   );
 }
 
+function Icon({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn("absolute top-1/2 left-1/2 inline-block", className)}>
+      {children}
+    </div>
+  );
+}
+
 // ✅
 function Check() {
   return (
-    <Image
-      alt=""
-      className={cn(
-        "absolute size-33",
-        "top-0 left-0 translate-x-[0.6em] -translate-y-[calc(100%+0.1em)]"
-      )}
-      height={400}
-      src={CheckIcon.src}
-      width={400}
-    />
+    <Icon className={s.checkIcon}>
+      <Image
+        alt=""
+        className="size-33 max-w-none"
+        height={400}
+        src={CheckIcon.src}
+        width={400}
+      />
+    </Icon>
   );
 }
 
 // 🛡️
 function Shield() {
   return (
-    <Image
-      alt=""
-      className={cn(
-        "absolute w-28",
-        "top-0 left-0 translate-x-[3.4em] translate-y-[-50%]"
-      )}
-      height={400}
-      src={ShieldIcon.src}
-      width={400}
-    />
+    <Icon className={s.shieldIcon}>
+      <Image
+        alt=""
+        className="w-28 max-w-none"
+        height={400}
+        src={ShieldIcon.src}
+        width={400}
+      />
+    </Icon>
   );
 }
 
 // 🚩
 function Flag() {
   return (
-    <Image
-      alt=""
-      className={cn(
-        "absolute w-32",
-        "top-0 left-0 translate-x-[4.70em] translate-y-[15%]"
-      )}
-      height={400}
-      src={FlagIcon.src}
-      width={400}
-    />
+    <Icon className={s.flagIcon}>
+      <Image
+        alt=""
+        className="w-32 max-w-none"
+        height={400}
+        src={FlagIcon.src}
+        width={400}
+      />
+    </Icon>
   );
 }
 
 // 🔑
 function Key() {
   return (
-    <Image
-      alt=""
-      className={cn(
-        "absolute w-32",
-        "top-0 left-0 translate-x-[-1em] translate-y-[15%]"
-      )}
-      height={400}
-      src={KeyIcon.src}
-      width={400}
-    />
+    <Icon className={s.keyIcon}>
+      <Image
+        alt=""
+        className="w-32 max-w-none"
+        height={400}
+        src={KeyIcon.src}
+        width={400}
+      />
+    </Icon>
   );
 }
 
 // 📱
 function Phone() {
   return (
-    <Image
-      alt=""
-      className={cn(
-        "absolute w-20",
-        "bottom-0 left-0 translate-x-[calc(-115%)] translate-y-[10%]"
-      )}
-      height={400}
-      src={PhoneIcon.src}
-      width={400}
-    />
+    <Icon className={s.phoneIcon}>
+      <Image
+        alt=""
+        className="w-20 max-w-none"
+        height={400}
+        src={PhoneIcon.src}
+        width={400}
+      />
+    </Icon>
   );
 }
 
 //👑
 function Crown() {
   return (
-    <Image
-      alt=""
-      className={cn(
-        "absolute w-24",
-        "right-0 bottom-0 translate-x-[calc(115%)] translate-y-[10%]"
-      )}
-      height={400}
-      src={CrownIcon.src}
-      width={400}
-    />
+    <Icon className={s.crownIcon}>
+      <Image
+        alt=""
+        className="w-24 max-w-none"
+        height={400}
+        src={CrownIcon.src}
+        width={400}
+      />
+    </Icon>
   );
 }
 
