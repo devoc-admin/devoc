@@ -207,6 +207,8 @@
         "lucide-react": "catalog:ui",
         "motion": "catalog:ui",
         "next": "catalog:next",
+        "nucleo-glass": "^1.4.1",
+        "radix-ui": "^1.8.1",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "tailwind-merge": "catalog:ui",
