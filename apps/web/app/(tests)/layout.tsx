@@ -1,6 +1,6 @@
 import { cn } from "cn";
 import type { Metadata } from "next";
-import { Anton, Fraunces, Racing_Sans_One } from "next/font/google";
+import { Anton, Fraunces, Racing_Sans_One, Raleway } from "next/font/google";
 import { notFound } from "next/navigation";
 import s from "./style.module.css";
 
@@ -19,14 +19,7 @@ export default function TestLayout({
   }
 
   return (
-    <div
-      className={cn(
-        anton.variable,
-        racingSansOne.variable,
-        fraunces.variable,
-        "relative h-[300vh] p-8"
-      )}
-    >
+    <div className={cn(fonts, "relative h-[300vh] p-8")}>
       <LeftBarWithMarker />
       <RightBarWithMarker />
       {children}
@@ -120,3 +113,16 @@ const fraunces = Fraunces({
   variable: "--font-fraunces",
   weight: "400",
 });
+
+const raleway = Raleway({
+  subsets: ["latin"],
+  variable: "--font-raleway",
+  weight: "600",
+});
+
+const fonts = cn(
+  anton.variable,
+  racingSansOne.variable,
+  fraunces.variable,
+  raleway.variable
+);
